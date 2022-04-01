@@ -1,0 +1,139 @@
+syntax = "proto3";
+
+package dunkware.chart;
+
+
+option java_multiple_files = true;
+option java_package = "com.dunkware.net.proto.chart";
+option java_outer_classname = "ChartProto";
+
+service ChartService {
+    rpc getChart( ChartRequest) returns (stream ChartResponse) {}
+    rpc getGrid(GridRequest) returns (Grid) {}
+    rpc getGridSubscription(GridSubscriptionRequest) returns (stream GridTransaction) {}
+}
+
+message GridSubscriptionRequest { 
+    int32 id = 1;
+}
+
+message GridRequest { 
+    string name = 1; 
+}
+
+/* Value Parser enum that matches to a value parser function */ 
+enum GridValueParser { 
+    numberParser = 0; 
+    dateParser = 1; 
+}
+message GridColumn { 
+    /* Start Required Fields */ 
+
+    /* required field for column binding */ 
+    string field = 1; 
+    /* Specifies if column is sortable if not set on server default value is false */
+    bool sortable = 2; 
+    /* Specifies is column is filterable if not set default value is false */
+    bool filter = 3; 
+    /* Specifies if row drag is enabled default is false */
+    bool rowDrag = 4; 
+
+    /* Start Optional Fields */ 
+
+    /* Optional headerName that if not null will set the name of column */ 
+    string headerName = 5; 
+    /* Optional value parser that matches a function name from enum */
+    GridValueParser valueParser = 6;
+    /** Optional list of cellClassRules of gets configured in the client like this...
+        cellClassRules: {
+          'rag-green': 'x < 20',
+          'rag-amber': 'x >= 20 && x < 25',
+          'rag-red': 'x >= 25'
+        },
+    **/
+    repeated string cellClassRules = 7;
+    
+    /* optional cell class that must be a valid css class name */
+    string cellClass = 8; // optio
+}
+
+message Grid {
+    /* numeric id of the grid */
+    int32 gridId = 1; 
+    /** required list of GridColumn that the client side will iterate
+    and create column in the columnDefs array **/
+    repeated GridColumn columns = 2; 
+    /* Initial data set that will always be set regardless of static or streaming grid */
+    string data = 3; 
+    /** Indicates if this is a streaming Grid, if true then a call is made
+    to get getGridDescription sending the id of the grid using GetGridSubscriptionRequest 
+    **/
+    bool streaming = 4;
+    /* Sets the pivot flag on the grid options to toggle visibility */ 
+    bool pivot = 5; // boolean to enable or disable pivot on table 
+    /* If streaming grid then we specify what attribute to sue as rowNodeId */
+    string rowNodeId = 6;    
+
+    /* optional if set to tru pagination will be used */
+    bool pagination = 7; 
+
+    /* if pagination is set to true then we set the data size per row */
+    int32 paginationPageSize = 8; 
+}
+
+/* A Grid Transaction that translates to add[] on ag-dird api */
+message GridTransactionInsert { 
+    /* Json object of data */ 
+    string data = 1;
+}
+/** A Grid transaction that updates a row and in the json the rowNodeId
+must exist **/
+message GridTransactionUpdate { 
+    /* json with updated fields plus rowNodeId */ 
+    string data = 1; 
+}
+
+/* Grid transaction delete that translates to remove[] on ag-grid API */
+message GridTransactionDelete { 
+    /* json object that has the rowNodeId attribute/value to delete */ 
+    string data = 1; 
+}
+
+
+/** When streaming Grid a subscription is made to get a stream of 
+grid transactions which can have inserts/updates/deletes which together
+create a ag-grid transaction with add[], update[] remove[] **/
+message GridTransaction { 
+    /* Optional list of row updates */ 
+    repeated GridTransactionInsert inserts = 1;
+    /* Optional list of row updates */ 
+    repeated GridTransactionUpdate updates = 2; 
+    /* Optional list of row deletes */
+    repeated GridTransactionDelete deletes = 3;
+
+}
+
+
+
+/* Chart Messages Start Here */ 
+enum ChartType { 
+    LineChart = 0;
+    PieChart = 1;
+    ColumnChart = 2;
+}
+
+message ChartRequest { 
+    string name = 1;
+}
+
+message ChartInput {
+    ChartType chartType = 1;
+    string chartConfig = 2;
+    string data = 3;
+}
+
+message ChartResponse { 
+    ChartInput chartInput = 1;
+}
+
+

@@ -1,0 +1,69 @@
+package com.dunkware.trade.service.stream.server.grpc;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.annotation.Profile;
+import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.CrossOrigin;
+
+import com.dunkware.net.proto.stream.GStreamSpec;
+import com.dunkware.net.proto.stream.GStreamSpecsRequest;
+import com.dunkware.net.proto.stream.GStreamSpecsResponse;
+import com.dunkware.net.proto.stream.service.GStreamServiceGrpc.GStreamServiceImplBase;
+import com.dunkware.trade.service.stream.server.controller.StreamController;
+import com.dunkware.trade.service.stream.server.controller.StreamControllerService;
+import com.dunkware.trade.service.stream.server.controller.util.GStreamSpecBuilder;
+import com.dunkware.trade.service.stream.server.tick.StreamTickService;
+
+import io.grpc.stub.StreamObserver;
+import net.devh.springboot.autoconfigure.grpc.server.GrpcService;
+
+@GrpcService(GStreamServiceImplBase.class)
+@Service
+@Profile("StreamController")
+@CrossOrigin(origins = "*", allowedHeaders = "*")
+public class GrpcStreamService extends GStreamServiceImplBase {
+
+	@Value("${consumer.kafka.brokers}")
+	private String consumerKafkaBrokers;
+
+	@Autowired
+	private StreamControllerService controllerService;
+
+	@Autowired
+	private StreamTickService tickService;
+
+	
+	
+	@Override
+	public void streamSpecs(GStreamSpecsRequest request, StreamObserver<GStreamSpecsResponse> responseObserver) {
+		try {
+			GStreamSpecsResponse.Builder respBuilder = GStreamSpecsResponse.newBuilder();
+			List<GStreamSpec> gspecs = new ArrayList<GStreamSpec>();
+			for (StreamController stream : controllerService.getStreams()) {
+				gspecs.add(GStreamSpecBuilder.build(stream));
+			}
+			respBuilder.addAllSpecs(gspecs);
+			responseObserver.onNext(respBuilder.build());
+			responseObserver.onCompleted();	
+		} catch (Exception e) {
+			responseObserver.onError(e);
+		}
+	}
+
+	
+
+	
+	
+	
+	
+	
+	
+	
+
+
+
+}

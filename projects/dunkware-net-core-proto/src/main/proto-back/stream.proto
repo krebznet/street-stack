@@ -1,0 +1,289 @@
+syntax = "proto3";
+
+package dunkware.stream;
+
+
+ option java_multiple_files = true;
+ option java_package = "com.dunkware.net.proto.stream";
+ option java_outer_classname = "GStreamProto";
+ 
+import "core.proto";
+
+import "google/protobuf/timestamp.proto";
+
+
+/**
+*  Section 1. Stream Event Messsags That Get Sent Through Kafka In Reealtime. 
+*/ 
+enum GStreamEventType {
+    EntitySignal = 0;
+    EntitySnapshot = 1;
+}
+
+// Generic Object Contains 1 type of event 
+message GStreamEvent  {
+    string streamId = 1;
+    string sessionId = 3;
+    GStreamEventType type = 4;
+    oneof event {
+        GEntitySnapshot entitySnapshot = 5;
+        GEntitySignal entitySignal = 6;
+    }
+ 
+}
+// Entity Snapshot Event, datetime, entity id/code
+message GEntitySnapshot {
+    int32 id = 1;
+    string symbol = 2;
+    string streamId = 3; 
+    string sessionId = 4;
+    google.protobuf.Timestamp time = 12;
+    repeated GEntityVarSnapshot vars = 7;
+    message GSnapshotSignal { 
+        int32 id = 11; 
+        string identifier = 12; 
+    }
+    
+    repeated GSnapshotSignal signals = 8;
+}
+
+message GEntityVarSnapshot { 
+   int32 id = 1;
+   string name = 2;
+   int32 dataType = 9;
+   oneof value { 
+     bool booleanValue = 3;
+     int32 intValue = 4; 
+     string stringValue = 5; 
+     double doubleValue = 6;
+     int64 longValue = 7;
+     string nullValue = 8;
+   }
+}
+
+// GEntity Signal Event id/name entity stream/session timestamp type and variable values. 
+message GEntitySignal {
+    int32 id = 1;
+    string name = 2; 
+    int32 entityId = 3;
+    string entitySymbol =  4;
+     string streamId = 5;
+    string sessionId = 6; 
+    google.protobuf.Timestamp time = 12;
+   repeated GEntityVarSnapshot vars = 9;
+}
+
+
+
+/**
+*  Section 2. Stream Entity and Stream Entity Signal Queries 
+*/ 
+
+// entity query 
+message GEntityQuery { 
+   int32 queryId = 1;
+   string queryName = 2;
+   string queryPath = 3;
+   string streamId = 4;
+   repeated string entities = 5;
+   repeated GEntityVarCriteria varCriterias = 6; 
+   repeated GEntitySignalCountCriteria signalCountCritieras = 7;
+   dunkware.core.GCalendarRange searchRange = 8;
+}
+
+// entity signal query
+message GEntitySignalQuery { 
+  int32 queryId = 1; 
+  int32 queryName = 2;
+  string streamId = 3;
+  string directoryPath = 4;
+  repeated string entities = 5;
+  repeated string signalTypes = 6;
+  repeated GEntityVarCriteria varCriterias = 7;
+  dunkware.core.GCalendarRange searchRange = 8;
+} 
+
+// list of entity types 
+message GEntityTypeList { 
+ int32 listId = 1; 
+ string listName = 2; 
+ repeated int32 ids  = 3;
+}
+
+// list of signal types 
+message GEntitySignalTypeList {
+  int32 listId = 1; 
+  string listName = 2; 
+  repeated int32 ids = 3;  
+  
+
+}
+// Signal Types Criteria 
+message GEntitySignalTypeCriteria { 
+   GEntitySignalTypeList types = 1;
+}
+
+// Entity Types Critiera 
+message GEntityTypeCriteria { 
+  GEntityTypeList types = 1;
+}
+
+// Signal Couunt Criteria, specify the types the count the operator the time range 
+// and the entities to search with var criterias. 
+message GEntitySignalCountCriteria { 
+   string signalType =1; 
+   int32 signalCount = 2;
+   dunkware.core.GOperator operator = 3;
+   dunkware.core.GCalendarRange timeRange = 5;
+   
+}
+
+// Entity/Signal Var Critiera 
+message GEntityVarCriteria { 
+  string identifier = 1;
+  dunkware.core.GOperator operator = 2; 
+  double value = 3; 
+} 
+
+/**
+*  Section 3. Stream Entity and Stream Entity Signal Scanners 
+*/ 
+
+message GEntityScanner { 
+  int32 scannerId = 1;
+  string scannerName = 2;
+  string streamId = 6;
+  string directoryPath = 3; 
+  GEntityQuery query = 4; 
+}
+
+message GEntitysignalScanner { 
+  int32 scannerId = 1; 
+  int32 scannerName = 2; 
+  string streamId = 3; 
+  string directoryPath = 4; 
+  GEntitySignalQuery query = 5; 
+}
+
+/**
+ Stream Spec - The Metadata for a stream used as inputs into Signal and Entity Query Editors
+ */
+
+message GStreamSpec {
+    string streamIdentifier = 1;
+    string streamName = 2;
+    double streamVersion = 3;
+    repeated GStreamVarSpec variables = 4;
+    repeated GStreamEntitySpec entities = 5;
+    repeated GStreamEntitySignalSpec entitySignals = 6;
+}
+
+message GStreamVarSpec {
+    int32 varId = 1;
+    string varIdentifier = 2;
+    string varName = 3;
+    dunkware.core.GDataType dataType = 4;
+}
+
+message GStreamEntitySpec {
+    int32 entityId = 1;
+    string entityIdentifier = 2;
+    string entityName = 3;
+}
+
+message GStreamEntitySignalSpec {
+    int32 signalId = 1;
+    string signalIdentifier = 2;
+    string signalName = 3;
+
+}
+
+// RPC Messages
+message GStreamSpecRequest {
+    string streamIdentifier = 1; 
+}
+
+message GStreamSpecResponse {
+       dunkware.core.GError error = 1; 
+       dunkware.stream.GStreamSpec spec = 2;
+}
+
+
+// *** Search RPC Methods ** // 
+
+// Entity Signal Search Requst
+message GEntitySignalSearchRequest { 
+ string streamIdentifier = 1; 
+ GEntitySignalQuery query = 2;
+ repeated string vars = 3;
+}
+
+// Entity Signal Search Response
+message GEntitySignalSearchResponse { 
+  int32 size = 1;
+  
+  oneof Response { 
+    dunkware.core.GList results = 2; 
+    dunkware.core.GError error = 3;
+  }
+ 
+} 
+
+message GEntitySignalStreamRequest { 
+ string streamIdentifier = 1; 
+ GEntitySignalQuery query = 2;
+ repeated string vars = 3;
+ int32 refresh = 4;
+}
+
+
+// Entity Signal Stream Search Response 
+message GEntitySignalStreamResponse { 
+   int32 streamId = 1;
+   oneof Response { 
+       string error = 2;
+       dunkware.core.GListEvent listEvent = 3;
+    }
+
+}
+
+
+// Entity Signal Search Requst
+message GEntitySearchRequest { 
+ string streamIdentifier = 1; 
+ GEntityQuery query = 2;
+ repeated string vars = 3;
+}
+
+// Entity Signal Search Response
+message GEntitySearchResponse { 
+  int32 size = 1;
+  
+  oneof Response { 
+    dunkware.core.GList results = 2; 
+    dunkware.core.GError error = 3;
+  }
+ 
+} 
+
+message GEntityStreamRequest { 
+ string streamIdentifier = 1; 
+ GEntityQuery query = 2;
+ repeated string vars = 3;
+ int32 refresh = 4;
+}
+
+
+// Entity Signal Stream Search Response 
+message GEntityStreamResponse { 
+   int32 streamId = 1;
+   oneof Response { 
+       string error = 2;
+       dunkware.core.GListEvent listEvent = 3;
+    }
+
+}
+
+
+
+

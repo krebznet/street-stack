@@ -1,0 +1,16 @@
+syntax = "proto3";
+
+package dunkware.cluster;
+
+option java_multiple_files = true;
+option java_package = "com.dunkware.net.proto.cluster";
+
+option java_outer_classname = "GClusterProto";
+
+
+import "stream.proto";
+
+service GClusterService {
+     rpc getStreamSpec( dunkware.stream.GStreamSpecRequest) returns (dunkware.stream.GStreamSpecResponse) {}
+     rpc signalSearch( dunkware.stream.GEntitySignalSearchRequest) returns (dunkware.stream.GEntitySignalSearchResponse) {} 
+}

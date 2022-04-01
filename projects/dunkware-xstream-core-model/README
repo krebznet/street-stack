@@ -1,0 +1,2 @@
+cd ~/gdrive/dunktrade/protoc/bin 
+./protoc -I=/Users/dkrebs/dunkdev/feature-capture/artifacts/dunkware-xstream-core-model/src/main/java/com/dunkware/xstream/model/proto/ --java_out=/Users/dkrebs/dunkdev/feature-capture/artifacts/dunkware-xstream-core-model/src/main/java /Users/dkrebs/dunkdev/feature-capture/artifacts/dunkware-xstream-core-model/src/main/java/com/dunkware/xstream/model/proto/StreamProto.proto

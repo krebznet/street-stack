@@ -1,0 +1,185 @@
+package com.dunkware.trade.service.stream.server.controller;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import javax.annotation.PostConstruct;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Profile;
+import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.RestController;
+
+import com.dunkware.trade.service.stream.protocol.controller.GetStreamSpecResp;
+import com.dunkware.trade.service.stream.protocol.controller.GetStreamSpecsResp;
+import com.dunkware.trade.service.stream.protocol.controller.StartStreamResp;
+import com.dunkware.trade.service.stream.protocol.controller.StopStreamResp;
+import com.dunkware.trade.service.stream.protocol.controller.StreamStatsResp;
+import com.dunkware.trade.service.stream.protocol.controller.UpdateStreamReq;
+import com.dunkware.trade.service.stream.protocol.controller.UpdateStreamResp;
+import com.dunkware.trade.service.stream.protocol.controller.spec.StreamSpec;
+import com.dunkware.trade.service.stream.protocol.controller.spec.StreamStatus;
+
+// /stream/admin/add
+// /stream/admin/update 
+// /stream/session/start
+// /stream/session/stop
+// /stream/session/notify/signal
+// /stream/session/notify/ticker
+
+// /stream/session/status 
+
+@RestController
+@Profile("StreamController")
+@CrossOrigin(origins = "*") 
+public class StreamControllerWebService {
+
+	@Autowired
+	private StreamControllerService service; 
+	
+	private Logger logger = LoggerFactory.getLogger(getClass());
+	
+	@PostConstruct
+	public void load() { 
+		
+		System.out.println("stream controller web service start");
+	}
+
+	
+	@GetMapping(path = "/trap/hello")
+	
+	public @ResponseBody()String trapHello() { 
+		return "Hello Back";
+	}
+	
+
+	@PostMapping(path = "/stream/core/update") 
+	public @ResponseBody() UpdateStreamResp updateStream(@RequestBody()UpdateStreamReq req) {
+		UpdateStreamResp resp = new UpdateStreamResp();
+		try {
+			service.updateStream(req.getSpec());
+			resp.setCode("SUCCESS");
+			return resp;
+		} catch (Exception e) {
+			resp.setCode("ERROR");
+			resp.setError(e.toString());
+			return resp;
+		}
+		
+	}
+	
+	@GetMapping(path = "/stream/core/start") 
+	public @ResponseBody()StartStreamResp startStream(@RequestParam(name = "stream")String stream) {
+		StartStreamResp resp = new StartStreamResp();
+		StreamController controller = null;
+		try {
+			controller = service.getStreamByName(stream);
+		} catch (Exception e) {
+			resp.setCode("ERROR");
+			resp.setError("Get stream exception " + e.toString());
+			return resp;
+		}
+		try {
+			controller.startSession();
+			resp.setCode("SUCCESS");
+			return resp;
+		} catch (Exception e) {
+			resp.setError("Internal " + e.toString());
+			resp.setCode("ERROR");
+			return resp;
+		}
+		
+	}
+	
+	@GetMapping(path = "/stream/core/stop") 
+	public @ResponseBody()StopStreamResp stopStream(@RequestParam(name = "stream")String stream) {
+		StopStreamResp resp = new StopStreamResp();
+		StreamController controller = null;
+		try {
+			controller = service.getStreamByName(stream);
+		} catch (Exception e) {
+			resp.setCode("ERROR");
+			resp.setError("Get stream exception " + e.toString());
+			return resp;
+		}
+		try {
+			if(controller.getStatus() == StreamStatus.Running) { 
+				controller.stopSession();
+				resp.setCode("SUCCSS");
+				return resp;
+			}
+			resp.setCode("ERROR");
+			resp.setError("Stream is Not In Session");
+			return resp;
+		} catch (Exception e) {
+			resp.setError("Internal " + e.toString());
+			resp.setCode("ERROR");
+			return resp;
+		}
+		
+	}
+	
+	@RequestMapping(path = "/stream/core/stats") 
+	public @ResponseBody()StreamStatsResp streamStatus(@RequestParam(name = "stream")String stream) {
+		StreamStatsResp resp = new StreamStatsResp();
+		try {
+			StreamController controller = service.getStreamByName(stream);
+			resp.setCode("SUCCESS");
+			resp.setStats(controller.getStats());
+			return resp;
+		} catch (Exception e) {
+			resp.setCode("ERROR");
+			resp.setError("Exception getting stream " + e.toString());;
+			return resp;
+		}
+	}
+	
+	
+	@RequestMapping(path = "/stream/core/get")
+	public @ResponseBody GetStreamSpecResp getStreamSpec(@RequestParam(name = "stream") String stream) { 
+		GetStreamSpecResp resp = new GetStreamSpecResp();
+		try {
+			StreamController controller = service.getStreamByName(stream);
+			StreamSpec spec = controller.getSpec();
+			resp.setSpec(spec);
+			resp.setCode("SUCCESS");
+			return resp;			
+		} catch (Exception e) {
+			resp.setError("Exception Getting Stream " + e.toString());
+			return resp;
+		}
+		
+	}
+
+	@GetMapping(path = "/stream/core/specs")
+	public @ResponseBody GetStreamSpecsResp getStreamSpecs() { 
+		GetStreamSpecsResp resp = new GetStreamSpecsResp();
+		
+		try {
+			List<StreamSpec> specs = new ArrayList<StreamSpec>();
+			for (StreamController controller : service.getStreams()) {
+				specs.add(controller.getSpec());
+			}
+			
+			resp.setSpecs(specs);
+			resp.setCode("SUCCESS");
+			return resp;			
+		} catch (Exception e) {
+			resp.setError("Exception Getting Stream " + e.toString());
+			return resp;
+		}
+	}
+	
+	
+	
+
+	
+}

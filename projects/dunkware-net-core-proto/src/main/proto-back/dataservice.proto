@@ -1,0 +1,32 @@
+syntax = "proto3";
+
+package data.service;
+
+option java_multiple_files = true;
+option java_package = "com.dunkware.net.proto.data.service";
+option java_outer_classname = "GStreamDataProto";
+
+ 
+
+import "stream.proto";
+
+
+service GDataService  {
+    // search 
+    rpc signalSearch( dunkware.stream.GEntitySignalSearchRequest) returns (dunkware.stream.GEntitySignalSearchResponse) {} 
+    rpc signalStream( stream dunkware.stream.GEntitySignalStreamRequest) returns (stream dunkware.stream.GEntitySignalStreamResponse) {} 
+    rpc entitySearch( dunkware.stream.GEntitySearchRequest) returns (dunkware.stream.GEntitySearchResponse) {} 
+    rpc entityStream( stream dunkware.stream.GEntityStreamRequest) returns (stream dunkware.stream.GEntityStreamResponse) {} 
+    rpc ping(pinger) returns (ponger) {}
+  }
+  
+  message pinger { 
+  	string message = 1;
+  }
+  
+  message ponger { 
+    string message = 1;
+  }
+
+
+

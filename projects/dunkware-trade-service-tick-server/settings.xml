@@ -1,0 +1,49 @@
+ <settings xmlns="http://maven.apache.org/SETTINGS/1.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+      xsi:schemaLocation="http://maven.apache.org/SETTINGS/1.0.0 https://maven.apache.org/xsd/settings-1.0.0.xsd">
+<profiles>
+<profile>
+<id>dunkware</id>
+  <repositories>
+	  <repository>
+      <id>dunkware-internal-release</id>
+      <name>Dunkware Internal Release</name>
+    <releases>
+            <enabled>true</enabled>
+            <updatePolicy>always</updatePolicy>
+            <checksumPolicy>warn</checksumPolicy>
+          </releases>
+	  <url>https://nexus.dunkware.com/repository/dunkware-internal-release/</url>
+	  <layout>default</layout>
+	  <snapshots>
+		  <enabled>false</enabled>
+	  </snapshots>
+    </repository>
+    <repository>
+      <id>dunkware-internal-snapshot</id>
+      <name>Dunkware Internal Snapshot</name>
+      <releases>
+	<enabled>false</enabled>
+</releases>
+<snapshots>
+	      <enabled>true</enabled>
+            <updatePolicy>always</updatePolicy>
+            <checksumPolicy>warn</checksumPolicy>
+          </snapshots>
+      <url>https://nexus.dunkware.com/repository/dunkware-internal-snapshot/</url>
+    </repository>
+  </repositories>
+</profile>
+</profiles>
+<servers>
+<server>
+      <id>dunkware-internal-snapshot</id>
+      <username>admin</username>
+      <password>od1#LAft</password>
+    </server>
+    <server>
+      <id>dunkware-internal-release</id>
+      <username>admin</username>
+      <password>od1#LAft</password>
+    </server>
+  </servers>
+  </settings>

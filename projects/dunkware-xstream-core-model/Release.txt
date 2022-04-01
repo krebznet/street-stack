@@ -1,0 +1,2 @@
+1.2.0
+ - XStreamProto - XStreamTick Message can be a RowSnapshot, or Signal Good for now 

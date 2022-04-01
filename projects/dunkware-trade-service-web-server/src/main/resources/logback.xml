@@ -1,0 +1,49 @@
+<configuration scan="true">
+
+	<property name="PATTERN"
+		value="%d{HH:mm:ss.SSS} %-5level %logger{0} - %msg%n" />
+
+	<appender name="CONSOLE"
+		class="ch.qos.logback.core.ConsoleAppender">
+
+		<encoder>
+			<pattern>%d{HH:mm:ss.SSS} [%thread] %-5level %logger{36} - %msg%n
+			</pattern>
+		</encoder>
+	</appender>
+	
+	
+  <appender name="FLUENT"
+		class="ch.qos.logback.more.appenders.DataFluentAppender">
+		<tag>dunkware</tag>
+		<label>logging</label>
+		<remoteHost>172.16.16.55</remoteHost>
+		<port>32756</port>
+		<additionalField>
+			<key>owner</key>
+			<value>web-service</value>
+		</additionalField>
+	</appender>
+	
+	
+
+
+
+	<root level="info">
+		<appender-ref ref="CONSOLE" additivity="false" />
+		
+	</root>
+
+	
+
+	<logger name="com.dunkware" level="debug" additivity="false">
+		<appender-ref ref="CONSOLE" additivity="false" />
+			<appender-ref ref="FLUENT" additivity="false" />
+	</logger>
+	
+	
+	
+
+
+
+</configuration>

@@ -1,0 +1,47 @@
+<!-- this is the parent configuration pom that has all our resources defined
+	liked target platforms, release repos etc. -->
+<project
+	xmlns="http://maven.apache.org/POM/4.0.0"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	<groupId>com.kntrade</groupId>
+	<artifactId>com.kntrade.newrock.release</artifactId>
+	<version>1.1.0</version>
+	<packaging>pom</packaging>
+
+  <modules>
+  <module> projects/dunkware-maven-parent</module>
+      <module> projects/dunkware-common-util</module>
+      <module>projects/dunkware-net-core-proto</module>
+      <module>projects/dunkware-net-core-runtime</module>
+      <module>projects/dunkware-trade-tick-model</module>
+      <module>projects/dunkware-trade-tick-api</module>
+      <module>projects/dunkware-trade-tick-provider-atick</module>
+      <module>projects/dunkware-xstream-core-model</module>
+      <module>projects/dunkware-xstream-core-runtime</module>
+      <module>projects/dunkware-xstream-data-runtime</module>
+      <module>projects/dunkware-trade-service-tick-protocol</module>
+      <module>projects/dunkware-trade-service-tick-client</module>
+      <module>projects/dunkware-trade-service-tick-server</module>
+      <module>projects/dunkware-trade-service-stream-protocol</module>
+      <module>projects/dunkware-trade-service-stream-server</module>
+
+			<module>projects/dunkware-trade-sdk-tws-runtime</module>
+      <module>projects/dunkware-trade-service-web-server</module>
+      <module>projects/dunkware-trade-service-data-server</module>
+      <module>projects/dunkware-trade-service-data-mock</module>
+      <module>projects/dunkware-trade-service-data-lib</module>
+			<module>projects/dunkware-trade-service-data-json</module>
+			<module>projects/dunkware-trade-sdk-core-model</module>
+			<module>projects/dunkware-trade-sdk-core-runtime</module>
+      <module>projects/dunkware-trade-sdk-lib-model</module>
+			<module>projects/dunkware-trade-sdk-lib-runtime</module>
+			<module>projects/dunkware-trade-service-beach-server</module>
+			<module>projects/dunkware-trade-service-beach-protocol</module>
+
+
+  </modules>
+
+
+</project>

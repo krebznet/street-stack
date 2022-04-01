@@ -1,0 +1,11 @@
+1.0.0
+ - Basic Core Expressions
+ 
+1.1.0
+ - Sub Expression
+ - VarValue, VarValueRange, VarSet Expressions
+ - Avg and Roc Expressions
+ - Snapshot Expression
+ - XClass 
+ - Signal Holder 
+ 

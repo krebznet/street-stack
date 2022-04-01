@@ -1,0 +1,7 @@
+1.0.0
+ - Capture Message Consumer -> consume messages from kafka 
+ - CaptureUtil - convert to MongoDB objects for insert 
+ - CaptureSnapshotBucket - Model object to hold a list of snapshot messages for an entity
+ - CaptureService -- captures snapshot data and signals into a mongo database with buckets of a configured size. 
+  
+ 

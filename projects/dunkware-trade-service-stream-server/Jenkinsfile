@@ -1,0 +1,40 @@
+pipeline {
+    agent any
+
+    
+
+    stages {
+    
+        stage('Build') {
+            steps {
+                script{
+                 // pull from github
+
+                    git branch: '1.3.0',
+                    credentialsId: 'krebznet-github',
+                    url: 'git@github.com:krebznet/dunkware-trade-service-stream-server.git'
+            }
+                   withMaven(globalMavenSettingsConfig: 'dunkware-settings', maven: '3.8.1', options: [pipelineGraphPublisher(includeReleaseVersions: true),pipelineGraphPublisher(lifecycleThreshold: 'install')]) {
+ 			sh 'mvn clean deploy'
+}
+            
+        }}
+
+        stage('Deploy'){
+            steps{
+                script{
+                    docker.withRegistry(
+                        'https://505030817635.dkr.ecr.us-east-1.amazonaws.com/dunkware-trade-service-stream-server', 'ecr:us-east-1:ecr-dunkware-internal'
+                        ){
+                    def Image = docker.build('dunkware-trade-service-stream-server')
+                    Image.push()}
+                }
+            }
+        }
+
+     
+        }
+    }
+
+
+

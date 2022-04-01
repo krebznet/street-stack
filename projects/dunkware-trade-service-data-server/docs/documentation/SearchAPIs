@@ -1,0 +1,18 @@
+GEntitySignalQuery
+GEntityQuery
+
+GEntityStatQuery
+ list of entities 
+ date range 
+ 
+ 
+ Get Entity Variable values within a time range with specified interval 
+ Streaming 
+ 
+ 3  4  5  		Add Variable
+ 
+ Trick is searching cache + mongo data 
+ 
+ Git a grid or scanner of entities: 
+ 
+ 

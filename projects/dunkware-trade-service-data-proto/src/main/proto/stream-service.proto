@@ -1,0 +1,16 @@
+syntax = "proto3";
+
+package dunkware.stream.service;
+
+option java_multiple_files = true;
+option java_package = "com.dunkware.net.proto.stream.service";
+option java_outer_classname = "GStreamServiceProto";
+
+
+
+import "stream.proto";
+import "core.proto";
+service GStreamService  {
+    rpc streamSpecs( dunkware.stream.GStreamSpecsRequest) returns (dunkware.stream.GStreamSpecsResponse) {}
+
+ }

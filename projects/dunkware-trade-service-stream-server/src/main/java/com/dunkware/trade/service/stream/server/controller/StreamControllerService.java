@@ -1,0 +1,158 @@
+package com.dunkware.trade.service.stream.server.controller;
+
+import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
+
+import javax.annotation.PostConstruct;
+
+import org.slf4j.Logger;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.annotation.Profile;
+import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Transactional;
+
+import com.dunkware.common.util.json.DJson;
+import com.dunkware.trade.service.stream.protocol.controller.spec.StreamSpec;
+import com.dunkware.trade.service.stream.server.controller.repository.StreamDO;
+import com.dunkware.trade.service.stream.server.controller.repository.StreamRepo;
+import com.dunkware.trade.service.stream.server.controller.repository.StreamVersionDO;
+import com.dunkware.trade.service.stream.server.controller.repository.StreamVersionDORepo;
+import com.dunkware.trade.service.stream.server.tick.StreamTickService;
+
+@Component
+@Profile("StreamController")
+public class StreamControllerService {
+
+	private Logger logger = org.slf4j.LoggerFactory.getLogger(getClass());
+
+	private List<StreamController> controllers = new ArrayList<StreamController>();
+
+	@Autowired
+	private StreamRepo streamRepo;
+
+	@Autowired
+	private StreamVersionDORepo versionRepo;
+
+	@Autowired
+	private ApplicationContext ac;
+	
+	@Autowired
+	private StreamTickService tickService; 
+	
+
+	@PostConstruct
+	private void load() {
+		logger.info("Starting Stream Controller Servie");
+		try {
+			Thread.sleep(500);
+			Iterable<StreamDO> ents = streamRepo.findAll();
+			for (StreamDO ent : ents) {
+				if (logger.isInfoEnabled()) {
+					logger.info("Initializing Stream Controller " + ent.getName());
+				}
+				StreamController con = new StreamController();
+				ac.getAutowireCapableBeanFactory().autowireBean(con);
+				con.start(ent);
+				controllers.add(con);
+			}
+		} catch (Exception e) {
+			logger.error("Exception loading streams " + e.toString());
+			System.exit(-1);
+		}
+
+	}
+
+	
+	@Transactional
+	public StreamController addStream(StreamSpec spec) throws Exception {
+		StreamDO ent = new StreamDO();
+		String[] tickerLists = spec.getTickers().split(",");
+		// we should validate these lists
+		for (String list : tickerLists) {
+			try {
+				tickService.getClient().getTickerList(list);
+			} catch (Exception e) {
+				throw new Exception("Exception validating Ticker List " + list + " " + e.toString());
+			}
+		}
+		ent.setTickerLists(spec.getTickers());
+		ent.setDataTicks(spec.getDataTicks());
+		ent.setSpec(DJson.serialize(spec));
+		ent.setName(spec.getName());
+		ent.setCountry(spec.getCountry());
+		StreamVersionDO ver = new StreamVersionDO();
+		ver.setStream(ent);
+		ver.setVersion(spec.getVersion());
+		ver.setBundle(DJson.serialize(spec.getBundle()));
+		System.out.println(ver.getBundle());
+		ent.getVersions().add(ver);
+
+		try {
+			streamRepo.save(ent);
+		} catch (Exception e) {
+			throw new Exception("Insert Stream Enttiy expetion " + e.toString());
+		}
+		// need a spring version
+		StreamController controller = new StreamController();
+		ac.getAutowireCapableBeanFactory().autowireBean(controller);
+		controller.start(ent);
+		controllers.add(controller);
+
+		return controller;
+	}
+
+	public List<StreamController> getStreams() {
+		return controllers;
+	}
+
+	public StreamController getStreamByName(String name) throws Exception {
+		for (StreamController con : controllers) {
+			if (con.getEntity().getName().equals(name)) {
+				return con;
+			}
+		}
+		throw new Exception("Stream Controller " + name + " not found");
+	}
+
+
+	public void updateStream(StreamSpec spec) throws Exception {
+		StreamController stream = getStreamByName(spec.getName());
+		Double newVersion = spec.getVersion();
+		StreamVersionDO newVersionDO = new StreamVersionDO();
+		newVersionDO.setStream(stream.getEntity());
+		newVersionDO.setVersion(newVersion);
+		newVersionDO.setBundle(DJson.serialize(spec.getBundle()));
+		newVersionDO.setTimestamp(LocalDateTime.now());
+		List<StreamVersionDO> versions = versionRepo.findByStreamOrderByVersion(stream.getEntity());
+		boolean specVerisionGreater = true;
+		for (StreamVersionDO version : versions) {
+			if (spec.getVersion() < version.getVersion() || spec.getVersion() == version.getVersion()) {
+				specVerisionGreater = false;
+			}
+		}
+		// plural?
+		stream.getEntity().setTickerLists(spec.getTickers());
+		if (specVerisionGreater) {
+			// save the stream entity after adding new version
+			stream.getEntity().setSpec(DJson.serialize(spec));
+			stream.getEntity().getVersions().add(newVersionDO);
+		} else {
+			// else
+			StreamSpec entitySpec = DJson.getObjectMapper().readValue(stream.getEntity().getSpec(), StreamSpec.class);
+			spec.setBundle(entitySpec.getBundle());
+			stream.getEntity().setSpec(DJson.serialize(spec));
+		}
+		try {
+			streamRepo.save(stream.getEntity());
+		} catch (Exception e) {
+			throw new Exception("Exception Saving Stream Entity " + e.toString(), e);
+		}
+		// notify spec update
+		// no stream controller
+		stream.specUpdate(spec);
+
+	}
+
+}
