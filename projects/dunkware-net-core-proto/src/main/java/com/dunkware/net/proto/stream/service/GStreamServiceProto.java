@@ -24,12 +24,15 @@ public final class GStreamServiceProto {
   static {
     java.lang.String[] descriptorData = {
       "\n\024stream-service.proto\022\027dunkware.stream." +
-      "service\032\014stream.proto\032\ncore.proto2n\n\016GSt" +
-      "reamService\022\\\n\013streamSpecs\022$.dunkware.st" +
-      "ream.GStreamSpecsRequest\032%.dunkware.stre" +
-      "am.GStreamSpecsResponse\"\000B>\n%com.dunkwar" +
-      "e.net.proto.stream.serviceB\023GStreamServi" +
-      "ceProtoP\001b\006proto3"
+      "service\032\014stream.proto\032\ncore.proto2\330\001\n\016GS" +
+      "treamService\022\\\n\013streamSpecs\022$.dunkware.s" +
+      "tream.GStreamSpecsRequest\032%.dunkware.str" +
+      "eam.GStreamSpecsResponse\"\000\022h\n\022autoComple" +
+      "teSearch\022$.dunkware.stream.GAutCompleteR" +
+      "equest\032&.dunkware.stream.GAutoCompleteRe" +
+      "sponse\"\000(\0010\001B>\n%com.dunkware.net.proto.s" +
+      "tream.serviceB\023GStreamServiceProtoP\001b\006pr" +
+      "oto3"
     };
     com.google.protobuf.Descriptors.FileDescriptor.InternalDescriptorAssigner assigner =
         new com.google.protobuf.Descriptors.FileDescriptor.    InternalDescriptorAssigner() {
