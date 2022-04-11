@@ -42,53 +42,35 @@ public class StreamService {
 	
 	@PostConstruct
 	private void init() { 
-			List<StreamDO> entities = streamRepo.findAll();
-			GStreamSpecsResponse resp = null;
-			try {
-				resp = streamClient.streamSpecs();	
-			} catch (Exception e) {
-				logger.error(MarkerFactory.getMarker("Data"), "Exception getting stream specs exiting " + e.toString());
-				System.exit(-1);
-			}
-		     
-			for (GStreamSpec spec : resp.getSpecsList()) {
-				boolean exists = false;
-				for (StreamDO ent : entities) {
-					if(ent.getStream().equals(spec.getIdentifier())) { 
-						try {
-							Stream stream = new Stream();
-							ac.getAutowireCapableBeanFactory().autowireBean(stream);
-							stream.init(ent);
-							this.streams.put(ent.getStream(), stream);
-							logger.debug(MarkerFactory.getMarker("Data"), "Initialized existing stream from spec " + spec.getIdentifier());
-							exists = true;
-							break;
-						} catch (Exception e) {
-							logger.error(MarkerFactory.getMarker("Data"), "Exception init stream " + ent.getStream() + " " + e.toString());
-						}
-					}
-				}
-				if(!exists) { 
-					StreamDO newEnt = new StreamDO();
-					newEnt.setStream(spec.getIdentifier());
-					newEnt.setTimeZone(DProtoHelper.toTimeZoneName(spec.getTimeZone()));
-					newEnt.setCreated(LocalDateTime.now(DProtoHelper.toZoneId(spec.getTimeZone())));
-					try {
-						streamRepo.save(newEnt);
-					} catch (Exception e) {
-						logger.error(MarkerFactory.getMarker("Data"), "Exception creating new stream entity " + e.toString());
-					}
-					try {
-						Stream stream = new Stream();
-						ac.getAutowireCapableBeanFactory().autowireBean(stream);
-						stream.init(newEnt);
-						logger.debug(MarkerFactory.getMarker("Data"), "Created new stream from spec " + spec.getIdentifier());
-						this.streams.put(spec.getIdentifier(), stream);
-					} catch (Exception e) {
-						logger.error(MarkerFactory.getMarker("Data"), "Exception init new stream from spec " + e.toString());
-					}
-				}
-			}
+		/*
+		 * List<StreamDO> entities = streamRepo.findAll(); GStreamSpecsResponse resp =
+		 * null; try { resp = streamClient.streamSpecs(); } catch (Exception e) {
+		 * logger.error(MarkerFactory.getMarker("Data"),
+		 * "Exception getting stream specs exiting " + e.toString()); System.exit(-1); }
+		 * 
+		 * for (GStreamSpec spec : resp.getSpecsList()) { boolean exists = false; for
+		 * (StreamDO ent : entities) { if(ent.getStream().equals(spec.getIdentifier()))
+		 * { try { Stream stream = new Stream();
+		 * ac.getAutowireCapableBeanFactory().autowireBean(stream); stream.init(ent);
+		 * this.streams.put(ent.getStream(), stream);
+		 * logger.debug(MarkerFactory.getMarker("Data"),
+		 * "Initialized existing stream from spec " + spec.getIdentifier()); exists =
+		 * true; break; } catch (Exception e) {
+		 * logger.error(MarkerFactory.getMarker("Data"), "Exception init stream " +
+		 * ent.getStream() + " " + e.toString()); } } } if(!exists) { StreamDO newEnt =
+		 * new StreamDO(); newEnt.setStream(spec.getIdentifier());
+		 * newEnt.setTimeZone(DProtoHelper.toTimeZoneName(spec.getTimeZone()));
+		 * newEnt.setCreated(LocalDateTime.now(DProtoHelper.toZoneId(spec.getTimeZone())
+		 * )); try { streamRepo.save(newEnt); } catch (Exception e) {
+		 * logger.error(MarkerFactory.getMarker("Data"),
+		 * "Exception creating new stream entity " + e.toString()); } try { Stream
+		 * stream = new Stream();
+		 * ac.getAutowireCapableBeanFactory().autowireBean(stream); stream.init(newEnt);
+		 * logger.debug(MarkerFactory.getMarker("Data"), "Created new stream from spec "
+		 * + spec.getIdentifier()); this.streams.put(spec.getIdentifier(), stream); }
+		 * catch (Exception e) { logger.error(MarkerFactory.getMarker("Data"),
+		 * "Exception init new stream from spec " + e.toString()); } } }
+		 */
 	}
 	
 	public Collection<Stream> getStreams() { 

@@ -1,4 +1,4 @@
-package com.dunkware.genesis.service.tests;
+package com.dunkware.trade.service.web.server.tests;
 
 import lombok.Data;
 import lombok.NoArgsConstructor;

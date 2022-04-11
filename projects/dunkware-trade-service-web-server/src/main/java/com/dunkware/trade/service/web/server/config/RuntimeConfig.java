@@ -1,4 +1,4 @@
-package com.dunkware.genesis.service.config;
+package com.dunkware.trade.service.web.server.config;
 
 import javax.annotation.PostConstruct;
 

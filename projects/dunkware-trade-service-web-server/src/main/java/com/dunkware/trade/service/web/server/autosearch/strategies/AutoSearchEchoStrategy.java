@@ -1,7 +1,7 @@
-package com.dunkware.genesis.service.autosearch.strategies;
+package com.dunkware.trade.service.web.server.autosearch.strategies;
 
-import com.dunkware.genesis.service.autosearch.AutoSearchStrategy;
-import com.dunkware.genesis.service.autosearch.AutoSearchContext;
+import com.dunkware.trade.service.web.server.autosearch.AutoSearchContext;
+import com.dunkware.trade.service.web.server.autosearch.AutoSearchStrategy;
 
 /** 
  * Simple Search Strategy that echos request back 

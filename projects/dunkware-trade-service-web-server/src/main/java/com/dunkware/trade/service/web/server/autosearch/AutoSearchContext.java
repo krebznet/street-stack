@@ -1,8 +1,8 @@
-package com.dunkware.genesis.service.autosearch;
+package com.dunkware.trade.service.web.server.autosearch;
 
-import com.dunkware.genesis.service.autosearch.strategies.AutoSearchEchoStrategy;
 import com.dunkware.net.proto.stream.GAutCompleteRequest;
 import com.dunkware.net.proto.stream.GAutoCompleteResponse;
+import com.dunkware.trade.service.web.server.autosearch.strategies.AutoSearchEchoStrategy;
 
 import io.grpc.stub.StreamObserver;
 

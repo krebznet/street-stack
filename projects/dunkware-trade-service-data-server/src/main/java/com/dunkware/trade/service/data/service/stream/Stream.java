@@ -12,7 +12,7 @@ import com.dunkware.trade.service.data.json.controller.message.StreamSessionStar
 import com.dunkware.trade.service.data.json.controller.message.StreamSessionStop;
 import com.dunkware.trade.service.data.json.data.stream.StreamStats;
 import com.dunkware.trade.service.data.json.enums.StreamSessionState;
-import com.dunkware.trade.service.data.service.config.ConfigService;
+import com.dunkware.trade.service.data.service.config.RuntimeConfig;
 import com.dunkware.trade.service.data.service.domain.StreamDO;
 import com.dunkware.trade.service.data.service.message.MessageHandler;
 import com.dunkware.trade.service.data.service.message.MessageService;
@@ -23,7 +23,7 @@ import com.dunkware.trade.service.data.service.stream.session.StreamSession;
 public class Stream implements MessageHandler {
 	
 	@Autowired
-	private ConfigService configService; 
+	private RuntimeConfig configService; 
 
 	@Autowired
 	private ApplicationContext ac;

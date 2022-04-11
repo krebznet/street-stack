@@ -28,7 +28,7 @@ import com.dunkware.net.proto.stream.GEntitySignal;
 import com.dunkware.net.proto.stream.GStreamEvent;
 import com.dunkware.net.proto.stream.GStreamEventType;
 import com.dunkware.trade.service.data.json.data.stream.session.StreamSessionSignalWriterStats;
-import com.dunkware.trade.service.data.service.config.ConfigService;
+import com.dunkware.trade.service.data.service.config.RuntimeConfig;
 import com.dunkware.trade.service.data.service.stream.session.StreamSession;
 import com.dunkware.trade.service.data.service.util.NameHelper;
 import com.dunkware.xstream.data.cache.CacheException;
@@ -43,7 +43,7 @@ import com.mongodb.client.model.InsertOneModel;
 public class SessionMongoSignalWriter implements DKafkaByteHandler2 {
 
 	@Autowired
-	private ConfigService configService;
+	private RuntimeConfig configService;
 
 	private StreamSession session;
 	private DKafkaByteConsumer2 consumer;

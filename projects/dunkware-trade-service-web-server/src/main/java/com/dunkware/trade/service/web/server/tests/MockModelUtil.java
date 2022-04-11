@@ -1,4 +1,4 @@
-package com.dunkware.genesis.service.tests;
+package com.dunkware.trade.service.web.server.tests;
 
 import com.dunkware.net.util.JsonHelper;
 

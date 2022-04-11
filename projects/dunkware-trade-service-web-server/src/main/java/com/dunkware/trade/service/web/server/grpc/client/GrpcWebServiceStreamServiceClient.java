@@ -1,4 +1,4 @@
-package com.dunkware.trade.service.data.service.grpc;
+package com.dunkware.trade.service.web.server.grpc.client;
 
 import javax.annotation.PostConstruct;
 
@@ -10,26 +10,27 @@ import org.springframework.stereotype.Service;
 import com.dunkware.net.proto.stream.service.GStreamServiceGrpc;
 import com.dunkware.net.proto.stream.service.GStreamServiceGrpc.GStreamServiceBlockingStub;
 import com.dunkware.net.proto.stream.service.GStreamServiceGrpc.GStreamServiceStub;
-import com.dunkware.trade.service.data.service.config.RuntimeConfig;
-import com.dunkware.trade.service.data.service.util.DataMarkers;
+import com.dunkware.trade.service.web.server.config.RuntimeConfig;
+import com.dunkware.trade.service.web.server.logging.LogService;
 
 import io.grpc.ManagedChannel;
-import io.grpc.ManagedChannelBuilder;
 
 @Service
-public class GrpcStreamServiceClient {
-
-private Logger logger = LoggerFactory.getLogger(getClass());
+public class GrpcWebServiceStreamServiceClient {
+	
+	
+	private Logger logger = LoggerFactory.getLogger(getClass());
+	
+	
+	private LogService logService;
 	
 	@Autowired
-	private RuntimeConfig config;
+	private RuntimeConfig configService;
 	
 	private GStreamServiceBlockingStub blockingStub;
 	private GStreamServiceStub asyncSub; 
 	
 	private ManagedChannel channel;
-	
-	
 	
 	private boolean connected = false; 
 	
@@ -37,27 +38,19 @@ private Logger logger = LoggerFactory.getLogger(getClass());
 	@PostConstruct
 	public void load() { 
 		try {
-		     channel = ManagedChannelBuilder.forTarget(config.getStreamServiceGRPCURL()).usePlaintext().build();
+		    // channel = ManagedChannelBuilder.forTarget(configService.getStreamServiceGrpcServer()).usePlaintext().build();
 		     asyncSub =  GStreamServiceGrpc.newStub(channel);
 		     blockingStub = GStreamServiceGrpc.newBlockingStub(channel);
 		     connected = true; 
 		     // okay this is the asyncSub we need for streaming
 		    
 		} catch (Exception e) {
-			logger.error(DataMarkers.getServiceMarker(),"Exception connecting to Stream Service GRPC Server" + e.toString(),e);
+			//logger.error(DataMarkers.getServiceMarker(),"Exception connecting to Stream Service GRPC Server" + e.toString(),e);
 			System.exit(-1);
 		}
 		
 	}
 	
 	
-	
-	
 
-		
-	
-	
-	
-	
-	
 }

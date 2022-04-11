@@ -9,10 +9,13 @@ import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.CrossOrigin;
 
+import com.dunkware.net.proto.stream.GAutCompleteRequest;
+import com.dunkware.net.proto.stream.GAutoCompleteResponse;
 import com.dunkware.net.proto.stream.GStreamSpec;
 import com.dunkware.net.proto.stream.GStreamSpecsRequest;
 import com.dunkware.net.proto.stream.GStreamSpecsResponse;
 import com.dunkware.net.proto.stream.service.GStreamServiceGrpc.GStreamServiceImplBase;
+import com.dunkware.trade.service.stream.server.autosearch.AutoSearchService;
 import com.dunkware.trade.service.stream.server.controller.StreamController;
 import com.dunkware.trade.service.stream.server.controller.StreamControllerService;
 import com.dunkware.trade.service.stream.server.controller.util.GStreamSpecBuilder;
@@ -35,7 +38,13 @@ public class GrpcStreamService extends GStreamServiceImplBase {
 
 	@Autowired
 	private StreamTickService tickService;
+	
+	
+	@Autowired
+	private AutoSearchService autoSearchService; 
+	
 
+	// Streaming AI --> Learn From You Events As They Happpen 
 	
 	
 	@Override
@@ -53,6 +62,47 @@ public class GrpcStreamService extends GStreamServiceImplBase {
 			responseObserver.onError(e);
 		}
 	}
+
+	@Override
+	public StreamObserver<GAutCompleteRequest> autoCompleteSearch(
+			StreamObserver<GAutoCompleteResponse> responseObserver) {
+		
+		
+		return new StreamObserver<GAutCompleteRequest>() {
+
+			@Override
+			public void onNext(GAutCompleteRequest value) {
+				responseObserver.onNext(GAutoCompleteResponse.newBuilder().setResponse(value.getRequest()).build());
+				responseObserver.onCompleted();
+				// nned a proxy to another service 
+				// in streem that will have strategy
+				// will have to post vson. 
+				
+			}
+
+			@Override
+			public void onError(Throwable t) {
+				// TODO Auto-generated method stub
+				
+			}
+
+			@Override
+			public void onCompleted() {
+				// TODO Auto-generated method stub
+				
+			}
+		      
+		   
+	};
+	}
+	
+	
+	
+	
+	
+	
+	
+	
 
 	
 

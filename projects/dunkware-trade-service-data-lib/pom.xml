@@ -4,11 +4,8 @@
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
-	<!--<parent>
-		<groupId>com.dunkware.maven</groupId>
-		<artifactId>dunkware-maven-parent</artifactId>
-		<version>6-SNAPSHOT</version>
-	</parent>-->
+	<!--<parent> <groupId>com.dunkware.maven</groupId> <artifactId>dunkware-maven-parent</artifactId> 
+		<version>6-SNAPSHOT</version> </parent> -->
 	<groupId>com.dunkware.trade.service</groupId>
 	<artifactId>dunkware-trade-service-data-lib</artifactId>
 	<version>1.0.0-SNAPSHOT</version>
@@ -24,16 +21,16 @@
 		<tag>v1.2.0</tag>
 	</scm>
 
-	
 
-<properties>
+
+	<properties>
 		<java.version>11</java.version>
-			<test.dir>src/test/java</test.dir>
+		<test.dir>src/test/java</test.dir>
 		<testSourceDirectory>/src/test/java</testSourceDirectory>
 
 		<src.dir>src/main/java</src.dir>
 		<jdk.version>11</jdk.version>
-		
+
 		<execution-environment>JavaSE-1.8</execution-environment>
 		<maven.compiler.source>1.8</maven.compiler.source>
 		<maven.compiler.target>1.8</maven.compiler.target>
@@ -49,9 +46,9 @@
 		<project.build.sourceDirectory>src/mainjava</project.build.sourceDirectory>
 		<!-- Considering all your junit tests are in src/test/unit -->
 		<project.build.testSourceDirectory>src/test/java</project.build.testSourceDirectory>
-		        
+
 	</properties>
-	
+
 
 	<repositories>
 		<repository>
@@ -73,26 +70,26 @@
 
 
 
-		<!-- Distribution Repos -->
-		<distributionManagement>
-			<snapshotRepository>
-				<uniqueVersion>false</uniqueVersion>
-				<id>dunkware-internal-snapshot</id>
-				<layout>default</layout>
-				<name>dunkware-internal-snapshot</name>
-				<url>https://nexus.dunkware.com/repository/dunkware-internal-snapshot/</url>
-			</snapshotRepository>
-			<repository>
-				<uniqueVersion>false</uniqueVersion>
-				<id>dunkware-internal-release</id>
-				<layout>default</layout>
-				<name>dunkware-internal-release</name>
-				<url>http://nexus.dunkware.com/repository/dunkware-internal-release/</url>
-			</repository>
-		</distributionManagement>
+	<!-- Distribution Repos -->
+	<distributionManagement>
+		<snapshotRepository>
+			<uniqueVersion>false</uniqueVersion>
+			<id>dunkware-internal-snapshot</id>
+			<layout>default</layout>
+			<name>dunkware-internal-snapshot</name>
+			<url>https://nexus.dunkware.com/repository/dunkware-internal-snapshot/</url>
+		</snapshotRepository>
+		<repository>
+			<uniqueVersion>false</uniqueVersion>
+			<id>dunkware-internal-release</id>
+			<layout>default</layout>
+			<name>dunkware-internal-release</name>
+			<url>http://nexus.dunkware.com/repository/dunkware-internal-release/</url>
+		</repository>
+	</distributionManagement>
 
 
-	
+
 
 
 
@@ -105,6 +102,13 @@
 			<scope>test</scope>
 		</dependency>
 
+		<dependency>
+
+			<groupId>com.dunkware.net</groupId>
+			<artifactId>dunkware-net-core-proto</artifactId>
+			<version>1.0.0-SNAPSHOT</version>
+
+		</dependency>
 		<dependency>
 			<groupId>com.dunkware.trade.service</groupId>
 			<artifactId>dunkware-trade-service-data-proto</artifactId>
@@ -199,8 +203,8 @@
 		<testSourceDirectory>${project.basedir}/src/test/java</testSourceDirectory>
 
 		<pluginManagement>
-			<!-- lock down plugins versions to avoid using Maven
-				defaults (may be moved to parent pom) -->
+			<!-- lock down plugins versions to avoid using Maven defaults (may be 
+				moved to parent pom) -->
 			<plugins>
 				<plugin>
 					<artifactId>maven-clean-plugin</artifactId>

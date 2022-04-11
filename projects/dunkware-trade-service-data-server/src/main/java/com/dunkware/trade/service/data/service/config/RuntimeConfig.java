@@ -8,16 +8,19 @@ import org.springframework.stereotype.Service;
 import com.dunkware.common.util.executor.DExecutor;
 
 @Service
-public class ConfigService {
-	
-	@Value("${gclient.streamservice.grpc}")
-	private String streamServiceGrpcServer;
+public class RuntimeConfig {
 	
 	@Value("${mongo.url}")
 	private String mongoURL; 
 	
-	@Value("${mongo.db}")
+	@Value("${mongo.db}") 
 	private String mongoDatabase; 
+	
+	@Value("${stream.service.url.http")
+	private String streamServiceHTTPURL; 
+	
+	@Value("$stream.service.url.grpc")
+	private String streamServiceGRPCURL;
 	
 	private DExecutor executor; 
 	
@@ -29,10 +32,7 @@ public class ConfigService {
 	public DExecutor getExecutor() { 
 		return executor;
 	}
-	public String getStreamServiceGrpcServer() { 
-		return streamServiceGrpcServer;
-	}
-
+	
 	public String getMongoURL() {
 		return mongoURL;
 	}
@@ -40,6 +40,16 @@ public class ConfigService {
 	public String getMongoDatabase() {
 		return mongoDatabase;
 	}
+
+	public String getStreamServiceHTTPURL() {
+		return streamServiceHTTPURL;
+	}
+
+	public String getStreamServiceGRPCURL() {
+		return streamServiceGRPCURL;
+	}
+	
+	
 	
 
 }

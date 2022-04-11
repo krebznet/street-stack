@@ -1,4 +1,4 @@
-package com.dunkware.genesis.service.spring;
+package com.dunkware.trade.service.web.server.spring;
 
 import javax.annotation.PostConstruct;
 

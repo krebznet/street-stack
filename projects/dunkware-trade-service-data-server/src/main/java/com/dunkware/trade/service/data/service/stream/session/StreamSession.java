@@ -23,7 +23,7 @@ import com.dunkware.trade.service.data.json.controller.spec.StreamSessionSpec;
 import com.dunkware.trade.service.data.json.data.stream.session.StreamSessionCacheStats;
 import com.dunkware.trade.service.data.json.data.stream.session.StreamSessionStats;
 import com.dunkware.trade.service.data.json.enums.StreamSessionState;
-import com.dunkware.trade.service.data.service.config.ConfigService;
+import com.dunkware.trade.service.data.service.config.RuntimeConfig;
 import com.dunkware.trade.service.data.service.stream.Stream;
 import com.dunkware.trade.service.data.service.stream.session.writers.SessionMongoSignalWriter;
 import com.dunkware.trade.service.data.service.stream.session.writers.SessionMongoSnapshotWriter;
@@ -40,7 +40,7 @@ public class StreamSession {
 	
 	
 	@Autowired
-	private ConfigService configService; 
+	private RuntimeConfig configService; 
 	
 	@Autowired
 	private ApplicationContext ac;

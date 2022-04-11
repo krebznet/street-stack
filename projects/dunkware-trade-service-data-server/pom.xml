@@ -1,8 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 	<!-- hello -->
-		<parent>
+	<parent>
 		<groupId>org.springframework.boot</groupId>
 		<artifactId>spring-boot-starter-parent</artifactId>
 		<version>2.3.1.RELEASE</version>
@@ -54,6 +56,7 @@
 
 
 	<dependencies>
+
 		<dependency>
 			<groupId>com.dunkware.trade.service</groupId>
 			<artifactId>dunkware-trade-service-data-json</artifactId>
@@ -65,7 +68,11 @@
 			<version>1.0.0-SNAPSHOT</version>
 		</dependency>
 
-
+		<dependency>
+			<groupId>com.dunkware.net</groupId>
+			<artifactId>dunkware-net-core-proto</artifactId>
+			<version>1.0.0-SNAPSHOT</version>
+		</dependency>
 		<dependency>
 			<groupId>com.dunkware.trade.service</groupId>
 			<artifactId>dunkware-trade-service-data-proto</artifactId>
@@ -119,11 +126,8 @@
 			<version>1.8.3</version>
 		</dependency>
 		<!-- MongoDB Dependencies -->
-		<!--		<dependency>
-			<groupId>org.mongodb</groupId>
-			<artifactId>mongo-java-driver</artifactId>
-			<version>3.4.1</version>
-		</dependency>-->
+		<!-- <dependency> <groupId>org.mongodb</groupId> <artifactId>mongo-java-driver</artifactId> 
+			<version>3.4.1</version> </dependency> -->
 		<!-- Kafka Dependencies -->
 		<dependency>
 			<groupId>org.apache.kafka</groupId>
@@ -142,7 +146,7 @@
 
 
 		<!-- Genesis Depenencies -->
-		<!-- <dependency> <groupId>com.dunkware.genesis</groupId> <artifactId>dunkware-genesis-stream-data-protocol</artifactId>
+		<!-- <dependency> <groupId>com.dunkware.genesis</groupId> <artifactId>dunkware-genesis-stream-data-protocol</artifactId> 
 			<version>1.0.0-SNAPSHOT</version> </dependency> -->
 
 		<!-- Metrics/Prometheus -->
@@ -163,13 +167,9 @@
 			<artifactId>httpcore</artifactId>
 			<version>4.4.8</version>
 		</dependency>
-		<!--
-		<dependency>
-			<groupId>net.devh</groupId>
-			<artifactId>grpc-server-spring-boot-starter</artifactId>
-			<version>2.0.1.RELEASE</version>
-		</dependency>-->
-		<!--  spring cloud -->
+		<!-- <dependency> <groupId>net.devh</groupId> <artifactId>grpc-server-spring-boot-starter</artifactId> 
+			<version>2.0.1.RELEASE</version> </dependency> -->
+		<!-- spring cloud -->
 
 		<dependency>
 			<groupId>com.google.guava</groupId>
@@ -217,7 +217,7 @@
 		</plugins>
 		<pluginManagement>
 			<plugins>
-				<!--This plugin's configuration is used to store Eclipse m2e settings
+				<!--This plugin's configuration is used to store Eclipse m2e settings 
 					only. It has no influence on the Maven build itself. -->
 
 			</plugins>

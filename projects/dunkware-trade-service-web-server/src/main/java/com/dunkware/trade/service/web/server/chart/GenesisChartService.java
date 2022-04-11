@@ -1,4 +1,4 @@
-package com.dunkware.genesis.service.chart;
+package com.dunkware.trade.service.web.server.chart;
 
 import com.dunkware.net.proto.chart.ChartRequest;
 import com.dunkware.net.proto.chart.ChartResponse;

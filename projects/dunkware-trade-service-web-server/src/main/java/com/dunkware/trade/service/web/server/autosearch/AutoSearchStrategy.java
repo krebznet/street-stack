@@ -1,4 +1,4 @@
-package com.dunkware.genesis.service.autosearch;
+package com.dunkware.trade.service.web.server.autosearch;
 
 public interface AutoSearchStrategy {
 	
