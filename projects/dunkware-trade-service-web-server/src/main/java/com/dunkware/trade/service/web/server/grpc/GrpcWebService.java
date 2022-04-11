@@ -16,6 +16,7 @@ import com.dunkware.net.proto.web.GWebServiceGrpc.GWebServiceImplBase;
 import com.dunkware.trade.service.web.server.autosearch.AutoSearchService;
 import com.dunkware.trade.service.web.server.grid.SignalGridMockData1;
 import com.dunkware.trade.service.web.server.grid.SignalGrids;
+import com.dunkware.trade.service.web.server.grpc.client.GrpcWebServiceStreamServiceClient;
 
 import io.grpc.stub.StreamObserver;
 import net.devh.springboot.autoconfigure.grpc.server.GrpcService;
@@ -32,6 +33,9 @@ public class GrpcWebService extends GWebServiceImplBase {
 
 	@Autowired
 	private AutoSearchService autoSearch;
+	
+	@Autowired
+	private GrpcWebServiceStreamServiceClient streamServiceClient;
 
 	// this will have connector to DataService
 	// this will have connector to stream service
@@ -61,33 +65,8 @@ public class GrpcWebService extends GWebServiceImplBase {
 	public StreamObserver<GAutCompleteRequest> autoCompleteSearch(
 			StreamObserver<GAutoCompleteResponse> responseObserver) {
 		
-		
-		return new StreamObserver<GAutCompleteRequest>() {
+		return streamServiceClient.autoCompleteSearch(responseObserver);
 
-			@Override
-			public void onNext(GAutCompleteRequest value) {
-				responseObserver.onNext(GAutoCompleteResponse.newBuilder().setResponse(value.getRequest()).build());
-				responseObserver.onCompleted();
-				// nned a proxy to another service 
-				// in streem that will have strategy
-				// will have to post vson. 
-				
-			}
-
-			@Override
-			public void onError(Throwable t) {
-				// TODO Auto-generated method stub
-				
-			}
-
-			@Override
-			public void onCompleted() {
-				// TODO Auto-generated method stub
-				
-			}
-		      
-		   
-	};
 	}
 
 }

@@ -14,11 +14,11 @@ public class RuntimeConfig {
 	@Value("${mongo.db}") 
 	private String mongoDatabase; 
 	
-	@Value("${stream.service.url.http")
-	private String streamServiceHTTPURL; 
+	@Value("${service.stream.url.http")
+	private String serviceStreamHTTP; 
 	
-	@Value("$stream.service.url.grpc")
-	private String streamServiceGRPCURL;
+	@Value("$service.stream.url.grpc")
+	private String serviceStreamGRPC;
 	
 	private DExecutor executor; 
 	
@@ -27,24 +27,26 @@ public class RuntimeConfig {
 		executor = new DExecutor(10);
 	}
 	
-	public DExecutor getExecutor() { 
+	public DExecutor excutor() { 
 		return executor;
 	}
 	
-	public String getMongoURL() {
+	public String mongoURL() {
 		return mongoURL;
 	}
 
-	public String getMongoDatabase() {
+	public String mongoDatabase() {
 		return mongoDatabase;
 	}
 
-	public String getStreamServiceHTTPURL() {
-		return streamServiceHTTPURL;
+	public String serviceStreamHTTP() {
+		return serviceStreamHTTP;
 	}
 
-	public String getStreamServiceGRPCURL() {
-		return streamServiceGRPCURL;
+	public String serviceStreamGRPC() {
+		return serviceStreamGRPC;
 	}
+
+	
 	
 }

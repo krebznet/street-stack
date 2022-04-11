@@ -68,7 +68,7 @@ public class StreamController {
 	
 	private TradeTickerListSpec tickerList; 
 
-	@Value("${kafak.brokers}")
+	@Value("${kafka.brokers}")
 	private String kafkaBrokers;
 
 	@Autowired
