@@ -3,9 +3,11 @@ package com.dunkware.trade.service.web.server.config;
 import javax.annotation.PostConstruct;
 
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.stereotype.Service;
 
 import com.dunkware.common.util.executor.DExecutor;
 
+@Service
 public class RuntimeConfig {
 
 	@Value("${mongo.url}")
