@@ -204,6 +204,16 @@ public final class GStreamProto {
   static final 
     com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
       internal_static_dunkware_stream_GInstrumentVar_fieldAccessorTable;
+  static final com.google.protobuf.Descriptors.Descriptor
+    internal_static_dunkware_stream_GAutCompleteRequest_descriptor;
+  static final 
+    com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
+      internal_static_dunkware_stream_GAutCompleteRequest_fieldAccessorTable;
+  static final com.google.protobuf.Descriptors.Descriptor
+    internal_static_dunkware_stream_GAutoCompleteResponse_descriptor;
+  static final 
+    com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
+      internal_static_dunkware_stream_GAutoCompleteResponse_fieldAccessorTable;
 
   public static com.google.protobuf.Descriptors.FileDescriptor
       getDescriptor() {
@@ -334,11 +344,13 @@ public final class GStreamProto {
       "\004vars\030\001 \003(\0132\037.dunkware.stream.GInstrumen" +
       "tVar\"q\n\016GInstrumentVar\022\n\n\002id\030\001 \001(\005\022\022\n\nid" +
       "entifier\030\002 \001(\t\022\014\n\004name\030\003 \001(\t\022\"\n\004pipe\030\006 \001" +
-      "(\0132\024.dunkware.core.GPipe\022\r\n\005value\030\007 \001(\t*" +
-      "Y\n\020GStreamEventType\022\020\n\014EntitySignal\020\000\022\022\n" +
-      "\016EntitySnapshot\020\001\022\017\n\013StreamStart\020\002\022\016\n\nSt" +
-      "reamStop\020\003B/\n\035com.dunkware.net.proto.str" +
-      "eamB\014GStreamProtoP\001b\006proto3"
+      "(\0132\024.dunkware.core.GPipe\022\r\n\005value\030\007 \001(\t\"" +
+      "&\n\023GAutCompleteRequest\022\017\n\007request\030\001 \001(\t\"" +
+      ")\n\025GAutoCompleteResponse\022\020\n\010response\030\002 \001" +
+      "(\t*Y\n\020GStreamEventType\022\020\n\014EntitySignal\020\000" +
+      "\022\022\n\016EntitySnapshot\020\001\022\017\n\013StreamStart\020\002\022\016\n" +
+      "\nStreamStop\020\003B/\n\035com.dunkware.net.proto." +
+      "streamB\014GStreamProtoP\001b\006proto3"
     };
     com.google.protobuf.Descriptors.FileDescriptor.InternalDescriptorAssigner assigner =
         new com.google.protobuf.Descriptors.FileDescriptor.    InternalDescriptorAssigner() {
@@ -582,6 +594,18 @@ public final class GStreamProto {
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_dunkware_stream_GInstrumentVar_descriptor,
         new java.lang.String[] { "Id", "Identifier", "Name", "Pipe", "Value", });
+    internal_static_dunkware_stream_GAutCompleteRequest_descriptor =
+      getDescriptor().getMessageTypes().get(37);
+    internal_static_dunkware_stream_GAutCompleteRequest_fieldAccessorTable = new
+      com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
+        internal_static_dunkware_stream_GAutCompleteRequest_descriptor,
+        new java.lang.String[] { "Request", });
+    internal_static_dunkware_stream_GAutoCompleteResponse_descriptor =
+      getDescriptor().getMessageTypes().get(38);
+    internal_static_dunkware_stream_GAutoCompleteResponse_fieldAccessorTable = new
+      com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
+        internal_static_dunkware_stream_GAutoCompleteResponse_descriptor,
+        new java.lang.String[] { "Response", });
     com.dunkware.net.proto.core.GCoreProto.getDescriptor();
     com.google.protobuf.TimestampProto.getDescriptor();
   }

@@ -139,7 +139,6 @@
                     <!--更多配置信息可以查看https://www.xolstice.org/protobuf-maven-plugin/compile-mojo.html-->
                 </configuration>
                 <executions>
-               
                     <execution>
                         <phase>compile</phase>
                         <goals>

@@ -8,10 +8,10 @@ import org.springframework.boot.autoconfigure.mongo.MongoAutoConfiguration;
 
 @SpringBootApplication
 @EnableAutoConfiguration(exclude={MongoAutoConfiguration.class, MongoDataAutoConfiguration.class})
-public class GenesisService {
+public class WebService {
 
     public static void main(String[] args) {
-        SpringApplication.run(GenesisService.class, args);
+        SpringApplication.run(WebService.class, args);
     }
 
 }
