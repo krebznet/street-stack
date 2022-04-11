@@ -92,6 +92,7 @@ public class GrpcWebService extends GWebServiceImplBase {
 						// TODO: handle exception
 					}
 				
+					
 					responseObserver.onNext(GAutoCompleteResponse.newBuilder().setResponse(json).build());
 					responseObserver.onCompleted();
 			}
