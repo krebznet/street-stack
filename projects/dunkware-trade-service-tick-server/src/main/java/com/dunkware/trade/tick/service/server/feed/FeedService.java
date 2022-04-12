@@ -23,6 +23,7 @@ import com.dunkware.trade.tick.model.feed.TickFeedSpec;
 import com.dunkware.trade.tick.model.provider.TickProviderSpec;
 import com.dunkware.trade.tick.service.server.feed.repository.FeedProviderDO;
 import com.dunkware.trade.tick.service.server.feed.repository.FeedRepository;
+import com.dunkware.trade.tick.service.server.logging.LoggingService;
 
 @Component
 @Profile("FeedService")
@@ -46,8 +47,14 @@ public class FeedService {
 	
 	private List<FeedStream> streams = new ArrayList<FeedStream>();
 	
+	@Autowired
+	private LoggingService logging; 
+	
+	private Marker logMarker = null;
+	
 	@PostConstruct 
-	private void load() { 
+	private void load() {
+		logMarker = logging.getMarker();
 		Marker marker = MarkerFactory.getDetachedMarker("Monitor");
 		Marker notify = MarkerFactory.getDetachedMarker("Notify");
 		logger.info("Marker Test Starting Feed Service", marker);
@@ -57,32 +64,36 @@ public class FeedService {
 			FeedServiceProvider provider = new FeedServiceProvider();
 			ac.getAutowireCapableBeanFactory().autowireBean(provider);
 			try {
+				
 				provider.load(tickProviderEntity);
 				logger.info("Started " + provider.getEntity().getIdentifier(),notify);
 				serviceProviders.add(provider);
+				if(logger.isDebugEnabled()) { 
+					logger.debug(logMarker, "Loaded Tick Provider " + tickProviderEntity.getIdentifier());
+				}
 			} catch (Exception e) {
-				System.err.println(e.toString());
+				logger.error(logMarker, "Exception Loading Tick Provider " + e.toString() + " " + provider.getEntity().getIdentifier());
 			}
 			
 		}
 		
 		// clean up stream topics 
 		try {
-			DKafkaAdmin admin = DKafkaAdmin.newInstance(getKafkaBrokers());
-			Collection<TopicListing> topics = admin.getTopics();
+			DKafkaAdmin admin = DKafkaAdmin.newInstance(zookeepers);
+		Collection<TopicListing> topics = admin.getTopics();
 			List<String> deletes = new ArrayList<String>();
 			for (TopicListing topicListing : topics) {
 				if(topicListing.name().startsWith("dunktrade_tick_feed")) {
 					deletes.add(topicListing.name());
 				}
-			}
+	}
 			if(deletes.size() > 0) { 
 				admin.deleteTopics(deletes.toArray(new String[deletes.size()]));
 			}
 			
 			
 		} catch (Exception e) {
-			e.printStackTrace();
+		e.printStackTrace();
 		}
 	
 	}
