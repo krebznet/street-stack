@@ -4,11 +4,13 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Properties;
 
 import org.apache.kafka.clients.admin.AdminClient;
+import org.apache.kafka.clients.admin.AdminClientConfig;
 import org.apache.kafka.clients.admin.CreateTopicsResult;
 import org.apache.kafka.clients.admin.DeleteTopicsResult;
 import org.apache.kafka.clients.admin.KafkaAdminClient;
@@ -26,28 +28,46 @@ import com.dunkware.common.util.properties.DPropertiesException;
 public class DKafkaAdmin {
 	
 	public static DKafkaAdmin newInstance(String brokers) throws DKafkaException,DPropertiesException { 
-		return newInstance(DPropertiesBuilder.newBuilder().addProperty(DKafkaProperties.BOOTSTRAP_SERVERS, brokers).build());
-	}
-	
-	public static DKafkaAdmin newInstance(String brokers, String zookeeper) throws DKafkaException,DPropertiesException { 
-		return newInstance(DPropertiesBuilder.newBuilder().
-				addProperty("zookeeper.connect", zookeeper).
-				addProperty(DKafkaProperties.BOOTSTRAP_SERVERS, brokers).build());
-	}
-	
-	public static DKafkaAdmin newInstance(DProperties props) throws DKafkaException,DPropertiesException {
-		props.validate(DKafkaPropertiesValidator.newInstance());	
-		return new DKafkaAdmin(props);
-		
+		return new DKafkaAdmin(brokers);
 	}
 	
 	private DProperties props;
 	private AdminClient client;
 	
-	private DKafkaAdmin(DProperties props) throws DKafkaException { 
-		this.props = null;
-		Properties javaProps = props.toJavaProperties();
-		client = KafkaAdminClient.create(javaProps);
+	public static void main(String[] args) {
+		DKafkaAdmin admin = null; 
+		try {
+		admin = DKafkaAdmin.newInstance("localhost:9091");	
+		} catch (Exception e) {
+			System.err.println("exception creating new admin instance ");
+			System.exit(-1);
+			// TODO: handle exception
+		}
+		try {
+			Collection<TopicListing> topics = admin.getTopics();
+			for (TopicListing topicListing : topics) {
+				System.out.println(topicListing.name());
+			}
+			admin.close();
+		} catch (Exception e) {
+			System.err.println("exception getting topics"); 
+			e.printStackTrace();
+			System.exit(-1);
+			// TODO: handle exception
+		}
+	}
+	
+	private DKafkaAdmin(String brokers) throws DKafkaException { 
+		Map<String, Object> conf = new HashMap<>();
+		conf.put(AdminClientConfig.BOOTSTRAP_SERVERS_CONFIG, brokers);
+		conf.put(AdminClientConfig.REQUEST_TIMEOUT_MS_CONFIG, "5000");
+		try {
+			
+			client = AdminClient.create(conf);
+		} catch (Exception e) {
+			throw new DKafkaException("Exception Connection to AdminClient using brokers " + brokers + e.toString(),e);
+		}
+		
 	}
 	
 	public Collection<TopicListing> getTopics() throws DKafkaException {
