@@ -204,7 +204,7 @@ public class DKafkaByteConsumer {
 			status = DKafkaByteConsumerStatus.Connected;
 			while (!dispose) {
 				try {
-					ConsumerRecords<String, byte[]> records = consumer.poll(Duration.ofMillis(60000));
+					ConsumerRecords<String, byte[]> records = consumer.poll(3000);
 					for (ConsumerRecord<String, byte[]> record : records) {
 						recordCount.incrementAndGet();
 						byte[] bytes = record.value();

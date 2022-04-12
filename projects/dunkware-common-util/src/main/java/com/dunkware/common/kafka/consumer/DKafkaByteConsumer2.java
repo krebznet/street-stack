@@ -336,7 +336,8 @@ public class DKafkaByteConsumer2 {
 						consumerPaused = false;
 					}
 					
-					ConsumerRecords<String, byte[]> records = consumer.poll(Duration.ofMillis(3000));
+					
+					ConsumerRecords<String, byte[]> records = consumer.poll(3000);
 					if(printPoolCount) { 
 						System.out.println("Consumer consumed " + records.count());
 						printPoolCount = false;
