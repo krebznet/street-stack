@@ -4,14 +4,11 @@ import java.time.Instant;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
-import java.time.ZoneId;
-import java.time.ZoneOffset;
 import java.time.format.DateTimeFormatter;
 import java.util.Date;
 
-import javax.swing.text.DateFormatter;
-
 import com.dunkware.common.util.dtime.DTimeZone;
+import com.google.protobuf.Timestamp;
 
 public class DunkTime {
 
@@ -31,6 +28,10 @@ public class DunkTime {
 		
 	
 		
+	}
+	
+	public static String formatHHMMSS(LocalDateTime dt) { 
+		return format(dt,HH_MMM_SS);
 	}
 
 	public static String format(LocalDateTime dt, String format) {
@@ -61,6 +62,11 @@ public class DunkTime {
 
 	public static Date toDate(LocalDateTime dateToConvert) {
 	    return java.sql.Timestamp.valueOf(dateToConvert);
+	}
+	
+	public static LocalDateTime toLocalDateTime(Timestamp ts, DTimeZone timezone) {
+		return Instant.ofEpochSecond(ts.getSeconds(), ts.getNanos()).atZone(DTimeZone.toZoneId(timezone))
+				.toLocalDateTime();
 	}
 	
 	
