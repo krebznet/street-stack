@@ -7,6 +7,8 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.dunkware.net.proto.stream.GStreamSpecsRequest;
+import com.dunkware.net.proto.stream.GStreamSpecsResponse;
 import com.dunkware.net.proto.stream.service.GStreamServiceGrpc;
 import com.dunkware.net.proto.stream.service.GStreamServiceGrpc.GStreamServiceBlockingStub;
 import com.dunkware.net.proto.stream.service.GStreamServiceGrpc.GStreamServiceStub;
@@ -49,6 +51,21 @@ private Logger logger = LoggerFactory.getLogger(getClass());
 		}
 		
 	}
+	
+	public GStreamSpecsResponse streamSpecs() throws Exception {
+		try {
+			GStreamSpecsRequest request = GStreamSpecsRequest.newBuilder().setHello(1).build();
+			
+			GStreamSpecsResponse response = blockingStub.streamSpecs(request);
+			return response;
+		} catch (Exception e) {
+			logger.error(DataMarkers.getServiceMarker(), "Exception getting stream specs in client " + e.toString());
+			throw e;
+		}
+		
+		
+	}
+	
 	
 	
 	
