@@ -15,7 +15,7 @@ import com.dunkware.common.util.dtime.DZonedClock;
 import com.dunkware.common.util.dtime.DZonedClockListener;
 import com.dunkware.common.util.dtime.DZonedClockUpdater;
 import com.dunkware.common.util.dtime.DZonedDateTime;
-import com.dunkware.trade.service.data.json.enums.StreamSessionState;
+import com.dunkware.trade.service.data.json.enums.DataStreamStatus;
 import com.dunkwrae.trade.service.data.mock.input.MockInput;
 import com.dunkwrae.trade.service.data.mock.stream.session.MockSession;
 
@@ -51,7 +51,7 @@ public class MockStream {
 	
 	public MockSession startSession() throws Exception {
 		if(session != null) { 
-			if(session.getState() == StreamSessionState.Running) { 
+			if(session.getState() == DataStreamStatus.Running) { 
 				throw new Exception("Session found with running state");
 			}
 		}

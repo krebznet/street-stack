@@ -10,11 +10,11 @@ import com.dunkware.common.util.dtime.DTime;
 import com.dunkware.common.util.dtime.DTimeZone;
 import com.dunkware.common.util.time.DunkTime;
 import com.dunkware.net.proto.core.GDataType;
-import com.dunkware.trade.service.data.json.controller.script.StreamScript;
-import com.dunkware.trade.service.data.json.controller.script.StreamScriptBuilder;
-import com.dunkware.trade.service.data.json.controller.spec.StreamEntitySpec;
-import com.dunkware.trade.service.data.json.controller.spec.StreamSessionSpec;
-import com.dunkware.trade.service.data.json.enums.DataType;
+import com.dunkware.trade.service.stream.json.controller.model.StreamEntitySpec;
+import com.dunkware.trade.service.stream.json.controller.model.StreamSessionSpec;
+import com.dunkware.xstream.model.enums.XScriptDataType;
+import com.dunkware.xstream.model.script.StreamScript;
+import com.dunkware.xstream.model.script.StreamScriptBuilder;
 import com.dunkwrae.trade.service.data.mock.input.MockInputSignal;
 import com.dunkwrae.trade.service.data.mock.input.MockInputVar;
 import com.dunkwrae.trade.service.data.mock.stream.session.MockSession;
@@ -61,20 +61,20 @@ public class MockMessageHelper {
 		return builder.build();
 	}
 	
-	public static DataType createDataType(GDataType gType) {
+	public static XScriptDataType createDataType(GDataType gType) {
 		if(gType ==  GDataType.STRING_TYPE) {
-			return DataType.String;
+			return XScriptDataType.String;
 		}
 		if(gType ==  GDataType.BOOL_TYPE) {
-			return DataType.Boolean;
+			return XScriptDataType.Boolean;
 		}
 		if(gType ==  GDataType.LONG_TYPE) {
-			return DataType.Long;
+			return XScriptDataType.Long;
 		}
 		if(gType ==  GDataType.DOUBLE_TYPE) {
-			return DataType.Double;
+			return XScriptDataType.Double;
 		}
-		return DataType.Integer;
+		return XScriptDataType.Integer;
 		
 		
 		

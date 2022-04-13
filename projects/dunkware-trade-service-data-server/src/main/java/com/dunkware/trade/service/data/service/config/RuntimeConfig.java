@@ -16,10 +16,10 @@ public class RuntimeConfig {
 	@Value("${mongo.db}") 
 	private String mongoDatabase; 
 	
-	@Value("${stream.service.url.http")
+	@Value("${service.stream.url.http}")
 	private String streamServiceHTTPURL; 
 	
-	@Value("$stream.service.url.grpc")
+	@Value("${service.stream.url.grcp}")
 	private String streamServiceGRPCURL;
 	
 	private DExecutor executor; 

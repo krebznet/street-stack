@@ -13,10 +13,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import com.dunkware.common.util.dtime.DTimeZone;
 import com.dunkware.common.util.time.DunkTime;
-import com.dunkware.trade.service.data.json.controller.message.StreamSessionStart;
-import com.dunkware.trade.service.data.json.controller.message.StreamSessionStop;
-import com.dunkware.trade.service.data.json.controller.spec.StreamSessionSpec;
-import com.dunkware.trade.service.data.json.enums.StreamSessionState;
+import com.dunkware.trade.service.data.json.enums.DataStreamStatus;
+import com.dunkware.trade.service.stream.json.controller.model.StreamSessionSpec;
+import com.dunkware.trade.service.stream.json.message.StreamSessionStart;
+import com.dunkware.trade.service.stream.json.message.StreamSessionStop;
 import com.dunkwrae.trade.service.data.mock.config.ConfigService;
 import com.dunkwrae.trade.service.data.mock.input.MockInput;
 import com.dunkwrae.trade.service.data.mock.input.MockInputSignal;
@@ -28,7 +28,6 @@ import com.dunkwrae.trade.service.data.mock.stream.MockStream;
 import com.dunkwrae.trade.service.data.mock.stream.MockStreamEntity;
 import com.dunkwrae.trade.service.data.mock.util.MockMarker;
 import com.dunkwrae.trade.service.data.mock.util.MockMessageHelper;
-import com.dunkwrae.trade.service.data.mock.util.MockProtoUtil;
 
 public class MockSession {
 
@@ -54,7 +53,7 @@ public class MockSession {
 
 	private MockInput input;
 
-	private StreamSessionState state = StreamSessionState.Stopped;
+	private DataStreamStatus state = DataStreamStatus.Stopped;
 
 	private MockSignalPublisher signalPublisher;
 	private MockSnapshotPublisher snapshotPublisher;
@@ -114,7 +113,7 @@ public class MockSession {
 		logger.info(MarkerFactory.getMarker("Data"), "Sending stream session start " + spec.getSessionId());
 		messageService.sendMessage(startMessage);
 		
-		state = StreamSessionState.Running;
+		state = DataStreamStatus.Running;
 
 	}
 
@@ -129,7 +128,7 @@ public class MockSession {
 		return input;
 	}
 
-	public StreamSessionState getState() {
+	public DataStreamStatus getState() {
 		return state;
 	}
 	
@@ -138,14 +137,14 @@ public class MockSession {
 	}
 
 	public void stop() {
-		if(state == StreamSessionState.Stopped) { 
+		if(state == DataStreamStatus.Stopped) { 
 			return;
 		}
 		controller.interrupt();
 		signalPublisher.dispose();
 		snapshotPublisher.dispose();
 		logger.info(MockMarker.getMarker(), "Session Stop " + input.getStreamIdentifier());
-		this.state = StreamSessionState.Stopped;
+		this.state = DataStreamStatus.Stopped;
 		
 		StreamSessionStop stopMessage = new StreamSessionStop();
 		stopMessage.setSpec(MockMessageHelper.createSessionspec(this));

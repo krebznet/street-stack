@@ -18,15 +18,15 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.dunkware.trade.service.stream.protocol.controller.GetStreamSpecResp;
-import com.dunkware.trade.service.stream.protocol.controller.GetStreamSpecsResp;
-import com.dunkware.trade.service.stream.protocol.controller.StartStreamResp;
-import com.dunkware.trade.service.stream.protocol.controller.StopStreamResp;
-import com.dunkware.trade.service.stream.protocol.controller.StreamStatsResp;
-import com.dunkware.trade.service.stream.protocol.controller.UpdateStreamReq;
-import com.dunkware.trade.service.stream.protocol.controller.UpdateStreamResp;
-import com.dunkware.trade.service.stream.protocol.controller.spec.StreamSpec;
-import com.dunkware.trade.service.stream.protocol.controller.spec.StreamStatus;
+import com.dunkware.trade.service.stream.json.controller.GetStreamSpecResp;
+import com.dunkware.trade.service.stream.json.controller.GetStreamSpecsResp;
+import com.dunkware.trade.service.stream.json.controller.StartStreamResp;
+import com.dunkware.trade.service.stream.json.controller.StopStreamResp;
+import com.dunkware.trade.service.stream.json.controller.StreamStatsResp;
+import com.dunkware.trade.service.stream.json.controller.UpdateStreamReq;
+import com.dunkware.trade.service.stream.json.controller.UpdateStreamResp;
+import com.dunkware.trade.service.stream.json.controller.spec.StreamSpec;
+import com.dunkware.trade.service.stream.json.controller.spec.StreamStatus;
 
 // /stream/admin/add
 // /stream/admin/update 

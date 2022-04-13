@@ -1,11 +1,11 @@
 package com.dunkware.trade.service.data.json.search;
 
-import com.dunkware.trade.service.data.json.enums.Operator;
+import com.dunkware.common.util.enums.DOperator;
 
 public class EntityVarCriteria {
 	
 	private String identifier; 
-	private Operator operator; 
+	private DOperator operator; 
 	private Double value;
 	
 	
@@ -15,10 +15,10 @@ public class EntityVarCriteria {
 	public void setIdentifier(String identifier) {
 		this.identifier = identifier;
 	}
-	public Operator getOperator() {
+	public DOperator getOperator() {
 		return operator;
 	}
-	public void setOperator(Operator operator) {
+	public void setOperator(DOperator operator) {
 		this.operator = operator;
 	}
 	public Double getValue() {

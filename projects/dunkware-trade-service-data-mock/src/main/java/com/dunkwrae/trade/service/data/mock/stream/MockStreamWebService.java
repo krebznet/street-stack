@@ -12,8 +12,8 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.dunkware.common.util.dtime.DTime;
-import com.dunkware.trade.service.data.json.mock.MockStreamStats;
-import com.dunkware.trade.service.data.json.mock.rest.MockStreamStopResponse;
+import com.dunkware.trade.service.data.json.mock.DataMockStreamStats;
+import com.dunkware.trade.service.data.json.mock.rest.DataMockStreamStopResponse;
 import com.dunkwrae.trade.service.data.mock.stream.session.MockSession;
 
 @RestController
@@ -28,10 +28,10 @@ public class MockStreamWebService {
 	}
 
 	@GetMapping(path = "/getstreams")
-	public @ResponseBody() List<MockStreamStats> getStreams() {
-		List<MockStreamStats> stats = new ArrayList<MockStreamStats>();
+	public @ResponseBody() List<DataMockStreamStats> getStreams() {
+		List<DataMockStreamStats> stats = new ArrayList<DataMockStreamStats>();
 		for (MockStream stream : streamService.getStreams()) {
-			MockStreamStats stat = new MockStreamStats();
+			DataMockStreamStats stat = new DataMockStreamStats();
 			stat.setDays(stream.getInput().getSchedule().getDays().toString());
 			stat.setIdentifier(stream.getInput().getStreamIdentifier());
 			stat.setStartTime(DTime.from(stream.getInput().getSchedule().getStart()));
@@ -44,8 +44,8 @@ public class MockStreamWebService {
 	}
 
 	@GetMapping(path = "/startstream")
-	public @ResponseBody MockStreamStopResponse startStream(@RequestParam() String stream) throws Exception { 
-		MockStreamStopResponse resp = new MockStreamStopResponse();
+	public @ResponseBody DataMockStreamStopResponse startStream(@RequestParam() String stream) throws Exception { 
+		DataMockStreamStopResponse resp = new DataMockStreamStopResponse();
 		MockStream mockStream = null;
 		MockSession mockSession = null;
 		try {
@@ -74,16 +74,16 @@ public class MockStreamWebService {
 	}
 
 	@GetMapping(path = "/stopstream")
-	public @ResponseBody MockStreamStopResponse stopStream(@RequestParam() String stream) throws Exception {
+	public @ResponseBody DataMockStreamStopResponse stopStream(@RequestParam() String stream) throws Exception {
 		
 		try {
 			MockStream strema = streamService.getStream(stream);
 			strema.stopSession();
-			MockStreamStopResponse resp = new MockStreamStopResponse();
+			DataMockStreamStopResponse resp = new DataMockStreamStopResponse();
 			resp.setStatus("Stopped");
 			return resp;
 		} catch (Exception e) {
-			MockStreamStopResponse resp = new MockStreamStopResponse();
+			DataMockStreamStopResponse resp = new DataMockStreamStopResponse();
 			resp.setError(e.toString());;
 			return resp;
 		}

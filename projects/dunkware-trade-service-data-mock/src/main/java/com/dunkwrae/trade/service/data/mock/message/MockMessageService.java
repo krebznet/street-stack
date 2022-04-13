@@ -10,7 +10,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.integration.config.EnableIntegration;
 import org.springframework.stereotype.Service;
 
-import com.dunkware.trade.service.data.json.controller.message.StreamMessage;
+import com.dunkware.trade.service.stream.json.message.StreamMessage;
 
 
 @Service

@@ -3,7 +3,7 @@ package com.dunkware.trade.service.data.json.search;
 import java.time.LocalDate;
 
 import com.dunkware.common.util.dtime.DDate;
-import com.dunkware.trade.service.data.json.enums.Operator;
+import com.dunkware.common.util.enums.DOperator;
 
 public class EntitySignalSearchQueryBuilder {
 	
@@ -36,10 +36,11 @@ public class EntitySignalSearchQueryBuilder {
 		for (String string : entities) {
 			query.getEntities().add(string);
 		}
+		
 		return this;
 	}
 	
-	public EntitySignalSearchQueryBuilder addVarCriteria(String identifier, Operator operator, double value) {
+	public EntitySignalSearchQueryBuilder addVarCriteria(String identifier, DOperator operator, double value) {
 		EntityVarCriteria crit = new EntityVarCriteria();
 		crit.setIdentifier(identifier);
 		crit.setOperator(operator);

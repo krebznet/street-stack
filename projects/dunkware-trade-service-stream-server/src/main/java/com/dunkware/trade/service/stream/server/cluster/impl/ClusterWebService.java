@@ -9,8 +9,8 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.dunkware.trade.service.stream.protocol.cluster.ClusterStatusResp;
-import com.dunkware.trade.service.stream.protocol.cluster.spec.ClusterNodeStatus;
+import com.dunkware.trade.service.stream.json.cluster.ClusterStatusResp;
+import com.dunkware.trade.service.stream.json.cluster.spec.ClusterNodeStatus;
 import com.dunkware.trade.service.stream.server.cluster.ClusterNode;
 import com.dunkware.trade.service.stream.server.cluster.ClusterService;
 

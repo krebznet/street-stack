@@ -24,7 +24,7 @@
       <module>projects/dunkware-trade-service-tick-protocol</module>
       <module>projects/dunkware-trade-service-tick-client</module>
       <module>projects/dunkware-trade-service-tick-server</module>
-      <module>projects/dunkware-trade-service-stream-protocol</module>
+      <module>projects/dunkware-trade-service-stream-json</module>
       <module>projects/dunkware-trade-service-stream-server</module>
 
 			<module>projects/dunkware-trade-sdk-tws-runtime</module>

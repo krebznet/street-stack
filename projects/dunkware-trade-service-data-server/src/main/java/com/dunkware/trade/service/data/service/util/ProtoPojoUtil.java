@@ -4,6 +4,7 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.dunkware.common.util.enums.DOperator;
 import com.dunkware.common.util.json.DJson;
 import com.dunkware.net.proto.core.GCalendarRange;
 import com.dunkware.net.proto.core.GCalendarRangeType;
@@ -12,7 +13,6 @@ import com.dunkware.net.proto.core.GDateRange;
 import com.dunkware.net.proto.core.GOperator;
 import com.dunkware.net.proto.stream.GEntitySignalQuery;
 import com.dunkware.net.proto.stream.GEntityVarCriteria;
-import com.dunkware.trade.service.data.json.enums.Operator;
 import com.dunkware.trade.service.data.json.search.DateRange;
 import com.dunkware.trade.service.data.json.search.EntitySignalSearchQuery;
 import com.dunkware.trade.service.data.json.search.EntitySignalSearchQueryBuilder;
@@ -22,7 +22,7 @@ public class ProtoPojoUtil {
 
 	public static void main(String[] args) {
 		EntitySignalSearchQuery query = EntitySignalSearchQueryBuilder.newBuilder().addEntities("ident1","ident2").addSignalTyps("type1")
-		.addVarCriteria("var1", Operator.GT, 30.0).setDateRange(LocalDate.of(2022, 3, 1), LocalDate.of(2022, 3, 15)).setStream("stream1").build();
+		.addVarCriteria("var1", DOperator.GT, 30.0).setDateRange(LocalDate.of(2022, 3, 1), LocalDate.of(2022, 3, 15)).setStream("stream1").build();
 		try {
 			System.out.println(DJson.serializePretty(query));
 			GEntitySignalQuery gQuery = signalQueryPojoToProto(query);
@@ -60,22 +60,22 @@ public class ProtoPojoUtil {
 			GEntityVarCriteria.Builder vb = GEntityVarCriteria.newBuilder();
 			vb.setIdentifier(criteria.getIdentifier());
 			vb.setValue(criteria.getValue());
-			if (criteria.getOperator() == Operator.EQ) {
+			if (criteria.getOperator() == DOperator.EQ) {
 				vb.setOperator(GOperator.EQ);
 			}
-			if (criteria.getOperator() == Operator.NQ) {
+			if (criteria.getOperator() == DOperator.NQ) {
 				vb.setOperator(GOperator.NQ);
 			}
-			if (criteria.getOperator() == Operator.GT) {
+			if (criteria.getOperator() == DOperator.GT) {
 				vb.setOperator(GOperator.GT);
 			}
-			if (criteria.getOperator() == Operator.LT) {
+			if (criteria.getOperator() == DOperator.LT) {
 				vb.setOperator(GOperator.LT);
 			}
-			if (criteria.getOperator() == Operator.LTE) {
+			if (criteria.getOperator() == DOperator.LTE) {
 				vb.setOperator(GOperator.LTE);
 			}
-			if (criteria.getOperator() == Operator.GTE) {
+			if (criteria.getOperator() == DOperator.GTE) {
 				vb.setOperator(GOperator.GTE);
 			}
 			varCriterias.add(vb.build());

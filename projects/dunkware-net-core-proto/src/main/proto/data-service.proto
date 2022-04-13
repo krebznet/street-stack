@@ -13,5 +13,9 @@ import "core.proto";
 
 service GDataService  {
     rpc signalSearch( dunkware.stream.GEntitySignalSearchRequest) returns (dunkware.stream.GEntitySignalSearchResponse) {}
-
+	// VarStreamRequest
+	
+	// VarStreamResponse
  }
+
+ // GBeanList -> 

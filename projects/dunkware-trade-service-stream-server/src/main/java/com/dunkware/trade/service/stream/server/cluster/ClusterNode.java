@@ -1,8 +1,8 @@
 package com.dunkware.trade.service.stream.server.cluster;
 
 import com.dunkware.common.util.events.DEventNode;
-import com.dunkware.trade.service.stream.protocol.cluster.spec.ClusterNodeStatsSpec;
-import com.dunkware.trade.service.stream.protocol.cluster.spec.ClusterNodeStatus;
+import com.dunkware.trade.service.stream.json.cluster.spec.ClusterNodeStatsSpec;
+import com.dunkware.trade.service.stream.json.cluster.spec.ClusterNodeStatus;
 
 public interface ClusterNode {
 	

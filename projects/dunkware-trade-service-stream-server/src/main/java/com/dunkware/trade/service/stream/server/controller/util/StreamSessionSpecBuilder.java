@@ -6,15 +6,16 @@ import java.util.List;
 
 import com.dunkware.common.util.dtime.DDate;
 import com.dunkware.common.util.dtime.DTimeZone;
-import com.dunkware.trade.service.data.json.controller.script.StreamScript;
-import com.dunkware.trade.service.data.json.controller.script.StreamScriptVar;
-import com.dunkware.trade.service.data.json.controller.script.StreamSignalType;
-import com.dunkware.trade.service.data.json.controller.spec.StreamEntitySpec;
-import com.dunkware.trade.service.data.json.controller.spec.StreamSessionSpec;
-import com.dunkware.trade.service.data.json.enums.DataType;
+import com.dunkware.trade.service.stream.json.controller.model.StreamEntitySpec;
+import com.dunkware.trade.service.stream.json.controller.model.StreamSessionSpec;
 import com.dunkware.trade.service.stream.server.session.StreamSession;
 import com.dunkware.trade.tick.model.ticker.TradeTickerSpec;
 import com.dunkware.trade.tick.service.protocol.ticker.spec.TradeTickerListSpec;
+import com.dunkware.xstream.model.enums.XScriptDataType;
+import com.dunkware.xstream.model.script.StreamScript;
+import com.dunkware.xstream.model.script.StreamScriptVar;
+import com.dunkware.xstream.model.script.StreamSignalType;
+import com.dunkware.xstream.xScript.DataType;
 import com.dunkware.xstream.xScript.SignalType;
 import com.dunkware.xstream.xScript.VarType;
 import com.dunkware.xstream.xproject.XScriptProject;
@@ -79,23 +80,23 @@ public class StreamSessionSpecBuilder {
 	}
 	
 	
-	public static DataType convertScriptDataType(com.dunkware.xstream.xScript.DataType scriptType) throws Exception { 
+	public static XScriptDataType convertScriptDataType(com.dunkware.xstream.xScript.DataType scriptType) throws Exception { 
 		if(scriptType == com.dunkware.xstream.xScript.DataType.BO_OL) {
-			return DataType.Boolean;
+			return XScriptDataType.Boolean;
 		}
 		if(scriptType == com.dunkware.xstream.xScript.DataType.DUB) {
-			return DataType.Double;
+			return XScriptDataType.Double;
 		}
 		if(scriptType == com.dunkware.xstream.xScript.DataType.INT) { 
-			return DataType.Integer;
+			return XScriptDataType.Integer;
 			
 		}
 		if(scriptType == com.dunkware.xstream.xScript.DataType.LONG) { 
-			return DataType.Long;
+			return XScriptDataType.Long;
 			
 		}
 		if(scriptType == com.dunkware.xstream.xScript.DataType.STR) { 
-			return DataType.String;
+			return XScriptDataType.String;
 			
 		}
 		

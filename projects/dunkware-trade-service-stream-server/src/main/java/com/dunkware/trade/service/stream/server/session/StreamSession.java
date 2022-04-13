@@ -4,8 +4,8 @@ import java.util.List;
 import java.util.Map;
 
 import com.dunkware.common.util.events.DEventNode;
-import com.dunkware.trade.service.stream.protocol.controller.session.spec.StreamSessionStatsSpec;
-import com.dunkware.trade.service.stream.protocol.controller.session.spec.StreamSessionStatus;
+import com.dunkware.trade.service.stream.json.controller.session.StreamSessionStatsSpec;
+import com.dunkware.trade.service.stream.json.controller.session.StreamSessionStatus;
 import com.dunkware.trade.service.stream.server.controller.StreamController;
 import com.dunkware.trade.service.stream.server.session.repository.StreamSessionDO;
 import com.dunkware.trade.tick.service.protocol.ticker.spec.TradeTickerListSpec;

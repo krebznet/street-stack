@@ -7,8 +7,6 @@ import java.util.List;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
-import javax.persistence.EnumType;
-import javax.persistence.Enumerated;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -18,10 +16,9 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Transient;
 
-import com.dunkware.trade.service.stream.protocol.controller.session.spec.StreamSessionStatus;
+import com.dunkware.trade.service.stream.json.controller.session.StreamSessionStatus;
 import com.dunkware.trade.service.stream.server.controller.repository.StreamDO;
 import com.dunkware.trade.service.stream.server.controller.repository.StreamVersionDO;
-import com.dunkware.trade.service.stream.server.store.repository.StreamStoreDO;
 
 @Entity(name = "stream_session")
 public class StreamSessionDO {
@@ -43,9 +40,7 @@ public class StreamSessionDO {
 	private int tickerCount; 
 
 
-	@ManyToOne(fetch = FetchType.LAZY)
-	private StreamStoreDO streamStore;
-	
+
 	@OneToMany(cascade = CascadeType.ALL, orphanRemoval =  true, fetch = FetchType.EAGER)
 	@JoinColumn(name = "session_id")
 	private List<StreamSessionTickerDO> tickers = new ArrayList<StreamSessionTickerDO>();
@@ -135,15 +130,6 @@ public class StreamSessionDO {
 
 	public void setTickerCount(int tickerCount) {
 		this.tickerCount = tickerCount;
-	}
-
-
-	public StreamStoreDO getStreamStore() {
-		return streamStore;
-	}
-
-	public void setStreamStore(StreamStoreDO streamStore) {
-		this.streamStore = streamStore;
 	}
 
 	public LocalDateTime getStartingTime() {

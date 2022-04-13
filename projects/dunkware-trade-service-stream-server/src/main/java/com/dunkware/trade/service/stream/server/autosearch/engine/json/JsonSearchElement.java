@@ -5,6 +5,7 @@ public class JsonSearchElement {
 	public int id; 
 	public String identifier; 
 	public String name;
+	
 	public int getId() {
 		return id;
 	}

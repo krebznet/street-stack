@@ -75,6 +75,40 @@ public class GrpcWebService extends GWebServiceImplBase {
 	public StreamObserver<GAutoCompleteRequest> autoCompleteSearch(
 			StreamObserver<GAutoCompleteResponse> responseObserver) {
 		
+		if(1 ==  1) { 
+		
+			
+			return new StreamObserver<GAutoCompleteRequest>() {
+				
+				String json = null;
+
+				@Override
+				public void onNext(GAutoCompleteRequest value) {
+					// on next we forward request to the proxy 
+					responseObserver.onNext(GAutoCompleteResponse.newBuilder().setResponse(value.getRequest()).build());
+
+				}
+						
+						
+
+				@Override
+				public void onError(Throwable t) {
+					// TODO Auto-generated method stub
+					
+				}
+
+				@Override
+				public void onCompleted() {
+					// TODO Auto-generated method stub
+					
+				}
+			      
+			   
+		};
+		}	
+			
+	
+		
 		GrpcAutoCompleteProxy proxy = new GrpcAutoCompleteProxy();
 		GrpcAutoCompleteProxyListener proxyListener;
 		ac.getAutowireCapableBeanFactory().autowireBean(proxy);

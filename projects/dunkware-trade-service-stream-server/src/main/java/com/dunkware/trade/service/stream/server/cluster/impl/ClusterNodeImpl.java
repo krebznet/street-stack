@@ -7,10 +7,10 @@ import com.dunkware.common.util.dtime.DDateTime;
 import com.dunkware.common.util.events.DEventNode;
 import com.dunkware.common.util.helpers.DHttpHelper;
 import com.dunkware.common.util.json.DJson;
-import com.dunkware.trade.service.stream.protocol.cluster.protocol.ClusterProto;
-import com.dunkware.trade.service.stream.protocol.cluster.protocol.ClusterProto.NodePing;
-import com.dunkware.trade.service.stream.protocol.cluster.spec.ClusterNodeStatsSpec;
-import com.dunkware.trade.service.stream.protocol.cluster.spec.ClusterNodeStatus;
+import com.dunkware.trade.service.stream.json.cluster.protocol.ClusterProto;
+import com.dunkware.trade.service.stream.json.cluster.protocol.ClusterProto.NodePing;
+import com.dunkware.trade.service.stream.json.cluster.spec.ClusterNodeStatsSpec;
+import com.dunkware.trade.service.stream.json.cluster.spec.ClusterNodeStatus;
 import com.dunkware.trade.service.stream.server.cluster.ClusterNode;
 
 public class ClusterNodeImpl implements ClusterNode {

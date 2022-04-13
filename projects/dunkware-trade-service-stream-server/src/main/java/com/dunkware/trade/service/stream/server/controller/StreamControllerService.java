@@ -15,7 +15,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.dunkware.common.util.json.DJson;
-import com.dunkware.trade.service.stream.protocol.controller.spec.StreamSpec;
+import com.dunkware.trade.service.stream.json.controller.spec.StreamSpec;
 import com.dunkware.trade.service.stream.server.controller.repository.StreamDO;
 import com.dunkware.trade.service.stream.server.controller.repository.StreamRepo;
 import com.dunkware.trade.service.stream.server.controller.repository.StreamVersionDO;
