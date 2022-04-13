@@ -12,14 +12,11 @@ import com.dunkware.net.proto.core.GCalendarRange;
 import com.dunkware.net.proto.core.GCalendarRangeType;
 import com.dunkware.net.proto.core.GDate;
 import com.dunkware.net.proto.core.GDateTime;
-import com.dunkware.net.proto.core.GDuration;
 import com.dunkware.net.proto.core.GDurationRange;
 import com.dunkware.net.proto.core.GTime;
-import com.dunkware.net.proto.core.GTimeRange;
 import com.dunkware.net.proto.core.GTimeUnit;
 
 public class ProtoCalendarHelper {
-	
 	public static GTime toGTime(LocalTime time) { 
 		return GTime.newBuilder().setHour(time.getHour()).setMinute(time.getMinute()).setSecond(time.getSecond()).build();
 	}
@@ -98,6 +95,7 @@ public class ProtoCalendarHelper {
 		}
 		throw new Exception("Range type " + range.getType().name() + " not handled in proto helper");
 	}
+	
 	
 	
 	

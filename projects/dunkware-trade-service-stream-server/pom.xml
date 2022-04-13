@@ -13,7 +13,8 @@
 
 
 	<properties>
-		<java.version>11</java.version>
+	
+	<java.version>1.8</java.version>
 		<org.mapstruct.version>1.4.2.Final</org.mapstruct.version>
 		<flyway.version>7.10.0</flyway.version>
 		<lombok.version>1.18.20</lombok.version>
@@ -24,7 +25,6 @@
 		<net-devh-grpc.version>2.0.1.RELEASE</net-devh-grpc.version>
 		<grpc.version>1.32.1</grpc.version>
 		<spring-cloud.version>Hoxton.SR6</spring-cloud.version>
-
 	</properties>
 
 	<repositories>
@@ -199,7 +199,11 @@
 			<artifactId>dunkware-net-core-runtime</artifactId>
 			<version>1.0.0-SNAPSHOT</version>
 		</dependency>
-
+		<dependency>
+			<groupId>com.dunkware.net</groupId>
+			<artifactId>dunkware-net-core-proto</artifactId>
+			<version>1.0.0-SNAPSHOT</version>
+		</dependency>
 		<dependency>
 			<groupId>com.dunkware.xstream.core</groupId>
 			<artifactId>dunkware-xstream-core-runtime</artifactId>

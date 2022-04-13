@@ -24,15 +24,14 @@ public final class GStreamServiceProto {
   static {
     java.lang.String[] descriptorData = {
       "\n\024stream-service.proto\022\027dunkware.stream." +
-      "service\032\014stream.proto\032\ncore.proto2\331\001\n\016GS" +
-      "treamService\022\\\n\013streamSpecs\022$.dunkware.s" +
-      "tream.GStreamSpecsRequest\032%.dunkware.str" +
-      "eam.GStreamSpecsResponse\"\000\022i\n\022autoComple" +
-      "teSearch\022%.dunkware.stream.GAutoComplete" +
-      "Request\032&.dunkware.stream.GAutoCompleteR" +
-      "esponse\"\000(\0010\001B>\n%com.dunkware.net.proto." +
-      "stream.serviceB\023GStreamServiceProtoP\001b\006p" +
-      "roto3"
+      "service\032\014stream.proto2\331\001\n\016GStreamService" +
+      "\022\\\n\013streamSpecs\022$.dunkware.stream.GStrea" +
+      "mSpecsRequest\032%.dunkware.stream.GStreamS" +
+      "pecsResponse\"\000\022i\n\022autoCompleteSearch\022%.d" +
+      "unkware.stream.GAutoCompleteRequest\032&.du" +
+      "nkware.stream.GAutoCompleteResponse\"\000(\0010" +
+      "\001B>\n%com.dunkware.net.proto.stream.servi" +
+      "ceB\023GStreamServiceProtoP\001b\006proto3"
     };
     com.google.protobuf.Descriptors.FileDescriptor.InternalDescriptorAssigner assigner =
         new com.google.protobuf.Descriptors.FileDescriptor.    InternalDescriptorAssigner() {
@@ -46,10 +45,8 @@ public final class GStreamServiceProto {
       .internalBuildGeneratedFileFrom(descriptorData,
         new com.google.protobuf.Descriptors.FileDescriptor[] {
           com.dunkware.net.proto.stream.GStreamProto.getDescriptor(),
-          com.dunkware.net.proto.core.GCoreProto.getDescriptor(),
         }, assigner);
     com.dunkware.net.proto.stream.GStreamProto.getDescriptor();
-    com.dunkware.net.proto.core.GCoreProto.getDescriptor();
   }
 
   // @@protoc_insertion_point(outer_class_scope)

@@ -24,12 +24,12 @@ public final class GDataServiceProto {
   static {
     java.lang.String[] descriptorData = {
       "\n\022data-service.proto\022\025dunkware.data.serv" +
-      "ice\032\014stream.proto\032\ncore.proto2{\n\014GDataSe" +
-      "rvice\022k\n\014signalSearch\022+.dunkware.stream." +
-      "GEntitySignalSearchRequest\032,.dunkware.st" +
-      "ream.GEntitySignalSearchResponse\"\000B:\n#co" +
-      "m.dunkware.net.proto.data.serviceB\021GData" +
-      "ServiceProtoP\001b\006proto3"
+      "ice\032\014stream.proto2{\n\014GDataService\022k\n\014sig" +
+      "nalSearch\022+.dunkware.stream.GEntitySigna" +
+      "lSearchRequest\032,.dunkware.stream.GEntity" +
+      "SignalSearchResponse\"\000B:\n#com.dunkware.n" +
+      "et.proto.data.serviceB\021GDataServiceProto" +
+      "P\001b\006proto3"
     };
     com.google.protobuf.Descriptors.FileDescriptor.InternalDescriptorAssigner assigner =
         new com.google.protobuf.Descriptors.FileDescriptor.    InternalDescriptorAssigner() {
@@ -43,10 +43,8 @@ public final class GDataServiceProto {
       .internalBuildGeneratedFileFrom(descriptorData,
         new com.google.protobuf.Descriptors.FileDescriptor[] {
           com.dunkware.net.proto.stream.GStreamProto.getDescriptor(),
-          com.dunkware.net.proto.core.GCoreProto.getDescriptor(),
         }, assigner);
     com.dunkware.net.proto.stream.GStreamProto.getDescriptor();
-    com.dunkware.net.proto.core.GCoreProto.getDescriptor();
   }
 
   // @@protoc_insertion_point(outer_class_scope)

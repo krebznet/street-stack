@@ -5,7 +5,7 @@ import java.util.List;
 
 import org.bson.Document;
 
-import com.dunkware.net.core.helpers.ProtoCalendarHelper;
+import com.dunkware.net.core.runtime.core.helpers.ProtoCalendarHelper;
 import com.dunkware.net.proto.core.GCalendarRange;
 import com.dunkware.net.proto.core.GCalendarRangeType;
 import com.dunkware.net.proto.core.GDateRange;

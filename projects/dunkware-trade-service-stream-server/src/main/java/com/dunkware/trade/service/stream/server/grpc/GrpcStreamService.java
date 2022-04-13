@@ -50,7 +50,6 @@ public class GrpcStreamService extends GStreamServiceImplBase {
 
 	// Streaming AI --> Learn From You Events As They Happpen 
 	
-	
 	@Override
 	public void streamSpecs(GStreamSpecsRequest request, StreamObserver<GStreamSpecsResponse> responseObserver) {
 		try {
@@ -66,6 +65,47 @@ public class GrpcStreamService extends GStreamServiceImplBase {
 			responseObserver.onError(e);
 		}
 	}
+
+
+	@Override
+	public StreamObserver<GAutoCompleteRequest> autoCompleteSearch(
+			StreamObserver<GAutoCompleteResponse> responseObserver) {
+		return new StreamObserver<GAutoCompleteRequest>() {
+
+			@Override
+			public void onNext(final GAutoCompleteRequest value) {
+				try {
+					String results = autoSearchService.response(value.getRequest());
+					responseObserver.onNext(GAutoCompleteResponse.newBuilder().setResponse(results).build());
+
+				} catch (Exception e) {
+					logger.error("Exception invoking auto search engine " + e.toString());
+					onError(e);
+					// TODO: handle exception
+				}
+				
+
+
+				
+			}
+
+			@Override
+			public void onError(Throwable t) {
+				// TODO Auto-generated method stub
+				
+			}
+
+			@Override
+			public void onCompleted() {
+				// TODO Auto-generated method stub
+				
+			}
+			
+			
+	
+	};
+	}
+	
 	
 	
 
