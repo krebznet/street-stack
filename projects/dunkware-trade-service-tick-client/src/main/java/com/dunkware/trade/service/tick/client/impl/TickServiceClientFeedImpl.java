@@ -11,6 +11,8 @@ import com.dunkware.common.tick.proto.TickProto.Tick;
 import com.dunkware.common.tick.stream.TickStream;
 import com.dunkware.common.tick.stream.impl.TickStreamImpl;
 import com.dunkware.common.util.helpers.DHttpHelper;
+import com.dunkware.common.util.helpers.DJsonHelper;
+import com.dunkware.common.util.json.DJson;
 import com.dunkware.trade.service.tick.client.TickServiceClient;
 import com.dunkware.trade.service.tick.client.TickServiceClientException;
 import com.dunkware.trade.service.tick.client.TickServiceClientFeed;
@@ -44,6 +46,9 @@ public class TickServiceClientFeedImpl implements TickServiceClientFeed, DKafkaB
 		try {
 			TickFeedStartReq req = new TickFeedStartReq();
 			req.setSpec(spec);
+		System.out.println(DJson.serializePretty(req));
+		String url = "http://localhost:8987/tick/feed/start";
+		System.out.println(url);
 			TickFeedStartResp resp = (TickFeedStartResp)client.postResponseObject("/tick/feed/start",req,TickFeedStartResp.class);
 			if(resp.getCode().equals("ERROR")) { 
 				throw new TickServiceClientException("Exception Creating Tick Feed " + resp.getError());

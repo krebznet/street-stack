@@ -226,6 +226,7 @@ public class TickerDO {
 		TradeTickerSpec ticker = new TradeTickerSpec();
 		ticker.setAvgVolume(obj.getAverageVolume());
 		ticker.setSymbol(obj.getSymbol());
+		ticker.setName(obj.getSecurityName());
 		Long fuck = new Long(obj.getId());
 		ticker.setId(fuck.intValue());
 		return ticker;

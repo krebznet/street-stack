@@ -7,7 +7,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Predicate;
 
-import com.dunkware.net.core.helpers.ProtoCalendarHelper;
+import com.dunkware.net.core.runtime.core.helpers.ProtoCalendarHelper;
 import com.dunkware.net.proto.core.GCalendarRangeType;
 import com.dunkware.net.proto.core.GDate;
 import com.dunkware.net.proto.core.GDateTime;

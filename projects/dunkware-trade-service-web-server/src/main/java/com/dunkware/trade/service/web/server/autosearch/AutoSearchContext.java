@@ -1,15 +1,15 @@
 package com.dunkware.trade.service.web.server.autosearch;
 
-import com.dunkware.net.proto.stream.GAutCompleteRequest;
+import com.dunkware.net.proto.stream.GAutoCompleteRequest;
 import com.dunkware.net.proto.stream.GAutoCompleteResponse;
 import com.dunkware.trade.service.web.server.autosearch.strategies.AutoSearchEchoStrategy;
 
 import io.grpc.stub.StreamObserver;
 
-public  class AutoSearchContext implements StreamObserver<GAutCompleteRequest>{
+public  class AutoSearchContext implements StreamObserver<GAutoCompleteRequest>{
 	
 	private StreamObserver<GAutoCompleteResponse> response; 
-	private StreamObserver<GAutCompleteRequest> request;
+	private StreamObserver<GAutoCompleteRequest> request;
 	
 	private RequestController requestController;
 	
@@ -23,7 +23,7 @@ public  class AutoSearchContext implements StreamObserver<GAutCompleteRequest>{
 	 * @param responseObserver
 	 * @return
 	 */
-	public StreamObserver<GAutCompleteRequest> init (StreamObserver<GAutoCompleteResponse> responseObserver) {
+	public StreamObserver<GAutoCompleteRequest> init (StreamObserver<GAutoCompleteResponse> responseObserver) {
 		
 		this.response = responseObserver;
 		this.searchStrategy.init(this);
@@ -47,7 +47,7 @@ public  class AutoSearchContext implements StreamObserver<GAutCompleteRequest>{
 
 
 	@Override
-	public void onNext(GAutCompleteRequest arg0) {
+	public void onNext(GAutoCompleteRequest arg0) {
 		// handle a search request
 		//String searchResponse = searchStrategy.handleSearch(arg0.getRequest());
 		try {

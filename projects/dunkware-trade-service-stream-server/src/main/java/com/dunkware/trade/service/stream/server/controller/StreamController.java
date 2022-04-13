@@ -26,6 +26,7 @@ import com.dunkware.trade.service.stream.protocol.controller.spec.StreamStatus;
 import com.dunkware.trade.service.stream.server.controller.repository.StreamDO;
 import com.dunkware.trade.service.stream.server.controller.repository.StreamVersionDO;
 import com.dunkware.trade.service.stream.server.controller.util.GStreamSpecBuilder;
+import com.dunkware.trade.service.stream.server.logging.LogService;
 import com.dunkware.trade.service.stream.server.session.StreamSession;
 import com.dunkware.trade.service.stream.server.session.StreamSessionException;
 import com.dunkware.trade.service.stream.server.session.StreamSessionFactory;
@@ -43,6 +44,9 @@ import com.dunkware.xstream.xproject.model.XScriptBundle;
 public class StreamController {
 
 
+	@Autowired
+	private LogService logService; 
+	
 	private Logger logger = org.slf4j.LoggerFactory.getLogger(getClass());
 
 	private StreamDO ent;
@@ -80,6 +84,7 @@ public class StreamController {
 
 	private StreamSpec spec;
 
+	@Value("${streams.schedule.enable}")
 	private boolean scheduleEnabled = true;
 	
 	private GStreamSpec gStreamSpec = null;
@@ -117,29 +122,35 @@ public class StreamController {
 		
 		spec = DJson.getObjectMapper().readValue(ent.getSpec(), StreamSpec.class);
 		this.specUpdate(spec);
-		schedule = new StreamSchedule();
+		
+		if(scheduleEnabled) { 
+			schedule = new StreamSchedule();
 
-		Runnable runner = new Runnable() {
+			Runnable runner = new Runnable() {
 
-			@Override
-			public void run() {
-				try {
-					Thread.sleep(5000);
-					schedule.start();
+				@Override
+				public void run() {
+					try {
+						Thread.sleep(5000);
+						schedule.start();
 
-				} catch (Exception e) {
-					logger.error("Exception starting schedule in runnable " + e.toString(), e);
+					} catch (Exception e) {
+						logger.error("Exception starting schedule in runnable " + e.toString(), e);
+					}
+
 				}
-
-			}
-		};
-		if (spec.isSchedule() == false) {
-			scheduleEnabled = false;
+			};
+			
+			if (scheduleEnabled) {
+				logger.debug(LogService.createMarker(), "Enabling Stream Schedule for stream " + spec.getName());
+				Thread runnerThread = new Thread(runner);
+				runnerThread.start();
+			} else {
+				logger.debug(LogService.createMarker(), "Disabling Stream Schedule for stream " + spec.getName());
+			}	
 		}
-		if (scheduleEnabled) {
-			Thread runnerThread = new Thread(runner);
-			runnerThread.start();
-		}
+		
+			
 
 	}
 	
@@ -433,7 +444,10 @@ public class StreamController {
 		}
 
 		public void dispose() {
-			//TODO: delete a stream controller ? 
+			//TODO: delete a stream controller ?
+			if(schedule != null) { 
+				schedule.interrupt();
+			}
 			if (logger.isDebugEnabled()) {
 				logger.debug("Stream Session Schedule Disposing {}", ent.getName());
 			}

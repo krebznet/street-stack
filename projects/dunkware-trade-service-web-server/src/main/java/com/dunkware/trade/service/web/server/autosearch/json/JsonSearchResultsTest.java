@@ -1,7 +1,7 @@
 package com.dunkware.trade.service.web.server.autosearch.json;
 
 import com.dunkware.common.util.time.DunkTime;
-import com.dunkware.net.util.JsonHelper;
+import com.dunkware.net.core.runtime.util.JsonHelper;
 
 public class JsonSearchResultsTest {
 	

@@ -13,23 +13,12 @@
 	</appender>
 	
 	
-  <appender name="FLUENT"
-		class="ch.qos.logback.more.appenders.DataFluentAppender">
-		<tag>dunkware</tag>
-		<label>logging</label>
-		<remoteHost>172.16.16.55</remoteHost>
-		<port>32756</port>
-		<additionalField>
-			<key>owner</key>
-			<value>web-service</value>
-		</additionalField>
-	</appender>
-	
+
 	
 
 
 
-	<root level="debug">
+	<root level="info">
 		<appender-ref ref="CONSOLE" additivity="false" />
 		
 	</root>
@@ -38,7 +27,7 @@
 
 	<logger name="com.dunkware" level="debug" additivity="false">
 		<appender-ref ref="CONSOLE" additivity="false" />
-			<appender-ref ref="FLUENT" additivity="false" />
+		
 	</logger>
 	
 	

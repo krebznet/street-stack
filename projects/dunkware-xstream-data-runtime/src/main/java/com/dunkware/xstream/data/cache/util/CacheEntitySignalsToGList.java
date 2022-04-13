@@ -3,8 +3,8 @@ package com.dunkware.xstream.data.cache.util;
 import java.util.List;
 
 import com.dunkware.common.util.time.DunkTime;
-import com.dunkware.net.data.builders.GBeanBuilder;
-import com.dunkware.net.data.builders.GListBuilder;
+import com.dunkware.net.core.runtime.data.builders.GBeanBuilder;
+import com.dunkware.net.core.runtime.data.builders.GListBuilder;
 import com.dunkware.net.proto.core.GList;
 import com.dunkware.xstream.data.cache.CacheEntitySignal;
 import com.dunkware.xstream.data.cache.CacheValueSet;

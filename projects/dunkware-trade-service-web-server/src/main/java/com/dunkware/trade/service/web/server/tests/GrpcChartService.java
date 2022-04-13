@@ -7,11 +7,12 @@ import java.util.concurrent.atomic.AtomicInteger;
 
 import org.springframework.web.bind.annotation.CrossOrigin;
 
-import com.dunkware.net.chart.grid.builder.GridBuilder;
-import com.dunkware.net.chart.grid.builder.GridBuilderUtil;
-import com.dunkware.net.chart.grid.builder.model.GridModel;
-import com.dunkware.net.chart.grid.builder.model.GridModelColumnStyleRuleOperator;
-import com.dunkware.net.chart.grid.builder.model.GridModelValueParser;
+import com.dunkware.net.core.runtime.chart.grid.builder.GridBuilder;
+import com.dunkware.net.core.runtime.chart.grid.builder.GridBuilderUtil;
+import com.dunkware.net.core.runtime.chart.grid.builder.model.GridModel;
+import com.dunkware.net.core.runtime.chart.grid.builder.model.GridModelColumnStyleRuleOperator;
+import com.dunkware.net.core.runtime.chart.grid.builder.model.GridModelValueParser;
+import com.dunkware.net.core.runtime.util.JsonHelper;
 import com.dunkware.net.proto.chart.ChartInput;
 import com.dunkware.net.proto.chart.ChartRequest;
 import com.dunkware.net.proto.chart.ChartResponse;
@@ -23,7 +24,6 @@ import com.dunkware.net.proto.chart.GridTransaction;
 import com.dunkware.net.proto.chart.GridTransactionDelete;
 import com.dunkware.net.proto.chart.GridTransactionInsert;
 import com.dunkware.net.proto.chart.GridTransactionUpdate;
-import com.dunkware.net.util.JsonHelper;
 
 import io.grpc.stub.StreamObserver;
 import net.devh.springboot.autoconfigure.grpc.server.GrpcService;

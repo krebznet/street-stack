@@ -3,13 +3,15 @@ package com.dunkware.trade.service.stream.server.grpc;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.CrossOrigin;
 
-import com.dunkware.net.proto.stream.GAutCompleteRequest;
+import com.dunkware.net.proto.stream.GAutoCompleteRequest;
 import com.dunkware.net.proto.stream.GAutoCompleteResponse;
 import com.dunkware.net.proto.stream.GStreamSpec;
 import com.dunkware.net.proto.stream.GStreamSpecsRequest;
@@ -29,6 +31,8 @@ import net.devh.springboot.autoconfigure.grpc.server.GrpcService;
 @Profile("StreamController")
 @CrossOrigin(origins = "*", allowedHeaders = "*")
 public class GrpcStreamService extends GStreamServiceImplBase {
+	
+	private Logger logger = LoggerFactory.getLogger(getClass());
 
 	@Value("${consumer.kafka.brokers}")
 	private String consumerKafkaBrokers;
@@ -64,19 +68,26 @@ public class GrpcStreamService extends GStreamServiceImplBase {
 	}
 
 	@Override
-	public StreamObserver<GAutCompleteRequest> autoCompleteSearch(
+	public StreamObserver<GAutoCompleteRequest> autoCompleteSearch(
 			StreamObserver<GAutoCompleteResponse> responseObserver) {
 		
+		System.out.println("stream service auto search called");
 		
-		return new StreamObserver<GAutCompleteRequest>() {
+		
+		return new StreamObserver<GAutoCompleteRequest>() {
 
 			@Override
-			public void onNext(GAutCompleteRequest value) {
-				responseObserver.onNext(GAutoCompleteResponse.newBuilder().setResponse(value.getRequest()).build());
-				responseObserver.onCompleted();
-				// nned a proxy to another service 
-				// in streem that will have strategy
-				// will have to post vson. 
+			public void onNext(final GAutoCompleteRequest value) {
+				try {
+					String results = autoSearchService.response(value.getRequest());
+					responseObserver.onNext(GAutoCompleteResponse.newBuilder().setResponse(results).build());
+					
+				} catch (Exception e) {
+					logger.error("Exception invoking auto search engine " + e.toString());
+					onError(e);
+					// TODO: handle exception
+				}
+				
 				
 			}
 

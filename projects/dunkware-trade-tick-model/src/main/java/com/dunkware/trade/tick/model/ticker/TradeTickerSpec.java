@@ -4,6 +4,7 @@ public class TradeTickerSpec {
 
 	private int id; 
 	private String symbol;
+	private String name; 
 	private long avgVolume;
 	private TradeTickerType type;
 	
@@ -38,7 +39,14 @@ public class TradeTickerSpec {
 	@Override
 	public String toString() {
 		return type.toString() + ":" + symbol;
+	}
+	public String getName() {
+		return name;
+	}
+	public void setName(String name) {
+		this.name = name;
 	} 
+	
 	
 	
 	

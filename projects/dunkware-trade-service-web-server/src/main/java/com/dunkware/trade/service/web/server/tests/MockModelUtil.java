@@ -1,6 +1,6 @@
 package com.dunkware.trade.service.web.server.tests;
 
-import com.dunkware.net.util.JsonHelper;
+import com.dunkware.net.core.runtime.util.JsonHelper;
 
 public class MockModelUtil {
 	

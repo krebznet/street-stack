@@ -1,8 +1,8 @@
 package com.dunkware.trade.service.web.server.grid;
 
 import com.dunkware.common.util.helpers.DRandom;
-import com.dunkware.net.data.builders.GBeanBuilder;
-import com.dunkware.net.data.builders.GListBuilder;
+import com.dunkware.net.core.runtime.data.builders.GBeanBuilder;
+import com.dunkware.net.core.runtime.data.builders.GListBuilder;
 import com.dunkware.net.proto.core.GList;
 
 public class SignalGridMockData1 {

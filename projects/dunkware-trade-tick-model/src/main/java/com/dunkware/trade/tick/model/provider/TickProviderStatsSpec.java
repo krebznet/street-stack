@@ -3,6 +3,7 @@ package com.dunkware.trade.tick.model.provider;
 public class TickProviderStatsSpec {
 	
 	private TickProviderStatus status; 
+	private String name; 
 	private int subscriptionCount; 
 	
 	public TickProviderStatsSpec() { 
@@ -25,6 +26,15 @@ public class TickProviderStatsSpec {
 	public void setSubscriptionCount(int subscriptionCount) {
 		this.subscriptionCount = subscriptionCount;
 	}
+
+	public String getName() {
+		return name;
+	}
+
+	public void setName(String name) {
+		this.name = name;
+	}
+	
 	
 	
 
