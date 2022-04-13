@@ -12,6 +12,6 @@ import "stream.proto";
 import "core.proto";
 service GStreamService  {
     rpc streamSpecs( dunkware.stream.GStreamSpecsRequest) returns (dunkware.stream.GStreamSpecsResponse) {}
-    rpc autoCompleteSearch(stream dunkware.stream.GAutCompleteRequest) returns (stream dunkware.stream.GAutoCompleteResponse) {}
+    rpc autoCompleteSearch(stream dunkware.stream.GAutoCompleteRequest) returns (stream dunkware.stream.GAutoCompleteResponse) {}
         
  }

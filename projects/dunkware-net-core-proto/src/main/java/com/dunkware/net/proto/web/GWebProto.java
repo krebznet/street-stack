@@ -24,7 +24,7 @@ public final class GWebProto {
   static {
     java.lang.String[] descriptorData = {
       "\n\tweb.proto\022\014dunkware.web\032\014stream.proto\032" +
-      "\013chart.proto2\366\006\n\013GWebService\022M\n\016testSign" +
+      "\013chart.proto2\367\006\n\013GWebService\022M\n\016testSign" +
       "alGrid\022#.dunkware.stream.GEntitySignalQu" +
       "ery\032\024.dunkware.chart.Grid\"\000\022G\n\016testEntit" +
       "yGrid\022\035.dunkware.stream.GEntityQuery\032\024.d" +
@@ -43,11 +43,11 @@ public final class GWebProto {
       "equest\032&.dunkware.stream.GEntityStreamRe" +
       "sponse\"\0000\001\022g\n\016instrumentVars\022\'.dunkware." +
       "stream.GInstrumentVarsRequest\032(.dunkware" +
-      ".stream.GInstrumentVarsResponse\"\0000\001\022h\n\022a" +
-      "utoCompleteSearch\022$.dunkware.stream.GAut" +
-      "CompleteRequest\032&.dunkware.stream.GAutoC" +
-      "ompleteResponse\"\000(\0010\001B)\n\032com.dunkware.ne" +
-      "t.proto.webB\tGWebProtoP\001b\006proto3"
+      ".stream.GInstrumentVarsResponse\"\0000\001\022i\n\022a" +
+      "utoCompleteSearch\022%.dunkware.stream.GAut" +
+      "oCompleteRequest\032&.dunkware.stream.GAuto" +
+      "CompleteResponse\"\000(\0010\001B)\n\032com.dunkware.n" +
+      "et.proto.webB\tGWebProtoP\001b\006proto3"
     };
     com.google.protobuf.Descriptors.FileDescriptor.InternalDescriptorAssigner assigner =
         new com.google.protobuf.Descriptors.FileDescriptor.    InternalDescriptorAssigner() {

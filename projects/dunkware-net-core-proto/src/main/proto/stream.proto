@@ -339,7 +339,7 @@ message GInstrumentVar {
 
 // AutoComplete 
 
-message GAutCompleteRequest {
+message GAutoCompleteRequest {
     string request = 1;
 }
 
