@@ -2,7 +2,6 @@ package com.dunkware.trade.service.data.service.stream.writers;
 
 import com.dunkware.common.spec.kafka.DKafkaConsumerSpec2;
 import com.dunkware.common.util.dtime.DTimeZone;
-import com.dunkware.xstream.data.consumer.StreamEventConsumer;
 
 public class DataStreamSnapshotWriterInput {
 	

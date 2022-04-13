@@ -19,8 +19,8 @@ import "google/protobuf/timestamp.proto";
 enum GStreamEventType {
     EntitySignal = 0;
     EntitySnapshot = 1;
-    StreamStart = 2;
-    StreamStop = 3;
+    SessionStart = 2;
+    SessionStop= 3;
 }
 
 // Generic Object Contains 1 type of event
@@ -31,20 +31,20 @@ message GStreamEvent  {
     oneof event {
         GEntitySnapshot entitySnapshot = 5;
         GEntitySignal entitySignal = 6;
-        GStreamStopEvent stopEvent = 7;
-        GStreamStartEvent startEvent = 8;
+        GStreamSessionStop sessionStop = 7;
+        GStreamSessionStart sessionStart = 8;
     }
 
 }
 
-message GStreamStopEvent {
-	string streamIdentifier = 1;
-	string sessionId = 2;
+message GStreamSessionStop {
+    google.protobuf.Timestamp time = 1; 
+	GStreamSessionSpec session = 2;
 }
 
-message GStreamStartEvent {
-	string streamIdentifier = 1;
-	string sessionId = 2;
+message GStreamSessionStart {
+	google.protobuf.Timestamp time = 1; 
+	GStreamSessionSpec session = 2;
 }
 
 // Entity Snapshot Event, datetime, entity id/code
@@ -185,6 +185,14 @@ message GEntitysignalScanner {
  */
 message GStreamSpec {
     string identifier = 1;
+    GStreamScriptSpec script = 4;
+    dunkware.core.GTimeZone timeZone = 5;
+}
+
+
+message GStreamSessionSpec {
+    string stream = 1;
+    string sessionId = 2;
     GStreamScriptSpec script = 4;
     dunkware.core.GTimeZone timeZone = 5;
 	repeated GStreamEntitySpec entities = 6;

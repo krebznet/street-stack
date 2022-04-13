@@ -1,6 +1,8 @@
 package com.dunkware.trade.service.data.service.stream;
 
 import java.time.LocalDateTime;
+import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 
 import javax.annotation.PostConstruct;
 
@@ -11,12 +13,16 @@ import org.springframework.context.ApplicationContext;
 import org.springframework.stereotype.Service;
 
 import com.dunkware.trade.service.data.service.config.RuntimeConfig;
+import com.dunkware.trade.service.data.service.message.StreamMessageHandler;
 import com.dunkware.trade.service.data.service.message.StreamMessageService;
 import com.dunkware.trade.service.data.service.repository.DataServiceRepository;
 import com.dunkware.trade.service.data.service.repository.DataStreamEntity;
+import com.dunkware.trade.service.stream.json.message.StreamSessionPing;
+import com.dunkware.trade.service.stream.json.message.StreamSessionStart;
+import com.dunkware.trade.service.stream.json.message.StreamSessionStop;
 
 @Service
-public class DataStreamService {
+public class DataStreamService implements StreamMessageHandler {
 	
 	
 	@Autowired
@@ -30,20 +36,20 @@ public class DataStreamService {
 
 	@Autowired
 	private DataServiceRepository dataRepo;
+	
+	private Map<String,DataStream> dataStreams = new ConcurrentHashMap<String, DataStream>();
 
 	private Logger logger = LoggerFactory.getLogger(getClass());
 	
 
 	@PostConstruct
-	public void test() { 
+	public void load() {
+		
+		messageService.addHandler(this);
 		try {
-			int i = 0;
-			while(i < 100) { 
-				DataStreamEntity ent = new DataStreamEntity();
-				ent.setCreated(LocalDateTime.now());
-				ent.setName("Test name");
-				dataRepo.persist(ent);	
-				i++;
+		
+			for (DataStreamEntity ent : dataRepo.getDataStreamEntities()) {
+				System.out.println(ent.getName());
 			}
 			
 		} catch (Exception e) {
@@ -52,6 +58,22 @@ public class DataStreamService {
 			// TODO: handle exception
 		}
 	}
+	
+	@Override
+	public void sessionPing(StreamSessionPing ping) {
+		
+	}
+	
+	@Override
+	public void sessionStart(StreamSessionStart start) {
+		
+	}
+	
+	@Override
+	public void sessionStop(StreamSessionStop stop) {
+		
+	}
+	
 	
 
 

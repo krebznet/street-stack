@@ -1,11 +1,18 @@
 package com.dunkware.net.core.runtime.core.helpers;
 
+import java.time.Instant;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
+import java.time.ZoneId;
+import java.time.ZoneOffset;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import com.dunkware.common.util.dtime.DTime;
 import com.dunkware.common.util.dtime.DTimeZone;
+import com.dunkware.common.util.helpers.DProtoHelper;
 import com.dunkware.common.util.time.range.CalendarDateTimeRange;
 import com.dunkware.common.util.time.range.CalendarRange;
 import com.dunkware.net.proto.core.GCalendarRange;
@@ -15,8 +22,13 @@ import com.dunkware.net.proto.core.GDateTime;
 import com.dunkware.net.proto.core.GDurationRange;
 import com.dunkware.net.proto.core.GTime;
 import com.dunkware.net.proto.core.GTimeUnit;
+import com.dunkware.net.proto.core.GTimeZone;
+import com.google.protobuf.Timestamp;
 
-public class ProtoCalendarHelper {
+public class GProtoHelper {
+	
+	private static Logger logger = LoggerFactory.getLogger(GProtoHelper.class);
+	
 	public static GTime toGTime(LocalTime time) { 
 		return GTime.newBuilder().setHour(time.getHour()).setMinute(time.getMinute()).setSecond(time.getSecond()).build();
 	}
@@ -27,6 +39,33 @@ public class ProtoCalendarHelper {
 	
 	public static LocalTime toLocalTime(GTime time) { 
 		return LocalTime.of(time.getHour(), time.getMinute(),time.getSecond());	
+	}
+	
+
+	public static Timestamp toTimeStamp(LocalDateTime dt, DTimeZone timezone) {
+		Instant instant = dt.toInstant(DProtoHelper.timeZoneToOffset(timezone));
+
+		Timestamp result = Timestamp.newBuilder().setSeconds(instant.getEpochSecond()).setNanos(instant.getNano())
+				.build();
+		return result;
+	}
+
+	public static ZoneOffset zoneIdToOffset(ZoneId zoneId) {
+		Instant instant = Instant.now(); // can be LocalDateTime
+		ZoneOffset currentOffsetForMyZone = zoneId.getRules().getOffset(instant);
+		return currentOffsetForMyZone;
+	}
+
+	public static ZoneOffset timeZoneToOffset(DTimeZone timezone) {
+		Instant instant = Instant.now(); // can be LocalDateTime
+		ZoneOffset currentOffsetForMyZone = DTimeZone.toZoneId(timezone).getRules().getOffset(instant);
+		return currentOffsetForMyZone;
+	}
+
+	public static LocalDateTime toLocalDateTime(Timestamp ts, DTimeZone timezone) {
+		return Instant.ofEpochSecond(ts.getSeconds(), ts.getNanos()).atZone(DTimeZone.toZoneId(timezone))
+				.toLocalDateTime();
+
 	}
 	
 	public static LocalDateTime toLocalDateTime(GDate date) { 
@@ -71,33 +110,48 @@ public class ProtoCalendarHelper {
 	
 	public static CalendarDateTimeRange toCalendarDateTimeRange(GCalendarRange range, LocalDateTime now) throws Exception { 
 		if(range.getType() == GCalendarRangeType.DATE_RANGE) { 
-			LocalDateTime start = ProtoCalendarHelper.toLocalDateTime(range.getDateRange().getStartDate());
-			LocalDateTime stop = ProtoCalendarHelper.toLocalDateTime(range.getDateRange().getStopDate());
+			LocalDateTime start = GProtoHelper.toLocalDateTime(range.getDateRange().getStartDate());
+			LocalDateTime stop = GProtoHelper.toLocalDateTime(range.getDateRange().getStopDate());
 			return CalendarDateTimeRange.newInstance(start, stop);
 			
 		}
 		if(range.getType() == GCalendarRangeType.DATE_TIME_RANGE) { 
-			LocalDateTime start = ProtoCalendarHelper.toLocalDateTime(range.getDateTimeRange().getStart());
-			LocalDateTime stop = ProtoCalendarHelper.toLocalDateTime(range.getDateTimeRange().getStop());
+			LocalDateTime start = GProtoHelper.toLocalDateTime(range.getDateTimeRange().getStart());
+			LocalDateTime stop = GProtoHelper.toLocalDateTime(range.getDateTimeRange().getStop());
 			return CalendarDateTimeRange.newInstance(start, stop);
 		
 		}
 		if(range.getType() == GCalendarRangeType.TIME_RANGE) { 
 			LocalDate currentDate = LocalDate.now();
-			LocalDateTime start = ProtoCalendarHelper.toLocalDateTime(range.getTimeRange().getStartTime(), currentDate);
-			LocalDateTime stop = ProtoCalendarHelper.toLocalDateTime(range.getTimeRange().getStopTime(),currentDate);
+			LocalDateTime start = GProtoHelper.toLocalDateTime(range.getTimeRange().getStartTime(), currentDate);
+			LocalDateTime stop = GProtoHelper.toLocalDateTime(range.getTimeRange().getStopTime(),currentDate);
 			return CalendarDateTimeRange.newInstance(start, stop);
 		}
 		if(range.getType() == GCalendarRangeType.TIME_DURATION) { 
 			LocalDateTime stop = LocalDateTime.now(DTimeZone.toZoneId(DTimeZone.NewYork));
-			LocalDateTime start = ProtoCalendarHelper.toLocalDateTime(range.getDurationRange(), stop);
+			LocalDateTime start = GProtoHelper.toLocalDateTime(range.getDurationRange(), stop);
 			return CalendarDateTimeRange.newInstance(start, stop);
 		}
 		throw new Exception("Range type " + range.getType().name() + " not handled in proto helper");
 	}
 	
 	
-	
+	public static GTimeZone toGTimeZone(DTimeZone target) {
+		if(target == DTimeZone.California) { 
+			return GTimeZone.US_PACIFIC;
+		}
+		if(target == DTimeZone.Chicago) { 
+			return GTimeZone.US_CENTRAL;
+		}
+		if(target == DTimeZone.NewYork) { 
+			return GTimeZone.US_EASTERN;
+		}
+		if(target == DTimeZone.Denver) { 
+			return GTimeZone.US_MOUNTAIN;
+		}
+		logger.error("DTImeZone " + target.name() + " not converted to GTimeZone");
+		return GTimeZone.US_EASTERN;
+	}
 	
 
 }

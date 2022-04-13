@@ -23,7 +23,6 @@ private static final long serialVersionUID = 0L;
   private GStreamSpec() {
     identifier_ = "";
     timeZone_ = 0;
-    entities_ = java.util.Collections.emptyList();
   }
 
   @java.lang.Override
@@ -75,15 +74,6 @@ private static final long serialVersionUID = 0L;
             timeZone_ = rawValue;
             break;
           }
-          case 50: {
-            if (!((mutable_bitField0_ & 0x00000008) == 0x00000008)) {
-              entities_ = new java.util.ArrayList<com.dunkware.net.proto.stream.GStreamEntitySpec>();
-              mutable_bitField0_ |= 0x00000008;
-            }
-            entities_.add(
-                input.readMessage(com.dunkware.net.proto.stream.GStreamEntitySpec.parser(), extensionRegistry));
-            break;
-          }
           default: {
             if (!parseUnknownFieldProto3(
                 input, unknownFields, extensionRegistry, tag)) {
@@ -99,9 +89,6 @@ private static final long serialVersionUID = 0L;
       throw new com.google.protobuf.InvalidProtocolBufferException(
           e).setUnfinishedMessage(this);
     } finally {
-      if (((mutable_bitField0_ & 0x00000008) == 0x00000008)) {
-        entities_ = java.util.Collections.unmodifiableList(entities_);
-      }
       this.unknownFields = unknownFields.build();
       makeExtensionsImmutable();
     }
@@ -119,7 +106,6 @@ private static final long serialVersionUID = 0L;
             com.dunkware.net.proto.stream.GStreamSpec.class, com.dunkware.net.proto.stream.GStreamSpec.Builder.class);
   }
 
-  private int bitField0_;
   public static final int IDENTIFIER_FIELD_NUMBER = 1;
   private volatile java.lang.Object identifier_;
   /**
@@ -192,41 +178,6 @@ private static final long serialVersionUID = 0L;
     return result == null ? com.dunkware.net.proto.core.GTimeZone.UNRECOGNIZED : result;
   }
 
-  public static final int ENTITIES_FIELD_NUMBER = 6;
-  private java.util.List<com.dunkware.net.proto.stream.GStreamEntitySpec> entities_;
-  /**
-   * <code>repeated .dunkware.stream.GStreamEntitySpec entities = 6;</code>
-   */
-  public java.util.List<com.dunkware.net.proto.stream.GStreamEntitySpec> getEntitiesList() {
-    return entities_;
-  }
-  /**
-   * <code>repeated .dunkware.stream.GStreamEntitySpec entities = 6;</code>
-   */
-  public java.util.List<? extends com.dunkware.net.proto.stream.GStreamEntitySpecOrBuilder> 
-      getEntitiesOrBuilderList() {
-    return entities_;
-  }
-  /**
-   * <code>repeated .dunkware.stream.GStreamEntitySpec entities = 6;</code>
-   */
-  public int getEntitiesCount() {
-    return entities_.size();
-  }
-  /**
-   * <code>repeated .dunkware.stream.GStreamEntitySpec entities = 6;</code>
-   */
-  public com.dunkware.net.proto.stream.GStreamEntitySpec getEntities(int index) {
-    return entities_.get(index);
-  }
-  /**
-   * <code>repeated .dunkware.stream.GStreamEntitySpec entities = 6;</code>
-   */
-  public com.dunkware.net.proto.stream.GStreamEntitySpecOrBuilder getEntitiesOrBuilder(
-      int index) {
-    return entities_.get(index);
-  }
-
   private byte memoizedIsInitialized = -1;
   @java.lang.Override
   public final boolean isInitialized() {
@@ -250,9 +201,6 @@ private static final long serialVersionUID = 0L;
     if (timeZone_ != com.dunkware.net.proto.core.GTimeZone.US_EASTERN.getNumber()) {
       output.writeEnum(5, timeZone_);
     }
-    for (int i = 0; i < entities_.size(); i++) {
-      output.writeMessage(6, entities_.get(i));
-    }
     unknownFields.writeTo(output);
   }
 
@@ -272,10 +220,6 @@ private static final long serialVersionUID = 0L;
     if (timeZone_ != com.dunkware.net.proto.core.GTimeZone.US_EASTERN.getNumber()) {
       size += com.google.protobuf.CodedOutputStream
         .computeEnumSize(5, timeZone_);
-    }
-    for (int i = 0; i < entities_.size(); i++) {
-      size += com.google.protobuf.CodedOutputStream
-        .computeMessageSize(6, entities_.get(i));
     }
     size += unknownFields.getSerializedSize();
     memoizedSize = size;
@@ -301,8 +245,6 @@ private static final long serialVersionUID = 0L;
           .equals(other.getScript());
     }
     result = result && timeZone_ == other.timeZone_;
-    result = result && getEntitiesList()
-        .equals(other.getEntitiesList());
     result = result && unknownFields.equals(other.unknownFields);
     return result;
   }
@@ -322,10 +264,6 @@ private static final long serialVersionUID = 0L;
     }
     hash = (37 * hash) + TIMEZONE_FIELD_NUMBER;
     hash = (53 * hash) + timeZone_;
-    if (getEntitiesCount() > 0) {
-      hash = (37 * hash) + ENTITIES_FIELD_NUMBER;
-      hash = (53 * hash) + getEntitiesList().hashCode();
-    }
     hash = (29 * hash) + unknownFields.hashCode();
     memoizedHashCode = hash;
     return hash;
@@ -459,7 +397,6 @@ private static final long serialVersionUID = 0L;
     private void maybeForceBuilderInitialization() {
       if (com.google.protobuf.GeneratedMessageV3
               .alwaysUseFieldBuilders) {
-        getEntitiesFieldBuilder();
       }
     }
     @java.lang.Override
@@ -475,12 +412,6 @@ private static final long serialVersionUID = 0L;
       }
       timeZone_ = 0;
 
-      if (entitiesBuilder_ == null) {
-        entities_ = java.util.Collections.emptyList();
-        bitField0_ = (bitField0_ & ~0x00000008);
-      } else {
-        entitiesBuilder_.clear();
-      }
       return this;
     }
 
@@ -507,8 +438,6 @@ private static final long serialVersionUID = 0L;
     @java.lang.Override
     public com.dunkware.net.proto.stream.GStreamSpec buildPartial() {
       com.dunkware.net.proto.stream.GStreamSpec result = new com.dunkware.net.proto.stream.GStreamSpec(this);
-      int from_bitField0_ = bitField0_;
-      int to_bitField0_ = 0;
       result.identifier_ = identifier_;
       if (scriptBuilder_ == null) {
         result.script_ = script_;
@@ -516,16 +445,6 @@ private static final long serialVersionUID = 0L;
         result.script_ = scriptBuilder_.build();
       }
       result.timeZone_ = timeZone_;
-      if (entitiesBuilder_ == null) {
-        if (((bitField0_ & 0x00000008) == 0x00000008)) {
-          entities_ = java.util.Collections.unmodifiableList(entities_);
-          bitField0_ = (bitField0_ & ~0x00000008);
-        }
-        result.entities_ = entities_;
-      } else {
-        result.entities_ = entitiesBuilder_.build();
-      }
-      result.bitField0_ = to_bitField0_;
       onBuilt();
       return result;
     }
@@ -584,32 +503,6 @@ private static final long serialVersionUID = 0L;
       if (other.timeZone_ != 0) {
         setTimeZoneValue(other.getTimeZoneValue());
       }
-      if (entitiesBuilder_ == null) {
-        if (!other.entities_.isEmpty()) {
-          if (entities_.isEmpty()) {
-            entities_ = other.entities_;
-            bitField0_ = (bitField0_ & ~0x00000008);
-          } else {
-            ensureEntitiesIsMutable();
-            entities_.addAll(other.entities_);
-          }
-          onChanged();
-        }
-      } else {
-        if (!other.entities_.isEmpty()) {
-          if (entitiesBuilder_.isEmpty()) {
-            entitiesBuilder_.dispose();
-            entitiesBuilder_ = null;
-            entities_ = other.entities_;
-            bitField0_ = (bitField0_ & ~0x00000008);
-            entitiesBuilder_ = 
-              com.google.protobuf.GeneratedMessageV3.alwaysUseFieldBuilders ?
-                 getEntitiesFieldBuilder() : null;
-          } else {
-            entitiesBuilder_.addAllMessages(other.entities_);
-          }
-        }
-      }
       this.mergeUnknownFields(other.unknownFields);
       onChanged();
       return this;
@@ -638,7 +531,6 @@ private static final long serialVersionUID = 0L;
       }
       return this;
     }
-    private int bitField0_;
 
     private java.lang.Object identifier_ = "";
     /**
@@ -869,246 +761,6 @@ private static final long serialVersionUID = 0L;
       timeZone_ = 0;
       onChanged();
       return this;
-    }
-
-    private java.util.List<com.dunkware.net.proto.stream.GStreamEntitySpec> entities_ =
-      java.util.Collections.emptyList();
-    private void ensureEntitiesIsMutable() {
-      if (!((bitField0_ & 0x00000008) == 0x00000008)) {
-        entities_ = new java.util.ArrayList<com.dunkware.net.proto.stream.GStreamEntitySpec>(entities_);
-        bitField0_ |= 0x00000008;
-       }
-    }
-
-    private com.google.protobuf.RepeatedFieldBuilderV3<
-        com.dunkware.net.proto.stream.GStreamEntitySpec, com.dunkware.net.proto.stream.GStreamEntitySpec.Builder, com.dunkware.net.proto.stream.GStreamEntitySpecOrBuilder> entitiesBuilder_;
-
-    /**
-     * <code>repeated .dunkware.stream.GStreamEntitySpec entities = 6;</code>
-     */
-    public java.util.List<com.dunkware.net.proto.stream.GStreamEntitySpec> getEntitiesList() {
-      if (entitiesBuilder_ == null) {
-        return java.util.Collections.unmodifiableList(entities_);
-      } else {
-        return entitiesBuilder_.getMessageList();
-      }
-    }
-    /**
-     * <code>repeated .dunkware.stream.GStreamEntitySpec entities = 6;</code>
-     */
-    public int getEntitiesCount() {
-      if (entitiesBuilder_ == null) {
-        return entities_.size();
-      } else {
-        return entitiesBuilder_.getCount();
-      }
-    }
-    /**
-     * <code>repeated .dunkware.stream.GStreamEntitySpec entities = 6;</code>
-     */
-    public com.dunkware.net.proto.stream.GStreamEntitySpec getEntities(int index) {
-      if (entitiesBuilder_ == null) {
-        return entities_.get(index);
-      } else {
-        return entitiesBuilder_.getMessage(index);
-      }
-    }
-    /**
-     * <code>repeated .dunkware.stream.GStreamEntitySpec entities = 6;</code>
-     */
-    public Builder setEntities(
-        int index, com.dunkware.net.proto.stream.GStreamEntitySpec value) {
-      if (entitiesBuilder_ == null) {
-        if (value == null) {
-          throw new NullPointerException();
-        }
-        ensureEntitiesIsMutable();
-        entities_.set(index, value);
-        onChanged();
-      } else {
-        entitiesBuilder_.setMessage(index, value);
-      }
-      return this;
-    }
-    /**
-     * <code>repeated .dunkware.stream.GStreamEntitySpec entities = 6;</code>
-     */
-    public Builder setEntities(
-        int index, com.dunkware.net.proto.stream.GStreamEntitySpec.Builder builderForValue) {
-      if (entitiesBuilder_ == null) {
-        ensureEntitiesIsMutable();
-        entities_.set(index, builderForValue.build());
-        onChanged();
-      } else {
-        entitiesBuilder_.setMessage(index, builderForValue.build());
-      }
-      return this;
-    }
-    /**
-     * <code>repeated .dunkware.stream.GStreamEntitySpec entities = 6;</code>
-     */
-    public Builder addEntities(com.dunkware.net.proto.stream.GStreamEntitySpec value) {
-      if (entitiesBuilder_ == null) {
-        if (value == null) {
-          throw new NullPointerException();
-        }
-        ensureEntitiesIsMutable();
-        entities_.add(value);
-        onChanged();
-      } else {
-        entitiesBuilder_.addMessage(value);
-      }
-      return this;
-    }
-    /**
-     * <code>repeated .dunkware.stream.GStreamEntitySpec entities = 6;</code>
-     */
-    public Builder addEntities(
-        int index, com.dunkware.net.proto.stream.GStreamEntitySpec value) {
-      if (entitiesBuilder_ == null) {
-        if (value == null) {
-          throw new NullPointerException();
-        }
-        ensureEntitiesIsMutable();
-        entities_.add(index, value);
-        onChanged();
-      } else {
-        entitiesBuilder_.addMessage(index, value);
-      }
-      return this;
-    }
-    /**
-     * <code>repeated .dunkware.stream.GStreamEntitySpec entities = 6;</code>
-     */
-    public Builder addEntities(
-        com.dunkware.net.proto.stream.GStreamEntitySpec.Builder builderForValue) {
-      if (entitiesBuilder_ == null) {
-        ensureEntitiesIsMutable();
-        entities_.add(builderForValue.build());
-        onChanged();
-      } else {
-        entitiesBuilder_.addMessage(builderForValue.build());
-      }
-      return this;
-    }
-    /**
-     * <code>repeated .dunkware.stream.GStreamEntitySpec entities = 6;</code>
-     */
-    public Builder addEntities(
-        int index, com.dunkware.net.proto.stream.GStreamEntitySpec.Builder builderForValue) {
-      if (entitiesBuilder_ == null) {
-        ensureEntitiesIsMutable();
-        entities_.add(index, builderForValue.build());
-        onChanged();
-      } else {
-        entitiesBuilder_.addMessage(index, builderForValue.build());
-      }
-      return this;
-    }
-    /**
-     * <code>repeated .dunkware.stream.GStreamEntitySpec entities = 6;</code>
-     */
-    public Builder addAllEntities(
-        java.lang.Iterable<? extends com.dunkware.net.proto.stream.GStreamEntitySpec> values) {
-      if (entitiesBuilder_ == null) {
-        ensureEntitiesIsMutable();
-        com.google.protobuf.AbstractMessageLite.Builder.addAll(
-            values, entities_);
-        onChanged();
-      } else {
-        entitiesBuilder_.addAllMessages(values);
-      }
-      return this;
-    }
-    /**
-     * <code>repeated .dunkware.stream.GStreamEntitySpec entities = 6;</code>
-     */
-    public Builder clearEntities() {
-      if (entitiesBuilder_ == null) {
-        entities_ = java.util.Collections.emptyList();
-        bitField0_ = (bitField0_ & ~0x00000008);
-        onChanged();
-      } else {
-        entitiesBuilder_.clear();
-      }
-      return this;
-    }
-    /**
-     * <code>repeated .dunkware.stream.GStreamEntitySpec entities = 6;</code>
-     */
-    public Builder removeEntities(int index) {
-      if (entitiesBuilder_ == null) {
-        ensureEntitiesIsMutable();
-        entities_.remove(index);
-        onChanged();
-      } else {
-        entitiesBuilder_.remove(index);
-      }
-      return this;
-    }
-    /**
-     * <code>repeated .dunkware.stream.GStreamEntitySpec entities = 6;</code>
-     */
-    public com.dunkware.net.proto.stream.GStreamEntitySpec.Builder getEntitiesBuilder(
-        int index) {
-      return getEntitiesFieldBuilder().getBuilder(index);
-    }
-    /**
-     * <code>repeated .dunkware.stream.GStreamEntitySpec entities = 6;</code>
-     */
-    public com.dunkware.net.proto.stream.GStreamEntitySpecOrBuilder getEntitiesOrBuilder(
-        int index) {
-      if (entitiesBuilder_ == null) {
-        return entities_.get(index);  } else {
-        return entitiesBuilder_.getMessageOrBuilder(index);
-      }
-    }
-    /**
-     * <code>repeated .dunkware.stream.GStreamEntitySpec entities = 6;</code>
-     */
-    public java.util.List<? extends com.dunkware.net.proto.stream.GStreamEntitySpecOrBuilder> 
-         getEntitiesOrBuilderList() {
-      if (entitiesBuilder_ != null) {
-        return entitiesBuilder_.getMessageOrBuilderList();
-      } else {
-        return java.util.Collections.unmodifiableList(entities_);
-      }
-    }
-    /**
-     * <code>repeated .dunkware.stream.GStreamEntitySpec entities = 6;</code>
-     */
-    public com.dunkware.net.proto.stream.GStreamEntitySpec.Builder addEntitiesBuilder() {
-      return getEntitiesFieldBuilder().addBuilder(
-          com.dunkware.net.proto.stream.GStreamEntitySpec.getDefaultInstance());
-    }
-    /**
-     * <code>repeated .dunkware.stream.GStreamEntitySpec entities = 6;</code>
-     */
-    public com.dunkware.net.proto.stream.GStreamEntitySpec.Builder addEntitiesBuilder(
-        int index) {
-      return getEntitiesFieldBuilder().addBuilder(
-          index, com.dunkware.net.proto.stream.GStreamEntitySpec.getDefaultInstance());
-    }
-    /**
-     * <code>repeated .dunkware.stream.GStreamEntitySpec entities = 6;</code>
-     */
-    public java.util.List<com.dunkware.net.proto.stream.GStreamEntitySpec.Builder> 
-         getEntitiesBuilderList() {
-      return getEntitiesFieldBuilder().getBuilderList();
-    }
-    private com.google.protobuf.RepeatedFieldBuilderV3<
-        com.dunkware.net.proto.stream.GStreamEntitySpec, com.dunkware.net.proto.stream.GStreamEntitySpec.Builder, com.dunkware.net.proto.stream.GStreamEntitySpecOrBuilder> 
-        getEntitiesFieldBuilder() {
-      if (entitiesBuilder_ == null) {
-        entitiesBuilder_ = new com.google.protobuf.RepeatedFieldBuilderV3<
-            com.dunkware.net.proto.stream.GStreamEntitySpec, com.dunkware.net.proto.stream.GStreamEntitySpec.Builder, com.dunkware.net.proto.stream.GStreamEntitySpecOrBuilder>(
-                entities_,
-                ((bitField0_ & 0x00000008) == 0x00000008),
-                getParentForChildren(),
-                isClean());
-        entities_ = null;
-      }
-      return entitiesBuilder_;
     }
     @java.lang.Override
     public final Builder setUnknownFields(

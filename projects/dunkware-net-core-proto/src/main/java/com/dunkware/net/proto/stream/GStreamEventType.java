@@ -22,13 +22,13 @@ public enum GStreamEventType
    */
   EntitySnapshot(1),
   /**
-   * <code>StreamStart = 2;</code>
+   * <code>SessionStart = 2;</code>
    */
-  StreamStart(2),
+  SessionStart(2),
   /**
-   * <code>StreamStop = 3;</code>
+   * <code>SessionStop = 3;</code>
    */
-  StreamStop(3),
+  SessionStop(3),
   UNRECOGNIZED(-1),
   ;
 
@@ -41,13 +41,13 @@ public enum GStreamEventType
    */
   public static final int EntitySnapshot_VALUE = 1;
   /**
-   * <code>StreamStart = 2;</code>
+   * <code>SessionStart = 2;</code>
    */
-  public static final int StreamStart_VALUE = 2;
+  public static final int SessionStart_VALUE = 2;
   /**
-   * <code>StreamStop = 3;</code>
+   * <code>SessionStop = 3;</code>
    */
-  public static final int StreamStop_VALUE = 3;
+  public static final int SessionStop_VALUE = 3;
 
 
   public final int getNumber() {
@@ -70,8 +70,8 @@ public enum GStreamEventType
     switch (value) {
       case 0: return EntitySignal;
       case 1: return EntitySnapshot;
-      case 2: return StreamStart;
-      case 3: return StreamStop;
+      case 2: return SessionStart;
+      case 3: return SessionStop;
       default: return null;
     }
   }

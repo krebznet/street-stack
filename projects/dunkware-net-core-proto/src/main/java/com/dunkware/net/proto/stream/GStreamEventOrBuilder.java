@@ -63,30 +63,30 @@ public interface GStreamEventOrBuilder extends
   com.dunkware.net.proto.stream.GEntitySignalOrBuilder getEntitySignalOrBuilder();
 
   /**
-   * <code>.dunkware.stream.GStreamStopEvent stopEvent = 7;</code>
+   * <code>.dunkware.stream.GStreamSessionStop sessionStop = 7;</code>
    */
-  boolean hasStopEvent();
+  boolean hasSessionStop();
   /**
-   * <code>.dunkware.stream.GStreamStopEvent stopEvent = 7;</code>
+   * <code>.dunkware.stream.GStreamSessionStop sessionStop = 7;</code>
    */
-  com.dunkware.net.proto.stream.GStreamStopEvent getStopEvent();
+  com.dunkware.net.proto.stream.GStreamSessionStop getSessionStop();
   /**
-   * <code>.dunkware.stream.GStreamStopEvent stopEvent = 7;</code>
+   * <code>.dunkware.stream.GStreamSessionStop sessionStop = 7;</code>
    */
-  com.dunkware.net.proto.stream.GStreamStopEventOrBuilder getStopEventOrBuilder();
+  com.dunkware.net.proto.stream.GStreamSessionStopOrBuilder getSessionStopOrBuilder();
 
   /**
-   * <code>.dunkware.stream.GStreamStartEvent startEvent = 8;</code>
+   * <code>.dunkware.stream.GStreamSessionStart sessionStart = 8;</code>
    */
-  boolean hasStartEvent();
+  boolean hasSessionStart();
   /**
-   * <code>.dunkware.stream.GStreamStartEvent startEvent = 8;</code>
+   * <code>.dunkware.stream.GStreamSessionStart sessionStart = 8;</code>
    */
-  com.dunkware.net.proto.stream.GStreamStartEvent getStartEvent();
+  com.dunkware.net.proto.stream.GStreamSessionStart getSessionStart();
   /**
-   * <code>.dunkware.stream.GStreamStartEvent startEvent = 8;</code>
+   * <code>.dunkware.stream.GStreamSessionStart sessionStart = 8;</code>
    */
-  com.dunkware.net.proto.stream.GStreamStartEventOrBuilder getStartEventOrBuilder();
+  com.dunkware.net.proto.stream.GStreamSessionStartOrBuilder getSessionStartOrBuilder();
 
   public com.dunkware.net.proto.stream.GStreamEvent.EventCase getEventCase();
 }

@@ -13,6 +13,7 @@ import org.springframework.context.ApplicationContext;
 import com.dunkware.common.spec.locale.DCountry;
 import com.dunkware.common.util.concurrency.ReusableCountDownLatch;
 import com.dunkware.common.util.dtime.DTime;
+import com.dunkware.common.util.dtime.DTimeZone;
 import com.dunkware.common.util.dtime.DZonedClock;
 import com.dunkware.common.util.dtime.DZonedClockListener;
 import com.dunkware.common.util.dtime.DZonedClockUpdater;
@@ -25,7 +26,7 @@ import com.dunkware.trade.service.stream.json.controller.spec.StreamStatsSpec;
 import com.dunkware.trade.service.stream.json.controller.spec.StreamStatus;
 import com.dunkware.trade.service.stream.server.controller.repository.StreamDO;
 import com.dunkware.trade.service.stream.server.controller.repository.StreamVersionDO;
-import com.dunkware.trade.service.stream.server.controller.util.GStreamSpecBuilder;
+import com.dunkware.trade.service.stream.server.controller.util.GStreamHelper;
 import com.dunkware.trade.service.stream.server.logging.LogService;
 import com.dunkware.trade.service.stream.server.session.StreamSession;
 import com.dunkware.trade.service.stream.server.session.StreamSessionException;
@@ -87,6 +88,8 @@ public class StreamController {
 	@Value("${streams.schedule.enable}")
 	private boolean scheduleEnabled = true;
 	
+	
+	
 	private GStreamSpec gStreamSpec = null;
 	
 	private XScriptProject scriptProject; 
@@ -110,6 +113,7 @@ public class StreamController {
 				XScriptBundle bund = DJson.getObjectMapper().readValue(streamVersion.getBundle(),
 						XScriptBundle.class);
 				scriptProject = XscriptBundleHelper.loadProject(bund);
+				
 			} catch (Exception e) {
 				stats.setStatus(StreamStatus.Exception);
 				stats.setError("Exception Building XScript Bundle " + e.toString());
@@ -152,6 +156,10 @@ public class StreamController {
 		
 			
 
+	}
+	
+	public DTimeZone getTimeZone() { 
+		return spec.getTimeZone();
 	}
 	
 	public StreamVersionDO getStreamVersion() { 
@@ -272,7 +280,7 @@ public class StreamController {
 		}
 		
 		try {
-			gSpec = GStreamSpecBuilder.build(this);
+			gSpec = GStreamHelper.build(this);
 		} catch (Exception e) {
 			logger.error("Exception building g stream spec on spec init " + e.toString());
 		}

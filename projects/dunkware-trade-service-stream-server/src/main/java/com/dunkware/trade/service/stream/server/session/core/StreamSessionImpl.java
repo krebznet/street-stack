@@ -21,6 +21,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import com.dunkware.common.util.dtime.DTime;
 import com.dunkware.common.util.dtime.DTimeZone;
 import com.dunkware.common.util.events.DEventNode;
+import com.dunkware.net.proto.stream.GStreamEvent;
 import com.dunkware.trade.service.stream.json.controller.model.StreamEntitySpec;
 import com.dunkware.trade.service.stream.json.controller.session.StreamSessionNodeStatus;
 import com.dunkware.trade.service.stream.json.controller.session.StreamSessionState;
@@ -32,6 +33,7 @@ import com.dunkware.trade.service.stream.json.message.StreamSessionStop;
 import com.dunkware.trade.service.stream.server.cluster.ClusterNode;
 import com.dunkware.trade.service.stream.server.cluster.ClusterService;
 import com.dunkware.trade.service.stream.server.controller.StreamController;
+import com.dunkware.trade.service.stream.server.controller.util.GStreamHelper;
 import com.dunkware.trade.service.stream.server.controller.util.StreamSessionSpecBuilder;
 import com.dunkware.trade.service.stream.server.messaging.StreamMessageService;
 import com.dunkware.trade.service.stream.server.session.StreamSession;
@@ -51,6 +53,7 @@ import com.dunkware.trade.service.stream.server.tick.StreamTickService;
 import com.dunkware.trade.tick.model.ticker.TradeTickerSpec;
 import com.dunkware.trade.tick.model.ticker.TradeTickerType;
 import com.dunkware.trade.tick.service.protocol.ticker.spec.TradeTickerListSpec;
+import com.dunkware.xstream.data.publishers.StreamEventPublisher;
 import com.dunkware.xstream.xproject.XScriptProject;
 import com.google.api.client.util.Value;
 
@@ -310,6 +313,33 @@ public class StreamSessionImpl implements StreamSession {
 			throw new StreamSessionException("Stream Start Message Creation Failed " + e.toString());
 		}
 
+		// start session event delay 5 seconds
+		class EventSender extends Thread {
+
+			public void run() {
+				try {
+					Thread.sleep(1000);
+					GStreamEvent event = GStreamHelper.buildSessionStartEvent(StreamSessionImpl.this);
+					StreamEventPublisher signalPublisher = StreamEventPublisher.newInstance(kafkaBrokers,
+							"stream_" + getStream().getName().toLowerCase() + "_signals", "StreamController");
+					signalPublisher.sendEvent(event);
+					Thread.sleep(200);
+					signalPublisher.dispose();
+					StreamEventPublisher snapshotPublisher = StreamEventPublisher.newInstance(kafkaBrokers,
+							"stream_" + getStream().getName().toLowerCase() + "_snapshots", "StreamController");
+					snapshotPublisher.sendEvent(event);
+					Thread.sleep(200);
+					snapshotPublisher.dispose();
+				} catch (Exception e) {
+					logger.error(
+							"Exception sending stream session event message in controller session " + e.toString());
+				}
+			}
+		}
+
+		EventSender eventSender = new EventSender();
+		eventSender.start();
+
 	}
 
 	@Override
@@ -353,6 +383,32 @@ public class StreamSessionImpl implements StreamSession {
 		}
 		stats.setStatus(StreamSessionStatus.Running);
 
+		// lets just create a session stop event here delay 10 seconds
+		class EventSender extends Thread {
+
+			public void run() {
+				try {
+					Thread.sleep(1000);
+					GStreamEvent event = GStreamHelper.buildSessionStopEvent(StreamSessionImpl.this);
+					StreamEventPublisher signalPublisher = StreamEventPublisher.newInstance(kafkaBrokers,
+							"stream_" + getStream().getName().toLowerCase() + "_signals", "StreamController");
+					signalPublisher.sendEvent(event);
+					Thread.sleep(200);
+					signalPublisher.dispose();
+					StreamEventPublisher snapshotPublisher = StreamEventPublisher.newInstance(kafkaBrokers,
+							"stream_" + getStream().getName().toLowerCase() + "_snapshots", "StreamController");
+					snapshotPublisher.sendEvent(event);
+					Thread.sleep(200);
+					snapshotPublisher.dispose();
+				} catch (Exception e) {
+					logger.error(
+							"Exception sending stream session event message in controller session " + e.toString());
+				}
+			}
+		}
+
+		EventSender eventSender = new EventSender();
+		eventSender.start();
 	}
 
 	@Override
@@ -416,8 +472,6 @@ public class StreamSessionImpl implements StreamSession {
 	public DEventNode getEventNode() {
 		return eventNode;
 	}
-	
-	
 
 	@Override
 	public Long getSessionEntityId() {
@@ -586,6 +640,7 @@ public class StreamSessionImpl implements StreamSession {
 							logger.debug("Status Change To Stopped ");
 						}
 						stats.setStatus(StreamSessionStatus.Stopped);
+
 						sessionEntity.setStopDateTime(LocalDateTime.now());
 						sessionEntity.setStatus(StreamSessionStatus.Stopped);
 						sessionRepo.save(sessionEntity);

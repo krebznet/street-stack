@@ -105,7 +105,7 @@ public class StreamEventPublisherExt implements XStreamExtension, XStreamRowList
 		kafkaProducer.dispose();
 		stream.getClock().unscheduleRunnable(snapshotRunnable);
 		
-		
+
 	}
 
 	@Override

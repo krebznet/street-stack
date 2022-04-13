@@ -15,6 +15,8 @@ import com.dunkware.trade.service.data.service.message.StreamMessageHandler;
 import com.dunkware.trade.service.data.service.message.StreamMessageService;
 import com.dunkware.trade.service.data.service.repository.DataServiceRepository;
 import com.dunkware.trade.service.data.service.repository.DataStreamEntity;
+import com.dunkware.trade.service.data.service.stream.writers.DataStreamSignalWriter;
+import com.dunkware.trade.service.data.service.stream.writers.DataStreamSnapshotWriter;
 
 
 public class DataStream implements StreamMessageHandler {
@@ -30,23 +32,19 @@ public class DataStream implements StreamMessageHandler {
 
 	@Autowired
 	private DataServiceRepository dataRepo;
+	
+	private DataStreamSnapshotWriter snapshotWriter; 
+	private DataStreamSignalWriter signalWriter;
 
 	private Logger logger = LoggerFactory.getLogger(getClass());
 	
-
-	@PostConstruct
-	public void test() { 
-		try {
-			DataStreamEntity ent = new DataStreamEntity();
-			ent.setCreated(LocalDateTime.now());
-			ent.setName("Test name");
-			dataRepo.persist(ent);
-		} catch (Exception e) {
-			System.err.println(e.toString());
-			e.printStackTrace();
-			// TODO: handle exception
-		}
+	private DataStreamEntity streamEntity;
+	
+	public void load(DataStreamEntity entity) { 
+		this.streamEntity = entity;
 	}
+
+	
 	
 	
 

@@ -96,28 +96,28 @@ private static final long serialVersionUID = 0L;
             break;
           }
           case 58: {
-            com.dunkware.net.proto.stream.GStreamStopEvent.Builder subBuilder = null;
+            com.dunkware.net.proto.stream.GStreamSessionStop.Builder subBuilder = null;
             if (eventCase_ == 7) {
-              subBuilder = ((com.dunkware.net.proto.stream.GStreamStopEvent) event_).toBuilder();
+              subBuilder = ((com.dunkware.net.proto.stream.GStreamSessionStop) event_).toBuilder();
             }
             event_ =
-                input.readMessage(com.dunkware.net.proto.stream.GStreamStopEvent.parser(), extensionRegistry);
+                input.readMessage(com.dunkware.net.proto.stream.GStreamSessionStop.parser(), extensionRegistry);
             if (subBuilder != null) {
-              subBuilder.mergeFrom((com.dunkware.net.proto.stream.GStreamStopEvent) event_);
+              subBuilder.mergeFrom((com.dunkware.net.proto.stream.GStreamSessionStop) event_);
               event_ = subBuilder.buildPartial();
             }
             eventCase_ = 7;
             break;
           }
           case 66: {
-            com.dunkware.net.proto.stream.GStreamStartEvent.Builder subBuilder = null;
+            com.dunkware.net.proto.stream.GStreamSessionStart.Builder subBuilder = null;
             if (eventCase_ == 8) {
-              subBuilder = ((com.dunkware.net.proto.stream.GStreamStartEvent) event_).toBuilder();
+              subBuilder = ((com.dunkware.net.proto.stream.GStreamSessionStart) event_).toBuilder();
             }
             event_ =
-                input.readMessage(com.dunkware.net.proto.stream.GStreamStartEvent.parser(), extensionRegistry);
+                input.readMessage(com.dunkware.net.proto.stream.GStreamSessionStart.parser(), extensionRegistry);
             if (subBuilder != null) {
-              subBuilder.mergeFrom((com.dunkware.net.proto.stream.GStreamStartEvent) event_);
+              subBuilder.mergeFrom((com.dunkware.net.proto.stream.GStreamSessionStart) event_);
               event_ = subBuilder.buildPartial();
             }
             eventCase_ = 8;
@@ -161,8 +161,8 @@ private static final long serialVersionUID = 0L;
       implements com.google.protobuf.Internal.EnumLite {
     ENTITYSNAPSHOT(5),
     ENTITYSIGNAL(6),
-    STOPEVENT(7),
-    STARTEVENT(8),
+    SESSIONSTOP(7),
+    SESSIONSTART(8),
     EVENT_NOT_SET(0);
     private final int value;
     private EventCase(int value) {
@@ -180,8 +180,8 @@ private static final long serialVersionUID = 0L;
       switch (value) {
         case 5: return ENTITYSNAPSHOT;
         case 6: return ENTITYSIGNAL;
-        case 7: return STOPEVENT;
-        case 8: return STARTEVENT;
+        case 7: return SESSIONSTOP;
+        case 8: return SESSIONSTART;
         case 0: return EVENT_NOT_SET;
         default: return null;
       }
@@ -334,56 +334,56 @@ private static final long serialVersionUID = 0L;
     return com.dunkware.net.proto.stream.GEntitySignal.getDefaultInstance();
   }
 
-  public static final int STOPEVENT_FIELD_NUMBER = 7;
+  public static final int SESSIONSTOP_FIELD_NUMBER = 7;
   /**
-   * <code>.dunkware.stream.GStreamStopEvent stopEvent = 7;</code>
+   * <code>.dunkware.stream.GStreamSessionStop sessionStop = 7;</code>
    */
-  public boolean hasStopEvent() {
+  public boolean hasSessionStop() {
     return eventCase_ == 7;
   }
   /**
-   * <code>.dunkware.stream.GStreamStopEvent stopEvent = 7;</code>
+   * <code>.dunkware.stream.GStreamSessionStop sessionStop = 7;</code>
    */
-  public com.dunkware.net.proto.stream.GStreamStopEvent getStopEvent() {
+  public com.dunkware.net.proto.stream.GStreamSessionStop getSessionStop() {
     if (eventCase_ == 7) {
-       return (com.dunkware.net.proto.stream.GStreamStopEvent) event_;
+       return (com.dunkware.net.proto.stream.GStreamSessionStop) event_;
     }
-    return com.dunkware.net.proto.stream.GStreamStopEvent.getDefaultInstance();
+    return com.dunkware.net.proto.stream.GStreamSessionStop.getDefaultInstance();
   }
   /**
-   * <code>.dunkware.stream.GStreamStopEvent stopEvent = 7;</code>
+   * <code>.dunkware.stream.GStreamSessionStop sessionStop = 7;</code>
    */
-  public com.dunkware.net.proto.stream.GStreamStopEventOrBuilder getStopEventOrBuilder() {
+  public com.dunkware.net.proto.stream.GStreamSessionStopOrBuilder getSessionStopOrBuilder() {
     if (eventCase_ == 7) {
-       return (com.dunkware.net.proto.stream.GStreamStopEvent) event_;
+       return (com.dunkware.net.proto.stream.GStreamSessionStop) event_;
     }
-    return com.dunkware.net.proto.stream.GStreamStopEvent.getDefaultInstance();
+    return com.dunkware.net.proto.stream.GStreamSessionStop.getDefaultInstance();
   }
 
-  public static final int STARTEVENT_FIELD_NUMBER = 8;
+  public static final int SESSIONSTART_FIELD_NUMBER = 8;
   /**
-   * <code>.dunkware.stream.GStreamStartEvent startEvent = 8;</code>
+   * <code>.dunkware.stream.GStreamSessionStart sessionStart = 8;</code>
    */
-  public boolean hasStartEvent() {
+  public boolean hasSessionStart() {
     return eventCase_ == 8;
   }
   /**
-   * <code>.dunkware.stream.GStreamStartEvent startEvent = 8;</code>
+   * <code>.dunkware.stream.GStreamSessionStart sessionStart = 8;</code>
    */
-  public com.dunkware.net.proto.stream.GStreamStartEvent getStartEvent() {
+  public com.dunkware.net.proto.stream.GStreamSessionStart getSessionStart() {
     if (eventCase_ == 8) {
-       return (com.dunkware.net.proto.stream.GStreamStartEvent) event_;
+       return (com.dunkware.net.proto.stream.GStreamSessionStart) event_;
     }
-    return com.dunkware.net.proto.stream.GStreamStartEvent.getDefaultInstance();
+    return com.dunkware.net.proto.stream.GStreamSessionStart.getDefaultInstance();
   }
   /**
-   * <code>.dunkware.stream.GStreamStartEvent startEvent = 8;</code>
+   * <code>.dunkware.stream.GStreamSessionStart sessionStart = 8;</code>
    */
-  public com.dunkware.net.proto.stream.GStreamStartEventOrBuilder getStartEventOrBuilder() {
+  public com.dunkware.net.proto.stream.GStreamSessionStartOrBuilder getSessionStartOrBuilder() {
     if (eventCase_ == 8) {
-       return (com.dunkware.net.proto.stream.GStreamStartEvent) event_;
+       return (com.dunkware.net.proto.stream.GStreamSessionStart) event_;
     }
-    return com.dunkware.net.proto.stream.GStreamStartEvent.getDefaultInstance();
+    return com.dunkware.net.proto.stream.GStreamSessionStart.getDefaultInstance();
   }
 
   private byte memoizedIsInitialized = -1;
@@ -416,10 +416,10 @@ private static final long serialVersionUID = 0L;
       output.writeMessage(6, (com.dunkware.net.proto.stream.GEntitySignal) event_);
     }
     if (eventCase_ == 7) {
-      output.writeMessage(7, (com.dunkware.net.proto.stream.GStreamStopEvent) event_);
+      output.writeMessage(7, (com.dunkware.net.proto.stream.GStreamSessionStop) event_);
     }
     if (eventCase_ == 8) {
-      output.writeMessage(8, (com.dunkware.net.proto.stream.GStreamStartEvent) event_);
+      output.writeMessage(8, (com.dunkware.net.proto.stream.GStreamSessionStart) event_);
     }
     unknownFields.writeTo(output);
   }
@@ -450,11 +450,11 @@ private static final long serialVersionUID = 0L;
     }
     if (eventCase_ == 7) {
       size += com.google.protobuf.CodedOutputStream
-        .computeMessageSize(7, (com.dunkware.net.proto.stream.GStreamStopEvent) event_);
+        .computeMessageSize(7, (com.dunkware.net.proto.stream.GStreamSessionStop) event_);
     }
     if (eventCase_ == 8) {
       size += com.google.protobuf.CodedOutputStream
-        .computeMessageSize(8, (com.dunkware.net.proto.stream.GStreamStartEvent) event_);
+        .computeMessageSize(8, (com.dunkware.net.proto.stream.GStreamSessionStart) event_);
     }
     size += unknownFields.getSerializedSize();
     memoizedSize = size;
@@ -490,12 +490,12 @@ private static final long serialVersionUID = 0L;
             .equals(other.getEntitySignal());
         break;
       case 7:
-        result = result && getStopEvent()
-            .equals(other.getStopEvent());
+        result = result && getSessionStop()
+            .equals(other.getSessionStop());
         break;
       case 8:
-        result = result && getStartEvent()
-            .equals(other.getStartEvent());
+        result = result && getSessionStart()
+            .equals(other.getSessionStart());
         break;
       case 0:
       default:
@@ -527,12 +527,12 @@ private static final long serialVersionUID = 0L;
         hash = (53 * hash) + getEntitySignal().hashCode();
         break;
       case 7:
-        hash = (37 * hash) + STOPEVENT_FIELD_NUMBER;
-        hash = (53 * hash) + getStopEvent().hashCode();
+        hash = (37 * hash) + SESSIONSTOP_FIELD_NUMBER;
+        hash = (53 * hash) + getSessionStop().hashCode();
         break;
       case 8:
-        hash = (37 * hash) + STARTEVENT_FIELD_NUMBER;
-        hash = (53 * hash) + getStartEvent().hashCode();
+        hash = (37 * hash) + SESSIONSTART_FIELD_NUMBER;
+        hash = (53 * hash) + getSessionStart().hashCode();
         break;
       case 0:
       default:
@@ -726,17 +726,17 @@ private static final long serialVersionUID = 0L;
         }
       }
       if (eventCase_ == 7) {
-        if (stopEventBuilder_ == null) {
+        if (sessionStopBuilder_ == null) {
           result.event_ = event_;
         } else {
-          result.event_ = stopEventBuilder_.build();
+          result.event_ = sessionStopBuilder_.build();
         }
       }
       if (eventCase_ == 8) {
-        if (startEventBuilder_ == null) {
+        if (sessionStartBuilder_ == null) {
           result.event_ = event_;
         } else {
-          result.event_ = startEventBuilder_.build();
+          result.event_ = sessionStartBuilder_.build();
         }
       }
       result.eventCase_ = eventCase_;
@@ -808,12 +808,12 @@ private static final long serialVersionUID = 0L;
           mergeEntitySignal(other.getEntitySignal());
           break;
         }
-        case STOPEVENT: {
-          mergeStopEvent(other.getStopEvent());
+        case SESSIONSTOP: {
+          mergeSessionStop(other.getSessionStop());
           break;
         }
-        case STARTEVENT: {
-          mergeStartEvent(other.getStartEvent());
+        case SESSIONSTART: {
+          mergeSessionStart(other.getSessionStart());
           break;
         }
         case EVENT_NOT_SET: {
@@ -1320,67 +1320,67 @@ private static final long serialVersionUID = 0L;
     }
 
     private com.google.protobuf.SingleFieldBuilderV3<
-        com.dunkware.net.proto.stream.GStreamStopEvent, com.dunkware.net.proto.stream.GStreamStopEvent.Builder, com.dunkware.net.proto.stream.GStreamStopEventOrBuilder> stopEventBuilder_;
+        com.dunkware.net.proto.stream.GStreamSessionStop, com.dunkware.net.proto.stream.GStreamSessionStop.Builder, com.dunkware.net.proto.stream.GStreamSessionStopOrBuilder> sessionStopBuilder_;
     /**
-     * <code>.dunkware.stream.GStreamStopEvent stopEvent = 7;</code>
+     * <code>.dunkware.stream.GStreamSessionStop sessionStop = 7;</code>
      */
-    public boolean hasStopEvent() {
+    public boolean hasSessionStop() {
       return eventCase_ == 7;
     }
     /**
-     * <code>.dunkware.stream.GStreamStopEvent stopEvent = 7;</code>
+     * <code>.dunkware.stream.GStreamSessionStop sessionStop = 7;</code>
      */
-    public com.dunkware.net.proto.stream.GStreamStopEvent getStopEvent() {
-      if (stopEventBuilder_ == null) {
+    public com.dunkware.net.proto.stream.GStreamSessionStop getSessionStop() {
+      if (sessionStopBuilder_ == null) {
         if (eventCase_ == 7) {
-          return (com.dunkware.net.proto.stream.GStreamStopEvent) event_;
+          return (com.dunkware.net.proto.stream.GStreamSessionStop) event_;
         }
-        return com.dunkware.net.proto.stream.GStreamStopEvent.getDefaultInstance();
+        return com.dunkware.net.proto.stream.GStreamSessionStop.getDefaultInstance();
       } else {
         if (eventCase_ == 7) {
-          return stopEventBuilder_.getMessage();
+          return sessionStopBuilder_.getMessage();
         }
-        return com.dunkware.net.proto.stream.GStreamStopEvent.getDefaultInstance();
+        return com.dunkware.net.proto.stream.GStreamSessionStop.getDefaultInstance();
       }
     }
     /**
-     * <code>.dunkware.stream.GStreamStopEvent stopEvent = 7;</code>
+     * <code>.dunkware.stream.GStreamSessionStop sessionStop = 7;</code>
      */
-    public Builder setStopEvent(com.dunkware.net.proto.stream.GStreamStopEvent value) {
-      if (stopEventBuilder_ == null) {
+    public Builder setSessionStop(com.dunkware.net.proto.stream.GStreamSessionStop value) {
+      if (sessionStopBuilder_ == null) {
         if (value == null) {
           throw new NullPointerException();
         }
         event_ = value;
         onChanged();
       } else {
-        stopEventBuilder_.setMessage(value);
+        sessionStopBuilder_.setMessage(value);
       }
       eventCase_ = 7;
       return this;
     }
     /**
-     * <code>.dunkware.stream.GStreamStopEvent stopEvent = 7;</code>
+     * <code>.dunkware.stream.GStreamSessionStop sessionStop = 7;</code>
      */
-    public Builder setStopEvent(
-        com.dunkware.net.proto.stream.GStreamStopEvent.Builder builderForValue) {
-      if (stopEventBuilder_ == null) {
+    public Builder setSessionStop(
+        com.dunkware.net.proto.stream.GStreamSessionStop.Builder builderForValue) {
+      if (sessionStopBuilder_ == null) {
         event_ = builderForValue.build();
         onChanged();
       } else {
-        stopEventBuilder_.setMessage(builderForValue.build());
+        sessionStopBuilder_.setMessage(builderForValue.build());
       }
       eventCase_ = 7;
       return this;
     }
     /**
-     * <code>.dunkware.stream.GStreamStopEvent stopEvent = 7;</code>
+     * <code>.dunkware.stream.GStreamSessionStop sessionStop = 7;</code>
      */
-    public Builder mergeStopEvent(com.dunkware.net.proto.stream.GStreamStopEvent value) {
-      if (stopEventBuilder_ == null) {
+    public Builder mergeSessionStop(com.dunkware.net.proto.stream.GStreamSessionStop value) {
+      if (sessionStopBuilder_ == null) {
         if (eventCase_ == 7 &&
-            event_ != com.dunkware.net.proto.stream.GStreamStopEvent.getDefaultInstance()) {
-          event_ = com.dunkware.net.proto.stream.GStreamStopEvent.newBuilder((com.dunkware.net.proto.stream.GStreamStopEvent) event_)
+            event_ != com.dunkware.net.proto.stream.GStreamSessionStop.getDefaultInstance()) {
+          event_ = com.dunkware.net.proto.stream.GStreamSessionStop.newBuilder((com.dunkware.net.proto.stream.GStreamSessionStop) event_)
               .mergeFrom(value).buildPartial();
         } else {
           event_ = value;
@@ -1388,18 +1388,18 @@ private static final long serialVersionUID = 0L;
         onChanged();
       } else {
         if (eventCase_ == 7) {
-          stopEventBuilder_.mergeFrom(value);
+          sessionStopBuilder_.mergeFrom(value);
         }
-        stopEventBuilder_.setMessage(value);
+        sessionStopBuilder_.setMessage(value);
       }
       eventCase_ = 7;
       return this;
     }
     /**
-     * <code>.dunkware.stream.GStreamStopEvent stopEvent = 7;</code>
+     * <code>.dunkware.stream.GStreamSessionStop sessionStop = 7;</code>
      */
-    public Builder clearStopEvent() {
-      if (stopEventBuilder_ == null) {
+    public Builder clearSessionStop() {
+      if (sessionStopBuilder_ == null) {
         if (eventCase_ == 7) {
           eventCase_ = 0;
           event_ = null;
@@ -1410,113 +1410,113 @@ private static final long serialVersionUID = 0L;
           eventCase_ = 0;
           event_ = null;
         }
-        stopEventBuilder_.clear();
+        sessionStopBuilder_.clear();
       }
       return this;
     }
     /**
-     * <code>.dunkware.stream.GStreamStopEvent stopEvent = 7;</code>
+     * <code>.dunkware.stream.GStreamSessionStop sessionStop = 7;</code>
      */
-    public com.dunkware.net.proto.stream.GStreamStopEvent.Builder getStopEventBuilder() {
-      return getStopEventFieldBuilder().getBuilder();
+    public com.dunkware.net.proto.stream.GStreamSessionStop.Builder getSessionStopBuilder() {
+      return getSessionStopFieldBuilder().getBuilder();
     }
     /**
-     * <code>.dunkware.stream.GStreamStopEvent stopEvent = 7;</code>
+     * <code>.dunkware.stream.GStreamSessionStop sessionStop = 7;</code>
      */
-    public com.dunkware.net.proto.stream.GStreamStopEventOrBuilder getStopEventOrBuilder() {
-      if ((eventCase_ == 7) && (stopEventBuilder_ != null)) {
-        return stopEventBuilder_.getMessageOrBuilder();
+    public com.dunkware.net.proto.stream.GStreamSessionStopOrBuilder getSessionStopOrBuilder() {
+      if ((eventCase_ == 7) && (sessionStopBuilder_ != null)) {
+        return sessionStopBuilder_.getMessageOrBuilder();
       } else {
         if (eventCase_ == 7) {
-          return (com.dunkware.net.proto.stream.GStreamStopEvent) event_;
+          return (com.dunkware.net.proto.stream.GStreamSessionStop) event_;
         }
-        return com.dunkware.net.proto.stream.GStreamStopEvent.getDefaultInstance();
+        return com.dunkware.net.proto.stream.GStreamSessionStop.getDefaultInstance();
       }
     }
     /**
-     * <code>.dunkware.stream.GStreamStopEvent stopEvent = 7;</code>
+     * <code>.dunkware.stream.GStreamSessionStop sessionStop = 7;</code>
      */
     private com.google.protobuf.SingleFieldBuilderV3<
-        com.dunkware.net.proto.stream.GStreamStopEvent, com.dunkware.net.proto.stream.GStreamStopEvent.Builder, com.dunkware.net.proto.stream.GStreamStopEventOrBuilder> 
-        getStopEventFieldBuilder() {
-      if (stopEventBuilder_ == null) {
+        com.dunkware.net.proto.stream.GStreamSessionStop, com.dunkware.net.proto.stream.GStreamSessionStop.Builder, com.dunkware.net.proto.stream.GStreamSessionStopOrBuilder> 
+        getSessionStopFieldBuilder() {
+      if (sessionStopBuilder_ == null) {
         if (!(eventCase_ == 7)) {
-          event_ = com.dunkware.net.proto.stream.GStreamStopEvent.getDefaultInstance();
+          event_ = com.dunkware.net.proto.stream.GStreamSessionStop.getDefaultInstance();
         }
-        stopEventBuilder_ = new com.google.protobuf.SingleFieldBuilderV3<
-            com.dunkware.net.proto.stream.GStreamStopEvent, com.dunkware.net.proto.stream.GStreamStopEvent.Builder, com.dunkware.net.proto.stream.GStreamStopEventOrBuilder>(
-                (com.dunkware.net.proto.stream.GStreamStopEvent) event_,
+        sessionStopBuilder_ = new com.google.protobuf.SingleFieldBuilderV3<
+            com.dunkware.net.proto.stream.GStreamSessionStop, com.dunkware.net.proto.stream.GStreamSessionStop.Builder, com.dunkware.net.proto.stream.GStreamSessionStopOrBuilder>(
+                (com.dunkware.net.proto.stream.GStreamSessionStop) event_,
                 getParentForChildren(),
                 isClean());
         event_ = null;
       }
       eventCase_ = 7;
       onChanged();;
-      return stopEventBuilder_;
+      return sessionStopBuilder_;
     }
 
     private com.google.protobuf.SingleFieldBuilderV3<
-        com.dunkware.net.proto.stream.GStreamStartEvent, com.dunkware.net.proto.stream.GStreamStartEvent.Builder, com.dunkware.net.proto.stream.GStreamStartEventOrBuilder> startEventBuilder_;
+        com.dunkware.net.proto.stream.GStreamSessionStart, com.dunkware.net.proto.stream.GStreamSessionStart.Builder, com.dunkware.net.proto.stream.GStreamSessionStartOrBuilder> sessionStartBuilder_;
     /**
-     * <code>.dunkware.stream.GStreamStartEvent startEvent = 8;</code>
+     * <code>.dunkware.stream.GStreamSessionStart sessionStart = 8;</code>
      */
-    public boolean hasStartEvent() {
+    public boolean hasSessionStart() {
       return eventCase_ == 8;
     }
     /**
-     * <code>.dunkware.stream.GStreamStartEvent startEvent = 8;</code>
+     * <code>.dunkware.stream.GStreamSessionStart sessionStart = 8;</code>
      */
-    public com.dunkware.net.proto.stream.GStreamStartEvent getStartEvent() {
-      if (startEventBuilder_ == null) {
+    public com.dunkware.net.proto.stream.GStreamSessionStart getSessionStart() {
+      if (sessionStartBuilder_ == null) {
         if (eventCase_ == 8) {
-          return (com.dunkware.net.proto.stream.GStreamStartEvent) event_;
+          return (com.dunkware.net.proto.stream.GStreamSessionStart) event_;
         }
-        return com.dunkware.net.proto.stream.GStreamStartEvent.getDefaultInstance();
+        return com.dunkware.net.proto.stream.GStreamSessionStart.getDefaultInstance();
       } else {
         if (eventCase_ == 8) {
-          return startEventBuilder_.getMessage();
+          return sessionStartBuilder_.getMessage();
         }
-        return com.dunkware.net.proto.stream.GStreamStartEvent.getDefaultInstance();
+        return com.dunkware.net.proto.stream.GStreamSessionStart.getDefaultInstance();
       }
     }
     /**
-     * <code>.dunkware.stream.GStreamStartEvent startEvent = 8;</code>
+     * <code>.dunkware.stream.GStreamSessionStart sessionStart = 8;</code>
      */
-    public Builder setStartEvent(com.dunkware.net.proto.stream.GStreamStartEvent value) {
-      if (startEventBuilder_ == null) {
+    public Builder setSessionStart(com.dunkware.net.proto.stream.GStreamSessionStart value) {
+      if (sessionStartBuilder_ == null) {
         if (value == null) {
           throw new NullPointerException();
         }
         event_ = value;
         onChanged();
       } else {
-        startEventBuilder_.setMessage(value);
+        sessionStartBuilder_.setMessage(value);
       }
       eventCase_ = 8;
       return this;
     }
     /**
-     * <code>.dunkware.stream.GStreamStartEvent startEvent = 8;</code>
+     * <code>.dunkware.stream.GStreamSessionStart sessionStart = 8;</code>
      */
-    public Builder setStartEvent(
-        com.dunkware.net.proto.stream.GStreamStartEvent.Builder builderForValue) {
-      if (startEventBuilder_ == null) {
+    public Builder setSessionStart(
+        com.dunkware.net.proto.stream.GStreamSessionStart.Builder builderForValue) {
+      if (sessionStartBuilder_ == null) {
         event_ = builderForValue.build();
         onChanged();
       } else {
-        startEventBuilder_.setMessage(builderForValue.build());
+        sessionStartBuilder_.setMessage(builderForValue.build());
       }
       eventCase_ = 8;
       return this;
     }
     /**
-     * <code>.dunkware.stream.GStreamStartEvent startEvent = 8;</code>
+     * <code>.dunkware.stream.GStreamSessionStart sessionStart = 8;</code>
      */
-    public Builder mergeStartEvent(com.dunkware.net.proto.stream.GStreamStartEvent value) {
-      if (startEventBuilder_ == null) {
+    public Builder mergeSessionStart(com.dunkware.net.proto.stream.GStreamSessionStart value) {
+      if (sessionStartBuilder_ == null) {
         if (eventCase_ == 8 &&
-            event_ != com.dunkware.net.proto.stream.GStreamStartEvent.getDefaultInstance()) {
-          event_ = com.dunkware.net.proto.stream.GStreamStartEvent.newBuilder((com.dunkware.net.proto.stream.GStreamStartEvent) event_)
+            event_ != com.dunkware.net.proto.stream.GStreamSessionStart.getDefaultInstance()) {
+          event_ = com.dunkware.net.proto.stream.GStreamSessionStart.newBuilder((com.dunkware.net.proto.stream.GStreamSessionStart) event_)
               .mergeFrom(value).buildPartial();
         } else {
           event_ = value;
@@ -1524,18 +1524,18 @@ private static final long serialVersionUID = 0L;
         onChanged();
       } else {
         if (eventCase_ == 8) {
-          startEventBuilder_.mergeFrom(value);
+          sessionStartBuilder_.mergeFrom(value);
         }
-        startEventBuilder_.setMessage(value);
+        sessionStartBuilder_.setMessage(value);
       }
       eventCase_ = 8;
       return this;
     }
     /**
-     * <code>.dunkware.stream.GStreamStartEvent startEvent = 8;</code>
+     * <code>.dunkware.stream.GStreamSessionStart sessionStart = 8;</code>
      */
-    public Builder clearStartEvent() {
-      if (startEventBuilder_ == null) {
+    public Builder clearSessionStart() {
+      if (sessionStartBuilder_ == null) {
         if (eventCase_ == 8) {
           eventCase_ = 0;
           event_ = null;
@@ -1546,49 +1546,49 @@ private static final long serialVersionUID = 0L;
           eventCase_ = 0;
           event_ = null;
         }
-        startEventBuilder_.clear();
+        sessionStartBuilder_.clear();
       }
       return this;
     }
     /**
-     * <code>.dunkware.stream.GStreamStartEvent startEvent = 8;</code>
+     * <code>.dunkware.stream.GStreamSessionStart sessionStart = 8;</code>
      */
-    public com.dunkware.net.proto.stream.GStreamStartEvent.Builder getStartEventBuilder() {
-      return getStartEventFieldBuilder().getBuilder();
+    public com.dunkware.net.proto.stream.GStreamSessionStart.Builder getSessionStartBuilder() {
+      return getSessionStartFieldBuilder().getBuilder();
     }
     /**
-     * <code>.dunkware.stream.GStreamStartEvent startEvent = 8;</code>
+     * <code>.dunkware.stream.GStreamSessionStart sessionStart = 8;</code>
      */
-    public com.dunkware.net.proto.stream.GStreamStartEventOrBuilder getStartEventOrBuilder() {
-      if ((eventCase_ == 8) && (startEventBuilder_ != null)) {
-        return startEventBuilder_.getMessageOrBuilder();
+    public com.dunkware.net.proto.stream.GStreamSessionStartOrBuilder getSessionStartOrBuilder() {
+      if ((eventCase_ == 8) && (sessionStartBuilder_ != null)) {
+        return sessionStartBuilder_.getMessageOrBuilder();
       } else {
         if (eventCase_ == 8) {
-          return (com.dunkware.net.proto.stream.GStreamStartEvent) event_;
+          return (com.dunkware.net.proto.stream.GStreamSessionStart) event_;
         }
-        return com.dunkware.net.proto.stream.GStreamStartEvent.getDefaultInstance();
+        return com.dunkware.net.proto.stream.GStreamSessionStart.getDefaultInstance();
       }
     }
     /**
-     * <code>.dunkware.stream.GStreamStartEvent startEvent = 8;</code>
+     * <code>.dunkware.stream.GStreamSessionStart sessionStart = 8;</code>
      */
     private com.google.protobuf.SingleFieldBuilderV3<
-        com.dunkware.net.proto.stream.GStreamStartEvent, com.dunkware.net.proto.stream.GStreamStartEvent.Builder, com.dunkware.net.proto.stream.GStreamStartEventOrBuilder> 
-        getStartEventFieldBuilder() {
-      if (startEventBuilder_ == null) {
+        com.dunkware.net.proto.stream.GStreamSessionStart, com.dunkware.net.proto.stream.GStreamSessionStart.Builder, com.dunkware.net.proto.stream.GStreamSessionStartOrBuilder> 
+        getSessionStartFieldBuilder() {
+      if (sessionStartBuilder_ == null) {
         if (!(eventCase_ == 8)) {
-          event_ = com.dunkware.net.proto.stream.GStreamStartEvent.getDefaultInstance();
+          event_ = com.dunkware.net.proto.stream.GStreamSessionStart.getDefaultInstance();
         }
-        startEventBuilder_ = new com.google.protobuf.SingleFieldBuilderV3<
-            com.dunkware.net.proto.stream.GStreamStartEvent, com.dunkware.net.proto.stream.GStreamStartEvent.Builder, com.dunkware.net.proto.stream.GStreamStartEventOrBuilder>(
-                (com.dunkware.net.proto.stream.GStreamStartEvent) event_,
+        sessionStartBuilder_ = new com.google.protobuf.SingleFieldBuilderV3<
+            com.dunkware.net.proto.stream.GStreamSessionStart, com.dunkware.net.proto.stream.GStreamSessionStart.Builder, com.dunkware.net.proto.stream.GStreamSessionStartOrBuilder>(
+                (com.dunkware.net.proto.stream.GStreamSessionStart) event_,
                 getParentForChildren(),
                 isClean());
         event_ = null;
       }
       eventCase_ = 8;
       onChanged();;
-      return startEventBuilder_;
+      return sessionStartBuilder_;
     }
     @java.lang.Override
     public final Builder setUnknownFields(

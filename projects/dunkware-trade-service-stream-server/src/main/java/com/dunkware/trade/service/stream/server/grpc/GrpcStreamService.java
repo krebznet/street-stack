@@ -20,7 +20,7 @@ import com.dunkware.net.proto.stream.service.GStreamServiceGrpc.GStreamServiceIm
 import com.dunkware.trade.service.stream.server.autosearch.AutoSearchService;
 import com.dunkware.trade.service.stream.server.controller.StreamController;
 import com.dunkware.trade.service.stream.server.controller.StreamControllerService;
-import com.dunkware.trade.service.stream.server.controller.util.GStreamSpecBuilder;
+import com.dunkware.trade.service.stream.server.controller.util.GStreamHelper;
 import com.dunkware.trade.service.stream.server.tick.StreamTickService;
 
 import io.grpc.stub.StreamObserver;
@@ -56,7 +56,7 @@ public class GrpcStreamService extends GStreamServiceImplBase {
 			GStreamSpecsResponse.Builder respBuilder = GStreamSpecsResponse.newBuilder();
 			List<GStreamSpec> gspecs = new ArrayList<GStreamSpec>();
 			for (StreamController stream : controllerService.getStreams()) {
-				gspecs.add(GStreamSpecBuilder.build(stream));
+				gspecs.add(GStreamHelper.build(stream));
 			}
 			respBuilder.addAllSpecs(gspecs);
 			responseObserver.onNext(respBuilder.build());

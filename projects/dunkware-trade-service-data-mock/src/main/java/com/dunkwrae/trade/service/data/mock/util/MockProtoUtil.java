@@ -51,9 +51,6 @@ public class MockProtoUtil {
 		MockInput input = stream.getInput();
 		builder.setIdentifier(input.getStreamIdentifier());
 		builder.setScript(createScriptSpec(stream));
-		for (MockStreamEntity ent : input.getStreamEntities()) {
-			builder.addEntities(createEntitySpec(ent));
-		}
 		return builder.build();
 		
 	}

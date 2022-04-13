@@ -5,7 +5,7 @@ import java.util.List;
 
 import org.bson.Document;
 
-import com.dunkware.net.core.runtime.core.helpers.ProtoCalendarHelper;
+import com.dunkware.net.core.runtime.core.helpers.GProtoHelper;
 import com.dunkware.net.proto.core.GCalendarRange;
 import com.dunkware.net.proto.core.GCalendarRangeType;
 import com.dunkware.net.proto.core.GDateRange;
@@ -49,8 +49,8 @@ public class MongoEntityQueryConcept {
 		if(range.getType() == GCalendarRangeType.DATE_RANGE) {
 			// then we add a simple time range 
 			GDateRange dateRange = range.getDateRange();
-			LocalDateTime from = ProtoCalendarHelper.toLocalDateTime(dateRange.getStartDate());
-			LocalDateTime to = ProtoCalendarHelper.toLocalDateTime(dateRange.getStopDate());
+			LocalDateTime from = GProtoHelper.toLocalDateTime(dateRange.getStartDate());
+			LocalDateTime to = GProtoHelper.toLocalDateTime(dateRange.getStopDate());
 			// thense use this 
 		}
 		if(range.getType() == GCalendarRangeType.TIME_DURATION) { 

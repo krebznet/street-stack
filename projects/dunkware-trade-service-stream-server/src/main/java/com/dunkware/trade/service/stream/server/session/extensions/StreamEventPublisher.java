@@ -52,9 +52,9 @@ public class StreamEventPublisher implements StreamSessionExtension {
 		}
 		StreamEventPublisherExtType extType = new StreamEventPublisherExtType();
 		extType.setKafkaBrokers(kafkaBrokers);
-		String streamName = session.getStream().getName();
-		extType.setSnapshotTopic(topicName);
-		extType.setSignalTopic(signalTopics);
+		
+		extType.setSnapshotTopic("stream_" + node.getSession().getStream().getName().toLowerCase() + "_snapshots");
+		extType.setSignalTopic("stream_" + node.getSession().getStream().getName().toLowerCase() + "_signals");
 		extType.setKafkaIdentifier(node.getNodeId());
 		node.getStreamBundle().addExtension(extType);
 	}

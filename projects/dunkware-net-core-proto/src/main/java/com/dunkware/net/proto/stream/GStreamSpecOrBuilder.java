@@ -38,28 +38,4 @@ public interface GStreamSpecOrBuilder extends
    * <code>.dunkware.core.GTimeZone timeZone = 5;</code>
    */
   com.dunkware.net.proto.core.GTimeZone getTimeZone();
-
-  /**
-   * <code>repeated .dunkware.stream.GStreamEntitySpec entities = 6;</code>
-   */
-  java.util.List<com.dunkware.net.proto.stream.GStreamEntitySpec> 
-      getEntitiesList();
-  /**
-   * <code>repeated .dunkware.stream.GStreamEntitySpec entities = 6;</code>
-   */
-  com.dunkware.net.proto.stream.GStreamEntitySpec getEntities(int index);
-  /**
-   * <code>repeated .dunkware.stream.GStreamEntitySpec entities = 6;</code>
-   */
-  int getEntitiesCount();
-  /**
-   * <code>repeated .dunkware.stream.GStreamEntitySpec entities = 6;</code>
-   */
-  java.util.List<? extends com.dunkware.net.proto.stream.GStreamEntitySpecOrBuilder> 
-      getEntitiesOrBuilderList();
-  /**
-   * <code>repeated .dunkware.stream.GStreamEntitySpec entities = 6;</code>
-   */
-  com.dunkware.net.proto.stream.GStreamEntitySpecOrBuilder getEntitiesOrBuilder(
-      int index);
 }

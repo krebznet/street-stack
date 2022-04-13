@@ -7,7 +7,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Predicate;
 
-import com.dunkware.net.core.runtime.core.helpers.ProtoCalendarHelper;
+import com.dunkware.net.core.runtime.core.helpers.GProtoHelper;
 import com.dunkware.net.proto.core.GCalendarRangeType;
 import com.dunkware.net.proto.core.GDate;
 import com.dunkware.net.proto.core.GDateTime;
@@ -40,22 +40,22 @@ public class SignalEntityQueryPredicateBuilder {
 		if(query.getSearchRange().getType() == GCalendarRangeType.TIME_RANGE) {
 			GTime start = query.getSearchRange().getTimeRange().getStartTime();
 			GTime stop = query.getSearchRange().getTimeRange().getStopTime();
-			LocalDateTime startDateTime = ProtoCalendarHelper.toLocalDateTime(start, LocalDate.now(ZoneId.systemDefault()));
-			LocalDateTime stopDateTime = ProtoCalendarHelper.toLocalDateTime(stop, LocalDate.now(ZoneId.systemDefault()));
+			LocalDateTime startDateTime = GProtoHelper.toLocalDateTime(start, LocalDate.now(ZoneId.systemDefault()));
+			LocalDateTime stopDateTime = GProtoHelper.toLocalDateTime(stop, LocalDate.now(ZoneId.systemDefault()));
 			preds.add(SignalTimeRangePredicate.newInstance(startDateTime, stopDateTime));
 		}
 		if(query.getSearchRange().getType() == GCalendarRangeType.DATE_RANGE) { 
 			GDate start = query.getSearchRange().getDateRange().getStartDate();
 			GDate stop = query.getSearchRange().getDateRange().getStopDate();
-			LocalDateTime startDateTIme = ProtoCalendarHelper.toLocalDateTime(start);
-			LocalDateTime stopDateTime = ProtoCalendarHelper.toLocalDateTime(stop);
+			LocalDateTime startDateTIme = GProtoHelper.toLocalDateTime(start);
+			LocalDateTime stopDateTime = GProtoHelper.toLocalDateTime(stop);
 			preds.add(SignalTimeRangePredicate.newInstance(startDateTIme, stopDateTime));
 		}
 		if(query.getSearchRange().getType() == GCalendarRangeType.DATE_TIME_RANGE) { 
 			GDateTime start = query.getSearchRange().getDateTimeRange().getStart();
 			GDateTime stop = query.getSearchRange().getDateTimeRange().getStop();
-			LocalDateTime startDateTime  = ProtoCalendarHelper.toLocalDateTime(start);
-			LocalDateTime stopDateTime = ProtoCalendarHelper.toLocalDateTime(stop);
+			LocalDateTime startDateTime  = GProtoHelper.toLocalDateTime(start);
+			LocalDateTime stopDateTime = GProtoHelper.toLocalDateTime(stop);
 			preds.add(SignalTimeRangePredicate.newInstance(startDateTime, stopDateTime));
 			
 		}

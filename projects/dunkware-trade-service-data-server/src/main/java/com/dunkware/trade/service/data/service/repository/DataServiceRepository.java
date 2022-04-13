@@ -1,5 +1,7 @@
 package com.dunkware.trade.service.data.service.repository;
 
+import java.util.List;
+
 import javax.annotation.PostConstruct;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
@@ -48,6 +50,20 @@ public class DataServiceRepository {
 		} finally { 
 			em.close();
 		}
+	}
+	
+	public List<DataStreamEntity> getDataStreamEntities() {
+		try {
+			List<DataStreamEntity> results = em.createQuery("SELECT e FROM DataStreamEntity e", DataStreamEntity.class)
+					.getResultList();
+			return results;
+
+		} catch (Exception e) {
+			e.printStackTrace();
+			return null;
+			// TODO: handle exception
+		}
+
 	}
 	
 
