@@ -30,18 +30,21 @@ public class DataStreamSessionEntity {
 	@ManyToOne()
 	private DataStreamEntity stream; 
 	
-	@Column(name = "stream_name'")
+	@Column(name = "stream_name")
 	private String streamName;
+	
 	@Column(name = "script_version")
 	private double scriptVersion;
 	
 	@Column(name = "controller_start_time")
 	private LocalDateTime controllerStartTime;
+	
 	@Column(name = "controller_stop_time")
 	private LocalDateTime controllerStopTime;
 	
 	@Column(name = "session_start_time")
 	private LocalDateTime sessionStartTime;
+	
 	@Column(name = "session_stop_time")
 	private LocalDateTime sessionStopTime;
 	
@@ -50,10 +53,13 @@ public class DataStreamSessionEntity {
 	 
 	@Column(name = "session_state")
 	private DataStreamSessionState state;
+	
 	@Column(name = "signal_count")
 	private long signalCount;
+	
 	@Column(name = "snapshot_count")
 	private long snapshotCount;
+	
 	@Column(name = "instrument_count")
 	private long instrumentCount;;
 	
