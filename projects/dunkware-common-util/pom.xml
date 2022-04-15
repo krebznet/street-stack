@@ -90,11 +90,14 @@
 
 		<!-- Mongo DB -->
 
-		<dependency>
-			<groupId>org.mongodb</groupId>
-			<artifactId>mongo-java-driver</artifactId>
-			<version>3.4.2</version>
-		</dependency>
+	
+		
+		<!-- https://mvnrepository.com/artifact/org.mongodb/mongodb-driver-core -->
+<dependency>
+    <groupId>org.mongodb</groupId>
+    <artifactId>mongodb-driver-core</artifactId>
+    <version>4.0.4</version>
+</dependency>
 
 	</dependencies>
 

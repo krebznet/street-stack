@@ -22,6 +22,10 @@ public class RuntimeConfig {
 	@Value("${service.stream.url.grcp}")
 	private String streamServiceGRPCURL;
 	
+	@Value("${kafka.brokers}")
+	private String kafkaBrokers;
+	
+	
 	private DExecutor executor; 
 	
 	@PostConstruct
@@ -48,6 +52,11 @@ public class RuntimeConfig {
 	public String getStreamServiceGRPCURL() {
 		return streamServiceGRPCURL;
 	}
+
+	public String getKafkaBrokers() {
+		return kafkaBrokers;
+	}
+	
 	
 	
 	

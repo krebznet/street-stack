@@ -319,17 +319,17 @@ public class StreamSessionImpl implements StreamSession {
 			public void run() {
 				try {
 					Thread.sleep(1000);
-					GStreamEvent event = GStreamHelper.buildSessionStartEvent(StreamSessionImpl.this);
-					StreamEventPublisher signalPublisher = StreamEventPublisher.newInstance(kafkaBrokers,
-							"stream_" + getStream().getName().toLowerCase() + "_signals", "StreamController");
-					signalPublisher.sendEvent(event);
-					Thread.sleep(200);
-					signalPublisher.dispose();
-					StreamEventPublisher snapshotPublisher = StreamEventPublisher.newInstance(kafkaBrokers,
-							"stream_" + getStream().getName().toLowerCase() + "_snapshots", "StreamController");
-					snapshotPublisher.sendEvent(event);
-					Thread.sleep(200);
-					snapshotPublisher.dispose();
+				//	GStreamEvent event = GStreamHelper.buildSessionStartEvent(StreamSessionImpl.this);
+					//StreamEventPublisher signalPublisher = StreamEventPublisher.newInstance(kafkaBrokers,
+					//		"stream_" + getStream().getName().toLowerCase() + "_signals", "StreamController");
+					//signalPublisher.sendEvent(event);
+					//Thread.sleep(200);
+					//signalPublisher.dispose();
+					//StreamEventPublisher snapshotPublisher = StreamEventPublisher.newInstance(kafkaBrokers,
+					//		"stream_" + getStream().getName().toLowerCase() + "_snapshots", "StreamController");
+					//snapshotPublisher.sendEvent(event);
+					//Thread.sleep(200);
+					//snapshotPublisher.dispose();
 				} catch (Exception e) {
 					logger.error(
 							"Exception sending stream session event message in controller session " + e.toString());

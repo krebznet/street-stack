@@ -1,11 +1,16 @@
 package com.dunkware.trade.service.data.service.repository;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 
@@ -20,7 +25,11 @@ public class DataStreamEntity {
 	private String name; 
 	
 	private LocalDateTime created;
-
+	
+	
+	@OneToMany(cascade = CascadeType.ALL)
+	@JoinColumn(name = "stream_id")
+	List<DataStreamSessionEntity> sessions = new ArrayList<DataStreamSessionEntity>();
 	
 	public String getName() {
 		return name;
@@ -44,7 +53,23 @@ public class DataStreamEntity {
 
 	public void setId(long id) {
 		this.id = id;
-	} 
+	}
+
+	public List<DataStreamSessionEntity> getSessions() {
+		return sessions;
+	}
+
+	public void setSessions(List<DataStreamSessionEntity> sessions) {
+		this.sessions = sessions;
+	}
+	
+	
+
+
+	
+	
+	
+	
 	
 	
 	

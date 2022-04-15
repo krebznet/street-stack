@@ -11,7 +11,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Profile;
+import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.dunkware.common.util.json.DJson;
@@ -22,7 +24,8 @@ import com.dunkware.trade.service.stream.server.controller.repository.StreamVers
 import com.dunkware.trade.service.stream.server.controller.repository.StreamVersionDORepo;
 import com.dunkware.trade.service.stream.server.tick.StreamTickService;
 
-@Component
+
+@Service()
 @Profile("StreamController")
 public class StreamControllerService {
 
@@ -49,23 +52,28 @@ public class StreamControllerService {
 	@PostConstruct
 	private void load() {
 		logger.info("Starting Stream Controller Servie");
-		try {
-			Thread.sleep(500);
-			Iterable<StreamDO> ents = streamRepo.findAll();
-			for (StreamDO ent : ents) {
-				if (logger.isInfoEnabled()) {
-					logger.info("Initializing Stream Controller " + ent.getName());
+		Thread runner = new Thread() { 
+			public void run() { 
+				try {
+					//Thread.sleep(500);
+					Iterable<StreamDO> ents = streamRepo.findAll();
+					for (StreamDO ent : ents) {
+						if (logger.isInfoEnabled()) {
+							logger.info("Initializing Stream Controller " + ent.getName());
+						}
+						StreamController con = new StreamController();
+						ac.getAutowireCapableBeanFactory().autowireBean(con);
+						con.start(ent);
+						controllers.add(con);
+					}
+				} catch (Exception e) {
+					logger.error("Exception loading streams " + e.toString());
+					System.exit(-1);
 				}
-				StreamController con = new StreamController();
-				ac.getAutowireCapableBeanFactory().autowireBean(con);
-				con.start(ent);
-				controllers.add(con);
+		
 			}
-		} catch (Exception e) {
-			logger.error("Exception loading streams " + e.toString());
-			System.exit(-1);
-		}
-
+		};
+		runner.start();
 	}
 
 	

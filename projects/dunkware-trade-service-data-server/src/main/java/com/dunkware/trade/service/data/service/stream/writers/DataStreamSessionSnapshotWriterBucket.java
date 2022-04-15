@@ -7,7 +7,7 @@ import java.util.List;
 import com.dunkware.common.util.stopwatch.DStopWatch;
 import com.dunkware.net.proto.stream.GEntitySnapshot;
 
-public class DataStreamSnapshotWriterBucket {
+public class DataStreamSessionSnapshotWriterBucket {
 
 	private DStopWatch stopWatch = DStopWatch.create();
 	private LocalDateTime start; 

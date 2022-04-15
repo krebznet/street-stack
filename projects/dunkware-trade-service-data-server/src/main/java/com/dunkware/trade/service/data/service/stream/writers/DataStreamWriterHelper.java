@@ -29,7 +29,7 @@ public class DataStreamWriterHelper {
 	 * @return
 	 * @throws Exception
 	 */
-	public static Document buildSnapshotBucket(DataStreamSnapshotWriterBucket bucket, DTimeZone timeZone) throws Exception { 
+	public static Document buildSnapshotBucket(DataStreamSessionSnapshotWriterBucket bucket, DTimeZone timeZone) throws Exception { 
 		Document container = new Document();
 	
 		container.append("start", bucket.getStart());

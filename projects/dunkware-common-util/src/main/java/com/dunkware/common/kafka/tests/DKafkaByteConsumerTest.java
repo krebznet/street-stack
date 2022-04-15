@@ -12,8 +12,8 @@ public class DKafkaByteConsumerTest {
 
 	public static void main(String[] args) {
 		DProperties props = DPropertiesBuilder.newBuilder()
-		.addProperty(DKafkaProperties.BOOTSTRAP_SERVERS, "172.16.16.55:31090")
-		.addProperty("topics", "stream_us_equity_events").build();
+		.addProperty(DKafkaProperties.BOOTSTRAP_SERVERS, "localhost:9091")
+		.addProperty("topics", "stream_us_equity_snapshots").build();
 		try {
 			AtomicInteger counter = new AtomicInteger(0);
 			DKafkaByteConsumer consumer = DKafkaByteConsumer.newInstance(props);

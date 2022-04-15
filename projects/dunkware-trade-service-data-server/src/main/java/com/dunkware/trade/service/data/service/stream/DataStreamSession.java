@@ -3,35 +3,24 @@ package com.dunkware.trade.service.data.service.stream;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.slf4j.MarkerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 
-import com.dunkware.common.spec.kafka.DKafkaConsumerSpec2;
-import com.dunkware.common.spec.kafka.DKafkaConsumerSpec2.ConsumerType;
-import com.dunkware.common.spec.kafka.DKafkaConsumerSpec2.OffsetType;
-import com.dunkware.common.spec.kafka.DKafkaConsumerSpec2Builder;
 import com.dunkware.common.util.dtime.DTimeZone;
-import com.dunkware.common.util.uuid.DUUID;
-import com.dunkware.trade.service.data.json.enums.DataStreamStatus;
+import com.dunkware.trade.service.data.json.enums.DataStreamSessionState;
 import com.dunkware.trade.service.data.json.stream.session.DataStreamSessionStats;
 import com.dunkware.trade.service.data.service.config.RuntimeConfig;
-import com.dunkware.trade.service.data.service.stream.writers.DataStreamSignalWriter;
-import com.dunkware.trade.service.data.service.stream.writers.DataStreamSnapshotWriter;
-import com.dunkware.trade.service.data.service.stream.writers.DataStreamSnapshotWriterInput;
-import com.dunkware.trade.service.data.service.util.NameHelper;
+import com.dunkware.trade.service.data.service.repository.DataServiceRepository;
+import com.dunkware.trade.service.data.service.repository.DataStreamSessionEntity;
+import com.dunkware.trade.service.data.service.stream.writers.DataStreamSessionSnapshotWriter;
+import com.dunkware.trade.service.data.service.util.DataMarkers;
 import com.dunkware.trade.service.stream.json.controller.model.StreamSessionSpec;
-import com.dunkware.xstream.data.cache.CacheExtensionType;
 import com.dunkware.xstream.data.cache.CacheStream;
-import com.dunkware.xstream.data.cache.CacheStreamInput;
-import com.dunkware.xstream.data.cache.core.CacheStreamImpl;
-import com.dunkware.xstream.data.cache.ext.CacheKafkaSignalConsumerExtType;
-import com.dunkware.xstream.data.cache.ext.CacheKafkaSnapshotConsumerExtType;
 
 public class DataStreamSession {
 	
@@ -40,7 +29,12 @@ public class DataStreamSession {
 	private RuntimeConfig configService; 
 	
 	@Autowired
+	private DataServiceRepository dataRepo;
+	
+	@Autowired
 	private ApplicationContext ac;
+	
+	private Map<String,DataStreamSessionInstrument> instruments = new ConcurrentHashMap<String,DataStreamSessionInstrument>();
 	
 	private Logger logger = LoggerFactory.getLogger(getClass());
 	private DataStream stream; 
@@ -49,80 +43,70 @@ public class DataStreamSession {
 	
 	private LocalDateTime startTime; 
 	
-	private DataStreamSnapshotWriter snapshotWriter; 
-	private DataStreamSignalWriter signalWriter; 
+	private DataStreamSessionSnapshotWriter snapshotWriter; 
 	
-	private DataStreamStatus state = DataStreamStatus.Stopped;
+	// Entities 
+	private DataStreamSessionEntity sessionEntity; 
+	
+	
+	private DataStreamSessionState state = DataStreamSessionState.Running;
 
 	
-	public void start(DataStream stream, StreamSessionSpec spec) throws Exception { 
+	public void startSession(DataStream stream, StreamSessionSpec spec) throws Exception { 
 		this.stream = stream;
 		this.spec = spec; 
 		this.startTime = LocalDateTime.of(LocalDate.now(DTimeZone.toZoneId(spec.getTimeZone())), LocalTime.now(DTimeZone.toZoneId(spec.getTimeZone())));
 		
-		// Create CacheInput
-		List<CacheExtensionType> extTypes = new ArrayList<CacheExtensionType>();
-		CacheKafkaSignalConsumerExtType sigType = new CacheKafkaSignalConsumerExtType();
-		sigType.setKafkaBrokers(spec.getKafkaBrokers());
-		sigType.setKafkaTopic(spec.getKafkaSignalTopic());
-		sigType.setKafkaConsumerId("signal_" + spec.getSessionId());
-		sigType.setTimeZone(spec.getTimeZone());
-		extTypes.add(sigType);
-		CacheKafkaSnapshotConsumerExtType snapType = new CacheKafkaSnapshotConsumerExtType();
-		snapType.setKafkaBrokers(spec.getKafkaBrokers());
-		snapType.setKafkaConsumerId("snapshot_" + spec.getSessionId());
-		snapType.setKafkaTopic(spec.getKafkaSnapshotTopic());
-		snapType.setTimeZone(spec.getTimeZone());
-		
-		extTypes.add(snapType);
-		CacheStreamInput input = new CacheStreamInput(extTypes,configService.getExecutor(),spec.getTimeZone(),spec.getSessionId());	
+		// okay so we create our new entity
+		sessionEntity = new DataStreamSessionEntity();
+		sessionEntity.setMessageStartDateTime(startTime);
+		sessionEntity.setStream(stream.getEntity());
+		sessionEntity.setScriptVersion(spec.getStreamScript().getVersion());
+		sessionEntity.setSessionIdentifier(spec.getSessionId());
+		sessionEntity.setState(state);
 		
 		try {
-			cache = new CacheStreamImpl();
-			cache.start(input);
+			dataRepo.persist(sessionEntity);
 		} catch (Exception e) {
-			logger.error(MarkerFactory.getMarker("Data"), "Exception starting session cache " + e.toString());
-			throw new Exception("Stream Session Start Exception Starting Cache " + e.toString());
+			logger.error(DataMarkers.getServiceMarker(), " Data Repo Persist new stream entity failed we are fucked " + e.toString());
+			throw e;
 		}
-		
-		this.signalWriter = new DataStreamSignalWriter();
-		ac.getAutowireCapableBeanFactory().autowireBean(signalWriter);
-		
-		signalWriter.start(this);
-		DataStreamSnapshotWriterInput writerInput = new DataStreamSnapshotWriterInput();
-		writerInput.setBatchSize(30);
-		writerInput.setCaptureId(spec.getSessionId());
-		writerInput.setDebugLogging(false);
 		
 		try {
-			DKafkaConsumerSpec2 kspec = DKafkaConsumerSpec2Builder.newBuilder(ConsumerType.AllPartitions, OffsetType.Latest)
-					.addBroker(spec.getKafkaBrokers()).addTopic(spec.getKafkaSnapshotTopic()).setBrokerString(spec.getKafkaBrokers()).setClientAndGroup(DUUID.randomUUID(5), DUUID.randomUUID(5)).build();
-					
-		 writerInput.setStream(spec.getStreamIdentifier());
-		 writerInput.setMongoURL(configService.getMongoURL());
-		 writerInput.setMongoDatabase(configService.getMongoDatabase());
-		 writerInput.setMongoCollection(NameHelper.getSessionSnapshotCollectionName(spec.getStreamIdentifier(), LocalDate.now(DTimeZone.toZoneId(spec.getTimeZone()))));
-		 writerInput.setTimeZone(spec.getTimeZone());;
-		 writerInput.setWriteQueueSizeLimit(10000);
-		 writerInput.setKafkaSpec(kspec);
-		 snapshotWriter = new DataStreamSnapshotWriter();
-		 snapshotWriter.start(writerInput);
+			snapshotWriter = new DataStreamSessionSnapshotWriter();
+			ac.getAutowireCapableBeanFactory().autowireBean(snapshotWriter);
+			snapshotWriter.start(this);
 		} catch (Exception e) {
-			logger.error(MarkerFactory.getMarker("Data"), "exception starting mongo snapshot writer " + e.toString());
-			throw e; 
+			logger.error(DataMarkers.getServiceMarker(), "Exception starting data stream session snapshot writer " + e.toString());
+			throw e;
 		}
-	
-	
-		state  =DataStreamStatus.Running;
+		
 		
 	}
 	
-	public void stop() { 
-		state = DataStreamStatus.Stopping;
-		signalWriter.stop();
-		snapshotWriter.stop();	
-		state = DataStreamStatus.Stopped;
+	public DataStreamSessionState getState() { 
+		return state;
+	}
+	
+	/**
+	 * Called by the writer when its written all messages
+	 * @param writer
+	 */
+	public void snapshotWriterComplete(DataStreamSessionSnapshotWriter writer) { 
 		
+	}
+	
+	public void stopSession() { 
+		state = DataStreamSessionState.Stopping;
+		// need to listen to snapshot writer until its done; 
+		
+		// okay here this is where
+		// we set status to Stopping
+		
+	}
+	
+	public DataStream getStream() { 
+		return this.stream;
 	}
 	
 	public DataStreamSessionStats getStats() { 
@@ -141,15 +125,17 @@ public class DataStreamSession {
 		return spec;
 	}
 	
-	public DataStreamStatus getState() { 
-		return state;
-	}
-	public void dispose() { 
-		state = DataStreamStatus.Stopped;
-	}
 	
 	public CacheStream getCache() { 
 		return cache; 
 	}
-
+	
+	public String getIdentifier() { 
+		return sessionEntity.getSessionIdentifier();
+	}
+	
+	public DataStreamSessionEntity getEntity() { 
+		return sessionEntity;
+	}
+	
 }

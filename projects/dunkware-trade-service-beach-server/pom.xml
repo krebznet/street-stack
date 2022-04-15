@@ -15,7 +15,7 @@
 	<description>Dunkware Trade Broker Service Server</description>
 
 	<properties>
-		<java.version>8</java.version>
+		<java.version>11</java.version>
 		<xtextVersion>2.21.0</xtextVersion>
 		<mwe2Version>2.11.2</mwe2Version>
 	</properties>
