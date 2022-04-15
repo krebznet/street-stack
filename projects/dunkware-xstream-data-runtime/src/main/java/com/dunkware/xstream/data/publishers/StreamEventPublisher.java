@@ -40,6 +40,7 @@ public class StreamEventPublisher {
 		this.identifier = identifier;
 		try {
 			kafkaProducer = DKafkaByteProducer.newInstance(brokers, topic, identifier);	
+			
 		} catch (Exception e) {
 			throw new Exception("Exception creating stream event publisher kafka publisher " + e.toString());
 		}

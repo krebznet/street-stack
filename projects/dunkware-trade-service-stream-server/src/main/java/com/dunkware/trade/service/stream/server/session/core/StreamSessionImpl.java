@@ -18,6 +18,9 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import com.dunkware.common.kafka.producer.DKafkaByteProducer;
+import com.dunkware.common.spec.kafka.DKafkaConsumerSpec;
+import com.dunkware.common.spec.kafka.DKafkaConsumerSpec2Builder;
 import com.dunkware.common.util.dtime.DTime;
 import com.dunkware.common.util.dtime.DTimeZone;
 import com.dunkware.common.util.events.DEventNode;
@@ -319,17 +322,12 @@ public class StreamSessionImpl implements StreamSession {
 			public void run() {
 				try {
 					Thread.sleep(1000);
-				//	GStreamEvent event = GStreamHelper.buildSessionStartEvent(StreamSessionImpl.this);
-					//StreamEventPublisher signalPublisher = StreamEventPublisher.newInstance(kafkaBrokers,
-					//		"stream_" + getStream().getName().toLowerCase() + "_signals", "StreamController");
-					//signalPublisher.sendEvent(event);
-					//Thread.sleep(200);
-					//signalPublisher.dispose();
-					//StreamEventPublisher snapshotPublisher = StreamEventPublisher.newInstance(kafkaBrokers,
-					//		"stream_" + getStream().getName().toLowerCase() + "_snapshots", "StreamController");
-					//snapshotPublisher.sendEvent(event);
-					//Thread.sleep(200);
-					//snapshotPublisher.dispose();
+					DKafkaByteProducer producer = DKafkaByteProducer.newInstance(kafkaBrokers, "stream_" + getStream().getName().toLowerCase() + "_signals", getSessionId());
+					GStreamEvent event = GStreamHelper.buildSessionStartEvent(StreamSessionImpl.this);
+					producer.sendBytes(event.toByteArray());
+					producer.dispose();
+					producer = DKafkaByteProducer.newInstance(kafkaBrokers, "stream_" + getStream().getName().toLowerCase() + "_snapshots", getSessionId());
+					producer.sendBytes(event.toByteArray());
 				} catch (Exception e) {
 					logger.error(
 							"Exception sending stream session event message in controller session " + e.toString());
@@ -372,9 +370,33 @@ public class StreamSessionImpl implements StreamSession {
 		for (StreamSessionNode node : nodes) {
 			node.stopNode();
 		}
+		
+		class StopSender extends Thread { 
+			
+			public void start() { 
+				try {
+					Thread.sleep(1000);
+					DKafkaByteProducer producer = DKafkaByteProducer.newInstance(kafkaBrokers, "stream_" + getStream().getName().toLowerCase() + "_signals", getSessionId());
+					GStreamEvent event = GStreamHelper.buildSessionStopEvent(StreamSessionImpl.this);
+					producer.sendBytes(event.toByteArray());
+					producer.dispose();
+					producer = DKafkaByteProducer.newInstance(kafkaBrokers, "stream_" + getStream().getName().toLowerCase() + "_snapshots", getSessionId());
+					producer.sendBytes(event.toByteArray());
+				} catch (Exception e) {
+					logger.error(
+							"Exception sending stream session stop event message in controller session " + e.toString());
+				}
+			}
+		}
+		
+		// send stop event 
+		StopSender eventSender = new StopSender();
+		eventSender.start();
+		
 
-		StreamSessionStop stop = new StreamSessionStop();
+		// send stop message 
 		try {
+			StreamSessionStop stop = new StreamSessionStop();
 			stop.setSpec(startMessage.getSpec());
 			messageService.sendMessage(stop);
 			;
@@ -383,32 +405,6 @@ public class StreamSessionImpl implements StreamSession {
 		}
 		stats.setStatus(StreamSessionStatus.Running);
 
-		// lets just create a session stop event here delay 10 seconds
-		class EventSender extends Thread {
-
-			public void run() {
-				try {
-					Thread.sleep(1000);
-					GStreamEvent event = GStreamHelper.buildSessionStopEvent(StreamSessionImpl.this);
-					StreamEventPublisher signalPublisher = StreamEventPublisher.newInstance(kafkaBrokers,
-							"stream_" + getStream().getName().toLowerCase() + "_signals", "StreamController");
-					signalPublisher.sendEvent(event);
-					Thread.sleep(200);
-					signalPublisher.dispose();
-					StreamEventPublisher snapshotPublisher = StreamEventPublisher.newInstance(kafkaBrokers,
-							"stream_" + getStream().getName().toLowerCase() + "_snapshots", "StreamController");
-					snapshotPublisher.sendEvent(event);
-					Thread.sleep(200);
-					snapshotPublisher.dispose();
-				} catch (Exception e) {
-					logger.error(
-							"Exception sending stream session event message in controller session " + e.toString());
-				}
-			}
-		}
-
-		EventSender eventSender = new EventSender();
-		eventSender.start();
 	}
 
 	@Override
