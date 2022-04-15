@@ -29,30 +29,28 @@ import com.dunkware.trade.service.stream.json.message.StreamSessionStop;
 
 @Service
 public class DataStreamService implements StreamMessageHandler {
-	
-	
+
 	@Autowired
-	private RuntimeConfig configService; 
+	private RuntimeConfig configService;
 
 	@Autowired
 	private ApplicationContext ac;
-	
+
 	@Autowired
 	private StreamMessageService messageService;
 
 	@Autowired
 	private DataServiceRepository dataRepo;
-	
-	private Map<String,DataStream> dataStreams = new ConcurrentHashMap<String, DataStream>();
 
-	private Map<String,DataStreamEntity> dataStreamEntities = new ConcurrentHashMap<String,DataStreamEntity>();
-	
+	private Map<String, DataStream> dataStreams = new ConcurrentHashMap<String, DataStream>();
+
+	private Map<String, DataStreamEntity> dataStreamEntities = new ConcurrentHashMap<String, DataStreamEntity>();
+
 	private Logger logger = LoggerFactory.getLogger(getClass());
-	
+
 	@Autowired
-	private GrpcStreamServiceClient streamServiceClient; 
-	
-	
+	private GrpcStreamServiceClient streamServiceClient;
+
 	private DataStreamSession currentSession = null;
 
 	@PostConstruct
@@ -66,85 +64,77 @@ public class DataStreamService implements StreamMessageHandler {
 			streamSpecs = streamServiceClient.streamSpecs();
 		} catch (Exception e) {
 			logger.error("Exception Getting GStreamSpecs from Stream GRPC Service " + e.toString());
-			// try again or shut down 
+			// try again or shut down
 			System.exit(1);
 		}
 		for (GStreamSpec gspec : streamSpecs.getSpecsList()) {
-			if(dataStreamEntities.containsKey(gspec.getIdentifier())) { 
-				// load it 
+			if (dataStreamEntities.get(gspec.getIdentifier()) != null) {
+				// load it
 				DataStream dataStream = new DataStream();
 				ac.getAutowireCapableBeanFactory().autowireBean(dataStream);
 				try {
-					dataStream.start(dataStreamEntities.get(gspec.getIdentifier()));	
+					dataStream.start(dataStreamEntities.get(gspec.getIdentifier()));
 					dataStreams.put(gspec.getIdentifier(), dataStream);
 				} catch (Exception e) {
-					logger.error("Exception Starting Data Stream " + gspec.getIdentifier() + " " + e.toString(),e);
+					logger.error("Exception Starting Data Stream " + gspec.getIdentifier() + " " + e.toString(), e);
 				}
-				
-			} // else 
-			
-			logger.info("Creating New DataStream For " + gspec.getIdentifier());
-			DataStreamEntity ent = new DataStreamEntity();
-			ent.setName(gspec.getIdentifier());
-			ent.setCreated(LocalDateTime.now(DTimeZone.toZoneId(DTimeZone.NewYork)));
-			try {
-				EntityManager em = dataRepo.createEntityManager();
-				em.getTransaction().begin();
-				em.persist(ent);
-				em.getTransaction().commit();
-				//dataRepo.persist(ent);
-			} catch (Exception e) {
-				logger.error("Exception persisting new data stream entity " + e.toString());
-				// TODO: handle exception
+
+			} else { // else
+
+				logger.info("Creating New DataStream For " + gspec.getIdentifier());
+				DataStreamEntity ent = new DataStreamEntity();
+				ent.setName(gspec.getIdentifier());
+				ent.setCreated(LocalDateTime.now(DTimeZone.toZoneId(DTimeZone.NewYork)));
+				try {
+					EntityManager em = dataRepo.createEntityManager();
+					em.getTransaction().begin();
+					em.persist(ent);
+					em.getTransaction().commit();
+					// dataRepo.persist(ent);
+				} catch (Exception e) {
+					logger.error("Exception persisting new data stream entity " + e.toString());
+					// TODO: handle exception
+				}
 			}
 		}
-		
 		messageService.addHandler(this);
 		try {
-		
-			
-			
+
 		} catch (Exception e) {
 			System.err.println(e.toString());
 			e.printStackTrace();
 			// TODO: handle exception
 		}
 	}
-	
-	public boolean streamExists(String name) { 
-		if(dataStreams.get(name) == null) { 
+
+	public boolean streamExists(String name) {
+		if (dataStreams.get(name) == null) {
 			return false;
 		}
 		return true;
 	}
-	
-	public DataStream getStream(String name) { 
+
+	public DataStream getStream(String name) {
 		return dataStreams.get(name);
 	}
-	
-	public Collection<DataStream> getStreams() { 
+
+	public Collection<DataStream> getStreams() {
 		return dataStreams.values();
 	}
-	
+
 	@Override
 	public void sessionPing(StreamSessionPing ping) {
-		
+
 	}
-	
+
 	@Override
 	public void sessionStart(StreamSessionStart start) {
-		
+
 	}
-	
+
 	@Override
 	public void sessionStop(StreamSessionStop stop) {
-		
+
 	}
-	
-	
-
-
-	
 
 }
-
