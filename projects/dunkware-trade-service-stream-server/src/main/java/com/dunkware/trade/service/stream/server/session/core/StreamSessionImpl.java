@@ -17,10 +17,9 @@ import java.util.concurrent.atomic.AtomicLong;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 
 import com.dunkware.common.kafka.producer.DKafkaByteProducer;
-import com.dunkware.common.spec.kafka.DKafkaConsumerSpec;
-import com.dunkware.common.spec.kafka.DKafkaConsumerSpec2Builder;
 import com.dunkware.common.util.dtime.DTime;
 import com.dunkware.common.util.dtime.DTimeZone;
 import com.dunkware.common.util.events.DEventNode;
@@ -56,9 +55,7 @@ import com.dunkware.trade.service.stream.server.tick.StreamTickService;
 import com.dunkware.trade.tick.model.ticker.TradeTickerSpec;
 import com.dunkware.trade.tick.model.ticker.TradeTickerType;
 import com.dunkware.trade.tick.service.protocol.ticker.spec.TradeTickerListSpec;
-import com.dunkware.xstream.data.publishers.StreamEventPublisher;
 import com.dunkware.xstream.xproject.XScriptProject;
-import com.google.api.client.util.Value;
 
 public class StreamSessionImpl implements StreamSession {
 
@@ -72,6 +69,10 @@ public class StreamSessionImpl implements StreamSession {
 	private StreamSessionStatsSpec stats = new StreamSessionStatsSpec();
 
 	private DEventNode eventNode;
+	
+	@Value("${kafka.brokers}")
+	private String kafkaBrokers;
+
 
 	@Autowired
 	private RuntimeService runtimeService;
@@ -113,9 +114,7 @@ public class StreamSessionImpl implements StreamSession {
 
 	private SnapshotMessageSender snapshotSender;
 
-	@Value("${kafka.brokers}")
-	private String kafkaBrokers;
-
+	
 	private String kafkaSnapshotTopic;
 
 	private String kafkaSignalTopic;

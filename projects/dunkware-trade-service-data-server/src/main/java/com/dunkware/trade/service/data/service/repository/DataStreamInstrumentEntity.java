@@ -13,7 +13,7 @@ import com.dunkware.net.proto.stream.GEntitySnapshot;
 
 @Entity(name = "DataStreamSessionInstrumentEntity")
 @Table(name = "stream_session_instrument")
-public class DataStreamSessionInstrumentEntity {
+public class DataStreamInstrumentEntity {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)

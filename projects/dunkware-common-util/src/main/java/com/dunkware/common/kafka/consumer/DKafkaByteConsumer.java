@@ -21,6 +21,7 @@ import com.dunkware.common.kafka.DKafkaException;
 import com.dunkware.common.kafka.properties.DKafkaProperties;
 import com.dunkware.common.spec.kafka.DKafkaConsumerSpec;
 import com.dunkware.common.util.properties.DProperties;
+import com.dunkware.common.util.uuid.DUUID;
 
 public class DKafkaByteConsumer {
 
@@ -76,6 +77,8 @@ public class DKafkaByteConsumer {
 	public static DKafkaByteConsumer newInstance(String brokers,String topics) throws DKafkaException { 
 		DKafkaByteConsumer consumer = new DKafkaByteConsumer(); 
 		Properties props = new Properties();
+		props.put(DKafkaProperties.CLIENT_ID_CONFIG, DUUID.randomUUID(5) + 5);
+		props.put(DKafkaProperties.GROUP_ID_CONFIG, DUUID.randomUUID(5) + 5);
 		props.put(DKafkaProperties.BOOTSTRAP_SERVERS, brokers);
 		props.put(DKafkaProperties.TOPICS, topics);
 		consumer.connect(props);

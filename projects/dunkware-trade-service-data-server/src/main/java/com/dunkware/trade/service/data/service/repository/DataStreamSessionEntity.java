@@ -30,38 +30,41 @@ public class DataStreamSessionEntity {
 	@ManyToOne()
 	private DataStreamEntity stream; 
 	
-	@Column(name = "stream_name")
+	@Column(name = "Stream")
 	private String streamName;
 	
-	@Column(name = "script_version")
+	@Column(name = "ScriptVersion")
 	private double scriptVersion;
 	
-	@Column(name = "controller_start_time")
+	@Column(name = "ControllerStart")
 	private LocalDateTime controllerStartTime;
 	
-	@Column(name = "controller_stop_time")
+	@Column(name = "ControllerStop")
 	private LocalDateTime controllerStopTime;
 	
-	@Column(name = "session_start_time")
+	@Column(name = "SessionStart")
 	private LocalDateTime sessionStartTime;
 	
-	@Column(name = "session_stop_time")
+	@Column(name = "SessionStop")
 	private LocalDateTime sessionStopTime;
 	
-	@Column(name = "session_ident")
+	@Column(name = "Identifier")
 	private String sessionIdentifier; 
 	 
-	@Column(name = "session_state")
+	@Column(name = "State")
 	private DataStreamSessionState state;
 	
-	@Column(name = "signal_count")
+	@Column(name = "Signals")
 	private long signalCount;
 	
-	@Column(name = "snapshot_count")
+	@Column(name = "Snapshots")
 	private long snapshotCount;
 	
-	@Column(name = "instrument_count")
+	@Column(name = "Instruments")
 	private long instrumentCount;;
+	
+	@Column(name = "SnapshotCompletion")
+	private LocalDateTime snapshotCompleteTime;
 	
 	
 	public long getId() {
@@ -143,6 +146,14 @@ public class DataStreamSessionEntity {
 	public void setInstrumentCount(long instrumentCount) {
 		this.instrumentCount = instrumentCount;
 	}
+	public LocalDateTime getSnapshotCompleteTime() {
+		return snapshotCompleteTime;
+	}
+	public void setSnapshotCompleteTime(LocalDateTime snapshotCompleteTime) {
+		this.snapshotCompleteTime = snapshotCompleteTime;
+	}
+	
+	
 	
 	
 	

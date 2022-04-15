@@ -9,15 +9,16 @@ import org.springframework.boot.autoconfigure.mongo.MongoAutoConfiguration;
 import org.springframework.cloud.stream.annotation.EnableBinding;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.transaction.annotation.EnableTransactionManagement;
 
 import com.dunkware.trade.service.data.service.message.StreamMessageProcessor;
 
 
 @Configuration
 @ComponentScan
-
+@EnableTransactionManagement
 @SpringBootApplication
-@EnableAutoConfiguration(exclude={ DataSourceAutoConfiguration.class, MongoAutoConfiguration.class, MongoDataAutoConfiguration.class})
+@EnableAutoConfiguration(exclude={ MongoAutoConfiguration.class, MongoDataAutoConfiguration.class})
 
 @EnableBinding(StreamMessageProcessor.class)
 public class DataService {

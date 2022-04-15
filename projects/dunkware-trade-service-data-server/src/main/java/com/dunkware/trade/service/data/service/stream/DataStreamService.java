@@ -6,7 +6,7 @@ import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
 import javax.annotation.PostConstruct;
-import javax.persistence.EntityManager;
+import javax.transaction.Transactional;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -21,8 +21,8 @@ import com.dunkware.trade.service.data.service.config.RuntimeConfig;
 import com.dunkware.trade.service.data.service.grpc.GrpcStreamServiceClient;
 import com.dunkware.trade.service.data.service.message.StreamMessageHandler;
 import com.dunkware.trade.service.data.service.message.StreamMessageService;
-import com.dunkware.trade.service.data.service.repository.DataServiceRepository;
 import com.dunkware.trade.service.data.service.repository.DataStreamEntity;
+import com.dunkware.trade.service.data.service.repository.DataStreamEntityRepo;
 import com.dunkware.trade.service.stream.json.message.StreamSessionPing;
 import com.dunkware.trade.service.stream.json.message.StreamSessionStart;
 import com.dunkware.trade.service.stream.json.message.StreamSessionStop;
@@ -40,7 +40,8 @@ public class DataStreamService implements StreamMessageHandler {
 	private StreamMessageService messageService;
 
 	@Autowired
-	private DataServiceRepository dataRepo;
+	private DataStreamEntityRepo streamRepo;
+	
 
 	private Map<String, DataStream> dataStreams = new ConcurrentHashMap<String, DataStream>();
 
@@ -53,10 +54,11 @@ public class DataStreamService implements StreamMessageHandler {
 
 	private DataStreamSession currentSession = null;
 
+	@Transactional
 	@PostConstruct
 	public void load() {
 		// first popuplate stream entity map
-		for (DataStreamEntity ent : dataRepo.getDataStreamEntities()) {
+		for (DataStreamEntity ent : streamRepo.findAll()) {
 			dataStreamEntities.put(ent.getName(), ent);
 		}
 		GStreamSpecsResponse streamSpecs = null;
@@ -85,16 +87,7 @@ public class DataStreamService implements StreamMessageHandler {
 				DataStreamEntity ent = new DataStreamEntity();
 				ent.setName(gspec.getIdentifier());
 				ent.setCreated(LocalDateTime.now(DTimeZone.toZoneId(DTimeZone.NewYork)));
-				try {
-					EntityManager em = dataRepo.createEntityManager();
-					em.getTransaction().begin();
-					em.persist(ent);
-					em.getTransaction().commit();
-					// dataRepo.persist(ent);
-				} catch (Exception e) {
-					logger.error("Exception persisting new data stream entity " + e.toString());
-					// TODO: handle exception
-				}
+				streamRepo.save(ent);
 			}
 		}
 		messageService.addHandler(this);
@@ -136,5 +129,7 @@ public class DataStreamService implements StreamMessageHandler {
 	public void sessionStop(StreamSessionStop stop) {
 
 	}
+	
+	// 
 
 }

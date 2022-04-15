@@ -2,15 +2,15 @@ package com.dunkware.trade.service.data.service.stream;
 
 import com.dunkware.net.proto.stream.GEntitySignal;
 import com.dunkware.net.proto.stream.GEntitySnapshot;
-import com.dunkware.trade.service.data.service.repository.DataStreamSessionInstrumentEntity;
+import com.dunkware.trade.service.data.service.repository.DataStreamInstrumentEntity;
 
 public class DataStreamSessionInstrument {
 	
 	private DataStreamSession session;
-	private DataStreamSessionInstrumentEntity entity;
+	private DataStreamInstrumentEntity entity;
 	private boolean dirty = false;
 	
-	public void start(DataStreamSession session, DataStreamSessionInstrumentEntity entity) {
+	public void start(DataStreamSession session, DataStreamInstrumentEntity entity) {
 		this.session = session;
 		this.entity = entity;
 	}
@@ -25,7 +25,7 @@ public class DataStreamSessionInstrument {
 		dirty = true;
 	}
 	
-	public DataStreamSessionInstrumentEntity getEntity() { 
+	public DataStreamInstrumentEntity getEntity() { 
 		return entity;
 	}
 	

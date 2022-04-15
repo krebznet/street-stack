@@ -10,8 +10,8 @@ import com.dunkware.trade.service.data.json.enums.DataStreamSessionState;
 import com.dunkware.trade.service.data.service.config.RuntimeConfig;
 import com.dunkware.trade.service.data.service.message.StreamMessageHandler;
 import com.dunkware.trade.service.data.service.message.StreamMessageService;
-import com.dunkware.trade.service.data.service.repository.DataServiceRepository;
 import com.dunkware.trade.service.data.service.repository.DataStreamEntity;
+import com.dunkware.trade.service.data.service.repository.DataStreamEntityRepo;
 import com.dunkware.trade.service.data.service.util.DataMarkers;
 import com.dunkware.trade.service.stream.json.message.StreamSessionStart;
 import com.dunkware.trade.service.stream.json.message.StreamSessionStop;
@@ -30,7 +30,7 @@ public class DataStream implements StreamMessageHandler {
 	private StreamMessageService messageService;
 
 	@Autowired
-	private DataServiceRepository dataRepo;
+	private DataStreamEntityRepo streamRepo;
 
 	private DataStreamEntity streamEntity;
 
@@ -39,7 +39,7 @@ public class DataStream implements StreamMessageHandler {
 	public void start(DataStreamEntity entity) {
 		this.streamEntity = entity;
 		messageService.addHandler(this);
-		
+
 	}
 
 	public DataStreamSession getSession() {
@@ -91,34 +91,38 @@ public class DataStream implements StreamMessageHandler {
 			runner.start();
 			return;
 		}
-		if (session.getState() == DataStreamSessionState.Completed) {
-			// okay create new session
-			Thread runner = new Thread() {
 
-				public void run() {
-					session = new DataStreamSession();
-					ac.getAutowireCapableBeanFactory().autowireBean(session);
-					try {
-						session.controllerStart(DataStream.this, start.getSpec());
-					} catch (Exception e) {
-						logger.error(DataMarkers.getServiceMarker(),
-								"Exception starting stream session on session start " + e.toString());
-					}
+		// okay create new session
+		Thread runner = new Thread() {
 
+			public void run() {
+				session = new DataStreamSession();
+				ac.getAutowireCapableBeanFactory().autowireBean(session);
+				try {
+					session.controllerStart(DataStream.this, start.getSpec());
+				} catch (Exception e) {
+					logger.error(DataMarkers.getServiceMarker(),
+							"Exception starting stream session on session start " + e.toString());
 				}
-			};
 
-			runner.start();
-			return;
-		}
-		// else we already have a running session why 
-		logger.error("getting start session message on a sesssion that is not in completed status");
+			}
+		};
+
+		runner.start();
 
 	}
 
 	@Override
 	public void sessionStop(StreamSessionStop stop) {
-
+		if (stop.getSpec().getStreamIdentifier().equals(getName()) == false) {
+			return;
+		}
+		if(session != null) { 
+			if(session.getState() == DataStreamSessionState.Running) { 
+				
+				session.controllerStop();
+			}
+		}
 	}
 
 }

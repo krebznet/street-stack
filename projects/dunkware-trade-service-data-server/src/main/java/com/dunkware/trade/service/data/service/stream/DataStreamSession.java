@@ -3,10 +3,12 @@ package com.dunkware.trade.service.data.service.stream;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
-import javax.persistence.EntityManager;
+import javax.transaction.Transactional;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -19,9 +21,11 @@ import com.dunkware.net.proto.stream.GEntitySnapshot;
 import com.dunkware.trade.service.data.json.enums.DataStreamSessionState;
 import com.dunkware.trade.service.data.json.stream.session.DataStreamSessionStats;
 import com.dunkware.trade.service.data.service.config.RuntimeConfig;
-import com.dunkware.trade.service.data.service.repository.DataServiceRepository;
+import com.dunkware.trade.service.data.service.repository.DataStreamInstrumentEntity;
+import com.dunkware.trade.service.data.service.repository.DataStreamInstrumentEntityRepo;
 import com.dunkware.trade.service.data.service.repository.DataStreamSessionEntity;
-import com.dunkware.trade.service.data.service.repository.DataStreamSessionInstrumentEntity;
+import com.dunkware.trade.service.data.service.repository.DataStreamSessionEntityRepo;
+import com.dunkware.trade.service.data.service.stream.writers.DataStreamSessionSignalWriter;
 import com.dunkware.trade.service.data.service.stream.writers.DataStreamSessionSnapshotWriter;
 import com.dunkware.trade.service.data.service.util.DataMarkers;
 import com.dunkware.trade.service.stream.json.controller.model.StreamSessionSpec;
@@ -34,7 +38,10 @@ public class DataStreamSession {
 	private RuntimeConfig configService; 
 	
 	@Autowired
-	private DataServiceRepository dataRepo;
+	private DataStreamSessionEntityRepo sessionRepo;
+	
+	@Autowired
+	private DataStreamInstrumentEntityRepo instrumentRepo;
 	
 	@Autowired
 	private ApplicationContext ac;
@@ -49,17 +56,21 @@ public class DataStreamSession {
 	private LocalDateTime startTime; 
 	
 	private DataStreamSessionSnapshotWriter snapshotWriter; 
+	private DataStreamSessionSignalWriter signalWriter;
 	
 	// Entities 
 	private DataStreamSessionEntity sessionEntity; 
 	
 	
 	private EntityPersister entityPersister;
-	private SessionMonitor sessionMonitor;
+
 	
 	private boolean snapshotWriterComplete = false; 
 	private boolean signalWriterComplete = false; 
 	
+	private boolean completed = false; 
+	
+	@Transactional
 	public void controllerStart(DataStream stream, StreamSessionSpec spec) throws Exception { 
 		this.stream = stream;
 		this.spec = spec; 
@@ -74,7 +85,7 @@ public class DataStreamSession {
 		sessionEntity.setState(DataStreamSessionState.Running);
 		sessionEntity.setScriptVersion(spec.getStreamScript().getVersion());
 		try {
-			dataRepo.persist(sessionEntity);
+			sessionRepo.save(sessionEntity);
 		} catch (Exception e) {
 			logger.error(DataMarkers.getServiceMarker(), " Data Repo Persist new stream entity failed we are fucked " + e.toString());
 			throw e;
@@ -88,12 +99,18 @@ public class DataStreamSession {
 			logger.error(DataMarkers.getServiceMarker(), "Exception starting data stream session snapshot writer " + e.toString());
 			throw e;
 		}
+		try {
+			signalWriter = new DataStreamSessionSignalWriter();
+			ac.getAutowireCapableBeanFactory().autowireBean(signalWriter);
+			signalWriter.startSession(this);
+		} catch (Exception e) {
+			logger.error(DataMarkers.getServiceMarker(), "Exception starting session signal writer " + e.toString());
+			// TODO: handle exception
+		}
 		
 		entityPersister = new EntityPersister();
 		entityPersister.start();
-		
-		sessionMonitor = new SessionMonitor();
-		sessionMonitor.start();
+	
 		
 	}
 	
@@ -111,7 +128,7 @@ public class DataStreamSession {
 		if(inst == null) { 
 			inst = new DataStreamSessionInstrument();
 			ac.getAutowireCapableBeanFactory().autowireBean(inst);
-			DataStreamSessionInstrumentEntity ent = new DataStreamSessionInstrumentEntity();
+			DataStreamInstrumentEntity ent = new DataStreamInstrumentEntity();
 			ent.setInstId(snapshot.getId());
 			ent.setInstIdentifier(snapshot.getIdentifier());
 			ent.setScriptVersion(DataStreamSession.this.spec.getStreamScript().getVersion());
@@ -132,7 +149,7 @@ public class DataStreamSession {
 		if(inst == null) { 
 			inst = new DataStreamSessionInstrument();
 			ac.getAutowireCapableBeanFactory().autowireBean(inst);
-			DataStreamSessionInstrumentEntity ent = new DataStreamSessionInstrumentEntity();
+			DataStreamInstrumentEntity ent = new DataStreamInstrumentEntity();
 			ent.setInstId(signal.getEntityId());
 			ent.setInstIdentifier(signal.getEntityIdentifier());
 			ent.setScriptVersion(DataStreamSession.this.spec.getStreamScript().getVersion());
@@ -149,10 +166,30 @@ public class DataStreamSession {
 		}		
 	}
 	
+	@Transactional
+	public void saveInstruments() {
+		List<DataStreamInstrumentEntity> ents = new ArrayList<DataStreamInstrumentEntity>();
+		for (DataStreamSessionInstrument instrument : instruments.values()) {
+			ents.add(instrument.getEntity());
+		}
+		try {
+			instrumentRepo.saveAll(ents);	
+		} catch (Exception e) {
+			logger.error("Exception saving instruments " + e.toString());
+		}
+		
+	}
+	
+	@Transactional
+	public void saveSession() { 
+		sessionRepo.save(sessionEntity);
+	}
 	
 	public void controllerStop() { 
 		sessionEntity.setControllerStopTime(LocalDateTime.now(DTimeZone.toZoneId(spec.getTimeZone())));
+		LocalDateTime now = LocalDateTime.now(DTimeZone.toZoneId(stream.getTimeZone()));
 		sessionEntity.setState(DataStreamSessionState.Persisting);
+		saveSession();
 		// who will update session enetity
 	}
 	
@@ -178,10 +215,15 @@ public class DataStreamSession {
 	
 	public void snapshotWriterComplete() { 
 		snapshotWriterComplete = true;
+		sessionEntity.setSnapshotCompleteTime(LocalDateTime.now(DTimeZone.toZoneId(stream.getTimeZone())));
+		saveSession();
+		completeSession();
 	}
 	
 	public void signalWriterComplete() { 
 		signalWriterComplete = true;
+		completeSession();
+		
 	}
 	
 	public CacheStream getCache() { 
@@ -196,51 +238,34 @@ public class DataStreamSession {
 		return sessionEntity;
 	}
 	
-	
-	
-	private class SessionMonitor extends Thread { 
-		
-		public void run() { 
-			while(!interrupted()) { 
-				try {
-					Thread.sleep(1000);
-					if(sessionEntity.getState() == DataStreamSessionState.Persisting) {
-						if(snapshotWriterComplete && signalWriterComplete) { 
-							// then change state
-							sessionEntity.setState(DataStreamSessionState.Completed);
-							sessionEntity.setSessionStopTime(LocalDateTime.now(DTimeZone.toZoneId(stream.getTimeZone())));
-							// persist -- events? 
-						}
-					}
-				} catch (Exception e) {
-					// TODO: handle exception
-				}
-			}
+	private void completeSession() { 
+		if(completed) { 
+			return;
 		}
+		if(signalWriterComplete && snapshotWriterComplete) {
+			LocalDateTime now = LocalDateTime.now(DTimeZone.toZoneId(stream.getTimeZone()));
+			sessionEntity.setSessionStopTime(now);
+			sessionEntity.setState(DataStreamSessionState.Completed);
+			entityPersister.interrupt();
+			saveSession();	
+		}
+		
 	}
+	
+	
+
 	private class EntityPersister extends Thread { 
 		
 		public void run() { 
 			while(!interrupted()) { 
 				try {
 					Thread.sleep(5000);
+					saveInstruments();
 				} catch (Exception e) {
 					// TODO: handle exception
 				}
-				try {
-					EntityManager em = dataRepo.createEntityManager();
-					em.getTransaction().begin();
-					em.persist(sessionEntity);
-					for (DataStreamSessionInstrument inst : instruments.values()) {
-						
-						em.persist(inst.getEntity());
-					}
-					em.flush();
-					em.getTransaction().commit();
-					em.close();
-				} catch (Exception e) {
-					// TODO: handle exception
-				}
+				
+				
 			}
 		}
 	}

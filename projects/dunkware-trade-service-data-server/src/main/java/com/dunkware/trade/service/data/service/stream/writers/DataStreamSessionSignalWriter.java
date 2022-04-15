@@ -24,7 +24,6 @@ import com.dunkware.net.proto.stream.GEntitySignal;
 import com.dunkware.net.proto.stream.GStreamEvent;
 import com.dunkware.net.proto.stream.GStreamEventType;
 import com.dunkware.trade.service.data.service.config.RuntimeConfig;
-import com.dunkware.trade.service.data.service.repository.DataServiceRepository;
 import com.dunkware.trade.service.data.service.stream.DataStream;
 import com.dunkware.trade.service.data.service.stream.DataStreamSession;
 import com.dunkware.trade.service.data.service.util.DataMarkers;
@@ -43,8 +42,6 @@ public class DataStreamSessionSignalWriter implements DKafkaByteHandler2 {
 	@Autowired
 	private RuntimeConfig config;
 
-	@Autowired
-	private DataServiceRepository dataRepo;
 
 	private MongoClient mongoClient;
 	private MongoDatabase mongoDatabase;
@@ -66,7 +63,8 @@ public class DataStreamSessionSignalWriter implements DKafkaByteHandler2 {
 	private DKafkaByteConsumer2 kafkaConsumer;
 
 	public void startSession(DataStreamSession session) throws Exception {
-
+		this.session = session;
+		this.stream = session.getStream();
 		this.timeZone = session.getSpec().getTimeZone();
 		timeZone = stream.getTimeZone();
 
@@ -119,6 +117,7 @@ public class DataStreamSessionSignalWriter implements DKafkaByteHandler2 {
 		}
 
 		if(event.getType() == GStreamEventType.SessionStop) {
+			session.signalWriterComplete();
 			DisposeRunner runner = new  DisposeRunner();
 			runner.start();
 		}

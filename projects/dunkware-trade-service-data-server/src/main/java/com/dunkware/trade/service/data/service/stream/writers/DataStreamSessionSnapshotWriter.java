@@ -202,7 +202,7 @@ public class DataStreamSessionSnapshotWriter implements DKafkaByteHandler2 {
 	private class WriterDisposer extends Thread {
 
 		public void start() {
-			 while(!interrupted()) {
+		
 				 int count = 0;
 				 kafkaConsumer.dispose();
 				 while(writeQueue.isEmpty() == false) { 
@@ -215,10 +215,9 @@ public class DataStreamSessionSnapshotWriter implements DKafkaByteHandler2 {
 					} catch (Exception e) {
 						// TODO: handle exception
 					}
-				 }
+				
 				 bucketWriter.interrupt();
 				 queueMonitor.interrupt();
-				 
 				 session.snapshotWriterComplete();
 				 
 			 }

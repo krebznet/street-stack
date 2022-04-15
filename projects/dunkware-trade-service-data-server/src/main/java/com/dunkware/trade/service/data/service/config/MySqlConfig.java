@@ -20,10 +20,10 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
 
 
 
-@Configuration
-@EnableTransactionManagement
-@EnableJpaRepositories(entityManagerFactoryRef = "dataEntityManagerFactory", transactionManagerRef = "dataTransactionManager", basePackages = {
-		"com.dunkware.trade.service.data.service.repository" })
+//@Configuration
+//@EnableTransactionManagement
+//@EnableJpaRepositories(entityManagerFactoryRef = "dataEntityManagerFactory", transactionManagerRef = "dataTransactionManager", basePackages = {
+//		"com.dunkware.trade.service.data.service.repository" })
 public class MySqlConfig {
 
 	@Value("${spring.data.datasource.jpa.properties.hibernate.hbm2ddl.auto}")
