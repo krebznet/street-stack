@@ -79,7 +79,7 @@ public class DataStream implements StreamMessageHandler {
 					session = new DataStreamSession();
 					ac.getAutowireCapableBeanFactory().autowireBean(session);
 					try {
-						session.startSession(DataStream.this, start.getSpec());
+						session.controllerStart(DataStream.this, start.getSpec());
 					} catch (Exception e) {
 						logger.error(DataMarkers.getServiceMarker(),
 								"Exception starting stream session on session start " + e.toString());
@@ -99,7 +99,7 @@ public class DataStream implements StreamMessageHandler {
 					session = new DataStreamSession();
 					ac.getAutowireCapableBeanFactory().autowireBean(session);
 					try {
-						session.startSession(DataStream.this, start.getSpec());
+						session.controllerStart(DataStream.this, start.getSpec());
 					} catch (Exception e) {
 						logger.error(DataMarkers.getServiceMarker(),
 								"Exception starting stream session on session start " + e.toString());

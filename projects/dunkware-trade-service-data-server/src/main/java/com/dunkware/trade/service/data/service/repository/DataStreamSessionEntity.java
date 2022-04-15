@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import javax.persistence.CascadeType;
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -29,23 +30,32 @@ public class DataStreamSessionEntity {
 	@ManyToOne()
 	private DataStreamEntity stream; 
 	
-	private String streamName; 
+	@Column(name = "stream_name'")
+	private String streamName;
+	@Column(name = "script_version")
 	private double scriptVersion;
 	
-	private LocalDateTime messageStartDateTime; 
-	private LocalDateTime messageStopDateTime;
+	@Column(name = "controller_start_time")
+	private LocalDateTime controllerStartTime;
+	@Column(name = "controller_stop_time")
+	private LocalDateTime controllerStopTime;
 	
-	private LocalDateTime sessionStartDateTime;
-	private LocalDateTime sessionEndDateTime;
+	@Column(name = "session_start_time")
+	private LocalDateTime sessionStartTime;
+	@Column(name = "session_stop_time")
+	private LocalDateTime sessionStopTime;
 	
+	@Column(name = "session_ident")
 	private String sessionIdentifier; 
 	 
-	
+	@Column(name = "session_state")
 	private DataStreamSessionState state;
-	
-	private long signalWriteCount;
-	private long snapshotBucketWriteCount;
-	private long snapshotWriteCount;
+	@Column(name = "signal_count")
+	private long signalCount;
+	@Column(name = "snapshot_count")
+	private long snapshotCount;
+	@Column(name = "instrument_count")
+	private long instrumentCount;;
 	
 	
 	public long getId() {
@@ -73,29 +83,29 @@ public class DataStreamSessionEntity {
 	public void setScriptVersion(double scriptVersion) {
 		this.scriptVersion = scriptVersion;
 	}
-	public LocalDateTime getMessageStartDateTime() {
-		return messageStartDateTime;
+	public LocalDateTime getControllerStartTime() {
+		return controllerStartTime;
 	}
-	public void setMessageStartDateTime(LocalDateTime messageStartDateTime) {
-		this.messageStartDateTime = messageStartDateTime;
+	public void setControllerStartTime(LocalDateTime controllerStartTime) {
+		this.controllerStartTime = controllerStartTime;
 	}
-	public LocalDateTime getMessageStopDateTime() {
-		return messageStopDateTime;
+	public LocalDateTime getControllerStopTime() {
+		return controllerStopTime;
 	}
-	public void setMessageStopDateTime(LocalDateTime messageStopDateTime) {
-		this.messageStopDateTime = messageStopDateTime;
+	public void setControllerStopTime(LocalDateTime controllerStopTime) {
+		this.controllerStopTime = controllerStopTime;
 	}
-	public LocalDateTime getSessionStartDateTime() {
-		return sessionStartDateTime;
+	public LocalDateTime getSessionStartTime() {
+		return sessionStartTime;
 	}
-	public void setSessionStartDateTime(LocalDateTime sessionStartDateTime) {
-		this.sessionStartDateTime = sessionStartDateTime;
+	public void setSessionStartTime(LocalDateTime sessionStartTime) {
+		this.sessionStartTime = sessionStartTime;
 	}
-	public LocalDateTime getSessionEndDateTime() {
-		return sessionEndDateTime;
+	public LocalDateTime getSessionStopTime() {
+		return sessionStopTime;
 	}
-	public void setSessionEndDateTime(LocalDateTime sessionEndDateTime) {
-		this.sessionEndDateTime = sessionEndDateTime;
+	public void setSessionStopTime(LocalDateTime sessionStopTime) {
+		this.sessionStopTime = sessionStopTime;
 	}
 	public String getSessionIdentifier() {
 		return sessionIdentifier;
@@ -103,30 +113,29 @@ public class DataStreamSessionEntity {
 	public void setSessionIdentifier(String sessionIdentifier) {
 		this.sessionIdentifier = sessionIdentifier;
 	}
-	
 	public DataStreamSessionState getState() {
 		return state;
 	}
 	public void setState(DataStreamSessionState state) {
 		this.state = state;
 	}
-	public long getSignalWriteCount() {
-		return signalWriteCount;
+	public long getSignalCount() {
+		return signalCount;
 	}
-	public void setSignalWriteCount(long signalWriteCount) {
-		this.signalWriteCount = signalWriteCount;
+	public void setSignalCount(long signalCount) {
+		this.signalCount = signalCount;
 	}
-	public long getSnapshotBucketWriteCount() {
-		return snapshotBucketWriteCount;
+	public long getSnapshotCount() {
+		return snapshotCount;
 	}
-	public void setSnapshotBucketWriteCount(long snapshotBucketWriteCount) {
-		this.snapshotBucketWriteCount = snapshotBucketWriteCount;
+	public void setSnapshotCount(long snapshotCount) {
+		this.snapshotCount = snapshotCount;
 	}
-	public long getSnapshotWriteCount() {
-		return snapshotWriteCount;
+	public long getInstrumentCount() {
+		return instrumentCount;
 	}
-	public void setSnapshotWriteCount(long snapshotWriteCount) {
-		this.snapshotWriteCount = snapshotWriteCount;
+	public void setInstrumentCount(long instrumentCount) {
+		this.instrumentCount = instrumentCount;
 	}
 	
 	

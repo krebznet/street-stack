@@ -1,72 +1,36 @@
 package com.dunkware.trade.service.data.service.stream;
 
-import java.time.LocalDateTime;
+import com.dunkware.net.proto.stream.GEntitySignal;
+import com.dunkware.net.proto.stream.GEntitySnapshot;
+import com.dunkware.trade.service.data.service.repository.DataStreamSessionInstrumentEntity;
 
-import com.dunkware.trade.service.data.service.repository.DataStreamSessionEntity;
-
-// then we will update these and mark
-// them dirty as updated. 
 public class DataStreamSessionInstrument {
 	
-	private int id; 
-	private String identifier; 
+	private DataStreamSession session;
+	private DataStreamSessionInstrumentEntity entity;
+	private boolean dirty = false;
 	
-	private volatile long snapshotCount; 
-	private volatile long signalCount; 
-	private volatile int errorCount; 
-	private LocalDateTime firstSnapshot;
-	
-	private DataStreamSessionEntity entity; 
-	private DataStreamSession sesion; 
-	
-	private boolean dirty = false; 
-	
-	
-	public int getId() {
-		return id;
+	public void start(DataStreamSession session, DataStreamSessionInstrumentEntity entity) {
+		this.session = session;
+		this.entity = entity;
 	}
 	
-	public void setId(int id) {
-		this.id = id;
+	public void snapshot(GEntitySnapshot snapshot) {
+		entity.setSnapshotCount(entity.getSnapshotCount() + 1);
+		dirty = true; 
 	}
 	
-	public String getIdentifier() {
-		return identifier;
-	}
-	public void setIdentifier(String identifier) {
-		this.identifier = identifier;
+	public void signal(GEntitySignal signal) { 
+		entity.setSignalCount(entity.getSignalCount() + 1);
 		dirty = true;
 	}
-	public long getSnapshotCount() {
-		return snapshotCount;
-	}
-	public void setSnapshotCount(long snapshotCount) {
-		this.snapshotCount = snapshotCount;
-	}
 	
-	public void snapshot() { 
-		
+	public DataStreamSessionInstrumentEntity getEntity() { 
+		return entity;
 	}
 	
 	
-	public long getSignalCount() {
-		return signalCount;
-	}
-	public void setSignalCount(long signalCount) {
-		this.signalCount = signalCount;
-	}
-	public int getErrorCount() {
-		return errorCount;
-	}
-	public void setErrorCount(int errorCount) {
-		this.errorCount = errorCount;
-	}
-	public LocalDateTime getFirstSnapshot() {
-		return firstSnapshot;
-	}
-	public void setFirstSnapshot(LocalDateTime firstSnapshot) {
-		this.firstSnapshot = firstSnapshot;
-	} 
+	
+	
 
-	
 }
