@@ -28,7 +28,10 @@ pipeline {
                   dir('projects/dunkware-trade-service-tick-server') {
                    sh "pwd"
        }
-            steps{
+            script{
+                  sh "pwd"
+                  dir('projects/dunkware-trade-service-tick-server') {
+                   sh "pwd"
                     docker.withRegistry(
                         'https://505030817635.dkr.ecr.us-east-1.amazonaws.com/dunkware-trade-service-tick-server', 'ecr:us-east-1:ecr-dunkware-internal'
                         ){
