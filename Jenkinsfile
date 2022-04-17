@@ -24,6 +24,7 @@ pipeline {
            // Build Tick Server Image 
            steps {
             sh '''
+            pwd
             cd $WORKSPACE/projects/dunkware-trade-service-tick-server
             ''' 
             script{
