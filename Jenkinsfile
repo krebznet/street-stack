@@ -15,10 +15,10 @@ pipeline {
  			sh 'mvn clean install'
 }
             
-        }}
-
-     
         }
+        }
+     
+        
         // docker image deploy stage 
         stage('Buiding test images') {
            // Build Tick Server Image 
@@ -36,6 +36,7 @@ pipeline {
   }
 }
     }
+}
 
 
 
