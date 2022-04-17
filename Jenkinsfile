@@ -2,9 +2,9 @@ pipeline {
     agent any
     stages {
     
-        stage('Build') {
-            steps {
-                script{
+       stage('Build') {
+           steps {
+               script{
                  // pull from github
 
                     git branch: 'main',
@@ -16,6 +16,7 @@ pipeline {
 }
             
         }
+    
         }
      
         
@@ -23,10 +24,10 @@ pipeline {
         stage('Buiding test images') {
            // Build Tick Server Image 
            steps {
-            sh '''
-            pwd
-            cd $WORKSPACE/projects/dunkware-trade-service-tick-server
-            ''' 
+                  sh "pwd"
+                  dir('projects/dunkware-trade-service-tick-server') {
+                   sh "pwd"
+       }
             script{
                     docker.withRegistry(
                         'https://505030817635.dkr.ecr.us-east-1.amazonaws.com/dunkware-trade-service-tick-server', 'ecr:us-east-1:dunkware-ecr-internal'
