@@ -99,7 +99,7 @@
 <!--  <logger name="com.dunkware.trade.tick.provider.atick.ActiveTickProvider" level="INFO">
 	<appender-ref ref="TickProviderTrace"></appender-ref>
 </logger>-->
-	<root level="DEBUG">
+	<root level="INFO">
 		
 		<appender-ref ref="CONSOLE" additivity="false" />
 	</root>
