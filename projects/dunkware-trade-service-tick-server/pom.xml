@@ -62,6 +62,8 @@
 	<dependencies>
 		<!-- <dependency> <groupId>org.springframework.boot</groupId> <artifactId>spring-boot-starter-data-jpa</artifactId> 
 			</dependency> -->
+
+
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-web</artifactId>
@@ -123,6 +125,12 @@
 
 
 		<!-- Dunkware Dependnecies -->
+
+		<dependency>
+			<groupId>com.dunkware.net.cluster</groupId>
+			<artifactId>dunkware-net-cluster-node</artifactId>
+			<version>1.0.0-SNAPSHOT</version>
+		</dependency>
 		<dependency>
 			<groupId>com.dunkware.trade.tick</groupId>
 			<artifactId>dunkware-trade-tick-provider-atick</artifactId>

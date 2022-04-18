@@ -101,6 +101,7 @@ public class StreamController {
 	}
 
 	public void start(StreamDO ent) throws Exception {
+		logger.info(logService.createMarker(), "Starting Stream Controller");
 		// set member variabbes
 		this.ent = ent;
 		stats = new StreamStatsSpec();

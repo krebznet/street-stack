@@ -13,7 +13,7 @@ import javax.annotation.PostConstruct;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Profile;
-import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 
 import com.dunkware.trade.tick.api.provider.TradeSymbolService;
 import com.dunkware.trade.tick.service.server.spring.DatabaseService;
@@ -23,7 +23,7 @@ import com.dunkware.trade.tick.service.server.ticker.repsoitory.TickerListDoRepo
 import com.dunkware.trade.tick.service.server.ticker.repsoitory.TickerListTickerDO;
 import com.dunkware.trade.tick.service.server.ticker.repsoitory.TickerRepository;
 
-@Component
+@Service
 @Profile("TickerService")
 public class TickerService implements TradeSymbolService {
 

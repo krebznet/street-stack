@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 public class LogService {
 	
 	
+	
 	 
 	public static Marker createMarker() { 
 		return MarkerFactory.getMarker("STREAM-ID-" + "the stream instance id");

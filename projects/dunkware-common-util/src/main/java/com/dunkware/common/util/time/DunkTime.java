@@ -47,8 +47,8 @@ public class DunkTime {
 	public static String format(LocalDate date, String format) { 
 		DateTimeFormatter formatter = DateTimeFormatter.ofPattern(format);
 		return date.format(formatter);
-		
 	}
+	
 	
 	public static String formatDateTimeStamp(long time) { 
 		LocalDateTime dt = toLocalDateTime(new Date(time));

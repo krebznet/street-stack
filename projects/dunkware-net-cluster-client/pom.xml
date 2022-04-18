@@ -12,10 +12,10 @@
 
 	</parent>
 	<groupId>com.dunkware.net.cluster</groupId>
-	<artifactId>dunkware-net-cluster-node</artifactId>
+	<artifactId>dunkware-net-cluster-client</artifactId>
 	<version>1.0.0-SNAPSHOT</version>
 
-	<name>Dunkware Net Cluster Node</name>
+	<name>Dunkware Net Cluster client</name>
 	<description>maven-archtype-jar.</description>
 
 
@@ -35,10 +35,15 @@
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot</artifactId>
-			<version>2.4.0</version>
+			<version>2.6.3</version>
 		</dependency>
 		<!-- Dunkware Dependencies -->
 
+		<dependency>
+			<groupId>com.dunkware.net.cluster</groupId>
+			<artifactId>dunkware-net-cluster-util</artifactId>
+			<version>1.0.0-SNAPSHOT</version>
+		</dependency>
 		<dependency>
 			<groupId>com.dunkware.net</groupId>
 			<artifactId>dunkware-net-core-proto</artifactId>

@@ -1,8 +1,8 @@
 package com.dunkware.common.util.helpers;
 
 import java.math.BigInteger;
-
-import javax.print.DocFlavor.INPUT_STREAM;
+import java.text.MessageFormat;
+import java.util.regex.Pattern;
 
 public class DStringHelper {
 	
@@ -86,6 +86,14 @@ public class DStringHelper {
 		}
 		return builder.toString();
 	}
+	
+	public static String format(String s, Object... var2) {
+        int i = 0;
+        while(s.contains("{}")) {
+            s = s.replaceFirst(Pattern.quote("{}"), "{"+ i++ +"}");
+        }
+        return MessageFormat.format(s, var2);
+    }
 	
 
 }

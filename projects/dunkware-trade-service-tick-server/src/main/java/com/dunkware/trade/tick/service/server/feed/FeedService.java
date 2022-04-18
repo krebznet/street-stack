@@ -19,6 +19,8 @@ import org.springframework.stereotype.Component;
 
 import com.dunkware.common.kafka.admin.DKafkaAdmin;
 import com.dunkware.common.util.json.DJson;
+import com.dunkware.net.cluster.node.trace.Trace;
+import com.dunkware.net.cluster.node.trace.TraceService;
 import com.dunkware.trade.tick.model.feed.TickFeedSpec;
 import com.dunkware.trade.tick.model.provider.TickProviderSpec;
 import com.dunkware.trade.tick.service.server.feed.repository.FeedProviderDO;
@@ -32,6 +34,9 @@ public class FeedService {
 	private Logger logger = LoggerFactory.getLogger(getClass());
 	
 	private List<FeedServiceProvider> serviceProviders = new ArrayList<FeedServiceProvider>();
+	
+	@Autowired
+	private TraceService trace; 
 	
 	@Autowired
 	private FeedRepository providerRepo;
@@ -54,6 +59,8 @@ public class FeedService {
 	
 	@PostConstruct 
 	private void load() {
+		System.out.println("loading feed service");
+		trace.trace(Trace.INFO).message("Starting Feed Service").send();
 		logMarker = logging.getMarker();
 		Marker marker = MarkerFactory.getDetachedMarker("Monitor");
 		Marker notify = MarkerFactory.getDetachedMarker("Notify");
