@@ -34,7 +34,7 @@ public class TraceService {
   @PostConstruct
   private void load() { 
 	  try {
-		  System.out.println("-------- starting trace service ------");
+		
 		kafkaProducer = DKafkaByteProducer.newInstance(brokers, topic, node + "_trace");
 	} catch (Exception e) {
 		logger.error("Exception building trace kafka producer " + e.toString());
@@ -42,15 +42,10 @@ public class TraceService {
 	}
 	 publisher = new Publisher();
 	 publisher.start();
-	 trace("info").message("fuck you").tag("0023").tag("Stream").label("tradeid", "323").send();
 	 
   }
   
-  public Trace trace(String level) { 
-	  Trace trace = new Trace(this, level);
-	  return trace;
-  }
-  
+ 
   public void send(GTrace trace) { 
 	  publishQueue.add(trace);
   }
@@ -60,6 +55,11 @@ public class TraceService {
 	  return node; 
   }
   
+  
+  public TraceLogger logger(Class clazz) { 
+	  TraceLogger logger = new TraceLogger(this, clazz);
+	  return logger;
+  }
   
   private class Publisher extends Thread { 
 	  

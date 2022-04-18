@@ -23,14 +23,15 @@ public class Trace {
 		private Map<String,String> labels = new ConcurrentHashMap<String,String>();
 		
 		private TraceService traceService;
-		
-		public Trace(TraceService traceService, String level) { 
+		private Class clazz; 
+		public Trace(TraceService traceService, String level, Class clazz) { 
 			this.level = level;
+			this.clazz = clazz;
 			this.traceService = traceService;
 		}
 		
-		public Trace message(String message, Object[]... values) {
-			message = DStringHelper.format(message, values);
+		public Trace message(String message, Object... values) {
+			this.message = DStringHelper.format(message, values);
 			return this;
 		}
 		
@@ -55,6 +56,7 @@ public class Trace {
 			builder.setTime(DProtoHelper.toTimeStamp(LocalDateTime.now(), DTimeZone.NewYork));
 			builder.setMessage(message);
 			builder.setLevel(level);
+			builder.setClassName(clazz.getName());
 			builder.setNode(traceService.node());
 			for (String tab : tags) {
 				builder.addTags(GTrace.GTraceTag.newBuilder().setTag(tab).build());
