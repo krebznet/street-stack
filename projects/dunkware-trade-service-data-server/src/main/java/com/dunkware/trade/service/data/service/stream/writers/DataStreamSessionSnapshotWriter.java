@@ -84,6 +84,9 @@ public class DataStreamSessionSnapshotWriter implements DKafkaByteHandler2 {
 
 	@Value("${snapshot.writer.queuelimit}")
 	private int queueSizeLimit;
+	
+	@Value("${kafka.brokers}")
+	private String kafkaBrokers;
 
 	private boolean completed = false;
 
@@ -124,7 +127,7 @@ public class DataStreamSessionSnapshotWriter implements DKafkaByteHandler2 {
 		}
 
 		DKafkaConsumerSpec2 spec = DKafkaConsumerSpec2Builder.newBuilder(ConsumerType.AllPartitions, OffsetType.Latest)
-				.setBrokerString("localhost:9091").addTopic("stream_us_equity_snapshots")
+				.setBrokerString(kafkaBrokers).addTopic("stream_" + session.getStream().getName().toLowerCase() + "_snapshots")
 				.setClientAndGroup("d" + DUUID.randomUUID(5), "d" + DUUID.randomUUID(6)).build();
 
 		try {
