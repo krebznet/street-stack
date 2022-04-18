@@ -97,4 +97,14 @@ public interface GTraceOrBuilder extends
    */
   com.dunkware.net.cluster.GTrace.GTraceLabelOrBuilder getLabelsOrBuilder(
       int index);
+
+  /**
+   * <code>string className = 7;</code>
+   */
+  java.lang.String getClassName();
+  /**
+   * <code>string className = 7;</code>
+   */
+  com.google.protobuf.ByteString
+      getClassNameBytes();
 }

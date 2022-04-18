@@ -21,6 +21,7 @@ private static final long serialVersionUID = 0L;
     level_ = "";
     tags_ = java.util.Collections.emptyList();
     labels_ = java.util.Collections.emptyList();
+    className_ = "";
   }
 
   @java.lang.Override
@@ -94,6 +95,12 @@ private static final long serialVersionUID = 0L;
             }
             labels_.add(
                 input.readMessage(com.dunkware.net.cluster.GTrace.GTraceLabel.parser(), extensionRegistry));
+            break;
+          }
+          case 58: {
+            java.lang.String s = input.readStringRequireUtf8();
+
+            className_ = s;
             break;
           }
           default: {
@@ -1565,6 +1572,40 @@ private static final long serialVersionUID = 0L;
     return labels_.get(index);
   }
 
+  public static final int CLASSNAME_FIELD_NUMBER = 7;
+  private volatile java.lang.Object className_;
+  /**
+   * <code>string className = 7;</code>
+   */
+  public java.lang.String getClassName() {
+    java.lang.Object ref = className_;
+    if (ref instanceof java.lang.String) {
+      return (java.lang.String) ref;
+    } else {
+      com.google.protobuf.ByteString bs = 
+          (com.google.protobuf.ByteString) ref;
+      java.lang.String s = bs.toStringUtf8();
+      className_ = s;
+      return s;
+    }
+  }
+  /**
+   * <code>string className = 7;</code>
+   */
+  public com.google.protobuf.ByteString
+      getClassNameBytes() {
+    java.lang.Object ref = className_;
+    if (ref instanceof java.lang.String) {
+      com.google.protobuf.ByteString b = 
+          com.google.protobuf.ByteString.copyFromUtf8(
+              (java.lang.String) ref);
+      className_ = b;
+      return b;
+    } else {
+      return (com.google.protobuf.ByteString) ref;
+    }
+  }
+
   private byte memoizedIsInitialized = -1;
   @java.lang.Override
   public final boolean isInitialized() {
@@ -1597,6 +1638,9 @@ private static final long serialVersionUID = 0L;
     for (int i = 0; i < labels_.size(); i++) {
       output.writeMessage(6, labels_.get(i));
     }
+    if (!getClassNameBytes().isEmpty()) {
+      com.google.protobuf.GeneratedMessageV3.writeString(output, 7, className_);
+    }
     unknownFields.writeTo(output);
   }
 
@@ -1626,6 +1670,9 @@ private static final long serialVersionUID = 0L;
     for (int i = 0; i < labels_.size(); i++) {
       size += com.google.protobuf.CodedOutputStream
         .computeMessageSize(6, labels_.get(i));
+    }
+    if (!getClassNameBytes().isEmpty()) {
+      size += com.google.protobuf.GeneratedMessageV3.computeStringSize(7, className_);
     }
     size += unknownFields.getSerializedSize();
     memoizedSize = size;
@@ -1658,6 +1705,8 @@ private static final long serialVersionUID = 0L;
         .equals(other.getTagsList());
     result = result && getLabelsList()
         .equals(other.getLabelsList());
+    result = result && getClassName()
+        .equals(other.getClassName());
     result = result && unknownFields.equals(other.unknownFields);
     return result;
   }
@@ -1687,6 +1736,8 @@ private static final long serialVersionUID = 0L;
       hash = (37 * hash) + LABELS_FIELD_NUMBER;
       hash = (53 * hash) + getLabelsList().hashCode();
     }
+    hash = (37 * hash) + CLASSNAME_FIELD_NUMBER;
+    hash = (53 * hash) + getClassName().hashCode();
     hash = (29 * hash) + unknownFields.hashCode();
     memoizedHashCode = hash;
     return hash;
@@ -1846,6 +1897,8 @@ private static final long serialVersionUID = 0L;
       } else {
         labelsBuilder_.clear();
       }
+      className_ = "";
+
       return this;
     }
 
@@ -1900,6 +1953,7 @@ private static final long serialVersionUID = 0L;
       } else {
         result.labels_ = labelsBuilder_.build();
       }
+      result.className_ = className_;
       result.bitField0_ = to_bitField0_;
       onBuilt();
       return result;
@@ -2015,6 +2069,10 @@ private static final long serialVersionUID = 0L;
             labelsBuilder_.addAllMessages(other.labels_);
           }
         }
+      }
+      if (!other.getClassName().isEmpty()) {
+        className_ = other.className_;
+        onChanged();
       }
       this.mergeUnknownFields(other.unknownFields);
       onChanged();
@@ -2848,6 +2906,75 @@ private static final long serialVersionUID = 0L;
         labels_ = null;
       }
       return labelsBuilder_;
+    }
+
+    private java.lang.Object className_ = "";
+    /**
+     * <code>string className = 7;</code>
+     */
+    public java.lang.String getClassName() {
+      java.lang.Object ref = className_;
+      if (!(ref instanceof java.lang.String)) {
+        com.google.protobuf.ByteString bs =
+            (com.google.protobuf.ByteString) ref;
+        java.lang.String s = bs.toStringUtf8();
+        className_ = s;
+        return s;
+      } else {
+        return (java.lang.String) ref;
+      }
+    }
+    /**
+     * <code>string className = 7;</code>
+     */
+    public com.google.protobuf.ByteString
+        getClassNameBytes() {
+      java.lang.Object ref = className_;
+      if (ref instanceof String) {
+        com.google.protobuf.ByteString b = 
+            com.google.protobuf.ByteString.copyFromUtf8(
+                (java.lang.String) ref);
+        className_ = b;
+        return b;
+      } else {
+        return (com.google.protobuf.ByteString) ref;
+      }
+    }
+    /**
+     * <code>string className = 7;</code>
+     */
+    public Builder setClassName(
+        java.lang.String value) {
+      if (value == null) {
+    throw new NullPointerException();
+  }
+  
+      className_ = value;
+      onChanged();
+      return this;
+    }
+    /**
+     * <code>string className = 7;</code>
+     */
+    public Builder clearClassName() {
+      
+      className_ = getDefaultInstance().getClassName();
+      onChanged();
+      return this;
+    }
+    /**
+     * <code>string className = 7;</code>
+     */
+    public Builder setClassNameBytes(
+        com.google.protobuf.ByteString value) {
+      if (value == null) {
+    throw new NullPointerException();
+  }
+  checkByteStringIsUtf8(value);
+      
+      className_ = value;
+      onChanged();
+      return this;
     }
     @java.lang.Override
     public final Builder setUnknownFields(

@@ -16,6 +16,7 @@ message GTrace {
  string level = 4; 
  repeated GTraceTag tags = 5; 
  repeated GTraceLabel labels = 6; 
+ string className = 7;
  
  message GTraceTag { 
    string tag = 1;

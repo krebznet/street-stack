@@ -39,15 +39,16 @@ public final class GClusterProto {
   static {
     java.lang.String[] descriptorData = {
       "\n\rcluster.proto\022\020dunkware.cluster\032\037googl" +
-      "e/protobuf/timestamp.proto\"\216\002\n\006GTrace\022(\n" +
+      "e/protobuf/timestamp.proto\"\241\002\n\006GTrace\022(\n" +
       "\004time\030\001 \001(\0132\032.google.protobuf.Timestamp\022" +
       "\014\n\004node\030\002 \001(\t\022\017\n\007message\030\003 \001(\t\022\r\n\005level\030" +
       "\004 \001(\t\0220\n\004tags\030\005 \003(\0132\".dunkware.cluster.G" +
       "Trace.GTraceTag\0224\n\006labels\030\006 \003(\0132$.dunkwa" +
-      "re.cluster.GTrace.GTraceLabel\032\030\n\tGTraceT" +
-      "ag\022\013\n\003tag\030\001 \001(\t\032*\n\013GTraceLabel\022\014\n\004name\030\001" +
-      " \001(\t\022\r\n\005value\030\002 \001(\tB+\n\030com.dunkware.net." +
-      "clusterB\rGClusterProtoP\001b\006proto3"
+      "re.cluster.GTrace.GTraceLabel\022\021\n\tclassNa" +
+      "me\030\007 \001(\t\032\030\n\tGTraceTag\022\013\n\003tag\030\001 \001(\t\032*\n\013GT" +
+      "raceLabel\022\014\n\004name\030\001 \001(\t\022\r\n\005value\030\002 \001(\tB+" +
+      "\n\030com.dunkware.net.clusterB\rGClusterProt" +
+      "oP\001b\006proto3"
     };
     com.google.protobuf.Descriptors.FileDescriptor.InternalDescriptorAssigner assigner =
         new com.google.protobuf.Descriptors.FileDescriptor.    InternalDescriptorAssigner() {
@@ -67,7 +68,7 @@ public final class GClusterProto {
     internal_static_dunkware_cluster_GTrace_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_dunkware_cluster_GTrace_descriptor,
-        new java.lang.String[] { "Time", "Node", "Message", "Level", "Tags", "Labels", });
+        new java.lang.String[] { "Time", "Node", "Message", "Level", "Tags", "Labels", "ClassName", });
     internal_static_dunkware_cluster_GTrace_GTraceTag_descriptor =
       internal_static_dunkware_cluster_GTrace_descriptor.getNestedTypes().get(0);
     internal_static_dunkware_cluster_GTrace_GTraceTag_fieldAccessorTable = new
