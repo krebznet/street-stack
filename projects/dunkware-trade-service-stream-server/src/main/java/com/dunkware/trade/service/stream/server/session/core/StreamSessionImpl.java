@@ -23,6 +23,9 @@ import com.dunkware.common.kafka.producer.DKafkaByteProducer;
 import com.dunkware.common.util.dtime.DTime;
 import com.dunkware.common.util.dtime.DTimeZone;
 import com.dunkware.common.util.events.DEventNode;
+import com.dunkware.net.cluster.node.trace.Trace;
+import com.dunkware.net.cluster.node.trace.TraceLogger;
+import com.dunkware.net.cluster.node.trace.TraceService;
 import com.dunkware.net.proto.stream.GStreamEvent;
 import com.dunkware.trade.service.stream.json.controller.model.StreamEntitySpec;
 import com.dunkware.trade.service.stream.json.controller.session.StreamSessionNodeStatus;
@@ -73,6 +76,8 @@ public class StreamSessionImpl implements StreamSession {
 	@Value("${kafka.brokers}")
 	private String kafkaBrokers;
 
+	@Autowired
+	private TraceService trace;
 
 	@Autowired
 	private RuntimeService runtimeService;
@@ -120,9 +125,13 @@ public class StreamSessionImpl implements StreamSession {
 	private String kafkaSignalTopic;
 
 	private long sessionEntityId;
+	
+	private TraceLogger traceLogger;
 
 	@Override
 	public void startSession(StreamController stream) throws StreamSessionException {
+		traceLogger = trace.logger(getClass());
+		this.stream = stream;
 		if (logger.isDebugEnabled()) {
 			logger.debug("Session Debug - StartSession() called on StreamSession()");
 		}
@@ -130,6 +139,10 @@ public class StreamSessionImpl implements StreamSession {
 		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("MMddHHmmss");
 		String formatDateTime = LocalDateTime.now().format(formatter);
 		sessionId = stream.getName() + "_" + formatDateTime;
+		traceLogger.addLabel("SessionIdentifier", sessionId);
+		traceLogger.info("Starting Stream {} Session {}",stream.getName(),sessionId);
+		
+		
 		// set kafka topics
 		kafkaSignalTopic = "stream_" + stream.getName() + "_signals";
 		kafkaSnapshotTopic = "stream_snapshots_" + sessionId;
@@ -141,7 +154,7 @@ public class StreamSessionImpl implements StreamSession {
 		stats.setSessionId(sessionId);
 		stats.setExceptionNodeCount(0);
 
-		this.stream = stream;
+		
 
 		// Entity:
 
@@ -159,6 +172,7 @@ public class StreamSessionImpl implements StreamSession {
 			if (!tickService.isOnline()) {
 				stats.setStatus(StreamSessionStatus.Exception);
 				stats.setException("Tick Service Not Available");
+				traceLogger.error("Tick Service Coming Back as offline");
 				throw new StreamSessionException("Tick Service Not Online");
 			}
 		} catch (Exception e) {
@@ -169,6 +183,7 @@ public class StreamSessionImpl implements StreamSession {
 		if (clusterNodes.length == 0) {
 			stats.setStatus(StreamSessionStatus.Exception);
 			stats.setException("No Cluster Nodes Available");
+			traceLogger.error("No available stream worker nodes found");
 			throw new StreamSessionException(
 					"No Cluster Nodes Available In Cluster Healthy & StreamSessionWorkerProfile");
 		}
@@ -208,6 +223,7 @@ public class StreamSessionImpl implements StreamSession {
 					} catch (Exception e2) {
 						errorCount++;
 						if (errorCount > 9) {
+							traceLogger.error("Session Starting could not ping workder node {} skipping", clusterNode.getId());
 							logger.error("Stream Session Starting Could not ping worker node {} with endpoint {}",
 									clusterNode.getId(), clusterNode.getEndpoint("/stream/worker/ping"));
 							stats.setSkippedNodeCount(stats.getSkippedNodeCount() + 1);
@@ -310,7 +326,9 @@ public class StreamSessionImpl implements StreamSession {
 		try {
 			startMessage.setSpec(StreamSessionSpecBuilder.build(this));
 			messageService.sendMessage(startMessage);
+			traceLogger.info("Sent Session Start Message");
 		} catch (Exception e) {
+			traceLogger.error("Exception creating spec or sending start message {}",e.toString());
 			logger.error("Exception building stream session spec " + e.toString());
 			throw new StreamSessionException("Stream Start Message Creation Failed " + e.toString());
 		}
@@ -327,7 +345,9 @@ public class StreamSessionImpl implements StreamSession {
 					producer.dispose();
 					producer = DKafkaByteProducer.newInstance(kafkaBrokers, "stream_" + getStream().getName().toLowerCase() + "_snapshots", getSessionId());
 					producer.sendBytes(event.toByteArray());
+					traceLogger.info("Sent GStream Start Events to signal and snapshot topics");
 				} catch (Exception e) {
+					traceLogger.error("Exception sending GStream Start Events " + e.toString());
 					logger.error(
 							"Exception sending stream session event message in controller session " + e.toString());
 				}
@@ -341,6 +361,7 @@ public class StreamSessionImpl implements StreamSession {
 
 	@Override
 	public void stopSession() throws StreamSessionException {
+		traceLogger.info("Stop Session Method Invoked");
 		if (heartbeatUpdater != null) {
 			heartbeatUpdater.interrupt();
 			heartbeatUpdater = null;
@@ -381,7 +402,9 @@ public class StreamSessionImpl implements StreamSession {
 					producer.dispose();
 					producer = DKafkaByteProducer.newInstance(kafkaBrokers, "stream_" + getStream().getName().toLowerCase() + "_snapshots", getSessionId());
 					producer.sendBytes(event.toByteArray());
+					traceLogger.info("Sent GStream Event Session Stop message to signal and snapshot writers");
 				} catch (Exception e) {
+					traceLogger.error("Exception sending GStream Event Session Stop " + e.toString());
 					logger.error(
 							"Exception sending stream session stop event message in controller session " + e.toString());
 				}
@@ -398,8 +421,9 @@ public class StreamSessionImpl implements StreamSession {
 			StreamSessionStop stop = new StreamSessionStop();
 			stop.setSpec(startMessage.getSpec());
 			messageService.sendMessage(stop);
-			;
+			traceLogger.info("Sent StreamSessionStop message");
 		} catch (Exception e) {
+			traceLogger.error("Exception sending StreamSession Stop Message " + e.toString());;
 			logger.error("Exception sending stream stop message " + e.toString());
 		}
 		stats.setStatus(StreamSessionStatus.Running);

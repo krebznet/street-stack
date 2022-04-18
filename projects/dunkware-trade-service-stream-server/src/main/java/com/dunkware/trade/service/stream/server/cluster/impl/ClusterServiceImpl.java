@@ -264,6 +264,7 @@ public class ClusterServiceImpl implements ClusterService {
 			try {
 				logger.debug("Cluster Ping Consumer Starting ");
 				consumer = DKafkaByteConsumer.newInstance(clusterBrokers, pingTopic);
+				
 				consumer.addStreamHandler(this);
 			} catch (Exception e) {
 				logger.error("Exception Creating Cluster Ping Topic {}", e.toString(), e);

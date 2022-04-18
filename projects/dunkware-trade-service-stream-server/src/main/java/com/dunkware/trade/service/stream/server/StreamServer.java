@@ -8,7 +8,8 @@ import org.springframework.boot.autoconfigure.mongo.MongoAutoConfiguration;
 import org.springframework.integration.config.EnableIntegration;
 
 
-@SpringBootApplication()
+@SpringBootApplication(scanBasePackages = "com.dunkware.net.cluster.node.trace, com.dunkware.trade.service.stream.server")
+
 @EnableAutoConfiguration(exclude={MongoAutoConfiguration.class, MongoDataAutoConfiguration.class})
 @EnableIntegration 
 public class StreamServer {
