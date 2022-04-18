@@ -22,6 +22,8 @@ public class TraceFormatter {
 		builder.append(" ");
 		builder.append(trace.getNode().toUpperCase());
 		builder.append(" ");
+		builder.append(trace.getClassName());
+		builder.append(" ");
 		builder.append("\"");
 		builder.append(trace.getMessage());
 		builder.append("\"");
