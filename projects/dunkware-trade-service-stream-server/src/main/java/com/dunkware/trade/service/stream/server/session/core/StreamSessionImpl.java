@@ -197,13 +197,27 @@ public class StreamSessionImpl implements StreamSession {
 		}
 		// get the ticker list configured for this stream
 		try {
+			
 			tickerList = tickService.getClient().getTickerList(stream.getEntity().getTickerLists());
 			if (logger.isDebugEnabled()) {
 				logger.debug("Stream Debug - StartSession() Ticker List retreived");
 			}
 		} catch (Exception e) {
-			stats.setStatus(StreamSessionStatus.Exception);
+			
 			stats.setException("Stream Ticker List Get Exception " + e.toString());
+			int i = 0;
+			while(i < 5) { 
+				try {
+					
+					tickerList = tickService.getClient().getTickerList(stream.getEntity().getTickerLists());
+					break;
+				} catch (Exception e2) {
+					i++;
+					traceLogger.error("Error getting ticker list for the " + i + " time");
+				}
+				
+			}
+			stats.setStatus(StreamSessionStatus.Exception);
 			throw new StreamSessionException("Exception getting ticker list " + e.toString());
 		}
 		// create our stream session nodes from the avaiable cluster nodes
