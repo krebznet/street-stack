@@ -1,5 +1,10 @@
 package com.dunkware.net.cluster.node.client.trace;
 
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.OutputStreamWriter;
+
 import org.apache.kafka.clients.consumer.ConsumerRecord;
 
 import com.dunkware.common.kafka.consumer.DKafkaByteConsumer2;
@@ -41,11 +46,23 @@ public class TracePrinter implements DKafkaByteHandler2 {
 	
 	private DKafkaByteConsumer2 kafkaConsumer; 
 	
+	private String filePath = "/Users/duncankrebs/dunkware/street/log/local.log";
+	
+	File fout= null;
+     FileOutputStream fos = null;
+	BufferedWriter bw = null; 
 	public TracePrinter(String brokers, String topic)  throws Exception { 
+		
+		 fout = new File(filePath);
+		 if(fout.exists() == false) { 
+			 fout.createNewFile();
+		 }
+		 fos = new FileOutputStream(fout);
+		bw = new BufferedWriter(new OutputStreamWriter(fos));
 		this.brokers = brokers;
 		this.topic = topic;
 		try {
-			kafkaConsumer = DKafkaByteConsumer2.newInstance(DKafkaConsumerSpec2Builder.newBuilder(ConsumerType.AllPartitions, OffsetType.Earliest).setBrokerString(brokers).setClientAndGroup("Prinjjktejr", "Pjkkrinter").setTopicString(topic).build());
+			kafkaConsumer = DKafkaByteConsumer2.newInstance(DKafkaConsumerSpec2Builder.newBuilder(ConsumerType.AllPartitions, OffsetType.Earliest).setBrokerString(brokers).setClientAndGroup("Prijnjjktejr", "Pjkkrinjter").setTopicString(topic).build());
 			kafkaConsumer.start();
 			kafkaConsumer.addStreamHandler(this);
 		} catch (Exception e) {
@@ -60,7 +77,14 @@ public class TracePrinter implements DKafkaByteHandler2 {
 	public void record(ConsumerRecord<String, byte[]> record) {
 		byte[] value = record.value();
 		try {
+			
 			GTrace trace = GTrace.parseFrom(value);
+			String formatted = TraceFormatter.format1(trace);
+			System.out.println(formatted);
+			bw.write(formatted);
+			bw.newLine();
+			bw.flush();
+			
 			System.out.println(TraceFormatter.format1(trace));
 			
 		} catch (Exception e) {
