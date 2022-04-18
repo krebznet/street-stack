@@ -87,6 +87,9 @@ public class DStringHelper {
 		return builder.toString();
 	}
 	
+	public static void main(String[] args) {
+		
+	}
 	public static String format(String s, Object... var2) {
         int i = 0;
         while(s.contains("{}")) {
