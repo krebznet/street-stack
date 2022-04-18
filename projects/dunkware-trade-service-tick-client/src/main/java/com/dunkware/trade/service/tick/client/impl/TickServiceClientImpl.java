@@ -1,6 +1,7 @@
 package com.dunkware.trade.service.tick.client.impl;
 
 import com.dunkware.common.util.helpers.DHttpHelper;
+import com.dunkware.common.util.json.DJson;
 import com.dunkware.trade.service.tick.client.TickServiceClient;
 import com.dunkware.trade.service.tick.client.TickServiceClientException;
 import com.dunkware.trade.service.tick.client.TickServiceClientFeed;
@@ -78,6 +79,16 @@ public class TickServiceClientImpl implements TickServiceClient  {
 	public void post(String path, Object request) throws TickServiceClientException {
 		// TODO Auto-generated method stub
 		
+	}
+	
+	public static void main(String[] args) {
+		TSTickerListGetReq req = new TSTickerListGetReq();
+		req.setName("Test500");
+		try {
+			System.out.println(DJson.serializePretty(req));
+		} catch (Exception e) {
+			// TODO: handle exception
+		}
 	}
 
 	@Override

@@ -19,7 +19,7 @@ public class TracePrinter implements DKafkaByteHandler2 {
 
 	public static void main(String[] args) {
 		try {
-			new TracePrinter("localhost:9091", "cluster-trace");	
+			new TracePrinter("172.16.16.55:31090", "cluster-trace");	
 			Thread stay = new Thread() { 
 				public void run() { 
 					while(true) {
@@ -46,7 +46,7 @@ public class TracePrinter implements DKafkaByteHandler2 {
 	
 	private DKafkaByteConsumer2 kafkaConsumer; 
 	
-	private String filePath = "/Users/duncankrebs/dunkware/street/log/local.log";
+	private String filePath = "/Users/duncankrebs/dunkware/street/log/test.log";
 	
 	File fout= null;
      FileOutputStream fos = null;
@@ -62,7 +62,7 @@ public class TracePrinter implements DKafkaByteHandler2 {
 		this.brokers = brokers;
 		this.topic = topic;
 		try {
-			kafkaConsumer = DKafkaByteConsumer2.newInstance(DKafkaConsumerSpec2Builder.newBuilder(ConsumerType.AllPartitions, OffsetType.Earliest).setBrokerString(brokers).setClientAndGroup("Prijnjjktejr", "Pjkkrinjter").setTopicString(topic).build());
+			kafkaConsumer = DKafkaByteConsumer2.newInstance(DKafkaConsumerSpec2Builder.newBuilder(ConsumerType.AllPartitions, OffsetType.Earliest).setBrokerString(brokers).setClientAndGroup("Prijjnjjktejr", "Pjkkrinjjter").setTopicString(topic).build());
 			kafkaConsumer.start();
 			kafkaConsumer.addStreamHandler(this);
 		} catch (Exception e) {
