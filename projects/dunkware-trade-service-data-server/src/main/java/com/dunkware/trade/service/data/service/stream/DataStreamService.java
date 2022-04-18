@@ -15,6 +15,8 @@ import org.springframework.context.ApplicationContext;
 import org.springframework.stereotype.Service;
 
 import com.dunkware.common.util.dtime.DTimeZone;
+import com.dunkware.net.cluster.node.trace.TraceLogger;
+import com.dunkware.net.cluster.node.trace.TraceService;
 import com.dunkware.net.proto.stream.GStreamSpec;
 import com.dunkware.net.proto.stream.GStreamSpecsResponse;
 import com.dunkware.trade.service.data.service.config.RuntimeConfig;
@@ -42,6 +44,9 @@ public class DataStreamService implements StreamMessageHandler {
 	@Autowired
 	private DataStreamEntityRepo streamRepo;
 	
+	@Autowired
+	private TraceService trace;
+	
 
 	private Map<String, DataStream> dataStreams = new ConcurrentHashMap<String, DataStream>();
 
@@ -54,16 +59,21 @@ public class DataStreamService implements StreamMessageHandler {
 
 	private DataStreamSession currentSession = null;
 
+	private TraceLogger traceLogger;
+
 	@Transactional
 	@PostConstruct
 	public void load() {
+		traceLogger = trace.logger(getClass());
 		// first popuplate stream entity map
 		for (DataStreamEntity ent : streamRepo.findAll()) {
 			dataStreamEntities.put(ent.getName(), ent);
 		}
+		traceLogger.info("Getting Stream Specs");
 		GStreamSpecsResponse streamSpecs = null;
 		try {
 			streamSpecs = streamServiceClient.streamSpecs();
+			traceLogger.info("Received Stream Specs");
 		} catch (Exception e) {
 			logger.error("Exception Getting GStreamSpecs from Stream GRPC Service " + e.toString());
 			// try again or shut down
@@ -75,6 +85,7 @@ public class DataStreamService implements StreamMessageHandler {
 				DataStream dataStream = new DataStream();
 				ac.getAutowireCapableBeanFactory().autowireBean(dataStream);
 				try {
+					
 					dataStream.start(dataStreamEntities.get(gspec.getIdentifier()));
 					dataStreams.put(gspec.getIdentifier(), dataStream);
 				} catch (Exception e) {
@@ -94,6 +105,7 @@ public class DataStreamService implements StreamMessageHandler {
 		try {
 
 		} catch (Exception e) {
+			traceLogger.error("Error starting data stream service " + e.toString());
 			System.err.println(e.toString());
 			e.printStackTrace();
 			// TODO: handle exception

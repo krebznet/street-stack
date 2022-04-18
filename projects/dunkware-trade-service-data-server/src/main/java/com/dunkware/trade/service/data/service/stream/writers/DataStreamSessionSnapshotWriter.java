@@ -28,6 +28,9 @@ import com.dunkware.common.util.helpers.DProtoHelper;
 import com.dunkware.common.util.stopwatch.DStopWatch;
 import com.dunkware.common.util.time.DunkTime;
 import com.dunkware.common.util.uuid.DUUID;
+import com.dunkware.net.cluster.node.trace.Trace;
+import com.dunkware.net.cluster.node.trace.TraceLogger;
+import com.dunkware.net.cluster.node.trace.TraceService;
 import com.dunkware.net.proto.stream.GEntitySnapshot;
 import com.dunkware.net.proto.stream.GStreamEvent;
 import com.dunkware.net.proto.stream.GStreamEventType;
@@ -72,6 +75,9 @@ public class DataStreamSessionSnapshotWriter implements DKafkaByteHandler2 {
 	private DataStreamSession session;
 
 	private DataStreamSessionSnapshotWriterMetrics metrics;
+	
+	@Autowired
+	private TraceService trace;
 
 	@Value("${snapshot.writer.batchsize}")
 	private int bucketBatchSize;
@@ -82,16 +88,22 @@ public class DataStreamSessionSnapshotWriter implements DKafkaByteHandler2 {
 	private boolean completed = false;
 
 	private GStreamSessionStop stopEvent;
+	
+	private TraceLogger traceLogger;
 
 	public DataStreamSessionSnapshotWriter() {
 
 	}
 
 	public void start(DataStreamSession session) throws Exception {
+		
 		metrics = new DataStreamSessionSnapshotWriterMetrics(this);
 		this.session = session;
 		this.stream = session.getStream();
-
+		traceLogger = trace.logger(getClass());
+		traceLogger.addLabel("SessionIdentifier", session.getIdentifier());
+		traceLogger.addLabel("Stream", session.getStream().getName());
+		traceLogger.info("Starting Snapshot Writer");
 		timeZone = DTimeZone.toZoneId(session.getStream().getTimeZone());
 		try {
 			mongoClient = MongoClients.create(config.getMongoURL());
@@ -104,6 +116,7 @@ public class DataStreamSessionSnapshotWriter implements DKafkaByteHandler2 {
 					.withWriteConcern(wc);
 
 		} catch (Exception e) {
+			traceLogger.error("Exception starting snapshot writer " + e.toString());
 			logger.error(DataMarkers.getServiceMarker(),
 					"Exception connecting stream {} session {} snapshot writer to mongo db ", stream.getName(),
 					session.getIdentifier());
@@ -121,6 +134,7 @@ public class DataStreamSessionSnapshotWriter implements DKafkaByteHandler2 {
 			kafkaConsumer.start();
 			kafkaConsumer.addStreamHandler(this);
 		} catch (Exception e) {
+			traceLogger.error("Exception connecting to kafka consumer " + e.toString());
 			logger.error("Exception connecting to kafka consumer " + e.toString(), e);
 			throw new Exception("Exception creating kafka byte consumer " + e.toString());
 		}
@@ -145,6 +159,7 @@ public class DataStreamSessionSnapshotWriter implements DKafkaByteHandler2 {
 			event = GStreamEvent.parseFrom(record.value());
 			//
 			if (event.getType() == GStreamEventType.SessionStop) {
+				traceLogger.info("Received Session Stop GStreamEvent");
 				stopEvent = event.getSessionStop();
 				WriterDisposer disposer = new WriterDisposer();
 				disposer.start();
@@ -202,25 +217,27 @@ public class DataStreamSessionSnapshotWriter implements DKafkaByteHandler2 {
 	private class WriterDisposer extends Thread {
 
 		public void start() {
-		
+				traceLogger.info("Starting Writer Disposer");
 				 int count = 0;
 				 kafkaConsumer.dispose();
 				 while(writeQueue.isEmpty() == false) { 
 					 try {
 						Thread.sleep(1000);
 						count++;
+						
 						if(count > 60) {
 							logger.error(DataMarkers.getServiceMarker(), "Snapshot writer disposer timed out after snapshot write queue not emptied in 60 seconds");
 						}
 					} catch (Exception e) {
 						// TODO: handle exception
 					}
+				 }
 				
 				 bucketWriter.interrupt();
 				 queueMonitor.interrupt();
+				 traceLogger.info("Invoking Snapshot Writer complete method on session");
 				 session.snapshotWriterComplete();
-				 
-			 }
+				  
 		}
 	}
 
