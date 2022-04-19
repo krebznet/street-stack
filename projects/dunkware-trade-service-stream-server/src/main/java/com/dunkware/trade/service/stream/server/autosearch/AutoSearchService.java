@@ -7,6 +7,7 @@ import javax.annotation.PostConstruct;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
+import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Service;
 
 import com.dunkware.common.util.json.DJson;
@@ -22,6 +23,7 @@ import com.dunkware.xstream.xproject.XScriptProject;
 import ch.qos.logback.classic.Logger;
 
 @Service
+@Profile("AutoSearch")
 public class AutoSearchService {
 
 	@Autowired
