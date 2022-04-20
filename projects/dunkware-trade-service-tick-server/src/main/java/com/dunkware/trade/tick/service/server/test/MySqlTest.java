@@ -6,6 +6,11 @@ import com.dunkware.common.util.mysql.pool.MySqlConnectionPool;
 public class MySqlTest {
 
 	public static void main(String[] args) {
+		MySqlTest test = new MySqlTest();
+		String hmm = test.getClass().getSimpleName();
+		System.out.println(hmm);
+	}
+	public static void main2(String[] args) {
 		MySqlConnection con = new MySqlConnection();
 		con.setFuzz("123456");
 		con.setHost("devfish");

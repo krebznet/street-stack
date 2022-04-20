@@ -75,7 +75,7 @@ public class FeedStream implements TickHandler {
 		this.id = feedSpec.getName() + "_" + timestamp + "_" + random;
 		this.kafkaTopic = "dunktrade_tick_feed_" + feedSpec.getName() + "_" + timestamp + "_" + random;
 		if (logger.isDebugEnabled()) {
-			logger.info("Tick Feed {} Starting ID {} Topic {}", feedSpec.getName(), id,kafkaTopic);
+			logger.debug("Tick Feed {} Starting ID {} Topic {}", feedSpec.getName(), id,kafkaTopic);
 		}
 		this.brokers = tickService.getKafkaBrokers();
 		DKafkaAdmin admin = DKafkaAdmin.newInstance(tickService.getKafkaBrokers());
@@ -109,9 +109,6 @@ public class FeedStream implements TickHandler {
 		lastPing = DDateTime.now();
 		monitor = new PingMonitor();
 		monitor.start();
-		if (logger.isDebugEnabled()) {
-			logger.info("Tick Feed {} Started ID {} Topic {}", feedSpec.getName(), id,kafkaTopic);
-		}
 	}
 
 	public DProperties getConsumerProperties() {
@@ -140,9 +137,9 @@ public class FeedStream implements TickHandler {
 
 	public void dispose(boolean timeout) {
 		if (timeout) {
-			logger.info("Tick Feed Timeout {} ", id);
+			logger.debug("Tick Feed Timeout {} ", id);
 		}
-		logger.info("Disposing Tick Feed ID {} Kafka Topic {} Timeout {} " + kafkaTopic);
+		logger.debug("Disposing Tick Feed ID {} Kafka Topic {} Timeout {} " + kafkaTopic);
 
 		this.feed.removeTickHandler(this);
 		kafkaProducer.dispose();

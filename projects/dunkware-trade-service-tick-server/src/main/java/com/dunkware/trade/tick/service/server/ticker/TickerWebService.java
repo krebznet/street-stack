@@ -7,16 +7,15 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.dunkware.trade.tick.service.protocol.ticker.TSTickerListGetReq;
 import com.dunkware.trade.tick.service.protocol.ticker.TickerListAddReq;
 import com.dunkware.trade.tick.service.protocol.ticker.TickerListAddResp;
-import com.dunkware.trade.tick.service.protocol.ticker.TSTickerListGetReq;
 import com.dunkware.trade.tick.service.protocol.ticker.TickerListGetResp;
 import com.dunkware.trade.tick.service.server.ticker.repsoitory.TickerListDO;
 
@@ -28,7 +27,8 @@ public class TickerWebService {
 	@Autowired
 	private TickerService service;
 	
-	private Logger logger = LoggerFactory.getLogger(getClass());
+	private Logger logger = LoggerFactory.getLogger(getClass().getSimpleName())
+;
 
 	@GetMapping(path = "/ticker/echo")
 	public @ResponseBody String echo(@RequestParam String name) { 
@@ -55,7 +55,7 @@ public class TickerWebService {
 
 	@PostMapping(path = "/ticker/list/get")
 	public @ResponseBody() TickerListGetResp deleteTickerList(@RequestBody() TSTickerListGetReq req) {
-		if(logger.isInfoEnabled()) { 
+		if(logger.isDebugEnabled()) { 
 			logger.info("REST REQ REQ {} List {} ","/ticker/list/get",req.getName());
 		}
 		TickerListGetResp resp  = new TickerListGetResp();
@@ -73,8 +73,12 @@ public class TickerWebService {
 				resp.setList(TickerListDO.toTickerList(lists.get(0)));
 				resp.setCode("SUCCESS");
 				
+				if(logger.isDebugEnabled()) { 
+					logger.debug("Returning TickerList API {} Size {}",req.getName(),resp.getList().getSize());
+				}
+				
 			} catch (Exception e) {
-				logger.error("Exception getting list by name " + e.toString());
+				logger.error("Exception eturning TickerList API {} Exception {}",req.getName(),e.toString());
 			}
 			
 			

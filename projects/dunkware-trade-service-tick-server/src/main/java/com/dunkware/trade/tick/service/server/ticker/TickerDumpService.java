@@ -43,7 +43,7 @@ public class TickerDumpService {
 		public void run() { 
 			
 			try {
-				System.out.println("Starting Dump Import " + new Date().toGMTString());
+				
 				List<NasdaqSymbol> dumps = NasdaqSymbolDump.parseSymbols("/Users/dkrebs/dunkware/dunkware-trade-tools-scrape/src/main/java/com/dunkware/trade/tools/scrape/nasdaq/nasdaqlisted.txt");
 				List<TickerDO> results = new ArrayList<TickerDO>();
 				for (NasdaqSymbol symbol : dumps) {
