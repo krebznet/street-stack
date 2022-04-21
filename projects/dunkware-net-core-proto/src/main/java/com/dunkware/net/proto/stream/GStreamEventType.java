@@ -7,6 +7,7 @@ package com.dunkware.net.proto.stream;
  * <pre>
  **
  *  Section 1. Stream Event Messsags That Get Sent Through Kafka In Reealtime.
+ *  Stream Events 
  * </pre>
  *
  * Protobuf enum {@code dunkware.stream.GStreamEventType}

@@ -3,6 +3,8 @@ package com.dunkware.net.cluster.node.internal;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
+import com.dunkware.net.cluster.json.node.ClusterNodeType;
+
 @Service
 public class ClusterConfig {
 	
@@ -25,8 +27,14 @@ public class ClusterConfig {
 		return nodeId;
 	}
 
-	public String getNodeType() {
-		return nodeType;
+	public ClusterNodeType getNodeType() {
+		if(nodeType.equalsIgnoreCase(ClusterNodeType.Worker.name())) {
+			return ClusterNodeType.Worker;
+		}
+		if(nodeType.equalsIgnoreCase(ClusterNodeType.Service.name())) {
+			return ClusterNodeType.Service;
+		}
+		return ClusterNodeType.Unknown;
 	}
 
 	public String getServerBrokers() {

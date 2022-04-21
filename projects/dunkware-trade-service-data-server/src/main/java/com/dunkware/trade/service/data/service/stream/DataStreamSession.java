@@ -16,9 +16,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 
 import com.dunkware.common.util.dtime.DTimeZone;
-import com.dunkware.net.cluster.node.trace.Trace;
-import com.dunkware.net.cluster.node.trace.TraceLogger;
-import com.dunkware.net.cluster.node.trace.TraceService;
+import com.dunkware.net.cluster.node.logging.DLog;
+import com.dunkware.net.cluster.node.logging.DLogger;
+import com.dunkware.net.cluster.node.logging.DLoggerService;
 import com.dunkware.net.proto.stream.GEntitySignal;
 import com.dunkware.net.proto.stream.GEntitySnapshot;
 import com.dunkware.trade.service.data.json.enums.DataStreamSessionState;
@@ -50,7 +50,7 @@ public class DataStreamSession {
 	private ApplicationContext ac;
 	
 	@Autowired
-	private TraceService trace; 
+	private DLoggerService trace; 
 	
 	private Map<String,DataStreamSessionInstrument> instruments = new ConcurrentHashMap<String,DataStreamSessionInstrument>();
 	
@@ -76,7 +76,7 @@ public class DataStreamSession {
 	
 	private boolean completed = false; 
 	
-	TraceLogger traceLogger; 
+	DLogger traceLogger; 
 	
 	public void init() { 
 		traceLogger = trace.logger(getClass());

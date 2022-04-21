@@ -4,6 +4,7 @@ import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
 import com.dunkware.net.proto.stream.GEntitySignal;
+import com.dunkware.trade.service.data.json.stream.session.DataStreamSessionSnapshotWriterStats;
 
 public class DataStreamSessionSignalWriterMetrics {
 	
@@ -14,14 +15,23 @@ public class DataStreamSessionSignalWriterMetrics {
 	private int lastBatchWriteSize = 0;
 	private double lastBatchWriteSpeed = 0;
 	
+	
+	
 	public DataStreamSessionSignalWriterMetrics() {
 		
 	}
+	
+	
 	 
 	public int getLastBatchWriteSize() {
 		return lastBatchWriteSize;
 	}
 
+	public DataStreamSessionSnapshotWriterStats getStats() { 
+		DataStreamSessionSnapshotWriterStats stats = new DataStreamSessionSnapshotWriterStats();
+		
+		return stats;
+	}
 	
 
 	public double getLastBatchWriteSpeed() {

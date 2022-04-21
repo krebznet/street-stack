@@ -586,7 +586,7 @@ public class ATProviderRequestor extends at.feedapi.ActiveTickServerRequester {
 			while(!interrupted()) { 
 				try {
 					Thread.sleep(5000);
-					logger.debug("Snapshot Count {}",snapshotCount.get());
+					//logger.debug("Snapshot Count {}",snapshotCount.get());
 				} catch (Exception e) {
 					// TODO: handle exception
 				}

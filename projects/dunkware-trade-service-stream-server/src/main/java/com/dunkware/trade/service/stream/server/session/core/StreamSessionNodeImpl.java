@@ -13,19 +13,21 @@ import com.dunkware.common.util.dtime.DTimeZone;
 import com.dunkware.common.util.events.DEventNode;
 import com.dunkware.common.util.helpers.DHttpHelper;
 import com.dunkware.common.util.json.DJson;
+import com.dunkware.net.cluster.node.ClusterNode;
 import com.dunkware.trade.service.stream.json.controller.session.StreamSessionNodeState;
+import com.dunkware.trade.service.stream.json.controller.session.StreamSessionNodeStats;
 import com.dunkware.trade.service.stream.json.controller.session.StreamSessionNodeStatsSpec;
 import com.dunkware.trade.service.stream.json.controller.session.StreamSessionNodeStatus;
-import com.dunkware.trade.service.stream.server.cluster.ClusterNode;
+import com.dunkware.trade.service.stream.json.worker.stream.StreamSessionWorkerStartReq;
+import com.dunkware.trade.service.stream.json.worker.stream.StreamSessionWorkerStartResp;
+import com.dunkware.trade.service.stream.json.worker.stream.StreamSessionWorkerStats;
+import com.dunkware.trade.service.stream.json.worker.stream.StreamSessionWorkerStatsResp;
+import com.dunkware.trade.service.stream.json.worker.stream.StreamSessionWorkerStopReq;
 import com.dunkware.trade.service.stream.server.controller.StreamController;
 import com.dunkware.trade.service.stream.server.session.StreamSession;
 import com.dunkware.trade.service.stream.server.session.StreamSessionExtension;
 import com.dunkware.trade.service.stream.server.session.StreamSessionNode;
-import com.dunkware.trade.service.stream.server.session.worker.protocol.StreamSessionWorkerStartReq;
-import com.dunkware.trade.service.stream.server.session.worker.protocol.StreamSessionWorkerStartResp;
-import com.dunkware.trade.service.stream.server.session.worker.protocol.StreamSessionWorkerStatsResp;
-import com.dunkware.trade.service.stream.server.session.worker.protocol.StreamSessionWorkerStopReq;
-import com.dunkware.trade.service.stream.server.session.worker.protocol.StreamSessionWorkerStopResp;
+import com.dunkware.trade.service.stream.server.session.StreamSessionNodeInput;
 import com.dunkware.trade.service.stream.server.session.worker.protocol.spec.StreamSessionWorkerStatsSpec;
 import com.dunkware.trade.tick.model.ticker.TradeTickerSpec;
 import com.dunkware.xstream.xproject.model.XStreamBundle;
@@ -37,66 +39,38 @@ public class StreamSessionNodeImpl implements StreamSessionNode {
 	private ClusterNode node;
 	private DDateTime startingTime;
 	private DDateTime startedTime;
-	private List<TradeTickerSpec> tickers;
 	private int startupTime;
 	private StreamSession session;
-	private StreamSessionNodeStatsSpec stats = new StreamSessionNodeStatsSpec();
-	private XStreamBundle xstreamBundle = new XStreamBundle();
+	private StreamSessionNodeStats stats = new StreamSessionNodeStats();
 	
 	private WorkerMonitor workerMonitor = null;
 
 	private DEventNode eventNode;
+	
+	private StreamSessionNodeInput input;
 
-	public StreamSessionNodeImpl(StreamSession session, ClusterNode node) {
-		this.node = node;
-		this.tickers = new ArrayList<TradeTickerSpec>();
-		stats.setNodeId(node.getId());
-		stats.setNode(node.getStats());
-		stats.setStartingTime(DTime.now());
-		stats.setState(StreamSessionNodeState.Green);
-		stats.setStatus(StreamSessionNodeStatus.Starting);
+
+	public StreamSessionNodeImpl() { 
 		
-
 	}
-
 	@Override
-	public void startNode(StreamSession session, ClusterNode node, String workerId, List<TradeTickerSpec> tickers) {
+	public void startNode(StreamSessionNodeInput input) {
 		// set session, node, tickers
-		this.session = session;
-		this.node = node;
-		this.tickers = tickers;
-		// create/init the xstream bundle 
-		xstreamBundle = new XStreamBundle();
-		xstreamBundle.setDate(DDate.now());
-		xstreamBundle.setTimeZone(DTimeZone.NewYork);
-		xstreamBundle.setScriptBundle(session.getStream().getSpec().getBundle());
-		// create event node
-		session.getEventNode().createChild("/node/" + workerId);
+		this.input = input;
+		
+		session.getEventNode().createChild("/node/" + input.getClusterNode().getId());
 		// set starting time
-		this.startingTime = DDateTime.now();
+		stats.setStartedTime(DDateTime.now(input.getStream().getTimeZone()));
+		stats.setNode(input.getClusterNode().getId());
 		// initialize stats
-		this.stats.setStatus(StreamSessionNodeStatus.Starting);
-		this.stats.setState(StreamSessionNodeState.Green);
-		this.stats.setWorkerId(workerId);
-		this.stats.setTickerCount(tickers.size());
+		//this.stats.setStatus(StreamSessionNodeStatus.Starting);
+		//this.stats.setState(StreamSessionNodeState.Green);
+		//this.stats.setWorkerId(workerId);
+		//this.stats.setTickerCount(tickers.size());
 		Launcher launcher = new Launcher();
 		launcher.start();
 	}
 
-	@Override
-	public StreamSessionNodeStatus getStatus() {
-		return stats.getStatus();
-	}
-
-	@Override
-	public StreamSessionNodeStatsSpec getStats() {
-		return stats;
-	}
-
-	@Override
-	public ClusterNode getNode() {
-		return node;
-	}
 
 	@Override
 	public String getNodeId() {
@@ -105,23 +79,11 @@ public class StreamSessionNodeImpl implements StreamSessionNode {
 
 	@Override
 	public List<TradeTickerSpec> getTickers() {
-		return tickers;
+		return input.getTickers();
 	}
 
-	@Override
-	public DDateTime getStartedTime() {
-		return startedTime;
-	}
+	
 
-	@Override
-	public DDateTime getStartingTime() {
-		return startingTime;
-	}
-
-	@Override
-	public int getStartupTime() {
-		return startupTime;
-	}
 
 	@Override
 	public void stopNode() {
@@ -133,28 +95,29 @@ public class StreamSessionNodeImpl implements StreamSessionNode {
 	public DEventNode getEventNode() {
 		return eventNode;
 	}
-
+	
+	
 	@Override
-	public XStreamBundle getStreamBundle() {
-		return xstreamBundle;
+	public StreamSessionNodeStatus getStatus() {
+		return this.stat
+	}
+	@Override
+	public StreamSessionWorkerStats getStats() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+	@Override
+	public ClusterNode getNode() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+	@Override
+	public StreamSessionNodeInput getInput() {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
-	@Override
-	public StreamSession getSession() {
-		return session;
-	}
-
-	@Override
-	public StreamController getStream() {
-		return session.getStream();
-	}
-
-	@Override
-	public String getWorkerId() {
-		return stats.getWorkerId();
-	}
-
-	class Launcher extends Thread {
+	class NodeStarter extends Thread {
 		
 
 		public void run() {
@@ -164,31 +127,22 @@ public class StreamSessionNodeImpl implements StreamSessionNode {
 				ext.nodeStarting(StreamSessionNodeImpl.this);
 			}
 			StreamSessionWorkerStartReq req = new StreamSessionWorkerStartReq();
-			req.setWorkerId(stats.getWorkerId());
+			req.setWorkerId(stats.getNode());
 			req.setStream(session.getStream().getName());
 			req.setSessionId(session.getSessionId());
-			req.setStreamBundle(xstreamBundle);
+			//req.setStreamBundle(input.getStream().getSpec().getb);
 			StreamSessionWorkerStartResp resp = null;
-			String respString = null;
+			
 			try {
-				
-				respString = DHttpHelper.postJson(node.getEndpoint("/stream/worker/start"), req);
+				resp = (StreamSessionWorkerStartResp)node.jsonPost("/stream/worker/start", req, StreamSessionWorkerStartResp.class);
 			} catch (Exception e) {
-				stats.setStatus(StreamSessionNodeStatus.Exception);
-				stats.setException("Start Worker Exception " + e.toString());
+				//stats.setStatus(StreamSessionNodeStatus.Exception);
+				//stats.setException("Start Worker Exception " + e.toString());
 				StreamSessionImpl sessionImpl = (StreamSessionImpl) getSession();
 				sessionImpl.nodeStartCallback(StreamSessionNodeImpl.this);
 				return;
 			}
-			try {
-				resp = DJson.getObjectMapper().readValue(respString, StreamSessionWorkerStartResp.class);
-			} catch (Exception e) {
-				stats.setStatus(StreamSessionNodeStatus.Exception);
-				stats.setException("Internal Exception Parsing Worker Start Response " + e.toString());
-				StreamSessionImpl sessionImpl = (StreamSessionImpl) getSession();
-				sessionImpl.nodeStartCallback(StreamSessionNodeImpl.this);
-				return;
-			}
+			
 			// check response code for error 
 			if(resp.getCode().equals("ERROR")) { 
 				stats.setStatus(StreamSessionNodeStatus.Exception);
@@ -210,7 +164,7 @@ public class StreamSessionNodeImpl implements StreamSessionNode {
 	};
 
 	
-	private class Stopper extends Thread { 
+	private class NodeStopper extends Thread { 
 		
 		public void run() { 
 			// Right Do this in a different thread! 
@@ -223,7 +177,7 @@ public class StreamSessionNodeImpl implements StreamSessionNode {
 				}
 				// send stop request to worker node 
 				StreamSessionWorkerStopReq req = new StreamSessionWorkerStopReq();
-				req.setWorkerId(getWorkerId());
+				req.setWorkerId(node.getId());
 				try {
 					String resp = node.reqResp("/stream/worker/stop?id=" + getWorkerId());
 					if(resp.equals("OK") == false) { 

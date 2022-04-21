@@ -23,10 +23,10 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.dunkware.common.kafka.DKafkaException;
-import com.dunkware.common.spec.kafka.DKafkaConsumerSpec2;
-import com.dunkware.common.spec.kafka.DKafkaConsumerSpec2.ConsumerType;
-import com.dunkware.common.spec.kafka.DKafkaConsumerSpec2.OffsetType;
-import com.dunkware.common.spec.kafka.DKafkaConsumerSpec2.ThrottleType;
+import com.dunkware.common.spec.kafka.DKafkaByteConsumer2Spec;
+import com.dunkware.common.spec.kafka.DKafkaByteConsumer2Spec.ConsumerType;
+import com.dunkware.common.spec.kafka.DKafkaByteConsumer2Spec.OffsetType;
+import com.dunkware.common.spec.kafka.DKafkaByteConsumer2Spec.ThrottleType;
 import com.dunkware.common.util.helpers.DStringHelper;
 import com.dunkware.common.util.properties.DProperties;
 
@@ -47,7 +47,7 @@ public class DKafkaByteConsumer2 {
 	private DKafkaByteConsumerStatus status = DKafkaByteConsumerStatus.Disconnected;
 	private int instanceCount = 0;
 
-	private DKafkaConsumerSpec2 spec = null;
+	private DKafkaByteConsumer2Spec spec = null;
 
 	private List<TopicPartition> topicPartitions = new ArrayList<TopicPartition>();
 	private List<PartitionInfo> partitionInfos = new ArrayList<PartitionInfo>();
@@ -62,11 +62,11 @@ public class DKafkaByteConsumer2 {
 	private ThrottleThread throttleThread; 
 	private HandlerThread handlerThread; 
 	
-	public static DKafkaByteConsumer2 newInstance(DKafkaConsumerSpec2 spec) {
+	public static DKafkaByteConsumer2 newInstance(DKafkaByteConsumer2Spec spec) {
 		return new DKafkaByteConsumer2(spec);
 	}
 
-	private DKafkaByteConsumer2(DKafkaConsumerSpec2 spec) {
+	private DKafkaByteConsumer2(DKafkaByteConsumer2Spec spec) {
 		this.spec = spec;
 
 	}

@@ -6,8 +6,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 
 import com.dunkware.common.util.dtime.DTimeZone;
-import com.dunkware.net.cluster.node.trace.TraceLogger;
-import com.dunkware.net.cluster.node.trace.TraceService;
 import com.dunkware.trade.service.data.json.enums.DataStreamSessionState;
 import com.dunkware.trade.service.data.service.config.RuntimeConfig;
 import com.dunkware.trade.service.data.service.message.StreamMessageHandler;
@@ -28,8 +26,6 @@ public class DataStream implements StreamMessageHandler {
 	@Autowired
 	private ApplicationContext ac;
 
-	@Autowired
-	private TraceService trace; 
 	
 	@Autowired
 	private StreamMessageService messageService;
@@ -41,12 +37,12 @@ public class DataStream implements StreamMessageHandler {
 
 	private DataStreamSession session;
 
-	private TraceLogger traceLogger; 
 	public void start(DataStreamEntity entity) {
 		this.streamEntity = entity;
 		messageService.addHandler(this);
-		traceLogger = trace.logger(getClass());
-		traceLogger.addLabel("Stream", entity.getName());
+		if(logger.isDebugEnabled())	 { 
+			logger.debug("Started Data Stream " + entity.getName());
+		}
 	}
 
 	public DataStreamSession getSession() {
@@ -79,7 +75,7 @@ public class DataStream implements StreamMessageHandler {
 			return;
 		}
 		
-		traceLogger.info("Receieved Session {} Start Message", start.getSpec().getSessionId());
+		
 
 		if (!hasSession()) {
 			Thread runner = new Thread() {
@@ -128,10 +124,10 @@ public class DataStream implements StreamMessageHandler {
 		if (stop.getSpec().getStreamIdentifier().equals(getName()) == false) {
 			return;
 		}
-		traceLogger.info("Received Session {}", stop.getSpec().getSessionId());
+	
 		if(session != null) { 
 			if(session.getState() == DataStreamSessionState.Running) { 
-				traceLogger.info("Calling controllerStop on session");
+				
 				session.controllerStop();
 			}
 		}

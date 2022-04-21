@@ -1,0 +1,20 @@
+Get Snapshot intervals for entity x starting at time a and ending at d interval size = 2 minutes; 
+Get the high of a variable for an entity 
+Get Entity Signal Session Summary - type - count -> last time 
+
+// Searches
+
+Get Signals where entity = x > y; 
+Get Entity Signals by type(s);
+
+Still have a entity query
+
+
+Then streaming -> 
+
+Stream entity vars of these types; 
+
+// Make the query easier; 
+
+Signal 
+

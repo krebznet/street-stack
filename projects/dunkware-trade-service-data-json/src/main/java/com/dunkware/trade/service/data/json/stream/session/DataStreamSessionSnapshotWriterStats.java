@@ -1,9 +1,11 @@
 package com.dunkware.trade.service.data.json.stream.session;
 
+import com.dunkware.common.util.dtime.DTime;
+
 public class DataStreamSessionSnapshotWriterStats {
 
 	private int pauseCount;
-	private int pauseTime;
+	private double pauseTime;
 	private long snapshotConsumeCount;
 	private long snapshotWriteCount; 
 	private long snapshotBucketWriteCount;
@@ -11,14 +13,26 @@ public class DataStreamSessionSnapshotWriterStats {
 	private double lastBucketWriteSpeed; 
 	private double maxBucketWriteSpeed; 
 	private String sessionIdentifier;
+	private String mongoURL; 
+	private String mongoDatabase; 
+	private String mongoCollection; 
+	
+	private DTime lastSnapshotTime;
+	private DTime lastSnapshotWriteTime; 
+	
 	public int getPauseCount() {
 		return pauseCount;
 	}
 	public void setPauseCount(int pauseCount) {
 		this.pauseCount = pauseCount;
 	}
-	public int getPauseTime() {
+	
+	
+	public double getPauseTime() {
 		return pauseTime;
+	}
+	public void setPauseTime(double pauseTime) {
+		this.pauseTime = pauseTime;
 	}
 	public void setPauseTime(int pauseTime) {
 		this.pauseTime = pauseTime;
@@ -64,7 +78,38 @@ public class DataStreamSessionSnapshotWriterStats {
 	}
 	public void setSessionIdentifier(String sessionIdentifier) {
 		this.sessionIdentifier = sessionIdentifier;
+	}
+	public String getMongoURL() {
+		return mongoURL;
+	}
+	public void setMongoURL(String mongoURL) {
+		this.mongoURL = mongoURL;
+	}
+	public String getMongoDatabase() {
+		return mongoDatabase;
+	}
+	public void setMongoDatabase(String mongoDatabase) {
+		this.mongoDatabase = mongoDatabase;
+	}
+	public String getMongoCollection() {
+		return mongoCollection;
+	}
+	public void setMongoCollection(String mongoCollection) {
+		this.mongoCollection = mongoCollection;
+	}
+	public DTime getLastSnapshotTime() {
+		return lastSnapshotTime;
+	}
+	public void setLastSnapshotTime(DTime lastSnapshotTime) {
+		this.lastSnapshotTime = lastSnapshotTime;
+	}
+	public DTime getLastSnapshotWriteTime() {
+		return lastSnapshotWriteTime;
+	}
+	public void setLastSnapshotWriteTime(DTime lastSnapshotWriteTime) {
+		this.lastSnapshotWriteTime = lastSnapshotWriteTime;
 	} 
+	
 	
 	
 	

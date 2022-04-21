@@ -7,10 +7,10 @@ import org.apache.kafka.clients.consumer.ConsumerRecord;
 import com.dunkware.common.kafka.consumer.DKafkaByteConsumer2;
 import com.dunkware.common.kafka.consumer.DKafkaByteHandler2;
 import com.dunkware.common.kafka.properties.DKafkaProperties;
-import com.dunkware.common.spec.kafka.DKafkaConsumerSpec2;
-import com.dunkware.common.spec.kafka.DKafkaConsumerSpec2.ConsumerType;
-import com.dunkware.common.spec.kafka.DKafkaConsumerSpec2.OffsetType;
-import com.dunkware.common.spec.kafka.DKafkaConsumerSpec2Builder;
+import com.dunkware.common.spec.kafka.DKafkaByteConsumer2Spec;
+import com.dunkware.common.spec.kafka.DKafkaByteConsumer2Spec.ConsumerType;
+import com.dunkware.common.spec.kafka.DKafkaByteConsumer2Spec.OffsetType;
+import com.dunkware.common.spec.kafka.DKafkaByteConsumer2SpecBuilder;
 import com.dunkware.common.util.properties.DProperties;
 import com.dunkware.common.util.properties.DPropertiesBuilder;
 
@@ -22,7 +22,7 @@ public class DKafkaByteConsumer2Test {
 		.addProperty("topics", "stream_us_equity_snapshots").build();
 		DKafkaByteConsumer2 consumer = null;
 		try {
-			DKafkaConsumerSpec2 spec = DKafkaConsumerSpec2Builder.newBuilder(ConsumerType.Auto, OffsetType.Earliest).addBroker("localhost:9091").setClientAndGroup("dd", "ff")
+			DKafkaByteConsumer2Spec spec = DKafkaByteConsumer2SpecBuilder.newBuilder(ConsumerType.Auto, OffsetType.Earliest).addBroker("localhost:9091").setClientAndGroup("dd", "ff")
 					.addTopic("stream_us_equity_snapshots").build();
 				consumer = DKafkaByteConsumer2.newInstance(spec);
 				consumer.start();

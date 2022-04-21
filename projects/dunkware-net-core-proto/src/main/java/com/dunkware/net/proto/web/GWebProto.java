@@ -23,31 +23,23 @@ public final class GWebProto {
       descriptor;
   static {
     java.lang.String[] descriptorData = {
-      "\n\tweb.proto\022\014dunkware.web\032\014stream.proto\032" +
-      "\013chart.proto2\367\006\n\013GWebService\022M\n\016testSign" +
-      "alGrid\022#.dunkware.stream.GEntitySignalQu" +
-      "ery\032\024.dunkware.chart.Grid\"\000\022G\n\016testEntit" +
-      "yGrid\022\035.dunkware.stream.GEntityQuery\032\024.d" +
-      "unkware.chart.Grid\"\000\022\\\n\rgetStreamSpec\022#." +
-      "dunkware.stream.GStreamSpecRequest\032$.dun" +
-      "kware.stream.GStreamSpecResponse\"\000\022k\n\014si" +
-      "gnalSearch\022+.dunkware.stream.GEntitySign" +
-      "alSearchRequest\032,.dunkware.stream.GEntit" +
-      "ySignalSearchResponse\"\000\022m\n\014signalStream\022" +
-      "+.dunkware.stream.GEntitySignalStreamReq" +
-      "uest\032,.dunkware.stream.GEntitySignalStre" +
-      "amResponse\"\0000\001\022_\n\014entitySearch\022%.dunkwar" +
-      "e.stream.GEntitySearchRequest\032&.dunkware" +
-      ".stream.GEntitySearchResponse\"\000\022a\n\014entit" +
-      "yStream\022%.dunkware.stream.GEntityStreamR" +
-      "equest\032&.dunkware.stream.GEntityStreamRe" +
-      "sponse\"\0000\001\022g\n\016instrumentVars\022\'.dunkware." +
-      "stream.GInstrumentVarsRequest\032(.dunkware" +
-      ".stream.GInstrumentVarsResponse\"\0000\001\022i\n\022a" +
-      "utoCompleteSearch\022%.dunkware.stream.GAut" +
-      "oCompleteRequest\032&.dunkware.stream.GAuto" +
-      "CompleteResponse\"\000(\0010\001B)\n\032com.dunkware.n" +
-      "et.proto.webB\tGWebProtoP\001b\006proto3"
+      "\n\tweb.proto\022\014dunkware.web\032\ndata.proto\032\014s" +
+      "tream.proto\032\013chart.proto2\260\004\n\013GWebService" +
+      "\022K\n\016testSignalGrid\022!.dunkware.data.GEnti" +
+      "tySignalQuery\032\024.dunkware.chart.Grid\"\000\022E\n" +
+      "\016testEntityGrid\022\033.dunkware.data.GEntityQ" +
+      "uery\032\024.dunkware.chart.Grid\"\000\022\\\n\rgetStrea" +
+      "mSpec\022#.dunkware.stream.GStreamSpecReque" +
+      "st\032$.dunkware.stream.GStreamSpecResponse" +
+      "\"\000\022g\n\014signalSearch\022).dunkware.data.GEnti" +
+      "tySignalSearchRequest\032*.dunkware.data.GE" +
+      "ntitySignalSearchResponse\"\000\022[\n\014entitySea" +
+      "rch\022#.dunkware.data.GEntitySearchRequest" +
+      "\032$.dunkware.data.GEntitySearchResponse\"\000" +
+      "\022i\n\022autoCompleteSearch\022%.dunkware.stream" +
+      ".GAutoCompleteRequest\032&.dunkware.stream." +
+      "GAutoCompleteResponse\"\000(\0010\001B)\n\032com.dunkw" +
+      "are.net.proto.webB\tGWebProtoP\001b\006proto3"
     };
     com.google.protobuf.Descriptors.FileDescriptor.InternalDescriptorAssigner assigner =
         new com.google.protobuf.Descriptors.FileDescriptor.    InternalDescriptorAssigner() {
@@ -60,9 +52,11 @@ public final class GWebProto {
     com.google.protobuf.Descriptors.FileDescriptor
       .internalBuildGeneratedFileFrom(descriptorData,
         new com.google.protobuf.Descriptors.FileDescriptor[] {
+          com.dunkware.net.proto.stream.GDataProto.getDescriptor(),
           com.dunkware.net.proto.stream.GStreamProto.getDescriptor(),
           com.dunkware.net.proto.chart.ChartProto.getDescriptor(),
         }, assigner);
+    com.dunkware.net.proto.stream.GDataProto.getDescriptor();
     com.dunkware.net.proto.stream.GStreamProto.getDescriptor();
     com.dunkware.net.proto.chart.ChartProto.getDescriptor();
   }

@@ -14,13 +14,17 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 
 import com.dunkware.common.kafka.producer.DKafkaByteProducer;
+import com.dunkware.common.util.dtime.DDateTime;
 import com.dunkware.common.util.dtime.DTimeZone;
 import com.dunkware.common.util.events.DEventTree;
 import com.dunkware.common.util.executor.DExecutor;
 import com.dunkware.net.cluster.GClusterEvent;
+import com.dunkware.net.cluster.json.job.ClusterJobState;
+import com.dunkware.net.cluster.json.node.ClusterNodeStats;
 import com.dunkware.net.cluster.node.Cluster;
 import com.dunkware.net.cluster.node.ClusterJob;
 import com.dunkware.net.cluster.node.ClusterJobRunner;
+import com.dunkware.net.cluster.node.ClusterNode;
 import com.dunkware.net.cluster.util.helpers.ClusterEventHelper;
 
 public class ClusterImpl implements Cluster {
@@ -41,11 +45,16 @@ public class ClusterImpl implements Cluster {
 	
 	private DKafkaByteProducer eventProducer; 
 	
+	private ClusterPingService pingService; 
+	
+	private DDateTime startTime;
+	
 	private List<ClusterJob> jobs = new ArrayList<ClusterJob>();
 	private Semaphore jobLock = new Semaphore(1);
 	
 	@PostConstruct
 	public void load() { 
+		startTime = DDateTime.now(DTimeZone.NewYork);
 		registry = new ClusterRegistry();
 		executor = new DExecutor(15);
 		eventTree = DEventTree.newInstance(executor);
@@ -121,6 +130,46 @@ public class ClusterImpl implements Cluster {
 		registry.removeComponent(component);
 		
 	}
+	
+	
+	@Override
+	public List<ClusterNode> getIdleNodes() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public List<ClusterNode> getIdleNodes(int count) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public List<ClusterNode> getNodes() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public ClusterNodeStats buildStats() {
+		ClusterNodeStats stats = new ClusterNodeStats();
+		stats.setGrpcEndpoint(clusterConfig.getServerGrpc());
+		stats.setHttpEndpoint(clusterConfig.getServerHttp());
+		stats.setId(getNodeId());
+		stats.setStart(startTime);
+		stats.setExecutorStats(executor.getStats());
+		int activeJobs = 0;
+		for (ClusterJob clusterJob : jobs) {
+			if(clusterJob.getState() == ClusterJobState.Running) {
+				activeJobs++;
+			}
+		}
+		stats.setRunningJobCount(activeJobs);
+		stats.setType(clusterConfig.getNodeType());
+		return stats;
+	}
+	
+	
 	
 	
 	

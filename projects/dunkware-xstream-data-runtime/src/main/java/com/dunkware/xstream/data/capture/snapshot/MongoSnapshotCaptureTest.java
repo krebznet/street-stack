@@ -1,9 +1,9 @@
 package com.dunkware.xstream.data.capture.snapshot;
 
-import com.dunkware.common.spec.kafka.DKafkaConsumerSpec2;
-import com.dunkware.common.spec.kafka.DKafkaConsumerSpec2.ConsumerType;
-import com.dunkware.common.spec.kafka.DKafkaConsumerSpec2.OffsetType;
-import com.dunkware.common.spec.kafka.DKafkaConsumerSpec2Builder;
+import com.dunkware.common.spec.kafka.DKafkaByteConsumer2Spec;
+import com.dunkware.common.spec.kafka.DKafkaByteConsumer2Spec.ConsumerType;
+import com.dunkware.common.spec.kafka.DKafkaByteConsumer2Spec.OffsetType;
+import com.dunkware.common.spec.kafka.DKafkaByteConsumer2SpecBuilder;
 import com.dunkware.common.util.dtime.DTimeZone;
 
 public class MongoSnapshotCaptureTest {
@@ -12,7 +12,7 @@ public class MongoSnapshotCaptureTest {
 		
 		try {
 			MongoSnapshotCaptureInput input = new MongoSnapshotCaptureInput();
-			DKafkaConsumerSpec2 spec  = DKafkaConsumerSpec2Builder.newBuilder(ConsumerType.AllPartitions, OffsetType.Latest).
+			DKafkaByteConsumer2Spec spec  = DKafkaByteConsumer2SpecBuilder.newBuilder(ConsumerType.AllPartitions, OffsetType.Latest).
 					setTopicString("stream_us_equity_220210_snapshots").setClientAndGroup("jjkjkkjkj", "jjjkjkkk").
 					setBrokerString("172.16.16.55:31090").build();
 			input.setBatchSize(200);

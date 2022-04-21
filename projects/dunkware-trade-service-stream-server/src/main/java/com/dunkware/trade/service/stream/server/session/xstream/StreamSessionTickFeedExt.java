@@ -46,7 +46,7 @@ public class StreamSessionTickFeedExt implements XStreamExtension, TickHandler {
 		try {
 			for (Integer key : myType.getDataTicks().keySet()) {
 				stream.getTickRouter().registerDataTick(key, myType.getDataTicks().get(key));
-			}
+			} // how many tickers per node -- 100 
 			tickFeed = tickService.createFeed(myType.getFeedSpec());
 			tickFeed.getTickStream().addTickHandler(this);
 		} catch (Exception e) {

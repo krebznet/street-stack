@@ -19,23 +19,22 @@ import org.springframework.beans.factory.annotation.Value;
 
 import com.dunkware.common.kafka.consumer.DKafkaByteConsumer2;
 import com.dunkware.common.kafka.consumer.DKafkaByteHandler2;
-import com.dunkware.common.spec.kafka.DKafkaConsumerSpec2;
-import com.dunkware.common.spec.kafka.DKafkaConsumerSpec2.ConsumerType;
-import com.dunkware.common.spec.kafka.DKafkaConsumerSpec2.OffsetType;
-import com.dunkware.common.spec.kafka.DKafkaConsumerSpec2Builder;
+import com.dunkware.common.spec.kafka.DKafkaByteConsumer2Spec;
+import com.dunkware.common.spec.kafka.DKafkaByteConsumer2Spec.ConsumerType;
+import com.dunkware.common.spec.kafka.DKafkaByteConsumer2Spec.OffsetType;
+import com.dunkware.common.spec.kafka.DKafkaByteConsumer2SpecBuilder;
 import com.dunkware.common.util.dtime.DTimeZone;
 import com.dunkware.common.util.helpers.DProtoHelper;
 import com.dunkware.common.util.stopwatch.DStopWatch;
 import com.dunkware.common.util.time.DunkTime;
 import com.dunkware.common.util.uuid.DUUID;
-import com.dunkware.net.cluster.node.trace.Trace;
-import com.dunkware.net.cluster.node.trace.TraceLogger;
-import com.dunkware.net.cluster.node.trace.TraceService;
+import com.dunkware.net.cluster.node.logging.DLogger;
+import com.dunkware.net.cluster.node.logging.DLoggerService;
 import com.dunkware.net.proto.stream.GEntitySnapshot;
 import com.dunkware.net.proto.stream.GStreamEvent;
 import com.dunkware.net.proto.stream.GStreamEventType;
 import com.dunkware.net.proto.stream.GStreamSessionStop;
-import com.dunkware.trade.service.data.json.stream.writer.DataStreamSnapshotWriterStats;
+import com.dunkware.trade.service.data.json.stream.session.DataStreamSessionSnapshotWriterStats;
 import com.dunkware.trade.service.data.service.config.RuntimeConfig;
 import com.dunkware.trade.service.data.service.stream.DataStream;
 import com.dunkware.trade.service.data.service.stream.DataStreamSession;
@@ -73,11 +72,16 @@ public class DataStreamSessionSnapshotWriter implements DKafkaByteHandler2 {
 
 	private DataStream stream;
 	private DataStreamSession session;
+	
+	private volatile long snapshotConsumeCount; 
+	private volatile long snapshotWriteCount; 
+	private volatile long snapshotBucketCount; 
+	
 
 	private DataStreamSessionSnapshotWriterMetrics metrics;
 	
 	@Autowired
-	private TraceService trace;
+	private DLoggerService trace;
 
 	@Value("${snapshot.writer.batchsize}")
 	private int bucketBatchSize;
@@ -92,7 +96,9 @@ public class DataStreamSessionSnapshotWriter implements DKafkaByteHandler2 {
 
 	private GStreamSessionStop stopEvent;
 	
-	private TraceLogger traceLogger;
+	private DLogger traceLogger;
+	
+	private String mongoCollectionName;
 
 	public DataStreamSessionSnapshotWriter() {
 
@@ -103,10 +109,7 @@ public class DataStreamSessionSnapshotWriter implements DKafkaByteHandler2 {
 		metrics = new DataStreamSessionSnapshotWriterMetrics(this);
 		this.session = session;
 		this.stream = session.getStream();
-		traceLogger = trace.logger(getClass());
-		traceLogger.addLabel("SessionIdentifier", session.getIdentifier());
-		traceLogger.addLabel("Stream", session.getStream().getName());
-		traceLogger.info("Starting Snapshot Writer");
+		
 		timeZone = DTimeZone.toZoneId(session.getStream().getTimeZone());
 		try {
 			mongoClient = MongoClients.create(config.getMongoURL());
@@ -114,19 +117,20 @@ public class DataStreamSessionSnapshotWriter implements DKafkaByteHandler2 {
 			mongoDatabase = mongoClient.getDatabase(config.getMongoDatabase());
 			String ident = session.getIdentifier();
 			System.out.println(ident);
+			mongoCollectionName = "stream_" + session.getStream().getName().toLowerCase() + "_snapshots";
 			snapshotCollection = mongoDatabase
-					.getCollection("stream_" + session.getStream().getName().toLowerCase() + "_snapshots")
+					.getCollection(mongoCollectionName)
 					.withWriteConcern(wc);
 
 		} catch (Exception e) {
-			traceLogger.error("Exception starting snapshot writer " + e.toString());
+		
 			logger.error(DataMarkers.getServiceMarker(),
 					"Exception connecting stream {} session {} snapshot writer to mongo db ", stream.getName(),
 					session.getIdentifier());
 			throw new Exception("Mongo Setup/Connection Exception " + e.getLocalizedMessage(), e);
 		}
 
-		DKafkaConsumerSpec2 spec = DKafkaConsumerSpec2Builder.newBuilder(ConsumerType.AllPartitions, OffsetType.Latest)
+		DKafkaByteConsumer2Spec spec = DKafkaByteConsumer2SpecBuilder.newBuilder(ConsumerType.AllPartitions, OffsetType.Latest)
 				.setBrokerString(kafkaBrokers).addTopic("stream_" + session.getStream().getName().toLowerCase() + "_snapshots")
 				.setClientAndGroup("d" + DUUID.randomUUID(5), "d" + DUUID.randomUUID(6)).build();
 
@@ -137,7 +141,7 @@ public class DataStreamSessionSnapshotWriter implements DKafkaByteHandler2 {
 			kafkaConsumer.start();
 			kafkaConsumer.addStreamHandler(this);
 		} catch (Exception e) {
-			traceLogger.error("Exception connecting to kafka consumer " + e.toString());
+		
 			logger.error("Exception connecting to kafka consumer " + e.toString(), e);
 			throw new Exception("Exception creating kafka byte consumer " + e.toString());
 		}
@@ -148,10 +152,25 @@ public class DataStreamSessionSnapshotWriter implements DKafkaByteHandler2 {
 		queueMonitor.start();
 
 	}
+	
+	public DataStreamSession getSession() { 
+		return session;
+	}
 
-	public DataStreamSnapshotWriterStats getStats() {
-		DataStreamSnapshotWriterStats stats = new DataStreamSnapshotWriterStats();
-		return stats;
+	public DataStreamSessionSnapshotWriterStats getStats() { 
+		return metrics.getStats();
+	}
+	
+	public String getMongoURL() { 
+		return config.getMongoURL();
+	}
+	
+	public String getMongoDatabase() { 
+		return config.getMongoDatabase();
+	}
+	
+	public String getMongoCollection() { 
+		return mongoCollectionName;
 	}
 
 	@Override
@@ -162,7 +181,7 @@ public class DataStreamSessionSnapshotWriter implements DKafkaByteHandler2 {
 			event = GStreamEvent.parseFrom(record.value());
 			//
 			if (event.getType() == GStreamEventType.SessionStop) {
-				traceLogger.info("Received Session Stop GStreamEvent");
+		
 				stopEvent = event.getSessionStop();
 				WriterDisposer disposer = new WriterDisposer();
 				disposer.start();
@@ -199,7 +218,7 @@ public class DataStreamSessionSnapshotWriter implements DKafkaByteHandler2 {
 			buckets.put(snapshot.getIdentifier(), bucket);
 			if (bucket.getSize() > 30) {
 				try {
-
+					
 					bucket.setStop(DProtoHelper.toLocalDateTime(snapshot.getTime(), session.getStream().getTimeZone()));
 					if (logger.isDebugEnabled()) {
 						logger.debug(MarkerFactory.getMarker("Data"), "Snapshot Bucket {} Closing at {} sizei {}",
@@ -220,7 +239,7 @@ public class DataStreamSessionSnapshotWriter implements DKafkaByteHandler2 {
 	private class WriterDisposer extends Thread {
 
 		public void start() {
-				traceLogger.info("Starting Writer Disposer");
+			
 				 int count = 0;
 				 kafkaConsumer.dispose();
 				 while(writeQueue.isEmpty() == false) { 
@@ -238,7 +257,7 @@ public class DataStreamSessionSnapshotWriter implements DKafkaByteHandler2 {
 				
 				 bucketWriter.interrupt();
 				 queueMonitor.interrupt();
-				 traceLogger.info("Invoking Snapshot Writer complete method on session");
+			
 				 session.snapshotWriterComplete();
 				  
 		}
@@ -309,13 +328,14 @@ public class DataStreamSessionSnapshotWriter implements DKafkaByteHandler2 {
 				DataStreamSessionSnapshotWriterBucket bucket = null;
 				try {
 					bucket = writeQueue.poll(15, TimeUnit.SECONDS);
+					metrics.bucketWrite(bucket);
 					if (bucket == null && pendingWrites.size() > 0) {
 						// write pending writes if no snapshot received for 15 seconds;
 						sw.start();
 						snapshotCollection.bulkWrite(pendingWrites);
 						sw.stop();
 						metrics.bucketWriteBatch(pendingWrites.size(), bucketBatchSize);
-
+						
 						pendingWrites.clear();
 						continue;
 					}
@@ -343,7 +363,7 @@ public class DataStreamSessionSnapshotWriter implements DKafkaByteHandler2 {
 					logger.error("Exception building Snapshot Bucket Document " + e.toString());
 					continue;
 				}
-				if (pendingWrites.size() > 0) {
+				if (pendingWrites.size() > bucketBatchSize) {
 					try {
 						sw.start();
 						snapshotCollection.bulkWrite(pendingWrites);

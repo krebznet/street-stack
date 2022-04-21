@@ -15,8 +15,8 @@ import org.springframework.context.ApplicationContext;
 import org.springframework.stereotype.Service;
 
 import com.dunkware.common.util.dtime.DTimeZone;
-import com.dunkware.net.cluster.node.trace.TraceLogger;
-import com.dunkware.net.cluster.node.trace.TraceService;
+import com.dunkware.net.cluster.node.logging.DLogger;
+import com.dunkware.net.cluster.node.logging.DLoggerService;
 import com.dunkware.net.proto.stream.GStreamSpec;
 import com.dunkware.net.proto.stream.GStreamSpecsResponse;
 import com.dunkware.trade.service.data.service.config.RuntimeConfig;
@@ -45,7 +45,7 @@ public class DataStreamService implements StreamMessageHandler {
 	private DataStreamEntityRepo streamRepo;
 	
 	@Autowired
-	private TraceService trace;
+	private DLoggerService trace;
 	
 
 	private Map<String, DataStream> dataStreams = new ConcurrentHashMap<String, DataStream>();
@@ -59,7 +59,7 @@ public class DataStreamService implements StreamMessageHandler {
 
 	private DataStreamSession currentSession = null;
 
-	private TraceLogger traceLogger;
+	private DLogger traceLogger;
 
 	@Transactional
 	@PostConstruct

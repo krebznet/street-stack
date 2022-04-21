@@ -12,10 +12,10 @@ import org.slf4j.MarkerFactory;
 
 import com.dunkware.common.kafka.consumer.DKafkaByteConsumer2;
 import com.dunkware.common.kafka.consumer.DKafkaByteHandler2;
-import com.dunkware.common.spec.kafka.DKafkaConsumerSpec2;
-import com.dunkware.common.spec.kafka.DKafkaConsumerSpec2.ConsumerType;
-import com.dunkware.common.spec.kafka.DKafkaConsumerSpec2.OffsetType;
-import com.dunkware.common.spec.kafka.DKafkaConsumerSpec2Builder;
+import com.dunkware.common.spec.kafka.DKafkaByteConsumer2Spec;
+import com.dunkware.common.spec.kafka.DKafkaByteConsumer2Spec.ConsumerType;
+import com.dunkware.common.spec.kafka.DKafkaByteConsumer2Spec.OffsetType;
+import com.dunkware.common.spec.kafka.DKafkaByteConsumer2SpecBuilder;
 import com.dunkware.common.util.helpers.DProtoHelper;
 import com.dunkware.net.proto.stream.GEntitySignal;
 import com.dunkware.net.proto.stream.GEntitySnapshot;
@@ -51,9 +51,9 @@ public class CacheKafkaSignalConsumerExt implements CacheExtension, DKafkaByteHa
 	public void init(CacheStream stash, CacheExtensionType type) throws CacheException {
 		this.cache = stash; 
 		this.type = (CacheKafkaSignalConsumerExtType)type;
-		DKafkaConsumerSpec2 spec = null;
+		DKafkaByteConsumer2Spec spec = null;
 		try {
-			spec = DKafkaConsumerSpec2Builder.newBuilder(ConsumerType.AllPartitions, OffsetType.Earliest).addBroker(this.type.getKafkaBrokers())
+			spec = DKafkaByteConsumer2SpecBuilder.newBuilder(ConsumerType.AllPartitions, OffsetType.Earliest).addBroker(this.type.getKafkaBrokers())
 			.addTopic(this.type.getKafkaTopic()).setClientAndGroup("ss", "dfsd").build();
 		} catch (Exception e) {
 			throw new CacheException("Exception building cache kafka snapshot consumer spec " + e.toString(),e);

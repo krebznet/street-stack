@@ -15,6 +15,7 @@ import "google/protobuf/timestamp.proto";
 
 /**
 *  Section 1. Stream Event Messsags That Get Sent Through Kafka In Reealtime.
+*  Stream Events 
 */
 enum GStreamEventType {
     EntitySignal = 0;
@@ -87,108 +88,20 @@ message GEntitySignal {
     google.protobuf.Timestamp time = 12;
    repeated GEntityVarSnapshot vars = 9;
 }
-
-
-
 /**
-*  Section 2. Stream Entity and Stream Entity Signal Queries
+*  End Stream Events --------------------------------------
 */
 
-// entity query
-message GEntityQuery {
-   int32 queryId = 1;
-   string queryName = 2;
-   string queryPath = 3;
-   string streamId = 4;
-   repeated string entities = 5;
-   repeated GEntityVarCriteria varCriterias = 6;
-   repeated GEntitySignalCountCriteria signalCountCritieras = 7;
-   dunkware.core.GCalendarRange searchRange = 8;
-}
 
-// entity signal query
-message GEntitySignalQuery {
-  int32 queryId = 1;
-  int32 queryName = 2;
-  string streamId = 3;
-  string directoryPath = 4;
-  repeated string entities = 5;
-  repeated string signalTypes = 6;
-  repeated GEntityVarCriteria varCriterias = 7;
-  dunkware.core.GCalendarRange searchRange = 8;
-}
-
-// list of entity types
-message GEntityTypeList {
- int32 listId = 1;
- string listName = 2;
- repeated int32 ids  = 3;
-}
-
-// list of signal types
-message GEntitySignalTypeList {
-  int32 listId = 1;
-  string listName = 2;
-  repeated int32 ids = 3;
-
-
-}
-// Signal Types Criteria
-message GEntitySignalTypeCriteria {
-   GEntitySignalTypeList types = 1;
-}
-
-// Entity Types Critiera
-message GEntityTypeCriteria {
-  GEntityTypeList types = 1;
-}
-
-// Signal Couunt Criteria, specify the types the count the operator the time range
-// and the entities to search with var criterias.
-message GEntitySignalCountCriteria {
-   string signalType =1;
-   int32 signalCount = 2;
-   dunkware.core.GOperator operator = 3;
-   dunkware.core.GCalendarRange timeRange = 5;
-
-}
-
-// Entity/Signal Var Critiera
-message GEntityVarCriteria {
-  string identifier = 1;
-  dunkware.core.GOperator operator = 2;
-  double value = 3;
-}
 
 /**
-*  Section 3. Stream Entity and Stream Entity Signal Scanners
-*/
-
-message GEntityScanner {
-  int32 scannerId = 1;
-  string scannerName = 2;
-  string streamId = 6;
-  string directoryPath = 3;
-  GEntityQuery query = 4;
-}
-
-message GEntitysignalScanner {
-  int32 scannerId = 1;
-  int32 scannerName = 2;
-  string streamId = 3;
-  string directoryPath = 4;
-  GEntitySignalQuery query = 5;
-}
-
-/**
- Stream Spec - The Metadata for a stream used as inputs into Signal and Entity Query Editors
+ Stream Resource Specs 
  */
 message GStreamSpec {
     string identifier = 1;
     GStreamScriptSpec script = 4;
     dunkware.core.GTimeZone timeZone = 5;
 }
-
 
 message GStreamSessionSpec {
     string stream = 1;
@@ -225,6 +138,10 @@ message GEntitySignalSpec {
 
 }
 
+/**
+*  End GStream Resource Specs 
+*/
+
 // RPC Messages
 message GStreamSpecRequest {
     string streamIdentifier = 1;
@@ -244,106 +161,6 @@ message GStreamSpecsResponse {
 }
 
 
-// *** Search RPC Methods ** //
-
-// Entity Signal Search Requst
-message GEntitySignalSearchRequest {
- string streamIdentifier = 1;
- GEntitySignalQuery query = 2;
- repeated string vars = 3;
-}
-
-// Entity Signal Search Response
-message GEntitySignalSearchResponse {
-  int32 size = 1;
-
-  oneof Response {
-    dunkware.core.GList results = 2;
-    dunkware.core.GError error = 3;
-  }
-
-}
-
-message GEntitySignalStreamRequest {
- string streamIdentifier = 1;
- GEntitySignalQuery query = 2;
- repeated string vars = 3;
- int32 refresh = 4;
-}
-
-
-// Entity Signal Stream Search Response
-message GEntitySignalStreamResponse {
-   int32 streamId = 1;
-   oneof Response {
-       string error = 2;
-       dunkware.core.GListEvent listEvent = 3;
-    }
-
-}
-
-
-// Entity Signal Search Requst
-message GEntitySearchRequest {
- string streamIdentifier = 1;
- GEntityQuery query = 2;
- repeated string vars = 3;
-}
-
-// Entity Signal Search Response
-message GEntitySearchResponse {
-  int32 size = 1;
-
-  oneof Response {
-    dunkware.core.GList results = 2;
-    dunkware.core.GError error = 3;
-  }
-
-}
-
-message GEntityStreamRequest {
- string streamIdentifier = 1;
- GEntityQuery query = 2;
- repeated string vars = 3;
- int32 refresh = 4;
-}
-
-
-// Entity Signal Stream Search Response
-message GEntityStreamResponse {
-   int32 streamId = 1;
-   oneof Response {
-       string error = 2;
-       dunkware.core.GListEvent listEvent = 3;
-    }
-
-}
-
-// New Trading UI Messages
-
-message GInstrumentVarsRequest {
-    string identifier = 1;
-}
-
-// this will be the stream message as well
-// as variables change you get another Message
-// of this type and using the ID you know what rowSignal
-// to update
-message GInstrumentVarsResponse {
-  repeated GInstrumentVar vars = 1;
-}
-
-message GInstrumentVars {
-  repeated GInstrumentVar vars = 1;
-}
-
-message GInstrumentVar {
-  int32 id = 1;
-  string identifier = 2;
-  string name = 3;
-  dunkware.core.GPipe pipe = 6;
-  string value = 7;
-}
 
 // AutoComplete 
 

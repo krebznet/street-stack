@@ -1,11 +1,11 @@
 package com.dunkware.xstream.data.capture.signal;
 
-import com.dunkware.common.spec.kafka.DKafkaConsumerSpec2;
+import com.dunkware.common.spec.kafka.DKafkaByteConsumer2Spec;
 import com.dunkware.common.util.dtime.DTimeZone;
 
 public class MongoSignalCaptureInput {
 	
-	private DKafkaConsumerSpec2 kafkaSpec; 
+	private DKafkaByteConsumer2Spec kafkaSpec; 
 	private String mongoURL; 
 	private String mongoDatabase; 
 	private String mongoCollection;
@@ -15,10 +15,10 @@ public class MongoSignalCaptureInput {
 	private int signalQueueSizeLimit = 10000; 
 	private boolean debugLogging = false;
 	
-	public DKafkaConsumerSpec2 getKafkaSpec() {
+	public DKafkaByteConsumer2Spec getKafkaSpec() {
 		return kafkaSpec;
 	}
-	public void setKafkaSpec(DKafkaConsumerSpec2 kafkaSpec) {
+	public void setKafkaSpec(DKafkaByteConsumer2Spec kafkaSpec) {
 		this.kafkaSpec = kafkaSpec;
 	}
 	public String getMongoURL() {

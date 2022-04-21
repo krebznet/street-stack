@@ -59,6 +59,38 @@ public final class GDataServiceGrpc {
      return getSignalSearchMethod;
   }
 
+  private static volatile io.grpc.MethodDescriptor<com.dunkware.net.proto.stream.GEntitySearchRequest,
+      com.dunkware.net.proto.stream.GEntitySearchResponse> getEntitySearchMethod;
+
+  @io.grpc.stub.annotations.RpcMethod(
+      fullMethodName = SERVICE_NAME + '/' + "entitySearch",
+      requestType = com.dunkware.net.proto.stream.GEntitySearchRequest.class,
+      responseType = com.dunkware.net.proto.stream.GEntitySearchResponse.class,
+      methodType = io.grpc.MethodDescriptor.MethodType.UNARY)
+  public static io.grpc.MethodDescriptor<com.dunkware.net.proto.stream.GEntitySearchRequest,
+      com.dunkware.net.proto.stream.GEntitySearchResponse> getEntitySearchMethod() {
+    io.grpc.MethodDescriptor<com.dunkware.net.proto.stream.GEntitySearchRequest, com.dunkware.net.proto.stream.GEntitySearchResponse> getEntitySearchMethod;
+    if ((getEntitySearchMethod = GDataServiceGrpc.getEntitySearchMethod) == null) {
+      synchronized (GDataServiceGrpc.class) {
+        if ((getEntitySearchMethod = GDataServiceGrpc.getEntitySearchMethod) == null) {
+          GDataServiceGrpc.getEntitySearchMethod = getEntitySearchMethod = 
+              io.grpc.MethodDescriptor.<com.dunkware.net.proto.stream.GEntitySearchRequest, com.dunkware.net.proto.stream.GEntitySearchResponse>newBuilder()
+              .setType(io.grpc.MethodDescriptor.MethodType.UNARY)
+              .setFullMethodName(generateFullMethodName(
+                  "dunkware.data.service.GDataService", "entitySearch"))
+              .setSampledToLocalTracing(true)
+              .setRequestMarshaller(io.grpc.protobuf.ProtoUtils.marshaller(
+                  com.dunkware.net.proto.stream.GEntitySearchRequest.getDefaultInstance()))
+              .setResponseMarshaller(io.grpc.protobuf.ProtoUtils.marshaller(
+                  com.dunkware.net.proto.stream.GEntitySearchResponse.getDefaultInstance()))
+                  .setSchemaDescriptor(new GDataServiceMethodDescriptorSupplier("entitySearch"))
+                  .build();
+          }
+        }
+     }
+     return getEntitySearchMethod;
+  }
+
   /**
    * Creates a new async stub that supports all call types for the service
    */
@@ -93,6 +125,13 @@ public final class GDataServiceGrpc {
       asyncUnimplementedUnaryCall(getSignalSearchMethod(), responseObserver);
     }
 
+    /**
+     */
+    public void entitySearch(com.dunkware.net.proto.stream.GEntitySearchRequest request,
+        io.grpc.stub.StreamObserver<com.dunkware.net.proto.stream.GEntitySearchResponse> responseObserver) {
+      asyncUnimplementedUnaryCall(getEntitySearchMethod(), responseObserver);
+    }
+
     @java.lang.Override public final io.grpc.ServerServiceDefinition bindService() {
       return io.grpc.ServerServiceDefinition.builder(getServiceDescriptor())
           .addMethod(
@@ -102,6 +141,13 @@ public final class GDataServiceGrpc {
                 com.dunkware.net.proto.stream.GEntitySignalSearchRequest,
                 com.dunkware.net.proto.stream.GEntitySignalSearchResponse>(
                   this, METHODID_SIGNAL_SEARCH)))
+          .addMethod(
+            getEntitySearchMethod(),
+            asyncUnaryCall(
+              new MethodHandlers<
+                com.dunkware.net.proto.stream.GEntitySearchRequest,
+                com.dunkware.net.proto.stream.GEntitySearchResponse>(
+                  this, METHODID_ENTITY_SEARCH)))
           .build();
     }
   }
@@ -131,6 +177,14 @@ public final class GDataServiceGrpc {
       asyncUnaryCall(
           getChannel().newCall(getSignalSearchMethod(), getCallOptions()), request, responseObserver);
     }
+
+    /**
+     */
+    public void entitySearch(com.dunkware.net.proto.stream.GEntitySearchRequest request,
+        io.grpc.stub.StreamObserver<com.dunkware.net.proto.stream.GEntitySearchResponse> responseObserver) {
+      asyncUnaryCall(
+          getChannel().newCall(getEntitySearchMethod(), getCallOptions()), request, responseObserver);
+    }
   }
 
   /**
@@ -156,6 +210,13 @@ public final class GDataServiceGrpc {
     public com.dunkware.net.proto.stream.GEntitySignalSearchResponse signalSearch(com.dunkware.net.proto.stream.GEntitySignalSearchRequest request) {
       return blockingUnaryCall(
           getChannel(), getSignalSearchMethod(), getCallOptions(), request);
+    }
+
+    /**
+     */
+    public com.dunkware.net.proto.stream.GEntitySearchResponse entitySearch(com.dunkware.net.proto.stream.GEntitySearchRequest request) {
+      return blockingUnaryCall(
+          getChannel(), getEntitySearchMethod(), getCallOptions(), request);
     }
   }
 
@@ -184,9 +245,18 @@ public final class GDataServiceGrpc {
       return futureUnaryCall(
           getChannel().newCall(getSignalSearchMethod(), getCallOptions()), request);
     }
+
+    /**
+     */
+    public com.google.common.util.concurrent.ListenableFuture<com.dunkware.net.proto.stream.GEntitySearchResponse> entitySearch(
+        com.dunkware.net.proto.stream.GEntitySearchRequest request) {
+      return futureUnaryCall(
+          getChannel().newCall(getEntitySearchMethod(), getCallOptions()), request);
+    }
   }
 
   private static final int METHODID_SIGNAL_SEARCH = 0;
+  private static final int METHODID_ENTITY_SEARCH = 1;
 
   private static final class MethodHandlers<Req, Resp> implements
       io.grpc.stub.ServerCalls.UnaryMethod<Req, Resp>,
@@ -208,6 +278,10 @@ public final class GDataServiceGrpc {
         case METHODID_SIGNAL_SEARCH:
           serviceImpl.signalSearch((com.dunkware.net.proto.stream.GEntitySignalSearchRequest) request,
               (io.grpc.stub.StreamObserver<com.dunkware.net.proto.stream.GEntitySignalSearchResponse>) responseObserver);
+          break;
+        case METHODID_ENTITY_SEARCH:
+          serviceImpl.entitySearch((com.dunkware.net.proto.stream.GEntitySearchRequest) request,
+              (io.grpc.stub.StreamObserver<com.dunkware.net.proto.stream.GEntitySearchResponse>) responseObserver);
           break;
         default:
           throw new AssertionError();
@@ -271,6 +345,7 @@ public final class GDataServiceGrpc {
           serviceDescriptor = result = io.grpc.ServiceDescriptor.newBuilder(SERVICE_NAME)
               .setSchemaDescriptor(new GDataServiceFileDescriptorSupplier())
               .addMethod(getSignalSearchMethod())
+              .addMethod(getEntitySearchMethod())
               .build();
         }
       }

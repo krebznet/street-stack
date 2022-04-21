@@ -13,15 +13,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import com.dunkware.common.kafka.consumer.DKafkaByteConsumer2;
 import com.dunkware.common.kafka.consumer.DKafkaByteHandler2;
-import com.dunkware.common.spec.kafka.DKafkaConsumerSpec2;
-import com.dunkware.common.spec.kafka.DKafkaConsumerSpec2.ConsumerType;
-import com.dunkware.common.spec.kafka.DKafkaConsumerSpec2.OffsetType;
-import com.dunkware.common.spec.kafka.DKafkaConsumerSpec2Builder;
+import com.dunkware.common.spec.kafka.DKafkaByteConsumer2Spec;
+import com.dunkware.common.spec.kafka.DKafkaByteConsumer2Spec.ConsumerType;
+import com.dunkware.common.spec.kafka.DKafkaByteConsumer2Spec.OffsetType;
+import com.dunkware.common.spec.kafka.DKafkaByteConsumer2SpecBuilder;
 import com.dunkware.common.util.dtime.DTimeZone;
 import com.dunkware.common.util.stopwatch.DStopWatch;
 import com.dunkware.common.util.uuid.DUUID;
-import com.dunkware.net.cluster.node.trace.TraceLogger;
-import com.dunkware.net.cluster.node.trace.TraceService;
 import com.dunkware.net.proto.stream.GEntitySignal;
 import com.dunkware.net.proto.stream.GStreamEvent;
 import com.dunkware.net.proto.stream.GStreamEventType;
@@ -44,9 +42,7 @@ public class DataStreamSessionSignalWriter implements DKafkaByteHandler2 {
 	@Autowired
 	private RuntimeConfig config;
 	
-	@Autowired
-	private TraceService traceService; 
-
+	
 
 	private MongoClient mongoClient;
 	private MongoDatabase mongoDatabase;
@@ -67,17 +63,13 @@ public class DataStreamSessionSignalWriter implements DKafkaByteHandler2 {
 	
 	private DKafkaByteConsumer2 kafkaConsumer;
 
-	private TraceLogger traceLogger;
+	
 	public void startSession(DataStreamSession session) throws Exception {
 		this.session = session;
 		this.stream = session.getStream();
 		this.timeZone = session.getSpec().getTimeZone();
 		timeZone = stream.getTimeZone();
-		traceLogger = traceService.logger(getClass());
-		traceLogger.addLabel("SessionIdentifier", session.getIdentifier());
-		traceLogger.addLabel("Stream", session.getStream().getName());
-		traceLogger.info("Starting Signal Writer");
-
+	
 		metrics = new DataStreamSessionSignalWriterMetrics();
 		metrics.start(this);
 		// if pending set the start time and all that good stuff.
@@ -90,12 +82,12 @@ public class DataStreamSessionSignalWriter implements DKafkaByteHandler2 {
 			signalCollection = mongoDatabase.getCollection("stream_" + stream.getName() + "_signals");
 
 		} catch (Exception e) {
-			traceLogger.error("Exception connecting to mongo db " + e.toString());
+		
 			logger.error("Exceptoon Init Mongo DB " + e.toString());
 			throw new Exception("Mongo Setup/Connection Exception " + e.getLocalizedMessage(), e);
 		}
 		
-		DKafkaConsumerSpec2 spec = DKafkaConsumerSpec2Builder.newBuilder(ConsumerType.AllPartitions, OffsetType.Latest).setBrokerString("localhost:9091")
+		DKafkaByteConsumer2Spec spec = DKafkaByteConsumer2SpecBuilder.newBuilder(ConsumerType.AllPartitions, OffsetType.Latest).setBrokerString("localhost:9091")
 				.addTopic("stream_us_equity_signals").setClientAndGroup("d" + DUUID.randomUUID(5), "d" + DUUID.randomUUID(6)).build();
 				
 		try {
@@ -104,7 +96,7 @@ public class DataStreamSessionSignalWriter implements DKafkaByteHandler2 {
 			kafkaConsumer.start();
 			kafkaConsumer.addStreamHandler(this);
 		} catch (Exception e) {
-			traceLogger.error("Exception connecting to kafka consumer " + e.toString());
+		
 			logger.error("Exception connecting to kafka consumer " + e.toString(),e);
 			throw new Exception("Exception creating kafka byte consumer " + e.toString());
 		}
@@ -157,7 +149,7 @@ public class DataStreamSessionSignalWriter implements DKafkaByteHandler2 {
 			writer.interrupt();
 			metrics.stop();
 			mongoClient.close();
-			traceLogger.info("Invoking signal writer complete on session");
+		
 			session.signalWriterComplete();
 			
 		}

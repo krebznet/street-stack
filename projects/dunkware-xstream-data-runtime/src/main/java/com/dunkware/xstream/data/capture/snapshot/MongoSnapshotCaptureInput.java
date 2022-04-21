@@ -1,11 +1,11 @@
 package com.dunkware.xstream.data.capture.snapshot;
 
-import com.dunkware.common.spec.kafka.DKafkaConsumerSpec2;
+import com.dunkware.common.spec.kafka.DKafkaByteConsumer2Spec;
 import com.dunkware.common.util.dtime.DTimeZone;
 
 public class MongoSnapshotCaptureInput {
 	
-	private DKafkaConsumerSpec2 kafkaSpec; 
+	private DKafkaByteConsumer2Spec kafkaSpec; 
 	private String mongoURL; 
 	private int batchSize = 200; 
 	private String mongoDatabase; 
@@ -60,10 +60,10 @@ public class MongoSnapshotCaptureInput {
 	public void setTimeZone(DTimeZone timeZone) {
 		this.timeZone = timeZone;
 	}
-	public DKafkaConsumerSpec2 getKafkaSpec() {
+	public DKafkaByteConsumer2Spec getKafkaSpec() {
 		return kafkaSpec;
 	}
-	public void setKafkaSpec(DKafkaConsumerSpec2 kafkaSpec) {
+	public void setKafkaSpec(DKafkaByteConsumer2Spec kafkaSpec) {
 		this.kafkaSpec = kafkaSpec;
 	}
 	public int getWriteQueueSizeLimit() {

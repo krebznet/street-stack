@@ -1,0 +1,18 @@
+syntax = "proto3";
+
+package dunkware.cluster;
+
+
+option java_multiple_files = true;
+option java_package = "com.dunkware.net.proto.cluster.service";
+option java_outer_classname = "GClusterServiceProto";
+
+import "google/protobuf/timestamp.proto";
+
+import "cluster.proto";
+
+service GClusterService  {
+    rpc nodePing(stream dunkware.cluster.GNodePing) returns (stream dunkware.cluster.GNodePing) {}
+	
+ }
+

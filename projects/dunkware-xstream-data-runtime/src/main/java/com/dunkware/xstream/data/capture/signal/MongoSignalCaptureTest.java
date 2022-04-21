@@ -1,9 +1,9 @@
 package com.dunkware.xstream.data.capture.signal;
 
-import com.dunkware.common.spec.kafka.DKafkaConsumerSpec2;
-import com.dunkware.common.spec.kafka.DKafkaConsumerSpec2.ConsumerType;
-import com.dunkware.common.spec.kafka.DKafkaConsumerSpec2.OffsetType;
-import com.dunkware.common.spec.kafka.DKafkaConsumerSpec2Builder;
+import com.dunkware.common.spec.kafka.DKafkaByteConsumer2Spec;
+import com.dunkware.common.spec.kafka.DKafkaByteConsumer2Spec.ConsumerType;
+import com.dunkware.common.spec.kafka.DKafkaByteConsumer2Spec.OffsetType;
+import com.dunkware.common.spec.kafka.DKafkaByteConsumer2SpecBuilder;
 import com.dunkware.common.util.dtime.DTimeZone;
 
 public class MongoSignalCaptureTest {
@@ -12,7 +12,7 @@ public static void main(String[] args) {
 		
 		try {
 			MongoSignalCaptureInput input = new MongoSignalCaptureInput();
-			DKafkaConsumerSpec2 spec  = DKafkaConsumerSpec2Builder.newBuilder(ConsumerType.AllPartitions, OffsetType.Earliest).
+			DKafkaByteConsumer2Spec spec  = DKafkaByteConsumer2SpecBuilder.newBuilder(ConsumerType.AllPartitions, OffsetType.Earliest).
 					setTopicString("stream_us_equity_220209_signals").setClientAndGroup("jjkj4kkjkj", "jj4jkjkkk").
 					setBrokerString("172.16.16.55:31090").build();
 			

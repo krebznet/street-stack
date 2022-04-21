@@ -6,7 +6,7 @@ package com.dunkware.net.proto.stream;
 /**
  * <pre>
  **
- *Stream Spec - The Metadata for a stream used as inputs into Signal and Entity Query Editors
+ *Stream Resource Specs 
  * </pre>
  *
  * Protobuf type {@code dunkware.stream.GStreamSpec}
@@ -362,7 +362,7 @@ private static final long serialVersionUID = 0L;
   /**
    * <pre>
    **
-   *Stream Spec - The Metadata for a stream used as inputs into Signal and Entity Query Editors
+   *Stream Resource Specs 
    * </pre>
    *
    * Protobuf type {@code dunkware.stream.GStreamSpec}

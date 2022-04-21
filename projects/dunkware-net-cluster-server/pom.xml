@@ -50,9 +50,18 @@
 	<dependencies>
 		<!-- Spring Boot Starter Dependencies -->
 
-
-
 		<dependency>
+			<groupId>com.dunkware.net</groupId>
+			<artifactId>dunkware-net-core-proto</artifactId>
+			<version>2.0.0-SNAPSHOT</version>
+		</dependency>
+		<dependency>
+			<groupId>com.dunkware.net</groupId>
+			<artifactId>dunkware-net-core-runtime</artifactId>
+			<version>1.0.0-SNAPSHOT</version>
+		</dependency>
+		<dependency>
+	
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-web</artifactId>
 		</dependency>

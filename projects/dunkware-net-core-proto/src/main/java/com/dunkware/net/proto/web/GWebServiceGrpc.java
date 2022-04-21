@@ -155,38 +155,6 @@ public final class GWebServiceGrpc {
      return getSignalSearchMethod;
   }
 
-  private static volatile io.grpc.MethodDescriptor<com.dunkware.net.proto.stream.GEntitySignalStreamRequest,
-      com.dunkware.net.proto.stream.GEntitySignalStreamResponse> getSignalStreamMethod;
-
-  @io.grpc.stub.annotations.RpcMethod(
-      fullMethodName = SERVICE_NAME + '/' + "signalStream",
-      requestType = com.dunkware.net.proto.stream.GEntitySignalStreamRequest.class,
-      responseType = com.dunkware.net.proto.stream.GEntitySignalStreamResponse.class,
-      methodType = io.grpc.MethodDescriptor.MethodType.SERVER_STREAMING)
-  public static io.grpc.MethodDescriptor<com.dunkware.net.proto.stream.GEntitySignalStreamRequest,
-      com.dunkware.net.proto.stream.GEntitySignalStreamResponse> getSignalStreamMethod() {
-    io.grpc.MethodDescriptor<com.dunkware.net.proto.stream.GEntitySignalStreamRequest, com.dunkware.net.proto.stream.GEntitySignalStreamResponse> getSignalStreamMethod;
-    if ((getSignalStreamMethod = GWebServiceGrpc.getSignalStreamMethod) == null) {
-      synchronized (GWebServiceGrpc.class) {
-        if ((getSignalStreamMethod = GWebServiceGrpc.getSignalStreamMethod) == null) {
-          GWebServiceGrpc.getSignalStreamMethod = getSignalStreamMethod = 
-              io.grpc.MethodDescriptor.<com.dunkware.net.proto.stream.GEntitySignalStreamRequest, com.dunkware.net.proto.stream.GEntitySignalStreamResponse>newBuilder()
-              .setType(io.grpc.MethodDescriptor.MethodType.SERVER_STREAMING)
-              .setFullMethodName(generateFullMethodName(
-                  "dunkware.web.GWebService", "signalStream"))
-              .setSampledToLocalTracing(true)
-              .setRequestMarshaller(io.grpc.protobuf.ProtoUtils.marshaller(
-                  com.dunkware.net.proto.stream.GEntitySignalStreamRequest.getDefaultInstance()))
-              .setResponseMarshaller(io.grpc.protobuf.ProtoUtils.marshaller(
-                  com.dunkware.net.proto.stream.GEntitySignalStreamResponse.getDefaultInstance()))
-                  .setSchemaDescriptor(new GWebServiceMethodDescriptorSupplier("signalStream"))
-                  .build();
-          }
-        }
-     }
-     return getSignalStreamMethod;
-  }
-
   private static volatile io.grpc.MethodDescriptor<com.dunkware.net.proto.stream.GEntitySearchRequest,
       com.dunkware.net.proto.stream.GEntitySearchResponse> getEntitySearchMethod;
 
@@ -217,70 +185,6 @@ public final class GWebServiceGrpc {
         }
      }
      return getEntitySearchMethod;
-  }
-
-  private static volatile io.grpc.MethodDescriptor<com.dunkware.net.proto.stream.GEntityStreamRequest,
-      com.dunkware.net.proto.stream.GEntityStreamResponse> getEntityStreamMethod;
-
-  @io.grpc.stub.annotations.RpcMethod(
-      fullMethodName = SERVICE_NAME + '/' + "entityStream",
-      requestType = com.dunkware.net.proto.stream.GEntityStreamRequest.class,
-      responseType = com.dunkware.net.proto.stream.GEntityStreamResponse.class,
-      methodType = io.grpc.MethodDescriptor.MethodType.SERVER_STREAMING)
-  public static io.grpc.MethodDescriptor<com.dunkware.net.proto.stream.GEntityStreamRequest,
-      com.dunkware.net.proto.stream.GEntityStreamResponse> getEntityStreamMethod() {
-    io.grpc.MethodDescriptor<com.dunkware.net.proto.stream.GEntityStreamRequest, com.dunkware.net.proto.stream.GEntityStreamResponse> getEntityStreamMethod;
-    if ((getEntityStreamMethod = GWebServiceGrpc.getEntityStreamMethod) == null) {
-      synchronized (GWebServiceGrpc.class) {
-        if ((getEntityStreamMethod = GWebServiceGrpc.getEntityStreamMethod) == null) {
-          GWebServiceGrpc.getEntityStreamMethod = getEntityStreamMethod = 
-              io.grpc.MethodDescriptor.<com.dunkware.net.proto.stream.GEntityStreamRequest, com.dunkware.net.proto.stream.GEntityStreamResponse>newBuilder()
-              .setType(io.grpc.MethodDescriptor.MethodType.SERVER_STREAMING)
-              .setFullMethodName(generateFullMethodName(
-                  "dunkware.web.GWebService", "entityStream"))
-              .setSampledToLocalTracing(true)
-              .setRequestMarshaller(io.grpc.protobuf.ProtoUtils.marshaller(
-                  com.dunkware.net.proto.stream.GEntityStreamRequest.getDefaultInstance()))
-              .setResponseMarshaller(io.grpc.protobuf.ProtoUtils.marshaller(
-                  com.dunkware.net.proto.stream.GEntityStreamResponse.getDefaultInstance()))
-                  .setSchemaDescriptor(new GWebServiceMethodDescriptorSupplier("entityStream"))
-                  .build();
-          }
-        }
-     }
-     return getEntityStreamMethod;
-  }
-
-  private static volatile io.grpc.MethodDescriptor<com.dunkware.net.proto.stream.GInstrumentVarsRequest,
-      com.dunkware.net.proto.stream.GInstrumentVarsResponse> getInstrumentVarsMethod;
-
-  @io.grpc.stub.annotations.RpcMethod(
-      fullMethodName = SERVICE_NAME + '/' + "instrumentVars",
-      requestType = com.dunkware.net.proto.stream.GInstrumentVarsRequest.class,
-      responseType = com.dunkware.net.proto.stream.GInstrumentVarsResponse.class,
-      methodType = io.grpc.MethodDescriptor.MethodType.SERVER_STREAMING)
-  public static io.grpc.MethodDescriptor<com.dunkware.net.proto.stream.GInstrumentVarsRequest,
-      com.dunkware.net.proto.stream.GInstrumentVarsResponse> getInstrumentVarsMethod() {
-    io.grpc.MethodDescriptor<com.dunkware.net.proto.stream.GInstrumentVarsRequest, com.dunkware.net.proto.stream.GInstrumentVarsResponse> getInstrumentVarsMethod;
-    if ((getInstrumentVarsMethod = GWebServiceGrpc.getInstrumentVarsMethod) == null) {
-      synchronized (GWebServiceGrpc.class) {
-        if ((getInstrumentVarsMethod = GWebServiceGrpc.getInstrumentVarsMethod) == null) {
-          GWebServiceGrpc.getInstrumentVarsMethod = getInstrumentVarsMethod = 
-              io.grpc.MethodDescriptor.<com.dunkware.net.proto.stream.GInstrumentVarsRequest, com.dunkware.net.proto.stream.GInstrumentVarsResponse>newBuilder()
-              .setType(io.grpc.MethodDescriptor.MethodType.SERVER_STREAMING)
-              .setFullMethodName(generateFullMethodName(
-                  "dunkware.web.GWebService", "instrumentVars"))
-              .setSampledToLocalTracing(true)
-              .setRequestMarshaller(io.grpc.protobuf.ProtoUtils.marshaller(
-                  com.dunkware.net.proto.stream.GInstrumentVarsRequest.getDefaultInstance()))
-              .setResponseMarshaller(io.grpc.protobuf.ProtoUtils.marshaller(
-                  com.dunkware.net.proto.stream.GInstrumentVarsResponse.getDefaultInstance()))
-                  .setSchemaDescriptor(new GWebServiceMethodDescriptorSupplier("instrumentVars"))
-                  .build();
-          }
-        }
-     }
-     return getInstrumentVarsMethod;
   }
 
   private static volatile io.grpc.MethodDescriptor<com.dunkware.net.proto.stream.GAutoCompleteRequest,
@@ -372,30 +276,9 @@ public final class GWebServiceGrpc {
 
     /**
      */
-    public void signalStream(com.dunkware.net.proto.stream.GEntitySignalStreamRequest request,
-        io.grpc.stub.StreamObserver<com.dunkware.net.proto.stream.GEntitySignalStreamResponse> responseObserver) {
-      asyncUnimplementedUnaryCall(getSignalStreamMethod(), responseObserver);
-    }
-
-    /**
-     */
     public void entitySearch(com.dunkware.net.proto.stream.GEntitySearchRequest request,
         io.grpc.stub.StreamObserver<com.dunkware.net.proto.stream.GEntitySearchResponse> responseObserver) {
       asyncUnimplementedUnaryCall(getEntitySearchMethod(), responseObserver);
-    }
-
-    /**
-     */
-    public void entityStream(com.dunkware.net.proto.stream.GEntityStreamRequest request,
-        io.grpc.stub.StreamObserver<com.dunkware.net.proto.stream.GEntityStreamResponse> responseObserver) {
-      asyncUnimplementedUnaryCall(getEntityStreamMethod(), responseObserver);
-    }
-
-    /**
-     */
-    public void instrumentVars(com.dunkware.net.proto.stream.GInstrumentVarsRequest request,
-        io.grpc.stub.StreamObserver<com.dunkware.net.proto.stream.GInstrumentVarsResponse> responseObserver) {
-      asyncUnimplementedUnaryCall(getInstrumentVarsMethod(), responseObserver);
     }
 
     /**
@@ -436,33 +319,12 @@ public final class GWebServiceGrpc {
                 com.dunkware.net.proto.stream.GEntitySignalSearchResponse>(
                   this, METHODID_SIGNAL_SEARCH)))
           .addMethod(
-            getSignalStreamMethod(),
-            asyncServerStreamingCall(
-              new MethodHandlers<
-                com.dunkware.net.proto.stream.GEntitySignalStreamRequest,
-                com.dunkware.net.proto.stream.GEntitySignalStreamResponse>(
-                  this, METHODID_SIGNAL_STREAM)))
-          .addMethod(
             getEntitySearchMethod(),
             asyncUnaryCall(
               new MethodHandlers<
                 com.dunkware.net.proto.stream.GEntitySearchRequest,
                 com.dunkware.net.proto.stream.GEntitySearchResponse>(
                   this, METHODID_ENTITY_SEARCH)))
-          .addMethod(
-            getEntityStreamMethod(),
-            asyncServerStreamingCall(
-              new MethodHandlers<
-                com.dunkware.net.proto.stream.GEntityStreamRequest,
-                com.dunkware.net.proto.stream.GEntityStreamResponse>(
-                  this, METHODID_ENTITY_STREAM)))
-          .addMethod(
-            getInstrumentVarsMethod(),
-            asyncServerStreamingCall(
-              new MethodHandlers<
-                com.dunkware.net.proto.stream.GInstrumentVarsRequest,
-                com.dunkware.net.proto.stream.GInstrumentVarsResponse>(
-                  this, METHODID_INSTRUMENT_VARS)))
           .addMethod(
             getAutoCompleteSearchMethod(),
             asyncBidiStreamingCall(
@@ -526,34 +388,10 @@ public final class GWebServiceGrpc {
 
     /**
      */
-    public void signalStream(com.dunkware.net.proto.stream.GEntitySignalStreamRequest request,
-        io.grpc.stub.StreamObserver<com.dunkware.net.proto.stream.GEntitySignalStreamResponse> responseObserver) {
-      asyncServerStreamingCall(
-          getChannel().newCall(getSignalStreamMethod(), getCallOptions()), request, responseObserver);
-    }
-
-    /**
-     */
     public void entitySearch(com.dunkware.net.proto.stream.GEntitySearchRequest request,
         io.grpc.stub.StreamObserver<com.dunkware.net.proto.stream.GEntitySearchResponse> responseObserver) {
       asyncUnaryCall(
           getChannel().newCall(getEntitySearchMethod(), getCallOptions()), request, responseObserver);
-    }
-
-    /**
-     */
-    public void entityStream(com.dunkware.net.proto.stream.GEntityStreamRequest request,
-        io.grpc.stub.StreamObserver<com.dunkware.net.proto.stream.GEntityStreamResponse> responseObserver) {
-      asyncServerStreamingCall(
-          getChannel().newCall(getEntityStreamMethod(), getCallOptions()), request, responseObserver);
-    }
-
-    /**
-     */
-    public void instrumentVars(com.dunkware.net.proto.stream.GInstrumentVarsRequest request,
-        io.grpc.stub.StreamObserver<com.dunkware.net.proto.stream.GInstrumentVarsResponse> responseObserver) {
-      asyncServerStreamingCall(
-          getChannel().newCall(getInstrumentVarsMethod(), getCallOptions()), request, responseObserver);
     }
 
     /**
@@ -613,33 +451,9 @@ public final class GWebServiceGrpc {
 
     /**
      */
-    public java.util.Iterator<com.dunkware.net.proto.stream.GEntitySignalStreamResponse> signalStream(
-        com.dunkware.net.proto.stream.GEntitySignalStreamRequest request) {
-      return blockingServerStreamingCall(
-          getChannel(), getSignalStreamMethod(), getCallOptions(), request);
-    }
-
-    /**
-     */
     public com.dunkware.net.proto.stream.GEntitySearchResponse entitySearch(com.dunkware.net.proto.stream.GEntitySearchRequest request) {
       return blockingUnaryCall(
           getChannel(), getEntitySearchMethod(), getCallOptions(), request);
-    }
-
-    /**
-     */
-    public java.util.Iterator<com.dunkware.net.proto.stream.GEntityStreamResponse> entityStream(
-        com.dunkware.net.proto.stream.GEntityStreamRequest request) {
-      return blockingServerStreamingCall(
-          getChannel(), getEntityStreamMethod(), getCallOptions(), request);
-    }
-
-    /**
-     */
-    public java.util.Iterator<com.dunkware.net.proto.stream.GInstrumentVarsResponse> instrumentVars(
-        com.dunkware.net.proto.stream.GInstrumentVarsRequest request) {
-      return blockingServerStreamingCall(
-          getChannel(), getInstrumentVarsMethod(), getCallOptions(), request);
     }
   }
 
@@ -706,11 +520,8 @@ public final class GWebServiceGrpc {
   private static final int METHODID_TEST_ENTITY_GRID = 1;
   private static final int METHODID_GET_STREAM_SPEC = 2;
   private static final int METHODID_SIGNAL_SEARCH = 3;
-  private static final int METHODID_SIGNAL_STREAM = 4;
-  private static final int METHODID_ENTITY_SEARCH = 5;
-  private static final int METHODID_ENTITY_STREAM = 6;
-  private static final int METHODID_INSTRUMENT_VARS = 7;
-  private static final int METHODID_AUTO_COMPLETE_SEARCH = 8;
+  private static final int METHODID_ENTITY_SEARCH = 4;
+  private static final int METHODID_AUTO_COMPLETE_SEARCH = 5;
 
   private static final class MethodHandlers<Req, Resp> implements
       io.grpc.stub.ServerCalls.UnaryMethod<Req, Resp>,
@@ -745,21 +556,9 @@ public final class GWebServiceGrpc {
           serviceImpl.signalSearch((com.dunkware.net.proto.stream.GEntitySignalSearchRequest) request,
               (io.grpc.stub.StreamObserver<com.dunkware.net.proto.stream.GEntitySignalSearchResponse>) responseObserver);
           break;
-        case METHODID_SIGNAL_STREAM:
-          serviceImpl.signalStream((com.dunkware.net.proto.stream.GEntitySignalStreamRequest) request,
-              (io.grpc.stub.StreamObserver<com.dunkware.net.proto.stream.GEntitySignalStreamResponse>) responseObserver);
-          break;
         case METHODID_ENTITY_SEARCH:
           serviceImpl.entitySearch((com.dunkware.net.proto.stream.GEntitySearchRequest) request,
               (io.grpc.stub.StreamObserver<com.dunkware.net.proto.stream.GEntitySearchResponse>) responseObserver);
-          break;
-        case METHODID_ENTITY_STREAM:
-          serviceImpl.entityStream((com.dunkware.net.proto.stream.GEntityStreamRequest) request,
-              (io.grpc.stub.StreamObserver<com.dunkware.net.proto.stream.GEntityStreamResponse>) responseObserver);
-          break;
-        case METHODID_INSTRUMENT_VARS:
-          serviceImpl.instrumentVars((com.dunkware.net.proto.stream.GInstrumentVarsRequest) request,
-              (io.grpc.stub.StreamObserver<com.dunkware.net.proto.stream.GInstrumentVarsResponse>) responseObserver);
           break;
         default:
           throw new AssertionError();
@@ -829,10 +628,7 @@ public final class GWebServiceGrpc {
               .addMethod(getTestEntityGridMethod())
               .addMethod(getGetStreamSpecMethod())
               .addMethod(getSignalSearchMethod())
-              .addMethod(getSignalStreamMethod())
               .addMethod(getEntitySearchMethod())
-              .addMethod(getEntityStreamMethod())
-              .addMethod(getInstrumentVarsMethod())
               .addMethod(getAutoCompleteSearchMethod())
               .build();
         }

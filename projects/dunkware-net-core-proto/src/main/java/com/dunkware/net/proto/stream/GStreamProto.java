@@ -50,56 +50,6 @@ public final class GStreamProto {
     com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
       internal_static_dunkware_stream_GEntitySignal_fieldAccessorTable;
   static final com.google.protobuf.Descriptors.Descriptor
-    internal_static_dunkware_stream_GEntityQuery_descriptor;
-  static final 
-    com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
-      internal_static_dunkware_stream_GEntityQuery_fieldAccessorTable;
-  static final com.google.protobuf.Descriptors.Descriptor
-    internal_static_dunkware_stream_GEntitySignalQuery_descriptor;
-  static final 
-    com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
-      internal_static_dunkware_stream_GEntitySignalQuery_fieldAccessorTable;
-  static final com.google.protobuf.Descriptors.Descriptor
-    internal_static_dunkware_stream_GEntityTypeList_descriptor;
-  static final 
-    com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
-      internal_static_dunkware_stream_GEntityTypeList_fieldAccessorTable;
-  static final com.google.protobuf.Descriptors.Descriptor
-    internal_static_dunkware_stream_GEntitySignalTypeList_descriptor;
-  static final 
-    com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
-      internal_static_dunkware_stream_GEntitySignalTypeList_fieldAccessorTable;
-  static final com.google.protobuf.Descriptors.Descriptor
-    internal_static_dunkware_stream_GEntitySignalTypeCriteria_descriptor;
-  static final 
-    com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
-      internal_static_dunkware_stream_GEntitySignalTypeCriteria_fieldAccessorTable;
-  static final com.google.protobuf.Descriptors.Descriptor
-    internal_static_dunkware_stream_GEntityTypeCriteria_descriptor;
-  static final 
-    com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
-      internal_static_dunkware_stream_GEntityTypeCriteria_fieldAccessorTable;
-  static final com.google.protobuf.Descriptors.Descriptor
-    internal_static_dunkware_stream_GEntitySignalCountCriteria_descriptor;
-  static final 
-    com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
-      internal_static_dunkware_stream_GEntitySignalCountCriteria_fieldAccessorTable;
-  static final com.google.protobuf.Descriptors.Descriptor
-    internal_static_dunkware_stream_GEntityVarCriteria_descriptor;
-  static final 
-    com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
-      internal_static_dunkware_stream_GEntityVarCriteria_fieldAccessorTable;
-  static final com.google.protobuf.Descriptors.Descriptor
-    internal_static_dunkware_stream_GEntityScanner_descriptor;
-  static final 
-    com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
-      internal_static_dunkware_stream_GEntityScanner_fieldAccessorTable;
-  static final com.google.protobuf.Descriptors.Descriptor
-    internal_static_dunkware_stream_GEntitysignalScanner_descriptor;
-  static final 
-    com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
-      internal_static_dunkware_stream_GEntitysignalScanner_fieldAccessorTable;
-  static final com.google.protobuf.Descriptors.Descriptor
     internal_static_dunkware_stream_GStreamSpec_descriptor;
   static final 
     com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
@@ -149,66 +99,6 @@ public final class GStreamProto {
   static final 
     com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
       internal_static_dunkware_stream_GStreamSpecsResponse_fieldAccessorTable;
-  static final com.google.protobuf.Descriptors.Descriptor
-    internal_static_dunkware_stream_GEntitySignalSearchRequest_descriptor;
-  static final 
-    com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
-      internal_static_dunkware_stream_GEntitySignalSearchRequest_fieldAccessorTable;
-  static final com.google.protobuf.Descriptors.Descriptor
-    internal_static_dunkware_stream_GEntitySignalSearchResponse_descriptor;
-  static final 
-    com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
-      internal_static_dunkware_stream_GEntitySignalSearchResponse_fieldAccessorTable;
-  static final com.google.protobuf.Descriptors.Descriptor
-    internal_static_dunkware_stream_GEntitySignalStreamRequest_descriptor;
-  static final 
-    com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
-      internal_static_dunkware_stream_GEntitySignalStreamRequest_fieldAccessorTable;
-  static final com.google.protobuf.Descriptors.Descriptor
-    internal_static_dunkware_stream_GEntitySignalStreamResponse_descriptor;
-  static final 
-    com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
-      internal_static_dunkware_stream_GEntitySignalStreamResponse_fieldAccessorTable;
-  static final com.google.protobuf.Descriptors.Descriptor
-    internal_static_dunkware_stream_GEntitySearchRequest_descriptor;
-  static final 
-    com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
-      internal_static_dunkware_stream_GEntitySearchRequest_fieldAccessorTable;
-  static final com.google.protobuf.Descriptors.Descriptor
-    internal_static_dunkware_stream_GEntitySearchResponse_descriptor;
-  static final 
-    com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
-      internal_static_dunkware_stream_GEntitySearchResponse_fieldAccessorTable;
-  static final com.google.protobuf.Descriptors.Descriptor
-    internal_static_dunkware_stream_GEntityStreamRequest_descriptor;
-  static final 
-    com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
-      internal_static_dunkware_stream_GEntityStreamRequest_fieldAccessorTable;
-  static final com.google.protobuf.Descriptors.Descriptor
-    internal_static_dunkware_stream_GEntityStreamResponse_descriptor;
-  static final 
-    com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
-      internal_static_dunkware_stream_GEntityStreamResponse_fieldAccessorTable;
-  static final com.google.protobuf.Descriptors.Descriptor
-    internal_static_dunkware_stream_GInstrumentVarsRequest_descriptor;
-  static final 
-    com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
-      internal_static_dunkware_stream_GInstrumentVarsRequest_fieldAccessorTable;
-  static final com.google.protobuf.Descriptors.Descriptor
-    internal_static_dunkware_stream_GInstrumentVarsResponse_descriptor;
-  static final 
-    com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
-      internal_static_dunkware_stream_GInstrumentVarsResponse_fieldAccessorTable;
-  static final com.google.protobuf.Descriptors.Descriptor
-    internal_static_dunkware_stream_GInstrumentVars_descriptor;
-  static final 
-    com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
-      internal_static_dunkware_stream_GInstrumentVars_fieldAccessorTable;
-  static final com.google.protobuf.Descriptors.Descriptor
-    internal_static_dunkware_stream_GInstrumentVar_descriptor;
-  static final 
-    com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
-      internal_static_dunkware_stream_GInstrumentVar_fieldAccessorTable;
   static final com.google.protobuf.Descriptors.Descriptor
     internal_static_dunkware_stream_GAutoCompleteRequest_descriptor;
   static final 
@@ -263,106 +153,38 @@ public final class GStreamProto {
       "mId\030\005 \001(\t\022\021\n\tsessionId\030\006 \001(\t\022(\n\004time\030\014 \001" +
       "(\0132\032.google.protobuf.Timestamp\0221\n\004vars\030\t" +
       " \003(\0132#.dunkware.stream.GEntityVarSnapsho" +
-      "t\"\243\002\n\014GEntityQuery\022\017\n\007queryId\030\001 \001(\005\022\021\n\tq" +
-      "ueryName\030\002 \001(\t\022\021\n\tqueryPath\030\003 \001(\t\022\020\n\010str" +
-      "eamId\030\004 \001(\t\022\020\n\010entities\030\005 \003(\t\0229\n\014varCrit" +
-      "erias\030\006 \003(\0132#.dunkware.stream.GEntityVar" +
-      "Criteria\022I\n\024signalCountCritieras\030\007 \003(\0132+" +
-      ".dunkware.stream.GEntitySignalCountCrite" +
-      "ria\0222\n\013searchRange\030\010 \001(\0132\035.dunkware.core" +
-      ".GCalendarRange\"\367\001\n\022GEntitySignalQuery\022\017" +
-      "\n\007queryId\030\001 \001(\005\022\021\n\tqueryName\030\002 \001(\005\022\020\n\010st" +
-      "reamId\030\003 \001(\t\022\025\n\rdirectoryPath\030\004 \001(\t\022\020\n\010e" +
-      "ntities\030\005 \003(\t\022\023\n\013signalTypes\030\006 \003(\t\0229\n\014va" +
-      "rCriterias\030\007 \003(\0132#.dunkware.stream.GEnti" +
-      "tyVarCriteria\0222\n\013searchRange\030\010 \001(\0132\035.dun" +
-      "kware.core.GCalendarRange\"@\n\017GEntityType" +
-      "List\022\016\n\006listId\030\001 \001(\005\022\020\n\010listName\030\002 \001(\t\022\013" +
-      "\n\003ids\030\003 \003(\005\"F\n\025GEntitySignalTypeList\022\016\n\006" +
-      "listId\030\001 \001(\005\022\020\n\010listName\030\002 \001(\t\022\013\n\003ids\030\003 " +
-      "\003(\005\"R\n\031GEntitySignalTypeCriteria\0225\n\005type" +
-      "s\030\001 \001(\0132&.dunkware.stream.GEntitySignalT" +
-      "ypeList\"F\n\023GEntityTypeCriteria\022/\n\005types\030" +
-      "\001 \001(\0132 .dunkware.stream.GEntityTypeList\"" +
-      "\243\001\n\032GEntitySignalCountCriteria\022\022\n\nsignal" +
-      "Type\030\001 \001(\t\022\023\n\013signalCount\030\002 \001(\005\022*\n\010opera" +
-      "tor\030\003 \001(\0162\030.dunkware.core.GOperator\0220\n\tt" +
-      "imeRange\030\005 \001(\0132\035.dunkware.core.GCalendar" +
-      "Range\"c\n\022GEntityVarCriteria\022\022\n\nidentifie" +
-      "r\030\001 \001(\t\022*\n\010operator\030\002 \001(\0162\030.dunkware.cor" +
-      "e.GOperator\022\r\n\005value\030\003 \001(\001\"\217\001\n\016GEntitySc" +
-      "anner\022\021\n\tscannerId\030\001 \001(\005\022\023\n\013scannerName\030" +
-      "\002 \001(\t\022\020\n\010streamId\030\006 \001(\t\022\025\n\rdirectoryPath" +
-      "\030\003 \001(\t\022,\n\005query\030\004 \001(\0132\035.dunkware.stream." +
-      "GEntityQuery\"\233\001\n\024GEntitysignalScanner\022\021\n" +
-      "\tscannerId\030\001 \001(\005\022\023\n\013scannerName\030\002 \001(\005\022\020\n" +
-      "\010streamId\030\003 \001(\t\022\025\n\rdirectoryPath\030\004 \001(\t\0222" +
-      "\n\005query\030\005 \001(\0132#.dunkware.stream.GEntityS" +
-      "ignalQuery\"\201\001\n\013GStreamSpec\022\022\n\nidentifier" +
-      "\030\001 \001(\t\0222\n\006script\030\004 \001(\0132\".dunkware.stream" +
-      ".GStreamScriptSpec\022*\n\010timeZone\030\005 \001(\0162\030.d" +
-      "unkware.core.GTimeZone\"\315\001\n\022GStreamSessio" +
-      "nSpec\022\016\n\006stream\030\001 \001(\t\022\021\n\tsessionId\030\002 \001(\t" +
-      "\0222\n\006script\030\004 \001(\0132\".dunkware.stream.GStre" +
-      "amScriptSpec\022*\n\010timeZone\030\005 \001(\0162\030.dunkwar" +
-      "e.core.GTimeZone\0224\n\010entities\030\006 \003(\0132\".dun" +
-      "kware.stream.GStreamEntitySpec\"\253\001\n\021GStre" +
-      "amScriptSpec\022\030\n\020streamIdentifier\030\001 \001(\t\022\017" +
-      "\n\007version\030\002 \001(\001\0222\n\tvariables\030\003 \003(\0132\037.dun" +
-      "kware.stream.GStreamVarSpec\0227\n\013signalTyp" +
-      "es\030\004 \003(\0132\".dunkware.stream.GEntitySignal" +
-      "Spec\"k\n\016GStreamVarSpec\022\n\n\002id\030\001 \001(\005\022\022\n\nid" +
-      "entifier\030\002 \001(\t\022\r\n\005label\030\003 \001(\t\022*\n\010dataTyp" +
-      "e\030\004 \001(\0162\030.dunkware.core.GDataType\"B\n\021GSt" +
-      "reamEntitySpec\022\n\n\002id\030\001 \001(\005\022\022\n\nidentifier" +
-      "\030\002 \001(\t\022\r\n\005label\030\003 \001(\t\"B\n\021GEntitySignalSp" +
-      "ec\022\n\n\002id\030\001 \001(\005\022\022\n\nidentifier\030\002 \001(\t\022\r\n\005la" +
-      "bel\030\003 \001(\t\".\n\022GStreamSpecRequest\022\030\n\020strea" +
-      "mIdentifier\030\001 \001(\t\"g\n\023GStreamSpecResponse" +
-      "\022$\n\005error\030\001 \001(\0132\025.dunkware.core.GError\022*" +
-      "\n\004spec\030\002 \001(\0132\034.dunkware.stream.GStreamSp" +
-      "ec\"$\n\023GStreamSpecsRequest\022\r\n\005hello\030\001 \001(\005" +
-      "\"C\n\024GStreamSpecsResponse\022+\n\005specs\030\001 \003(\0132" +
-      "\034.dunkware.stream.GStreamSpec\"x\n\032GEntity" +
-      "SignalSearchRequest\022\030\n\020streamIdentifier\030" +
-      "\001 \001(\t\0222\n\005query\030\002 \001(\0132#.dunkware.stream.G" +
-      "EntitySignalQuery\022\014\n\004vars\030\003 \003(\t\"\210\001\n\033GEnt" +
-      "itySignalSearchResponse\022\014\n\004size\030\001 \001(\005\022\'\n" +
-      "\007results\030\002 \001(\0132\024.dunkware.core.GListH\000\022&" +
-      "\n\005error\030\003 \001(\0132\025.dunkware.core.GErrorH\000B\n" +
-      "\n\010Response\"\211\001\n\032GEntitySignalStreamReques" +
-      "t\022\030\n\020streamIdentifier\030\001 \001(\t\0222\n\005query\030\002 \001" +
-      "(\0132#.dunkware.stream.GEntitySignalQuery\022" +
-      "\014\n\004vars\030\003 \003(\t\022\017\n\007refresh\030\004 \001(\005\"|\n\033GEntit" +
-      "ySignalStreamResponse\022\020\n\010streamId\030\001 \001(\005\022" +
-      "\017\n\005error\030\002 \001(\tH\000\022.\n\tlistEvent\030\003 \001(\0132\031.du" +
-      "nkware.core.GListEventH\000B\n\n\010Response\"l\n\024" +
-      "GEntitySearchRequest\022\030\n\020streamIdentifier" +
-      "\030\001 \001(\t\022,\n\005query\030\002 \001(\0132\035.dunkware.stream." +
-      "GEntityQuery\022\014\n\004vars\030\003 \003(\t\"\202\001\n\025GEntitySe" +
-      "archResponse\022\014\n\004size\030\001 \001(\005\022\'\n\007results\030\002 " +
-      "\001(\0132\024.dunkware.core.GListH\000\022&\n\005error\030\003 \001" +
-      "(\0132\025.dunkware.core.GErrorH\000B\n\n\010Response\"" +
-      "}\n\024GEntityStreamRequest\022\030\n\020streamIdentif" +
-      "ier\030\001 \001(\t\022,\n\005query\030\002 \001(\0132\035.dunkware.stre" +
-      "am.GEntityQuery\022\014\n\004vars\030\003 \003(\t\022\017\n\007refresh" +
-      "\030\004 \001(\005\"v\n\025GEntityStreamResponse\022\020\n\010strea" +
-      "mId\030\001 \001(\005\022\017\n\005error\030\002 \001(\tH\000\022.\n\tlistEvent\030" +
-      "\003 \001(\0132\031.dunkware.core.GListEventH\000B\n\n\010Re" +
-      "sponse\",\n\026GInstrumentVarsRequest\022\022\n\niden" +
-      "tifier\030\001 \001(\t\"H\n\027GInstrumentVarsResponse\022" +
-      "-\n\004vars\030\001 \003(\0132\037.dunkware.stream.GInstrum" +
-      "entVar\"@\n\017GInstrumentVars\022-\n\004vars\030\001 \003(\0132" +
-      "\037.dunkware.stream.GInstrumentVar\"q\n\016GIns" +
-      "trumentVar\022\n\n\002id\030\001 \001(\005\022\022\n\nidentifier\030\002 \001" +
-      "(\t\022\014\n\004name\030\003 \001(\t\022\"\n\004pipe\030\006 \001(\0132\024.dunkwar" +
-      "e.core.GPipe\022\r\n\005value\030\007 \001(\t\"\'\n\024GAutoComp" +
-      "leteRequest\022\017\n\007request\030\001 \001(\t\")\n\025GAutoCom" +
-      "pleteResponse\022\020\n\010response\030\002 \001(\t*[\n\020GStre" +
-      "amEventType\022\020\n\014EntitySignal\020\000\022\022\n\016EntityS" +
-      "napshot\020\001\022\020\n\014SessionStart\020\002\022\017\n\013SessionSt" +
-      "op\020\003B/\n\035com.dunkware.net.proto.streamB\014G" +
-      "StreamProtoP\001b\006proto3"
+      "t\"\201\001\n\013GStreamSpec\022\022\n\nidentifier\030\001 \001(\t\0222\n" +
+      "\006script\030\004 \001(\0132\".dunkware.stream.GStreamS" +
+      "criptSpec\022*\n\010timeZone\030\005 \001(\0162\030.dunkware.c" +
+      "ore.GTimeZone\"\315\001\n\022GStreamSessionSpec\022\016\n\006" +
+      "stream\030\001 \001(\t\022\021\n\tsessionId\030\002 \001(\t\0222\n\006scrip" +
+      "t\030\004 \001(\0132\".dunkware.stream.GStreamScriptS" +
+      "pec\022*\n\010timeZone\030\005 \001(\0162\030.dunkware.core.GT" +
+      "imeZone\0224\n\010entities\030\006 \003(\0132\".dunkware.str" +
+      "eam.GStreamEntitySpec\"\253\001\n\021GStreamScriptS" +
+      "pec\022\030\n\020streamIdentifier\030\001 \001(\t\022\017\n\007version" +
+      "\030\002 \001(\001\0222\n\tvariables\030\003 \003(\0132\037.dunkware.str" +
+      "eam.GStreamVarSpec\0227\n\013signalTypes\030\004 \003(\0132" +
+      "\".dunkware.stream.GEntitySignalSpec\"k\n\016G" +
+      "StreamVarSpec\022\n\n\002id\030\001 \001(\005\022\022\n\nidentifier\030" +
+      "\002 \001(\t\022\r\n\005label\030\003 \001(\t\022*\n\010dataType\030\004 \001(\0162\030" +
+      ".dunkware.core.GDataType\"B\n\021GStreamEntit" +
+      "ySpec\022\n\n\002id\030\001 \001(\005\022\022\n\nidentifier\030\002 \001(\t\022\r\n" +
+      "\005label\030\003 \001(\t\"B\n\021GEntitySignalSpec\022\n\n\002id\030" +
+      "\001 \001(\005\022\022\n\nidentifier\030\002 \001(\t\022\r\n\005label\030\003 \001(\t" +
+      "\".\n\022GStreamSpecRequest\022\030\n\020streamIdentifi" +
+      "er\030\001 \001(\t\"g\n\023GStreamSpecResponse\022$\n\005error" +
+      "\030\001 \001(\0132\025.dunkware.core.GError\022*\n\004spec\030\002 " +
+      "\001(\0132\034.dunkware.stream.GStreamSpec\"$\n\023GSt" +
+      "reamSpecsRequest\022\r\n\005hello\030\001 \001(\005\"C\n\024GStre" +
+      "amSpecsResponse\022+\n\005specs\030\001 \003(\0132\034.dunkwar" +
+      "e.stream.GStreamSpec\"\'\n\024GAutoCompleteReq" +
+      "uest\022\017\n\007request\030\001 \001(\t\")\n\025GAutoCompleteRe" +
+      "sponse\022\020\n\010response\030\002 \001(\t*[\n\020GStreamEvent" +
+      "Type\022\020\n\014EntitySignal\020\000\022\022\n\016EntitySnapshot" +
+      "\020\001\022\020\n\014SessionStart\020\002\022\017\n\013SessionStop\020\003B/\n" +
+      "\035com.dunkware.net.proto.streamB\014GStreamP" +
+      "rotoP\001b\006proto3"
     };
     com.google.protobuf.Descriptors.FileDescriptor.InternalDescriptorAssigner assigner =
         new com.google.protobuf.Descriptors.FileDescriptor.    InternalDescriptorAssigner() {
@@ -420,206 +242,74 @@ public final class GStreamProto {
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_dunkware_stream_GEntitySignal_descriptor,
         new java.lang.String[] { "Id", "Identifier", "EntityId", "EntityIdentifier", "StreamId", "SessionId", "Time", "Vars", });
-    internal_static_dunkware_stream_GEntityQuery_descriptor =
-      getDescriptor().getMessageTypes().get(6);
-    internal_static_dunkware_stream_GEntityQuery_fieldAccessorTable = new
-      com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
-        internal_static_dunkware_stream_GEntityQuery_descriptor,
-        new java.lang.String[] { "QueryId", "QueryName", "QueryPath", "StreamId", "Entities", "VarCriterias", "SignalCountCritieras", "SearchRange", });
-    internal_static_dunkware_stream_GEntitySignalQuery_descriptor =
-      getDescriptor().getMessageTypes().get(7);
-    internal_static_dunkware_stream_GEntitySignalQuery_fieldAccessorTable = new
-      com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
-        internal_static_dunkware_stream_GEntitySignalQuery_descriptor,
-        new java.lang.String[] { "QueryId", "QueryName", "StreamId", "DirectoryPath", "Entities", "SignalTypes", "VarCriterias", "SearchRange", });
-    internal_static_dunkware_stream_GEntityTypeList_descriptor =
-      getDescriptor().getMessageTypes().get(8);
-    internal_static_dunkware_stream_GEntityTypeList_fieldAccessorTable = new
-      com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
-        internal_static_dunkware_stream_GEntityTypeList_descriptor,
-        new java.lang.String[] { "ListId", "ListName", "Ids", });
-    internal_static_dunkware_stream_GEntitySignalTypeList_descriptor =
-      getDescriptor().getMessageTypes().get(9);
-    internal_static_dunkware_stream_GEntitySignalTypeList_fieldAccessorTable = new
-      com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
-        internal_static_dunkware_stream_GEntitySignalTypeList_descriptor,
-        new java.lang.String[] { "ListId", "ListName", "Ids", });
-    internal_static_dunkware_stream_GEntitySignalTypeCriteria_descriptor =
-      getDescriptor().getMessageTypes().get(10);
-    internal_static_dunkware_stream_GEntitySignalTypeCriteria_fieldAccessorTable = new
-      com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
-        internal_static_dunkware_stream_GEntitySignalTypeCriteria_descriptor,
-        new java.lang.String[] { "Types", });
-    internal_static_dunkware_stream_GEntityTypeCriteria_descriptor =
-      getDescriptor().getMessageTypes().get(11);
-    internal_static_dunkware_stream_GEntityTypeCriteria_fieldAccessorTable = new
-      com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
-        internal_static_dunkware_stream_GEntityTypeCriteria_descriptor,
-        new java.lang.String[] { "Types", });
-    internal_static_dunkware_stream_GEntitySignalCountCriteria_descriptor =
-      getDescriptor().getMessageTypes().get(12);
-    internal_static_dunkware_stream_GEntitySignalCountCriteria_fieldAccessorTable = new
-      com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
-        internal_static_dunkware_stream_GEntitySignalCountCriteria_descriptor,
-        new java.lang.String[] { "SignalType", "SignalCount", "Operator", "TimeRange", });
-    internal_static_dunkware_stream_GEntityVarCriteria_descriptor =
-      getDescriptor().getMessageTypes().get(13);
-    internal_static_dunkware_stream_GEntityVarCriteria_fieldAccessorTable = new
-      com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
-        internal_static_dunkware_stream_GEntityVarCriteria_descriptor,
-        new java.lang.String[] { "Identifier", "Operator", "Value", });
-    internal_static_dunkware_stream_GEntityScanner_descriptor =
-      getDescriptor().getMessageTypes().get(14);
-    internal_static_dunkware_stream_GEntityScanner_fieldAccessorTable = new
-      com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
-        internal_static_dunkware_stream_GEntityScanner_descriptor,
-        new java.lang.String[] { "ScannerId", "ScannerName", "StreamId", "DirectoryPath", "Query", });
-    internal_static_dunkware_stream_GEntitysignalScanner_descriptor =
-      getDescriptor().getMessageTypes().get(15);
-    internal_static_dunkware_stream_GEntitysignalScanner_fieldAccessorTable = new
-      com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
-        internal_static_dunkware_stream_GEntitysignalScanner_descriptor,
-        new java.lang.String[] { "ScannerId", "ScannerName", "StreamId", "DirectoryPath", "Query", });
     internal_static_dunkware_stream_GStreamSpec_descriptor =
-      getDescriptor().getMessageTypes().get(16);
+      getDescriptor().getMessageTypes().get(6);
     internal_static_dunkware_stream_GStreamSpec_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_dunkware_stream_GStreamSpec_descriptor,
         new java.lang.String[] { "Identifier", "Script", "TimeZone", });
     internal_static_dunkware_stream_GStreamSessionSpec_descriptor =
-      getDescriptor().getMessageTypes().get(17);
+      getDescriptor().getMessageTypes().get(7);
     internal_static_dunkware_stream_GStreamSessionSpec_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_dunkware_stream_GStreamSessionSpec_descriptor,
         new java.lang.String[] { "Stream", "SessionId", "Script", "TimeZone", "Entities", });
     internal_static_dunkware_stream_GStreamScriptSpec_descriptor =
-      getDescriptor().getMessageTypes().get(18);
+      getDescriptor().getMessageTypes().get(8);
     internal_static_dunkware_stream_GStreamScriptSpec_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_dunkware_stream_GStreamScriptSpec_descriptor,
         new java.lang.String[] { "StreamIdentifier", "Version", "Variables", "SignalTypes", });
     internal_static_dunkware_stream_GStreamVarSpec_descriptor =
-      getDescriptor().getMessageTypes().get(19);
+      getDescriptor().getMessageTypes().get(9);
     internal_static_dunkware_stream_GStreamVarSpec_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_dunkware_stream_GStreamVarSpec_descriptor,
         new java.lang.String[] { "Id", "Identifier", "Label", "DataType", });
     internal_static_dunkware_stream_GStreamEntitySpec_descriptor =
-      getDescriptor().getMessageTypes().get(20);
+      getDescriptor().getMessageTypes().get(10);
     internal_static_dunkware_stream_GStreamEntitySpec_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_dunkware_stream_GStreamEntitySpec_descriptor,
         new java.lang.String[] { "Id", "Identifier", "Label", });
     internal_static_dunkware_stream_GEntitySignalSpec_descriptor =
-      getDescriptor().getMessageTypes().get(21);
+      getDescriptor().getMessageTypes().get(11);
     internal_static_dunkware_stream_GEntitySignalSpec_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_dunkware_stream_GEntitySignalSpec_descriptor,
         new java.lang.String[] { "Id", "Identifier", "Label", });
     internal_static_dunkware_stream_GStreamSpecRequest_descriptor =
-      getDescriptor().getMessageTypes().get(22);
+      getDescriptor().getMessageTypes().get(12);
     internal_static_dunkware_stream_GStreamSpecRequest_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_dunkware_stream_GStreamSpecRequest_descriptor,
         new java.lang.String[] { "StreamIdentifier", });
     internal_static_dunkware_stream_GStreamSpecResponse_descriptor =
-      getDescriptor().getMessageTypes().get(23);
+      getDescriptor().getMessageTypes().get(13);
     internal_static_dunkware_stream_GStreamSpecResponse_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_dunkware_stream_GStreamSpecResponse_descriptor,
         new java.lang.String[] { "Error", "Spec", });
     internal_static_dunkware_stream_GStreamSpecsRequest_descriptor =
-      getDescriptor().getMessageTypes().get(24);
+      getDescriptor().getMessageTypes().get(14);
     internal_static_dunkware_stream_GStreamSpecsRequest_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_dunkware_stream_GStreamSpecsRequest_descriptor,
         new java.lang.String[] { "Hello", });
     internal_static_dunkware_stream_GStreamSpecsResponse_descriptor =
-      getDescriptor().getMessageTypes().get(25);
+      getDescriptor().getMessageTypes().get(15);
     internal_static_dunkware_stream_GStreamSpecsResponse_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_dunkware_stream_GStreamSpecsResponse_descriptor,
         new java.lang.String[] { "Specs", });
-    internal_static_dunkware_stream_GEntitySignalSearchRequest_descriptor =
-      getDescriptor().getMessageTypes().get(26);
-    internal_static_dunkware_stream_GEntitySignalSearchRequest_fieldAccessorTable = new
-      com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
-        internal_static_dunkware_stream_GEntitySignalSearchRequest_descriptor,
-        new java.lang.String[] { "StreamIdentifier", "Query", "Vars", });
-    internal_static_dunkware_stream_GEntitySignalSearchResponse_descriptor =
-      getDescriptor().getMessageTypes().get(27);
-    internal_static_dunkware_stream_GEntitySignalSearchResponse_fieldAccessorTable = new
-      com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
-        internal_static_dunkware_stream_GEntitySignalSearchResponse_descriptor,
-        new java.lang.String[] { "Size", "Results", "Error", "Response", });
-    internal_static_dunkware_stream_GEntitySignalStreamRequest_descriptor =
-      getDescriptor().getMessageTypes().get(28);
-    internal_static_dunkware_stream_GEntitySignalStreamRequest_fieldAccessorTable = new
-      com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
-        internal_static_dunkware_stream_GEntitySignalStreamRequest_descriptor,
-        new java.lang.String[] { "StreamIdentifier", "Query", "Vars", "Refresh", });
-    internal_static_dunkware_stream_GEntitySignalStreamResponse_descriptor =
-      getDescriptor().getMessageTypes().get(29);
-    internal_static_dunkware_stream_GEntitySignalStreamResponse_fieldAccessorTable = new
-      com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
-        internal_static_dunkware_stream_GEntitySignalStreamResponse_descriptor,
-        new java.lang.String[] { "StreamId", "Error", "ListEvent", "Response", });
-    internal_static_dunkware_stream_GEntitySearchRequest_descriptor =
-      getDescriptor().getMessageTypes().get(30);
-    internal_static_dunkware_stream_GEntitySearchRequest_fieldAccessorTable = new
-      com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
-        internal_static_dunkware_stream_GEntitySearchRequest_descriptor,
-        new java.lang.String[] { "StreamIdentifier", "Query", "Vars", });
-    internal_static_dunkware_stream_GEntitySearchResponse_descriptor =
-      getDescriptor().getMessageTypes().get(31);
-    internal_static_dunkware_stream_GEntitySearchResponse_fieldAccessorTable = new
-      com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
-        internal_static_dunkware_stream_GEntitySearchResponse_descriptor,
-        new java.lang.String[] { "Size", "Results", "Error", "Response", });
-    internal_static_dunkware_stream_GEntityStreamRequest_descriptor =
-      getDescriptor().getMessageTypes().get(32);
-    internal_static_dunkware_stream_GEntityStreamRequest_fieldAccessorTable = new
-      com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
-        internal_static_dunkware_stream_GEntityStreamRequest_descriptor,
-        new java.lang.String[] { "StreamIdentifier", "Query", "Vars", "Refresh", });
-    internal_static_dunkware_stream_GEntityStreamResponse_descriptor =
-      getDescriptor().getMessageTypes().get(33);
-    internal_static_dunkware_stream_GEntityStreamResponse_fieldAccessorTable = new
-      com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
-        internal_static_dunkware_stream_GEntityStreamResponse_descriptor,
-        new java.lang.String[] { "StreamId", "Error", "ListEvent", "Response", });
-    internal_static_dunkware_stream_GInstrumentVarsRequest_descriptor =
-      getDescriptor().getMessageTypes().get(34);
-    internal_static_dunkware_stream_GInstrumentVarsRequest_fieldAccessorTable = new
-      com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
-        internal_static_dunkware_stream_GInstrumentVarsRequest_descriptor,
-        new java.lang.String[] { "Identifier", });
-    internal_static_dunkware_stream_GInstrumentVarsResponse_descriptor =
-      getDescriptor().getMessageTypes().get(35);
-    internal_static_dunkware_stream_GInstrumentVarsResponse_fieldAccessorTable = new
-      com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
-        internal_static_dunkware_stream_GInstrumentVarsResponse_descriptor,
-        new java.lang.String[] { "Vars", });
-    internal_static_dunkware_stream_GInstrumentVars_descriptor =
-      getDescriptor().getMessageTypes().get(36);
-    internal_static_dunkware_stream_GInstrumentVars_fieldAccessorTable = new
-      com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
-        internal_static_dunkware_stream_GInstrumentVars_descriptor,
-        new java.lang.String[] { "Vars", });
-    internal_static_dunkware_stream_GInstrumentVar_descriptor =
-      getDescriptor().getMessageTypes().get(37);
-    internal_static_dunkware_stream_GInstrumentVar_fieldAccessorTable = new
-      com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
-        internal_static_dunkware_stream_GInstrumentVar_descriptor,
-        new java.lang.String[] { "Id", "Identifier", "Name", "Pipe", "Value", });
     internal_static_dunkware_stream_GAutoCompleteRequest_descriptor =
-      getDescriptor().getMessageTypes().get(38);
+      getDescriptor().getMessageTypes().get(16);
     internal_static_dunkware_stream_GAutoCompleteRequest_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_dunkware_stream_GAutoCompleteRequest_descriptor,
         new java.lang.String[] { "Request", });
     internal_static_dunkware_stream_GAutoCompleteResponse_descriptor =
-      getDescriptor().getMessageTypes().get(39);
+      getDescriptor().getMessageTypes().get(17);
     internal_static_dunkware_stream_GAutoCompleteResponse_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_dunkware_stream_GAutoCompleteResponse_descriptor,

@@ -13,7 +13,7 @@
 	</appender>
 	
 	
-<!--    <appender name="FLUENT"
+    <appender name="FLUENT"
 		class="ch.qos.logback.more.appenders.DataFluentAppender">
 		<tag>dunkware</tag>
 		<label>logging</label>
@@ -23,7 +23,7 @@
 			<key>owner</key>
 			<value>stream-test</value>
 		</additionalField>
-	</appender> -->
+	</appender> 
 	
 
 
@@ -38,6 +38,7 @@
 
 	<logger name="com.dunkware" level="debug" additivity="false">
 		<appender-ref ref="CONSOLE" additivity="false" />
+		<appender-ref ref="FLUENT" additivity="false" />
 		
 	</logger>
 	

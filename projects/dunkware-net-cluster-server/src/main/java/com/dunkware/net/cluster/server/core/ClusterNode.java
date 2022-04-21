@@ -5,5 +5,6 @@ public class ClusterNode {
 	private String id; 
 	//private need node type; 
 	
+	// cab stream pings; 
 
 }

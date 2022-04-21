@@ -29,7 +29,7 @@ public class GrpcWebServiceChannels {
 		try {
 		     streamChannel = ManagedChannelBuilder.forTarget(config.serviceStreamGRPC()).usePlaintext().build();
 		     connected = true; 
-		    
+		    streamChannel.
 		} catch (Exception e) {
 			logger.error("Exception creating stream service channel to " + config.serviceStreamGRPC() + " " + e.toString(),e);
 		}

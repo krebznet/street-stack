@@ -4,27 +4,33 @@ package dunkware.cluster;
 
 
 option java_multiple_files = true;
-option java_package = "com.dunkware.net.cluster";
+option java_package = "com.dunkware.net.proto.cluster";
 option java_outer_classname = "GClusterProto";
 
 import "google/protobuf/timestamp.proto";
 
-message GTrace { 
- google.protobuf.Timestamp time = 1; 
- string node = 2;
- string message = 3; 
- string level = 4; 
- repeated GTraceTag tags = 5; 
- repeated GTraceLabel labels = 6; 
- string className = 7;
- 
- message GTraceTag { 
-   string tag = 1;
+
+ enum GClusterEventType { 
+    POJO = 0;
  }
  
- message GTraceLabel { 
-   string name = 1;
-   string value = 2;
- 
+ message GClusterEvent {
+     google.protobuf.Timestamp time = 1; 
+     string node = 2; 
+     GClusterEventType type = 3;
+     oneof event {
+        GClusterPojoEvent pojoEvent = 4;
+       }
  }
-} 
+ 
+ 
+ message GClusterPojoEvent { 
+     string className = 1; 
+     string json = 2; 
+ }
+ 
+
+ message GNodePing { 
+   string node = 1;
+   string json = 2;
+ }

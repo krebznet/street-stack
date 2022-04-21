@@ -20,8 +20,6 @@ import com.dunkware.common.util.dtime.DZonedClockUpdater;
 import com.dunkware.common.util.dtime.DZonedDateTime;
 import com.dunkware.common.util.events.anot.ADEventMethod;
 import com.dunkware.common.util.json.DJson;
-import com.dunkware.net.cluster.node.trace.TraceLogger;
-import com.dunkware.net.cluster.node.trace.TraceService;
 import com.dunkware.net.proto.stream.GStreamSpec;
 import com.dunkware.trade.service.stream.json.controller.spec.StreamSpec;
 import com.dunkware.trade.service.stream.json.controller.spec.StreamStatsSpec;
@@ -90,10 +88,7 @@ public class StreamController {
 	@Value("${streams.schedule.enable}")
 	private boolean scheduleEnabled = true;
 	
-	@Autowired
-	private TraceService trace;
 	
-	private TraceLogger traceLogger;
 	private GStreamSpec gStreamSpec = null;
 	
 	private XScriptProject scriptProject; 
@@ -112,17 +107,14 @@ public class StreamController {
 		stats.setStream(ent.getName());
 		stats.setStatus(StreamStatus.Stopped);
 		streamVersion = getCurrentVersion();
-		traceLogger = trace.logger(getClass());
-		traceLogger.addLabel("Stream", ent.getName());
-		
-		
+	
 			String bundle = streamVersion.getBundle();
 			try {
-				traceLogger.info("Loading XScript Project");
+				
 				XScriptBundle bund = DJson.getObjectMapper().readValue(streamVersion.getBundle(),
 						XScriptBundle.class);
 				scriptProject = XscriptBundleHelper.loadProject(bund);
-				traceLogger.info("Loaded XScript Project" );
+			
 				
 			} catch (Exception e) {
 				stats.setStatus(StreamStatus.Exception);

@@ -53,6 +53,15 @@ public class DExecutor {
 
 	}
 	
+	public DExecutorStats getStats() { 
+		DExecutorStats s = new DExecutorStats();
+		s.setCompletedCount(getCompletedTaskCount());
+		s.setPendingCount(getPendingTaskCount());
+		s.setPoolSize(poolSize);
+		s.setTimeoutCount(getTimeoutTaskCount());
+		return s
+	}
+	
 	public int getPendingTaskCount() { 
 		return phaser.getCount();
 	}
