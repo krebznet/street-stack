@@ -13,40 +13,47 @@
 		</encoder>
 	</appender>
 
-
-
-	
- <!--   <appender name="FLUENT"
+	<!-- <appender name="SysInfo" class="ch.qos.logback.core.FileAppender"> 
+		<file>/Users/dkrebs/dunkware/log/tick/sys-info.log</file> <filter class="ch.qos.logback.classic.filter.LevelFilter"> 
+		<level>INFO</level> <onMatch>ACCEPT</onMatch> <onMismatch>DENY</onMismatch> 
+		</filter> <encoder> <pattern>${PATTERN}</pattern> </encoder> </appender> 
+		<appender name="SysError" class="ch.qos.logback.core.FileAppender"> <file>/Users/dkrebs/dunkware/log/tick/sys-error.log</file> 
+		<filter class="ch.qos.logback.classic.filter.LevelFilter"> <level>ERROR</level> 
+		<onMatch>ACCEPT</onMatch> <onMismatch>DENY</onMismatch> </filter> <encoder> 
+		<pattern>${PATTERN}</pattern> </encoder> </appender> <appender name="SysDebug" 
+		class="ch.qos.logback.core.FileAppender"> <file>/Users/dkrebs/dunkware/log/tick/sys-debug.log</file> 
+		<filter class="ch.qos.logback.classic.filter.LevelFilter"> <level>DEBUG</level> 
+		<onMatch>ACCEPT</onMatch> <onMismatch>DENY</onMismatch> </filter> <encoder> 
+		<pattern>${PATTERN}</pattern> </encoder> </appender> <appender name="SysTrace" 
+		class="ch.qos.logback.core.FileAppender"> <file>/Users/dkrebs/dunkware/log/tick/sys-trace.log</file> 
+		<filter class="ch.qos.logback.classic.filter.LevelFilter"> <level>TRACE</level> 
+		<onMatch>ACCEPT</onMatch> <onMismatch>DENY</onMismatch> </filter> <encoder> 
+		<pattern>${PATTERN}</pattern> </encoder> </appender> <appender name="TickProviderTrace" 
+		class="ch.qos.logback.core.FileAppender"> <file>/Users/dkrebs/dunkware/log/tick/tick-provider-trace.log</file> 
+		<filter class="ch.qos.logback.classic.filter.LevelFilter"> <level>TRACE</level> 
+		<onMatch>ACCEPT</onMatch> <onMismatch>DENY</onMismatch> </filter> <encoder> 
+		<pattern>${PATTERN}</pattern> </encoder> </appender> -->
+	<appender name="FLUENT"
 		class="ch.qos.logback.more.appenders.DataFluentAppender">
-		<tag>dunkware</tag>
+		<tag>streetdev</tag>
 		<label>logging</label>
-		<remoteHost>172.16.16.55</remoteHost>
-		<port>32756</port>
+		<remoteHost>testrock2.dunkware.net</remoteHost>
+		<port>5678</port>
 		<additionalField>
-			<key>owner</key>
-			<value>data-dev</value>
+			<key>node</key>
+			<value>cluster</value>
 		</additionalField>
-	</appender>-->
-	
-
-	
+	</appender>
 
 	<root level="INFO">
+
 		<appender-ref ref="CONSOLE" additivity="false" />
 	</root>
 
-	
-	<logger name="com.dunkware" level="DEBUG" additivity="false">
-		
-		<appender-ref ref="CONSOLE" additivity="false" />
-	
-		<!--  <appender-ref ref="FLUENT" additivity="false" />-->
+
+	<logger name="com.dunkware" level="DEBUG">
+		<appender-ref ref="FLUENT" additivity="false" />
+
 	</logger>
-	
-	
-
-
-
-
 
 </configuration>

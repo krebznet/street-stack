@@ -1,0 +1,35 @@
+package com.dunkware.net.cluster.server.core;
+
+import javax.annotation.PostConstruct;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.slf4j.MarkerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+@Service
+public class ClusterService {
+	
+	private Logger logger = LoggerFactory.getLogger(getClass());
+	
+	@Autowired
+	private org.springframework.context.ApplicationContext ac;
+	
+	private ClusterNodeManager nodeManger; 
+	
+	private ClusterEventManager eventManager; 
+
+	@PostConstruct
+	public void load() { 
+		nodeManger = new ClusterNodeManager();
+		ac.getAutowireCapableBeanFactory().autowireBean(nodeManger);;
+		try {
+			nodeManger.start(this);
+		} catch (Exception e) {
+			logger.error(MarkerFactory.getMarker("Crash"), "Node Manager Start Exception " + e.toString());
+			System.exit(-1);
+		}
+		
+	}
+}

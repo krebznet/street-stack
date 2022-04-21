@@ -6,9 +6,6 @@ import org.springframework.stereotype.Service;
 @Service
 public class ClusterConfig {
 	
-	//@Value("${mongoURL}")
-	//private String mongoURL; 
-	
 	@Value("${kafkaBrokers}")
 	private String kafkaBrokers;
 
