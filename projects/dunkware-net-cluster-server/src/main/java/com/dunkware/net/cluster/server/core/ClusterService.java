@@ -8,6 +8,8 @@ import org.slf4j.MarkerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.dunkware.common.util.logging.Markers;
+
 @Service
 public class ClusterService {
 	
@@ -30,6 +32,9 @@ public class ClusterService {
 			logger.error(MarkerFactory.getMarker("Crash"), "Node Manager Start Exception " + e.toString());
 			System.exit(-1);
 		}
+		eventManager = new ClusterEventManager();
+		ac.getAutowireCapableBeanFactory().autowireBean(eventManager);
+		logger.info(Markers.serviceStart(), "Started Cluster Server Service");
 		
 	}
 }

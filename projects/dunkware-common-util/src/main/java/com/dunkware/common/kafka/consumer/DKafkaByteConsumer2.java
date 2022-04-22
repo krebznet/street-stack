@@ -54,14 +54,14 @@ public class DKafkaByteConsumer2 {
 
 	private boolean throttle = false;
 	private int throttleLimit = 9;
-	
+
 	private AtomicBoolean paused = new AtomicBoolean(false);
 
 	private BlockingQueue<ConsumerRecord<String, byte[]>> recordQueue = new LinkedBlockingQueue<ConsumerRecord<String, byte[]>>();
 
-	private ThrottleThread throttleThread; 
-	private HandlerThread handlerThread; 
-	
+	private ThrottleThread throttleThread;
+	private HandlerThread handlerThread;
+
 	public static DKafkaByteConsumer2 newInstance(DKafkaByteConsumer2Spec spec) {
 		return new DKafkaByteConsumer2(spec);
 	}
@@ -70,14 +70,15 @@ public class DKafkaByteConsumer2 {
 		this.spec = spec;
 
 	}
-	
 
 	public void start() throws DKafkaException {
 
 		// init throttling
-		if (spec.getThrottleType() == ThrottleType.Manual) {
-			throttle = true;
-			throttleLimit = spec.getThrottleLimit();
+		if (spec.getThrottleType() != null) {
+			if (spec.getThrottleType() == ThrottleType.Manual) {
+				throttle = true;
+				throttleLimit = spec.getThrottleLimit();
+			}
 		}
 
 		String brokers = DStringHelper.convertArrayToCSV(spec.getBrokers());
@@ -119,11 +120,11 @@ public class DKafkaByteConsumer2 {
 			}
 		}
 		int sleepCount = 0;
-	
+
 		if (spec.getConsumerType() == ConsumerType.Auto) {
 			consumer.subscribe(Arrays.asList(spec.getTopics()));
 			// add our dynamically assigned partitions
-		
+
 			/// just create topic partitions from partioninfos
 			for (PartitionInfo info : partitionInfos) {
 				TopicPartition p = new TopicPartition(info.topic(), info.partition());
@@ -153,8 +154,6 @@ public class DKafkaByteConsumer2 {
 			consumer.assign(topicPartitions);
 		}
 
-		
-
 		if (spec.getOffsetType() == OffsetType.Manual) {
 			// no we need to figure out how to
 			// specify the offset is it seekTo?
@@ -182,16 +181,15 @@ public class DKafkaByteConsumer2 {
 			}
 		}
 
-
 		status = DKafkaByteConsumerStatus.Connecting;
 		consumerThread = new ConsumerThread();
 		consumerThread.start();
-		
-		if(spec.getThrottleType() == ThrottleType.Manual) { 
+
+		if (spec.getThrottleType() == ThrottleType.Manual) {
 			throttleThread = new ThrottleThread();
 			throttleThread.start();
 		}
-		
+
 		handlerThread = new HandlerThread();
 		handlerThread.start();
 
@@ -224,75 +222,73 @@ public class DKafkaByteConsumer2 {
 	public int getRecordCount() {
 		return recordCount.get();
 	}
-	
-	public void pauseConsumer() throws DKafkaException { 
+
+	public void pauseConsumer() throws DKafkaException {
 		consumerThread.pause();
 	}
-	
-	public void resumeConsumer() throws DKafkaException { 
+
+	public void resumeConsumer() throws DKafkaException {
 		consumerThread.unpause();
 	}
-	
 
 	private class ThrottleThread extends Thread {
 
-		private volatile boolean sleeping = false; 
-		
+		private volatile boolean sleeping = false;
+
 		public void run() {
 			setName("DKafkaConsumerThrottle:" + spec.getConsumerId());
 			while (!interrupted()) {
 				try {
 					Thread.sleep(500);
-					if(sleeping) { 
-						if(DKafkaByteConsumer2.this.recordQueue.size() < throttleLimit) { 
+					if (sleeping) {
+						if (DKafkaByteConsumer2.this.recordQueue.size() < throttleLimit) {
 							resumeConsumer();
-							sleeping = false; 
+							sleeping = false;
 						}
-					} else { 
-						if(recordQueue.size() > throttleLimit) { 
-							if(logger.isDebugEnabled()) { 
+					} else {
+						if (recordQueue.size() > throttleLimit) {
+							if (logger.isDebugEnabled()) {
 								logger.debug("Pausing DKafkaConsumer " + spec.getConsumerId());
 							}
 							pauseConsumer();
 							sleeping = true;
-							
+
 						}
 					}
 				} catch (Exception e) {
-					if (e instanceof InterruptedException) {		
+					if (e instanceof InterruptedException) {
 						return;
 					}
-					logger.error("Exception in throttle thread " + e.toString(),e);
-					
+					logger.error("Exception in throttle thread " + e.toString(), e);
+
 				}
 			}
 		}
 	}
-	
-	
-	private class HandlerThread extends Thread { 
-		
-		public void run() { 
-			while(!interrupted()) { 
+
+	private class HandlerThread extends Thread {
+
+		public void run() {
+			while (!interrupted()) {
 				try {
-					ConsumerRecord<String,byte[]> record = recordQueue.take();
+					ConsumerRecord<String, byte[]> record = recordQueue.take();
 					try {
-						
+
 						handlerLock.acquire();
 						for (DKafkaByteHandler2 handler : handlers) {
 							handler.record(record);
 						}
 					} catch (Exception e) {
-						if (e instanceof InterruptedException) { 
-							return;	
+						if (e instanceof InterruptedException) {
+							return;
 						}
 						logger.error("DKafkaConsumer2 Handler Thread Exception " + e.toString());
 					} finally {
 						handlerLock.release();
 					}
 				} catch (Exception e) {
-					if (e instanceof InterruptedException) { 
-						return;	
+					if (e instanceof InterruptedException) {
+						return;
 					}
 					logger.error("DKafkaConsumer2 Handler Thread Exception " + e.toString());
 				}
@@ -305,18 +301,19 @@ public class DKafkaByteConsumer2 {
 		private volatile boolean paused = false;
 		private volatile boolean consumerPaused = false;
 		private boolean printPoolCount = false;
+
 		public void dispose() {
 			if (logger.isDebugEnabled()) {
 				logger.debug("disposed() in voked on consumer thread settinf dispose to true");
 			}
 			dispose = true;
 		}
-		
-		public void pause() { 
+
+		public void pause() {
 			paused = true;
 		}
-		
-		public void unpause() { 
+
+		public void unpause() {
 			paused = false;
 		}
 
@@ -324,21 +321,20 @@ public class DKafkaByteConsumer2 {
 			setName("DKafkaConsumer2:" + spec.getConsumerId());
 			while (!dispose) {
 				try {
-					if(paused && consumerPaused == false) { 
+					if (paused && consumerPaused == false) {
 						consumer.pause(consumer.assignment());
 						System.out.println("consumer paused");
 						consumerPaused = true;
 					}
-					if(consumerPaused && paused == false) { 
+					if (consumerPaused && paused == false) {
 						consumer.resume(consumer.paused());
 						System.out.println("consumer resumed");
 						printPoolCount = true;
 						consumerPaused = false;
 					}
-					
-					
+
 					ConsumerRecords<String, byte[]> records = consumer.poll(3000);
-					if(printPoolCount) { 
+					if (printPoolCount) {
 						System.out.println("Consumer consumed " + records.count());
 						printPoolCount = false;
 					}
@@ -365,7 +361,7 @@ public class DKafkaByteConsumer2 {
 				}
 
 			}
-	
+
 		}
 	}
 }

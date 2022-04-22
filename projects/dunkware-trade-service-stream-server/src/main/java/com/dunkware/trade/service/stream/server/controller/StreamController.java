@@ -32,6 +32,7 @@ import com.dunkware.trade.service.stream.server.logging.LogService;
 import com.dunkware.trade.service.stream.server.session.StreamSession;
 import com.dunkware.trade.service.stream.server.session.StreamSessionException;
 import com.dunkware.trade.service.stream.server.session.StreamSessionFactory;
+import com.dunkware.trade.service.stream.server.session.StreamSessionInput;
 import com.dunkware.trade.service.stream.server.session.events.EStreamSessionException;
 import com.dunkware.trade.service.stream.server.session.events.EStreamSessionStarted;
 import com.dunkware.trade.service.stream.server.session.events.EStreamSessionStopped;
@@ -230,7 +231,8 @@ public class StreamController {
 					tickerCount = 0;
 				}
 			}
-			//cluster.get
+			StreamSessionInput input = new StreamSessionInput();
+			
 			session.startSession(this);
 			// need to call this after start session annoying
 			session.getEventNode().addEventHandler(this);

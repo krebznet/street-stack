@@ -14,12 +14,14 @@ import org.slf4j.LoggerFactory;
 import org.slf4j.MarkerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
+import org.springframework.stereotype.Service;
 
 import com.dunkware.common.kafka.producer.DKafkaByteProducer;
 import com.dunkware.common.util.dtime.DDateTime;
 import com.dunkware.common.util.dtime.DTimeZone;
 import com.dunkware.common.util.events.DEventTree;
 import com.dunkware.common.util.executor.DExecutor;
+import com.dunkware.common.util.logging.Markers;
 import com.dunkware.net.cluster.json.job.ClusterJobState;
 import com.dunkware.net.cluster.json.node.ClusterNodeState;
 import com.dunkware.net.cluster.json.node.ClusterNodeStats;
@@ -33,6 +35,7 @@ import com.dunkware.net.cluster.node.ClusterNodeException;
 import com.dunkware.net.cluster.util.helpers.ClusterEventHelper;
 import com.dunkware.net.proto.cluster.GClusterEvent;
 
+@Service
 public class ClusterImpl implements Cluster {
 
 	@Autowired
@@ -60,6 +63,8 @@ public class ClusterImpl implements Cluster {
 	private Map<String, ClusterNode> nodes = new ConcurrentHashMap<String, ClusterNode>();
 
 	private Semaphore jobLock = new Semaphore(1);
+	
+	private ClusterStatsPublisher statsPublisher;
 
 	@PostConstruct
 	public void load() {
@@ -81,6 +86,15 @@ public class ClusterImpl implements Cluster {
 					"ClusterNode-" + getNodeId());
 		} catch (Exception e) {
 			logger.error(MarkerFactory.getMarker("Crash"), "Exception creating cluster event producer " + e.toString());
+			System.exit(-1);
+		}
+		
+		try {
+			statsPublisher = new ClusterStatsPublisher();
+			ac.getAutowireCapableBeanFactory().autowireBean(statsPublisher);
+			statsPublisher.start();
+		} catch (Exception e) {
+			logger.error(Markers.systemCrash(),"Exception starting cluster node stats publisher " + e.toString());
 			System.exit(-1);
 		}
 	}
@@ -212,7 +226,7 @@ public class ClusterImpl implements Cluster {
 		stats.setGrpcEndpoint(clusterConfig.getServerGrpc());
 		stats.setHttpEndpoint(clusterConfig.getServerHttp());
 		stats.setId(getNodeId());
-		stats.setStart(startTime);
+		stats.setStart(startTime.toString());
 		stats.setExecutorStats(executor.getStats());
 		int activeJobs = 0;
 		for (ClusterJob clusterJob : jobs) {

@@ -44,7 +44,7 @@ public class ClusterNodeService implements DKafkaByteHandler2  {
 	public void start(ClusterService cluster) throws Exception { 
 		DKafkaByteConsumer2Spec spec = null;
 		try {
-			DKafkaByteConsumer2SpecBuilder.newBuilder(ConsumerType.Auto, OffsetType.Latest)
+			spec = DKafkaByteConsumer2SpecBuilder.newBuilder(ConsumerType.Auto, OffsetType.Latest)
 			.addBroker(config.getKafkaBrokers()).addTopic("cluster_core_node_stats").
 			setClientAndGroup("ClusterPingConsumer" + DunkTime.formatHHMMSS(LocalDateTime.now()),
 					DunkTime.formatHHMMSS(LocalDateTime.now())).build();
@@ -58,6 +58,8 @@ public class ClusterNodeService implements DKafkaByteHandler2  {
 		
 		statsProcessor = new StatProcessor();
 		statsProcessor.start();
+		
+		
 		
 	}
 	

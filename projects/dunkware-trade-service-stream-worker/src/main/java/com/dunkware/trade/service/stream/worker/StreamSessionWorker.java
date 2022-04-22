@@ -1,4 +1,4 @@
-package com.dunkware.trade.service.data.worker.stream.session;
+package com.dunkware.trade.service.stream.worker;
 
 import com.dunkware.trade.service.stream.json.worker.stream.StreamSessionWorkerStartReq;
 import com.dunkware.trade.service.stream.json.worker.stream.StreamSessionWorkerStats;

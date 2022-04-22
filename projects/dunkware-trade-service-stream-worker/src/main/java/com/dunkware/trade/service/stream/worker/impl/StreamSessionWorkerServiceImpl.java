@@ -1,4 +1,4 @@
-package com.dunkware.trade.service.data.worker.stream.session.impl;
+package com.dunkware.trade.service.stream.worker.impl;
 
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
@@ -7,15 +7,13 @@ import javax.annotation.PostConstruct;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
-import org.springframework.context.annotation.Profile;
-import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 
-import com.dunkware.trade.service.data.worker.stream.session.StreamSessionWorker;
-import com.dunkware.trade.service.data.worker.stream.session.StreamSessionWorkerService;
 import com.dunkware.trade.service.stream.json.worker.stream.StreamSessionWorkerStartReq;
+import com.dunkware.trade.service.stream.worker.StreamSessionWorker;
+import com.dunkware.trade.service.stream.worker.StreamSessionWorkerService;
 
-@Component
-@Profile("StreamSessionWorker")
+@Service
 public class StreamSessionWorkerServiceImpl implements StreamSessionWorkerService {
 
 	@Autowired

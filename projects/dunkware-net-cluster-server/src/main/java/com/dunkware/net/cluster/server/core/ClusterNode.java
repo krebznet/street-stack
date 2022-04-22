@@ -35,7 +35,7 @@ public class ClusterNode {
 					// TODO: handle exception
 				}
 				if(i > 30) { 
-					// transient failutre at 3 seconds/
+					nodeState = ClusterNodeState.NodeTimeout;
 				}
 			}
 		}

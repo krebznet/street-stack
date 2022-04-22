@@ -95,7 +95,7 @@ public class ClusterNodeImpl implements ClusterNode {
 
 	@Override
 	public DDateTime getStartTime() {
-		return stats.getStart();
+		return null;
 	}
 
 	@Override

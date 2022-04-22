@@ -17,6 +17,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Service;
 
+import com.dunkware.net.cluster.node.Cluster;
 import com.dunkware.trade.tick.api.provider.TradeSymbolService;
 import com.dunkware.trade.tick.service.server.spring.DatabaseService;
 import com.dunkware.trade.tick.service.server.ticker.repsoitory.TickerDO;
@@ -40,6 +41,8 @@ public class TickerService implements TradeSymbolService {
 	@Autowired
 	private TickerListDoRepo tickerListRepo; 
 	
+	@Autowired
+	private Cluster cluster;
 	
 	private Map<String,Integer> symbolIds = new ConcurrentHashMap<String,Integer>();
 	
