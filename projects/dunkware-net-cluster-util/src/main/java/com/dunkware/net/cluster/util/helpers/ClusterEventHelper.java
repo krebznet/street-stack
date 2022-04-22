@@ -3,9 +3,9 @@ package com.dunkware.net.cluster.util.helpers;
 import java.time.LocalDateTime;
 
 import com.dunkware.common.util.dtime.DTimeZone;
-import com.dunkware.net.cluster.GClusterEvent;
-import com.dunkware.net.cluster.GClusterEventType;
 import com.dunkware.net.core.runtime.core.helpers.GProtoHelper;
+import com.dunkware.net.proto.cluster.GClusterEvent;
+import com.dunkware.net.proto.cluster.GClusterEventType;
 
 public class ClusterEventHelper {
 

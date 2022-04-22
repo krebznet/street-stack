@@ -18,9 +18,9 @@ public interface Cluster {
 	
 	public String getNodeId();
 	
-	public ClusterJob startJob(ClusterJobRunner runner, String type, String name) throws Exception;
+	public ClusterJob startJob(ClusterJobRunner runner, String type, String name) throws ClusterNodeException;
 	
-	public void pojoEvent(Object pojo) throws Exception;
+	public void pojoEvent(Object pojo) throws ClusterNodeException;;
 	
 	public LocalDateTime now();
 	
@@ -28,12 +28,20 @@ public interface Cluster {
 	
 	public void removeComponent(Object component);
 	
-	public List<ClusterNode> getIdleNodes();
+	public List<ClusterNode> getAvailableWorkerNodes();
 	
-	public List<ClusterNode> getIdleNodes(int count);
+	public List<ClusterNode> getAvailablWorkereNodes(int count) throws ClusterNodeException;
 	
-	public List<ClusterNode> getNodes();
+	public int getAvailablWorkereNodeCount();
 	
-	ClusterNodeStats buildStats();
+	public boolean nodeExists(String id);
+	
+	public ClusterNode getNode(String id) throws ClusterNodeException;
+	
+	public ClusterNodeStats getStats();
 	
 }
+	
+	
+	
+	

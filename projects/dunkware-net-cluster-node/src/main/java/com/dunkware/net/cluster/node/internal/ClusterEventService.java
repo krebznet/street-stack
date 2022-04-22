@@ -22,13 +22,13 @@ import com.dunkware.common.spec.kafka.DKafkaByteConsumer2SpecBuilder;
 import com.dunkware.common.util.events.anot.ADEventMethod;
 import com.dunkware.common.util.json.DJson;
 import com.dunkware.common.util.uuid.DUUID;
-import com.dunkware.net.cluster.GClusterEvent;
-import com.dunkware.net.cluster.GClusterEventType;
-import com.dunkware.net.cluster.GClusterPojoEvent;
 import com.dunkware.net.cluster.node.Cluster;
 import com.dunkware.net.cluster.node.anot.AClusterPojoEventHandler;
-import com.dunkware.net.cluster.node.events.DClusterComponentAdded;
+import com.dunkware.net.cluster.node.events.EClusterNodeAdded;
 import com.dunkware.net.cluster.node.events.DClusterComponentRemoved;
+import com.dunkware.net.proto.cluster.GClusterEvent;
+import com.dunkware.net.proto.cluster.GClusterEventType;
+import com.dunkware.net.proto.cluster.GClusterPojoEvent;
 
 
 public class ClusterEventService implements DKafkaByteHandler2 {
@@ -77,7 +77,7 @@ public class ClusterEventService implements DKafkaByteHandler2 {
 	
 	
 	@ADEventMethod
-	public void componentAdded(DClusterComponentAdded added	 ) {
+	public void componentAdded(EClusterNodeAdded added	 ) {
 		Object component = added.getComponent();
 		for (Method method : component.getClass().getMethods()) {
 			AClusterPojoEventHandler[] anots = method.getAnnotationsByType(AClusterPojoEventHandler.class);

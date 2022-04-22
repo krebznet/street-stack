@@ -25,10 +25,10 @@ public final class GClusterProto {
     com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
       internal_static_dunkware_cluster_GClusterPojoEvent_fieldAccessorTable;
   static final com.google.protobuf.Descriptors.Descriptor
-    internal_static_dunkware_cluster_GNodePing_descriptor;
+    internal_static_dunkware_cluster_GNodeStats_descriptor;
   static final 
     com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
-      internal_static_dunkware_cluster_GNodePing_fieldAccessorTable;
+      internal_static_dunkware_cluster_GNodeStats_fieldAccessorTable;
 
   public static com.google.protobuf.Descriptors.FileDescriptor
       getDescriptor() {
@@ -45,11 +45,11 @@ public final class GClusterProto {
       "kware.cluster.GClusterEventType\0228\n\tpojoE" +
       "vent\030\004 \001(\0132#.dunkware.cluster.GClusterPo" +
       "joEventH\000B\007\n\005event\"4\n\021GClusterPojoEvent\022" +
-      "\021\n\tclassName\030\001 \001(\t\022\014\n\004json\030\002 \001(\t\"\'\n\tGNod" +
-      "ePing\022\014\n\004node\030\001 \001(\t\022\014\n\004json\030\002 \001(\t*\035\n\021GCl" +
-      "usterEventType\022\010\n\004POJO\020\000B1\n\036com.dunkware" +
-      ".net.proto.clusterB\rGClusterProtoP\001b\006pro" +
-      "to3"
+      "\021\n\tclassName\030\001 \001(\t\022\014\n\004json\030\002 \001(\t\"(\n\nGNod" +
+      "eStats\022\014\n\004node\030\001 \001(\t\022\014\n\004json\030\002 \001(\t*\035\n\021GC" +
+      "lusterEventType\022\010\n\004POJO\020\000B1\n\036com.dunkwar" +
+      "e.net.proto.clusterB\rGClusterProtoP\001b\006pr" +
+      "oto3"
     };
     com.google.protobuf.Descriptors.FileDescriptor.InternalDescriptorAssigner assigner =
         new com.google.protobuf.Descriptors.FileDescriptor.    InternalDescriptorAssigner() {
@@ -76,11 +76,11 @@ public final class GClusterProto {
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_dunkware_cluster_GClusterPojoEvent_descriptor,
         new java.lang.String[] { "ClassName", "Json", });
-    internal_static_dunkware_cluster_GNodePing_descriptor =
+    internal_static_dunkware_cluster_GNodeStats_descriptor =
       getDescriptor().getMessageTypes().get(2);
-    internal_static_dunkware_cluster_GNodePing_fieldAccessorTable = new
+    internal_static_dunkware_cluster_GNodeStats_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
-        internal_static_dunkware_cluster_GNodePing_descriptor,
+        internal_static_dunkware_cluster_GNodeStats_descriptor,
         new java.lang.String[] { "Node", "Json", });
     com.google.protobuf.TimestampProto.getDescriptor();
   }

@@ -20,6 +20,7 @@ import com.dunkware.common.util.dtime.DZonedClockUpdater;
 import com.dunkware.common.util.dtime.DZonedDateTime;
 import com.dunkware.common.util.events.anot.ADEventMethod;
 import com.dunkware.common.util.json.DJson;
+import com.dunkware.net.cluster.node.Cluster;
 import com.dunkware.net.proto.stream.GStreamSpec;
 import com.dunkware.trade.service.stream.json.controller.spec.StreamSpec;
 import com.dunkware.trade.service.stream.json.controller.spec.StreamStatsSpec;
@@ -34,9 +35,11 @@ import com.dunkware.trade.service.stream.server.session.StreamSessionFactory;
 import com.dunkware.trade.service.stream.server.session.events.EStreamSessionException;
 import com.dunkware.trade.service.stream.server.session.events.EStreamSessionStarted;
 import com.dunkware.trade.service.stream.server.session.events.EStreamSessionStopped;
+import com.dunkware.trade.service.stream.server.spring.ConfigService;
 import com.dunkware.trade.service.stream.server.spring.ExecutorService;
 import com.dunkware.trade.service.stream.server.spring.RuntimeService;
 import com.dunkware.trade.service.stream.server.tick.StreamTickService;
+import com.dunkware.trade.tick.model.ticker.TradeTickerSpec;
 import com.dunkware.trade.tick.service.protocol.ticker.spec.TradeTickerListSpec;
 import com.dunkware.xstream.xproject.XScriptProject;
 import com.dunkware.xstream.xproject.bundle.XscriptBundleHelper;
@@ -44,9 +47,6 @@ import com.dunkware.xstream.xproject.model.XScriptBundle;
 
 public class StreamController {
 
-
-	@Autowired
-	private LogService logService; 
 	
 	private Logger logger = org.slf4j.LoggerFactory.getLogger(getClass());
 
@@ -64,7 +64,7 @@ public class StreamController {
 	private StreamControllerService service;
 
 	@Autowired
-	private ExecutorService exService;
+	private Cluster cluster;
 
 	@Autowired
 	private RuntimeService runtimeService;
@@ -73,22 +73,19 @@ public class StreamController {
 	
 	private TradeTickerListSpec tickerList; 
 
-	@Value("${kafka.brokers}")
 	private String kafkaBrokers;
 
 	@Autowired
 	private StreamTickService tickService;
 
+	@Autowired
+	private ConfigService config;
 	
 	@Autowired
 	private ApplicationContext ac;
 
 	private StreamSpec spec;
 
-	@Value("${streams.schedule.enable}")
-	private boolean scheduleEnabled = true;
-	
-	
 	private GStreamSpec gStreamSpec = null;
 	
 	private XScriptProject scriptProject; 
@@ -100,7 +97,6 @@ public class StreamController {
 	}
 
 	public void start(StreamDO ent) throws Exception {
-		logger.info(logService.createMarker(), "Starting Stream Controller");
 		// set member variabbes
 		this.ent = ent;
 		stats = new StreamStatsSpec();
@@ -129,7 +125,7 @@ public class StreamController {
 		spec = DJson.getObjectMapper().readValue(ent.getSpec(), StreamSpec.class);
 		this.specUpdate(spec);
 		
-		if(scheduleEnabled) { 
+		if(config.isScheduleStreams()) { 
 			schedule = new StreamSchedule();
 
 			Runnable runner = new Runnable() {
@@ -147,12 +143,12 @@ public class StreamController {
 				}
 			};
 			
-			if (scheduleEnabled) {
-				logger.debug(LogService.createMarker(), "Enabling Stream Schedule for stream " + spec.getName());
+			 if(config.isScheduleStreams()) {
+			
 				Thread runnerThread = new Thread(runner);
 				runnerThread.start();
 			} else {
-				logger.debug(LogService.createMarker(), "Disabling Stream Schedule for stream " + spec.getName());
+				
 			}	
 		}
 		
@@ -216,11 +212,6 @@ public class StreamController {
 			return;
 		}
 		stats.setStatus(StreamStatus.Starting);
-		
-		// debug/info?
-		if (logger.isDebugEnabled()) {
-			logger.debug("{} Start Session Starting ", ent.getName());
-		}
 		// create session / set session stats
 		session = StreamSessionFactory.createSession();
 		ac.getAutowireCapableBeanFactory().autowireBean(session);
@@ -228,6 +219,18 @@ public class StreamController {
 		try {
 			// if the session throws an exception if there
 			stats.setStatus(StreamStatus.Starting);
+			int tickers = getTickerList().getSize(); 
+			int nodeTickerLimit = config.getSessionNodeTickerLimit();
+			int nodeCount = 0;
+			int tickerCount = 0;
+			for (TradeTickerSpec ticker : getTickerList().getTickers()) {
+				tickerCount++;
+				if(tickerCount == nodeTickerLimit) { 
+					nodeCount++;
+					tickerCount = 0;
+				}
+			}
+			//cluster.get
 			session.startSession(this);
 			// need to call this after start session annoying
 			session.getEventNode().addEventHandler(this);

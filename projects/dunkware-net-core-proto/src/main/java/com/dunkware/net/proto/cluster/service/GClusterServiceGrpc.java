@@ -27,36 +27,36 @@ public final class GClusterServiceGrpc {
   public static final String SERVICE_NAME = "dunkware.cluster.GClusterService";
 
   // Static method descriptors that strictly reflect the proto.
-  private static volatile io.grpc.MethodDescriptor<com.dunkware.net.proto.cluster.GNodePing,
-      com.dunkware.net.proto.cluster.GNodePing> getNodePingMethod;
+  private static volatile io.grpc.MethodDescriptor<com.dunkware.net.proto.cluster.GNodeStats,
+      com.dunkware.net.proto.cluster.GNodeStats> getNodeStatsMethod;
 
   @io.grpc.stub.annotations.RpcMethod(
-      fullMethodName = SERVICE_NAME + '/' + "nodePing",
-      requestType = com.dunkware.net.proto.cluster.GNodePing.class,
-      responseType = com.dunkware.net.proto.cluster.GNodePing.class,
+      fullMethodName = SERVICE_NAME + '/' + "nodeStats",
+      requestType = com.dunkware.net.proto.cluster.GNodeStats.class,
+      responseType = com.dunkware.net.proto.cluster.GNodeStats.class,
       methodType = io.grpc.MethodDescriptor.MethodType.BIDI_STREAMING)
-  public static io.grpc.MethodDescriptor<com.dunkware.net.proto.cluster.GNodePing,
-      com.dunkware.net.proto.cluster.GNodePing> getNodePingMethod() {
-    io.grpc.MethodDescriptor<com.dunkware.net.proto.cluster.GNodePing, com.dunkware.net.proto.cluster.GNodePing> getNodePingMethod;
-    if ((getNodePingMethod = GClusterServiceGrpc.getNodePingMethod) == null) {
+  public static io.grpc.MethodDescriptor<com.dunkware.net.proto.cluster.GNodeStats,
+      com.dunkware.net.proto.cluster.GNodeStats> getNodeStatsMethod() {
+    io.grpc.MethodDescriptor<com.dunkware.net.proto.cluster.GNodeStats, com.dunkware.net.proto.cluster.GNodeStats> getNodeStatsMethod;
+    if ((getNodeStatsMethod = GClusterServiceGrpc.getNodeStatsMethod) == null) {
       synchronized (GClusterServiceGrpc.class) {
-        if ((getNodePingMethod = GClusterServiceGrpc.getNodePingMethod) == null) {
-          GClusterServiceGrpc.getNodePingMethod = getNodePingMethod = 
-              io.grpc.MethodDescriptor.<com.dunkware.net.proto.cluster.GNodePing, com.dunkware.net.proto.cluster.GNodePing>newBuilder()
+        if ((getNodeStatsMethod = GClusterServiceGrpc.getNodeStatsMethod) == null) {
+          GClusterServiceGrpc.getNodeStatsMethod = getNodeStatsMethod = 
+              io.grpc.MethodDescriptor.<com.dunkware.net.proto.cluster.GNodeStats, com.dunkware.net.proto.cluster.GNodeStats>newBuilder()
               .setType(io.grpc.MethodDescriptor.MethodType.BIDI_STREAMING)
               .setFullMethodName(generateFullMethodName(
-                  "dunkware.cluster.GClusterService", "nodePing"))
+                  "dunkware.cluster.GClusterService", "nodeStats"))
               .setSampledToLocalTracing(true)
               .setRequestMarshaller(io.grpc.protobuf.ProtoUtils.marshaller(
-                  com.dunkware.net.proto.cluster.GNodePing.getDefaultInstance()))
+                  com.dunkware.net.proto.cluster.GNodeStats.getDefaultInstance()))
               .setResponseMarshaller(io.grpc.protobuf.ProtoUtils.marshaller(
-                  com.dunkware.net.proto.cluster.GNodePing.getDefaultInstance()))
-                  .setSchemaDescriptor(new GClusterServiceMethodDescriptorSupplier("nodePing"))
+                  com.dunkware.net.proto.cluster.GNodeStats.getDefaultInstance()))
+                  .setSchemaDescriptor(new GClusterServiceMethodDescriptorSupplier("nodeStats"))
                   .build();
           }
         }
      }
-     return getNodePingMethod;
+     return getNodeStatsMethod;
   }
 
   /**
@@ -88,20 +88,20 @@ public final class GClusterServiceGrpc {
 
     /**
      */
-    public io.grpc.stub.StreamObserver<com.dunkware.net.proto.cluster.GNodePing> nodePing(
-        io.grpc.stub.StreamObserver<com.dunkware.net.proto.cluster.GNodePing> responseObserver) {
-      return asyncUnimplementedStreamingCall(getNodePingMethod(), responseObserver);
+    public io.grpc.stub.StreamObserver<com.dunkware.net.proto.cluster.GNodeStats> nodeStats(
+        io.grpc.stub.StreamObserver<com.dunkware.net.proto.cluster.GNodeStats> responseObserver) {
+      return asyncUnimplementedStreamingCall(getNodeStatsMethod(), responseObserver);
     }
 
     @java.lang.Override public final io.grpc.ServerServiceDefinition bindService() {
       return io.grpc.ServerServiceDefinition.builder(getServiceDescriptor())
           .addMethod(
-            getNodePingMethod(),
+            getNodeStatsMethod(),
             asyncBidiStreamingCall(
               new MethodHandlers<
-                com.dunkware.net.proto.cluster.GNodePing,
-                com.dunkware.net.proto.cluster.GNodePing>(
-                  this, METHODID_NODE_PING)))
+                com.dunkware.net.proto.cluster.GNodeStats,
+                com.dunkware.net.proto.cluster.GNodeStats>(
+                  this, METHODID_NODE_STATS)))
           .build();
     }
   }
@@ -126,10 +126,10 @@ public final class GClusterServiceGrpc {
 
     /**
      */
-    public io.grpc.stub.StreamObserver<com.dunkware.net.proto.cluster.GNodePing> nodePing(
-        io.grpc.stub.StreamObserver<com.dunkware.net.proto.cluster.GNodePing> responseObserver) {
+    public io.grpc.stub.StreamObserver<com.dunkware.net.proto.cluster.GNodeStats> nodeStats(
+        io.grpc.stub.StreamObserver<com.dunkware.net.proto.cluster.GNodeStats> responseObserver) {
       return asyncBidiStreamingCall(
-          getChannel().newCall(getNodePingMethod(), getCallOptions()), responseObserver);
+          getChannel().newCall(getNodeStatsMethod(), getCallOptions()), responseObserver);
     }
   }
 
@@ -171,7 +171,7 @@ public final class GClusterServiceGrpc {
     }
   }
 
-  private static final int METHODID_NODE_PING = 0;
+  private static final int METHODID_NODE_STATS = 0;
 
   private static final class MethodHandlers<Req, Resp> implements
       io.grpc.stub.ServerCalls.UnaryMethod<Req, Resp>,
@@ -200,9 +200,9 @@ public final class GClusterServiceGrpc {
     public io.grpc.stub.StreamObserver<Req> invoke(
         io.grpc.stub.StreamObserver<Resp> responseObserver) {
       switch (methodId) {
-        case METHODID_NODE_PING:
-          return (io.grpc.stub.StreamObserver<Req>) serviceImpl.nodePing(
-              (io.grpc.stub.StreamObserver<com.dunkware.net.proto.cluster.GNodePing>) responseObserver);
+        case METHODID_NODE_STATS:
+          return (io.grpc.stub.StreamObserver<Req>) serviceImpl.nodeStats(
+              (io.grpc.stub.StreamObserver<com.dunkware.net.proto.cluster.GNodeStats>) responseObserver);
         default:
           throw new AssertionError();
       }
@@ -254,7 +254,7 @@ public final class GClusterServiceGrpc {
         if (result == null) {
           serviceDescriptor = result = io.grpc.ServiceDescriptor.newBuilder(SERVICE_NAME)
               .setSchemaDescriptor(new GClusterServiceFileDescriptorSupplier())
-              .addMethod(getNodePingMethod())
+              .addMethod(getNodeStatsMethod())
               .build();
         }
       }

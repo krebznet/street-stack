@@ -16,13 +16,13 @@ public class ClusterService {
 	@Autowired
 	private org.springframework.context.ApplicationContext ac;
 	
-	private ClusterNodeManager nodeManger; 
+	private ClusterNodeService nodeManger; 
 	
 	private ClusterEventManager eventManager; 
 
 	@PostConstruct
 	public void load() { 
-		nodeManger = new ClusterNodeManager();
+		nodeManger = new ClusterNodeService();
 		ac.getAutowireCapableBeanFactory().autowireBean(nodeManger);;
 		try {
 			nodeManger.start(this);

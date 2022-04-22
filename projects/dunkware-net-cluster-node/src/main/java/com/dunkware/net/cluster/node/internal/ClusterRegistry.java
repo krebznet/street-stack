@@ -8,7 +8,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
-import com.dunkware.net.cluster.node.events.DClusterComponentAdded;
+import com.dunkware.net.cluster.node.events.EClusterNodeAdded;
 
 @Service
 public class ClusterRegistry {
@@ -28,7 +28,7 @@ public class ClusterRegistry {
 		if(logger.isTraceEnabled()) { 
 			logger.trace("Added Component Class " + component.getClass().getName());
 		}
-		cluster.getEventTree().getRoot().event(new DClusterComponentAdded(component));
+		cluster.getEventTree().getRoot().event(new EClusterNodeAdded(component));
 		
 	}
 	

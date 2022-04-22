@@ -12,15 +12,20 @@ public class ClusterNodeStats {
 	private ClusterNodeType type;
 	private String id; 
 	private DDateTime start; 
-	private ClusterNodeState state;
 	private List<ClusterJobStats> runningJobs = new ArrayList<ClusterJobStats>();
 	private String httpEndpoint; 
 	private String grpcEndpoint;
+	private int availableProcessors;
+	private double systemLoadAverage;
+	private double freeMemory;
+	private double maxMemory;
+	private double totalMemory;
 	private DExecutorStats executorStats;
 	private int runningJobCount;
 	
 	public ClusterNodeType getType() {
 		return type;
+		
 	}
 	public void setType(ClusterNodeType type) {
 		this.type = type;
@@ -36,12 +41,6 @@ public class ClusterNodeStats {
 	}
 	public void setStart(DDateTime start) {
 		this.start = start;
-	}
-	public ClusterNodeState getState() {
-		return state;
-	}
-	public void setState(ClusterNodeState state) {
-		this.state = state;
 	}
 	public List<ClusterJobStats> getRunningJobs() {
 		return runningJobs;

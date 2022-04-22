@@ -29,8 +29,4 @@ import "google/protobuf/timestamp.proto";
      string json = 2; 
  }
  
-
- message GNodePing { 
-   string node = 1;
-   string json = 2;
- }
+ 
