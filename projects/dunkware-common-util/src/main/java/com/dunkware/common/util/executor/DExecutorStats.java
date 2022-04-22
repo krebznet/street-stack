@@ -6,7 +6,7 @@ public class DExecutorStats {
 	private long completedCount; 
 	private long pendingCount; 
 	private long timeoutCount;
-	
+	private long pendingTasks;
 	public int getPoolSize() {
 		return poolSize;
 	}
@@ -31,6 +31,14 @@ public class DExecutorStats {
 	public void setTimeoutCount(long timeoutCount) {
 		this.timeoutCount = timeoutCount;
 	}
+	public long getPendingTasks() {
+		return pendingTasks;
+	}
+	public void setPendingTasks(long pendingTasks) {
+		this.pendingTasks = pendingTasks;
+	}
+	
+	
 	
 	
 

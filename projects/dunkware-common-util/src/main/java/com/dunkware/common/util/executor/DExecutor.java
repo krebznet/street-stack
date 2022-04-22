@@ -39,7 +39,7 @@ public class DExecutor {
 		this.awaitingTasks = new LinkedBlockingQueue<>();
 		this.executor = Executors.newScheduledThreadPool(corePoolSize);
 		this.corePoolSize = corePoolSize;
-		this.poolSize = 0;
+		this.poolSize = Runtime.getRuntime().availableProcessors();
 
 	}
 
@@ -59,7 +59,7 @@ public class DExecutor {
 		s.setPendingCount(getPendingTaskCount());
 		s.setPoolSize(poolSize);
 		s.setTimeoutCount(getTimeoutTaskCount());
-		return s
+		return s;
 	}
 	
 	public int getPendingTaskCount() { 

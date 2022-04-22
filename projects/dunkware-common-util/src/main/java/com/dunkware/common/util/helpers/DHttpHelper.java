@@ -74,6 +74,17 @@ public class DHttpHelper {
 		
 	}
 	
+	public static String postJson(String endpoint, String path, Object request) throws IOException { 
+		if(endpoint.endsWith("/") ) { 
+			endpoint = endpoint.substring(0,endpoint.length() - 1);
+		}
+		if(path.startsWith("/") == false) { 
+			path = "/" + path;
+		}
+		endpoint = endpoint + path;
+		
+		return postJson(endpoint,request);
+	}
 	
 	public static String postJson(String endpoint, Object request) throws IOException { 
 		URL url = new URL(endpoint);
