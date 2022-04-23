@@ -29,6 +29,16 @@ public final class GClusterProto {
   static final 
     com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
       internal_static_dunkware_cluster_GNodeStats_fieldAccessorTable;
+  static final com.google.protobuf.Descriptors.Descriptor
+    internal_static_dunkware_cluster_GNodeStatsRequest_descriptor;
+  static final 
+    com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
+      internal_static_dunkware_cluster_GNodeStatsRequest_fieldAccessorTable;
+  static final com.google.protobuf.Descriptors.Descriptor
+    internal_static_dunkware_cluster_GNodeStatsResponse_descriptor;
+  static final 
+    com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
+      internal_static_dunkware_cluster_GNodeStatsResponse_fieldAccessorTable;
 
   public static com.google.protobuf.Descriptors.FileDescriptor
       getDescriptor() {
@@ -46,10 +56,11 @@ public final class GClusterProto {
       "vent\030\004 \001(\0132#.dunkware.cluster.GClusterPo" +
       "joEventH\000B\007\n\005event\"4\n\021GClusterPojoEvent\022" +
       "\021\n\tclassName\030\001 \001(\t\022\014\n\004json\030\002 \001(\t\"(\n\nGNod" +
-      "eStats\022\014\n\004node\030\001 \001(\t\022\014\n\004json\030\002 \001(\t*\035\n\021GC" +
-      "lusterEventType\022\010\n\004POJO\020\000B1\n\036com.dunkwar" +
-      "e.net.proto.clusterB\rGClusterProtoP\001b\006pr" +
-      "oto3"
+      "eStats\022\014\n\004node\030\001 \001(\t\022\014\n\004json\030\002 \001(\t\"\023\n\021GN" +
+      "odeStatsRequest\"\"\n\022GNodeStatsResponse\022\014\n" +
+      "\004json\030\001 \001(\t*\035\n\021GClusterEventType\022\010\n\004POJO" +
+      "\020\000B1\n\036com.dunkware.net.proto.clusterB\rGC" +
+      "lusterProtoP\001b\006proto3"
     };
     com.google.protobuf.Descriptors.FileDescriptor.InternalDescriptorAssigner assigner =
         new com.google.protobuf.Descriptors.FileDescriptor.    InternalDescriptorAssigner() {
@@ -82,6 +93,18 @@ public final class GClusterProto {
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_dunkware_cluster_GNodeStats_descriptor,
         new java.lang.String[] { "Node", "Json", });
+    internal_static_dunkware_cluster_GNodeStatsRequest_descriptor =
+      getDescriptor().getMessageTypes().get(3);
+    internal_static_dunkware_cluster_GNodeStatsRequest_fieldAccessorTable = new
+      com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
+        internal_static_dunkware_cluster_GNodeStatsRequest_descriptor,
+        new java.lang.String[] { });
+    internal_static_dunkware_cluster_GNodeStatsResponse_descriptor =
+      getDescriptor().getMessageTypes().get(4);
+    internal_static_dunkware_cluster_GNodeStatsResponse_fieldAccessorTable = new
+      com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
+        internal_static_dunkware_cluster_GNodeStatsResponse_descriptor,
+        new java.lang.String[] { "Json", });
     com.google.protobuf.TimestampProto.getDescriptor();
   }
 

@@ -29,4 +29,15 @@ import "google/protobuf/timestamp.proto";
      string json = 2; 
  }
  
+ message GNodeStats { 
+   string node = 1;
+   string json = 2;
+ }
+ message GNodeStatsRequest {
+ 
+ }
+ 
+ message GNodeStatsResponse {
+   string json = 1;
+ }
  
