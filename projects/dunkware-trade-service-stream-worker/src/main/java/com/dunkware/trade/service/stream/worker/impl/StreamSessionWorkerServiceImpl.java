@@ -23,7 +23,7 @@ public class StreamSessionWorkerServiceImpl implements StreamSessionWorkerServic
 	
 	@PostConstruct
 	public void start() { 
-		
+		System.out.println("break here");
 	}
 	
 	@Override

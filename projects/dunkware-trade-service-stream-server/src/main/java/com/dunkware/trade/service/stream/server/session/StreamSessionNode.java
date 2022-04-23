@@ -26,10 +26,20 @@ public interface StreamSessionNode {
 	
 	void stopNode();
 	
-	void startNode(StreamSessionNodeInput input) throws Exception;
+	void startNode(StreamSessionNodeInput input) ;
 	
 	DEventNode getEventNode();
 	
 	public StreamSessionNodeInput getInput();
+	
+	public StreamSession getSession();
+	
+	public StreamController getStream();
+	
+	public XStreamBundle getStreamBundle();
+	
+	public String getStartError();
+	
+	public StreamSessionNodeStatus getStatus();
 	
 }

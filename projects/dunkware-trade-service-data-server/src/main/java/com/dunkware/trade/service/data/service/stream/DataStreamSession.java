@@ -16,9 +16,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 
 import com.dunkware.common.util.dtime.DTimeZone;
-import com.dunkware.net.cluster.node.logging.DLog;
-import com.dunkware.net.cluster.node.logging.DLogger;
-import com.dunkware.net.cluster.node.logging.DLoggerService;
 import com.dunkware.net.proto.stream.GEntitySignal;
 import com.dunkware.net.proto.stream.GEntitySnapshot;
 import com.dunkware.trade.service.data.json.enums.DataStreamSessionState;
@@ -49,8 +46,6 @@ public class DataStreamSession {
 	@Autowired
 	private ApplicationContext ac;
 	
-	@Autowired
-	private DLoggerService trace; 
 	
 	private Map<String,DataStreamSessionInstrument> instruments = new ConcurrentHashMap<String,DataStreamSessionInstrument>();
 	
@@ -76,20 +71,19 @@ public class DataStreamSession {
 	
 	private boolean completed = false; 
 	
-	DLogger traceLogger; 
+	
 	
 	public void init() { 
-		traceLogger = trace.logger(getClass());
+		
 	}
 	
 	@Transactional
 	public void controllerStart(DataStream stream, StreamSessionSpec spec) throws Exception { 
-		traceLogger.addLabel("SessionIdentifier", spec.getSessionId());
-		traceLogger.addLabel("Stream", stream.getName());;
+		
 		this.stream = stream;
 		this.spec = spec; 
 		this.startTime = LocalDateTime.of(LocalDate.now(DTimeZone.toZoneId(spec.getTimeZone())), LocalTime.now(DTimeZone.toZoneId(spec.getTimeZone())));
-		traceLogger.info("Controller Start Session");
+		
 		// okay so we create our new entity
 		sessionEntity = new DataStreamSessionEntity();
 		sessionEntity.setControllerStartTime(startTime);
@@ -229,7 +223,7 @@ public class DataStreamSession {
 	}
 	
 	public void snapshotWriterComplete() { 
-		traceLogger.info("snapshotWriter Complete invoked");
+		
 		snapshotWriterComplete = true;
 		sessionEntity.setSnapshotCompleteTime(LocalDateTime.now(DTimeZone.toZoneId(stream.getTimeZone())));
 		saveSession();
@@ -237,7 +231,7 @@ public class DataStreamSession {
 	}
 	
 	public void signalWriterComplete() { 
-		traceLogger.info("Signal Writer complete invoked");
+	
 		signalWriterComplete = true;
 		completeSession();
 		
@@ -260,7 +254,7 @@ public class DataStreamSession {
 			return;
 		}
 		if(signalWriterComplete && snapshotWriterComplete) {
-			traceLogger.info("Completing Session with signal and snapshot writer complete");
+			
 			LocalDateTime now = LocalDateTime.now(DTimeZone.toZoneId(stream.getTimeZone()));
 			sessionEntity.setSessionStopTime(now);
 			sessionEntity.setState(DataStreamSessionState.Completed);
@@ -278,7 +272,7 @@ public class DataStreamSession {
 					Thread.sleep(5000);
 					saveInstruments();
 				} catch (Exception e) {
-					traceLogger.error("Exception saving instruments " + e.toString());
+				
 					// TODO: handle exception
 				}
 				

@@ -4,17 +4,22 @@ import java.util.List;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import com.dunkware.common.util.dtime.DDate;
 import com.dunkware.common.util.dtime.DTimeZone;
 import com.dunkware.common.util.events.DEventNode;
+import com.dunkware.net.cluster.node.Cluster;
 import com.dunkware.net.cluster.node.ClusterNode;
+import com.dunkware.net.cluster.node.anot.AClusterPojoEventHandler;
 import com.dunkware.trade.service.stream.json.controller.session.StreamSessionNodeState;
 import com.dunkware.trade.service.stream.json.controller.session.StreamSessionNodeStatus;
 import com.dunkware.trade.service.stream.json.worker.stream.StreamSessionWorkerStartReq;
 import com.dunkware.trade.service.stream.json.worker.stream.StreamSessionWorkerStartResp;
 import com.dunkware.trade.service.stream.json.worker.stream.StreamSessionWorkerStats;
 import com.dunkware.trade.service.stream.json.worker.stream.StreamSessionWorkerStopReq;
+import com.dunkware.trade.service.stream.server.controller.StreamController;
+import com.dunkware.trade.service.stream.server.session.StreamSession;
 import com.dunkware.trade.service.stream.server.session.StreamSessionExtension;
 import com.dunkware.trade.service.stream.server.session.StreamSessionNode;
 import com.dunkware.trade.service.stream.server.session.StreamSessionNodeInput;
@@ -36,8 +41,16 @@ public class StreamSessionNodeImpl implements StreamSessionNode {
 	private String workerId; 
 	
 	private DEventNode eventNode;
+	
+	@Autowired
+	private Cluster cluster; 
+	
+	private StreamSessionWorkerStats workerStats = null;
+	
+	
 	@Override
-	public void startNode(StreamSessionNodeInput input) throws Exception {
+	public void startNode(StreamSessionNodeInput input)   {
+		cluster.addComponent(this);
 		this.input = input;
 		eventNode = input.getSession().getEventNode().createChild("/node/" + input.getClusterNode().getId());
 		xstreamBundle = new XStreamBundle();
@@ -45,30 +58,64 @@ public class StreamSessionNodeImpl implements StreamSessionNode {
 		xstreamBundle.setTimeZone(DTimeZone.NewYork);
 		xstreamBundle.setScriptBundle(input.getSession().getStream().getSpec().getBundle());
 		
-		for (StreamSessionExtension ext : input.getSession().getExtensions()) {
-			ext.nodeStarting(StreamSessionNodeImpl.this);
-		}
-		StreamSessionWorkerStartReq req = new StreamSessionWorkerStartReq();
-		workerId = input.getStream().getName() + "_session_worker_" + input.getClusterNode().getId();
-		req.setWorkerId(workerId);
-		req.setStream(input.getSession().getStream().getName());
-		req.setSessionId(input.getSession().getSessionId());
-		req.setStreamBundle(xstreamBundle);
+		Thread starter = new Thread() { 
+			
+			public void start() { 
+				for (StreamSessionExtension ext : input.getSession().getExtensions()) {
+					ext.nodeStarting(StreamSessionNodeImpl.this);
+				}
+				StreamSessionWorkerStartReq req = new StreamSessionWorkerStartReq();
+				workerId = input.getStream().getName() + "_session_worker_" + input.getClusterNode().getId();
+				req.setWorkerId(workerId);
+				req.setStream(input.getSession().getStream().getName());
+				req.setSessionId(input.getSession().getSessionId());
+				req.setStreamBundle(xstreamBundle);
+				
+				StreamSessionWorkerStartResp resp = null;
+				try {
+					resp = (StreamSessionWorkerStartResp)input.getClusterNode().jsonPost("/stream/worker/start", req, StreamSessionWorkerStartResp.class);
+				} catch (Exception e) {
+					state = StreamSessionNodeState.StartException;
+					startException = "Exception invoking worker api " + e.toString();
+					input.getCallBack().nodeStartException(StreamSessionNodeImpl.this);
+					return;
+				}
+				if(resp.getCode().equalsIgnoreCase("error")) {
+					startException = resp.getError();
+					startException = "Worker error return on node " + getNodeId() + " " + resp.getError();
+					input.getCallBack().nodeStartException(StreamSessionNodeImpl.this);
+					state = StreamSessionNodeState.StartException;
+				}
+				state = StreamSessionNodeState.Running;
+				input.getCallBack().nodeStarted(StreamSessionNodeImpl.this);
+			}
+			
+		};
 		
-		StreamSessionWorkerStartResp resp = null;
-		try {
-			resp = (StreamSessionWorkerStartResp)input.getClusterNode().jsonPost("/stream/worker/start", req, StreamSessionWorkerStartResp.class);
-		} catch (Exception e) {
-			state = state.StartException;
-			// TODO: handle exception
-		}
-		if(resp.getCode().equalsIgnoreCase("error")) {
-			// exception
-		}
+		starter.start();
 		
-		state = StreamSessionNodeState.Running;
 	
 	}
+	
+	@Override
+	public StreamSessionNodeStatus getStatus() {
+		StreamSessionNodeStatus status = new StreamSessionNodeStatus();
+		status.setStream(input.getStream().getName());
+		status.setNodeId(input.getClusterNode().getId());
+		if(workerStats != null) { 
+			status.setLastDataTickTime(workerStats.getLastDataTickTime());
+			status.setPendingTaskCount(workerStats.getPendingTaskCount());
+			status.setRowCount(workerStats.getRowCount());
+			status.setSignalCount(workerStats.getSignalCount());
+			status.setStreamTime(workerStats.getStreamTime());
+			status.setSystemTime(workerStats.getSystemTime());
+			status.setStream(input.getStream().getName());
+			status.setTickCount(input.getTickers().size());
+			status.setTimeoutTaskCount(workerStats.getTimeoutTaskCount());
+		}
+		return status;
+	}
+
 	
 	@Override
 	public StreamSessionNodeState getState() {
@@ -95,30 +142,64 @@ public class StreamSessionNodeImpl implements StreamSessionNode {
 	public List<TradeTickerSpec> getTickers() {
 		return input.getTickers();
 	}
+	
+	
+	@Override
+	public StreamSession getSession() {
+		return input.getSession();
+	}
+	
+
+	@Override
+	public String getStartError() {
+		return startException;
+	}
+
+	@Override
+	public StreamController getStream() {
+		return input.getStream();
+	}
+	
+	@AClusterPojoEventHandler(pojoClass = StreamSessionWorkerStats.class)
+	public void streamWorkerStatus(StreamSessionWorkerStats workerStats) { 
+		if(workerStats.getNodeId().equals(input.getClusterNode().getId())) {
+			this.workerStats = workerStats;
+		}
+	}
 
 	@Override
 	public void stopNode() {
-		if(state == StreamSessionNodeState.Running) { 
-			// interrupt/stop the worker monitor
-			// nodeStopping event fire
-			for (StreamSessionExtension ext : input.getSession().getExtensions()) {
-				ext.nodeStopping(StreamSessionNodeImpl.this);
-			}
-			// send stop request to worker node 
-			StreamSessionWorkerStopReq req = new StreamSessionWorkerStopReq();
-			req.setWorkerId(workerId);
-			try {
-				String resp = input.getClusterNode().httpGet("/stream/worker/stop?id=" + workerId);
+		Thread stopper = new Thread() { 
 			
-				if(resp.equals("OK") == false) { 
-					logger.error("ERROR Code Stopping Session Worker Node " + workerId + " Exception " + resp);
+			public void run() { 
+				if(state == StreamSessionNodeState.Running) { 
+					// interrupt/stop the worker monitor
+					// nodeStopping event fire
+					for (StreamSessionExtension ext : input.getSession().getExtensions()) {
+						ext.nodeStopping(StreamSessionNodeImpl.this);
+					}
+					// send stop request to worker node 
+					StreamSessionWorkerStopReq req = new StreamSessionWorkerStopReq();
+					req.setWorkerId(workerId);
+					try {
+						String resp = input.getClusterNode().httpGet("/stream/worker/stop?id=" + workerId);
+					
+						if(resp.equals("OK") == false) { 
+							logger.error("ERROR Code Stopping Session Worker Node " + workerId + " Exception " + resp);
+						}
+					} catch (Exception e) {
+						
+						logger.error("Exception Invoking /stream/worker/stop on " +  input.getClusterNode().getId() + " exception " + e.toString());
+					}
+					state = StreamSessionNodeState.Stopped;
 				}
-			} catch (Exception e) {
-				
-				logger.error("Exception Invoking /stream/worker/stop on " +  input.getClusterNode().getId() + " exception " + e.toString());
+				input.getCallBack().nodeStopped(StreamSessionNodeImpl.this);
 			}
-			state = StreamSessionNodeState.Stopped;
-		}
+			
+		};
+		
+		stopper.start();
+	
 		// stay in exception status after stopped node is called?
 		// no put it to stop
 	
@@ -129,6 +210,11 @@ public class StreamSessionNodeImpl implements StreamSessionNode {
 	}
 
 	
+
+	@Override
+	public XStreamBundle getStreamBundle() {
+		return xstreamBundle;
+	}
 
 	@Override
 	public DEventNode getEventNode() {

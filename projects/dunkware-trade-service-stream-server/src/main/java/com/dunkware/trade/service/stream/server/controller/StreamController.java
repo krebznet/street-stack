@@ -211,7 +211,7 @@ public class StreamController {
 		// create session / set session stats
 		session = StreamSessionFactory.createSession();
 		ac.getAutowireCapableBeanFactory().autowireBean(session);
-		stats.setSession(session.getStats());
+		stats.setSession(session.getStatus());
 		try {
 			
 			StreamSessionInput input = new StreamSessionInput();
@@ -240,7 +240,7 @@ public class StreamController {
 
 	public StreamStats getStats() {
 		if (session != null) {
-			stats.setSession(session.getStats());
+			stats.setSession(session.getStatus());
 		}
 		return stats;
 	}
@@ -462,6 +462,10 @@ public class StreamController {
 		}
 		stats.setState(StreamState.Running);
 	}
+	
+	public List<TradeTickerSpec> getTickers() { 
+		return tickerList.getTickers();
+	}
 
 	/**
 	 * Notify when session has exception
@@ -471,7 +475,7 @@ public class StreamController {
 	@ADEventMethod()
 	public void sessionException(EStreamSessionException sessionException) {
 		if (logger.isDebugEnabled()) {
-			logger.debug("Recieved Session Exception Event " + sessionException.getSession().getStats().getException());
+			logger.debug("Recieved Session Exception Event " + sessionException.getSession().getStatus().getException());
 		}
 		stats.setState(StreamState.Exception);
 		// sessionException state

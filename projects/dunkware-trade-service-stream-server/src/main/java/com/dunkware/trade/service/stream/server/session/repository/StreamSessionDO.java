@@ -16,6 +16,7 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Transient;
 
+import com.dunkware.trade.service.stream.json.controller.session.StreamSessionState;
 import com.dunkware.trade.service.stream.json.controller.session.StreamSessionStatus;
 import com.dunkware.trade.service.stream.server.controller.repository.StreamDO;
 import com.dunkware.trade.service.stream.server.controller.repository.StreamVersionDO;
@@ -30,7 +31,6 @@ public class StreamSessionDO {
 	private int nodeCount; 
 	private LocalDateTime startDateTime; 
 	private LocalDateTime stopDateTime;
-	private LocalDateTime lastHeartbeat;
 	
 	private LocalDate date;
 	@ManyToOne
@@ -39,14 +39,18 @@ public class StreamSessionDO {
 	private String streamName; 
 	private int tickerCount; 
 
-
+	private int problemCount;
 
 	@OneToMany(cascade = CascadeType.ALL, orphanRemoval =  true, fetch = FetchType.EAGER)
 	@JoinColumn(name = "session_id")
 	private List<StreamSessionTickerDO> tickers = new ArrayList<StreamSessionTickerDO>();
 	
+	@OneToMany(cascade = CascadeType.ALL, orphanRemoval =  true, fetch = FetchType.EAGER)
+	@JoinColumn(name = "session_id")
+	private List<StreamSessionProblemDO> problems = new ArrayList<StreamSessionProblemDO>();
+	
 	@Transient
-	private StreamSessionStatus status;
+	private StreamSessionState state;
 	
 	@ManyToOne
 	private StreamDO stream;
@@ -99,14 +103,13 @@ public class StreamSessionDO {
 		this.stream = stream;
 	}
 
-	public StreamSessionStatus getStatus() {
-		return status;
+	public StreamSessionState getState() {
+		return state;
 	}
 
-	public void setStatus(StreamSessionStatus status) {
-		this.status = status;
+	public void setState(StreamSessionState state) {
+		this.state = state;
 	}
-
 
 	public double getVersionValue() {
 		return versionValue;
@@ -156,13 +159,25 @@ public class StreamSessionDO {
 		this.version = version;
 	}
 
-	public LocalDateTime getLastHeartbeat() {
-		return lastHeartbeat;
+	public int getProblemCount() {
+		return problemCount;
 	}
 
-	public void setLastHeartbeat(LocalDateTime lastHeartbeat) {
-		this.lastHeartbeat = lastHeartbeat;
+	public void setProblemCount(int problemCount) {
+		this.problemCount = problemCount;
 	}
+
+	public List<StreamSessionProblemDO> getProblems() {
+		return problems;
+	}
+
+	public void setProblems(List<StreamSessionProblemDO> problems) {
+		this.problems = problems;
+	}
+	
+	
+
+	
 	
 	
 

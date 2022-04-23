@@ -51,7 +51,7 @@ public class GStreamHelper {
 	
 	public static GStreamSessionSpec buildSessionSpec(StreamSession session) throws Exception { 
 		GStreamSessionSpec.Builder builder = GStreamSessionSpec.newBuilder();
-		for (TradeTickerSpec ticker : session.getTickerListSpec().getTickers()) {
+		for (TradeTickerSpec ticker : session.getTickers()) {
 			GStreamEntitySpec entSpec = GStreamEntitySpec.newBuilder().setId(ticker.getId()).setIdentifier(ticker.getSymbol()).build();
 			builder.addEntities(entSpec);
 		}
@@ -152,7 +152,7 @@ public class GStreamHelper {
 		builder.addAllVariables(varSpecs);
 		sb.setScript(builder.build());
 		List<GStreamEntitySpec> entSpecs = new ArrayList<GStreamEntitySpec>();
-		for (TradeTickerSpec ticker : controller.getTickerList().getTickers()) {
+		for (TradeTickerSpec ticker : controller.getTickers()) {
 			entSpecs.add(GStreamEntitySpec.newBuilder().setId(ticker.getId()).setIdentifier(ticker.getSymbol()).setLabel(ticker.getSymbol()).build());
 		}
 		

@@ -90,8 +90,8 @@ public class DataStreamSessionSnapshotWriterMetrics {
 		stats.setMongoURL(writer.getMongoURL());
 		stats.setMongoDatabase(writer.getMongoDatabase());
 		stats.setMongoCollection(writer.getMongoCollection());
-		stats.setLastSnapshotWriteTime(DunkTime.formatHHMMSS(GProtoHelper.toCalendarDateTimeRange(lastConsumeSnapshot.getTime(), writer.getSession().getStream().getTimeZone())));
-		
+		//stats.setLastSnapshotWriteTime(DunkTime.formatHHMMSS(GProtoHelper.toCalendarDateTimeRange(lastConsumeSnapshot.getTime(), writer.getSession().getStream().getTimeZone())));
+		return stats;
 		//stats.set
 	}
 	public void consumerResumed() { 

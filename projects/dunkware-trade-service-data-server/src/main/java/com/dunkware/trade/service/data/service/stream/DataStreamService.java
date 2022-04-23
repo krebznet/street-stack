@@ -15,8 +15,6 @@ import org.springframework.context.ApplicationContext;
 import org.springframework.stereotype.Service;
 
 import com.dunkware.common.util.dtime.DTimeZone;
-import com.dunkware.net.cluster.node.logging.DLogger;
-import com.dunkware.net.cluster.node.logging.DLoggerService;
 import com.dunkware.net.proto.stream.GStreamSpec;
 import com.dunkware.net.proto.stream.GStreamSpecsResponse;
 import com.dunkware.trade.service.data.service.config.RuntimeConfig;
@@ -25,9 +23,6 @@ import com.dunkware.trade.service.data.service.message.StreamMessageHandler;
 import com.dunkware.trade.service.data.service.message.StreamMessageService;
 import com.dunkware.trade.service.data.service.repository.DataStreamEntity;
 import com.dunkware.trade.service.data.service.repository.DataStreamEntityRepo;
-import com.dunkware.trade.service.stream.json.message.StreamSessionPing;
-import com.dunkware.trade.service.stream.json.message.StreamSessionStart;
-import com.dunkware.trade.service.stream.json.message.StreamSessionStop;
 
 @Service
 public class DataStreamService implements StreamMessageHandler {
@@ -44,10 +39,6 @@ public class DataStreamService implements StreamMessageHandler {
 	@Autowired
 	private DataStreamEntityRepo streamRepo;
 	
-	@Autowired
-	private DLoggerService trace;
-	
-
 	private Map<String, DataStream> dataStreams = new ConcurrentHashMap<String, DataStream>();
 
 	private Map<String, DataStreamEntity> dataStreamEntities = new ConcurrentHashMap<String, DataStreamEntity>();
@@ -59,21 +50,18 @@ public class DataStreamService implements StreamMessageHandler {
 
 	private DataStreamSession currentSession = null;
 
-	private DLogger traceLogger;
-
 	@Transactional
 	@PostConstruct
 	public void load() {
-		traceLogger = trace.logger(getClass());
 		// first popuplate stream entity map
 		for (DataStreamEntity ent : streamRepo.findAll()) {
 			dataStreamEntities.put(ent.getName(), ent);
 		}
-		traceLogger.info("Getting Stream Specs");
+		
 		GStreamSpecsResponse streamSpecs = null;
 		try {
 			streamSpecs = streamServiceClient.streamSpecs();
-			traceLogger.info("Received Stream Specs");
+			
 		} catch (Exception e) {
 			logger.error("Exception Getting GStreamSpecs from Stream GRPC Service " + e.toString());
 			// try again or shut down
@@ -105,7 +93,7 @@ public class DataStreamService implements StreamMessageHandler {
 		try {
 
 		} catch (Exception e) {
-			traceLogger.error("Error starting data stream service " + e.toString());
+		
 			System.err.println(e.toString());
 			e.printStackTrace();
 			// TODO: handle exception
@@ -127,20 +115,7 @@ public class DataStreamService implements StreamMessageHandler {
 		return dataStreams.values();
 	}
 
-	@Override
-	public void sessionPing(StreamSessionPing ping) {
 
-	}
-
-	@Override
-	public void sessionStart(StreamSessionStart start) {
-
-	}
-
-	@Override
-	public void sessionStop(StreamSessionStop stop) {
-
-	}
 	
 	// 
 

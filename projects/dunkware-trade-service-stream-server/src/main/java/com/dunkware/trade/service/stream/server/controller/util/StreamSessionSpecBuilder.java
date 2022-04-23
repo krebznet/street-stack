@@ -15,7 +15,6 @@ import com.dunkware.xstream.model.enums.XScriptDataType;
 import com.dunkware.xstream.model.script.StreamScript;
 import com.dunkware.xstream.model.script.StreamScriptVar;
 import com.dunkware.xstream.model.script.StreamSignalType;
-import com.dunkware.xstream.xScript.DataType;
 import com.dunkware.xstream.xScript.SignalType;
 import com.dunkware.xstream.xScript.VarType;
 import com.dunkware.xstream.xproject.XScriptProject;
@@ -23,12 +22,11 @@ import com.dunkware.xstream.xproject.XScriptProject;
 public class StreamSessionSpecBuilder {
 
 	
-	public static StreamSessionSpec build(StreamSession session) throws Exception { 
+	public static StreamSessionSpec build(StreamSession session, String kafkaBrokers) throws Exception { 
 		StreamSessionSpec spec = new StreamSessionSpec();
 		// entities
-		TradeTickerListSpec tickerList = session.getStream().getSpec().get();
 		List<StreamEntitySpec> entitySpecs = new ArrayList<StreamEntitySpec>();
-		for (TradeTickerSpec ticker : tickerList.getTickers()) {
+		for (TradeTickerSpec ticker : session.getStream().getTickers()) {
 			StreamEntitySpec entSpec = new StreamEntitySpec();
 			entSpec.setId(ticker.getId());
 			entSpec.setIndentifier(ticker.getSymbol());
@@ -39,9 +37,10 @@ public class StreamSessionSpecBuilder {
 		spec.setSessionId(session.getSessionId());
 		spec.setStartTime(session.getStream().getSpec().getStartTime());
 		spec.setStopTime(session.getStream().getSpec().getStopTime());
-		spec.setKafkaBrokers(session.getKafkaBrokers());
-		spec.setKafkaSignalTopic(session.getKafkaSignalTopic());
-		spec.setKafkaSnapshotTopic(session.getKafkaSnapshotTopic());
+		spec.setKafkaBrokers(kafkaBrokers);
+		spec.setKafkaSignalTopic("stream_" + session.getStream().getName().toLowerCase() + "_event_signal");
+		spec.setKafkaSignalTopic("stream_" + session.getStream().getName().toLowerCase() + "_event_snapshot");
+
 		spec.setStreamScript(buildStreamScript(session.getStream().getScriptProject(), session));
 		spec.setDate(DDate.from(LocalDate.now(DTimeZone.toZoneId(session.getStream().getSpec().getTimeZone()))));
 		spec.setStreamIdentifier(session.getStream().getName());

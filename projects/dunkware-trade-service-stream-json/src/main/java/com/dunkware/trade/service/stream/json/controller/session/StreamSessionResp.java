@@ -3,7 +3,7 @@ package com.dunkware.trade.service.stream.json.controller.session;
 public class StreamSessionResp {
 
 	private String summary; 
-	private StreamSessionStats session;
+	private StreamSessionStatus session;
 	
 	public StreamSessionResp() { 
 		
@@ -17,11 +17,11 @@ public class StreamSessionResp {
 		this.summary = summary;
 	}
 
-	public StreamSessionStats getSession() {
+	public StreamSessionStatus getSession() {
 		return session;
 	}
 
-	public void setSession(StreamSessionStats session) {
+	public void setSession(StreamSessionStatus session) {
 		this.session = session;
 	}
 	

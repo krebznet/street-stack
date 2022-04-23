@@ -49,7 +49,7 @@ public class AutoSearchService {
 		cat.setCategoryName("Instruments");
 		cat.setCategoryType("instruments");
 		for (StreamController controller : streamController.getStreams()) {
-			for (TradeTickerSpec spec :controller.getTickerList().getTickers()) {
+			for (TradeTickerSpec spec :controller.getTickers()) {
 				JsonSearchElement el = new JsonSearchElement();
 				el.setId(spec.getId());
 				el.setIdentifier(spec.getSymbol());

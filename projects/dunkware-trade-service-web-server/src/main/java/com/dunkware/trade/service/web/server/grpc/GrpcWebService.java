@@ -11,14 +11,11 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.CrossOrigin;
 
 import com.dunkware.net.proto.chart.Grid;
-import com.dunkware.net.proto.core.GList;
 import com.dunkware.net.proto.stream.GAutoCompleteRequest;
 import com.dunkware.net.proto.stream.GAutoCompleteResponse;
 import com.dunkware.net.proto.stream.GEntitySignalQuery;
 import com.dunkware.net.proto.web.GWebServiceGrpc.GWebServiceImplBase;
 import com.dunkware.trade.service.web.server.autosearch.AutoSearchService;
-import com.dunkware.trade.service.web.server.grid.SignalGridMockData1;
-import com.dunkware.trade.service.web.server.grid.SignalGrids;
 import com.dunkware.trade.service.web.server.grpc.proxy.GrpcAutoCompleteProxy;
 import com.dunkware.trade.service.web.server.grpc.proxy.GrpcAutoCompleteProxyListener;
 
@@ -53,21 +50,7 @@ public class GrpcWebService extends GWebServiceImplBase {
 
 	@Override
 	public void testSignalGrid(GEntitySignalQuery request, StreamObserver<Grid> responseObserver) {
-		if (mock) {
-			GList list = SignalGridMockData1.getList();
-			try {
-				Grid grid = SignalGrids.grid1(list);
-				responseObserver.onNext(grid);
-				responseObserver.onCompleted();
-
-			} catch (Exception e) {
-				logger.error("Exception returning mock signal gird " + e.toString());
-				responseObserver.onError(e);
-
-			}
-			return;
-
-		}
+		
 
 	}
 

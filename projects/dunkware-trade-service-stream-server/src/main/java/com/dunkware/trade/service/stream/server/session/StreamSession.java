@@ -4,7 +4,7 @@ import java.util.List;
 import java.util.Map;
 
 import com.dunkware.common.util.events.DEventNode;
-import com.dunkware.trade.service.stream.json.controller.session.StreamSessionStats;
+import com.dunkware.trade.service.stream.json.controller.session.StreamSessionStatus;
 import com.dunkware.trade.service.stream.json.controller.session.StreamSessionStatus;
 import com.dunkware.trade.service.stream.server.controller.StreamController;
 import com.dunkware.trade.service.stream.server.session.repository.StreamSessionDO;
@@ -18,8 +18,6 @@ public interface StreamSession {
 	public void stopSession() throws StreamSessionException;
 	
 	public StreamSessionStatus getStatus();
-	
-	public StreamSessionStats getStats();
 	
 	public List<StreamSessionNode> getNodes();
 	

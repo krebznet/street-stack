@@ -40,6 +40,8 @@ public class StreamSessionWorkerImpl implements StreamSessionWorker, ClusterJobR
 	
 	private ClusterJob clusterJob; 
 	
+	private StatusPublisher statusPublisher;
+	
 	public StreamSessionWorkerImpl() {
 
 	}
@@ -70,6 +72,8 @@ public class StreamSessionWorkerImpl implements StreamSessionWorker, ClusterJobR
 			stream.start(streamInput);
 			
 			signalService = stream.getService(XStreamSignalService.class);
+			statusPublisher = new StatusPublisher();
+			statusPublisher.start();
 		} catch (Exception e) {
 			throw e;
 		}
@@ -97,6 +101,7 @@ public class StreamSessionWorkerImpl implements StreamSessionWorker, ClusterJobR
 	public void stop() throws Exception {
 		this.stream.dispose();
 		clusterJob.jobComplete();
+		statusPublisher.interrupt();
 	}
 
 
@@ -116,7 +121,25 @@ public class StreamSessionWorkerImpl implements StreamSessionWorker, ClusterJobR
 		return spec;
 	}
 
-	
+	private class StatusPublisher extends Thread { 
+		
+		public void run() { 
+			StreamSessionWorkerStats stats = getStats();
+			try {
+				cluster.pojoEvent(stats);
+				
+			} catch (Exception e) {
+				logger.error("Exceptin sending worker stream node status " + e.toString());
+			}
+			try {
+				Thread.sleep(3000);
+			} catch (Exception e) {
+				// TODO: handle exception
+			}
+		
+			
+		}
+	}
 
 	
 

@@ -28,8 +28,6 @@ import com.dunkware.common.util.helpers.DProtoHelper;
 import com.dunkware.common.util.stopwatch.DStopWatch;
 import com.dunkware.common.util.time.DunkTime;
 import com.dunkware.common.util.uuid.DUUID;
-import com.dunkware.net.cluster.node.logging.DLogger;
-import com.dunkware.net.cluster.node.logging.DLoggerService;
 import com.dunkware.net.proto.stream.GEntitySnapshot;
 import com.dunkware.net.proto.stream.GStreamEvent;
 import com.dunkware.net.proto.stream.GStreamEventType;
@@ -80,8 +78,7 @@ public class DataStreamSessionSnapshotWriter implements DKafkaByteHandler2 {
 
 	private DataStreamSessionSnapshotWriterMetrics metrics;
 	
-	@Autowired
-	private DLoggerService trace;
+	
 
 	@Value("${snapshot.writer.batchsize}")
 	private int bucketBatchSize;
@@ -96,7 +93,7 @@ public class DataStreamSessionSnapshotWriter implements DKafkaByteHandler2 {
 
 	private GStreamSessionStop stopEvent;
 	
-	private DLogger traceLogger;
+	
 	
 	private String mongoCollectionName;
 
@@ -334,7 +331,7 @@ public class DataStreamSessionSnapshotWriter implements DKafkaByteHandler2 {
 						sw.start();
 						snapshotCollection.bulkWrite(pendingWrites);
 						sw.stop();
-						metrics.bucketWriteBatch(pendingWrites.size(), bucketBatchSize);
+						//metrics.bucketWriteBatch(pendingWrites.size(), bucketBatchSize);
 						
 						pendingWrites.clear();
 						continue;
@@ -368,7 +365,7 @@ public class DataStreamSessionSnapshotWriter implements DKafkaByteHandler2 {
 						sw.start();
 						snapshotCollection.bulkWrite(pendingWrites);
 						sw.stop();
-						metrics.bucketWriteBatch(pendingWrites.size(), bucketBatchSize);
+						//metrics.bucketWriteBatch(pendingWrites.size(), bucketBatchSize);
 
 						pendingWrites.clear();
 

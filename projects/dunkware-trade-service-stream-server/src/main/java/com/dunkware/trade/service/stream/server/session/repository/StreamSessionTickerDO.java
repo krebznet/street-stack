@@ -20,19 +20,12 @@ public class StreamSessionTickerDO {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private long id; 
-	private String symbol;
+	private String tickerIdentifer;
 	private long tickerId; 
 	@Enumerated(EnumType.STRING	)
 	private TradeTickerType type; 
 	private boolean validated = false; 
 	
-	
-	public String getSymbol() {
-		return symbol;
-	}
-	public void setSymbol(String symbol) {
-		this.symbol = symbol;
-	}
 	
 	@ManyToOne
 	private StreamSessionDO session;
@@ -67,5 +60,13 @@ public class StreamSessionTickerDO {
 	public void setValidated(boolean validated) {
 		this.validated = validated;
 	}
+	public String getTickerIdentifer() {
+		return tickerIdentifer;
+	}
+	public void setTickerIdentifer(String tickerIdentifer) {
+		this.tickerIdentifer = tickerIdentifer;
+	}
+	
+	
 
 }

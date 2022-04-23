@@ -1,8 +1,11 @@
 package com.dunkware.trade.service.stream.server.session.extensions;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.autoconfigure.AutoConfigureOrder;
+import java.time.LocalDateTime;
 
+import org.springframework.beans.factory.annotation.Autowired;
+
+import com.dunkware.common.util.dtime.DTimeZone;
+import com.dunkware.common.util.time.DunkTime;
 import com.dunkware.trade.service.stream.server.session.StreamSession;
 import com.dunkware.trade.service.stream.server.session.StreamSessionExtension;
 import com.dunkware.trade.service.stream.server.session.StreamSessionNode;
@@ -31,7 +34,8 @@ public class TickFeedExtension implements StreamSessionExtension {
 	public void nodeStarting(StreamSessionNode node) {
 		StreamSessionTickFeedExtType type = new StreamSessionTickFeedExtType();
 		//type.setServiceEndpoint(null);
-		TickFeedSpecBuilder builder = TickFeedSpecBuilder.newInstance(session.getSessionId() + "_" + node.getWorkerId());
+		TickFeedSpecBuilder builder = TickFeedSpecBuilder.newInstance(session.getSessionId() + "_" + node.getNodeId() + 
+				DunkTime.formatHHMMSS(LocalDateTime.now(DTimeZone.toZoneId(node.getStream().getTimeZone()))));
 		builder.addTickType(TradeTicks.TickSnapshot);
 		for (TradeTickerSpec ticker : node.getTickers()) {
 			builder.addTicker(ticker);
