@@ -24,7 +24,7 @@ import com.dunkware.common.util.json.DJson;
 import com.dunkware.common.util.uuid.DUUID;
 import com.dunkware.net.cluster.node.Cluster;
 import com.dunkware.net.cluster.node.anot.AClusterPojoEventHandler;
-import com.dunkware.net.cluster.node.events.EClusterNodeAdded;
+import com.dunkware.net.cluster.node.events.EClusterComponentAdded;
 import com.dunkware.net.cluster.node.events.DClusterComponentRemoved;
 import com.dunkware.net.proto.cluster.GClusterEvent;
 import com.dunkware.net.proto.cluster.GClusterEventType;
@@ -50,6 +50,7 @@ public class ClusterEventService implements DKafkaByteHandler2 {
 	
 	Reflections reflections = null;
 	public void start(ClusterImpl cluster) throws Exception { 
+		cluster.getEventTree().getRoot().addEventHandler(this);
 		if(logger.isDebugEnabled()) {
 			logger.debug("Creating Reflection Instance");
 		}
@@ -65,6 +66,7 @@ public class ClusterEventService implements DKafkaByteHandler2 {
 			.build();
 			eventConsumer = DKafkaByteConsumer2.newInstance(kafkaSpec);
 			eventConsumer.start();
+			eventConsumer.addStreamHandler(this);
 		} catch (Exception e) {
 			logger.error("Exception Creating Cluster Event Kafka Consumer " + e.toString());
 			throw new Exception("Exception Creating Event Manager Kafka Consumer " + e.toString());
@@ -76,8 +78,8 @@ public class ClusterEventService implements DKafkaByteHandler2 {
 	}
 	
 	
-	@ADEventMethod
-	public void componentAdded(EClusterNodeAdded added	 ) {
+	@ADEventMethod()
+	public void componentAdded(EClusterComponentAdded added	 ) {
 		Object component = added.getComponent();
 		for (Method method : component.getClass().getMethods()) {
 			AClusterPojoEventHandler[] anots = method.getAnnotationsByType(AClusterPojoEventHandler.class);
@@ -183,7 +185,7 @@ public class ClusterEventService implements DKafkaByteHandler2 {
 				return;
 			}
 			try {
-				parsedPojo = DJson.getObjectMapper().readValue(pojoEvent.getJson(), pojoClazz.getClass());
+				parsedPojo = DJson.getObjectMapper().readValue(pojoEvent.getJson(), pojoClazz);
 			} catch (Exception e) {
 				logger.error("Exception parsing pojo event json after class found on classpath " + e.toString());
 				return;
@@ -191,7 +193,7 @@ public class ClusterEventService implements DKafkaByteHandler2 {
 			try {
 				pojoEventHandlerLock.acquire();
 				for (PojoEventHandler handler : pojoEventHandlers) {
-					if(handler.getClass().isInstance(parsedPojo)) { 
+					if(handler.getPojoClass().isInstance(parsedPojo)) { 
 						Method method = handler.getMethod();
 						try {
 							method.invoke(handler.getComponent(),parsedPojo);	

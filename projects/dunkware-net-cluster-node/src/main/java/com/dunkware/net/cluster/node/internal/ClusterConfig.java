@@ -17,7 +17,7 @@ public class ClusterConfig {
 	@Value("${net.cluster.server.brokers}")
 	private String serverBrokers;
 	
-	@Value("${net.cluster.server.http}")
+	@Value("${net.cluster.server.grpc}")
 	private String serverGrpc; 
 	
 	@Value("${net.cluster.server.http}")

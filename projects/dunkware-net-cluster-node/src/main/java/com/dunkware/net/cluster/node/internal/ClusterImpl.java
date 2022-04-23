@@ -32,6 +32,7 @@ import com.dunkware.net.cluster.node.ClusterJob;
 import com.dunkware.net.cluster.node.ClusterJobRunner;
 import com.dunkware.net.cluster.node.ClusterNode;
 import com.dunkware.net.cluster.node.ClusterNodeException;
+import com.dunkware.net.cluster.node.events.EClusterComponentAdded;
 import com.dunkware.net.cluster.util.helpers.ClusterEventHelper;
 import com.dunkware.net.proto.cluster.GClusterEvent;
 
@@ -70,9 +71,11 @@ public class ClusterImpl implements Cluster {
 	public void load() {
 		startTime = DDateTime.now(DTimeZone.NewYork);
 		registry = new ClusterRegistry();
+		registry.start(this);
 		executor = new DExecutor(15);
 		eventTree = DEventTree.newInstance(executor);
 		eventService = new ClusterEventService();
+		eventTree = DEventTree.newInstance(executor);
 		ac.getAutowireCapableBeanFactory().autowireBean(eventService);
 		try {
 			eventService.start(this);
@@ -147,6 +150,8 @@ public class ClusterImpl implements Cluster {
 	@Override
 	public void addComponent(Object component) {
 		registry.addComponent(component);
+		EClusterComponentAdded added = new EClusterComponentAdded(component);
+		eventTree.getRoot().event(added);
 		;
 
 	}
