@@ -1,0 +1,59 @@
+<configuration scan="true">
+
+
+	<property name="PATTERN"
+		value="%d{HH:mm:ss.SSS} %-5level %logger{0} - %msg%n" />
+
+	<appender name="CONSOLE"
+		class="ch.qos.logback.core.ConsoleAppender">
+
+		<encoder>
+			<pattern>%d{HH:mm:ss.SSS} [%thread] %-5level %logger{36} - %msg%n
+			</pattern>
+		</encoder>
+	</appender>
+
+	<!-- <appender name="SysInfo" class="ch.qos.logback.core.FileAppender"> 
+		<file>/Users/dkrebs/dunkware/log/tick/sys-info.log</file> <filter class="ch.qos.logback.classic.filter.LevelFilter"> 
+		<level>INFO</level> <onMatch>ACCEPT</onMatch> <onMismatch>DENY</onMismatch> 
+		</filter> <encoder> <pattern>${PATTERN}</pattern> </encoder> </appender> 
+		<appender name="SysError" class="ch.qos.logback.core.FileAppender"> <file>/Users/dkrebs/dunkware/log/tick/sys-error.log</file> 
+		<filter class="ch.qos.logback.classic.filter.LevelFilter"> <level>ERROR</level> 
+		<onMatch>ACCEPT</onMatch> <onMismatch>DENY</onMismatch> </filter> <encoder> 
+		<pattern>${PATTERN}</pattern> </encoder> </appender> <appender name="SysDebug" 
+		class="ch.qos.logback.core.FileAppender"> <file>/Users/dkrebs/dunkware/log/tick/sys-debug.log</file> 
+		<filter class="ch.qos.logback.classic.filter.LevelFilter"> <level>DEBUG</level> 
+		<onMatch>ACCEPT</onMatch> <onMismatch>DENY</onMismatch> </filter> <encoder> 
+		<pattern>${PATTERN}</pattern> </encoder> </appender> <appender name="SysTrace" 
+		class="ch.qos.logback.core.FileAppender"> <file>/Users/dkrebs/dunkware/log/tick/sys-trace.log</file> 
+		<filter class="ch.qos.logback.classic.filter.LevelFilter"> <level>TRACE</level> 
+		<onMatch>ACCEPT</onMatch> <onMismatch>DENY</onMismatch> </filter> <encoder> 
+		<pattern>${PATTERN}</pattern> </encoder> </appender> <appender name="TickProviderTrace" 
+		class="ch.qos.logback.core.FileAppender"> <file>/Users/dkrebs/dunkware/log/tick/tick-provider-trace.log</file> 
+		<filter class="ch.qos.logback.classic.filter.LevelFilter"> <level>TRACE</level> 
+		<onMatch>ACCEPT</onMatch> <onMismatch>DENY</onMismatch> </filter> <encoder> 
+		<pattern>${PATTERN}</pattern> </encoder> </appender> -->
+	<appender name="FLUENT"
+		class="ch.qos.logback.more.appenders.DataFluentAppender">
+		<tag>streetdev</tag>
+		<label>logging</label>
+		<remoteHost>testrock2.dunkware.net</remoteHost>
+		<port>5678</port>
+		<additionalField>
+			<key>node</key>
+			<value>cluster</value>
+		</additionalField>
+	</appender>
+
+	<root level="INFO">
+
+		<appender-ref ref="CONSOLE" additivity="false" />
+	</root>
+
+
+	<logger name="com.dunkware" level="DEBUG">
+		<appender-ref ref="FLUENT" additivity="false" />
+
+	</logger>
+
+</configuration>

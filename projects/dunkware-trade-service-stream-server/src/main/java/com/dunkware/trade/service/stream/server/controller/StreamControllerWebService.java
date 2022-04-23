@@ -26,7 +26,7 @@ import com.dunkware.trade.service.stream.json.controller.StreamStatsResp;
 import com.dunkware.trade.service.stream.json.controller.UpdateStreamReq;
 import com.dunkware.trade.service.stream.json.controller.UpdateStreamResp;
 import com.dunkware.trade.service.stream.json.controller.spec.StreamSpec;
-import com.dunkware.trade.service.stream.json.controller.spec.StreamStatus;
+import com.dunkware.trade.service.stream.json.controller.spec.StreamState;
 
 // /stream/admin/add
 // /stream/admin/update 
@@ -111,7 +111,7 @@ public class StreamControllerWebService {
 			return resp;
 		}
 		try {
-			if(controller.getStatus() == StreamStatus.Running) { 
+			if(controller.getStats().getState() == StreamState.Running) { 
 				controller.stopSession();
 				resp.setCode("SUCCSS");
 				return resp;

@@ -4,27 +4,33 @@ import com.dunkware.trade.service.stream.json.controller.session.StreamSessionSt
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonInclude.Include;
 
-public class StreamStatsSpec {
+public class StreamStats {
 
-	private String stream;
-	private StreamStatus status;
+	private String name;
+	private StreamState state;
 	@JsonInclude(Include.NON_NULL)
 	private StreamSessionStats session;
 
 	@JsonInclude(Include.NON_NULL)
 	private String error;
 
-	public StreamStatsSpec() {
+	public StreamStats() {
 
 	}
 
-	public StreamStatus getStatus() {
-		return status;
+	
+
+	public StreamState getState() {
+		return state;
 	}
 
-	public void setStatus(StreamStatus status) {
-		this.status = status;
+
+
+	public void setState(StreamState state) {
+		this.state = state;
 	}
+
+
 
 	public StreamSessionStats getSession() {
 		return session;
@@ -34,12 +40,12 @@ public class StreamStatsSpec {
 		this.session = session;
 	}
 
-	public String getStream() {
-		return stream;
+	public String getName() {
+		return name;
 	}
 
-	public void setStream(String stream) {
-		this.stream = stream;
+	public void setName(String name) {
+		this.name = name;
 	}
 
 	public String getError() {

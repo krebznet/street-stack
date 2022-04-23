@@ -7,7 +7,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.CrossOrigin;
 
@@ -24,11 +23,10 @@ import com.dunkware.trade.service.stream.server.controller.util.GStreamHelper;
 import com.dunkware.trade.service.stream.server.tick.StreamTickService;
 
 import io.grpc.stub.StreamObserver;
-import net.devh.springboot.autoconfigure.grpc.server.GrpcService;
+import net.devh.boot.grpc.server.service.GrpcService;
 
-@GrpcService(GStreamServiceImplBase.class)
+@GrpcService()
 @Service
-@Profile("StreamController")
 @CrossOrigin(origins = "*", allowedHeaders = "*")
 public class GrpcStreamService extends GStreamServiceImplBase {
 	

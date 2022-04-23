@@ -1,6 +1,6 @@
 package com.dunkware.trade.service.stream.json.controller.spec;
 
-public enum StreamStatus {
+public enum StreamState {
 Starting,Running,Stopping,Stopped,Exception
 
 }

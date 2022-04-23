@@ -26,7 +26,7 @@ public class StreamSessionSpecBuilder {
 	public static StreamSessionSpec build(StreamSession session) throws Exception { 
 		StreamSessionSpec spec = new StreamSessionSpec();
 		// entities
-		TradeTickerListSpec tickerList = session.getTickerListSpec();
+		TradeTickerListSpec tickerList = session.getStream().getSpec().get();
 		List<StreamEntitySpec> entitySpecs = new ArrayList<StreamEntitySpec>();
 		for (TradeTickerSpec ticker : tickerList.getTickers()) {
 			StreamEntitySpec entSpec = new StreamEntitySpec();

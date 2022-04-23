@@ -5,6 +5,7 @@ import java.util.List;
 import com.dunkware.common.util.dtime.DDateTime;
 import com.dunkware.common.util.events.DEventNode;
 import com.dunkware.net.cluster.node.ClusterNode;
+import com.dunkware.trade.service.stream.json.controller.session.StreamSessionNodeState;
 import com.dunkware.trade.service.stream.json.controller.session.StreamSessionNodeStatus;
 import com.dunkware.trade.service.stream.json.worker.stream.StreamSessionWorkerStats;
 import com.dunkware.trade.service.stream.server.controller.StreamController;
@@ -13,9 +14,9 @@ import com.dunkware.xstream.xproject.model.XStreamBundle;
 
 public interface StreamSessionNode {
 
-	StreamSessionNodeStatus getStatus(); 
+	StreamSessionNodeState getState(); 
 	
-	StreamSessionWorkerStats getStats();
+	StreamSessionWorkerStats getWorkerStats();
 	
 	ClusterNode getNode(); 
 	
@@ -25,9 +26,10 @@ public interface StreamSessionNode {
 	
 	void stopNode();
 	
-	void startNode(StreamSessionNodeInput input); 
+	void startNode(StreamSessionNodeInput input) throws Exception;
 	
 	DEventNode getEventNode();
 	
 	public StreamSessionNodeInput getInput();
+	
 }
