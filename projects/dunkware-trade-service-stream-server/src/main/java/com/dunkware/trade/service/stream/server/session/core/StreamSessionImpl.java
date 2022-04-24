@@ -3,6 +3,7 @@ package com.dunkware.trade.service.stream.server.session.core;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
+import java.time.ZoneId;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -11,16 +12,24 @@ import java.util.concurrent.atomic.AtomicInteger;
 import javax.transaction.Transactional;
 
 import org.slf4j.Logger;
+import org.slf4j.Marker;
+import org.slf4j.MarkerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 
 import com.dunkware.common.util.dtime.DTime;
 import com.dunkware.common.util.dtime.DTimeZone;
 import com.dunkware.common.util.events.DEventNode;
+import com.dunkware.common.util.events.DEventTree;
+import com.dunkware.common.util.time.DunkTime;
+import com.dunkware.net.cluster.node.Cluster;
 import com.dunkware.net.cluster.node.ClusterNode;
 import com.dunkware.trade.service.stream.json.controller.session.StreamSessionState;
 import com.dunkware.trade.service.stream.json.controller.session.StreamSessionStatus;
+import com.dunkware.trade.service.stream.json.message.StreamSessionStart;
+import com.dunkware.trade.service.stream.json.message.StreamSessionStop;
 import com.dunkware.trade.service.stream.server.controller.StreamController;
+import com.dunkware.trade.service.stream.server.controller.util.StreamSessionSpecBuilder;
 import com.dunkware.trade.service.stream.server.session.StreamSession;
 import com.dunkware.trade.service.stream.server.session.StreamSessionException;
 import com.dunkware.trade.service.stream.server.session.StreamSessionExtension;
@@ -36,6 +45,8 @@ import com.dunkware.trade.tick.model.ticker.TradeTickerSpec;
 import com.dunkware.trade.tick.model.ticker.TradeTickerType;
 import com.dunkware.xstream.xproject.XScriptProject;
 
+import io.opencensus.stats.Stats;
+
 public class StreamSessionImpl implements StreamSession {
 
 	private Logger logger = org.slf4j.LoggerFactory.getLogger(getClass());
@@ -47,6 +58,9 @@ public class StreamSessionImpl implements StreamSession {
 	
 	@Autowired
 	private ApplicationContext ac;
+	
+	@Autowired
+	private Cluster cluster; 
 	
 	private StreamSessionStatus status;
 	
@@ -61,13 +75,24 @@ public class StreamSessionImpl implements StreamSession {
 	
 	private StreamSessionDO sessionEntity;
 	
+	private DEventNode eventNode; 
+	
+	private String sessionId; 
+	
+	private AtomicInteger nodeStartFailures = new AtomicInteger(0);
+	
 	@Override
 	public void startSession(StreamSessionInput input) throws StreamSessionException {
 		this.input = input;
+		eventNode = cluster.getEventTree().getRoot().createChild(input.getController().getName() + "/session");
+		;
 		status = new StreamSessionStatus();
 		status.setState(StreamSessionState.Starting);
 		status.setStartingTime(DTime.
 				from(LocalTime.now(DTimeZone.toZoneId(input.getController().getTimeZone()))));
+		ZoneId zoneId = DTimeZone.toZoneId(input.getController().getTimeZone());
+		sessionId = input.getController().getName() +  " _" + DunkTime.format(LocalDateTime.now(zoneId),DunkTime.YYYY_MM_DD_HH_MM_SS);
+		logger.info(MarkerFactory.getMarker(sessionId), "Starting Session");
 		List<List<TradeTickerSpec>> nodeTickers = StreamSessionHelper.nodeTickers(input.getWorkerNodes().size(), input.getTickers());
 		int nodeIndex = 0;
 		extensionTypes = sessionService.createExtensions();
@@ -76,21 +101,61 @@ public class StreamSessionImpl implements StreamSession {
 			StreamSessionNodeImpl sessionNode = new StreamSessionNodeImpl();
 			ac.getAutowireCapableBeanFactory().autowireBean(sessionNode);
 			callbackCountDown.incrementAndGet();
+			logger.info(MarkerFactory.getMarker(sessionId), "Starting session node on worker " + workerNode.getId());
 			sessionNode.startNode(nodeInput);
 			nodes.add(sessionNode);
 		}
-	}
-
-	@Override
-	public void stopSession() throws StreamSessionException {
-		// TODO Auto-generated method stub
+		StreamSessionStart start = new StreamSessionStart();
+		try {
+			start.setSpec(StreamSessionSpecBuilder.build(this,sessionId));
+			try {
+				
+				cluster.pojoEvent(start);
+				logger.info(MarkerFactory.getMarker(sessionId), "Published Stream Session Start Message");
+			} catch (Exception e) {
+				logger.error("Exception sending session start message " + e.toString());
+			}
+		} catch (Exception e) {
+			logger.error("Exception building session spec " + e.toString());
+			logger.error("No start session getting sent to cluster");
+		}
+		
+		
 		
 	}
 
 	@Override
+	public void stopSession() throws StreamSessionException {
+		StopMonitor monitor = new StopMonitor();
+		monitor.start();
+		logger.info(MarkerFactory.getMarker(getSessionId()), "Stopping Session");
+		StreamSessionStop start = new StreamSessionStop();
+		try {
+			start.setSpec(StreamSessionSpecBuilder.build(this,sessionId));
+			try {
+				cluster.pojoEvent(start);
+				logger.info(MarkerFactory.getMarker(sessionId), "Published Stream Session Stop Message");
+			} catch (Exception e) {
+				logger.error("Exception sending stream session stop message " + e.toString());
+			}
+		} catch (Exception e) {
+			logger.error("Exception building session spec " + e.toString());
+			logger.error("No start session getting sent to cluster");
+		}
+		for (StreamSessionNode node : nodes) {
+			logger.info(MarkerFactory.getMarker(getSessionId()), "Stopping Session node " + node.getNodeId());
+			node.stopNode();
+		}
+	}
+
+	@Override
 	public StreamSessionStatus getStatus() {
-		// TODO Auto-generated method stub
-		return null;
+		status.getNodes().clear();
+		for (StreamSessionNode node : nodes) {
+			status.getNodes().add(node.getStatus());
+			
+		}
+		return status;
 	}
 
 	
@@ -107,51 +172,35 @@ public class StreamSessionImpl implements StreamSession {
 
 	@Override
 	public String getSessionId() {
-		// TODO Auto-generated method stub
-		return null;
+		return sessionId;
 	}
 
 	@Override
 	public List<StreamSessionExtension> getExtensions() {
-		// TODO Auto-generated method stub
-		return null;
+		return extensionTypes;
 	}
 
 	@Override
 	public DEventNode getEventNode() {
-		// TODO Auto-generated method stub
-		return null;
+		return eventNode;
 	}
 
 	@Override
 	public Long getSessionEntityId() {
-		// TODO Auto-generated method stub
-		return null;
+		return sessionEntity.getId();
 	}
 
 	@Override
 	public XScriptProject getScriptProject() {
-		// TODO Auto-generated method stub
-		return null;
+		return input.getController().getScriptProject();
 	}
 
 	@Override
 	public StreamSessionDO getEntity() {
-		// TODO Auto-generated method stub
-		return null;
+		return sessionEntity;
 	}
 
-	@Override
-	public Map<String, String> getProperties() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public void setProperty(String name, String value) {
-		// TODO Auto-generated method stub
-		
-	}
+	
 
 	@Override
 	public List<TradeTickerSpec> getTickers() {
@@ -199,6 +248,7 @@ public class StreamSessionImpl implements StreamSession {
 
 		@Override
 		public void nodeStarted(StreamSessionNode node) {
+			logger.info(MarkerFactory.getMarker(getSessionId()), "Stream Session Node " + node.getNodeId() + "Started callback");
 			int count = callbackCountDown.incrementAndGet();
 			if(count == nodes.size()) { 
 				if(status.getProblems().size() == 0) { 
@@ -212,6 +262,9 @@ public class StreamSessionImpl implements StreamSession {
 
 		@Override
 		public void nodeStartException(StreamSessionNode node) {
+			logger.warn(MarkerFactory.getMarker(getSessionId()), "Session Node {} Failed To Sstart {} ",node.getNode(), node.getEventNode());
+			nodeStartFailures.incrementAndGet();
+			sessionEntity.setNodeStartFailures(sessionEntity.getNodeStartFailures() + 1);;
 			sessionEntity.setProblemCount(sessionEntity.getProblemCount() + 1);
 			status.getProblems().add("Node " + node.getNodeId() + " Start Exception " + node.getStartError());
 			StreamSessionProblemDO probEnt = new StreamSessionProblemDO();
@@ -221,7 +274,14 @@ public class StreamSessionImpl implements StreamSession {
 			sessionEntity.setState(StreamSessionState.RunningErrors);
 			int count = callbackCountDown.incrementAndGet();
 			if(count == nodes.size()) { 
+				
 				if(status.getProblems().size() == 0) { 
+					logger.warn(MarkerFactory.getMarker(getSessionId()), "Started Session with {} node start exceptions", nodeStartFailures.get());
+					sessionEntity.setState(StreamSessionState.RunningErrors);
+					sessionEntity.setStartDateTime(LocalDateTime.now(DTimeZone.toZoneId(input.getController().getTimeZone())));
+					saveSessionEntity();
+				} else { 
+					logger.info(MarkerFactory.getMarker(getSessionId()), "Started Session with no node failures ");
 					sessionEntity.setState(StreamSessionState.RunningErrors);
 					sessionEntity.setStartDateTime(LocalDateTime.now(DTimeZone.toZoneId(input.getController().getTimeZone())));
 					saveSessionEntity();
@@ -232,11 +292,14 @@ public class StreamSessionImpl implements StreamSession {
 
 		@Override
 		public void nodeStopped(StreamSessionNode node) {
+			logger.info(MarkerFactory.getMarker(getSessionId()), "Session Node P{ top Callback", node.getNodeId());
 			int count = stopCountDown.incrementAndGet();
 			if(count == nodes.size()) { 
 				if(status.getProblems().size() > 0) { 
 					status.setState(StreamSessionState.CompletedErrors);
+					logger.info(MarkerFactory.getMarker(getSessionId()), "Stopped Session Completed with errors");
 				} else { 
+					logger.info(MarkerFactory.getMarker(getSessionId())," Stopped Session with no errors ");
 					status.setState(StreamSessionState.Completed);
 				}
 				sessionEntity.setStopDateTime(LocalDateTime.now(DTimeZone.toZoneId(input.getController().getTimeZone())));
@@ -246,7 +309,32 @@ public class StreamSessionImpl implements StreamSession {
 		} 
 		
 		
+		
 	}
+	
+	private class StopMonitor extends Thread { 
+		
+		public void run( ) { 
+			while(!interrupted()) {
+				int count = 9;
+				try {
+					Thread.sleep(1000);
+					if(status.getState() == StreamSessionState.Completed || status.getState() ==  StreamSessionState.CompletedErrors) { 
+						logger.info(MarkerFactory.getMarker(getName()),"Sesssion Stopped in " + count + "seconds");
+						return;
+					}
+					count++;
+					if(count > 30) { 
+						logger.warn(MarkerFactory.getMarker(getSessionId()), "not stopped after 30 seconds:");
+						return;
+					}
+				} catch (Exception e) {
+					// TODO: handle exception
+				}
+			}
+		}
+	}
+	
 
 
 	

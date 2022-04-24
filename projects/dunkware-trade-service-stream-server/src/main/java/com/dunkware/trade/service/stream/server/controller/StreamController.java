@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 import org.slf4j.Logger;
+import org.slf4j.MarkerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 
@@ -97,6 +98,7 @@ public class StreamController {
 	}
 
 	public void start(StreamDO ent) throws Exception {
+		logger.info(":Starting Stream Controller " + ent.getName());
 		// set member variabbes
 		this.ent = ent;
 		stats = new StreamStats();
@@ -131,7 +133,7 @@ public class StreamController {
 
 		if (config.isScheduleStreams()) {
 			schedule = new StreamSchedule();
-
+			logger.info("Starting straem  {} controller scheudle",ent.getName());
 			Runnable runner = new Runnable() {
 
 				@Override
@@ -195,9 +197,11 @@ public class StreamController {
 	}
 
 	public void stopSession() throws StreamSessionException {
+		
 		if(session == null) { 
 			throw new StreamSessionException("Session Not Found");
 		}
+		logger.info(MarkerFactory.getMarker(session.getSessionId()), "Stopping {} Session",getName());
 		session.stopSession();
 
 	}
@@ -225,12 +229,13 @@ public class StreamController {
 				stats.setError("Np Available Worker Nodes");;
 				throw new StreamSessionException("No Available worker nodes to start stream session");
 			}
+			logger.info("Stream {} Scheduler Starting Session",getName());
 			session.startSession(input);
 			// need to call this after start session annoying
 			session.getEventNode().addEventHandler(this);
 		} catch (StreamSessionException e) {
 			stats.setState(StreamState.Exception);
-			stats.setError("Exception starting session " + e.toString());
+			stats.setError("Exception starting Stram " + getName()+  " session " + e.toString());
 			this.exception = e.toString();
 		}
 	}
@@ -271,7 +276,7 @@ public class StreamController {
 		try {
 			gSpec = GStreamHelper.build(this);
 		} catch (Exception e) {
-			logger.error("Exception building g stream spec on spec init " + e.toString());
+			logger.error("Exception building g stream spec on spec update for stream {} " + e.toString(),getName());
 		}
 
 		if (schedule == null) {
@@ -333,6 +338,7 @@ public class StreamController {
 				if (inSession) {
 					inSession = false;
 					try {
+						logger.info("Schedule Stopping Stram {} Session",getName());
 						stopSession();
 					} catch (Exception e) {
 						logger.error("Exception Stopping Session In Schedule Spec Update " + e.toString(), e);
@@ -354,6 +360,7 @@ public class StreamController {
 						if (logger.isInfoEnabled()) {
 							logger.info("Stream Session Schedule Starting Stream {}", ent.getName());
 						}
+						logger.info("Schedule Starting Stream Session for Stream " + getName());
 						startSession();
 						inSession = true;
 					} catch (Exception e) {
@@ -408,6 +415,7 @@ public class StreamController {
 							logger.info("Stream Schedule Stopping Stream {}", ent.getName());
 						}
 						inSession = false;
+						logger.info("Schedule Stopping Stream {} Session", getName());
 						stopSession();
 					} catch (Exception e) {
 						logger.error("Stream Schedule Stopping {} Exception {}", ent.getName(), e.toString(), e);

@@ -2,10 +2,13 @@ package com.dunkware.trade.service.data.service.stream;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.slf4j.MarkerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 
 import com.dunkware.common.util.dtime.DTimeZone;
+import com.dunkware.net.cluster.node.Cluster;
+import com.dunkware.net.cluster.node.anot.AClusterPojoEventHandler;
 import com.dunkware.trade.service.data.json.enums.DataStreamSessionState;
 import com.dunkware.trade.service.data.service.config.RuntimeConfig;
 import com.dunkware.trade.service.data.service.message.StreamMessageHandler;
@@ -26,6 +29,8 @@ public class DataStream implements StreamMessageHandler {
 	@Autowired
 	private ApplicationContext ac;
 
+	@Autowired
+	private Cluster cluster;
 	
 	@Autowired
 	private StreamMessageService messageService;
@@ -38,11 +43,10 @@ public class DataStream implements StreamMessageHandler {
 	private DataStreamSession session;
 
 	public void start(DataStreamEntity entity) {
+		cluster.addComponent(this);
 		this.streamEntity = entity;
 		messageService.addHandler(this);
-		if(logger.isDebugEnabled())	 { 
-			logger.debug("Started Data Stream " + entity.getName());
-		}
+		logger.info("Started Data Stream " + entity.getName());
 	}
 
 	public DataStreamSession getSession() {
@@ -68,13 +72,13 @@ public class DataStream implements StreamMessageHandler {
 		return streamEntity;
 	}
 
-	@Override
+	@AClusterPojoEventHandler(pojoClass = StreamSessionStart.class)
 	public void sessionStart(final StreamSessionStart start) {
 
 		if (start.getSpec().getStreamIdentifier().equals(getName()) == false) {
 			return;
 		}
-		
+		logger.info(MarkerFactory.getMarker(start.getSpec().getSessionId()),"Recieved Session Start Event ID " + start.getSpec().getSessionId());
 		
 
 		if (!hasSession()) {
@@ -119,11 +123,13 @@ public class DataStream implements StreamMessageHandler {
 
 	}
 
-	@Override
+	@AClusterPojoEventHandler(pojoClass = StreamSessionStop.class)
 	public void sessionStop(StreamSessionStop stop) {
 		if (stop.getSpec().getStreamIdentifier().equals(getName()) == false) {
 			return;
 		}
+		logger.info(MarkerFactory.getMarker(stop.getSpec().getSessionId()),"Recieved Session Stop Event ID " + stop.getSpec().getSessionId());
+		
 	
 		if(session != null) { 
 			if(session.getState() == DataStreamSessionState.Running) { 

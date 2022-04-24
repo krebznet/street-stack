@@ -35,9 +35,5 @@ public interface StreamSession {
 	
 	public StreamSessionDO getEntity();
 	
-	public Map<String,String> getProperties();
-	
-	public void setProperty(String name,String value);
-	
 	public List<TradeTickerSpec> getTickers();
 }

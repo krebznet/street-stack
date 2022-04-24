@@ -199,17 +199,8 @@ public class StreamSessionNodeImpl implements StreamSessionNode {
 		};
 		
 		stopper.start();
-	
-		// stay in exception status after stopped node is called?
-		// no put it to stop
-	
-		
-		//StreamSessionImpl impl = (StreamSessionImpl)getSession();
-		//impl.nodeStopCallback(StreamSessionNodeImpl.this);
-		// callback ? 
 	}
 
-	
 
 	@Override
 	public XStreamBundle getStreamBundle() {

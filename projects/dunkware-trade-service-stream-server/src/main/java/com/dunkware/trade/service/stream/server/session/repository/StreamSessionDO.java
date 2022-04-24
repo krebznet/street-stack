@@ -38,6 +38,7 @@ public class StreamSessionDO {
 	private double versionValue;
 	private String streamName; 
 	private int tickerCount; 
+	private int nodeStartFailures = 0;
 
 	private int problemCount;
 
@@ -174,6 +175,16 @@ public class StreamSessionDO {
 	public void setProblems(List<StreamSessionProblemDO> problems) {
 		this.problems = problems;
 	}
+
+	public int getNodeStartFailures() {
+		return nodeStartFailures;
+	}
+
+	public void setNodeStartFailures(int nodeStartFailures) {
+		this.nodeStartFailures = nodeStartFailures;
+	}
+	
+	
 	
 	
 

@@ -1,6 +1,6 @@
 package com.dunkware.trade.service.data.util.cache.session;
 
-import com.dunkware.common.util.dtime.DTime;
+import java.time.LocalDateTime;
 
 public interface SessionEntityVar {
 
@@ -10,14 +10,20 @@ public interface SessionEntityVar {
 	
 	Object getHigh();
 	
-	DTime getHighTime();
+	LocalDateTime getHighTime();
 	
 	Object getLow();
 	
-	DTime getLowTime();
+	LocalDateTime getLowTime();
 	
 	Object getValue();
 	
 	SessionEntity getEntity();
+	
+	void varUpdate(Object value);
+	
+	public void addListener(SessionEntityVarListener listener);
+	
+	public void removeListener(SessionEntityVarListener listener);
 	
 }

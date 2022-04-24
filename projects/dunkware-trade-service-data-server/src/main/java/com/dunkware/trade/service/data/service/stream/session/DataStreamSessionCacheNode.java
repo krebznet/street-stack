@@ -6,6 +6,6 @@ public interface DataStreamSessionCacheNode {
 	
 	// Going to have a GRPC stream? - not sure 
 	
-	// 
+	// list of tickers; 
 
 }
