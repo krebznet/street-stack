@@ -24,6 +24,7 @@ import com.dunkware.net.proto.cluster.GNodeUpdateResponse;
 import com.dunkware.net.proto.cluster.service.GClustererviceGrpc;
 import com.dunkware.net.proto.cluster.service.GClustererviceGrpc.GClustererviceStub;
 
+import io.grpc.ManagedChannelBuilder;
 import io.grpc.stub.StreamObserver;
 
 public class ClusterNodeServiceImpl implements ClusterNodeService {
@@ -41,39 +42,57 @@ public class ClusterNodeServiceImpl implements ClusterNodeService {
 	
 	public void start(ClusterImpl cluster) { 
 		this.cluster = cluster;
-		try {
-			stub = GClustererviceGrpc.newStub(cluster.getServerChannel());
-			GNodeUpdateRequest request = GNodeUpdateRequest.newBuilder().setNode(cluster.getNodeId()).build();
+		Thread runner = new Thread() { 
 			
-			StreamObserver<GNodeUpdateResponse> response = new StreamObserver<GNodeUpdateResponse>() {
-
-				@Override
-				public void onNext(GNodeUpdateResponse value) {
-					responseQueue.add(value);
-				}
-
-				@Override
-				public void onError(Throwable t) {
-					logger.error("Error returned on Node Update Request " + t.getMessage());
-				}
-
-				@Override
-				public void onCompleted() {
-					// TODO Auto-generated method stub
+			public void run() { 
+				try {
+					Thread.sleep(5000);
 					
+				} catch (Exception e) {
+					// TODO: handle exception
 				}
-			
-			
-			};
-			
-			stub.nodeUpdateStream(request, response);
-			updateHandler = new NodeUpdaterHandler();
-			updateHandler.start();
-			
-		} catch (Exception e) {
-			logger.error(MarkerFactory.getMarker("Crash"),"Exception Start Cluster Node Service GRPC Update Stream Request " + e.toString());
-			System.exit(-1);
-		}
+				try {
+					stub = GClustererviceGrpc.newStub(ManagedChannelBuilder.forTarget(cluster.getConfig().getClusterGrpc()).usePlaintext().build());
+					GNodeUpdateRequest request = GNodeUpdateRequest.newBuilder().setNode(cluster.getNodeId()).build();
+					
+					StreamObserver<GNodeUpdateResponse> response = new StreamObserver<GNodeUpdateResponse>() {
+
+						@Override
+						public void onNext(GNodeUpdateResponse value) {
+							if(logger.isDebugEnabled()) { 
+								logger.debug(cluster.getNodeId() + " received node update response");
+							}
+							responseQueue.add(value);
+						}
+
+						@Override
+						public void onError(Throwable t) {
+							logger.error("Error returned on Node Update Request " + t.getMessage(),t);
+							t.printStackTrace();
+						}
+
+						@Override
+						public void onCompleted() {
+							// TODO Auto-generated method stub
+							
+						}
+					
+					
+					};
+					
+					stub.nodeUpdateStream(request, response);
+					updateHandler = new NodeUpdaterHandler();
+					updateHandler.start();
+					
+				} catch (Exception e) {
+					logger.error(MarkerFactory.getMarker("Crash"),"Exception Start Cluster Node Service GRPC Update Stream Request " + e.toString());
+					System.exit(-1);
+				}
+			}
+		};
+		runner.start();
+		
+	
 	}
 
 	@Override
@@ -125,6 +144,9 @@ public class ClusterNodeServiceImpl implements ClusterNodeService {
 				GNodeUpdateResponse response = null;
 				try {
 					response = responseQueue.take();
+					if(logger.isTraceEnabled()) { 
+						logger.trace("Handling {} Node Updates on Node " + cluster.getNodeId(), response.getUpdatesList().size());
+					}
 				} catch (Exception e) {
 					logger.error("Exception taking GNodeUpdateResponse from queue " + e.toString());
 					continue;
