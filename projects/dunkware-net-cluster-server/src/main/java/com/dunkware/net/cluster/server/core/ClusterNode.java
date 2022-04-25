@@ -3,7 +3,6 @@ package com.dunkware.net.cluster.server.core;
 import com.dunkware.net.cluster.json.node.ClusterNodeState;
 import com.dunkware.net.cluster.json.node.ClusterNodeStats;
 import com.dunkware.net.cluster.json.node.ClusterNodeUpdate;
-import com.dunkware.net.proto.cluster.GNodeStats;
 
 import io.grpc.ConnectivityState;
 import io.grpc.ManagedChannel;
@@ -20,6 +19,9 @@ public class ClusterNode {
 	private ManagedChannel nodeChannel;
 	
 	public void start(ClusterNodeStats stats) { 
+		this.lastStats = stats;
+		this.id = stats.getId();
+		this.nodeState = ClusterNodeState.Available;
 		nodeChannel = ManagedChannelBuilder.forTarget(stats.getGrpcEndpoint()).usePlaintext().build();
 		ConnectivityState channelState = nodeChannel.getState(true);
 		if(channelState == ConnectivityState.TRANSIENT_FAILURE) { 
@@ -41,10 +43,24 @@ public class ClusterNode {
 		}
 	}
 	
+	public String getId() { 
+		return id;
+	}
+	
+	public ClusterNodeStats getStats() { 
+		return lastStats;
+	}
+	
+	public ClusterNodeState getState() { 
+		return nodeState;
+	}
+	
+	
 	public void updateNodeState(ClusterNodeStats stats) { 
 		// here we should look at like pending task
 		// memroy ussage for now return available;
 		nodeState = ClusterNodeState.Available;
+		lastStats = stats;
 	}
 	
 	public ClusterNodeUpdate createUpdate() { 

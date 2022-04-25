@@ -1,6 +1,7 @@
 package com.dunkware.net.cluster.server.core;
 
 import java.time.LocalDateTime;
+import java.util.Collection;
 import java.util.Map;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.ConcurrentHashMap;
@@ -59,8 +60,10 @@ public class ClusterNodeService implements DKafkaByteHandler2  {
 		statsProcessor = new StatProcessor();
 		statsProcessor.start();
 		
-		
-		
+	}
+	
+	public Collection<ClusterNode> getNodes() { 
+		return nodes.values();
 	}
 	
 	
@@ -102,8 +105,45 @@ public class ClusterNodeService implements DKafkaByteHandler2  {
 				
 			}
 			
-			
 		}
+		
+		
+		
+	}
+	
+	public ClusterNode getNode(String id) throws Exception {
+		ClusterNode node = nodes.get(id);
+		if(node == null) { 
+			int count = 0;
+			while(node == null) { 
+				try {
+					Thread.sleep(250);
+					node = nodes.get(id);
+					if(node != null) { 
+						break;
+					}
+					count++;
+					if(count > 12) { 
+						throw new Exception("Node " + id + " not found after waiting 3 seconds");
+					}
+				} catch (Exception e) {
+					// TODO: handle exception
+				}
+			}
+			throw new Exception("Node " + id + " not found");
+		}
+		return node;
+		
+	}
+	
+	private class NoeStatsStreamPublisher extends Thread { 
+		
+		public void run() { 
+			while(!interrupted()) { 
+				
+			}
+		}
+		
 	}
 	
 	

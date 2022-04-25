@@ -37,4 +37,12 @@ public class ClusterService {
 		logger.info(Markers.serviceStart(), "Started Cluster Server Service");
 		
 	}
+	
+	public ClusterNodeService getNodeService() { 
+		return nodeManger;
+	}
+	
+	public ClusterEventManager getEventManager() { 
+		return eventManager;
+	}
 }
