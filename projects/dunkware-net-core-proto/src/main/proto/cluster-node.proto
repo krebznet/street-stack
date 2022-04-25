@@ -12,7 +12,6 @@ import "google/protobuf/timestamp.proto";
 import "cluster.proto";
 
 service GClusterNodeService  {
-    rpc getStats(stream dunkware.cluster.GNodeStatsRequest) returns (stream dunkware.cluster.GNodeStatsResponse) {}
-	
+    
  }
 
