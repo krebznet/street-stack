@@ -135,9 +135,9 @@ public class ATProviderSession extends ATCallback implements ATLoginResponseCall
 			break;
 		}
 		if(strStatusType.length() == 0) { 
-			logger.error("Amiga Status Change No Code in Switch  " +  type.m_atSessionStatusType);
+			logger.error("Status Change No Code in Switch  " +  type.m_atSessionStatusType);
 		} else { 
-			logger.error("Amiga Status Change Code " + strStatusType);
+			logger.info("Status Change Code " + strStatusType);
 		}
 		
 	
