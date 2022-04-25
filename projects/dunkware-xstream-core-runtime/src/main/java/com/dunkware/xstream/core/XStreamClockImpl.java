@@ -73,9 +73,10 @@ public class XStreamClockImpl implements XStreamClock {
 		if(logger.isTraceEnabled()) { 
 			logger.trace("Time Set {}",time.getHour() + ":" + time.getMinute() + ":" + time.getSecond());
 		}
+		this.time = time; 
 		LocalDateTime dt = getLocalDateTime();
 		stream.getExecutor().execute(new ListenerRunnable(dt));
-		this.time = time; 
+		
 		for (ScheduledRunnable scheduled : scheduledRunnables.values()) {
 			scheduled.timeUpdate();
 		}
