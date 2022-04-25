@@ -11,4 +11,12 @@ import "google/protobuf/timestamp.proto";
 
 import "cluster.proto";
 
+service GClusterervice  {
+    rpc nodeUpdateStream( dunkware.cluster.GNodeUpdateRequest) returns (stream dunkware.cluster.GNodeUpdateResponse) {}
+	
+	
+	
+ }
+
+
 
