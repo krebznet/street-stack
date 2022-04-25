@@ -25,9 +25,12 @@ public final class GClusterServiceProto {
     java.lang.String[] descriptorData = {
       "\n\025cluster-service.proto\022\020dunkware.cluste" +
       "r\032\037google/protobuf/timestamp.proto\032\rclus" +
-      "ter.protoB@\n&com.dunkware.net.proto.clus" +
-      "ter.serviceB\024GClusterServiceProtoP\001b\006pro" +
-      "to3"
+      "ter.proto2u\n\016GClusterervice\022c\n\020nodeUpdat" +
+      "eStream\022$.dunkware.cluster.GNodeUpdateRe" +
+      "quest\032%.dunkware.cluster.GNodeUpdateResp" +
+      "onse\"\0000\001B@\n&com.dunkware.net.proto.clust" +
+      "er.serviceB\024GClusterServiceProtoP\001b\006prot" +
+      "o3"
     };
     com.google.protobuf.Descriptors.FileDescriptor.InternalDescriptorAssigner assigner =
         new com.google.protobuf.Descriptors.FileDescriptor.    InternalDescriptorAssigner() {

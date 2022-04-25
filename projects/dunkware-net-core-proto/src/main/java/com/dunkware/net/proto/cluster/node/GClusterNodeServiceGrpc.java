@@ -27,38 +27,6 @@ public final class GClusterNodeServiceGrpc {
   public static final String SERVICE_NAME = "dunkware.cluster.node.GClusterNodeService";
 
   // Static method descriptors that strictly reflect the proto.
-  private static volatile io.grpc.MethodDescriptor<com.dunkware.net.proto.cluster.GNodeStatsRequest,
-      com.dunkware.net.proto.cluster.GNodeStatsResponse> getGetStatsMethod;
-
-  @io.grpc.stub.annotations.RpcMethod(
-      fullMethodName = SERVICE_NAME + '/' + "getStats",
-      requestType = com.dunkware.net.proto.cluster.GNodeStatsRequest.class,
-      responseType = com.dunkware.net.proto.cluster.GNodeStatsResponse.class,
-      methodType = io.grpc.MethodDescriptor.MethodType.BIDI_STREAMING)
-  public static io.grpc.MethodDescriptor<com.dunkware.net.proto.cluster.GNodeStatsRequest,
-      com.dunkware.net.proto.cluster.GNodeStatsResponse> getGetStatsMethod() {
-    io.grpc.MethodDescriptor<com.dunkware.net.proto.cluster.GNodeStatsRequest, com.dunkware.net.proto.cluster.GNodeStatsResponse> getGetStatsMethod;
-    if ((getGetStatsMethod = GClusterNodeServiceGrpc.getGetStatsMethod) == null) {
-      synchronized (GClusterNodeServiceGrpc.class) {
-        if ((getGetStatsMethod = GClusterNodeServiceGrpc.getGetStatsMethod) == null) {
-          GClusterNodeServiceGrpc.getGetStatsMethod = getGetStatsMethod = 
-              io.grpc.MethodDescriptor.<com.dunkware.net.proto.cluster.GNodeStatsRequest, com.dunkware.net.proto.cluster.GNodeStatsResponse>newBuilder()
-              .setType(io.grpc.MethodDescriptor.MethodType.BIDI_STREAMING)
-              .setFullMethodName(generateFullMethodName(
-                  "dunkware.cluster.node.GClusterNodeService", "getStats"))
-              .setSampledToLocalTracing(true)
-              .setRequestMarshaller(io.grpc.protobuf.ProtoUtils.marshaller(
-                  com.dunkware.net.proto.cluster.GNodeStatsRequest.getDefaultInstance()))
-              .setResponseMarshaller(io.grpc.protobuf.ProtoUtils.marshaller(
-                  com.dunkware.net.proto.cluster.GNodeStatsResponse.getDefaultInstance()))
-                  .setSchemaDescriptor(new GClusterNodeServiceMethodDescriptorSupplier("getStats"))
-                  .build();
-          }
-        }
-     }
-     return getGetStatsMethod;
-  }
-
   /**
    * Creates a new async stub that supports all call types for the service
    */
@@ -86,22 +54,8 @@ public final class GClusterNodeServiceGrpc {
    */
   public static abstract class GClusterNodeServiceImplBase implements io.grpc.BindableService {
 
-    /**
-     */
-    public io.grpc.stub.StreamObserver<com.dunkware.net.proto.cluster.GNodeStatsRequest> getStats(
-        io.grpc.stub.StreamObserver<com.dunkware.net.proto.cluster.GNodeStatsResponse> responseObserver) {
-      return asyncUnimplementedStreamingCall(getGetStatsMethod(), responseObserver);
-    }
-
     @java.lang.Override public final io.grpc.ServerServiceDefinition bindService() {
       return io.grpc.ServerServiceDefinition.builder(getServiceDescriptor())
-          .addMethod(
-            getGetStatsMethod(),
-            asyncBidiStreamingCall(
-              new MethodHandlers<
-                com.dunkware.net.proto.cluster.GNodeStatsRequest,
-                com.dunkware.net.proto.cluster.GNodeStatsResponse>(
-                  this, METHODID_GET_STATS)))
           .build();
     }
   }
@@ -122,14 +76,6 @@ public final class GClusterNodeServiceGrpc {
     protected GClusterNodeServiceStub build(io.grpc.Channel channel,
         io.grpc.CallOptions callOptions) {
       return new GClusterNodeServiceStub(channel, callOptions);
-    }
-
-    /**
-     */
-    public io.grpc.stub.StreamObserver<com.dunkware.net.proto.cluster.GNodeStatsRequest> getStats(
-        io.grpc.stub.StreamObserver<com.dunkware.net.proto.cluster.GNodeStatsResponse> responseObserver) {
-      return asyncBidiStreamingCall(
-          getChannel().newCall(getGetStatsMethod(), getCallOptions()), responseObserver);
     }
   }
 
@@ -171,7 +117,6 @@ public final class GClusterNodeServiceGrpc {
     }
   }
 
-  private static final int METHODID_GET_STATS = 0;
 
   private static final class MethodHandlers<Req, Resp> implements
       io.grpc.stub.ServerCalls.UnaryMethod<Req, Resp>,
@@ -200,9 +145,6 @@ public final class GClusterNodeServiceGrpc {
     public io.grpc.stub.StreamObserver<Req> invoke(
         io.grpc.stub.StreamObserver<Resp> responseObserver) {
       switch (methodId) {
-        case METHODID_GET_STATS:
-          return (io.grpc.stub.StreamObserver<Req>) serviceImpl.getStats(
-              (io.grpc.stub.StreamObserver<com.dunkware.net.proto.cluster.GNodeStatsResponse>) responseObserver);
         default:
           throw new AssertionError();
       }
@@ -254,7 +196,6 @@ public final class GClusterNodeServiceGrpc {
         if (result == null) {
           serviceDescriptor = result = io.grpc.ServiceDescriptor.newBuilder(SERVICE_NAME)
               .setSchemaDescriptor(new GClusterNodeServiceFileDescriptorSupplier())
-              .addMethod(getGetStatsMethod())
               .build();
         }
       }

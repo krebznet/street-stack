@@ -4,20 +4,19 @@
 package com.dunkware.net.proto.cluster;
 
 /**
- * Protobuf type {@code dunkware.cluster.GNodeStats}
+ * Protobuf type {@code dunkware.cluster.GNodeUpdateRequest}
  */
-public  final class GNodeStats extends
+public  final class GNodeUpdateRequest extends
     com.google.protobuf.GeneratedMessageV3 implements
-    // @@protoc_insertion_point(message_implements:dunkware.cluster.GNodeStats)
-    GNodeStatsOrBuilder {
+    // @@protoc_insertion_point(message_implements:dunkware.cluster.GNodeUpdateRequest)
+    GNodeUpdateRequestOrBuilder {
 private static final long serialVersionUID = 0L;
-  // Use GNodeStats.newBuilder() to construct.
-  private GNodeStats(com.google.protobuf.GeneratedMessageV3.Builder<?> builder) {
+  // Use GNodeUpdateRequest.newBuilder() to construct.
+  private GNodeUpdateRequest(com.google.protobuf.GeneratedMessageV3.Builder<?> builder) {
     super(builder);
   }
-  private GNodeStats() {
+  private GNodeUpdateRequest() {
     node_ = "";
-    json_ = "";
   }
 
   @java.lang.Override
@@ -25,7 +24,7 @@ private static final long serialVersionUID = 0L;
   getUnknownFields() {
     return this.unknownFields;
   }
-  private GNodeStats(
+  private GNodeUpdateRequest(
       com.google.protobuf.CodedInputStream input,
       com.google.protobuf.ExtensionRegistryLite extensionRegistry)
       throws com.google.protobuf.InvalidProtocolBufferException {
@@ -50,12 +49,6 @@ private static final long serialVersionUID = 0L;
             node_ = s;
             break;
           }
-          case 18: {
-            java.lang.String s = input.readStringRequireUtf8();
-
-            json_ = s;
-            break;
-          }
           default: {
             if (!parseUnknownFieldProto3(
                 input, unknownFields, extensionRegistry, tag)) {
@@ -77,15 +70,15 @@ private static final long serialVersionUID = 0L;
   }
   public static final com.google.protobuf.Descriptors.Descriptor
       getDescriptor() {
-    return com.dunkware.net.proto.cluster.GClusterProto.internal_static_dunkware_cluster_GNodeStats_descriptor;
+    return com.dunkware.net.proto.cluster.GClusterProto.internal_static_dunkware_cluster_GNodeUpdateRequest_descriptor;
   }
 
   @java.lang.Override
   protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
       internalGetFieldAccessorTable() {
-    return com.dunkware.net.proto.cluster.GClusterProto.internal_static_dunkware_cluster_GNodeStats_fieldAccessorTable
+    return com.dunkware.net.proto.cluster.GClusterProto.internal_static_dunkware_cluster_GNodeUpdateRequest_fieldAccessorTable
         .ensureFieldAccessorsInitialized(
-            com.dunkware.net.proto.cluster.GNodeStats.class, com.dunkware.net.proto.cluster.GNodeStats.Builder.class);
+            com.dunkware.net.proto.cluster.GNodeUpdateRequest.class, com.dunkware.net.proto.cluster.GNodeUpdateRequest.Builder.class);
   }
 
   public static final int NODE_FIELD_NUMBER = 1;
@@ -122,40 +115,6 @@ private static final long serialVersionUID = 0L;
     }
   }
 
-  public static final int JSON_FIELD_NUMBER = 2;
-  private volatile java.lang.Object json_;
-  /**
-   * <code>string json = 2;</code>
-   */
-  public java.lang.String getJson() {
-    java.lang.Object ref = json_;
-    if (ref instanceof java.lang.String) {
-      return (java.lang.String) ref;
-    } else {
-      com.google.protobuf.ByteString bs = 
-          (com.google.protobuf.ByteString) ref;
-      java.lang.String s = bs.toStringUtf8();
-      json_ = s;
-      return s;
-    }
-  }
-  /**
-   * <code>string json = 2;</code>
-   */
-  public com.google.protobuf.ByteString
-      getJsonBytes() {
-    java.lang.Object ref = json_;
-    if (ref instanceof java.lang.String) {
-      com.google.protobuf.ByteString b = 
-          com.google.protobuf.ByteString.copyFromUtf8(
-              (java.lang.String) ref);
-      json_ = b;
-      return b;
-    } else {
-      return (com.google.protobuf.ByteString) ref;
-    }
-  }
-
   private byte memoizedIsInitialized = -1;
   @java.lang.Override
   public final boolean isInitialized() {
@@ -173,9 +132,6 @@ private static final long serialVersionUID = 0L;
     if (!getNodeBytes().isEmpty()) {
       com.google.protobuf.GeneratedMessageV3.writeString(output, 1, node_);
     }
-    if (!getJsonBytes().isEmpty()) {
-      com.google.protobuf.GeneratedMessageV3.writeString(output, 2, json_);
-    }
     unknownFields.writeTo(output);
   }
 
@@ -188,9 +144,6 @@ private static final long serialVersionUID = 0L;
     if (!getNodeBytes().isEmpty()) {
       size += com.google.protobuf.GeneratedMessageV3.computeStringSize(1, node_);
     }
-    if (!getJsonBytes().isEmpty()) {
-      size += com.google.protobuf.GeneratedMessageV3.computeStringSize(2, json_);
-    }
     size += unknownFields.getSerializedSize();
     memoizedSize = size;
     return size;
@@ -201,16 +154,14 @@ private static final long serialVersionUID = 0L;
     if (obj == this) {
      return true;
     }
-    if (!(obj instanceof com.dunkware.net.proto.cluster.GNodeStats)) {
+    if (!(obj instanceof com.dunkware.net.proto.cluster.GNodeUpdateRequest)) {
       return super.equals(obj);
     }
-    com.dunkware.net.proto.cluster.GNodeStats other = (com.dunkware.net.proto.cluster.GNodeStats) obj;
+    com.dunkware.net.proto.cluster.GNodeUpdateRequest other = (com.dunkware.net.proto.cluster.GNodeUpdateRequest) obj;
 
     boolean result = true;
     result = result && getNode()
         .equals(other.getNode());
-    result = result && getJson()
-        .equals(other.getJson());
     result = result && unknownFields.equals(other.unknownFields);
     return result;
   }
@@ -224,76 +175,74 @@ private static final long serialVersionUID = 0L;
     hash = (19 * hash) + getDescriptor().hashCode();
     hash = (37 * hash) + NODE_FIELD_NUMBER;
     hash = (53 * hash) + getNode().hashCode();
-    hash = (37 * hash) + JSON_FIELD_NUMBER;
-    hash = (53 * hash) + getJson().hashCode();
     hash = (29 * hash) + unknownFields.hashCode();
     memoizedHashCode = hash;
     return hash;
   }
 
-  public static com.dunkware.net.proto.cluster.GNodeStats parseFrom(
+  public static com.dunkware.net.proto.cluster.GNodeUpdateRequest parseFrom(
       java.nio.ByteBuffer data)
       throws com.google.protobuf.InvalidProtocolBufferException {
     return PARSER.parseFrom(data);
   }
-  public static com.dunkware.net.proto.cluster.GNodeStats parseFrom(
+  public static com.dunkware.net.proto.cluster.GNodeUpdateRequest parseFrom(
       java.nio.ByteBuffer data,
       com.google.protobuf.ExtensionRegistryLite extensionRegistry)
       throws com.google.protobuf.InvalidProtocolBufferException {
     return PARSER.parseFrom(data, extensionRegistry);
   }
-  public static com.dunkware.net.proto.cluster.GNodeStats parseFrom(
+  public static com.dunkware.net.proto.cluster.GNodeUpdateRequest parseFrom(
       com.google.protobuf.ByteString data)
       throws com.google.protobuf.InvalidProtocolBufferException {
     return PARSER.parseFrom(data);
   }
-  public static com.dunkware.net.proto.cluster.GNodeStats parseFrom(
+  public static com.dunkware.net.proto.cluster.GNodeUpdateRequest parseFrom(
       com.google.protobuf.ByteString data,
       com.google.protobuf.ExtensionRegistryLite extensionRegistry)
       throws com.google.protobuf.InvalidProtocolBufferException {
     return PARSER.parseFrom(data, extensionRegistry);
   }
-  public static com.dunkware.net.proto.cluster.GNodeStats parseFrom(byte[] data)
+  public static com.dunkware.net.proto.cluster.GNodeUpdateRequest parseFrom(byte[] data)
       throws com.google.protobuf.InvalidProtocolBufferException {
     return PARSER.parseFrom(data);
   }
-  public static com.dunkware.net.proto.cluster.GNodeStats parseFrom(
+  public static com.dunkware.net.proto.cluster.GNodeUpdateRequest parseFrom(
       byte[] data,
       com.google.protobuf.ExtensionRegistryLite extensionRegistry)
       throws com.google.protobuf.InvalidProtocolBufferException {
     return PARSER.parseFrom(data, extensionRegistry);
   }
-  public static com.dunkware.net.proto.cluster.GNodeStats parseFrom(java.io.InputStream input)
+  public static com.dunkware.net.proto.cluster.GNodeUpdateRequest parseFrom(java.io.InputStream input)
       throws java.io.IOException {
     return com.google.protobuf.GeneratedMessageV3
         .parseWithIOException(PARSER, input);
   }
-  public static com.dunkware.net.proto.cluster.GNodeStats parseFrom(
+  public static com.dunkware.net.proto.cluster.GNodeUpdateRequest parseFrom(
       java.io.InputStream input,
       com.google.protobuf.ExtensionRegistryLite extensionRegistry)
       throws java.io.IOException {
     return com.google.protobuf.GeneratedMessageV3
         .parseWithIOException(PARSER, input, extensionRegistry);
   }
-  public static com.dunkware.net.proto.cluster.GNodeStats parseDelimitedFrom(java.io.InputStream input)
+  public static com.dunkware.net.proto.cluster.GNodeUpdateRequest parseDelimitedFrom(java.io.InputStream input)
       throws java.io.IOException {
     return com.google.protobuf.GeneratedMessageV3
         .parseDelimitedWithIOException(PARSER, input);
   }
-  public static com.dunkware.net.proto.cluster.GNodeStats parseDelimitedFrom(
+  public static com.dunkware.net.proto.cluster.GNodeUpdateRequest parseDelimitedFrom(
       java.io.InputStream input,
       com.google.protobuf.ExtensionRegistryLite extensionRegistry)
       throws java.io.IOException {
     return com.google.protobuf.GeneratedMessageV3
         .parseDelimitedWithIOException(PARSER, input, extensionRegistry);
   }
-  public static com.dunkware.net.proto.cluster.GNodeStats parseFrom(
+  public static com.dunkware.net.proto.cluster.GNodeUpdateRequest parseFrom(
       com.google.protobuf.CodedInputStream input)
       throws java.io.IOException {
     return com.google.protobuf.GeneratedMessageV3
         .parseWithIOException(PARSER, input);
   }
-  public static com.dunkware.net.proto.cluster.GNodeStats parseFrom(
+  public static com.dunkware.net.proto.cluster.GNodeUpdateRequest parseFrom(
       com.google.protobuf.CodedInputStream input,
       com.google.protobuf.ExtensionRegistryLite extensionRegistry)
       throws java.io.IOException {
@@ -306,7 +255,7 @@ private static final long serialVersionUID = 0L;
   public static Builder newBuilder() {
     return DEFAULT_INSTANCE.toBuilder();
   }
-  public static Builder newBuilder(com.dunkware.net.proto.cluster.GNodeStats prototype) {
+  public static Builder newBuilder(com.dunkware.net.proto.cluster.GNodeUpdateRequest prototype) {
     return DEFAULT_INSTANCE.toBuilder().mergeFrom(prototype);
   }
   @java.lang.Override
@@ -322,26 +271,26 @@ private static final long serialVersionUID = 0L;
     return builder;
   }
   /**
-   * Protobuf type {@code dunkware.cluster.GNodeStats}
+   * Protobuf type {@code dunkware.cluster.GNodeUpdateRequest}
    */
   public static final class Builder extends
       com.google.protobuf.GeneratedMessageV3.Builder<Builder> implements
-      // @@protoc_insertion_point(builder_implements:dunkware.cluster.GNodeStats)
-      com.dunkware.net.proto.cluster.GNodeStatsOrBuilder {
+      // @@protoc_insertion_point(builder_implements:dunkware.cluster.GNodeUpdateRequest)
+      com.dunkware.net.proto.cluster.GNodeUpdateRequestOrBuilder {
     public static final com.google.protobuf.Descriptors.Descriptor
         getDescriptor() {
-      return com.dunkware.net.proto.cluster.GClusterProto.internal_static_dunkware_cluster_GNodeStats_descriptor;
+      return com.dunkware.net.proto.cluster.GClusterProto.internal_static_dunkware_cluster_GNodeUpdateRequest_descriptor;
     }
 
     @java.lang.Override
     protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
         internalGetFieldAccessorTable() {
-      return com.dunkware.net.proto.cluster.GClusterProto.internal_static_dunkware_cluster_GNodeStats_fieldAccessorTable
+      return com.dunkware.net.proto.cluster.GClusterProto.internal_static_dunkware_cluster_GNodeUpdateRequest_fieldAccessorTable
           .ensureFieldAccessorsInitialized(
-              com.dunkware.net.proto.cluster.GNodeStats.class, com.dunkware.net.proto.cluster.GNodeStats.Builder.class);
+              com.dunkware.net.proto.cluster.GNodeUpdateRequest.class, com.dunkware.net.proto.cluster.GNodeUpdateRequest.Builder.class);
     }
 
-    // Construct using com.dunkware.net.proto.cluster.GNodeStats.newBuilder()
+    // Construct using com.dunkware.net.proto.cluster.GNodeUpdateRequest.newBuilder()
     private Builder() {
       maybeForceBuilderInitialization();
     }
@@ -361,25 +310,23 @@ private static final long serialVersionUID = 0L;
       super.clear();
       node_ = "";
 
-      json_ = "";
-
       return this;
     }
 
     @java.lang.Override
     public com.google.protobuf.Descriptors.Descriptor
         getDescriptorForType() {
-      return com.dunkware.net.proto.cluster.GClusterProto.internal_static_dunkware_cluster_GNodeStats_descriptor;
+      return com.dunkware.net.proto.cluster.GClusterProto.internal_static_dunkware_cluster_GNodeUpdateRequest_descriptor;
     }
 
     @java.lang.Override
-    public com.dunkware.net.proto.cluster.GNodeStats getDefaultInstanceForType() {
-      return com.dunkware.net.proto.cluster.GNodeStats.getDefaultInstance();
+    public com.dunkware.net.proto.cluster.GNodeUpdateRequest getDefaultInstanceForType() {
+      return com.dunkware.net.proto.cluster.GNodeUpdateRequest.getDefaultInstance();
     }
 
     @java.lang.Override
-    public com.dunkware.net.proto.cluster.GNodeStats build() {
-      com.dunkware.net.proto.cluster.GNodeStats result = buildPartial();
+    public com.dunkware.net.proto.cluster.GNodeUpdateRequest build() {
+      com.dunkware.net.proto.cluster.GNodeUpdateRequest result = buildPartial();
       if (!result.isInitialized()) {
         throw newUninitializedMessageException(result);
       }
@@ -387,10 +334,9 @@ private static final long serialVersionUID = 0L;
     }
 
     @java.lang.Override
-    public com.dunkware.net.proto.cluster.GNodeStats buildPartial() {
-      com.dunkware.net.proto.cluster.GNodeStats result = new com.dunkware.net.proto.cluster.GNodeStats(this);
+    public com.dunkware.net.proto.cluster.GNodeUpdateRequest buildPartial() {
+      com.dunkware.net.proto.cluster.GNodeUpdateRequest result = new com.dunkware.net.proto.cluster.GNodeUpdateRequest(this);
       result.node_ = node_;
-      result.json_ = json_;
       onBuilt();
       return result;
     }
@@ -429,22 +375,18 @@ private static final long serialVersionUID = 0L;
     }
     @java.lang.Override
     public Builder mergeFrom(com.google.protobuf.Message other) {
-      if (other instanceof com.dunkware.net.proto.cluster.GNodeStats) {
-        return mergeFrom((com.dunkware.net.proto.cluster.GNodeStats)other);
+      if (other instanceof com.dunkware.net.proto.cluster.GNodeUpdateRequest) {
+        return mergeFrom((com.dunkware.net.proto.cluster.GNodeUpdateRequest)other);
       } else {
         super.mergeFrom(other);
         return this;
       }
     }
 
-    public Builder mergeFrom(com.dunkware.net.proto.cluster.GNodeStats other) {
-      if (other == com.dunkware.net.proto.cluster.GNodeStats.getDefaultInstance()) return this;
+    public Builder mergeFrom(com.dunkware.net.proto.cluster.GNodeUpdateRequest other) {
+      if (other == com.dunkware.net.proto.cluster.GNodeUpdateRequest.getDefaultInstance()) return this;
       if (!other.getNode().isEmpty()) {
         node_ = other.node_;
-        onChanged();
-      }
-      if (!other.getJson().isEmpty()) {
-        json_ = other.json_;
         onChanged();
       }
       this.mergeUnknownFields(other.unknownFields);
@@ -462,11 +404,11 @@ private static final long serialVersionUID = 0L;
         com.google.protobuf.CodedInputStream input,
         com.google.protobuf.ExtensionRegistryLite extensionRegistry)
         throws java.io.IOException {
-      com.dunkware.net.proto.cluster.GNodeStats parsedMessage = null;
+      com.dunkware.net.proto.cluster.GNodeUpdateRequest parsedMessage = null;
       try {
         parsedMessage = PARSER.parsePartialFrom(input, extensionRegistry);
       } catch (com.google.protobuf.InvalidProtocolBufferException e) {
-        parsedMessage = (com.dunkware.net.proto.cluster.GNodeStats) e.getUnfinishedMessage();
+        parsedMessage = (com.dunkware.net.proto.cluster.GNodeUpdateRequest) e.getUnfinishedMessage();
         throw e.unwrapIOException();
       } finally {
         if (parsedMessage != null) {
@@ -544,75 +486,6 @@ private static final long serialVersionUID = 0L;
       onChanged();
       return this;
     }
-
-    private java.lang.Object json_ = "";
-    /**
-     * <code>string json = 2;</code>
-     */
-    public java.lang.String getJson() {
-      java.lang.Object ref = json_;
-      if (!(ref instanceof java.lang.String)) {
-        com.google.protobuf.ByteString bs =
-            (com.google.protobuf.ByteString) ref;
-        java.lang.String s = bs.toStringUtf8();
-        json_ = s;
-        return s;
-      } else {
-        return (java.lang.String) ref;
-      }
-    }
-    /**
-     * <code>string json = 2;</code>
-     */
-    public com.google.protobuf.ByteString
-        getJsonBytes() {
-      java.lang.Object ref = json_;
-      if (ref instanceof String) {
-        com.google.protobuf.ByteString b = 
-            com.google.protobuf.ByteString.copyFromUtf8(
-                (java.lang.String) ref);
-        json_ = b;
-        return b;
-      } else {
-        return (com.google.protobuf.ByteString) ref;
-      }
-    }
-    /**
-     * <code>string json = 2;</code>
-     */
-    public Builder setJson(
-        java.lang.String value) {
-      if (value == null) {
-    throw new NullPointerException();
-  }
-  
-      json_ = value;
-      onChanged();
-      return this;
-    }
-    /**
-     * <code>string json = 2;</code>
-     */
-    public Builder clearJson() {
-      
-      json_ = getDefaultInstance().getJson();
-      onChanged();
-      return this;
-    }
-    /**
-     * <code>string json = 2;</code>
-     */
-    public Builder setJsonBytes(
-        com.google.protobuf.ByteString value) {
-      if (value == null) {
-    throw new NullPointerException();
-  }
-  checkByteStringIsUtf8(value);
-      
-      json_ = value;
-      onChanged();
-      return this;
-    }
     @java.lang.Override
     public final Builder setUnknownFields(
         final com.google.protobuf.UnknownFieldSet unknownFields) {
@@ -626,41 +499,41 @@ private static final long serialVersionUID = 0L;
     }
 
 
-    // @@protoc_insertion_point(builder_scope:dunkware.cluster.GNodeStats)
+    // @@protoc_insertion_point(builder_scope:dunkware.cluster.GNodeUpdateRequest)
   }
 
-  // @@protoc_insertion_point(class_scope:dunkware.cluster.GNodeStats)
-  private static final com.dunkware.net.proto.cluster.GNodeStats DEFAULT_INSTANCE;
+  // @@protoc_insertion_point(class_scope:dunkware.cluster.GNodeUpdateRequest)
+  private static final com.dunkware.net.proto.cluster.GNodeUpdateRequest DEFAULT_INSTANCE;
   static {
-    DEFAULT_INSTANCE = new com.dunkware.net.proto.cluster.GNodeStats();
+    DEFAULT_INSTANCE = new com.dunkware.net.proto.cluster.GNodeUpdateRequest();
   }
 
-  public static com.dunkware.net.proto.cluster.GNodeStats getDefaultInstance() {
+  public static com.dunkware.net.proto.cluster.GNodeUpdateRequest getDefaultInstance() {
     return DEFAULT_INSTANCE;
   }
 
-  private static final com.google.protobuf.Parser<GNodeStats>
-      PARSER = new com.google.protobuf.AbstractParser<GNodeStats>() {
+  private static final com.google.protobuf.Parser<GNodeUpdateRequest>
+      PARSER = new com.google.protobuf.AbstractParser<GNodeUpdateRequest>() {
     @java.lang.Override
-    public GNodeStats parsePartialFrom(
+    public GNodeUpdateRequest parsePartialFrom(
         com.google.protobuf.CodedInputStream input,
         com.google.protobuf.ExtensionRegistryLite extensionRegistry)
         throws com.google.protobuf.InvalidProtocolBufferException {
-      return new GNodeStats(input, extensionRegistry);
+      return new GNodeUpdateRequest(input, extensionRegistry);
     }
   };
 
-  public static com.google.protobuf.Parser<GNodeStats> parser() {
+  public static com.google.protobuf.Parser<GNodeUpdateRequest> parser() {
     return PARSER;
   }
 
   @java.lang.Override
-  public com.google.protobuf.Parser<GNodeStats> getParserForType() {
+  public com.google.protobuf.Parser<GNodeUpdateRequest> getParserForType() {
     return PARSER;
   }
 
   @java.lang.Override
-  public com.dunkware.net.proto.cluster.GNodeStats getDefaultInstanceForType() {
+  public com.dunkware.net.proto.cluster.GNodeUpdateRequest getDefaultInstanceForType() {
     return DEFAULT_INSTANCE;
   }
 

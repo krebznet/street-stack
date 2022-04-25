@@ -3,8 +3,8 @@
 
 package com.dunkware.net.proto.cluster;
 
-public interface GNodeStatsOrBuilder extends
-    // @@protoc_insertion_point(interface_extends:dunkware.cluster.GNodeStats)
+public interface GNodeUpdateOrBuilder extends
+    // @@protoc_insertion_point(interface_extends:dunkware.cluster.GNodeUpdate)
     com.google.protobuf.MessageOrBuilder {
 
   /**
