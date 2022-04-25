@@ -80,7 +80,7 @@ public class FeedStream implements TickHandler {
 		this.brokers = tickService.getKafkaBrokers();
 		DKafkaAdmin admin = DKafkaAdmin.newInstance(tickService.getKafkaBrokers());
 		try {
-			admin.createTopic(kafkaTopic, 1, (short) 2, null);
+			admin.createTopic(kafkaTopic, 1, (short) 1, null);
 			admin.close();
 		} catch (Exception e) {
 			logger.error("Exception Creating Tick Feed Kafka Topic " + e.toString(), e);
