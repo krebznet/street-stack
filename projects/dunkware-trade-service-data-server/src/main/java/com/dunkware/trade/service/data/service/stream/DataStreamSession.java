@@ -10,16 +10,28 @@ import java.util.concurrent.ConcurrentHashMap;
 
 import javax.transaction.Transactional;
 
+import org.apache.kafka.clients.consumer.ConsumerRecord;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 
+import com.dunkware.common.kafka.consumer.DKafkaByteConsumer2;
+import com.dunkware.common.kafka.consumer.DKafkaByteHandler2;
+import com.dunkware.common.spec.kafka.DKafkaByteConsumer2Spec;
+import com.dunkware.common.spec.kafka.DKafkaByteConsumer2Spec.ConsumerType;
+import com.dunkware.common.spec.kafka.DKafkaByteConsumer2Spec.OffsetType;
+import com.dunkware.common.spec.kafka.DKafkaByteConsumer2SpecBuilder;
+import com.dunkware.common.util.dtime.DDateTime;
 import com.dunkware.common.util.dtime.DTimeZone;
+import com.dunkware.common.util.helpers.DProtoHelper;
+import com.dunkware.common.util.uuid.DUUID;
 import com.dunkware.net.proto.stream.GEntitySignal;
 import com.dunkware.net.proto.stream.GEntitySnapshot;
+import com.dunkware.net.proto.stream.GStreamEvent;
 import com.dunkware.trade.service.data.json.enums.DataStreamSessionState;
 import com.dunkware.trade.service.data.json.stream.session.DataStreamSessionStats;
+import com.dunkware.trade.service.data.json.stream.writer.DataStreamSnapshotWriterSessionStats;
 import com.dunkware.trade.service.data.service.config.RuntimeConfig;
 import com.dunkware.trade.service.data.service.repository.DataStreamInstrumentEntity;
 import com.dunkware.trade.service.data.service.repository.DataStreamInstrumentEntityRepo;
@@ -62,6 +74,7 @@ public class DataStreamSession {
 	// Entities 
 	private DataStreamSessionEntity sessionEntity; 
 	
+	private DKafkaByteConsumer2 timeConsumer;
 	
 	private EntityPersister entityPersister;
 
@@ -71,7 +84,8 @@ public class DataStreamSession {
 	
 	private boolean completed = false; 
 	
-	
+	private volatile LocalDateTime sessionTime;
+	private TimeUpdateHandler timeUpdateHandler;
 	
 	public void init() { 
 		
@@ -79,11 +93,20 @@ public class DataStreamSession {
 	
 	@Transactional
 	public void controllerStart(DataStream stream, StreamSessionSpec spec) throws Exception { 
-		
 		this.stream = stream;
 		this.spec = spec; 
 		this.startTime = LocalDateTime.of(LocalDate.now(DTimeZone.toZoneId(spec.getTimeZone())), LocalTime.now(DTimeZone.toZoneId(spec.getTimeZone())));
-		
+		logger.info("Starting Data Stream Session {} Stream {}",spec.getSessionId(),stream.getName());
+		try {
+			DKafkaByteConsumer2Spec consumerSpec = DKafkaByteConsumer2SpecBuilder.newBuilder(ConsumerType.AllPartitions, OffsetType.Latest).setBrokerString(spec.getKafkaBrokers())
+					.addTopic("stream_" + this.stream.getName().toLowerCase() + "_event_time").setClientAndGroup("DataStreamTimeConsumer " + DUUID.randomUUID(4), "DataStremTimeConsimer" + DUUID.randomUUID(4)).build();
+			timeConsumer = DKafkaByteConsumer2.newInstance(consumerSpec);
+			timeConsumer.start();
+			timeUpdateHandler = new TimeUpdateHandler();
+			timeConsumer.addStreamHandler(timeUpdateHandler);
+		} catch (Exception e) {
+			// TODO: handle exception
+		}
 		// okay so we create our new entity
 		sessionEntity = new DataStreamSessionEntity();
 		sessionEntity.setControllerStartTime(startTime);
@@ -103,6 +126,7 @@ public class DataStreamSession {
 			snapshotWriter = new DataStreamSessionSnapshotWriter();
 			ac.getAutowireCapableBeanFactory().autowireBean(snapshotWriter);
 			snapshotWriter.start(this);
+			logger.info("Started Snapshot Writer Session {}", spec.getSessionId());
 		} catch (Exception e) {
 			logger.error(DataMarkers.getServiceMarker(), "Exception starting data stream session snapshot writer " + e.toString());
 			throw e;
@@ -196,8 +220,8 @@ public class DataStreamSession {
 	public void controllerStop() { 
 		logger.info("Controller Stop Method Invoked");
 		sessionEntity.setControllerStopTime(LocalDateTime.now(DTimeZone.toZoneId(spec.getTimeZone())));
-		LocalDateTime now = LocalDateTime.now(DTimeZone.toZoneId(stream.getTimeZone()));
 		sessionEntity.setState(DataStreamSessionState.Persisting);
+		timeConsumer.dispose();
 		saveSession();
 		// who will update session enetity
 	}
@@ -207,7 +231,16 @@ public class DataStreamSession {
 	}
 	
 	public DataStreamSessionStats getStats() { 
-		return new DataStreamSessionStats();
+		DataStreamSessionStats stats = new  DataStreamSessionStats();
+		stats.setIdentifier(spec.getSessionId());
+		stats.setStream(spec.getStreamIdentifier());
+		DataStreamSnapshotWriterSessionStats writerStats = snapshotWriter.getStats();
+		stats.setLastSnapshotWriteTime(writerStats.getLastWriteStreamTime());
+		stats.setSessionTime(DDateTime.from(getSessionTime()));
+		stats.setState(this.sessionEntity.getState());
+		stats.setSignalStats(signalWriter.getStats());
+		stats.setSnapshotStats(writerStats);
+		return stats;
 	}
 	
 	public LocalDateTime getStartDateTime() { 
@@ -261,6 +294,24 @@ public class DataStreamSession {
 			entityPersister.interrupt();
 			saveSession();	
 		}
+		
+	}
+	
+	public LocalDateTime getSessionTime() { 
+		return sessionTime;
+	}
+	
+	private class TimeUpdateHandler implements DKafkaByteHandler2 {
+
+		@Override
+		public void record(ConsumerRecord<String, byte[]> record) {
+			try {
+				GStreamEvent event = GStreamEvent.parseFrom(record.value());
+				sessionTime = DProtoHelper.toLocalDateTime(event.getTimeUpdate().getTime(), stream.getTimeZone());
+			} catch (Exception e) {
+				logger.error("Exception consuming Time update event " + e.toString());
+			}
+		} 
 		
 	}
 	

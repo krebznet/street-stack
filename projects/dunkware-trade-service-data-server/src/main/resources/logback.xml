@@ -47,8 +47,7 @@
 	
 	<logger name="com.dunkware.trade.service.data.service.stream.session.writers.SessionMongoSnapshotWriter" level="DEBUG" additivity="false">
 		<appender-ref ref="CONSOLE" additivity="false" />
-	
-	
+	<appender-ref ref="FLUENT" additivity="false" />
 	</logger>
 	
 	

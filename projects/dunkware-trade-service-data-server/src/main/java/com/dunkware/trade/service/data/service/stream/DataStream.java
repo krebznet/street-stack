@@ -69,13 +69,13 @@ public class DataStream   {
 
 	@AClusterPojoEventHandler(pojoClass = StreamSessionStart.class)
 	public void sessionStart(final StreamSessionStart start) {
-
+		logger.info("Received Stream Session Start {} ", start.getSpec().getStreamIdentifier());
 		if (start.getSpec().getStreamIdentifier().equals(getName()) == false) {
+			logger.info("Stream Session Start did not match session identifier");
 			return;
 		}
 		logger.info(MarkerFactory.getMarker(start.getSpec().getSessionId()),"Recieved Session Start Event ID " + start.getSpec().getSessionId());
 		
-
 		if (!hasSession()) {
 			Thread runner = new Thread() {
 
@@ -83,6 +83,7 @@ public class DataStream   {
 					session = new DataStreamSession();
 					ac.getAutowireCapableBeanFactory().autowireBean(session);
 					try {
+						logger.info("Starting Data Stream Session {} ", start.getSpec().getStreamIdentifier());
 						session.init();
 						session.controllerStart(DataStream.this, start.getSpec());
 					} catch (Exception e) {
