@@ -36,6 +36,7 @@ public class GrpcNodeUpdateStream {
 		try {
 			clusterService.getNodeService().getNode(request.getNode());
 		} catch (Exception e) {
+			logger.error("Exception creating GrpcNodeUpdate Stream " + e.toString());
 			responseObserver.onError(e);
 			return;
 		}
@@ -78,6 +79,9 @@ public class GrpcNodeUpdateStream {
 						logger.error("Exception publishing node stats " + e.toString(),e);
 						continue;
 					}	
+				}
+				if(logger.isTraceEnabled()) { 
+					logger.trace("Publishing Node Stat Count {} to Node {}", updateNodes.size(),request.getNode());
 				}
 				GNodeUpdateResponse resp = builder.build();
 				responseObserver.onNext(resp);
