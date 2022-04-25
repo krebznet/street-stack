@@ -16,6 +16,10 @@ public class DDateTime {
 	public static DDateTime now(DTimeZone timezone) {
 		return new DDateTime(LocalDateTime.now(DTimeZone.toZoneId(timezone)));
 	}
+	
+	public static DDateTime from(LocalDateTime dt) { 
+		return new DDateTime(dt);
+	}
 
 	private volatile LocalDateTime dateTime;
 	
