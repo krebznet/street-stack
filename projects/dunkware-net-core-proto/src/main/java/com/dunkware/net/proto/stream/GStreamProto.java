@@ -20,6 +20,11 @@ public final class GStreamProto {
     com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
       internal_static_dunkware_stream_GStreamEvent_fieldAccessorTable;
   static final com.google.protobuf.Descriptors.Descriptor
+    internal_static_dunkware_stream_GStreamTimeUpdate_descriptor;
+  static final 
+    com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
+      internal_static_dunkware_stream_GStreamTimeUpdate_fieldAccessorTable;
+  static final com.google.protobuf.Descriptors.Descriptor
     internal_static_dunkware_stream_GStreamSessionStop_descriptor;
   static final 
     com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
@@ -119,7 +124,7 @@ public final class GStreamProto {
   static {
     java.lang.String[] descriptorData = {
       "\n\014stream.proto\022\017dunkware.stream\032\ncore.pr" +
-      "oto\032\037google/protobuf/timestamp.proto\"\333\002\n" +
+      "oto\032\037google/protobuf/timestamp.proto\"\225\003\n" +
       "\014GStreamEvent\022\020\n\010streamId\030\001 \001(\t\022\021\n\tsessi" +
       "onId\030\003 \001(\t\022/\n\004type\030\004 \001(\0162!.dunkware.stre" +
       "am.GStreamEventType\022:\n\016entitySnapshot\030\005 " +
@@ -128,63 +133,66 @@ public final class GStreamProto {
       "GEntitySignalH\000\022:\n\013sessionStop\030\007 \001(\0132#.d" +
       "unkware.stream.GStreamSessionStopH\000\022<\n\014s" +
       "essionStart\030\010 \001(\0132$.dunkware.stream.GStr" +
-      "eamSessionStartH\000B\007\n\005event\"t\n\022GStreamSes" +
-      "sionStop\022(\n\004time\030\001 \001(\0132\032.google.protobuf" +
+      "eamSessionStartH\000\0228\n\ntimeUpdate\030\t \001(\0132\"." +
+      "dunkware.stream.GStreamTimeUpdateH\000B\007\n\005e" +
+      "vent\"=\n\021GStreamTimeUpdate\022(\n\004time\030\001 \001(\0132" +
+      "\032.google.protobuf.Timestamp\"t\n\022GStreamSe" +
+      "ssionStop\022(\n\004time\030\001 \001(\0132\032.google.protobu" +
+      "f.Timestamp\0224\n\007session\030\002 \001(\0132#.dunkware." +
+      "stream.GStreamSessionSpec\"u\n\023GStreamSess" +
+      "ionStart\022(\n\004time\030\001 \001(\0132\032.google.protobuf" +
       ".Timestamp\0224\n\007session\030\002 \001(\0132#.dunkware.s" +
-      "tream.GStreamSessionSpec\"u\n\023GStreamSessi" +
-      "onStart\022(\n\004time\030\001 \001(\0132\032.google.protobuf." +
-      "Timestamp\0224\n\007session\030\002 \001(\0132#.dunkware.st" +
-      "ream.GStreamSessionSpec\"\251\002\n\017GEntitySnaps" +
-      "hot\022\n\n\002id\030\001 \001(\005\022\022\n\nidentifier\030\002 \001(\t\022\020\n\010s" +
-      "treamId\030\003 \001(\t\022\021\n\tsessionId\030\004 \001(\t\022(\n\004time" +
-      "\030\014 \001(\0132\032.google.protobuf.Timestamp\0221\n\004va" +
-      "rs\030\007 \003(\0132#.dunkware.stream.GEntityVarSna" +
-      "pshot\022A\n\007signals\030\010 \003(\01320.dunkware.stream" +
-      ".GEntitySnapshot.GSnapshotSignal\0321\n\017GSna" +
-      "pshotSignal\022\n\n\002id\030\013 \001(\005\022\022\n\nidentifier\030\014 " +
-      "\001(\t\"\323\001\n\022GEntityVarSnapshot\022\n\n\002id\030\001 \001(\005\022\022" +
-      "\n\nidentifier\030\002 \001(\t\022\020\n\010dataType\030\t \001(\005\022\026\n\014" +
-      "booleanValue\030\003 \001(\010H\000\022\022\n\010intValue\030\004 \001(\005H\000" +
-      "\022\025\n\013stringValue\030\005 \001(\tH\000\022\025\n\013doubleValue\030\006" +
-      " \001(\001H\000\022\023\n\tlongValue\030\007 \001(\003H\000\022\023\n\tnullValue" +
-      "\030\010 \001(\tH\000B\007\n\005value\"\335\001\n\rGEntitySignal\022\n\n\002i" +
-      "d\030\001 \001(\005\022\022\n\nidentifier\030\002 \001(\t\022\020\n\010entityId\030" +
-      "\003 \001(\005\022\030\n\020entityIdentifier\030\004 \001(\t\022\020\n\010strea" +
-      "mId\030\005 \001(\t\022\021\n\tsessionId\030\006 \001(\t\022(\n\004time\030\014 \001" +
-      "(\0132\032.google.protobuf.Timestamp\0221\n\004vars\030\t" +
-      " \003(\0132#.dunkware.stream.GEntityVarSnapsho" +
-      "t\"\201\001\n\013GStreamSpec\022\022\n\nidentifier\030\001 \001(\t\0222\n" +
-      "\006script\030\004 \001(\0132\".dunkware.stream.GStreamS" +
-      "criptSpec\022*\n\010timeZone\030\005 \001(\0162\030.dunkware.c" +
-      "ore.GTimeZone\"\315\001\n\022GStreamSessionSpec\022\016\n\006" +
-      "stream\030\001 \001(\t\022\021\n\tsessionId\030\002 \001(\t\0222\n\006scrip" +
-      "t\030\004 \001(\0132\".dunkware.stream.GStreamScriptS" +
-      "pec\022*\n\010timeZone\030\005 \001(\0162\030.dunkware.core.GT" +
-      "imeZone\0224\n\010entities\030\006 \003(\0132\".dunkware.str" +
-      "eam.GStreamEntitySpec\"\253\001\n\021GStreamScriptS" +
-      "pec\022\030\n\020streamIdentifier\030\001 \001(\t\022\017\n\007version" +
-      "\030\002 \001(\001\0222\n\tvariables\030\003 \003(\0132\037.dunkware.str" +
-      "eam.GStreamVarSpec\0227\n\013signalTypes\030\004 \003(\0132" +
-      "\".dunkware.stream.GEntitySignalSpec\"k\n\016G" +
-      "StreamVarSpec\022\n\n\002id\030\001 \001(\005\022\022\n\nidentifier\030" +
-      "\002 \001(\t\022\r\n\005label\030\003 \001(\t\022*\n\010dataType\030\004 \001(\0162\030" +
-      ".dunkware.core.GDataType\"B\n\021GStreamEntit" +
-      "ySpec\022\n\n\002id\030\001 \001(\005\022\022\n\nidentifier\030\002 \001(\t\022\r\n" +
-      "\005label\030\003 \001(\t\"B\n\021GEntitySignalSpec\022\n\n\002id\030" +
-      "\001 \001(\005\022\022\n\nidentifier\030\002 \001(\t\022\r\n\005label\030\003 \001(\t" +
-      "\".\n\022GStreamSpecRequest\022\030\n\020streamIdentifi" +
-      "er\030\001 \001(\t\"g\n\023GStreamSpecResponse\022$\n\005error" +
-      "\030\001 \001(\0132\025.dunkware.core.GError\022*\n\004spec\030\002 " +
-      "\001(\0132\034.dunkware.stream.GStreamSpec\"$\n\023GSt" +
-      "reamSpecsRequest\022\r\n\005hello\030\001 \001(\005\"C\n\024GStre" +
-      "amSpecsResponse\022+\n\005specs\030\001 \003(\0132\034.dunkwar" +
-      "e.stream.GStreamSpec\"\'\n\024GAutoCompleteReq" +
-      "uest\022\017\n\007request\030\001 \001(\t\")\n\025GAutoCompleteRe" +
-      "sponse\022\020\n\010response\030\002 \001(\t*[\n\020GStreamEvent" +
-      "Type\022\020\n\014EntitySignal\020\000\022\022\n\016EntitySnapshot" +
-      "\020\001\022\020\n\014SessionStart\020\002\022\017\n\013SessionStop\020\003B/\n" +
-      "\035com.dunkware.net.proto.streamB\014GStreamP" +
-      "rotoP\001b\006proto3"
+      "tream.GStreamSessionSpec\"\251\002\n\017GEntitySnap" +
+      "shot\022\n\n\002id\030\001 \001(\005\022\022\n\nidentifier\030\002 \001(\t\022\020\n\010" +
+      "streamId\030\003 \001(\t\022\021\n\tsessionId\030\004 \001(\t\022(\n\004tim" +
+      "e\030\014 \001(\0132\032.google.protobuf.Timestamp\0221\n\004v" +
+      "ars\030\007 \003(\0132#.dunkware.stream.GEntityVarSn" +
+      "apshot\022A\n\007signals\030\010 \003(\01320.dunkware.strea" +
+      "m.GEntitySnapshot.GSnapshotSignal\0321\n\017GSn" +
+      "apshotSignal\022\n\n\002id\030\013 \001(\005\022\022\n\nidentifier\030\014" +
+      " \001(\t\"\323\001\n\022GEntityVarSnapshot\022\n\n\002id\030\001 \001(\005\022" +
+      "\022\n\nidentifier\030\002 \001(\t\022\020\n\010dataType\030\t \001(\005\022\026\n" +
+      "\014booleanValue\030\003 \001(\010H\000\022\022\n\010intValue\030\004 \001(\005H" +
+      "\000\022\025\n\013stringValue\030\005 \001(\tH\000\022\025\n\013doubleValue\030" +
+      "\006 \001(\001H\000\022\023\n\tlongValue\030\007 \001(\003H\000\022\023\n\tnullValu" +
+      "e\030\010 \001(\tH\000B\007\n\005value\"\335\001\n\rGEntitySignal\022\n\n\002" +
+      "id\030\001 \001(\005\022\022\n\nidentifier\030\002 \001(\t\022\020\n\010entityId" +
+      "\030\003 \001(\005\022\030\n\020entityIdentifier\030\004 \001(\t\022\020\n\010stre" +
+      "amId\030\005 \001(\t\022\021\n\tsessionId\030\006 \001(\t\022(\n\004time\030\014 " +
+      "\001(\0132\032.google.protobuf.Timestamp\0221\n\004vars\030" +
+      "\t \003(\0132#.dunkware.stream.GEntityVarSnapsh" +
+      "ot\"\201\001\n\013GStreamSpec\022\022\n\nidentifier\030\001 \001(\t\0222" +
+      "\n\006script\030\004 \001(\0132\".dunkware.stream.GStream" +
+      "ScriptSpec\022*\n\010timeZone\030\005 \001(\0162\030.dunkware." +
+      "core.GTimeZone\"\315\001\n\022GStreamSessionSpec\022\016\n" +
+      "\006stream\030\001 \001(\t\022\021\n\tsessionId\030\002 \001(\t\0222\n\006scri" +
+      "pt\030\004 \001(\0132\".dunkware.stream.GStreamScript" +
+      "Spec\022*\n\010timeZone\030\005 \001(\0162\030.dunkware.core.G" +
+      "TimeZone\0224\n\010entities\030\006 \003(\0132\".dunkware.st" +
+      "ream.GStreamEntitySpec\"\253\001\n\021GStreamScript" +
+      "Spec\022\030\n\020streamIdentifier\030\001 \001(\t\022\017\n\007versio" +
+      "n\030\002 \001(\001\0222\n\tvariables\030\003 \003(\0132\037.dunkware.st" +
+      "ream.GStreamVarSpec\0227\n\013signalTypes\030\004 \003(\013" +
+      "2\".dunkware.stream.GEntitySignalSpec\"k\n\016" +
+      "GStreamVarSpec\022\n\n\002id\030\001 \001(\005\022\022\n\nidentifier" +
+      "\030\002 \001(\t\022\r\n\005label\030\003 \001(\t\022*\n\010dataType\030\004 \001(\0162" +
+      "\030.dunkware.core.GDataType\"B\n\021GStreamEnti" +
+      "tySpec\022\n\n\002id\030\001 \001(\005\022\022\n\nidentifier\030\002 \001(\t\022\r" +
+      "\n\005label\030\003 \001(\t\"B\n\021GEntitySignalSpec\022\n\n\002id" +
+      "\030\001 \001(\005\022\022\n\nidentifier\030\002 \001(\t\022\r\n\005label\030\003 \001(" +
+      "\t\".\n\022GStreamSpecRequest\022\030\n\020streamIdentif" +
+      "ier\030\001 \001(\t\"g\n\023GStreamSpecResponse\022$\n\005erro" +
+      "r\030\001 \001(\0132\025.dunkware.core.GError\022*\n\004spec\030\002" +
+      " \001(\0132\034.dunkware.stream.GStreamSpec\"$\n\023GS" +
+      "treamSpecsRequest\022\r\n\005hello\030\001 \001(\005\"C\n\024GStr" +
+      "eamSpecsResponse\022+\n\005specs\030\001 \003(\0132\034.dunkwa" +
+      "re.stream.GStreamSpec\"\'\n\024GAutoCompleteRe" +
+      "quest\022\017\n\007request\030\001 \001(\t\")\n\025GAutoCompleteR" +
+      "esponse\022\020\n\010response\030\002 \001(\t*k\n\020GStreamEven" +
+      "tType\022\020\n\014EntitySignal\020\000\022\022\n\016EntitySnapsho" +
+      "t\020\001\022\020\n\014SessionStart\020\002\022\017\n\013SessionStop\020\003\022\016" +
+      "\n\nTimeUpdate\020\004B/\n\035com.dunkware.net.proto" +
+      ".streamB\014GStreamProtoP\001b\006proto3"
     };
     com.google.protobuf.Descriptors.FileDescriptor.InternalDescriptorAssigner assigner =
         new com.google.protobuf.Descriptors.FileDescriptor.    InternalDescriptorAssigner() {
@@ -205,21 +213,27 @@ public final class GStreamProto {
     internal_static_dunkware_stream_GStreamEvent_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_dunkware_stream_GStreamEvent_descriptor,
-        new java.lang.String[] { "StreamId", "SessionId", "Type", "EntitySnapshot", "EntitySignal", "SessionStop", "SessionStart", "Event", });
-    internal_static_dunkware_stream_GStreamSessionStop_descriptor =
+        new java.lang.String[] { "StreamId", "SessionId", "Type", "EntitySnapshot", "EntitySignal", "SessionStop", "SessionStart", "TimeUpdate", "Event", });
+    internal_static_dunkware_stream_GStreamTimeUpdate_descriptor =
       getDescriptor().getMessageTypes().get(1);
+    internal_static_dunkware_stream_GStreamTimeUpdate_fieldAccessorTable = new
+      com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
+        internal_static_dunkware_stream_GStreamTimeUpdate_descriptor,
+        new java.lang.String[] { "Time", });
+    internal_static_dunkware_stream_GStreamSessionStop_descriptor =
+      getDescriptor().getMessageTypes().get(2);
     internal_static_dunkware_stream_GStreamSessionStop_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_dunkware_stream_GStreamSessionStop_descriptor,
         new java.lang.String[] { "Time", "Session", });
     internal_static_dunkware_stream_GStreamSessionStart_descriptor =
-      getDescriptor().getMessageTypes().get(2);
+      getDescriptor().getMessageTypes().get(3);
     internal_static_dunkware_stream_GStreamSessionStart_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_dunkware_stream_GStreamSessionStart_descriptor,
         new java.lang.String[] { "Time", "Session", });
     internal_static_dunkware_stream_GEntitySnapshot_descriptor =
-      getDescriptor().getMessageTypes().get(3);
+      getDescriptor().getMessageTypes().get(4);
     internal_static_dunkware_stream_GEntitySnapshot_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_dunkware_stream_GEntitySnapshot_descriptor,
@@ -231,85 +245,85 @@ public final class GStreamProto {
         internal_static_dunkware_stream_GEntitySnapshot_GSnapshotSignal_descriptor,
         new java.lang.String[] { "Id", "Identifier", });
     internal_static_dunkware_stream_GEntityVarSnapshot_descriptor =
-      getDescriptor().getMessageTypes().get(4);
+      getDescriptor().getMessageTypes().get(5);
     internal_static_dunkware_stream_GEntityVarSnapshot_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_dunkware_stream_GEntityVarSnapshot_descriptor,
         new java.lang.String[] { "Id", "Identifier", "DataType", "BooleanValue", "IntValue", "StringValue", "DoubleValue", "LongValue", "NullValue", "Value", });
     internal_static_dunkware_stream_GEntitySignal_descriptor =
-      getDescriptor().getMessageTypes().get(5);
+      getDescriptor().getMessageTypes().get(6);
     internal_static_dunkware_stream_GEntitySignal_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_dunkware_stream_GEntitySignal_descriptor,
         new java.lang.String[] { "Id", "Identifier", "EntityId", "EntityIdentifier", "StreamId", "SessionId", "Time", "Vars", });
     internal_static_dunkware_stream_GStreamSpec_descriptor =
-      getDescriptor().getMessageTypes().get(6);
+      getDescriptor().getMessageTypes().get(7);
     internal_static_dunkware_stream_GStreamSpec_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_dunkware_stream_GStreamSpec_descriptor,
         new java.lang.String[] { "Identifier", "Script", "TimeZone", });
     internal_static_dunkware_stream_GStreamSessionSpec_descriptor =
-      getDescriptor().getMessageTypes().get(7);
+      getDescriptor().getMessageTypes().get(8);
     internal_static_dunkware_stream_GStreamSessionSpec_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_dunkware_stream_GStreamSessionSpec_descriptor,
         new java.lang.String[] { "Stream", "SessionId", "Script", "TimeZone", "Entities", });
     internal_static_dunkware_stream_GStreamScriptSpec_descriptor =
-      getDescriptor().getMessageTypes().get(8);
+      getDescriptor().getMessageTypes().get(9);
     internal_static_dunkware_stream_GStreamScriptSpec_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_dunkware_stream_GStreamScriptSpec_descriptor,
         new java.lang.String[] { "StreamIdentifier", "Version", "Variables", "SignalTypes", });
     internal_static_dunkware_stream_GStreamVarSpec_descriptor =
-      getDescriptor().getMessageTypes().get(9);
+      getDescriptor().getMessageTypes().get(10);
     internal_static_dunkware_stream_GStreamVarSpec_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_dunkware_stream_GStreamVarSpec_descriptor,
         new java.lang.String[] { "Id", "Identifier", "Label", "DataType", });
     internal_static_dunkware_stream_GStreamEntitySpec_descriptor =
-      getDescriptor().getMessageTypes().get(10);
+      getDescriptor().getMessageTypes().get(11);
     internal_static_dunkware_stream_GStreamEntitySpec_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_dunkware_stream_GStreamEntitySpec_descriptor,
         new java.lang.String[] { "Id", "Identifier", "Label", });
     internal_static_dunkware_stream_GEntitySignalSpec_descriptor =
-      getDescriptor().getMessageTypes().get(11);
+      getDescriptor().getMessageTypes().get(12);
     internal_static_dunkware_stream_GEntitySignalSpec_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_dunkware_stream_GEntitySignalSpec_descriptor,
         new java.lang.String[] { "Id", "Identifier", "Label", });
     internal_static_dunkware_stream_GStreamSpecRequest_descriptor =
-      getDescriptor().getMessageTypes().get(12);
+      getDescriptor().getMessageTypes().get(13);
     internal_static_dunkware_stream_GStreamSpecRequest_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_dunkware_stream_GStreamSpecRequest_descriptor,
         new java.lang.String[] { "StreamIdentifier", });
     internal_static_dunkware_stream_GStreamSpecResponse_descriptor =
-      getDescriptor().getMessageTypes().get(13);
+      getDescriptor().getMessageTypes().get(14);
     internal_static_dunkware_stream_GStreamSpecResponse_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_dunkware_stream_GStreamSpecResponse_descriptor,
         new java.lang.String[] { "Error", "Spec", });
     internal_static_dunkware_stream_GStreamSpecsRequest_descriptor =
-      getDescriptor().getMessageTypes().get(14);
+      getDescriptor().getMessageTypes().get(15);
     internal_static_dunkware_stream_GStreamSpecsRequest_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_dunkware_stream_GStreamSpecsRequest_descriptor,
         new java.lang.String[] { "Hello", });
     internal_static_dunkware_stream_GStreamSpecsResponse_descriptor =
-      getDescriptor().getMessageTypes().get(15);
+      getDescriptor().getMessageTypes().get(16);
     internal_static_dunkware_stream_GStreamSpecsResponse_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_dunkware_stream_GStreamSpecsResponse_descriptor,
         new java.lang.String[] { "Specs", });
     internal_static_dunkware_stream_GAutoCompleteRequest_descriptor =
-      getDescriptor().getMessageTypes().get(16);
+      getDescriptor().getMessageTypes().get(17);
     internal_static_dunkware_stream_GAutoCompleteRequest_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_dunkware_stream_GAutoCompleteRequest_descriptor,
         new java.lang.String[] { "Request", });
     internal_static_dunkware_stream_GAutoCompleteResponse_descriptor =
-      getDescriptor().getMessageTypes().get(17);
+      getDescriptor().getMessageTypes().get(18);
     internal_static_dunkware_stream_GAutoCompleteResponse_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_dunkware_stream_GAutoCompleteResponse_descriptor,

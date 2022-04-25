@@ -30,6 +30,10 @@ public enum GStreamEventType
    * <code>SessionStop = 3;</code>
    */
   SessionStop(3),
+  /**
+   * <code>TimeUpdate = 4;</code>
+   */
+  TimeUpdate(4),
   UNRECOGNIZED(-1),
   ;
 
@@ -49,6 +53,10 @@ public enum GStreamEventType
    * <code>SessionStop = 3;</code>
    */
   public static final int SessionStop_VALUE = 3;
+  /**
+   * <code>TimeUpdate = 4;</code>
+   */
+  public static final int TimeUpdate_VALUE = 4;
 
 
   public final int getNumber() {
@@ -73,6 +81,7 @@ public enum GStreamEventType
       case 1: return EntitySnapshot;
       case 2: return SessionStart;
       case 3: return SessionStop;
+      case 4: return TimeUpdate;
       default: return null;
     }
   }

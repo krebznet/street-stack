@@ -88,5 +88,18 @@ public interface GStreamEventOrBuilder extends
    */
   com.dunkware.net.proto.stream.GStreamSessionStartOrBuilder getSessionStartOrBuilder();
 
+  /**
+   * <code>.dunkware.stream.GStreamTimeUpdate timeUpdate = 9;</code>
+   */
+  boolean hasTimeUpdate();
+  /**
+   * <code>.dunkware.stream.GStreamTimeUpdate timeUpdate = 9;</code>
+   */
+  com.dunkware.net.proto.stream.GStreamTimeUpdate getTimeUpdate();
+  /**
+   * <code>.dunkware.stream.GStreamTimeUpdate timeUpdate = 9;</code>
+   */
+  com.dunkware.net.proto.stream.GStreamTimeUpdateOrBuilder getTimeUpdateOrBuilder();
+
   public com.dunkware.net.proto.stream.GStreamEvent.EventCase getEventCase();
 }

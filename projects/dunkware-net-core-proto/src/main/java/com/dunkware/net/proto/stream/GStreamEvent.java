@@ -123,6 +123,20 @@ private static final long serialVersionUID = 0L;
             eventCase_ = 8;
             break;
           }
+          case 74: {
+            com.dunkware.net.proto.stream.GStreamTimeUpdate.Builder subBuilder = null;
+            if (eventCase_ == 9) {
+              subBuilder = ((com.dunkware.net.proto.stream.GStreamTimeUpdate) event_).toBuilder();
+            }
+            event_ =
+                input.readMessage(com.dunkware.net.proto.stream.GStreamTimeUpdate.parser(), extensionRegistry);
+            if (subBuilder != null) {
+              subBuilder.mergeFrom((com.dunkware.net.proto.stream.GStreamTimeUpdate) event_);
+              event_ = subBuilder.buildPartial();
+            }
+            eventCase_ = 9;
+            break;
+          }
           default: {
             if (!parseUnknownFieldProto3(
                 input, unknownFields, extensionRegistry, tag)) {
@@ -163,6 +177,7 @@ private static final long serialVersionUID = 0L;
     ENTITYSIGNAL(6),
     SESSIONSTOP(7),
     SESSIONSTART(8),
+    TIMEUPDATE(9),
     EVENT_NOT_SET(0);
     private final int value;
     private EventCase(int value) {
@@ -182,6 +197,7 @@ private static final long serialVersionUID = 0L;
         case 6: return ENTITYSIGNAL;
         case 7: return SESSIONSTOP;
         case 8: return SESSIONSTART;
+        case 9: return TIMEUPDATE;
         case 0: return EVENT_NOT_SET;
         default: return null;
       }
@@ -386,6 +402,32 @@ private static final long serialVersionUID = 0L;
     return com.dunkware.net.proto.stream.GStreamSessionStart.getDefaultInstance();
   }
 
+  public static final int TIMEUPDATE_FIELD_NUMBER = 9;
+  /**
+   * <code>.dunkware.stream.GStreamTimeUpdate timeUpdate = 9;</code>
+   */
+  public boolean hasTimeUpdate() {
+    return eventCase_ == 9;
+  }
+  /**
+   * <code>.dunkware.stream.GStreamTimeUpdate timeUpdate = 9;</code>
+   */
+  public com.dunkware.net.proto.stream.GStreamTimeUpdate getTimeUpdate() {
+    if (eventCase_ == 9) {
+       return (com.dunkware.net.proto.stream.GStreamTimeUpdate) event_;
+    }
+    return com.dunkware.net.proto.stream.GStreamTimeUpdate.getDefaultInstance();
+  }
+  /**
+   * <code>.dunkware.stream.GStreamTimeUpdate timeUpdate = 9;</code>
+   */
+  public com.dunkware.net.proto.stream.GStreamTimeUpdateOrBuilder getTimeUpdateOrBuilder() {
+    if (eventCase_ == 9) {
+       return (com.dunkware.net.proto.stream.GStreamTimeUpdate) event_;
+    }
+    return com.dunkware.net.proto.stream.GStreamTimeUpdate.getDefaultInstance();
+  }
+
   private byte memoizedIsInitialized = -1;
   @java.lang.Override
   public final boolean isInitialized() {
@@ -421,6 +463,9 @@ private static final long serialVersionUID = 0L;
     if (eventCase_ == 8) {
       output.writeMessage(8, (com.dunkware.net.proto.stream.GStreamSessionStart) event_);
     }
+    if (eventCase_ == 9) {
+      output.writeMessage(9, (com.dunkware.net.proto.stream.GStreamTimeUpdate) event_);
+    }
     unknownFields.writeTo(output);
   }
 
@@ -455,6 +500,10 @@ private static final long serialVersionUID = 0L;
     if (eventCase_ == 8) {
       size += com.google.protobuf.CodedOutputStream
         .computeMessageSize(8, (com.dunkware.net.proto.stream.GStreamSessionStart) event_);
+    }
+    if (eventCase_ == 9) {
+      size += com.google.protobuf.CodedOutputStream
+        .computeMessageSize(9, (com.dunkware.net.proto.stream.GStreamTimeUpdate) event_);
     }
     size += unknownFields.getSerializedSize();
     memoizedSize = size;
@@ -497,6 +546,10 @@ private static final long serialVersionUID = 0L;
         result = result && getSessionStart()
             .equals(other.getSessionStart());
         break;
+      case 9:
+        result = result && getTimeUpdate()
+            .equals(other.getTimeUpdate());
+        break;
       case 0:
       default:
     }
@@ -533,6 +586,10 @@ private static final long serialVersionUID = 0L;
       case 8:
         hash = (37 * hash) + SESSIONSTART_FIELD_NUMBER;
         hash = (53 * hash) + getSessionStart().hashCode();
+        break;
+      case 9:
+        hash = (37 * hash) + TIMEUPDATE_FIELD_NUMBER;
+        hash = (53 * hash) + getTimeUpdate().hashCode();
         break;
       case 0:
       default:
@@ -739,6 +796,13 @@ private static final long serialVersionUID = 0L;
           result.event_ = sessionStartBuilder_.build();
         }
       }
+      if (eventCase_ == 9) {
+        if (timeUpdateBuilder_ == null) {
+          result.event_ = event_;
+        } else {
+          result.event_ = timeUpdateBuilder_.build();
+        }
+      }
       result.eventCase_ = eventCase_;
       onBuilt();
       return result;
@@ -814,6 +878,10 @@ private static final long serialVersionUID = 0L;
         }
         case SESSIONSTART: {
           mergeSessionStart(other.getSessionStart());
+          break;
+        }
+        case TIMEUPDATE: {
+          mergeTimeUpdate(other.getTimeUpdate());
           break;
         }
         case EVENT_NOT_SET: {
@@ -1589,6 +1657,142 @@ private static final long serialVersionUID = 0L;
       eventCase_ = 8;
       onChanged();;
       return sessionStartBuilder_;
+    }
+
+    private com.google.protobuf.SingleFieldBuilderV3<
+        com.dunkware.net.proto.stream.GStreamTimeUpdate, com.dunkware.net.proto.stream.GStreamTimeUpdate.Builder, com.dunkware.net.proto.stream.GStreamTimeUpdateOrBuilder> timeUpdateBuilder_;
+    /**
+     * <code>.dunkware.stream.GStreamTimeUpdate timeUpdate = 9;</code>
+     */
+    public boolean hasTimeUpdate() {
+      return eventCase_ == 9;
+    }
+    /**
+     * <code>.dunkware.stream.GStreamTimeUpdate timeUpdate = 9;</code>
+     */
+    public com.dunkware.net.proto.stream.GStreamTimeUpdate getTimeUpdate() {
+      if (timeUpdateBuilder_ == null) {
+        if (eventCase_ == 9) {
+          return (com.dunkware.net.proto.stream.GStreamTimeUpdate) event_;
+        }
+        return com.dunkware.net.proto.stream.GStreamTimeUpdate.getDefaultInstance();
+      } else {
+        if (eventCase_ == 9) {
+          return timeUpdateBuilder_.getMessage();
+        }
+        return com.dunkware.net.proto.stream.GStreamTimeUpdate.getDefaultInstance();
+      }
+    }
+    /**
+     * <code>.dunkware.stream.GStreamTimeUpdate timeUpdate = 9;</code>
+     */
+    public Builder setTimeUpdate(com.dunkware.net.proto.stream.GStreamTimeUpdate value) {
+      if (timeUpdateBuilder_ == null) {
+        if (value == null) {
+          throw new NullPointerException();
+        }
+        event_ = value;
+        onChanged();
+      } else {
+        timeUpdateBuilder_.setMessage(value);
+      }
+      eventCase_ = 9;
+      return this;
+    }
+    /**
+     * <code>.dunkware.stream.GStreamTimeUpdate timeUpdate = 9;</code>
+     */
+    public Builder setTimeUpdate(
+        com.dunkware.net.proto.stream.GStreamTimeUpdate.Builder builderForValue) {
+      if (timeUpdateBuilder_ == null) {
+        event_ = builderForValue.build();
+        onChanged();
+      } else {
+        timeUpdateBuilder_.setMessage(builderForValue.build());
+      }
+      eventCase_ = 9;
+      return this;
+    }
+    /**
+     * <code>.dunkware.stream.GStreamTimeUpdate timeUpdate = 9;</code>
+     */
+    public Builder mergeTimeUpdate(com.dunkware.net.proto.stream.GStreamTimeUpdate value) {
+      if (timeUpdateBuilder_ == null) {
+        if (eventCase_ == 9 &&
+            event_ != com.dunkware.net.proto.stream.GStreamTimeUpdate.getDefaultInstance()) {
+          event_ = com.dunkware.net.proto.stream.GStreamTimeUpdate.newBuilder((com.dunkware.net.proto.stream.GStreamTimeUpdate) event_)
+              .mergeFrom(value).buildPartial();
+        } else {
+          event_ = value;
+        }
+        onChanged();
+      } else {
+        if (eventCase_ == 9) {
+          timeUpdateBuilder_.mergeFrom(value);
+        }
+        timeUpdateBuilder_.setMessage(value);
+      }
+      eventCase_ = 9;
+      return this;
+    }
+    /**
+     * <code>.dunkware.stream.GStreamTimeUpdate timeUpdate = 9;</code>
+     */
+    public Builder clearTimeUpdate() {
+      if (timeUpdateBuilder_ == null) {
+        if (eventCase_ == 9) {
+          eventCase_ = 0;
+          event_ = null;
+          onChanged();
+        }
+      } else {
+        if (eventCase_ == 9) {
+          eventCase_ = 0;
+          event_ = null;
+        }
+        timeUpdateBuilder_.clear();
+      }
+      return this;
+    }
+    /**
+     * <code>.dunkware.stream.GStreamTimeUpdate timeUpdate = 9;</code>
+     */
+    public com.dunkware.net.proto.stream.GStreamTimeUpdate.Builder getTimeUpdateBuilder() {
+      return getTimeUpdateFieldBuilder().getBuilder();
+    }
+    /**
+     * <code>.dunkware.stream.GStreamTimeUpdate timeUpdate = 9;</code>
+     */
+    public com.dunkware.net.proto.stream.GStreamTimeUpdateOrBuilder getTimeUpdateOrBuilder() {
+      if ((eventCase_ == 9) && (timeUpdateBuilder_ != null)) {
+        return timeUpdateBuilder_.getMessageOrBuilder();
+      } else {
+        if (eventCase_ == 9) {
+          return (com.dunkware.net.proto.stream.GStreamTimeUpdate) event_;
+        }
+        return com.dunkware.net.proto.stream.GStreamTimeUpdate.getDefaultInstance();
+      }
+    }
+    /**
+     * <code>.dunkware.stream.GStreamTimeUpdate timeUpdate = 9;</code>
+     */
+    private com.google.protobuf.SingleFieldBuilderV3<
+        com.dunkware.net.proto.stream.GStreamTimeUpdate, com.dunkware.net.proto.stream.GStreamTimeUpdate.Builder, com.dunkware.net.proto.stream.GStreamTimeUpdateOrBuilder> 
+        getTimeUpdateFieldBuilder() {
+      if (timeUpdateBuilder_ == null) {
+        if (!(eventCase_ == 9)) {
+          event_ = com.dunkware.net.proto.stream.GStreamTimeUpdate.getDefaultInstance();
+        }
+        timeUpdateBuilder_ = new com.google.protobuf.SingleFieldBuilderV3<
+            com.dunkware.net.proto.stream.GStreamTimeUpdate, com.dunkware.net.proto.stream.GStreamTimeUpdate.Builder, com.dunkware.net.proto.stream.GStreamTimeUpdateOrBuilder>(
+                (com.dunkware.net.proto.stream.GStreamTimeUpdate) event_,
+                getParentForChildren(),
+                isClean());
+        event_ = null;
+      }
+      eventCase_ = 9;
+      onChanged();;
+      return timeUpdateBuilder_;
     }
     @java.lang.Override
     public final Builder setUnknownFields(

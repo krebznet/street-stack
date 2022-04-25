@@ -22,6 +22,7 @@ enum GStreamEventType {
     EntitySnapshot = 1;
     SessionStart = 2;
     SessionStop= 3;
+    TimeUpdate = 4;
 }
 
 // Generic Object Contains 1 type of event
@@ -34,10 +35,14 @@ message GStreamEvent  {
         GEntitySignal entitySignal = 6;
         GStreamSessionStop sessionStop = 7;
         GStreamSessionStart sessionStart = 8;
+        GStreamTimeUpdate timeUpdate = 9;
     }
 
 }
 
+message GStreamTimeUpdate { 
+   google.protobuf.Timestamp time = 1; 
+}
 message GStreamSessionStop {
     google.protobuf.Timestamp time = 1; 
 	GStreamSessionSpec session = 2;
