@@ -27,6 +27,7 @@ import com.dunkware.trade.service.stream.json.controller.spec.StreamSpec;
 import com.dunkware.trade.service.stream.json.controller.spec.StreamStats;
 import com.dunkware.trade.service.stream.json.controller.spec.StreamState;
 import com.dunkware.trade.service.stream.server.controller.repository.StreamDO;
+import com.dunkware.trade.service.stream.server.controller.repository.StreamRepo;
 import com.dunkware.trade.service.stream.server.controller.repository.StreamVersionDO;
 import com.dunkware.trade.service.stream.server.controller.util.GStreamHelper;
 import com.dunkware.trade.service.stream.server.session.StreamSession;
@@ -36,6 +37,7 @@ import com.dunkware.trade.service.stream.server.session.StreamSessionInput;
 import com.dunkware.trade.service.stream.server.session.events.EStreamSessionException;
 import com.dunkware.trade.service.stream.server.session.events.EStreamSessionStarted;
 import com.dunkware.trade.service.stream.server.session.events.EStreamSessionStopped;
+import com.dunkware.trade.service.stream.server.session.events.EStreamSessionStopping;
 import com.dunkware.trade.service.stream.server.spring.ConfigService;
 import com.dunkware.trade.service.stream.server.spring.RuntimeService;
 import com.dunkware.trade.service.stream.server.tick.StreamTickService;
@@ -51,6 +53,9 @@ public class StreamController {
 
 	private StreamDO ent;
 
+	@Autowired
+	private StreamRepo streamRepo;
+	
 	private StreamSchedule schedule;
 
 	private StreamStats stats = new StreamStats();
@@ -197,7 +202,6 @@ public class StreamController {
 	}
 
 	public void stopSession() throws StreamSessionException {
-		
 		if(session == null) { 
 			throw new StreamSessionException("Session Not Found");
 		}
@@ -222,6 +226,7 @@ public class StreamController {
 			// TOODO: here right -->
 			input.setTickers(tickers);
 			input.setController(this);
+			cluster.getNodeSevice().getAvailableWorkerNodes();
 			List<ClusterNode> nodes = cluster.getNodeSevice().getAvailableWorkerNodes();
 			if (nodes.size() == 0) {
 				logger.error("Exception Starting Stream {} Session, available worker nodes is 0", getName());
@@ -469,6 +474,10 @@ public class StreamController {
 			logger.debug("Recieved Session Started Event, Status Update Running");
 		}
 		stats.setState(StreamState.Running);
+		ent.setState(StreamState.Running);
+		streamRepo.save(ent);
+		
+		
 	}
 	
 	public List<TradeTickerSpec> getTickers() { 
@@ -500,6 +509,18 @@ public class StreamController {
 			logger.debug("Recieved Session Stopped Event, Status Update Stopped");
 		}
 		stats.setState(StreamState.Stopped);
+		ent.setState(StreamState.Stopped);
+		ent.getSessions().add(session.getEntity());
+		streamRepo.save(ent);
+	}
+	
+	@ADEventMethod()
+	public void sessionStopping(EStreamSessionStopping stopping) {
+		if (logger.isDebugEnabled()) {
+			logger.debug("Recieved Session Stopped Event, Status Update Stopped");
+		}
+		stats.setState(StreamState.Stopping);
+		
 	}
 
 }

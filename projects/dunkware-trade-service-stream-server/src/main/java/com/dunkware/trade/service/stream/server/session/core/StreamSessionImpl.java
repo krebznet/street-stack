@@ -35,6 +35,8 @@ import com.dunkware.trade.service.stream.server.session.StreamSessionNode;
 import com.dunkware.trade.service.stream.server.session.StreamSessionNodeInput;
 import com.dunkware.trade.service.stream.server.session.StreamSessionService;
 import com.dunkware.trade.service.stream.server.session.events.EStreamSessionStarted;
+import com.dunkware.trade.service.stream.server.session.events.EStreamSessionStopped;
+import com.dunkware.trade.service.stream.server.session.events.EStreamSessionStopping;
 import com.dunkware.trade.service.stream.server.session.repository.StreamSessionDO;
 import com.dunkware.trade.service.stream.server.session.repository.StreamSessionProblemDO;
 import com.dunkware.trade.service.stream.server.session.repository.StreamSessionRepo;
@@ -49,7 +51,7 @@ public class StreamSessionImpl implements StreamSession {
 	private Logger logger = org.slf4j.LoggerFactory.getLogger(getClass());
 	private List<StreamSessionNode> nodes = new ArrayList<StreamSessionNode>();
 	private StreamSessionInput input;
-	
+
 	@Autowired
 	private ConfigService configService;
 
@@ -110,19 +112,26 @@ public class StreamSessionImpl implements StreamSession {
 			logger.info(MarkerFactory.getMarker(sessionId), "Starting session node on worker " + workerNode.getId());
 			nodes.add(sessionNode);
 			sessionNode.startNode(nodeInput);
-			
+
 		}
 
 	}
 
 	@Override
 	public void stopSession() throws StreamSessionException {
-		StopMonitor monitor = new StopMonitor();
-		monitor.start();
 		logger.info(MarkerFactory.getMarker(getSessionId()), "Stopping Session");
-		StreamSessionStop start = new StreamSessionStop();
+		EStreamSessionStopping stopping = new EStreamSessionStopping(this);
+		eventNode.event(stopping);
+		for (StreamSessionExtension streamSessionExtension : extensionTypes) {
+			streamSessionExtension.sessionStopping(this);
+		}
+		for (StreamSessionNode streamSessionNode : nodes) {
+			streamSessionNode.stopNode();
+		}
+
+		StreamSessionStop stop = new StreamSessionStop();
 		try {
-			start.setSpec(StreamSessionSpecBuilder.build(this, sessionId));
+			stop.setSpec(StreamSessionSpecBuilder.build(this, sessionId));
 
 		} catch (Exception e) {
 			logger.error("Exception building session spec " + e.toString());
@@ -246,7 +255,37 @@ public class StreamSessionImpl implements StreamSession {
 			ext.sessionStarted(this);
 		}
 		EStreamSessionStarted started = new EStreamSessionStarted(this);
+	
 		eventNode.event(started);
+	}
+
+	private void handleSessionStopped() {
+		StreamSessionStop stop = new StreamSessionStop();
+		try {
+			stop.setSpec(StreamSessionSpecBuilder.build(this, configService.getKafkaBrokers()));
+			try {
+
+				cluster.pojoEvent(stop);
+				logger.info(MarkerFactory.getMarker(sessionId), "Published Stream Session Stop Message");
+			} catch (Exception e) {
+				logger.error("Exception sending session start message " + e.toString());
+			}
+			try {
+				sessionEntity
+						.setStopDateTime(LocalDateTime.now(DTimeZone.toZoneId(input.getController().getTimeZone())));
+				sessionEntity.setState(status.getState());
+				saveSessionEntity();
+			} catch (Exception e) {
+				logger.error("Exception updating session entity stopped ");
+			}
+		} catch (Exception e) {
+			logger.error("Exception building session spec " + e.toString());
+			logger.error("No start session getting sent to cluster");
+		}
+
+		EStreamSessionStopped stopped = new EStreamSessionStopped(this);
+		eventNode.event(stopped);
+
 	}
 
 	private class NodeCallback implements StreamSessionNodeCallback {
@@ -303,7 +342,11 @@ public class StreamSessionImpl implements StreamSession {
 
 		@Override
 		public void nodeStopped(StreamSessionNode node) {
-			logger.info(MarkerFactory.getMarker(getSessionId()), "Session Node P{ top Callback", node.getNodeId());
+			if (logger.isDebugEnabled()) {
+				logger.debug(MarkerFactory.getMarker(getSessionId()), "Session Node {} stop Callback",
+						node.getNodeId());
+			}
+
 			int count = stopCountDown.incrementAndGet();
 			if (count == nodes.size()) {
 				if (status.getProblems().size() > 0) {
@@ -313,37 +356,15 @@ public class StreamSessionImpl implements StreamSession {
 					logger.info(MarkerFactory.getMarker(getSessionId()), " Stopped Session with no errors ");
 					status.setState(StreamSessionState.Completed);
 				}
-				sessionEntity
-						.setStopDateTime(LocalDateTime.now(DTimeZone.toZoneId(input.getController().getTimeZone())));
-				sessionEntity.setState(status.getState());
-				saveSessionEntity();
+				handleSessionStopped();
 			}
 		}
+		
+		
+		
+		
+		
 
-	}
-
-	private class StopMonitor extends Thread {
-
-		public void run() {
-			while (!interrupted()) {
-				int count = 9;
-				try {
-					Thread.sleep(1000);
-					if (status.getState() == StreamSessionState.Completed
-							|| status.getState() == StreamSessionState.CompletedErrors) {
-						logger.info(MarkerFactory.getMarker(getName()), "Sesssion Stopped in " + count + "seconds");
-						return;
-					}
-					count++;
-					if (count > 30) {
-						logger.warn(MarkerFactory.getMarker(getSessionId()), "not stopped after 30 seconds:");
-						return;
-					}
-				} catch (Exception e) {
-					// TODO: handle exception
-				}
-			}
-		}
 	}
 
 }

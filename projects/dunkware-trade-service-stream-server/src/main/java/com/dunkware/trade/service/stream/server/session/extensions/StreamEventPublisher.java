@@ -28,10 +28,10 @@ public class StreamEventPublisher implements StreamSessionExtension {
 		String snapshotTopic = "stream_" + node.getStream().getName().toLowerCase() + "_event_snapshot";
 		
 		String signalTopic = "stream_" + node.getStream().getName().toLowerCase() + "_event_signal";
-
+		String timeTopic = "stream_" + node.getStream().getName().toLowerCase() + "_event_time";
 		StreamEventPublisherExtType extType = new StreamEventPublisherExtType();
 		extType.setKafkaBrokers(kafkaBrokers);
-		
+		extType.setTimeTopic(timeTopic);
 		extType.setSnapshotTopic(snapshotTopic);
 		extType.setSignalTopic(signalTopic);
 		extType.setKafkaIdentifier(node.getNodeId());

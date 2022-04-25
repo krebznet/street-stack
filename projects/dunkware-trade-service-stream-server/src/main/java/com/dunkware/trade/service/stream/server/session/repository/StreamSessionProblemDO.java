@@ -17,7 +17,7 @@ public class StreamSessionProblemDO {
 		@ManyToOne
 		private StreamSessionDO session; 
 		
-		@Column(length = 4000)
+		@Column(length = 65555)
 		private String problem;
 
 		public long getId() {

@@ -19,6 +19,7 @@ import org.hibernate.annotations.LazyCollection;
 import org.hibernate.annotations.LazyCollectionOption;
 
 import com.dunkware.common.spec.locale.DCountry;
+import com.dunkware.trade.service.stream.json.controller.spec.StreamState;
 import com.dunkware.trade.service.stream.server.session.repository.StreamSessionDO;
 
 @Entity(name = "stream_stream")
@@ -45,6 +46,8 @@ public class StreamDO {
 	@LazyCollection(LazyCollectionOption.FALSE)
 	@JoinColumn(name = "stream_id")
 	private List<StreamVersionDO> versions = new ArrayList<StreamVersionDO>();
+	
+	private StreamState state = null;
 	
 	public long getId() {
 		return id;
@@ -109,6 +112,16 @@ public class StreamDO {
 	public void setCountry(DCountry country) {
 		this.country = country;
 	}
+
+	public StreamState getState() {
+		return state;
+	}
+
+	public void setState(StreamState state) {
+		this.state = state;
+	}
+	
+	
 	
 	
 	
