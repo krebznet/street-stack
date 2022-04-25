@@ -44,7 +44,7 @@ public class ClusterStatsPublisher {
 				try {
 					String serialized = DJson.serialize(cluster.getStats());
 					pingProducer.sendBytes(serialized.getBytes());
-					Thread.sleep(5000);
+					Thread.sleep(1000);
 				} catch (Exception e) {
 					logger.error("Cluster Ping Sender Failed " + cluster.getNodeId() + " " + e.toString());
 				}
