@@ -73,7 +73,7 @@ public class FeedStream implements TickHandler {
 		String timestamp = formatDateTime;
 		String random = DUUID.randomUUID(4);
 		this.id = feedSpec.getName() + "_" + timestamp + "_" + random;
-		this.kafkaTopic = "stree_feed" + feedSpec.getName() + "_" + timestamp + "_" + random;
+		this.kafkaTopic = "street_feed" + feedSpec.getName() + "_" + timestamp + "_" + random;
 		if (logger.isDebugEnabled()) {
 			logger.debug("Tick Feed {} Starting ID {} Topic {}", feedSpec.getName(), id,kafkaTopic);
 		}
