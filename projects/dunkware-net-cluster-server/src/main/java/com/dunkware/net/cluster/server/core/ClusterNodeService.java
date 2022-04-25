@@ -73,7 +73,11 @@ public class ClusterNodeService implements DKafkaByteHandler2  {
 		// okay deserialize from json bytes
 		ClusterNodeStats stats = null;
 		try {
+			
 			 stats = DJson.getObjectMapper().readValue(record.value(), ClusterNodeStats.class);	
+			 if(logger.isTraceEnabled()) { 
+					logger.trace("Consumed ClusterNodeStats From " + stats.getId()	);
+				}
 			 statsQueue.add(stats);
 		} catch (Exception e) {
 			logger.error("Exception deserializing ClusterNodeStats " + e.toString());
@@ -123,7 +127,7 @@ public class ClusterNodeService implements DKafkaByteHandler2  {
 						break;
 					}
 					count++;
-					if(count > 12) { 
+					if(count > 35) { 
 						throw new Exception("Node " + id + " not found after waiting 3 seconds");
 					}
 				} catch (Exception e) {
