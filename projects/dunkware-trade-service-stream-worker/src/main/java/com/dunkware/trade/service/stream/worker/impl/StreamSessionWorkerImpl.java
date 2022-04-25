@@ -118,6 +118,7 @@ public class StreamSessionWorkerImpl implements StreamSessionWorker, ClusterJobR
 		spec.setTickCount(stream.getTickRouter().getTickCount());
 		spec.setSignalCount(signalService.getSignalCount());
 		spec.setLastDataTickTime(stream.getTickRouter().getLastDataTickTime());
+		spec.setNodeId(cluster.getNodeId());
 		return spec;
 	}
 
