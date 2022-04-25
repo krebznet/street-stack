@@ -41,7 +41,7 @@
 		<port>5678</port>
 		<additionalField>
 			<key>node</key>
-			<value>cluster</value>
+			<value>worker</value>
 		</additionalField>
 	</appender>
 
