@@ -19,13 +19,11 @@ import com.dunkware.net.proto.stream.GStreamSpec;
 import com.dunkware.net.proto.stream.GStreamSpecsResponse;
 import com.dunkware.trade.service.data.service.config.RuntimeConfig;
 import com.dunkware.trade.service.data.service.grpc.GrpcStreamServiceClient;
-import com.dunkware.trade.service.data.service.message.StreamMessageHandler;
-import com.dunkware.trade.service.data.service.message.StreamMessageService;
 import com.dunkware.trade.service.data.service.repository.DataStreamEntity;
 import com.dunkware.trade.service.data.service.repository.DataStreamEntityRepo;
 
 @Service
-public class DataStreamService implements StreamMessageHandler {
+public class DataStreamService   {
 
 	@Autowired
 	private RuntimeConfig configService;
@@ -33,9 +31,7 @@ public class DataStreamService implements StreamMessageHandler {
 	@Autowired
 	private ApplicationContext ac;
 
-	@Autowired
-	private StreamMessageService messageService;
-
+	
 	@Autowired
 	private DataStreamEntityRepo streamRepo;
 	
@@ -89,14 +85,12 @@ public class DataStreamService implements StreamMessageHandler {
 				streamRepo.save(ent);
 			}
 		}
-		messageService.addHandler(this);
+		
 		try {
 
 		} catch (Exception e) {
-		
-			System.err.println(e.toString());
-			e.printStackTrace();
-			// TODO: handle exception
+			logger.error("Exception starting data stream service " + e.toString(),e);
+			
 		}
 	}
 

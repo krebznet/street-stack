@@ -11,15 +11,13 @@ import com.dunkware.net.cluster.node.Cluster;
 import com.dunkware.net.cluster.node.anot.AClusterPojoEventHandler;
 import com.dunkware.trade.service.data.json.enums.DataStreamSessionState;
 import com.dunkware.trade.service.data.service.config.RuntimeConfig;
-import com.dunkware.trade.service.data.service.message.StreamMessageHandler;
-import com.dunkware.trade.service.data.service.message.StreamMessageService;
 import com.dunkware.trade.service.data.service.repository.DataStreamEntity;
 import com.dunkware.trade.service.data.service.repository.DataStreamEntityRepo;
 import com.dunkware.trade.service.data.service.util.DataMarkers;
 import com.dunkware.trade.service.stream.json.message.StreamSessionStart;
 import com.dunkware.trade.service.stream.json.message.StreamSessionStop;
 
-public class DataStream implements StreamMessageHandler {
+public class DataStream   {
 
 	private Logger logger = LoggerFactory.getLogger(getClass());
 
@@ -32,9 +30,7 @@ public class DataStream implements StreamMessageHandler {
 	@Autowired
 	private Cluster cluster;
 	
-	@Autowired
-	private StreamMessageService messageService;
-
+	
 	@Autowired
 	private DataStreamEntityRepo streamRepo;
 
@@ -45,7 +41,6 @@ public class DataStream implements StreamMessageHandler {
 	public void start(DataStreamEntity entity) {
 		cluster.addComponent(this);
 		this.streamEntity = entity;
-		messageService.addHandler(this);
 		logger.info("Started Data Stream " + entity.getName());
 	}
 

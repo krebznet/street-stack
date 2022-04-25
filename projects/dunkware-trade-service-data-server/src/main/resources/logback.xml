@@ -15,6 +15,17 @@
 
 
 
+		<appender name="FLUENT"
+		class="ch.qos.logback.more.appenders.DataFluentAppender">
+		<tag>streetdev</tag>
+		<label>logging</label>
+		<remoteHost>testrock2.dunkware.net</remoteHost>
+		<port>5678</port>
+		<additionalField>
+			<key>node</key>
+			<value>data</value>
+		</additionalField>
+	</appender>
 	
   
 	
@@ -24,9 +35,10 @@
 	</root>
 
 	
-	<logger name="com.dunkware" level="INFO" additivity="false">
+	<logger name="com.dunkware" level="DEBUG" additivity="false">
 		
 		<appender-ref ref="CONSOLE" additivity="false" />
+		<appender-ref ref="FLUENT" additivity="false" />
 	
 	
 	</logger>

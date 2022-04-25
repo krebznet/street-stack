@@ -9,6 +9,8 @@ import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.LinkedBlockingQueue;
 import java.util.concurrent.TimeUnit;
 
+import javax.servlet.WriteListener;
+
 import org.apache.kafka.clients.consumer.ConsumerRecord;
 import org.bson.Document;
 import org.slf4j.Logger;
@@ -66,20 +68,14 @@ public class DataStreamSessionSnapshotWriter implements DKafkaByteHandler2 {
 
 	private BucketWriter bucketWriter;
 	private QueueMonitor queueMonitor;
-	private DebugLogger debugLogger;
+	private WriterLogger writeLogger;
 
 	private DataStream stream;
 	private DataStreamSession session;
 	
-	private volatile long snapshotConsumeCount; 
-	private volatile long snapshotWriteCount; 
-	private volatile long snapshotBucketCount; 
-	
 
 	private DataStreamSessionSnapshotWriterMetrics metrics;
 	
-	
-
 	@Value("${snapshot.writer.batchsize}")
 	private int bucketBatchSize;
 
@@ -93,8 +89,6 @@ public class DataStreamSessionSnapshotWriter implements DKafkaByteHandler2 {
 
 	private GStreamSessionStop stopEvent;
 	
-	
-	
 	private String mongoCollectionName;
 
 	public DataStreamSessionSnapshotWriter() {
@@ -103,10 +97,11 @@ public class DataStreamSessionSnapshotWriter implements DKafkaByteHandler2 {
 
 	public void start(DataStreamSession session) throws Exception {
 		
-		metrics = new DataStreamSessionSnapshotWriterMetrics(this);
+		metrics = new DataStreamSessionSnapshotWriterMetrics();
+		metrics.start(this);
 		this.session = session;
 		this.stream = session.getStream();
-		
+		logger.info(MarkerFactory.getMarker(session.getIdentifier()), "Starting Snapshot Writer");
 		timeZone = DTimeZone.toZoneId(session.getStream().getTimeZone());
 		try {
 			mongoClient = MongoClients.create(config.getMongoURL());
@@ -128,7 +123,7 @@ public class DataStreamSessionSnapshotWriter implements DKafkaByteHandler2 {
 		}
 
 		DKafkaByteConsumer2Spec spec = DKafkaByteConsumer2SpecBuilder.newBuilder(ConsumerType.AllPartitions, OffsetType.Latest)
-				.setBrokerString(kafkaBrokers).addTopic("stream_" + session.getStream().getName().toLowerCase() + "_snapshots")
+				.setBrokerString(session.getSpec().getKafkaBrokers()).addTopic("stream_" + session.getStream().getName().toLowerCase() + "_event_snapshot")
 				.setClientAndGroup("d" + DUUID.randomUUID(5), "d" + DUUID.randomUUID(6)).build();
 
 		try {
@@ -138,8 +133,7 @@ public class DataStreamSessionSnapshotWriter implements DKafkaByteHandler2 {
 			kafkaConsumer.start();
 			kafkaConsumer.addStreamHandler(this);
 		} catch (Exception e) {
-		
-			logger.error("Exception connecting to kafka consumer " + e.toString(), e);
+			logger.error(MarkerFactory.getMarker(session.getIdentifier()),"Exception connecting to kafka consumer " + e.toString(), e);
 			throw new Exception("Exception creating kafka byte consumer " + e.toString());
 		}
 
@@ -147,6 +141,10 @@ public class DataStreamSessionSnapshotWriter implements DKafkaByteHandler2 {
 		bucketWriter.start();
 		queueMonitor = new QueueMonitor();
 		queueMonitor.start();
+		writeLogger = new WriterLogger();
+		writeLogger.start();
+		
+		
 
 	}
 	
@@ -254,24 +252,29 @@ public class DataStreamSessionSnapshotWriter implements DKafkaByteHandler2 {
 				
 				 bucketWriter.interrupt();
 				 queueMonitor.interrupt();
-			
+				 writeLogger.interrupt();
 				 session.snapshotWriterComplete();
 				  
 		}
 	}
 
-	private class DebugLogger extends Thread {
+	private class WriterLogger extends Thread {
 
 		public void run() {
 			while (!interrupted()) {
 				try {
-					Thread.sleep(5000);
-
+					Thread.sleep(30000);
+					if(logger.isDebugEnabled()) { 
+						logger.debug(MarkerFactory.getMarker(session.getIdentifier()), 
+								"Consumed {} Snapshot Write {} Bucket Write {} Pause Time {} Last Consume Time {} Error Count {}",
+								metrics.getEntitySnapshotConsumed(), metrics.getSnapshotWriteCount(), metrics.getPauseTime(),  metrics.getLastSnapshotConsumeTime(),metrics.getErrorCount());
+					}
+					
 				} catch (Exception e) {
 					if (e instanceof InterruptedException) {
 						return;
 					}
-					logger.error("Debug Logger Exception " + e.toString());
+					logger.error("Writer Logger Exception " + e.toString());
 					;
 				}
 			}
@@ -325,14 +328,13 @@ public class DataStreamSessionSnapshotWriter implements DKafkaByteHandler2 {
 				DataStreamSessionSnapshotWriterBucket bucket = null;
 				try {
 					bucket = writeQueue.poll(15, TimeUnit.SECONDS);
-					metrics.bucketWrite(bucket);
 					if (bucket == null && pendingWrites.size() > 0) {
 						// write pending writes if no snapshot received for 15 seconds;
 						sw.start();
 						snapshotCollection.bulkWrite(pendingWrites);
 						sw.stop();
 						//metrics.bucketWriteBatch(pendingWrites.size(), bucketBatchSize);
-						
+						metrics.bucketWriteBatch(pendingWrites.size(),sw.getCompletedSeconds());
 						pendingWrites.clear();
 						continue;
 					}
@@ -345,19 +347,14 @@ public class DataStreamSessionSnapshotWriter implements DKafkaByteHandler2 {
 					logger.error("Exception pulling bucket snapshot  " + e.toString(), e);
 				}
 				try {
-					if (logger.isDebugEnabled()) {
-
-						logger.debug("Adding Entity Bucket to Write Q for {} Start Time {} Stop Time {} Size {}",
-								bucket.getIdentifier(), DunkTime.format(bucket.getStart(), DunkTime.HH_MMM_SS),
-								DunkTime.format(bucket.getStop(), DunkTime.HH_MMM_SS), bucket.getSnapshots().size());
-
-					}
+	
 					Document document = DataStreamWriterHelper.buildSnapshotBucket(bucket,
 							session.getStream().getTimeZone());
 					pendingWrites.add(new InsertOneModel<Document>(document));
 				} catch (Exception e) {
 					// errorLogCount.incrementAndGet();
 					logger.error("Exception building Snapshot Bucket Document " + e.toString());
+					metrics.error("Exception Building Snapshot Document " + e.toString());
 					continue;
 				}
 				if (pendingWrites.size() > bucketBatchSize) {
@@ -365,13 +362,12 @@ public class DataStreamSessionSnapshotWriter implements DKafkaByteHandler2 {
 						sw.start();
 						snapshotCollection.bulkWrite(pendingWrites);
 						sw.stop();
-						//metrics.bucketWriteBatch(pendingWrites.size(), bucketBatchSize);
-
+						metrics.bucketWriteBatch(pendingWrites.size(), sw.getCompletedSeconds());;
 						pendingWrites.clear();
 
 					} catch (Exception e) {
 						logger.error("Exception bulk write snapshot bucket " + e.toString(), e);
-						// errorLogCount.incrementAndGet();
+						metrics.error("Exception writing buckets " + e.toString());
 					}
 				}
 			}

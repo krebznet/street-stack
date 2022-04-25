@@ -65,6 +65,8 @@ public class DataStreamSessionSignalWriter implements DKafkaByteHandler2 {
 
 	
 	public void startSession(DataStreamSession session) throws Exception {
+		logger.info(MarkerFactory.getMarker(session.getIdentifier()), "Starting Singal Writer Service");
+		
 		this.session = session;
 		this.stream = session.getStream();
 		this.timeZone = session.getSpec().getTimeZone();
@@ -83,12 +85,12 @@ public class DataStreamSessionSignalWriter implements DKafkaByteHandler2 {
 
 		} catch (Exception e) {
 		
-			logger.error("Exceptoon Init Mongo DB " + e.toString());
+			logger.error("Exceptoon Init Mongo DB in Session Singal Writer  " + e.toString());
 			throw new Exception("Mongo Setup/Connection Exception " + e.getLocalizedMessage(), e);
 		}
 		
-		DKafkaByteConsumer2Spec spec = DKafkaByteConsumer2SpecBuilder.newBuilder(ConsumerType.AllPartitions, OffsetType.Latest).setBrokerString("localhost:9091")
-				.addTopic("stream_us_equity_signals").setClientAndGroup("d" + DUUID.randomUUID(5), "d" + DUUID.randomUUID(6)).build();
+		DKafkaByteConsumer2Spec spec = DKafkaByteConsumer2SpecBuilder.newBuilder(ConsumerType.AllPartitions, OffsetType.Latest).setBrokerString(session.getSpec().getKafkaBrokers())
+				.addTopic("stream_" + session.getStream().getName().toLowerCase() + "_even_signal").setClientAndGroup("d" + DUUID.randomUUID(5), "d" + DUUID.randomUUID(6)).build();
 				
 		try {
 			

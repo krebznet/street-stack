@@ -1,12 +1,14 @@
 package com.dunkware.trade.service.data.service.stream.writers;
 
+import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.atomic.AtomicLong;
 
+import com.dunkware.common.util.helpers.DProtoHelper;
 import com.dunkware.common.util.stopwatch.DStopWatch;
-import com.dunkware.common.util.time.DunkTime;
-import com.dunkware.net.core.runtime.core.helpers.GProtoHelper;
 import com.dunkware.net.proto.stream.GEntitySnapshot;
 import com.dunkware.net.proto.stream.GStreamSessionStop;
 import com.dunkware.trade.service.data.json.stream.session.DataStreamSessionSnapshotWriterStats;
@@ -32,14 +34,18 @@ public class DataStreamSessionSnapshotWriterMetrics {
 	private DataStreamSessionSnapshotWriterBucket lastWriteBucket;
 	private int pauseCount; 
 	
+	private List<String> errors = new ArrayList<String>();
+	
 	private DataStreamSessionSnapshotWriter writer;
 	
-	public DataStreamSessionSnapshotWriterMetrics(DataStreamSessionSnapshotWriter writer) {
-		
-	}
+	
 	
 	public void start(DataStreamSessionSnapshotWriter writer) { 
 		this.writer = writer;
+	}
+	
+	public void error(String error) { 
+		this.errors.add(error);
 	}
 
 	public void snapshotConsumed(GEntitySnapshot snapshot) { 
@@ -53,20 +59,12 @@ public class DataStreamSessionSnapshotWriterMetrics {
 		 }
 	}
 	
-	public void bucketWrite(DataStreamSessionSnapshotWriterBucket bucket) { 
-		if(entityBucketCounts.get(bucket.getIdentifier()) == null ) { 
-			entityBucketCounts.put(bucket.getIdentifier(), new AtomicLong(1));
-		} else { 
-			entityBucketCounts.get(bucket.getIdentifier()).incrementAndGet();
-		}
-	}
 	
 	public void sessionStopEvent(GStreamSessionStop stop) {
 		
 	}
 	
-	public void bucketWriteBatch(int size, double speed, DataStreamSessionSnapshotWriterBucket lastBucket) {
-		this.lastWriteBucket = lastBucket;
+	public void bucketWriteBatch(int size, double speed ) {;
 		lastBucketWriteSpeed = speed;
 		lastBucketWriteSize = size;
 	}
@@ -106,6 +104,67 @@ public class DataStreamSessionSnapshotWriterMetrics {
 	public double getPauseTime() { 
 		return pauseTime.get();
 	}
+	
+	public int getErrorCount() { 
+		return errors.size();
+	}
+
+	public AtomicLong getSnapshotConsumeCount() {
+		return snapshotConsumeCount;
+	}
+
+	public GEntitySnapshot getLastConsumeSnapshot() {
+		return lastConsumeSnapshot;
+	}
+
+	public GEntitySnapshot getLastWriteSnapshot() {
+		return lastWriteSnapshot;
+	}
+
+	public AtomicLong getSnapshotWriteCount() {
+		return snapshotWriteCount;
+	}
+
+	public AtomicLong getSnapshotWriteBucketCount() {
+		return snapshotWriteBucketCount;
+	}
+
+	public double getLastBucketWriteSpeed() {
+		return lastBucketWriteSpeed;
+	}
+
+	public double getLastBucketWriteSize() {
+		return lastBucketWriteSize;
+	}
+	
+	public LocalDateTime getLastSnapshotConsumeTime() { 
+		if(lastConsumeSnapshot != null) { 
+			return DProtoHelper.toLocalDateTime(lastConsumeSnapshot.getTime(), writer.getSession().getStream().getTimeZone());
+		}
+		return null;
+	}
+
+	public Map<String, AtomicLong> getEntityBucketCounts() {
+		return entityBucketCounts;
+	}
+
+	public Map<String, AtomicLong> getEntitySnapshotConsumed() {
+		return entitySnapshotConsumed;
+	}
+
+	public DataStreamSessionSnapshotWriterBucket getLastWriteBucket() {
+		return lastWriteBucket;
+	}
+	
+	public LocalDateTime lastBucketWriteTime() { 
+		return DProtoHelper.toLocalDateTime(lastWriteSnapshot.getTime(), writer.getSession().getStream().getTimeZone());
+	}
+	
+	public List<String> getErrors() {
+		return errors;
+	}
+	
+	
 	
 	
 }
