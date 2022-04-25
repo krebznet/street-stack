@@ -116,6 +116,7 @@ public class ClusterEventService implements DKafkaByteHandler2 {
 	@Override
 	public void record(ConsumerRecord<String, byte[]> record) {
 		try {
+			
 			GClusterEvent event = GClusterEvent.parseFrom(record.value());
 			eventQueue.put(event);
 		} catch (Exception e) {
@@ -177,6 +178,7 @@ public class ClusterEventService implements DKafkaByteHandler2 {
 		public void handlePojoEvent(GClusterEvent event) { 
 			GClusterPojoEvent pojoEvent = event.getPojoEvent();
 			String pojoClass = pojoEvent.getClassName();
+			logger.info("Node {} Received Pojo Event {}",cluster.getNodeId(), pojoClass);
 			Class pojoClazz = null;
 			Object parsedPojo = null;
 			try {
