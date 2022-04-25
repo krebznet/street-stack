@@ -49,9 +49,20 @@ public class DataStreamService   {
 	@Transactional
 	@PostConstruct
 	public void load() {
+		logger.info("Starting Dat Stream Service");
 		// first popuplate stream entity map
 		for (DataStreamEntity ent : streamRepo.findAll()) {
 			dataStreamEntities.put(ent.getName(), ent);
+			logger.info("Starting stored data stream " + ent.getName());
+			DataStream stream = new DataStream();
+			ac.getAutowireCapableBeanFactory().autowireBean(stream);
+			dataStreams.put(ent.getName(), stream);
+			try {
+				stream.start(ent);	
+			} catch (Exception e) {
+				logger.error("Exception starting stored data stream " + e.toString());
+			}
+			
 		}
 		
 		GStreamSpecsResponse streamSpecs = null;
@@ -64,14 +75,20 @@ public class DataStreamService   {
 			System.exit(1);
 		}
 		for (GStreamSpec gspec : streamSpecs.getSpecsList()) {
-			if (dataStreamEntities.get(gspec.getIdentifier()) != null) {
+			if (dataStreamEntities.get(gspec.getIdentifier()) == null) {
 				// load it
+				logger.info("Creating new data stream from spec identifier " + gspec.getIdentifier());
+				DataStreamEntity ent = new DataStreamEntity();
+				ent.setName(gspec.getIdentifier());
+				ent.setCreated(LocalDateTime.now(DTimeZone.toZoneId(DTimeZone.NewYork)));
+				streamRepo.save(ent);
+				dataStreamEntities.put(ent.getName(), ent);
 				DataStream dataStream = new DataStream();
+				this.dataStreams.put(ent.getName(), dataStream);
 				ac.getAutowireCapableBeanFactory().autowireBean(dataStream);
 				try {
-					
+					logger.info("Starting New Data Stream " + gspec.getIdentifier());
 					dataStream.start(dataStreamEntities.get(gspec.getIdentifier()));
-					dataStreams.put(gspec.getIdentifier(), dataStream);
 				} catch (Exception e) {
 					logger.error("Exception Starting Data Stream " + gspec.getIdentifier() + " " + e.toString(), e);
 				}
@@ -79,19 +96,10 @@ public class DataStreamService   {
 			} else { // else
 
 				logger.info("Creating New DataStream For " + gspec.getIdentifier());
-				DataStreamEntity ent = new DataStreamEntity();
-				ent.setName(gspec.getIdentifier());
-				ent.setCreated(LocalDateTime.now(DTimeZone.toZoneId(DTimeZone.NewYork)));
-				streamRepo.save(ent);
+				
 			}
 		}
 		
-		try {
-
-		} catch (Exception e) {
-			logger.error("Exception starting data stream service " + e.toString(),e);
-			
-		}
 	}
 
 	public boolean streamExists(String name) {
