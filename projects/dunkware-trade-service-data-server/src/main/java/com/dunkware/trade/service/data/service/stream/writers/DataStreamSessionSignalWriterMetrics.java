@@ -1,35 +1,50 @@
 package com.dunkware.trade.service.data.service.stream.writers;
 
+import java.time.LocalDateTime;
+import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
+import com.dunkware.common.util.dtime.DDateTime;
+import com.dunkware.common.util.helpers.DProtoHelper;
 import com.dunkware.net.proto.stream.GEntitySignal;
-import com.dunkware.trade.service.data.json.stream.session.DataStreamSessionSnapshotWriterStats;
+import com.dunkware.trade.service.data.json.stream.writer.DataStreamSignalWriterSessionStats;
+import com.dunkware.xstream.xScript.SignalType;
 
 public class DataStreamSessionSignalWriterMetrics {
 	
-	private Map<String,SignalType> signalTypes = new ConcurrentHashMap<String,SignalType>();
+	private Map<String,SignalType> signalCountMap = new ConcurrentHashMap<String,SignalType>();
+	private int signalConsumeCount; 
+	private int signalWriteCount;
 	
 	private DataStreamSessionSignalWriter writer;
 	
 	private int lastBatchWriteSize = 0;
 	private double lastBatchWriteSpeed = 0;
 	
-	
+	private GEntitySignal lastWriteSignal;
 	
 	public DataStreamSessionSignalWriterMetrics() {
 		
 	}
 	
+	public void signalConsumed(GEntitySignal signal) { 
+		signalConsumeCount++;
+	}
 	
 	 
 	public int getLastBatchWriteSize() {
 		return lastBatchWriteSize;
 	}
 
-	public DataStreamSessionSnapshotWriterStats getStats() { 
-		DataStreamSessionSnapshotWriterStats stats = new DataStreamSessionSnapshotWriterStats();
-		
+	public DataStreamSignalWriterSessionStats getStats() { 
+		DataStreamSignalWriterSessionStats stats = new DataStreamSignalWriterSessionStats();
+		stats.setSignalWriteCount(signalWriteCount);
+		stats.setSignalConsumeCount(signalConsumeCount);
+		if(lastWriteSignal != null) { 
+			LocalDateTime lastTime = DProtoHelper.toLocalDateTime(lastWriteSignal.getTime(), writer.getSession().getStream().getTimeZone());
+			stats.setLastSignalWriteTime(DDateTime.from(lastTime));
+		}
 		return stats;
 	}
 	
@@ -38,15 +53,13 @@ public class DataStreamSessionSignalWriterMetrics {
 		return lastBatchWriteSpeed;
 	}
 
-	public void setLastBatchWriteSpeed(double lastBatchWriteSpeed) {
-		this.lastBatchWriteSpeed = lastBatchWriteSpeed;
+	public void setLastBatchWrite(List<GEntitySignal> signals, int size, double speed) { 
+		this.lastBatchWriteSize = size; 
+		this.lastBatchWriteSpeed = speed; 
+		signalWriteCount = signalWriteCount + signals.size();
+		lastWriteSignal = signals.get(signals.size() - 1);
+		
 	}
-
-	public void setLastBatchWriteSize(int lastBatchWriteSize) {
-		this.lastBatchWriteSize = lastBatchWriteSize;
-	}
-
-
 	public void start(DataStreamSessionSignalWriter writer) {
 		this.writer = writer;
 		
@@ -56,27 +69,6 @@ public class DataStreamSessionSignalWriterMetrics {
 		
 	}
 	
-	public void signal(GEntitySignal signal) {
-		SignalType type = signalTypes.get(signal.getIdentifier());
-		if(type == null) { 
-			type = new SignalType();
-			type.identifier = signal.getIdentifier();
-			type.id = signal.getId();
-			
-			signalTypes.put(signal.getIdentifier(), type);
-		} 
-		type.incrementCount();
-	}
 	
-	
-	public static class SignalType {
-			public  String identifier;
-			public  int id; 
-			public  long count;
-			
-			public  void incrementCount() { 
-				count++;
-			}
-	}
 
 }

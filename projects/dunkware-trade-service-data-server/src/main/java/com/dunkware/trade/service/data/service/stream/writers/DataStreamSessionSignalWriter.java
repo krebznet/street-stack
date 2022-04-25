@@ -23,6 +23,7 @@ import com.dunkware.common.util.uuid.DUUID;
 import com.dunkware.net.proto.stream.GEntitySignal;
 import com.dunkware.net.proto.stream.GStreamEvent;
 import com.dunkware.net.proto.stream.GStreamEventType;
+import com.dunkware.trade.service.data.json.stream.writer.DataStreamSignalWriterSessionStats;
 import com.dunkware.trade.service.data.service.config.RuntimeConfig;
 import com.dunkware.trade.service.data.service.stream.DataStream;
 import com.dunkware.trade.service.data.service.stream.DataStreamSession;
@@ -42,6 +43,7 @@ public class DataStreamSessionSignalWriter implements DKafkaByteHandler2 {
 	@Autowired
 	private RuntimeConfig config;
 	
+
 	
 
 	private MongoClient mongoClient;
@@ -90,7 +92,7 @@ public class DataStreamSessionSignalWriter implements DKafkaByteHandler2 {
 		}
 		
 		DKafkaByteConsumer2Spec spec = DKafkaByteConsumer2SpecBuilder.newBuilder(ConsumerType.AllPartitions, OffsetType.Latest).setBrokerString(session.getSpec().getKafkaBrokers())
-				.addTopic("stream_" + session.getStream().getName().toLowerCase() + "_even_signal").setClientAndGroup("d" + DUUID.randomUUID(5), "d" + DUUID.randomUUID(6)).build();
+				.addTopic("stream_" + session.getStream().getName().toLowerCase() + "_event_signal").setClientAndGroup("d" + DUUID.randomUUID(5), "d" + DUUID.randomUUID(6)).build();
 				
 		try {
 			
@@ -106,6 +108,10 @@ public class DataStreamSessionSignalWriter implements DKafkaByteHandler2 {
 		writer = new SignalWriter();
 		writer.start();
 
+	}
+	
+	public DataStreamSignalWriterSessionStats getStats() { 
+		return metrics.getStats();
 	}
 
 	@Override
@@ -156,43 +162,52 @@ public class DataStreamSessionSignalWriter implements DKafkaByteHandler2 {
 			
 		}
 	}
+	
+	public int getWriteQueueSize() { 
+		return writeQueue.size();
+	}
+	
+	public DataStreamSession getSession() { 
+		return session;
+	}
 
 	private class SignalWriter extends Thread {
 
 		private List<InsertOneModel<Document>> pendingWrites = new ArrayList<InsertOneModel<Document>>();
-
+		private List<GEntitySignal> pendingSignalWrites = new ArrayList<GEntitySignal>();
 		public void run() {
 			DStopWatch watch = DStopWatch.create();
 			while (!interrupted()) {
 				try {
 					// just publish all signals received every 5 seconds
-					Thread.sleep(5000);
+					Thread.sleep(3000);
 					List<GEntitySignal> signals = new ArrayList<GEntitySignal>();
 					writeQueue.removeAll(signals);
 					if (signals.size() == 0) {
 						continue;
 					}
-					metrics.setLastBatchWriteSize(signals.size());
 					try {
 						for (GEntitySignal gEntitySignal : signals) {
 							Document signalDocument = MongoCaptureHelper.buildEntitySignal(gEntitySignal,
 									stream.getTimeZone());
 							pendingWrites.add(new InsertOneModel<Document>(signalDocument));
+							pendingSignalWrites.add(gEntitySignal);
 						}
 						
 						try {
 							watch.start();
 							signalCollection.bulkWrite(pendingWrites);
 							watch.stop();
-							metrics.setLastBatchWriteSpeed(watch.getCompletedSeconds());
+							metrics.setLastBatchWrite(pendingSignalWrites, pendingWrites.size(), watch.getCompletedSeconds());
 							pendingWrites.clear();
+							pendingSignalWrites.clear();
 						} catch (Exception e) {
 							logger.error(DataMarkers.getServiceMarker(),
 									"Exception Bulk Write Stream {} Session {} Signals " + e.toString(),
 									stream.getName(), sessionIdentifier);
 						}
 					} catch (Exception e) {
-						// TODO: handle exception
+						logger.error("Errror wriring sigal " + e.toString());
 					}
 
 				} catch (Exception e) {
