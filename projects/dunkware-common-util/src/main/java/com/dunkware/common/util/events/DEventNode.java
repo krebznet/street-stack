@@ -115,7 +115,7 @@ public class DEventNode {
 						
 					}
 				} catch (Exception e) {
-					
+					logger.error("Error in event node sent " + e.toString());
 				} finally { 
 					eventHandlerLock.release();
 				}
