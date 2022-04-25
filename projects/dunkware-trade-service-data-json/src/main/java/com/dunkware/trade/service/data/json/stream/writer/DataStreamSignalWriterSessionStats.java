@@ -3,72 +3,39 @@ package com.dunkware.trade.service.data.json.stream.writer;
 import com.dunkware.common.util.dtime.DDateTime;
 
 public class DataStreamSignalWriterSessionStats {
-
-	private DDateTime startMessageDateTime; 
-	private DDateTime stopMessageDateTime;
-	private DDateTime startSessionDateTime;  
-	private DDateTime stopSessionDateTime;
 	
-	private long signalCount; 
-	private long writeCount; 
-	private long queueSize; 
-	private double writeTime; 
-	private int writeSize;
-	
-	public DDateTime getStartMessageDateTime() {
-		return startMessageDateTime;
+	private int signalWriteCount; 
+	private int signalConsumeCount; 
+	private int writeQueueSize;
+	private DDateTime lastSignalWriteTime;
+	public int getSignalWriteCount() {
+		return signalWriteCount;
 	}
-	public void setStartMessageDateTime(DDateTime startMessageDateTime) {
-		this.startMessageDateTime = startMessageDateTime;
+	public void setSignalWriteCount(int signalWriteCount) {
+		this.signalWriteCount = signalWriteCount;
 	}
-	public DDateTime getStopMessageDateTime() {
-		return stopMessageDateTime;
+	public int getSignalConsumeCount() {
+		return signalConsumeCount;
 	}
-	public void setStopMessageDateTime(DDateTime stopMessageDateTime) {
-		this.stopMessageDateTime = stopMessageDateTime;
+	public void setSignalConsumeCount(int signalConsumeCount) {
+		this.signalConsumeCount = signalConsumeCount;
 	}
-	public DDateTime getStartSessionDateTime() {
-		return startSessionDateTime;
+	public int getWriteQueueSize() {
+		return writeQueueSize;
 	}
-	public void setStartSessionDateTime(DDateTime startSessionDateTime) {
-		this.startSessionDateTime = startSessionDateTime;
+	public void setWriteQueueSize(int writeQueueSize) {
+		this.writeQueueSize = writeQueueSize;
 	}
-	public DDateTime getStopSessionDateTime() {
-		return stopSessionDateTime;
+	public DDateTime getLastSignalWriteTime() {
+		return lastSignalWriteTime;
 	}
-	public void setStopSessionDateTime(DDateTime stopSessionDateTime) {
-		this.stopSessionDateTime = stopSessionDateTime;
-	}
-	
-	public long getSignalCount() {
-		return signalCount;
-	}
-	public void setSignalCount(long signalCount) {
-		this.signalCount = signalCount;
-	}
-	public long getWriteCount() {
-		return writeCount;
-	}
-	public void setWriteCount(long writeCount) {
-		this.writeCount = writeCount;
-	}
-	public long getQueueSize() {
-		return queueSize;
-	}
-	public void setQueueSize(long queueSize) {
-		this.queueSize = queueSize;
-	}
-	public double getWriteTime() {
-		return writeTime;
-	}
-	public void setWriteTime(double writeTime) {
-		this.writeTime = writeTime;
-	}
-	public int getWriteSize() {
-		return writeSize;
-	}
-	public void setWriteSize(int writeSize) {
-		this.writeSize = writeSize;
+	public void setLastSignalWriteTime(DDateTime lastSignalWriteTime) {
+		this.lastSignalWriteTime = lastSignalWriteTime;
 	} 
+	
+	
+	
+	
+	
 	
 }

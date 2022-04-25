@@ -1,5 +1,6 @@
 package com.dunkware.trade.service.data.json.stream.writer;
 
+import com.dunkware.common.util.dtime.DDateTime;
 import com.dunkware.common.util.dtime.DTime;
 
 public class DataStreamSnapshotWriterSessionStats {
@@ -8,7 +9,7 @@ public class DataStreamSnapshotWriterSessionStats {
 	private long snapshotWriteCount;
 	private long snapshotConsumeCount; 
 	private long queueSize; 
-	private DTime lastWriteTime; 
+	private DDateTime lastWriteStreamTime; 
 	private int lastWriteSize;
 	private double lastWriteDuration;
 	private int bucketCount; 
@@ -18,7 +19,9 @@ public class DataStreamSnapshotWriterSessionStats {
 	private String mongoURL;
 	private String mongoCollection; 
 	private String mongoDatabase;
-	private DTime startTime;
+	private DDateTime startTime;
+	private int problemCount; 
+	private double writeLagTime;
 	
 	public long getEntityCount() {
 		return entityCount;
@@ -44,11 +47,17 @@ public class DataStreamSnapshotWriterSessionStats {
 	public void setQueueSize(long queueSize) {
 		this.queueSize = queueSize;
 	}
-	public DTime getLastWriteTime() {
-		return lastWriteTime;
+	
+
+	
+	public DDateTime getLastWriteStreamTime() {
+		return lastWriteStreamTime;
 	}
-	public void setLastWriteTime(DTime lastWriteTime) {
-		this.lastWriteTime = lastWriteTime;
+	public void setLastWriteStreamTime(DDateTime lastWriteStreamTime) {
+		this.lastWriteStreamTime = lastWriteStreamTime;
+	}
+	public void setStartTime(DDateTime startTime) {
+		this.startTime = startTime;
 	}
 	public int getLastWriteSize() {
 		return lastWriteSize;
@@ -104,12 +113,28 @@ public class DataStreamSnapshotWriterSessionStats {
 	public void setMongoDatabase(String mongoDatabase) {
 		this.mongoDatabase = mongoDatabase;
 	}
-	public DTime getStartTime() {
+	public int getProblemCount() {
+		return problemCount;
+	}
+	public void setProblemCount(int problemCount) {
+		this.problemCount = problemCount;
+	}
+	public DDateTime getStartTime() {
 		return startTime;
 	}
-	public void setStartTime(DTime startTime) {
-		this.startTime = startTime;
-	} 
+	public double getWriteLagTime() {
+		return writeLagTime;
+	}
+	public void setWriteLagTime(double writeLagTime) {
+		this.writeLagTime = writeLagTime;
+	}
+	
+	
+	
+	
+	
+	
+	
 	
 	
 	
