@@ -50,9 +50,25 @@
 		<appender-ref ref="CONSOLE" additivity="false" />
 	</root>
 
+<logger name="com.dunkware.net.cluster.server.publishers.GrpcNodeUpdateStream" level="TRACE">
+		<appender-ref ref="FLUENT" additivity="false" />
+			<appender-ref ref="CONSOLE" additivity="false" />
+</logger>
+
+<logger name="com.dunkware.net.cluster.node.internal.ClusterNodeServiceImpl" level="TRACE">
+		<appender-ref ref="FLUENT" additivity="false" />
+			<appender-ref ref="CONSOLE" additivity="false" />
+</logger>
+
+<logger name="com.dunkware.net.cluster.server.core.ClusterNodeService" level="TRACE">
+		<appender-ref ref="FLUENT" additivity="false" />
+			<appender-ref ref="CONSOLE" additivity="false" />
+		
+</logger>
 
 	<logger name="com.dunkware" level="DEBUG">
 		<appender-ref ref="FLUENT" additivity="false" />
+			<appender-ref ref="CONSOLE" additivity="false" />
 
 	</logger>
 
