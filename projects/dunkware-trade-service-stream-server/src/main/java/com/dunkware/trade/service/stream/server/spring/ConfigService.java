@@ -9,7 +9,7 @@ public class ConfigService {
 	@Value("${kafka.brokers}")
 	private String kafkaBrokers; 
 	@Value("{session.node.ticker.limit}")
-	private int sessionNodeTickerLimit; 
+	private String sessionNodeTickerLimit; 
 	@Value("${tick.service.endpoint}")
 	private String tickServiceURL;
 	@Value("${streams.schedule.enable}")
@@ -17,7 +17,8 @@ public class ConfigService {
 	public String getKafkaBrokers() {
 		return kafkaBrokers;
 	}
-	public int getSessionNodeTickerLimit() {
+	
+	public String getSessionNodeTickerLimit() { 
 		return sessionNodeTickerLimit;
 	}
 	public String getTickServiceURL() {

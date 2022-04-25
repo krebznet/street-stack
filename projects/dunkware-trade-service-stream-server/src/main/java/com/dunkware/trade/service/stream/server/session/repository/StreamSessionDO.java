@@ -46,7 +46,7 @@ public class StreamSessionDO {
 	@JoinColumn(name = "session_id")
 	private List<StreamSessionTickerDO> tickers = new ArrayList<StreamSessionTickerDO>();
 	
-	@OneToMany(cascade = CascadeType.ALL, orphanRemoval =  true, fetch = FetchType.EAGER)
+	@OneToMany(cascade = CascadeType.ALL, orphanRemoval =  true, fetch = FetchType.LAZY)
 	@JoinColumn(name = "session_id")
 	private List<StreamSessionProblemDO> problems = new ArrayList<StreamSessionProblemDO>();
 	

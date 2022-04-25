@@ -13,17 +13,19 @@
 	</appender>
 	
 	
-    <appender name="FLUENT"
+    
+	
+	<appender name="FLUENT"
 		class="ch.qos.logback.more.appenders.DataFluentAppender">
-		<tag>dunkware</tag>
+		<tag>streetdev</tag>
 		<label>logging</label>
-		<remoteHost>172.16.16.55</remoteHost>
-		<port>32756</port>
+		<remoteHost>testrock2.dunkware.net</remoteHost>
+		<port>5678</port>
 		<additionalField>
-			<key>owner</key>
-			<value>stream-test</value>
+			<key>node</key>
+			<value>stream</value>
 		</additionalField>
-	</appender> 
+	</appender>
 	
 
 

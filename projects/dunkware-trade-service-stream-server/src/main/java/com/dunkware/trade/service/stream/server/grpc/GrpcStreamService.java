@@ -25,6 +25,7 @@ import com.dunkware.trade.service.stream.server.tick.StreamTickService;
 import io.grpc.stub.StreamObserver;
 import net.devh.boot.grpc.server.service.GrpcService;
 
+
 @GrpcService()
 @Service
 @CrossOrigin(origins = "*", allowedHeaders = "*")

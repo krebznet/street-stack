@@ -211,32 +211,35 @@ public class StreamController {
 		if (getStats().getState() == StreamState.Starting || getStats().getState() == StreamState.Running) {
 			throw new StreamSessionException("Stream State is " + stats.getState().name() + " cannot start session");
 		}
-		stats.setState(StreamState.Starting);
+		stats.setState(StreamState.PendingStarting);
 		// create session / set session stats
 		session = StreamSessionFactory.createSession();
 		ac.getAutowireCapableBeanFactory().autowireBean(session);
-		stats.setSession(session.getStatus());
+		
 		try {
 			
 			StreamSessionInput input = new StreamSessionInput();
 			// TOODO: here right -->
 			input.setTickers(tickers);
 			input.setController(this);
-			List<ClusterNode> nodes = cluster.getAvailableWorkerNodes();
+			List<ClusterNode> nodes = cluster.getNodeSevice().getAvailableWorkerNodes();
 			if (nodes.size() == 0) {
 				logger.error("Exception Starting Stream {} Session, available worker nodes is 0", getName());
 				stats.setState(StreamState.Exception);
 				stats.setError("Np Available Worker Nodes");;
 				throw new StreamSessionException("No Available worker nodes to start stream session");
 			}
+			input.setWorkerNodes(nodes);
 			logger.info("Stream {} Scheduler Starting Session",getName());
 			session.startSession(input);
+			stats.setSession(session.getStatus());
 			// need to call this after start session annoying
 			session.getEventNode().addEventHandler(this);
 		} catch (StreamSessionException e) {
 			stats.setState(StreamState.Exception);
 			stats.setError("Exception starting Stram " + getName()+  " session " + e.toString());
 			this.exception = e.toString();
+			throw e;
 		}
 	}
 	public StreamSession getSession() {
@@ -244,9 +247,6 @@ public class StreamController {
 	}
 
 	public StreamStats getStats() {
-		if (session != null) {
-			stats.setSession(session.getStatus());
-		}
 		return stats;
 	}
 

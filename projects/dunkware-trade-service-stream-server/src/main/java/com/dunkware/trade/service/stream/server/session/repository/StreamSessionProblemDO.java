@@ -1,5 +1,6 @@
 package com.dunkware.trade.service.stream.server.session.repository;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -16,6 +17,7 @@ public class StreamSessionProblemDO {
 		@ManyToOne
 		private StreamSessionDO session; 
 		
+		@Column(length = 4000)
 		private String problem;
 
 		public long getId() {
