@@ -5,8 +5,11 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.Semaphore;
 import java.util.concurrent.atomic.AtomicInteger;
 
 import org.slf4j.Logger;
@@ -17,6 +20,7 @@ import com.dunkware.common.util.dtime.DTime;
 import com.dunkware.common.util.dtime.DTimeZone;
 import com.dunkware.common.util.time.DunkTime;
 import com.dunkware.xstream.api.XStreamClock;
+import com.dunkware.xstream.api.XStreamClockListener;
 
 /**
  * We are going to assume 1 second updates on the clock
@@ -32,6 +36,9 @@ public class XStreamClockImpl implements XStreamClock {
 	private DDate date; 
 	private DTimeZone timeZone; 
 	private ZoneId zoneId; 
+	
+	private List<XStreamClockListener> listeners = new ArrayList<XStreamClockListener>();
+	private Semaphore listenerLock = new Semaphore(1);
 	
 	private ConcurrentHashMap<Runnable, ScheduledRunnable> scheduledRunnables = new ConcurrentHashMap<Runnable, XStreamClockImpl.ScheduledRunnable>();
 	
@@ -66,6 +73,8 @@ public class XStreamClockImpl implements XStreamClock {
 		if(logger.isTraceEnabled()) { 
 			logger.trace("Time Set {}",time.getHour() + ":" + time.getMinute() + ":" + time.getSecond());
 		}
+		LocalDateTime dt = getLocalDateTime();
+		stream.getExecutor().execute(new ListenerRunnable(dt));
 		this.time = time; 
 		for (ScheduledRunnable scheduled : scheduledRunnables.values()) {
 			scheduled.timeUpdate();
@@ -123,6 +132,63 @@ public class XStreamClockImpl implements XStreamClock {
 	public DDate getDate() {
 		return date;
 	}
+
+
+	
+	private class ListenerRunnable implements Runnable {
+		
+		LocalDateTime time;
+		
+		public ListenerRunnable(LocalDateTime time) {
+			this.time = time;
+		}
+		
+		public void run() { 
+			try {
+				listenerLock.acquire();
+				for (XStreamClockListener listener : listeners) {
+					listener.timeUpdate(XStreamClockImpl.this, time);
+				}
+			} catch (Exception e) {
+				// TODO: handle exception
+			} finally {
+				listenerLock.release();
+			}
+		}
+		
+	};
+
+
+
+	@Override
+	public void addListener(XStreamClockListener listener) {
+		try {
+			listenerLock.acquire();
+			listeners.add(listener);
+		} catch (Exception e) {
+			
+		} finally { 
+			listenerLock.release();
+		}
+		
+	}
+
+
+
+
+	@Override
+	public void removeListener(XStreamClockListener listener) {
+		try {
+			listenerLock.acquire();
+			listeners.remove(listener);
+		} catch (Exception e) {
+			
+		} finally { 
+			listenerLock.release();
+		}
+		
+	}
+
 
 
 

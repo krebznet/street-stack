@@ -1,5 +1,6 @@
 package com.dunkware.xstream.core.extensions;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -10,12 +11,18 @@ import java.util.concurrent.LinkedBlockingQueue;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.dunkware.common.kafka.admin.DKafkaAdmin;
 import com.dunkware.common.kafka.producer.DKafkaByteProducer;
 import com.dunkware.common.util.dtime.DTimeZone;
+import com.dunkware.common.util.helpers.DProtoHelper;
 import com.dunkware.common.util.time.DunkTime;
+import com.dunkware.net.proto.stream.GStreamEntitySpec;
 import com.dunkware.net.proto.stream.GStreamEvent;
 import com.dunkware.net.proto.stream.GStreamEventType;
+import com.dunkware.net.proto.stream.GStreamTimeUpdate;
 import com.dunkware.xstream.api.XStream;
+import com.dunkware.xstream.api.XStreamClock;
+import com.dunkware.xstream.api.XStreamClockListener;
 import com.dunkware.xstream.api.XStreamException;
 import com.dunkware.xstream.api.XStreamExtension;
 import com.dunkware.xstream.api.XStreamRow;
@@ -38,10 +45,15 @@ public class StreamEventPublisherExt implements XStreamExtension, XStreamRowList
 	// need status here -- Signal Event Count - Snapshot Event Count - 
 	
 	private DKafkaByteProducer kafkaProducer; 
-	private EventPublisher eventPublisher;
+//	private EventPublisher eventPublisher;
 	private EntitySnapshotBuilder snapshotRunnable;
-	
+	private DKafkaByteProducer timeProducer; 
 	private DKafkaByteProducer signalProducer; 
+	
+	private TimeListener timeListener;
+	private TimePublisher timePublisher = new TimePublisher();
+	
+	private BlockingQueue<GStreamEvent> timeUpdateQueue = new LinkedBlockingQueue<GStreamEvent>();
 	
 	private Map<String,List<XStreamRowSignal>> snapshotSignals = new ConcurrentHashMap<String,List<XStreamRowSignal>>();
 	
@@ -61,7 +73,13 @@ public class StreamEventPublisherExt implements XStreamExtension, XStreamRowList
 			logger.error("Exception Creating Kafka Producer From Brokers " + this.type.getKafkaBrokers() + e.toString(),e);
 			throw new XStreamException("Stream Event Publisher Init Kafka Connection Failed " + e.toString());
 		}
-		
+		try {
+			timeProducer = DKafkaByteProducer.newInstance(this.type.getKafkaBrokers(), this.type.getTimeTopic(), this.type.getKafkaIdentifier());
+		} catch (Exception e) {
+			logger.error("Exception Creating Kafka Producer From Brokers " + this.type.getKafkaBrokers() + e.toString(),e);
+			throw new XStreamException("Stream Event Publisher Init Kafka Connection Failed " + e.toString());
+		}
+			
 	}
 
 	@Override
@@ -72,11 +90,15 @@ public class StreamEventPublisherExt implements XStreamExtension, XStreamRowList
 
 	@Override
 	public void start() throws XStreamException {
+		timeListener = new TimeListener();
+		stream.getClock().addListener(timeListener);
+		timePublisher.start();
+		
 		stream.addRowListener(this);
-		eventPublisher = new EventPublisher();
-		eventPublisher.start();
+		
 		snapshotRunnable = new EntitySnapshotBuilder();
 		stream.getClock().scheduleRunnable(snapshotRunnable, 1);
+		
 	}
 
 	@Override
@@ -101,8 +123,11 @@ public class StreamEventPublisherExt implements XStreamExtension, XStreamRowList
 			}
 		}
 		
-		EventPublisher.interrupted();
+		
 		kafkaProducer.dispose();
+		signalProducer.dispose();
+		timePublisher.interrupt();
+		timeProducer.dispose();
 		stream.getClock().unscheduleRunnable(snapshotRunnable);
 		
 
@@ -138,6 +163,31 @@ public class StreamEventPublisherExt implements XStreamExtension, XStreamRowList
 		
 	}
 	
+	private class TimeListener implements XStreamClockListener {
+
+		@Override
+		public void timeUpdate(XStreamClock clock, LocalDateTime time) {
+			timeUpdateQueue.add(GStreamEvent.newBuilder().setType(GStreamEventType.TimeUpdate).setTimeUpdate(GStreamTimeUpdate.newBuilder().setTime(DProtoHelper.toTimeStamp(time, stream.getInput().getTimeZone())).build()).build());
+		} 
+		
+		
+	}
+	
+	private class TimePublisher extends Thread { 
+		
+		public void run() { 
+			while(!interrupted()) { 
+				try {
+					GStreamEvent timeEvent = timeUpdateQueue.take();
+					timeProducer.sendBytes(timeEvent.toByteArray());
+				} catch (Exception e) {
+					logger.error("Exception sending time update " + e.toString());
+					// TODO: handle exception
+				}
+			}
+		}
+	}
+	
 	
 	
 	public class EntitySnapshotBuilder implements Runnable { 
@@ -168,33 +218,7 @@ public class StreamEventPublisherExt implements XStreamExtension, XStreamRowList
 
 	
 	
-	public class EventPublisher extends Thread { 
-		
-		public void run() { 
-			while(!interrupted()) { 
-				GStreamEvent event = null;
-				try {
-					 event = publishQueue.take();
-				} catch (Exception e) {
-					logger.error("Exception taking event from  " + e.toString());
-					continue;
-				}
-				
-				try {
-					if(event.getType() == GStreamEventType.EntitySnapshot) {
-						byte[] fuck = event.toByteArray();
-						
-						GStreamEvent des = GStreamEvent.parseFrom(fuck);
-						kafkaProducer.sendBytes(event.toByteArray());
-					}
-				
-				} catch (Exception e) {
-					logger.error("Exception Publishing Stream Event " + e.toString());
-				}
-				
-			}
-		}
-	}
+
 	
 	// needs a row signal map 
 	// <entiyidentifier,List<signals>)

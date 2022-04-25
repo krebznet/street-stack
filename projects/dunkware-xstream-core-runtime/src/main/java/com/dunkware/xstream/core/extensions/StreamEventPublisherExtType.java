@@ -7,6 +7,7 @@ public class StreamEventPublisherExtType extends XStreamExtensionType {
 	private String kafkaBrokers; 
 	private String snapshotTopic;
 	private String signalTopic;
+	private String timeTopic;
 	private String kafkaIdentifier; 
 	
 	
@@ -36,6 +37,13 @@ public class StreamEventPublisherExtType extends XStreamExtensionType {
 	public void setKafkaIdentifier(String kafkaIdentifier) {
 		this.kafkaIdentifier = kafkaIdentifier;
 	}
+	public String getTimeTopic() {
+		return timeTopic;
+	}
+	public void setTimeTopic(String timeTopic) {
+		this.timeTopic = timeTopic;
+	}
+	
 	
 	
 	

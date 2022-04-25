@@ -22,5 +22,9 @@ public interface XStreamClock {
 	public long getSystemTimestamp();
 	
 	public DDate getDate();
+	
+	public void addListener(XStreamClockListener listener);
+	
+	public void removeListener(XStreamClockListener listneer);
 
 }
