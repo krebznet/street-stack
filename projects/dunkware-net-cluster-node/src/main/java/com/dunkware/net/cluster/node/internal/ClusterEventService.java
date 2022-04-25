@@ -50,6 +50,7 @@ public class ClusterEventService implements DKafkaByteHandler2 {
 	
 	Reflections reflections = null;
 	public void start(ClusterImpl cluster) throws Exception { 
+		this.cluster = cluster;
 		cluster.getEventTree().getRoot().addEventHandler(this);
 		if(logger.isDebugEnabled()) {
 			logger.debug("Creating Reflection Instance");
@@ -181,7 +182,6 @@ public class ClusterEventService implements DKafkaByteHandler2 {
 			try {
 				pojoClazz = Class.forName(pojoEvent.getClassName());
 			} catch (Exception e) {
-				logger.info("Pojo Event Class " + pojoClass + " not on classpath of node " + cluster.getNodeId());
 				return;
 			}
 			try {

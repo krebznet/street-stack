@@ -23,6 +23,9 @@ public class ClusterConfig {
 	@Value("${net.cluster.server.http}")
 	private String serverHttp;
 
+	@Value("${net.cluster.cluster.grpc}")
+	private String clusterGrpc; 
+	
 	public String getNodeId() {
 		return nodeId;
 	}
@@ -48,6 +51,12 @@ public class ClusterConfig {
 	public String getServerHttp() {
 		return serverHttp;
 	}
+
+	public String getClusterGrpc() {
+		return clusterGrpc;
+	}
+	
+	
 	
 	
 	

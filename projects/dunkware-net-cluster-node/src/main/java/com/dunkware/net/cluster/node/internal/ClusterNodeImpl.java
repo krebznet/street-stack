@@ -52,9 +52,9 @@ public class ClusterNodeImpl implements ClusterNode {
 				logger.error("Exception creating Available cluster node grpc channel " + e.toString());
 				state = ClusterNodeState.NodeException;
 			}
-
-			// test http endpoint ?
-
+			if(logger.isDebugEnabled()) { 
+				logger.debug("New Node Cluster Added ID {} Type {} State {}",lastUpdate.getNode(), lastUpdate.getStats().getType().name(), state.name());
+			}
 		}
 
 	}
@@ -62,11 +62,10 @@ public class ClusterNodeImpl implements ClusterNode {
 	public void update(ClusterNodeUpdate update) {
 		this.lastUpdate = update;
 		this.stats = update.getStats();
-		// todo here if we have exception we try again
-		if (channel == null) {
-			channel = ManagedChannelBuilder.forTarget(stats.getGrpcEndpoint()).build();
+		if(state == ClusterNodeState.Available && update.getState() == ClusterNodeState.Busy) { 
+			// event
+			state = update.getState();
 		}
-		// Event
 	}
 
 	
@@ -125,7 +124,7 @@ public class ClusterNodeImpl implements ClusterNode {
 
 		String respString = null;
 		try {
-			respString = DHttpHelper.postJson(stats.getHttpEndpoint(), path, serialized);
+			respString = DHttpHelper.postJson(stats.getHttpEndpoint(), path, request);
 			if (respString == null) {
 				throw new Exception("node req resp returned null path " + getHttpPathEndPoint(path));
 			}

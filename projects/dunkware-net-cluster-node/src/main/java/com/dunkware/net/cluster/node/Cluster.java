@@ -8,6 +8,9 @@ import org.springframework.stereotype.Service;
 import com.dunkware.common.util.events.DEventTree;
 import com.dunkware.common.util.executor.DExecutor;
 import com.dunkware.net.cluster.json.node.ClusterNodeStats;
+import com.dunkware.net.cluster.node.internal.ClusterConfig;
+
+import io.grpc.ManagedChannel;
 
 @Service
 public interface Cluster {
@@ -28,19 +31,13 @@ public interface Cluster {
 	
 	public void removeComponent(Object component);
 	
-	public List<ClusterNode> getAvailableWorkerNodes();
-	
-	public List<ClusterNode> getAvailablWorkereNodes(int count) throws ClusterNodeException;
-	
-	public int getAvailablWorkereNodeCount();
-	
-	public boolean nodeExists(String id);
-	
-	public ClusterNode getNode(String id) throws ClusterNodeException;
+	public ClusterNodeService getNodeSevice();
 	
 	public ClusterNodeStats getStats();
 	
+	public ClusterConfig getConfig();
 	
+	public ManagedChannel getServerChannel();
 }
 	
 	

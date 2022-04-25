@@ -32,9 +32,14 @@ import com.dunkware.net.cluster.node.ClusterJob;
 import com.dunkware.net.cluster.node.ClusterJobRunner;
 import com.dunkware.net.cluster.node.ClusterNode;
 import com.dunkware.net.cluster.node.ClusterNodeException;
+import com.dunkware.net.cluster.node.ClusterNodeService;
 import com.dunkware.net.cluster.node.events.EClusterComponentAdded;
 import com.dunkware.net.cluster.util.helpers.ClusterEventHelper;
 import com.dunkware.net.proto.cluster.GClusterEvent;
+
+import io.grpc.ConnectivityState;
+import io.grpc.ManagedChannel;
+import io.grpc.ManagedChannelBuilder;
 
 @Service
 public class ClusterImpl implements Cluster {
@@ -56,7 +61,7 @@ public class ClusterImpl implements Cluster {
 	private DKafkaByteProducer eventProducer;
 
 	private DDateTime startTime;
-	
+
 	private ClusterEventService eventService;
 
 	private List<ClusterJob> jobs = new ArrayList<ClusterJob>();
@@ -64,11 +69,42 @@ public class ClusterImpl implements Cluster {
 	private Map<String, ClusterNode> nodes = new ConcurrentHashMap<String, ClusterNode>();
 
 	private Semaphore jobLock = new Semaphore(1);
-	
+
 	private ClusterStatsPublisher statsPublisher;
+
+	private ClusterNodeServiceImpl nodeService;
+
+	private ManagedChannel serverChannel;
 
 	@PostConstruct
 	public void load() {
+		try {
+			serverChannel = ManagedChannelBuilder.forTarget(clusterConfig.getClusterGrpc()).usePlaintext().build();
+			ConnectivityState channelState = serverChannel.getState(true);
+			if(channelState == ConnectivityState.TRANSIENT_FAILURE) { 
+				logger.error(MarkerFactory.getMarker("Crash"),"Getting Cluster GRPC Channel at " + clusterConfig.getClusterGrpc() + " Returned Transietn Failture");;
+				System.exit(-1);
+			}
+
+			if(channelState == ConnectivityState.CONNECTING) { 
+				int i = 1;
+				while(channelState == ConnectivityState.CONNECTING) { 
+					i++;
+					try {
+						Thread.sleep(100);
+					} catch (Exception e) {
+						// TODO: handle exception
+					}
+					if(i > 15) { 
+						logger.error(MarkerFactory.getMarker("Crash"),"Getting Cluster GRPC Channel at " + clusterConfig.getClusterGrpc() + " Returned Transietn Failture");;
+						System.exit(-1);;
+					}
+				}
+			}
+		} catch (Exception e) {
+			logger.error(MarkerFactory.getMarker("Crash"),"Getting Cluster GRPC Channel at " + clusterConfig.getClusterGrpc() + " Exception " + e.toString());;
+			System.exit(-1);
+		}
 		startTime = DDateTime.now(DTimeZone.NewYork);
 		registry = new ClusterRegistry();
 		registry.start(this);
@@ -83,7 +119,7 @@ public class ClusterImpl implements Cluster {
 			logger.error(MarkerFactory.getMarker("Crash"), "Event Service Failed to start " + e.toString());
 			System.exit(-1);
 		}
-		
+
 		try {
 			eventProducer = DKafkaByteProducer.newInstance(clusterConfig.getServerBrokers(), "cluster_core_events",
 					"ClusterNode-" + getNodeId());
@@ -91,13 +127,21 @@ public class ClusterImpl implements Cluster {
 			logger.error(MarkerFactory.getMarker("Crash"), "Exception creating cluster event producer " + e.toString());
 			System.exit(-1);
 		}
-		
+
 		try {
 			statsPublisher = new ClusterStatsPublisher();
 			ac.getAutowireCapableBeanFactory().autowireBean(statsPublisher);
 			statsPublisher.start();
 		} catch (Exception e) {
-			logger.error(Markers.systemCrash(),"Exception starting cluster node stats publisher " + e.toString());
+			logger.error(Markers.systemCrash(), "Exception starting cluster node stats publisher " + e.toString());
+			System.exit(-1);
+		}
+
+		try {
+			nodeService = new ClusterNodeServiceImpl();
+			nodeService.start(this);
+		} catch (Exception e) {
+			logger.error(MarkerFactory.getMarker("Crash"), "Exception starting cluster node service " + e.toString());
 			System.exit(-1);
 		}
 	}
@@ -109,6 +153,12 @@ public class ClusterImpl implements Cluster {
 	@Override
 	public DEventTree getEventTree() {
 		return eventTree;
+	}
+	
+
+	@Override
+	public ClusterConfig getConfig() {
+		return clusterConfig;
 	}
 
 	@Override
@@ -150,10 +200,16 @@ public class ClusterImpl implements Cluster {
 	@Override
 	public void addComponent(Object component) {
 		registry.addComponent(component);
-		EClusterComponentAdded added = new EClusterComponentAdded(component);
-		eventTree.getRoot().event(added);
-		;
+	}
 
+	@Override
+	public ClusterNodeService getNodeSevice() {
+		return nodeService;
+	}
+
+	@Override
+	public ManagedChannel getServerChannel() {
+		return serverChannel;
 	}
 
 	@Override
@@ -170,59 +226,6 @@ public class ClusterImpl implements Cluster {
 	@Override
 	public LocalDateTime now() {
 		return LocalDateTime.now(DTimeZone.toZoneId(DTimeZone.NewYork));
-	}
-
-	@Override
-	public List<ClusterNode> getAvailableWorkerNodes() {
-		List<ClusterNode> results = new ArrayList<ClusterNode>();
-		for (String key : nodes.keySet()) {
-			ClusterNode node = nodes.get(key);
-			if (node.getState() == ClusterNodeState.Available) {
-				results.add(node);
-			}
-		}
-		return results;
-	}
-	
-	@Override
-	public boolean nodeExists(String id) {
-		if(nodes.get(id) == null)
-			return false;
-		return true;
-	}
-
-	@Override
-	public ClusterNode getNode(String id) throws ClusterNodeException {
-		ClusterNode node = nodes.get(id);
-		if(node == null) {
-			throw new ClusterNodeException("Node " + id + " does not exist");
-		}
-		return node;
-	}
-
-	@Override
-	public List<ClusterNode> getAvailablWorkereNodes(int count) throws ClusterNodeException {
-		List<ClusterNode> results = new ArrayList<ClusterNode>();
-		int resultCount = 0;
-		for (String key : nodes.keySet()) {
-			ClusterNode node = nodes.get(key);
-			if (node.getState() == ClusterNodeState.Available) {
-				if (node.getType() == ClusterNodeType.Worker) {
-					results.add(node);
-					resultCount++;
-					if (resultCount == count) {
-						return results;
-					}
-				}
-			}
-		}
-		throw new ClusterNodeException(
-				"Requested " + count + " avaiable nodes is bigger than nodes avaiable which is " + results.size());
-	}
-
-	@Override
-	public int getAvailablWorkereNodeCount() {
-		return getAvailableWorkerNodes().size();
 	}
 
 	@Override
@@ -246,29 +249,28 @@ public class ClusterImpl implements Cluster {
 
 	void nodeUpdates(List<ClusterNodeUpdate> updates) {
 		Runnable nodeUpdater = new Runnable() {
-			
+
 			@Override
 			public void run() {
 				for (ClusterNodeUpdate update : updates) {
 					ClusterNode node = nodes.get(update.getNode());
-					if(node == null) { 
+					if (node == null) {
 						// log new node
 						node = new ClusterNodeImpl();
-						ClusterNodeImpl impl = (ClusterNodeImpl)node;
-						impl.start(update);;
+						ClusterNodeImpl impl = (ClusterNodeImpl) node;
+						impl.start(update);
+						;
 						nodes.put(update.getNode(), node);
-						
+
 					} else {
-						ClusterNodeImpl impl = (ClusterNodeImpl)node;
+						ClusterNodeImpl impl = (ClusterNodeImpl) node;
 						impl.update(update);
 					}
-					
+
 				}
 			}
 		};
 		getExecutor().execute(nodeUpdater);
 	}
-
-	
 
 }
