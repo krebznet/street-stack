@@ -255,8 +255,7 @@ public class StreamSessionImpl implements StreamSession {
 			ext.sessionStarted(this);
 		}
 		EStreamSessionStarted started = new EStreamSessionStarted(this);
-	
-		eventNode.event(started);
+		input.getController().sessionEvent(started);
 	}
 
 	private void handleSessionStopped() {
@@ -283,8 +282,10 @@ public class StreamSessionImpl implements StreamSession {
 			logger.error("No start session getting sent to cluster");
 		}
 
+		
 		EStreamSessionStopped stopped = new EStreamSessionStopped(this);
-		eventNode.event(stopped);
+		input.getController().sessionEvent(stopped);
+		//eventNode.event(stopped);
 
 	}
 

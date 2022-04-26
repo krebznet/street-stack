@@ -1,5 +1,7 @@
 package com.dunkware.trade.service.stream.server.controller;
 
+import static org.hamcrest.CoreMatchers.instanceOf;
+
 import java.time.DayOfWeek;
 import java.util.ArrayList;
 import java.util.List;
@@ -34,8 +36,10 @@ import com.dunkware.trade.service.stream.server.session.StreamSession;
 import com.dunkware.trade.service.stream.server.session.StreamSessionException;
 import com.dunkware.trade.service.stream.server.session.StreamSessionFactory;
 import com.dunkware.trade.service.stream.server.session.StreamSessionInput;
+import com.dunkware.trade.service.stream.server.session.events.EStreamSessionEvent;
 import com.dunkware.trade.service.stream.server.session.events.EStreamSessionException;
 import com.dunkware.trade.service.stream.server.session.events.EStreamSessionStarted;
+import com.dunkware.trade.service.stream.server.session.events.EStreamSessionStarting;
 import com.dunkware.trade.service.stream.server.session.events.EStreamSessionStopped;
 import com.dunkware.trade.service.stream.server.session.events.EStreamSessionStopping;
 import com.dunkware.trade.service.stream.server.spring.ConfigService;
@@ -521,6 +525,20 @@ public class StreamController {
 		}
 		stats.setState(StreamState.Stopping);
 		
+	}
+	
+	public void sessionEvent(EStreamSessionEvent event) { 
+		if (event instanceof EStreamSessionStopped) { 
+			sessionStopped((EStreamSessionStopped)event);
+			
+		}
+		if (event instanceof EStreamSessionStopping) { 
+			sessionStopping((EStreamSessionStopping)event);
+			
+		}
+		if (event instanceof EStreamSessionStarted) { 
+			sessionStartedEvent((EStreamSessionStarted)event);
+		}
 	}
 
 }

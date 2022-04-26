@@ -61,7 +61,7 @@ public class ClusterEventService implements DKafkaByteHandler2 {
 		}
 		DKafkaByteConsumer2Spec kafkaSpec = null;
 		try {
-			kafkaSpec = DKafkaByteConsumer2SpecBuilder.newBuilder(ConsumerType.AllPartitions, OffsetType.Latest)
+			kafkaSpec = DKafkaByteConsumer2SpecBuilder.newBuilder(ConsumerType.Auto, OffsetType.Latest)
 			.addBroker(config.getServerBrokers()).addTopic("cluster_core_events")
 			.setClientAndGroup("NodeEventManager-" + cluster.getNodeId() + "_" + DUUID.randomUUID(5), DUUID.randomUUID(4))
 			.build();
