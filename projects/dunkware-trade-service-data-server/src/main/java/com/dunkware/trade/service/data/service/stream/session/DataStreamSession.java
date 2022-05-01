@@ -1,4 +1,4 @@
-package com.dunkware.trade.service.data.service.stream;
+package com.dunkware.trade.service.data.service.stream.session;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -37,8 +37,10 @@ import com.dunkware.trade.service.data.service.repository.DataStreamInstrumentEn
 import com.dunkware.trade.service.data.service.repository.DataStreamInstrumentEntityRepo;
 import com.dunkware.trade.service.data.service.repository.DataStreamSessionEntity;
 import com.dunkware.trade.service.data.service.repository.DataStreamSessionEntityRepo;
-import com.dunkware.trade.service.data.service.stream.writers.DataStreamSessionSignalWriter;
-import com.dunkware.trade.service.data.service.stream.writers.DataStreamSessionSnapshotWriter;
+import com.dunkware.trade.service.data.service.stream.DataStream;
+import com.dunkware.trade.service.data.service.stream.DataStreamSessionInstrument;
+import com.dunkware.trade.service.data.service.stream.session.writers.DataStreamSessionSignalWriter;
+import com.dunkware.trade.service.data.service.stream.session.writers.DataStreamSessionSnapshotWriter;
 import com.dunkware.trade.service.data.service.util.DataMarkers;
 import com.dunkware.trade.service.stream.json.controller.model.StreamSessionSpec;
 import com.dunkware.xstream.data.cache.CacheStream;

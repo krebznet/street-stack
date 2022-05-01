@@ -1,4 +1,4 @@
-package com.dunkware.trade.service.data.service.stream.writers;
+package com.dunkware.trade.service.data.service.stream.session.writers;
 
 import java.time.LocalDateTime;
 import java.util.List;

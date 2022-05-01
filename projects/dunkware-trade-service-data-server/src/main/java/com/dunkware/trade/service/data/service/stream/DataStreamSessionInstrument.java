@@ -3,6 +3,7 @@ package com.dunkware.trade.service.data.service.stream;
 import com.dunkware.net.proto.stream.GEntitySignal;
 import com.dunkware.net.proto.stream.GEntitySnapshot;
 import com.dunkware.trade.service.data.service.repository.DataStreamInstrumentEntity;
+import com.dunkware.trade.service.data.service.stream.session.DataStreamSession;
 
 public class DataStreamSessionInstrument {
 	

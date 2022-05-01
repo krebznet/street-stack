@@ -1,4 +1,4 @@
-package com.dunkware.trade.service.data.service.stream.writers;
+package com.dunkware.trade.service.data.service.stream.session.writers;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -26,7 +26,7 @@ import com.dunkware.net.proto.stream.GStreamEventType;
 import com.dunkware.trade.service.data.json.stream.writer.DataStreamSignalWriterSessionStats;
 import com.dunkware.trade.service.data.service.config.RuntimeConfig;
 import com.dunkware.trade.service.data.service.stream.DataStream;
-import com.dunkware.trade.service.data.service.stream.DataStreamSession;
+import com.dunkware.trade.service.data.service.stream.session.DataStreamSession;
 import com.dunkware.trade.service.data.service.util.DataMarkers;
 import com.dunkware.xstream.data.capture.MongoCaptureHelper;
 import com.mongodb.WriteConcern;

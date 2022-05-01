@@ -23,9 +23,7 @@ import com.dunkware.common.util.events.DEventTree;
 import com.dunkware.common.util.executor.DExecutor;
 import com.dunkware.common.util.logging.Markers;
 import com.dunkware.net.cluster.json.job.ClusterJobState;
-import com.dunkware.net.cluster.json.node.ClusterNodeState;
 import com.dunkware.net.cluster.json.node.ClusterNodeStats;
-import com.dunkware.net.cluster.json.node.ClusterNodeType;
 import com.dunkware.net.cluster.json.node.ClusterNodeUpdate;
 import com.dunkware.net.cluster.node.Cluster;
 import com.dunkware.net.cluster.node.ClusterJob;
@@ -33,8 +31,6 @@ import com.dunkware.net.cluster.node.ClusterJobRunner;
 import com.dunkware.net.cluster.node.ClusterNode;
 import com.dunkware.net.cluster.node.ClusterNodeException;
 import com.dunkware.net.cluster.node.ClusterNodeService;
-import com.dunkware.net.cluster.node.events.EClusterComponentAdded;
-import com.dunkware.net.cluster.util.helpers.ClusterEventHelper;
 import com.dunkware.net.proto.cluster.GClusterEvent;
 
 import io.grpc.ConnectivityState;
@@ -186,7 +182,7 @@ public class ClusterImpl implements Cluster {
 	@Override
 	public void pojoEvent(Object pojo) throws ClusterNodeException {
 		try {
-			GClusterEvent event = ClusterEventHelper.pojoEvent(pojo, getNodeId());
+			GClusterEvent event = ClusterHelper.pojoEvent(pojo, getNodeId());
 			eventProducer.sendBytes(event.toByteArray());
 		} catch (Exception e) {
 			throw new ClusterNodeException("Exception sending pojo event " + e.toString(), e);

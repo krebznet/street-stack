@@ -2,19 +2,14 @@ package com.dunkware.trade.service.data.worker.stream.grpc;
 
 public class GrpcDataWorkerService {
 	
-	// new worker session -- > 
-		// stream snapshots to it
-		// stream signals to it 
+	// newSessionCache()
 	
-	// entity search 
+	// sessionCacheSignalSearch() 
 	
-	// entity stream 
+	// sessionCacheEntitySearch(); 
 	
-	// var stream 
+	// going to be sessionCacheEntityStream(); 
 	
-	// stream_us_equity_entity_stats
-	// index by identifier and date, 
-	
-	
+	// Need Common Format for Data Exchange 
 
 }

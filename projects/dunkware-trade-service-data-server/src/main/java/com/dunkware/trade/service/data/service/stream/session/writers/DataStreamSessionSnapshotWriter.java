@@ -1,4 +1,4 @@
-package com.dunkware.trade.service.data.service.stream.writers;
+package com.dunkware.trade.service.data.service.stream.session.writers;
 
 import java.time.ZoneId;
 import java.util.ArrayList;
@@ -35,7 +35,7 @@ import com.dunkware.net.proto.stream.GStreamSessionStop;
 import com.dunkware.trade.service.data.json.stream.writer.DataStreamSnapshotWriterSessionStats;
 import com.dunkware.trade.service.data.service.config.RuntimeConfig;
 import com.dunkware.trade.service.data.service.stream.DataStream;
-import com.dunkware.trade.service.data.service.stream.DataStreamSession;
+import com.dunkware.trade.service.data.service.stream.session.DataStreamSession;
 import com.dunkware.trade.service.data.service.util.DataMarkers;
 import com.mongodb.WriteConcern;
 import com.mongodb.client.MongoClient;

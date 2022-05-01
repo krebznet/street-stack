@@ -12,23 +12,4 @@ import com.dunkware.net.proto.cluster.GClusterPojoEvent;
 public class ClusterEventHelper {
 
 	
-	public static GClusterEvent pojoEvent(Object pojo, String node) throws Exception { 
-		GClusterEvent.Builder builder = GClusterEvent.newBuilder();
-		builder.setNode(node);
-		builder.setType(GClusterEventType.POJO);
-		builder.setTime(GProtoHelper.toTimeStamp(LocalDateTime.now(), DTimeZone.NewYork));
-		GClusterPojoEvent.Builder pojoBuilder = GClusterPojoEvent.newBuilder();
-		pojoBuilder.setClassName(pojo.getClass().getName());
-		try {
-			String json = DJson.serialize(pojo);
-			pojoBuilder.setJson(json);
-			builder.setPojoEvent(pojoBuilder.build());
-		} catch (Exception e) {
-			throw new Exception("Error parsing pojo event bean " + pojo.getClass().getName() + " " + e.toString());
-		}
-		
-		
-		return builder.build();
-		
-	}
 }
