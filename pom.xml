@@ -26,12 +26,18 @@
       <module>projects/dunkware-trade-service-tick-server</module>
       <module>projects/dunkware-trade-service-stream-json</module>
       <module>projects/dunkware-trade-service-stream-server</module>
+			<module>projects/dunkware-trade-service-stream-worker</module>
 
 			<module>projects/dunkware-trade-sdk-tws-runtime</module>
       <module>projects/dunkware-trade-service-web-server</module>
       <module>projects/dunkware-trade-service-data-server</module>
-      <module>projects/dunkware-trade-service-data-mock</module>
-      <module>projects/dunkware-trade-service-data-lib</module>
+			<module>projects/dunkware-trade-service-data-worker</module>
+			<module>projects/dunkware-trade-service-data-util</module>
+    <!--  <module>projects/dunkware-trade-service-data-mock</module>
+      <module>projects/dunkware-trade-service-data-lib</module>-->
+
+			<module>projects/dunkware-trade-service-worker-server</module>
+
 			<module>projects/dunkware-trade-service-data-json</module>
 			<module>projects/dunkware-trade-sdk-core-model</module>
 			<module>projects/dunkware-trade-sdk-core-runtime</module>
@@ -43,6 +49,7 @@
 			<module>projects/dunkware-net-cluster-node</module>
 			<module>projects/dunkware-net-cluster-client</module>
 			<module>projects/dunkware-net-cluster-util</module>
+			<module>projects/dunkware-net-cluster-server</module>
 
 
   </modules>
