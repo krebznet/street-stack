@@ -63,10 +63,10 @@ public class StreamSessionNodeImpl implements StreamSessionNode {
 				xstreamBundle = new XStreamBundle();
 				xstreamBundle.setDate(DDate.now());
 				xstreamBundle.setTimeZone(DTimeZone.NewYork);
-				xstreamBundle.setScriptBundle(input.getSession().getStream().getSpec().getBundle());
+				xstreamBundle.setScriptBundle(input.getSession().getStream().getScriptBundle());
 				
 				for (StreamSessionExtension ext : input.getSession().getExtensions()) {
-					ext.nodeStarting(StreamSessionNodeImpl.this);
+					//ext.nodeStarting(StreamSessionNodeImpl.this);
 					
 				}
 				StreamSessionWorkerStartReq req = new StreamSessionWorkerStartReq();
@@ -75,6 +75,7 @@ public class StreamSessionNodeImpl implements StreamSessionNode {
 				req.setStream(input.getSession().getStream().getName());
 				req.setSessionId(input.getSession().getSessionId());
 				req.setStreamBundle(xstreamBundle);
+				
 				
 				StreamSessionWorkerStartResp resp = null;
 				try {

@@ -88,6 +88,8 @@ public class StreamController {
 
 	@Autowired
 	private ConfigService config;
+	
+	private XScriptBundle scriptBundle;
 
 	@Autowired
 	private ApplicationContext ac;
@@ -131,8 +133,9 @@ public class StreamController {
 		String bundle = streamVersion.getBundle();
 		try {
 
-			XScriptBundle bund = DJson.getObjectMapper().readValue(streamVersion.getBundle(), XScriptBundle.class);
-			scriptProject = XscriptBundleHelper.loadProject(bund);
+			scriptBundle = DJson.getObjectMapper().readValue(streamVersion.getBundle(), XScriptBundle.class);
+			scriptProject = XscriptBundleHelper.loadProject(scriptBundle);
+			
 
 		} catch (Exception e) {
 			stats.setState(StreamState.Exception);
@@ -167,6 +170,10 @@ public class StreamController {
 			}
 		}
 
+	}
+	
+	public XScriptBundle getScriptBundle() { 
+		return scriptBundle;
 	}
 
 	public DTimeZone getTimeZone() {
