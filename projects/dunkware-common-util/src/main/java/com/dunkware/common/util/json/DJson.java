@@ -19,6 +19,7 @@ public class DJson {
 		if(!initialized) { 
 			objectMapper = new ObjectMapper();
 			objectMapper.setSerializationInclusion(Include.NON_NULL);
+			objectMapper.enable(DeserializationFeature.ACCEPT_EMPTY_STRING_AS_NULL_OBJECT);
 			initialized = true;
 		}
 	}
@@ -26,7 +27,7 @@ public class DJson {
 		init();
 		StringWriter writer = new StringWriter();
 		objectMapper.writeValue(writer, object);
-		objectMapper.enable(DeserializationFeature.ACCEPT_EMPTY_STRING_AS_NULL_OBJECT);
+		
 
 		return writer.toString();
 	}

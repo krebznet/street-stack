@@ -54,6 +54,8 @@ public class XScriptProject {
 				throw new XScriptException("Exception loading XScript Project " + e.toString(),e);
 			}
 		}
+		
+		// XScript
 
 		for (XScript xScript : scripts) {
 			streamVars.addAll(XScriptHelper.getVarTypes(xScript));

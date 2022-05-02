@@ -34,9 +34,14 @@ public class XStreamCore {
 	}
 	
 	public static XStreamInput createInput(XStreamBundle bundle, DExecutor executor) throws XStreamException { 
-		if(bundle.getScriptBundle() == null) { 
-			throw new XStreamException("XScript Bundle is not set on xstream bundle");
+		try {
+			if(bundle.getScriptBundle() == null) { 
+				throw new XStreamException("XScript Bundle is not set on xstream bundle");
+			}	
+		} catch (Exception e) {
+		  throw new XStreamException("Internal Exception reading XScriptBundle from DBytes " + e.toString(),e);
 		}
+		
 		if(bundle.getTimeZone() == null) {
 			
 		}

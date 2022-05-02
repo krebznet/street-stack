@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.dunkware.trade.tick.model.ticker.TradeTickerSpec;
-import com.dunkware.xstream.model.XStreamExtensionType;
 
 public class StreamSessionHelper {
 	

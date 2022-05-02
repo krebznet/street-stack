@@ -6,14 +6,18 @@ import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Component;
 
 import com.dunkware.common.spec.locale.DCountry;
+import com.dunkware.common.util.dtime.DDate;
 import com.dunkware.common.util.dtime.DTime;
 import com.dunkware.common.util.dtime.DTimeZone;
 import com.dunkware.common.util.json.DJson;
 import com.dunkware.trade.service.stream.json.controller.AddStreamReq;
 import com.dunkware.trade.service.stream.json.controller.spec.StreamSpec;
+import com.dunkware.xstream.core.extensions.TimeUpdaterExtType;
 import com.dunkware.xstream.xproject.XScriptProject;
 import com.dunkware.xstream.xproject.bundle.XscriptBundleHelper;
 import com.dunkware.xstream.xproject.model.XScriptBundle;
+import com.dunkware.xstream.xproject.model.XStreamBundle;
+import com.dunkware.xstream.xproject.model.XStreamExtensionType;
 
 /**
  * Builds/serializes stream spec
@@ -24,15 +28,46 @@ import com.dunkware.xstream.xproject.model.XScriptBundle;
 @Profile("StreamTest3")
 public class StreamTest3 {
 
+	public static void main(String[] args) {
+		StreamTest3 test3 = new StreamTest3();
+		test3.load();
+	}
 	@PostConstruct
 	private void load() { 
 	
 		try {
 			StreamSpec spec = new StreamSpec();
 			spec.setName("us_equity");
-			XScriptBundle bundle = XscriptBundleHelper.createBundleFromFilePaths("/Users/dkrebs/dunkware/dunkware-trade-xstream-equity");
-		//	XScriptBundle bundle = XscriptBundleHelper.createBundleFromFilePaths("/Users/dkrebs/dunkdev/workspaces/release-major/data/dunkware-trade-xstream-smoke");
+			XScriptBundle bundle = XscriptBundleHelper.createBundleFromFilePaths("/Users/duncankrebs/dunkware/street/xscript");
+			
+			try {
+				String serializedBundle = DJson.serialize(bundle);
+				System.out.println(serializedBundle);
+				XScriptBundle bundle2 = DJson.getObjectMapper().readValue(serializedBundle, XScriptBundle.class);
+				System.out.println(bundle2.getFiles().size());
+				XStreamBundle streamBundle = new XStreamBundle();
+				streamBundle.setScriptBundle(bundle2);
+				streamBundle.setDate(DDate.now());
+				streamBundle.setTimeZone(DTimeZone.NewYork);
+				String streamSeralized = DJson.serialize(streamBundle);
+				XStreamBundle backFromDead = DJson.getObjectMapper().readValue(streamSeralized, XStreamBundle.class);
+				TimeUpdaterExtType extType = new TimeUpdaterExtType();
+				extType.setTimeZone(DTimeZone.NewYork);
+				backFromDead.getExtensions().add(extType);
+				String deadSeralized = DJson.serialize(backFromDead);
+				System.out.println(deadSeralized);
+				XStreamBundle hopeBundle = DJson.getObjectMapper().readValue(deadSeralized, XStreamBundle.class);
+				System.out.println(hopeBundle.getScriptBundle().getFiles().size());
+				System.out.println(backFromDead.getScriptBundle().getFiles().size());
+			} catch (Exception e) {
+				e.printStackTrace();
+				
+				// TODO: handle exception
+			}
+			
+			//	XScriptBundle bundle = XscriptBundleHelper.createBundleFromFilePaths("/Users/dkrebs/dunkdev/workspaces/release-major/data/dunkware-trade-xstream-smoke");
 		
+			
 			spec.setSchedule(true);
 			
 			spec.setCountry(DCountry.US);

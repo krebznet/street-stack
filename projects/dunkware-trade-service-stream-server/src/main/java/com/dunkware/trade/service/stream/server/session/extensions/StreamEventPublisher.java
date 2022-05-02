@@ -35,7 +35,7 @@ public class StreamEventPublisher implements StreamSessionExtension {
 		extType.setSnapshotTopic(snapshotTopic);
 		extType.setSignalTopic(signalTopic);
 		extType.setKafkaIdentifier(node.getNodeId());
-		node.getStreamBundle().addExtension(extType);
+		node.getStreamBundle().getExtensions().add(extType);
 	}
 
 	@Override

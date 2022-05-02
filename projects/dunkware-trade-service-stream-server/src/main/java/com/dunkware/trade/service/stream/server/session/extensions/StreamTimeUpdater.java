@@ -29,7 +29,7 @@ public class StreamTimeUpdater implements StreamSessionExtension {
 	public void nodeStarting(StreamSessionNode node) {
 		TimeUpdaterExtType ext = new TimeUpdaterExtType();
 		ext.setTimeZone(node.getStream().getSpec().getTimeZone());
-		node.getStreamBundle().addExtension(ext);
+		node.getStreamBundle().getExtensions().add(ext);
 		logger.debug("Stream {} Session {} Add Stream Bundle Extension TimeUpdater ",session.getStream().getName(),session.getSessionId());
 	}
 

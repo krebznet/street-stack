@@ -6,7 +6,6 @@ import com.dunkware.net.cluster.node.ClusterNode;
 import com.dunkware.trade.service.stream.server.controller.StreamController;
 import com.dunkware.trade.service.stream.server.session.core.StreamSessionNodeCallback;
 import com.dunkware.trade.tick.model.ticker.TradeTickerSpec;
-import com.dunkware.xstream.model.XStreamExtensionType;
 
 public class StreamSessionNodeInput {
 	

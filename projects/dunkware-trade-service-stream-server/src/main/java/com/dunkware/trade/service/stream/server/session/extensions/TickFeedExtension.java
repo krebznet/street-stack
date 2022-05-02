@@ -45,7 +45,7 @@ public class TickFeedExtension implements StreamSessionExtension {
 		type.setFeedSpec(spec);
 		type.setServiceEndpoint(tickService.getClient().getEndpoint());
 		type.getDataTicks().put(TradeTicks.TickSnapshot, TradeTicks.FieldSymbol);
-		node.getStreamBundle().addExtension(type);;
+		node.getStreamBundle().getExtensions().add(type);
 		
 	}
 

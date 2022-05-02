@@ -63,10 +63,17 @@ public class StreamSessionNodeImpl implements StreamSessionNode {
 				xstreamBundle = new XStreamBundle();
 				xstreamBundle.setDate(DDate.now());
 				xstreamBundle.setTimeZone(DTimeZone.NewYork);
-				xstreamBundle.setScriptBundle(input.getSession().getStream().getScriptBundle());
+				try {
+					xstreamBundle.setScriptBundle(input.getSession().getStream().getScriptBundle());	
+				} catch (Exception e) {
+					logger.error("Stream Session Node Start Exception setting script bundle on stream bundle " + e.toString(),e);
+					startException = "Setting XScriptBundle that is encoded into bytes on steram bundle exception " + e.toString();
+					input.getCallBack().nodeStartException(StreamSessionNodeImpl.this);
+					return;
+				}
 				
 				for (StreamSessionExtension ext : input.getSession().getExtensions()) {
-					//ext.nodeStarting(StreamSessionNodeImpl.this);
+						ext.nodeStarting(StreamSessionNodeImpl.this);
 					
 				}
 				StreamSessionWorkerStartReq req = new StreamSessionWorkerStartReq();
@@ -80,7 +87,7 @@ public class StreamSessionNodeImpl implements StreamSessionNode {
 				StreamSessionWorkerStartResp resp = null;
 				try {
 					String serialized = DJson.serialize(req);
-					logger.error(DJson.serialize(resp));
+					
 					try {
 						StreamSessionWorkerStartReq reqParsed = DJson.getObjectMapper().readValue(serialized, StreamSessionWorkerStartReq.class);
 						logger.error("Parsed serialized fine");
