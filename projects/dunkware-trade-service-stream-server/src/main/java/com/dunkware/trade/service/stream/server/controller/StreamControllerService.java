@@ -26,7 +26,6 @@ import com.dunkware.trade.service.stream.server.tick.StreamTickService;
 
 
 @Service()
-@Profile("StreamController")
 public class StreamControllerService {
 
 	private Logger logger = org.slf4j.LoggerFactory.getLogger(getClass());

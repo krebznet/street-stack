@@ -23,7 +23,6 @@ import com.dunkware.xstream.xproject.XScriptProject;
 import ch.qos.logback.classic.Logger;
 
 @Service
-@Profile("AutoSearch")
 public class AutoSearchService {
 
 	@Autowired

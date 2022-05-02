@@ -38,7 +38,6 @@ import com.dunkware.trade.service.stream.json.controller.spec.StreamState;
 // /stream/session/status 
 
 @RestController
-@Profile("StreamController")
 @CrossOrigin(origins = "*") 
 public class StreamControllerWebService {
 

@@ -12,7 +12,6 @@ import com.dunkware.trade.service.tick.client.TickServiceClient;
 import com.dunkware.trade.service.tick.client.TickServiceClientFactory;
 
 @Component
-@Profile("TickService")
 public class StreamTickService {
 
 	private Logger logger = LoggerFactory.getLogger(getClass());
