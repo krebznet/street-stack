@@ -23,24 +23,14 @@ public class ClusterNode {
 		this.id = stats.getId();
 		this.nodeState = ClusterNodeState.Available;
 		nodeChannel = ManagedChannelBuilder.forTarget(stats.getGrpcEndpoint()).usePlaintext().build();
-		ConnectivityState channelState = nodeChannel.getState(true);
-		if(channelState == ConnectivityState.TRANSIENT_FAILURE) { 
-			// handle error
-		}
-		if(channelState == ConnectivityState.CONNECTING) { 
-			int i = 1;
-			while(channelState == ConnectivityState.CONNECTING) { 
-				i++;
-				try {
-					Thread.sleep(100);
-				} catch (Exception e) {
-					// TODO: handle exception
-				}
-				if(i > 30) { 
-					nodeState = ClusterNodeState.NodeTimeout;
-				}
+		nodeChannel.notifyWhenStateChanged(ConnectivityState.READY, new Runnable() {
+			
+			@Override
+			public void run() {
+				System.out.println("Managed Channel in Ready state");
 			}
-		}
+		});;
+
 	}
 	
 	public String getId() { 

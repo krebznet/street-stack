@@ -84,7 +84,12 @@ public class GrpcNodeUpdateStream {
 					logger.trace("Publishing Node Stat Count {} to Node {}", updateNodes.size(),request.getNode());
 				}
 				GNodeUpdateResponse resp = builder.build();
-				responseObserver.onNext(resp);
+				try {
+					responseObserver.onNext(resp);	
+				} catch (Exception e) {
+					// TODO: handle exception
+				}
+				
 				
 			}
 		}

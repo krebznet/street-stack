@@ -5,13 +5,13 @@ import javax.annotation.PostConstruct;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Profile;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.dunkware.common.util.dtime.DTime;
 import com.dunkware.common.util.json.DJson;
@@ -26,56 +26,71 @@ import com.dunkware.trade.service.stream.worker.StreamSessionWorkerService;
 public class StreamSessionWorkerWebService {
 
 	private Logger logger = LoggerFactory.getLogger(getClass());
-	
+
 	@Autowired
-	private StreamSessionWorkerService workerService; 
-	
+	private StreamSessionWorkerService workerService;
+
 	@PostConstruct
-	private void postConstruct() { 
+	private void postConstruct() {
 		logger.info("Starting Stream Session Worker Web Service");
 	}
-	
 
-	@PostMapping(path = "/stream/worker/start")
-	public @ResponseBody()StreamSessionWorkerStartResp startWorker(@RequestBody()DBytes input) {
-		StreamSessionWorkerStartResp resp = new StreamSessionWorkerStartResp();
+	@PostMapping("/stream/worker/start")
+	public String startWorker(@RequestParam("file") MultipartFile file) {
+		byte[] bundleBytes = null;
+		try {
+			bundleBytes = file.getBytes();
+		} catch (Exception e) {
+			return e.toString();
+		}
 		StreamSessionWorkerStartReq req = null;
 		try {
-			req = DJson.getObjectMapper().readValue(input.getBytes(), StreamSessionWorkerStartReq.class);
+			req = DJson.getObjectMapper().readValue(bundleBytes, StreamSessionWorkerStartReq.class);
+
 		} catch (Exception e) {
-			logger.error("Fuck bad parse stream start again " + e.toString(),e);
-			resp.setCode("ERROR");
-			resp.setError("Cannot deserialize bytes into session start req " + e.toString());
-			// TODO: handle exception
+			logger.error("Another fuckin error on this shit what the fuck " + e.toString(), e);
+			return e.toString();
 		}
-		logger.debug("In /stream/worker/start with " + req.toString());
-		
-		StreamSessionWorkerStartReq parsed = null;
+
 		try {
-			logger.info("Parsed Stream Session Worker Start Req without problems");
+			workerService.startWorker(req);
+			return "STARTED!";
 		} catch (Exception e) {
-			logger.error("Fatal Cannot deserialize stream session worker start req " + e.toString(),e);
-			resp.setCode("ERROR");
-			resp.setError("Error Parsing shit " + e.toString());
-			return resp;
-		}
-		
-		
-		try {
-			resp.setStartingTime(DTime.now());
-			workerService.startWorker(parsed);
-			resp.setStartTime(DTime.now());
-			resp.setCode("SUCCESS");
-			return resp;
-		} catch (Exception e) {
-			resp.setCode("ERROR");
-			resp.setError(e.toString());
-			return resp;
+			return e.toString();
 		}
 
 	}
+
+	/*
+	 * @PostMapping(path = "/stream/worker/start") public @ResponseBody()
+	 * StreamSessionWorkerStartResp startWorker(@RequestBody() DBytes input) {
+	 * StreamSessionWorkerStartResp resp = new StreamSessionWorkerStartResp();
+	 * StreamSessionWorkerStartReq req = null; try { req =
+	 * DJson.getObjectMapper().readValue(input.getBytes(),
+	 * StreamSessionWorkerStartReq.class); } catch (Exception e) {
+	 * logger.error("Fuck bad parse stream start again " + e.toString(), e);
+	 * resp.setCode("ERROR");
+	 * resp.setError("Cannot deserialize bytes into session start req " +
+	 * e.toString()); // TODO: handle exception }
+	 * logger.debug("In /stream/worker/start with " + req.toString());
+	 * 
+	 * StreamSessionWorkerStartReq parsed = null; try {
+	 * logger.info("Parsed Stream Session Worker Start Req without problems"); }
+	 * catch (Exception e) {
+	 * logger.error("Fatal Cannot deserialize stream session worker start req " +
+	 * e.toString(), e); resp.setCode("ERROR"); resp.setError("Error Parsing shit "
+	 * + e.toString()); return resp; }
+	 * 
+	 * try { resp.setStartingTime(DTime.now()); workerService.startWorker(parsed);
+	 * resp.setStartTime(DTime.now()); resp.setCode("SUCCESS"); return resp; } catch
+	 * (Exception e) { resp.setCode("ERROR"); resp.setError(e.toString()); return
+	 * resp; }
+	 * 
+	 * }
+	 */
+
 	@RequestMapping(path = "/stream/worker/stop")
-	public @ResponseBody()String stopWorker(@RequestParam(name="id")String workerId) { 
+	public @ResponseBody() String stopWorker(@RequestParam(name = "id") String workerId) {
 		try {
 			workerService.stopWorker(workerId);
 			return "OK";
@@ -83,17 +98,15 @@ public class StreamSessionWorkerWebService {
 			return e.toString();
 		}
 	}
-	
-	
+
 	@RequestMapping(path = "/stream/worker/ping")
-	public @ResponseBody()String pingWorker() { 
+	public @ResponseBody() String pingWorker() {
 		return "pong";
 	}
-	
-	
+
 	@RequestMapping(path = "/stream/worker/stats")
-	public @ResponseBody()StreamSessionWorkerStatsResp workerStats(@RequestParam(name = "id") String workerId) { 
-		StreamSessionWorkerStatsResp resp = new  StreamSessionWorkerStatsResp();
+	public @ResponseBody() StreamSessionWorkerStatsResp workerStats(@RequestParam(name = "id") String workerId) {
+		StreamSessionWorkerStatsResp resp = new StreamSessionWorkerStatsResp();
 		try {
 			StreamSessionWorkerStats stats = workerService.getWorker(workerId).getStats();
 			resp.setSpec(stats);
@@ -105,7 +118,5 @@ public class StreamSessionWorkerWebService {
 			return resp;
 		}
 	}
-	
 
-	
 }
