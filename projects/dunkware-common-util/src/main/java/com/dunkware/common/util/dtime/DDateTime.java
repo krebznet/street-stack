@@ -1,9 +1,23 @@
 package com.dunkware.common.util.dtime;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 
+import com.dunkware.common.util.dtime.json.DDateTimeDeserializer;
+import com.dunkware.common.util.dtime.json.DDateTimeSerializer;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+
+@JsonSerialize(using = DDateTimeSerializer.class)
+@JsonDeserialize(using = DDateTimeDeserializer.class)
 public class DDateTime {
 
+	
+	public static DDateTime parse(String text) {
+		LocalDateTime date = LocalDateTime.parse(text);
+		return new DDateTime(date);
+	}
+	
 	public static DDateTime of(DDate date, DTime time) {
 		return new DDateTime(LocalDateTime.of(date.get(), time.get()));
 
