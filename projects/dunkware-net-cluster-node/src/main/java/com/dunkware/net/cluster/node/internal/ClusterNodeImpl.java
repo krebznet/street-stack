@@ -117,6 +117,7 @@ public class ClusterNodeImpl implements ClusterNode {
 		String serialized = null;
 		try {
 			serialized = DJson.serialize(request);
+			
 		} catch (Exception e) {
 			throw new ClusterNodeException(
 					"Exception Serializing " + request.getClass().getName() + " " + e.toString());

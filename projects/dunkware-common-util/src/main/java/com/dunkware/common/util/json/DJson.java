@@ -5,6 +5,7 @@ import java.io.StringWriter;
 
 import com.fasterxml.jackson.annotation.JsonInclude.Include;
 import com.fasterxml.jackson.core.JsonGenerationException;
+import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
@@ -25,6 +26,8 @@ public class DJson {
 		init();
 		StringWriter writer = new StringWriter();
 		objectMapper.writeValue(writer, object);
+		objectMapper.enable(DeserializationFeature.ACCEPT_EMPTY_STRING_AS_NULL_OBJECT);
+
 		return writer.toString();
 	}
 

@@ -54,16 +54,20 @@ public class StreamSessionNodeImpl implements StreamSessionNode {
 		cluster.addComponent(this);
 		this.input = input;
 		eventNode = input.getSession().getEventNode().createChild("/node/" + input.getClusterNode().getId());
-		xstreamBundle = new XStreamBundle();
-		xstreamBundle.setDate(DDate.now());
-		xstreamBundle.setTimeZone(DTimeZone.NewYork);
-		xstreamBundle.setScriptBundle(input.getSession().getStream().getSpec().getBundle());
 		
+		
+		input.getSession().getStream().getSpec().getBundle();
 		Thread starter = new Thread() { 
 			
 			public void start() { 
+				xstreamBundle = new XStreamBundle();
+				xstreamBundle.setDate(DDate.now());
+				xstreamBundle.setTimeZone(DTimeZone.NewYork);
+				xstreamBundle.setScriptBundle(input.getSession().getStream().getSpec().getBundle());
+				
 				for (StreamSessionExtension ext : input.getSession().getExtensions()) {
 					ext.nodeStarting(StreamSessionNodeImpl.this);
+					
 				}
 				StreamSessionWorkerStartReq req = new StreamSessionWorkerStartReq();
 				workerId = input.getStream().getName() + "_session_worker_" + input.getClusterNode().getId();
@@ -74,6 +78,15 @@ public class StreamSessionNodeImpl implements StreamSessionNode {
 				
 				StreamSessionWorkerStartResp resp = null;
 				try {
+					String serialized = DJson.serialize(req);
+					logger.error(DJson.serialize(resp));
+					try {
+						StreamSessionWorkerStartReq reqParsed = DJson.getObjectMapper().readValue(serialized, StreamSessionWorkerStartReq.class);
+						logger.error("Parsed serialized fine");
+					} catch (Exception e) {
+						logger.error("session node can't deserialize its own fucking request " + e.toString(),e);
+						// TODO: handle exception
+					}
 					resp = (StreamSessionWorkerStartResp)input.getClusterNode().jsonPostSerializedRequest("/stream/worker/start", req, StreamSessionWorkerStartResp.class);
 				} catch (Exception e) {
 					state = StreamSessionNodeState.StartException;
