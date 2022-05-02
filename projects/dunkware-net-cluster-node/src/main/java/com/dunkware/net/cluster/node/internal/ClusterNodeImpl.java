@@ -138,6 +138,35 @@ public class ClusterNodeImpl implements ClusterNode {
 			throw new ClusterNodeException("Exception parsing json response " + e.toString());
 		}
 	}
+	
+	
+
+	@Override
+	public Object jsonPostSerializedRequest(String path, Object request, Class response) throws ClusterNodeException {
+		String serialized = null;
+		try {
+			serialized = DJson.serialize(request);
+		} catch (Exception e) {
+			throw new ClusterNodeException(
+					"Exception Serializing " + request.getClass().getName() + " " + e.toString());
+		}
+
+		String respString = null;
+		try {
+			respString = DHttpHelper.postJson(stats.getHttpEndpoint(), path, serialized);
+			if (respString == null) {
+				throw new Exception("node req resp returned null path " + getHttpPathEndPoint(path));
+			}
+		} catch (Exception e) {
+			throw new ClusterNodeException("Exception Invoking Endpoint " + path + " " + e.toString() + " Serialized Post Body is " + serialized,e);
+		}
+		try {
+			Object resp = DJson.getObjectMapper().readValue(respString, response);
+			return resp;
+		} catch (Exception e) {
+			throw new ClusterNodeException("Exception parsing json response " + e.toString());
+		}
+	}
 
 	@Override
 	public void jsonPostVoid(String path, Object request) throws ClusterNodeException {

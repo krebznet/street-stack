@@ -74,7 +74,7 @@ public class StreamSessionNodeImpl implements StreamSessionNode {
 				
 				StreamSessionWorkerStartResp resp = null;
 				try {
-					resp = (StreamSessionWorkerStartResp)input.getClusterNode().jsonPost("/stream/worker/start", req, StreamSessionWorkerStartResp.class);
+					resp = (StreamSessionWorkerStartResp)input.getClusterNode().jsonPostSerializedRequest("/stream/worker/start", req, StreamSessionWorkerStartResp.class);
 				} catch (Exception e) {
 					state = StreamSessionNodeState.StartException;
 					startException = "Exception invoking worker api " + e.toString();

@@ -25,6 +25,8 @@ public interface ClusterNode {
 	
 	public Object jsonPost(String path, Object request, Class response) throws ClusterNodeException;
 	
+	public Object jsonPostSerializedRequest(String path, Object request, Class response) throws ClusterNodeException;
+	
 	public void jsonPostVoid(String path, Object request) throws ClusterNodeException;
 	
 	public Object jsonPost(String path) throws ClusterNodeException;

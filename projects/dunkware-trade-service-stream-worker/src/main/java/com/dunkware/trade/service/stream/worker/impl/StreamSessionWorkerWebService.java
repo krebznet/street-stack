@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.dunkware.common.util.dtime.DTime;
+import com.dunkware.common.util.json.DJson;
 import com.dunkware.trade.service.stream.json.worker.stream.StreamSessionWorkerStartReq;
 import com.dunkware.trade.service.stream.json.worker.stream.StreamSessionWorkerStartResp;
 import com.dunkware.trade.service.stream.json.worker.stream.StreamSessionWorkerStats;
@@ -35,11 +36,24 @@ public class StreamSessionWorkerWebService {
 	
 
 	@PostMapping(path = "/stream/worker/start")
-	public @ResponseBody()StreamSessionWorkerStartResp startWorker(@RequestBody()StreamSessionWorkerStartReq req) { 
+	public @ResponseBody()StreamSessionWorkerStartResp startWorker(@RequestBody()String req) { 
+		logger.debug("In /stream/worker/start with " + req);
 		StreamSessionWorkerStartResp resp = new StreamSessionWorkerStartResp();
+		StreamSessionWorkerStartReq parsed = null;
+		try {
+			parsed = DJson.getObjectMapper().readValue(req, StreamSessionWorkerStartReq.class);
+			logger.info("Parsed Stream Session Worker Start Req without problems");
+		} catch (Exception e) {
+			logger.error("Fatal Cannot deserialize stream session worker start req " + e.toString(),e);
+			resp.setCode("ERROR");
+			resp.setError("Error Parsing shit " + e.toString());
+			return resp;
+		}
+		
+		
 		try {
 			resp.setStartingTime(DTime.now());
-			workerService.startWorker(req);
+			workerService.startWorker(parsed);
 			resp.setStartTime(DTime.now());
 			resp.setCode("SUCCESS");
 			return resp;
