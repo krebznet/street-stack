@@ -36,12 +36,11 @@ public class StreamSessionWorkerWebService {
 	
 
 	@PostMapping(path = "/stream/worker/start")
-	public @ResponseBody()StreamSessionWorkerStartResp startWorker(@RequestBody()String req) { 
-		logger.debug("In /stream/worker/start with " + req);
+	public @ResponseBody()StreamSessionWorkerStartResp startWorker(@RequestBody()StreamSessionWorkerStartReq req) { 
+		logger.debug("In /stream/worker/start with " + req.toString());
 		StreamSessionWorkerStartResp resp = new StreamSessionWorkerStartResp();
 		StreamSessionWorkerStartReq parsed = null;
 		try {
-			parsed = DJson.getObjectMapper().readValue(req, StreamSessionWorkerStartReq.class);
 			logger.info("Parsed Stream Session Worker Start Req without problems");
 		} catch (Exception e) {
 			logger.error("Fatal Cannot deserialize stream session worker start req " + e.toString(),e);

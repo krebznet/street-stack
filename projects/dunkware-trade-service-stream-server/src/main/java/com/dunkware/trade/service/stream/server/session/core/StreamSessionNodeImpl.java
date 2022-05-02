@@ -95,7 +95,7 @@ public class StreamSessionNodeImpl implements StreamSessionNode {
 						logger.error("session node can't deserialize its own fucking request " + e.toString(),e);
 						// TODO: handle exception
 					}
-					resp = (StreamSessionWorkerStartResp)input.getClusterNode().jsonPostSerializedRequest("/stream/worker/start", req, StreamSessionWorkerStartResp.class);
+					resp = (StreamSessionWorkerStartResp)input.getClusterNode().jsonPost("/stream/worker/start", req, StreamSessionWorkerStartResp.class);
 				} catch (Exception e) {
 					state = StreamSessionNodeState.StartException;
 					startException = "Exception invoking worker api " + e.toString();
