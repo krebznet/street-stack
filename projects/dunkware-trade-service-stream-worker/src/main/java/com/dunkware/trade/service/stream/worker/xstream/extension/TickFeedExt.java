@@ -1,7 +1,8 @@
-package com.dunkware.trade.service.stream.server.session.xstream;
+package com.dunkware.trade.service.stream.worker.xstream.extension;
 
 import com.dunkware.common.tick.TickHandler;
 import com.dunkware.common.tick.proto.TickProto.Tick;
+import com.dunkware.trade.service.stream.json.xstream.TickFeedExtType;
 import com.dunkware.trade.service.tick.client.TickServiceClient;
 import com.dunkware.trade.service.tick.client.TickServiceClientFactory;
 import com.dunkware.trade.service.tick.client.TickServiceClientFeed;
@@ -11,11 +12,10 @@ import com.dunkware.xstream.api.XStreamExtension;
 import com.dunkware.xstream.core.annotations.AXStreamExtension;
 import com.dunkware.xstream.xproject.model.XStreamExtensionType;
 
-@AXStreamExtension(type = StreamSessionTickFeedExtType.class)
+@AXStreamExtension(type = TickFeedExtType.class)
+public class TickFeedExt implements XStreamExtension, TickHandler {
 
-public class StreamSessionTickFeedExt implements XStreamExtension, TickHandler {
-
-	private StreamSessionTickFeedExtType myType;
+	private TickFeedExtType myType;
 	private XStream stream;
 	
 	private TickServiceClientFeed tickFeed;
@@ -25,7 +25,7 @@ public class StreamSessionTickFeedExt implements XStreamExtension, TickHandler {
 	@Override
 	public void init(XStream stream, XStreamExtensionType type) throws XStreamException {
 		this.stream = stream;
-		myType = (StreamSessionTickFeedExtType)type;
+		myType = (TickFeedExtType)type;
 		try {
 			tickService = TickServiceClientFactory.connect(myType.getServiceEndpoint());
 		} catch (Exception e) {

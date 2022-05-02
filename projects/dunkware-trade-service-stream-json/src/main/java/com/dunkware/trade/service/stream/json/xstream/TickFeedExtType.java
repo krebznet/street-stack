@@ -1,4 +1,4 @@
-package com.dunkware.trade.service.stream.server.session.xstream;
+package com.dunkware.trade.service.stream.json.xstream;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -6,7 +6,7 @@ import java.util.Map;
 import com.dunkware.trade.tick.model.feed.TickFeedSpec;
 import com.dunkware.xstream.xproject.model.XStreamExtensionType;
 
-public class StreamSessionTickFeedExtType extends XStreamExtensionType {
+public class TickFeedExtType extends XStreamExtensionType {
 	
 	private TickFeedSpec feedSpec;
 	private String serviceEndpoint; 

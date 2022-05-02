@@ -58,6 +58,7 @@ public class StreamSessionWorkerImpl implements StreamSessionWorker, ClusterJobR
 	public void startJob(ClusterJob job) throws Exception {
 
 		try {
+
 			// this is where we should create a cluster job
 			XScriptBundle script = bundle.getScriptBundle();
 			
