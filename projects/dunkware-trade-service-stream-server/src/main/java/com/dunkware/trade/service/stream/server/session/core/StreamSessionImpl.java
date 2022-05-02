@@ -103,10 +103,19 @@ public class StreamSessionImpl implements StreamSession {
 		for (StreamSessionExtension ext : extensionTypes) {
 			ext.sessionStarting(this);
 		}
-		createSessionEntity();
+		try {
+			createSessionEntity();	
+		} catch (Exception e) {
+			logger.error("Exception creating Sesssion Entity " + e.toString(),e);
+			status.setState(StreamSessionState.Exception);
+			status.setException(e.toString());
+			throw new StreamSessionException("Exception creating Session Entity " + e.toString(),e);
+		}
+		
 		for (ClusterNode workerNode : input.getWorkerNodes()) {
 			StreamSessionNodeInput nodeInput = new StreamSessionNodeInput(nodeTickers.get(nodeIndex), workerNode,
 					extensionTypes, this, input.getController(), this.nodeCallback);
+			
 			StreamSessionNodeImpl sessionNode = new StreamSessionNodeImpl();
 			ac.getAutowireCapableBeanFactory().autowireBean(sessionNode);
 			logger.info(MarkerFactory.getMarker(sessionId), "Starting session node on worker " + workerNode.getId());

@@ -17,8 +17,8 @@
 	
 	<appender name="FLUENT"
 		class="ch.qos.logback.more.appenders.DataFluentAppender">
-		<tag>streetdev</tag>
-		<label>logging</label>
+		<tag>streettest</tag>
+		<label>fuckyou</label>
 		<remoteHost>testrock2.dunkware.net</remoteHost>
 		<port>5678</port>
 		<additionalField>

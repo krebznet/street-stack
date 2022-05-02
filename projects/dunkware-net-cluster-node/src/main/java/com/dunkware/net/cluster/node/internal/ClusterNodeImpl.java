@@ -129,7 +129,7 @@ public class ClusterNodeImpl implements ClusterNode {
 				throw new Exception("node req resp returned null path " + getHttpPathEndPoint(path));
 			}
 		} catch (Exception e) {
-			throw new ClusterNodeException("Exception Invoking Endpoint " + path + " " + e.toString());
+			throw new ClusterNodeException("Exception Invoking Endpoint " + path + " " + e.toString() + " Serialized Post Body is " + serialized,e);
 		}
 		try {
 			Object resp = DJson.getObjectMapper().readValue(respString, response);
