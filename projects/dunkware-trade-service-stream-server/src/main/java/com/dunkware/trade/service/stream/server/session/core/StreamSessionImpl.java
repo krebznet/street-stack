@@ -7,6 +7,7 @@ import java.time.ZoneId;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicInteger;
+import java.util.concurrent.atomic.AtomicLong;
 
 import javax.transaction.Transactional;
 
@@ -25,6 +26,7 @@ import com.dunkware.trade.service.stream.json.controller.session.StreamSessionSt
 import com.dunkware.trade.service.stream.json.controller.session.StreamSessionStatus;
 import com.dunkware.trade.service.stream.json.message.StreamSessionStart;
 import com.dunkware.trade.service.stream.json.message.StreamSessionStop;
+import com.dunkware.trade.service.stream.json.worker.stream.StreamSessionWorkerStats;
 import com.dunkware.trade.service.stream.server.controller.StreamController;
 import com.dunkware.trade.service.stream.server.controller.util.StreamSessionSpecBuilder;
 import com.dunkware.trade.service.stream.server.session.StreamSession;
@@ -66,6 +68,7 @@ public class StreamSessionImpl implements StreamSession {
 
 	private StreamSessionStatus status;
 
+	
 	private List<StreamSessionExtension> extensionTypes;
 
 	private NodeCallback nodeCallback = new NodeCallback();
@@ -125,7 +128,7 @@ public class StreamSessionImpl implements StreamSession {
 		}
 
 	}
-
+ 
 	@Override
 	public void stopSession() throws StreamSessionException {
 		logger.info(MarkerFactory.getMarker(getSessionId()), "Stopping Session");
@@ -154,12 +157,34 @@ public class StreamSessionImpl implements StreamSession {
 
 	@Override
 	public StreamSessionStatus getStatus() {
-
 		status.getNodes().clear();
+		status.setNodeCount(nodes.size());
+		AtomicLong pendingTasks = new AtomicLong(0);
+		AtomicLong completedTasks = new AtomicLong(0);
+		AtomicLong timeoutTasks = new AtomicLong(0);
+		AtomicLong tickCount = new AtomicLong(0);
+		AtomicInteger nodeProblemCount = new AtomicInteger(0);
+		AtomicInteger rowCount = new AtomicInteger(0);
+		AtomicInteger nodeWarningCount = new AtomicInteger(0);
+		AtomicInteger signalCount = new AtomicInteger(0);
+		
 		for (StreamSessionNode node : nodes) {
-			status.getNodes().add(node.getStatus());
-
+			StreamSessionWorkerStats workerStats = node.getWorkerStats();
+			rowCount.addAndGet(workerStats.getRowCount());
+			signalCount.addAndGet(workerStats.getSignalCount());
+			pendingTasks.addAndGet(workerStats.getPendingTaskCount());
+			completedTasks.addAndGet(workerStats.getCompletedTaskCount());
+			timeoutTasks.addAndGet(workerStats.getTimeoutTaskCount());
+			tickCount.addAndGet(workerStats.getTickCount());
+			status.getNodes().add(workerStats);
 		}
+		status.setSignalCount(signalCount.get());
+		status.setCompletedTasks(completedTasks.get());
+		status.setTimeoutTasks(timeoutTasks.get());
+		status.setTickerCount(rowCount.get());
+		status.setTickCount(tickCount.get());
+		status.setPendingTasks(pendingTasks.get());
+		
 		return status;
 	}
 
@@ -369,7 +394,6 @@ public class StreamSessionImpl implements StreamSession {
 				handleSessionStopped();
 			}
 		}
-		
 		
 		
 		

@@ -20,6 +20,7 @@ import com.dunkware.trade.service.stream.json.controller.session.StreamSessionNo
 import com.dunkware.trade.service.stream.json.worker.stream.StreamSessionWorkerStartReq;
 import com.dunkware.trade.service.stream.json.worker.stream.StreamSessionWorkerStartResp;
 import com.dunkware.trade.service.stream.json.worker.stream.StreamSessionWorkerStats;
+import com.dunkware.trade.service.stream.json.worker.stream.StreamSessionWorkerStatsResp;
 import com.dunkware.trade.service.stream.json.worker.stream.StreamSessionWorkerStopReq;
 import com.dunkware.trade.service.stream.server.controller.StreamController;
 import com.dunkware.trade.service.stream.server.session.StreamSession;
@@ -44,6 +45,8 @@ public class StreamSessionNodeImpl implements StreamSessionNode {
 	private String workerId;
 
 	private DEventNode eventNode;
+	
+	private WorkerStatGetter workerStatGetter = null;
 
 	@Autowired
 	private Cluster cluster;
@@ -55,7 +58,7 @@ public class StreamSessionNodeImpl implements StreamSessionNode {
 		cluster.addComponent(this);
 		this.input = input;
 		eventNode = input.getSession().getEventNode().createChild("/node/" + input.getClusterNode().getId());
-
+		
 		input.getSession().getStream().getSpec().getBundle();
 		Thread starter = new Thread() {
 
@@ -80,6 +83,8 @@ public class StreamSessionNodeImpl implements StreamSessionNode {
 				}
 				StreamSessionWorkerStartReq req = new StreamSessionWorkerStartReq();
 				workerId = input.getStream().getName() + "_session_worker_" + input.getClusterNode().getId();
+				workerStats = new StreamSessionWorkerStats();
+				workerStats.setNodeId(workerId);
 				req.setWorkerId(workerId);
 				req.setStream(input.getSession().getStream().getName());
 				req.setSessionId(input.getSession().getSessionId());
@@ -111,6 +116,8 @@ public class StreamSessionNodeImpl implements StreamSessionNode {
 							input.getCallBack().nodeStarted(StreamSessionNodeImpl.this);
 							logger.info("Starting Stream Session {} Worker {}", input.getSession().getSessionId(),
 									input.getClusterNode().getId());
+							workerStatGetter = new WorkerStatGetter();
+							workerStatGetter.start();
 							return;
 						}
 					} catch (Exception e) {
@@ -163,8 +170,7 @@ public class StreamSessionNodeImpl implements StreamSessionNode {
 
 	@Override
 	public StreamSessionWorkerStats getWorkerStats() {
-		StreamSessionWorkerStats stats = new StreamSessionWorkerStats();
-		return stats;
+		return workerStats;
 	}
 
 	@Override
@@ -219,6 +225,9 @@ public class StreamSessionNodeImpl implements StreamSessionNode {
 					StreamSessionWorkerStopReq req = new StreamSessionWorkerStopReq();
 					req.setWorkerId(workerId);
 					try {
+						if(workerStatGetter != null) { 
+							workerStatGetter.interrupt();
+						}
 						String resp = input.getClusterNode().httpGet("/stream/worker/stop?id=" + workerId);
 
 						if (resp.equals("OK") == false) {
@@ -252,6 +261,39 @@ public class StreamSessionNodeImpl implements StreamSessionNode {
 	@Override
 	public StreamSessionNodeInput getInput() {
 		return input;
+	}
+
+	private class WorkerStatGetter extends Thread {
+
+		public void run() {
+			while (!interrupted()) {
+				try {
+					Thread.sleep(3000);
+					try {
+						StreamSessionWorkerStatsResp statResp = (StreamSessionWorkerStatsResp) getNode()
+								.jsonGet("/stream/worker/stats?id=" + workerId, StreamSessionWorkerStatsResp.class);
+						if(statResp.getCode().equalsIgnoreCase("ERROR")) { 
+							logger.error("Exception getting worker node stats " + workerId + " " + statResp.getError());
+							Thread.sleep(5000);
+						} else { 
+							workerStats = statResp.getSpec();
+						}
+					} catch (Exception e) {
+						if (e instanceof InterruptedException) {
+							return;
+						}
+						workerStats = new StreamSessionWorkerStats();
+						workerStats.setRequestError(e.toString());
+						
+						logger.error("Exception getting stream session " + workerId + " not stats " + e.toString(), e);
+					}
+				} catch (Exception e) {
+					if (e instanceof InterruptedException) {
+						return;
+					}
+				}
+			}
+		}
 	}
 
 }

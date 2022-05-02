@@ -263,7 +263,12 @@ public class StreamController {
 	}
 
 	public StreamStats getStats() {
+		if(session != null) { 
+			stats.setSession(session.getStatus());	
+		}
+		stats.setName(getSession().getSessionId());
 		return stats;
+		
 	}
 
 	public StreamVersionDO getCurrentVersion() {

@@ -3,10 +3,12 @@ package com.dunkware.trade.tick.service.server;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.boot.autoconfigure.data.mongo.MongoDataAutoConfiguration;
 import org.springframework.boot.autoconfigure.jmx.JmxAutoConfiguration;
+import org.springframework.boot.autoconfigure.mongo.MongoAutoConfiguration;
 
 
-@EnableAutoConfiguration(exclude={JmxAutoConfiguration.class})
+@EnableAutoConfiguration(exclude={JmxAutoConfiguration.class,MongoAutoConfiguration.class, MongoDataAutoConfiguration.class})
 @SpringBootApplication(scanBasePackages = "com.dunkware.net.cluster.node, com.dunkware.trade.tick.service.server")
 public class TickService {
 

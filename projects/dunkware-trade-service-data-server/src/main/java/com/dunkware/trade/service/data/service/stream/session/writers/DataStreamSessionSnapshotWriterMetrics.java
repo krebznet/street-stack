@@ -73,6 +73,7 @@ public class DataStreamSessionSnapshotWriterMetrics {
 	public void bucketWriteBatch(List<DataStreamSessionSnapshotWriterBucket> buckets, int size, double speed) {
 		lastBucketWriteSpeed = speed;
 		lastBucketWriteSize = size;
+		snapshotWriteBucketCount = snapshotWriteBucketCount + 1;
 		for (DataStreamSessionSnapshotWriterBucket bucket : buckets) {
 			for (GEntitySnapshot snapshot : bucket.getSnapshots()) {
 				snapshotWriteCount++;

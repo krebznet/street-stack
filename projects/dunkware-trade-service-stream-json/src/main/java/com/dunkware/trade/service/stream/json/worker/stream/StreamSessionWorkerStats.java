@@ -1,6 +1,8 @@
 package com.dunkware.trade.service.stream.json.worker.stream;
 
 import com.dunkware.common.util.dtime.DTime;
+import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonInclude.Include;
 
 public class StreamSessionWorkerStats {
 
@@ -10,11 +12,15 @@ public class StreamSessionWorkerStats {
 	private long completedTaskCount; 
 	private long timeoutTaskCount; 
 	private int signalCount; 
-	
+	@JsonInclude(Include.NON_NULL)
 	private DTime streamTime; 
+	@JsonInclude(Include.NON_NULL)
 	private DTime systemTime; 
 	private int rowCount; 
 	private long tickCount; 
+
+	@JsonInclude(Include.NON_NULL)
+	private String requestError;
 	
 	private DTime lastDataTickTime;
 	
@@ -132,6 +138,18 @@ public class StreamSessionWorkerStats {
 	public void setLastDataTickTime(DTime lastDataTickTime) {
 		this.lastDataTickTime = lastDataTickTime;
 	}
+
+
+	public String getRequestError() {
+		return requestError;
+	}
+
+
+	public void setRequestError(String requestError) {
+		this.requestError = requestError;
+	}
+	
+	
 	
 	
 	

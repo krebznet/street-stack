@@ -220,6 +220,7 @@ public class DataStreamSession {
 	}
 	
 	public void controllerStop() { 
+		//RIGHT HERE! 
 		logger.info("Controller Stop Method Invoked");
 		sessionEntity.setControllerStopTime(LocalDateTime.now(DTimeZone.toZoneId(spec.getTimeZone())));
 		sessionEntity.setState(DataStreamSessionState.Persisting);

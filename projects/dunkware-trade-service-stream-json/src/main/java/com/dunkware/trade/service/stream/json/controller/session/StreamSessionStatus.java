@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.dunkware.common.util.dtime.DTime;
+import com.dunkware.trade.service.stream.json.worker.stream.StreamSessionWorkerStats;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonInclude.Include;
 
@@ -16,7 +17,11 @@ public class StreamSessionStatus {
 	@JsonInclude(Include.NON_NULL)
 	private DTime startTime; 
 	@JsonInclude(Include.NON_NULL)
+	private long pendingTasks;
+	@JsonInclude(Include.NON_NULL)
 	private DTime startingTime;
+	@JsonInclude(Include.NON_NULL)
+	private long tickCount; 
 	@JsonInclude(Include.NON_NULL)
 	private int tickerCount;
 	@JsonInclude(Include.NON_NULL)
@@ -39,7 +44,7 @@ public class StreamSessionStatus {
 	@JsonInclude(Include.NON_NULL)
 	private String exception; 
 	@JsonInclude(Include.NON_NULL)
-	private List<StreamSessionNodeStatus> nodes = new ArrayList<StreamSessionNodeStatus>();
+	private List<StreamSessionWorkerStats> nodes = new ArrayList<StreamSessionWorkerStats>();
 	
 	public StreamSessionStatus() { 
 		
@@ -207,12 +212,14 @@ public class StreamSessionStatus {
 	}
 
 
-	public List<StreamSessionNodeStatus> getNodes() {
+	
+
+	public List<StreamSessionWorkerStats> getNodes() {
 		return nodes;
 	}
 
 
-	public void setNodes(List<StreamSessionNodeStatus> nodes) {
+	public void setNodes(List<StreamSessionWorkerStats> nodes) {
 		this.nodes = nodes;
 	}
 
@@ -226,6 +233,28 @@ public class StreamSessionStatus {
 	public void addWarning(String warning) { 
 		this.warnings.add(warning);
 	}
+
+
+	public long getPendingTasks() {
+		return pendingTasks;
+	}
+
+
+	public void setPendingTasks(long pendingTasks) {
+		this.pendingTasks = pendingTasks;
+	}
+
+
+	public long getTickCount() {
+		return tickCount;
+	}
+
+
+	public void setTickCount(long tickCount) {
+		this.tickCount = tickCount;
+	}
+	
+	
 	
 	
 

@@ -20,6 +20,7 @@ import com.dunkware.trade.service.stream.json.worker.stream.StreamSessionWorkerS
 import com.dunkware.trade.service.stream.json.worker.stream.StreamSessionWorkerStartResp;
 import com.dunkware.trade.service.stream.json.worker.stream.StreamSessionWorkerStats;
 import com.dunkware.trade.service.stream.json.worker.stream.StreamSessionWorkerStatsResp;
+import com.dunkware.trade.service.stream.worker.StreamSessionWorker;
 import com.dunkware.trade.service.stream.worker.StreamSessionWorkerService;
 
 @RestController
@@ -53,7 +54,7 @@ public class StreamSessionWorkerWebService {
 		}
 
 		try {
-			workerService.startWorker(req);
+			StreamSessionWorker worker = workerService.startWorker(req);
 			return "STARTED!";
 		} catch (Exception e) {
 			return e.toString();

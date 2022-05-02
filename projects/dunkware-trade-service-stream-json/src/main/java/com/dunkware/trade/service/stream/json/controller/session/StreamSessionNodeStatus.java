@@ -1,6 +1,7 @@
 package com.dunkware.trade.service.stream.json.controller.session;
 
 import com.dunkware.common.util.dtime.DTime;
+import com.dunkware.trade.service.stream.json.worker.stream.StreamSessionWorkerStats;
 
 public class StreamSessionNodeStatus {
 	private String nodeId; 
@@ -14,6 +15,7 @@ public class StreamSessionNodeStatus {
 	private int rowCount; 
 	private long tickCount; 
 	private DTime lastDataTickTime;
+	private StreamSessionWorkerStats workerStats = null;
 	
 	private StreamSessionNodeState state;
 	private String exception;
@@ -95,6 +97,8 @@ public class StreamSessionNodeStatus {
 	public void setException(String exception) {
 		this.exception = exception;
 	}
+	
+	
 	
 	
 }

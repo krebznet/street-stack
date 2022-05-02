@@ -189,8 +189,14 @@ public class ClusterNodeImpl implements ClusterNode {
 
 	@Override
 	public Object jsonGet(String path, Class response) throws ClusterNodeException {
-		// TODO Auto-generated method stub
-		return null;
+		String endpoint = getHttpPathEndPoint(path);
+		try {
+			String respString = DHttpHelper.getJson(endpoint);
+			return DJson.getObjectMapper().readValue(respString, response);
+		} catch (Exception e) {
+			throw new ClusterNodeException("Exception invoking endpoint " + endpoint + " " + e.toString(),e);
+		}
+	
 	}
 
 	@Override
