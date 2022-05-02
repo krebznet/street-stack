@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.dunkware.common.util.dtime.DTime;
 import com.dunkware.common.util.json.DJson;
+import com.dunkware.common.util.json.bytes.DBytes;
 import com.dunkware.trade.service.stream.json.worker.stream.StreamSessionWorkerStartReq;
 import com.dunkware.trade.service.stream.json.worker.stream.StreamSessionWorkerStartResp;
 import com.dunkware.trade.service.stream.json.worker.stream.StreamSessionWorkerStats;
@@ -36,9 +37,19 @@ public class StreamSessionWorkerWebService {
 	
 
 	@PostMapping(path = "/stream/worker/start")
-	public @ResponseBody()StreamSessionWorkerStartResp startWorker(@RequestBody()StreamSessionWorkerStartReq req) { 
-		logger.debug("In /stream/worker/start with " + req.toString());
+	public @ResponseBody()StreamSessionWorkerStartResp startWorker(@RequestBody()DBytes input) {
 		StreamSessionWorkerStartResp resp = new StreamSessionWorkerStartResp();
+		StreamSessionWorkerStartReq req = null;
+		try {
+			req = DJson.getObjectMapper().readValue(input.getBytes(), StreamSessionWorkerStartReq.class);
+		} catch (Exception e) {
+			logger.error("Fuck bad parse stream start again " + e.toString(),e);
+			resp.setCode("ERROR");
+			resp.setError("Cannot deserialize bytes into session start req " + e.toString());
+			// TODO: handle exception
+		}
+		logger.debug("In /stream/worker/start with " + req.toString());
+		
 		StreamSessionWorkerStartReq parsed = null;
 		try {
 			logger.info("Parsed Stream Session Worker Start Req without problems");

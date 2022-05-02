@@ -10,6 +10,7 @@ import com.dunkware.common.util.dtime.DDate;
 import com.dunkware.common.util.dtime.DTimeZone;
 import com.dunkware.common.util.events.DEventNode;
 import com.dunkware.common.util.json.DJson;
+import com.dunkware.common.util.json.bytes.DBytes;
 import com.dunkware.net.cluster.node.Cluster;
 import com.dunkware.net.cluster.node.ClusterNode;
 import com.dunkware.net.cluster.node.anot.AClusterPojoEventHandler;
@@ -95,7 +96,10 @@ public class StreamSessionNodeImpl implements StreamSessionNode {
 						logger.error("session node can't deserialize its own fucking request " + e.toString(),e);
 						// TODO: handle exception
 					}
-					resp = (StreamSessionWorkerStartResp)input.getClusterNode().jsonPost("/stream/worker/start", req, StreamSessionWorkerStartResp.class);
+					DBytes dbytes = new DBytes(DJson.serialize(req).getBytes());
+					
+					
+					resp = (StreamSessionWorkerStartResp)input.getClusterNode().jsonPost("/stream/worker/start", dbytes, StreamSessionWorkerStartResp.class);
 				} catch (Exception e) {
 					state = StreamSessionNodeState.StartException;
 					startException = "Exception invoking worker api " + e.toString();

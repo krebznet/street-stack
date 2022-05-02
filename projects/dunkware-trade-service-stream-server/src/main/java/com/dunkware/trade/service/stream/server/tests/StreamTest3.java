@@ -12,6 +12,7 @@ import com.dunkware.common.util.dtime.DTimeZone;
 import com.dunkware.common.util.json.DJson;
 import com.dunkware.trade.service.stream.json.controller.AddStreamReq;
 import com.dunkware.trade.service.stream.json.controller.spec.StreamSpec;
+import com.dunkware.trade.service.stream.json.worker.stream.StreamSessionWorkerStartReq;
 import com.dunkware.xstream.core.extensions.TimeUpdaterExtType;
 import com.dunkware.xstream.xproject.XScriptProject;
 import com.dunkware.xstream.xproject.bundle.XscriptBundleHelper;
@@ -59,6 +60,15 @@ public class StreamTest3 {
 				XStreamBundle hopeBundle = DJson.getObjectMapper().readValue(deadSeralized, XStreamBundle.class);
 				System.out.println(hopeBundle.getScriptBundle().getFiles().size());
 				System.out.println(backFromDead.getScriptBundle().getFiles().size());
+				
+				StreamSessionWorkerStartReq req = new StreamSessionWorkerStartReq();
+				req.setStreamBundle(hopeBundle);
+				req.setSessionId("ddddfs");
+				req.setStream("mee");
+				req.setWorkerId("poop");
+				String startSer = DJson.serialize(req);
+				StreamSessionWorkerStartReq reqDead = DJson.getObjectMapper().readValue(startSer, StreamSessionWorkerStartReq.class);
+				System.out.println(reqDead.getStreamBundle().getScriptBundle().getFiles().size());
 			} catch (Exception e) {
 				e.printStackTrace();
 				
