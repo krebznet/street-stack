@@ -1,5 +1,9 @@
 package com.dunkware.net.cluster.node.internal;
 
+import javax.annotation.PostConstruct;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
@@ -7,6 +11,8 @@ import com.dunkware.net.cluster.json.node.ClusterNodeType;
 
 @Service
 public class ClusterConfig {
+	
+	private Logger logger = LoggerFactory.getLogger(getClass());
 	
 	@Value("${net.cluster.node.id}")		
 	private String nodeId; 
@@ -28,6 +34,11 @@ public class ClusterConfig {
 	
 	public String getNodeId() {
 		return nodeId;
+	}
+	
+	@PostConstruct
+	public void load() { 
+		logger.debug("My Grpc Server " + serverGrpc);
 	}
 
 	public ClusterNodeType getNodeType() {
