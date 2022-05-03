@@ -23,6 +23,41 @@ public class DataStreamWriterHelper {
 	}
 	
 	
+	public static Document buildSnapshotSerries(GEntitySnapshot snapshot, DTimeZone zone) throws Exception { 
+		Document container = new Document();
+		LocalDateTime timestamp = DunkTime.toLocalDateTime(snapshot.getTime(), zone);
+		container.append("time", timestamp);
+		container.append("ent", snapshot.getId());
+		Document varDoc = new Document();
+		
+		for (GEntityVarSnapshot var : snapshot.getVarsList()) {
+			
+			if (var.getValueCase() == GEntityVarSnapshot.ValueCase.BOOLEANVALUE) {
+				varDoc.append(String.valueOf(var.getId()), var.getBooleanValue());
+			}
+			if (var.getValueCase() == GEntityVarSnapshot.ValueCase.DOUBLEVALUE) {
+				varDoc.append(String.valueOf(var.getId()), var.getDoubleValue());
+			}
+			if (var.getValueCase() == GEntityVarSnapshot.ValueCase.INTVALUE) {
+				varDoc.append(String.valueOf(var.getId()), var.getIntValue());
+			}
+			if (var.getValueCase() == GEntityVarSnapshot.ValueCase.LONGVALUE) {
+				varDoc.append(String.valueOf(var.getId()), var.getLongValue());
+			}
+			if (var.getValueCase() == GEntityVarSnapshot.ValueCase.STRINGVALUE) {
+				varDoc.append(String.valueOf(var.getId()), var.getStringValue());
+			}
+		}
+		container.append("vars", varDoc);
+		List<Integer> signals = new ArrayList<Integer>();
+		for (GEntitySnapshot.GSnapshotSignal signal : snapshot.getSignalsList()) {
+			signals.add(signal.getId());
+		}
+		container.append("signals", signals);
+		return container;
+		
+	}
+	
 	/**
 	 * Yup so just fix the time conversion 
 	 * @param bucket
@@ -107,7 +142,6 @@ public class DataStreamWriterHelper {
 		for (GEntityVarSnapshot var : snapshots) {
 			Document varDoc = new Document();
 			varDoc.append("id", var.getId());
-			varDoc.append("indent", var.getIdentifier());
 			boolean handled = false;
 			if (var.getValueCase() == GEntityVarSnapshot.ValueCase.BOOLEANVALUE) {
 				varDoc.append("value", var.getBooleanValue());

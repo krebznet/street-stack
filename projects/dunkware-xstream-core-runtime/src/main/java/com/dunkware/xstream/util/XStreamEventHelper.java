@@ -136,6 +136,9 @@ public class XStreamEventHelper {
 
 		List<GEntityVarSnapshot> snapshots = new ArrayList<GEntityVarSnapshot>();
 		for (XStreamVar var : row.getVars()) {
+			if(var.getSize() == 0) { 
+				continue;
+			}
 			GEntityVarSnapshot.Builder builder = GEntityVarSnapshot.newBuilder();
 			builder.setId(var.getVarType().getCode());
 			builder.setIdentifier(var.getVarType().getName());
@@ -170,7 +173,9 @@ public class XStreamEventHelper {
 					continue;
 				}
 				if (v instanceof Long) {
+					
 					Long longValue = (Long) v;
+					
 					builder.setLongValue(longValue);
 					snapshots.add(builder.build());
 					continue;

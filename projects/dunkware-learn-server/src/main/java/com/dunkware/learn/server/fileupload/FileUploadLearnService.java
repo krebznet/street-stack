@@ -2,12 +2,14 @@ package com.dunkware.learn.server.fileupload;
 
 import javax.annotation.PostConstruct;
 
+import org.springframework.context.annotation.Profile;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
 @RestController
+@Profile("FileMe")
 public class FileUploadLearnService {
 	
 	

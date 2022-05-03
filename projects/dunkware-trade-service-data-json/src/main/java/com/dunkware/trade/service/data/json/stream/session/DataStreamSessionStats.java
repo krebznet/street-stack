@@ -4,6 +4,7 @@ import com.dunkware.common.util.dtime.DDateTime;
 import com.dunkware.trade.service.data.json.enums.DataStreamSessionState;
 import com.dunkware.trade.service.data.json.stream.writer.DataStreamSignalWriterSessionStats;
 import com.dunkware.trade.service.data.json.stream.writer.DataStreamSnapshotWriterSessionStats;
+import com.dunkware.trade.service.data.json.stream.writer.DataStreamSnapshotWriterSessionStats2;
 
 public class DataStreamSessionStats {
 	
@@ -14,7 +15,7 @@ public class DataStreamSessionStats {
 	private double snapshotWriteLagTime; 
 	private DataStreamSessionState state; 
 	private DataStreamSignalWriterSessionStats signalStats;
-	private DataStreamSnapshotWriterSessionStats snapshotStats;
+	private DataStreamSnapshotWriterSessionStats2 snapshotStats;
 	public String getStream() {
 		return stream;
 	}
@@ -57,12 +58,13 @@ public class DataStreamSessionStats {
 	public void setSignalStats(DataStreamSignalWriterSessionStats signalStats) {
 		this.signalStats = signalStats;
 	}
-	public DataStreamSnapshotWriterSessionStats getSnapshotStats() {
+	public DataStreamSnapshotWriterSessionStats2 getSnapshotStats() {
 		return snapshotStats;
 	}
-	public void setSnapshotStats(DataStreamSnapshotWriterSessionStats snapshotStats) {
+	public void setSnapshotStats(DataStreamSnapshotWriterSessionStats2 snapshotStats) {
 		this.snapshotStats = snapshotStats;
 	}
+	
 	
 	
 	

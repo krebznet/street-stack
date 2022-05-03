@@ -31,7 +31,7 @@ import com.dunkware.net.proto.stream.GEntitySnapshot;
 import com.dunkware.net.proto.stream.GStreamEvent;
 import com.dunkware.trade.service.data.json.enums.DataStreamSessionState;
 import com.dunkware.trade.service.data.json.stream.session.DataStreamSessionStats;
-import com.dunkware.trade.service.data.json.stream.writer.DataStreamSnapshotWriterSessionStats;
+import com.dunkware.trade.service.data.json.stream.writer.DataStreamSnapshotWriterSessionStats2;
 import com.dunkware.trade.service.data.service.config.RuntimeConfig;
 import com.dunkware.trade.service.data.service.repository.DataStreamInstrumentEntity;
 import com.dunkware.trade.service.data.service.repository.DataStreamInstrumentEntityRepo;
@@ -40,7 +40,7 @@ import com.dunkware.trade.service.data.service.repository.DataStreamSessionEntit
 import com.dunkware.trade.service.data.service.stream.DataStream;
 import com.dunkware.trade.service.data.service.stream.DataStreamSessionInstrument;
 import com.dunkware.trade.service.data.service.stream.session.writers.DataStreamSessionSignalWriter;
-import com.dunkware.trade.service.data.service.stream.session.writers.DataStreamSessionSnapshotWriter;
+import com.dunkware.trade.service.data.service.stream.session.writers.DataStreamSessionSnapshotWriter2;
 import com.dunkware.trade.service.data.service.util.DataMarkers;
 import com.dunkware.trade.service.stream.json.controller.model.StreamSessionSpec;
 import com.dunkware.xstream.data.cache.CacheStream;
@@ -70,7 +70,7 @@ public class DataStreamSession {
 	
 	private LocalDateTime startTime; 
 	
-	private DataStreamSessionSnapshotWriter snapshotWriter; 
+	private DataStreamSessionSnapshotWriter2 snapshotWriter; 
 	private DataStreamSessionSignalWriter signalWriter;
 	
 	// Entities 
@@ -125,7 +125,7 @@ public class DataStreamSession {
 		}
 		
 		try {
-			snapshotWriter = new DataStreamSessionSnapshotWriter();
+			snapshotWriter = new DataStreamSessionSnapshotWriter2();
 			ac.getAutowireCapableBeanFactory().autowireBean(snapshotWriter);
 			snapshotWriter.start(this);
 			logger.info("Started Snapshot Writer Session {}", spec.getSessionId());
@@ -237,8 +237,8 @@ public class DataStreamSession {
 		DataStreamSessionStats stats = new  DataStreamSessionStats();
 		stats.setIdentifier(spec.getSessionId());
 		stats.setStream(spec.getStreamIdentifier());
-		DataStreamSnapshotWriterSessionStats writerStats = snapshotWriter.getStats();
-		stats.setLastSnapshotWriteTime(writerStats.getLastWriteStreamTime());
+		DataStreamSnapshotWriterSessionStats2 writerStats = snapshotWriter.getStats();
+		stats.setLastSnapshotWriteTime(writerStats.getLastWriteTime());
 		stats.setSessionTime(DDateTime.from(getSessionTime()));
 		stats.setState(this.sessionEntity.getState());
 		stats.setSignalStats(signalWriter.getStats());
