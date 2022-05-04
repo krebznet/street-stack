@@ -126,6 +126,7 @@ public class StreamSessionImpl implements StreamSession {
 			sessionNode.startNode(nodeInput);
 
 		}
+		handleSessionStarted();
 
 	}
  
@@ -342,7 +343,7 @@ public class StreamSessionImpl implements StreamSession {
 				sessionEntity
 						.setStartDateTime(LocalDateTime.now(DTimeZone.toZoneId(input.getController().getTimeZone())));
 				saveSessionEntity();
-				handleSessionStarted();
+				
 			}
 
 		}
