@@ -18,6 +18,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.dunkware.trade.service.stream.json.controller.AddStreamReq;
+import com.dunkware.trade.service.stream.json.controller.AddStreamResp;
 import com.dunkware.trade.service.stream.json.controller.GetStreamSpecResp;
 import com.dunkware.trade.service.stream.json.controller.GetStreamSpecsResp;
 import com.dunkware.trade.service.stream.json.controller.StartStreamResp;
@@ -48,15 +50,24 @@ public class StreamControllerWebService {
 	
 	@PostConstruct
 	public void load() { 
-		
-		System.out.println("stream controller web service start");
+	
 	}
 
 	
-	@GetMapping(path = "/trap/hello")
 	
-	public @ResponseBody()String trapHello() { 
-		return "Hello Back";
+	@PostMapping(path = "/stream/core/add") 
+	public @ResponseBody() AddStreamResp addStream(@RequestBody()AddStreamReq req) {
+		AddStreamResp resp = new AddStreamResp();
+		try {
+			service.addStream(req.getSpec());
+			resp.setCode("SUCCESS");
+			return resp;
+		} catch (Exception e) {
+			resp.setCode("ERROR");
+			resp.setError(e.toString());
+			return resp;
+		}
+		
 	}
 	
 
