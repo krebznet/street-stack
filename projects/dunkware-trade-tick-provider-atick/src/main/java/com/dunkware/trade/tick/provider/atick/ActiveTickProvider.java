@@ -11,11 +11,13 @@ import java.util.concurrent.TimeUnit;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.dunkware.common.util.executor.DExecutor;
 import com.dunkware.trade.tick.api.provider.ATickProvider;
 import com.dunkware.trade.tick.api.provider.TickProviderException;
 import com.dunkware.trade.tick.api.provider.TickProviderSubscription;
 import com.dunkware.trade.tick.api.provider.TradeSymbolService;
 import com.dunkware.trade.tick.api.provider.impl.TickProviderImpl;
+import com.dunkware.trade.tick.model.feed.TickFeedTicker;
 import com.dunkware.trade.tick.model.provider.TickProviderSpec;
 import com.dunkware.trade.tick.model.provider.TickProviderStatsSpec;
 import com.dunkware.trade.tick.model.provider.TickProviderStatus;
@@ -64,7 +66,7 @@ public class ActiveTickProvider extends TickProviderImpl {
 	}
 	
 	@Override
-	public void connect(TickProviderSpec spec, TradeSymbolService symbolService) throws TickProviderException {
+	public void connect(TickProviderSpec spec, TradeSymbolService symbolService, DExecutor executor) throws TickProviderException {
 		this.symbolService = symbolService; 
 		session = new ATProviderSession(serverapi, this);
 		this.spec = spec;
@@ -153,10 +155,31 @@ public class ActiveTickProvider extends TickProviderImpl {
 			throw new TickProviderException("Thread Interrupted during connect");
 		}
 	}
+	
+	
+
+	@Override
+	public void subscribeTickers(List<String> tickers) {
+		for (String string : tickers) {
+			try {
+				subscribe(string);				
+			} catch (Exception e) {
+				logger.error("Exception subscribing ticker " + e.toString());
+			}
+
+		}
+	}
 
 	@Override
 	public String tickerToString(TradeTickerSpec ticker) {
 		return ticker.getSymbol();
+	}
+	
+
+	@Override
+	public TickFeedTicker getFeedTicker(String symbol) {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 	@Override
@@ -253,7 +276,7 @@ public class ActiveTickProvider extends TickProviderImpl {
 								.add(atServerAPIDefines.new ATQuoteFieldType(ATQuoteFieldType.PreMarketTradeCount));
 						lstFieldTypes.add(atServerAPIDefines.new ATQuoteFieldType(ATQuoteFieldType.TradeCount));
 						long request = session.GetRequestor().SendATQuoteDbRequest(symbols, lstFieldTypes,
-								ActiveTickServerAPI.DEFAULT_REQUEST_TIMEOUT);
+								ActiveTickServerAPI.DEFAULT_REQUEST_TIMEOUT); // this must only return 500 
 						quoteRequests.put(request, sub.getSymbol());
 						if (request < 0) {
 							logger.error("Snapshot Request Exception " + Errors.GetStringFromError((int) request));

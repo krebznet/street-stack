@@ -11,6 +11,7 @@ import com.dunkware.common.util.executor.DExecutor;
 import com.dunkware.net.cluster.node.Cluster;
 import com.dunkware.net.cluster.node.ClusterJob;
 import com.dunkware.net.cluster.node.ClusterJobRunner;
+import com.dunkware.net.cluster.node.metrics.MetricsService;
 import com.dunkware.trade.service.stream.json.worker.stream.StreamSessionWorkerStartReq;
 import com.dunkware.trade.service.stream.json.worker.stream.StreamSessionWorkerStats;
 import com.dunkware.trade.service.stream.worker.StreamSessionWorker;
@@ -22,11 +23,18 @@ import com.dunkware.xstream.xproject.model.XScriptBundle;
 import com.dunkware.xstream.xproject.model.XStreamBundle;
 
 public class StreamSessionWorkerImpl implements StreamSessionWorker, ClusterJobRunner {
+	
+	public static final String METRIC_PENDING_TASK_COUNT = "stream.us_equity.stats.node.pendingtasks"; 
+	public static final String METRIC_ROW_COUNT = "stream.us_equity.stats.node.entities"; 
+	
 
 	private Logger logger = LoggerFactory.getLogger(getClass());
 
 	@Autowired
 	private Cluster cluster;
+	
+	@Autowired
+	private MetricsService metricsService; 
 
 	private XStreamBundle bundle;
 	private XStream stream;
@@ -36,6 +44,10 @@ public class StreamSessionWorkerImpl implements StreamSessionWorker, ClusterJobR
 	private XStreamSignalService signalService; 
 	
 	private StreamSessionWorkerStartReq startReq;
+	
+	
+	private MetricsUpdater metricsUpdater;
+	
 	
 	
 	private ClusterJob clusterJob; 
@@ -75,6 +87,8 @@ public class StreamSessionWorkerImpl implements StreamSessionWorker, ClusterJobR
 			signalService = stream.getService(XStreamSignalService.class);
 			statusPublisher = new StatusPublisher();
 			statusPublisher.start();
+			metricsUpdater = new MetricsUpdater();
+			metricsUpdater.start();
 		} catch (Exception e) {
 			throw e;
 		}
@@ -103,6 +117,7 @@ public class StreamSessionWorkerImpl implements StreamSessionWorker, ClusterJobR
 		this.stream.dispose();
 		clusterJob.jobComplete();
 		statusPublisher.interrupt();
+		metricsUpdater.interrupt();
 	}
 
 
@@ -140,6 +155,23 @@ public class StreamSessionWorkerImpl implements StreamSessionWorker, ClusterJobR
 			}
 		
 			
+		}
+	}
+	
+	private class MetricsUpdater extends Thread { 
+		
+		public void run() { 
+			try {
+				while(!interrupted()) { 
+					Thread.sleep(10000); 
+					StreamSessionWorkerStats stats = getStats();
+					metricsService.setGauge(METRIC_PENDING_TASK_COUNT,stats.getPendingTaskCount());
+					metricsService.setGauge(METRIC_ROW_COUNT, stats.getRowCount());
+				
+				}
+			} catch (Exception e) {
+				// TODO: handle exception
+			}
 		}
 	}
 

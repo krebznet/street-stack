@@ -26,6 +26,7 @@ import com.dunkware.common.util.dtime.DDateTime;
 import com.dunkware.common.util.dtime.DTimeZone;
 import com.dunkware.common.util.helpers.DProtoHelper;
 import com.dunkware.common.util.uuid.DUUID;
+import com.dunkware.net.cluster.node.metrics.MetricsService;
 import com.dunkware.net.proto.stream.GEntitySignal;
 import com.dunkware.net.proto.stream.GEntitySnapshot;
 import com.dunkware.net.proto.stream.GStreamEvent;
@@ -60,6 +61,8 @@ public class DataStreamSession {
 	@Autowired
 	private ApplicationContext ac;
 	
+	@Autowired
+	private MetricsService metricsService; 
 	
 	private Map<String,DataStreamSessionInstrument> instruments = new ConcurrentHashMap<String,DataStreamSessionInstrument>();
 	
@@ -325,6 +328,13 @@ public class DataStreamSession {
 				try {
 					Thread.sleep(5000);
 					saveInstruments();
+					metricsService.setGauge("stream.us_equity.stats.data.entities", instruments.size());
+					DataStreamSnapshotWriterSessionStats2 writerStats = snapshotWriter.getStats();
+					metricsService.setGauge("stream.us_equity.stats.data.snapshotwriter.pausecount",writerStats.getConsumerPauseCount());
+					metricsService.setGauge("stream.us_equity.stats.data.snapshotwriter.pausetime",writerStats.getConsumerPauseCount());
+					metricsService.setGauge("stream.us_equity.stats.data.snapshotwriter.snapshotcount",writerStats.getInserteCount());
+					
+					// fuck update some metrics here 
 				} catch (Exception e) {
 				
 					// TODO: handle exception

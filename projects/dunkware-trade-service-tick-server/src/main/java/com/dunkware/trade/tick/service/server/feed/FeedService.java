@@ -10,7 +10,6 @@ import org.apache.kafka.clients.admin.TopicListing;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.slf4j.Marker;
-import org.slf4j.MarkerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.ApplicationContext;
@@ -20,6 +19,7 @@ import org.springframework.stereotype.Component;
 import com.dunkware.common.kafka.admin.DKafkaAdmin;
 import com.dunkware.common.util.json.DJson;
 import com.dunkware.trade.tick.model.feed.TickFeedSpec;
+import com.dunkware.trade.tick.model.feed.TickFeedTicker;
 import com.dunkware.trade.tick.model.provider.TickProviderSpec;
 import com.dunkware.trade.tick.service.server.feed.repository.FeedProviderDO;
 import com.dunkware.trade.tick.service.server.feed.repository.FeedRepository;
@@ -167,6 +167,13 @@ public class FeedService {
 
 	public String getZookeepers() {
 		return zookeepers;
+	}
+	
+	public TickFeedTicker getFeedTicker(String symbol) throws Exception { 
+		if(this.serviceProviders.size() == 0) { 
+			throw new Exception("Tick Provider Not Found");
+		}
+		return serviceProviders.get(0).getProvider().getFeedTicker(symbol);
 	}
 
 }

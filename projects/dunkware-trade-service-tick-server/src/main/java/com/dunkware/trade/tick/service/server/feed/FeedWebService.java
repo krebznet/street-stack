@@ -6,6 +6,7 @@ import org.slf4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Profile;
 import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -110,6 +111,12 @@ public class FeedWebService {
 		TickFeedUpdateResp resp = new TickFeedUpdateResp();
 		resp.setCode("SUCCESS");
 		return resp;
+	}
+	
+	@GetMapping(path = "/tick/feed/ticker")
+	public @ResponseBody() com.dunkware.trade.tick.model.feed.TickFeedTicker getTicker(@RequestBody() String symbol) throws Exception { 
+		return this.tickService.getFeedTicker(symbol);
+		
 	}
 	
 

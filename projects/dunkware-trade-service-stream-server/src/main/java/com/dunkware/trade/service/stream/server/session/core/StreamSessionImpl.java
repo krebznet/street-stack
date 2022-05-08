@@ -22,6 +22,7 @@ import com.dunkware.common.util.events.DEventNode;
 import com.dunkware.common.util.time.DunkTime;
 import com.dunkware.net.cluster.node.Cluster;
 import com.dunkware.net.cluster.node.ClusterNode;
+import com.dunkware.net.cluster.node.metrics.MetricsService;
 import com.dunkware.trade.service.stream.json.controller.session.StreamSessionState;
 import com.dunkware.trade.service.stream.json.controller.session.StreamSessionStatus;
 import com.dunkware.trade.service.stream.json.message.StreamSessionStart;
@@ -49,10 +50,17 @@ import com.dunkware.trade.tick.model.ticker.TradeTickerType;
 import com.dunkware.xstream.xproject.XScriptProject;
 
 public class StreamSessionImpl implements StreamSession {
+	
+	public static final String METRIC_PENDING_TASK_COUNT = "stream.us_equity.stats.cluster.pendingtasks"; 
+	public static final String METRIC_NODE_COUNT = "stream.us_equity.stats.cluster.nodecount"; 
+	
 
 	private Logger logger = org.slf4j.LoggerFactory.getLogger(getClass());
 	private List<StreamSessionNode> nodes = new ArrayList<StreamSessionNode>();
 	private StreamSessionInput input;
+	
+	@Autowired
+	private MetricsService metricsService; 
 
 	@Autowired
 	private ConfigService configService;
@@ -85,6 +93,8 @@ public class StreamSessionImpl implements StreamSession {
 	private String sessionId;
 
 	private AtomicInteger nodeStartFailures = new AtomicInteger(0);
+	
+	private MetricsUpdater metricsUpdater;
 
 	@Override
 	public void startSession(StreamSessionInput input) throws StreamSessionException {
@@ -291,6 +301,8 @@ public class StreamSessionImpl implements StreamSession {
 		}
 		EStreamSessionStarted started = new EStreamSessionStarted(this);
 		input.getController().sessionEvent(started);
+		metricsUpdater = new MetricsUpdater();
+		metricsUpdater.start();
 	}
 
 	private void handleSessionStopped() {
@@ -321,6 +333,8 @@ public class StreamSessionImpl implements StreamSession {
 		EStreamSessionStopped stopped = new EStreamSessionStopped(this);
 		input.getController().sessionEvent(stopped);
 		//eventNode.event(stopped);
+		metricsUpdater.interrupt();
+		
 
 	}
 
@@ -397,9 +411,33 @@ public class StreamSessionImpl implements StreamSession {
 		}
 		
 		
+	
+		
 		
 		
 
 	}
+	
+	
+	private  class MetricsUpdater extends Thread { 
+	
+		public void run() { 
+			try {
+				while(!interrupted()) { 
+					Thread.sleep(10000);
+					StreamSessionStatus stats = getStatus();
+					metricsService.setGauge(METRIC_NODE_COUNT, stats.getNodeCount());
+					metricsService.setGauge(METRIC_PENDING_TASK_COUNT, stats.getPendingTasks());	
+				}
+			} catch (Exception e) {
+				if (e instanceof InterruptedException) {
+					return;
+				}
+				logger.error("Exception updating session metrics " + e.toString());
+			}
+		}
+		
+	}
+	
 
 }

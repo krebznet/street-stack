@@ -38,5 +38,7 @@ public class TradeTicks {
 
 	public static final int FieldOpenPrice = 2;
 	public static final int FieldClosePrice = 4;
+	
+	
 
 }

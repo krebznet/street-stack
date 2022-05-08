@@ -1,11 +1,14 @@
 package com.dunkware.trade.tick.api.provider;
 
 import java.util.Collection;
+import java.util.List;
 
 import com.dunkware.common.tick.reactor.TickReactorException;
 import com.dunkware.common.tick.stream.TickStream;
+import com.dunkware.common.util.executor.DExecutor;
 import com.dunkware.trade.tick.api.feed.TickFeed;
 import com.dunkware.trade.tick.model.feed.TickFeedSpec;
+import com.dunkware.trade.tick.model.feed.TickFeedTicker;
 import com.dunkware.trade.tick.model.provider.TickProviderSpec;
 import com.dunkware.trade.tick.model.provider.TickProviderStatsSpec;
 import com.dunkware.trade.tick.model.provider.TickProviderStatus;
@@ -13,11 +16,13 @@ import com.dunkware.trade.tick.model.ticker.TradeTickerSpec;
 
 public interface TickProvider extends TickStream {
 
-	public void connect(TickProviderSpec type, TradeSymbolService idProvider) throws TickProviderException;
+	public void connect(TickProviderSpec type, TradeSymbolService idProvider, DExecutor executor) throws TickProviderException;
 	
 	public TickFeed createFeed(TickFeedSpec spec) throws TickProviderException;
 	
 	public Collection<TickProviderSubscription> getSubscriptions();
+	
+	public void subscribeTickers(List<String> tickers);
 	
 	/**
 	 * Returns a tick provider subscription 
@@ -84,4 +89,11 @@ public interface TickProvider extends TickStream {
 	 * @return
 	 */
 	public String getConnectionError();
+	
+	/**
+	 * Gets a ticker if does not exist set -1 on price. 
+	 * @param symbol
+	 * @return
+	 */
+	public TickFeedTicker getFeedTicker(String symbol);
 }
