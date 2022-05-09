@@ -34,13 +34,27 @@
 		<onMatch>ACCEPT</onMatch> <onMismatch>DENY</onMismatch> </filter> <encoder> 
 		<pattern>${PATTERN}</pattern> </encoder> </appender> -->
 
+	
+	
+	<appender name="FLUENT"
+		class="ch.qos.logback.more.appenders.DataFluentAppender">
+		<tag>devstreet</tag>
+		<label>cluster</label>
+		
+		<remoteHost>testrock2.dunkware.net</remoteHost>
+		<port>24224</port>
+
+		<additionalField>
+			<key>node</key>
+			<value>cluster</value>
+		</additionalField>
+	</appender>
 
 	<root level="INFO">
 
 		<appender-ref ref="CONSOLE" additivity="false" />
 	</root>
 
-<!--  
 <logger name="com.dunkware.net.cluster.server.publishers.GrpcNodeUpdateStream" level="TRACE">
 		<appender-ref ref="FLUENT" additivity="false" />
 			<appender-ref ref="CONSOLE" additivity="false" />
@@ -56,11 +70,10 @@
 			<appender-ref ref="CONSOLE" additivity="false" />
 		
 </logger>
--->
+
 
 	<logger name="com.dunkware" level="DEBUG">
-		<appender-ref ref="FLUENT" additivity="false" />
-			<appender-ref ref="CONSOLE" additivity="false" />
+		<appender-ref ref="FLUENT" />
 
 	</logger>
 
