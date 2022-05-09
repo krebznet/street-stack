@@ -24,9 +24,9 @@
 		<url>https://github.com/krebznet/dunkware-trade-tick-provider-atick.git</url>
 		<tag>v1.0.0</tag>
 		<!-- Considering src/app will have all your sourcr java code -->
-		<project.build.sourceDirectory>src/mainjava</project.build.sourceDirectory>
+	
 		<!-- Considering all your junit tests are in src/test/unit -->
-		<project.build.testSourceDirectory>src/test/java</project.build.testSourceDirectory>
+	
 
 	</scm>
 
