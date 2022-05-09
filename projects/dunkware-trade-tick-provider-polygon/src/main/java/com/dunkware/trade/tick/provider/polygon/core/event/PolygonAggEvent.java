@@ -1,4 +1,4 @@
-package com.dunkware.trade.tick.provider.polygon.core;
+package com.dunkware.trade.tick.provider.polygon.core.event;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
@@ -29,7 +29,9 @@ public class PolygonAggEvent {
 	@JsonProperty(value = "z")
 	private int tickAverageTradeSize;
 	@JsonProperty(value = "e")
-	private long timestamp;
+	private long endTime;
+	@JsonProperty(value = "s")
+	private long startTime;
 	
 	public PolygonAggEvent() { 
 		
@@ -107,12 +109,24 @@ public class PolygonAggEvent {
 	public void setTickAverageTradeSize(int tickAverageTradeSize) {
 		this.tickAverageTradeSize = tickAverageTradeSize;
 	}
-	public long getTimestamp() {
-		return timestamp;
+
+	public long getEndTime() {
+		return endTime;
 	}
-	public void setTimestamp(long timestamp) {
-		this.timestamp = timestamp;
-	} 
+
+	public void setEndTime(long endTime) {
+		this.endTime = endTime;
+	}
+
+	public long getStartTime() {
+		return startTime;
+	}
+
+	public void setStartTime(long startTime) {
+		this.startTime = startTime;
+	}
+	
+
 	
 	
 }

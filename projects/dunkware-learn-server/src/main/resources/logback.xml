@@ -33,15 +33,20 @@
 		<filter class="ch.qos.logback.classic.filter.LevelFilter"> <level>TRACE</level> 
 		<onMatch>ACCEPT</onMatch> <onMismatch>DENY</onMismatch> </filter> <encoder> 
 		<pattern>${PATTERN}</pattern> </encoder> </appender> -->
+
+	
+	
 	<appender name="FLUENT"
 		class="ch.qos.logback.more.appenders.DataFluentAppender">
-		<tag>streetdev</tag>
-		<label>logging</label>
+		<tag>devstreet</tag>
+		<label>fuck</label>
+		
 		<remoteHost>testrock2.dunkware.net</remoteHost>
-		<port>5678</port>
+		<port>24224</port>
+
 		<additionalField>
 			<key>node</key>
-			<value>worker</value>
+			<value>hope</value>
 		</additionalField>
 	</appender>
 
@@ -68,7 +73,7 @@
 
 
 	<logger name="com.dunkware" level="DEBUG">
-		<appender-ref ref="FLUENT" additivity="false" />
+		<appender-ref ref="FLUENT" />
 
 	</logger>
 

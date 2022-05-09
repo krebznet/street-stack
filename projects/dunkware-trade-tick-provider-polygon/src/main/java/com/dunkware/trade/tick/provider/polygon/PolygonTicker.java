@@ -4,8 +4,8 @@ import java.time.LocalDateTime;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.atomic.AtomicLong;
 
-import com.dunkware.trade.tick.provider.polygon.core.PolygonAggEvent;
 import com.dunkware.trade.tick.provider.polygon.core.PolygonSnapshot;
+import com.dunkware.trade.tick.provider.polygon.core.event.PolygonAggEvent;
 
 public class PolygonTicker {
 	

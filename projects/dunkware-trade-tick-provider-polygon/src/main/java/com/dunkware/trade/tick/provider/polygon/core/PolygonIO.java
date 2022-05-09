@@ -19,7 +19,8 @@ public class PolygonIO {
         }
 
         public HttpResponse<String> get(String endpoint) {
-            String symbol = (endpoint.contains("?")) ? "&" : "?";
+        	System.out.println("new http request");
+        	String symbol = (endpoint.contains("?")) ? "&" : "?";
             endpoint = String.format("https://api.polygon.io%s%sapiKey=%s", endpoint, symbol, this.apiKey);
             HttpRequest request = HttpRequest.newBuilder()
                     .uri(URI.create(endpoint))
@@ -30,6 +31,8 @@ public class PolygonIO {
             } catch(java.io.IOException | java.lang.InterruptedException e) {
                 e.printStackTrace();
             }
+            System.out.println("request completed");
+            
             return response;
         }
     }

@@ -33,17 +33,7 @@
 		<filter class="ch.qos.logback.classic.filter.LevelFilter"> <level>TRACE</level> 
 		<onMatch>ACCEPT</onMatch> <onMismatch>DENY</onMismatch> </filter> <encoder> 
 		<pattern>${PATTERN}</pattern> </encoder> </appender> -->
-	<appender name="FLUENT"
-		class="ch.qos.logback.more.appenders.DataFluentAppender">
-		<tag>streetdev</tag>
-		<label>logging</label>
-		<remoteHost>testrock2.dunkware.net</remoteHost>
-		<port>5678</port>
-		<additionalField>
-			<key>node</key>
-			<value>cluster</value>
-		</additionalField>
-	</appender>
+
 
 	<root level="INFO">
 

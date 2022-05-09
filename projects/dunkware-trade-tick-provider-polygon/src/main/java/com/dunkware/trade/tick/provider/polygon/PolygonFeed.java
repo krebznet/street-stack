@@ -16,10 +16,10 @@ import org.slf4j.LoggerFactory;
 
 import com.dunkware.common.util.executor.DExecutor;
 import com.dunkware.common.util.json.DJson;
-import com.dunkware.trade.tick.model.feed.TickFeedTicker;
-import com.dunkware.trade.tick.provider.polygon.core.PolygonAggEvent;
 import com.dunkware.trade.tick.provider.polygon.core.PolygonIO;
+import com.dunkware.trade.tick.provider.polygon.core.PolygonIO.Rest;
 import com.dunkware.trade.tick.provider.polygon.core.PolygonSnapshot;
+import com.dunkware.trade.tick.provider.polygon.core.event.PolygonAggEvent;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
@@ -28,10 +28,10 @@ import com.google.gson.JsonParser;
 public class PolygonFeed {
 
 	private static final int SNAPSHOT_TICKER_LIMIT = 150;
-	private static final int EVENT_HANDLER_COUNT = 3;
+	private static final int EVENT_HANDLER_COUNT = 1;
 
 	private PolygonIO.WebSockets webSocket;
-	private PolygonIO.Rest restClient;
+	//private PolygonIO.Rest restClient;
 
 	private String apiKey;
 
@@ -49,8 +49,10 @@ public class PolygonFeed {
 
 	private List<EventHandler> eventHandlers = new ArrayList<EventHandler>();
 
+	
 	public void connect(String apiKey, List<String> subscriptions, DExecutor executor) throws Exception {
 		this.apiKey = apiKey;
+	//	restClient = new PolygonIO.Rest(apiKey);
 		this.executor = executor;
 		if(subscriptions != null) { 
 			this.subscriptions = subscriptions;
@@ -163,7 +165,8 @@ public class PolygonFeed {
 							if (eventType.equals("A")) {
 								PolygonAggEvent aggEvent = null;
 								try {
-									aggEvent = DJson.getObjectMapper().readValue(event, PolygonAggEvent.class);
+									String value = object.toString();
+									aggEvent = DJson.getObjectMapper().readValue(childElement.toString(), PolygonAggEvent.class);
 								} catch (Exception e) {
 									problemCount.incrementAndGet();
 									logger.error("Exception Parsing 1 Sec Agg Event " + e.toString());
@@ -229,7 +232,7 @@ public class PolygonFeed {
 				List<String> requestTickers = new ArrayList<String>();
 				for (PolygonTicker ticker : tickers.values()) {
 					if (count == SNAPSHOT_TICKER_LIMIT) {
-						SnapshotBatch req = new SnapshotBatch(requestTickers);
+						SnapshotBatch req = new SnapshotBatch(requestTickers.toArray(new String[requestTickers.size()]));
 						requests.add(req);
 						count = 0;
 						requestTickers.clear();
@@ -238,9 +241,16 @@ public class PolygonFeed {
 						count++;
 					}
 				}
+				if(requestTickers.size() > 0) { 
+					// add last batch 
+					SnapshotBatch req = new SnapshotBatch(requestTickers.toArray(new String[requestTickers.size()]));
+					requests.add(req);
+					requestTickers.clear();
+				}
 				for (SnapshotBatch request : requests) {
 					executor.execute(request);
 				}
+				requests.clear();
 				try {
 					Thread.sleep(1000);
 				} catch (Exception e) {
@@ -264,20 +274,22 @@ public class PolygonFeed {
 	 */
 	private class SnapshotBatch implements Runnable {
 
-		private List<String> tickers;
+		final private String[] runTickers;
 
-		public SnapshotBatch(List<String> tickers) {
-			this.tickers = tickers;
+		public SnapshotBatch(String[] tickers) {
+			this.runTickers = tickers;
 		}
 
 		@Override
 		public void run() {
+			 PolygonIO.Rest restClient = new Rest(apiKey);
 
 			try {
+				System.out.println("Running Snapshot Batch for tickers " + runTickers.toString());
 				StringBuilder url = new StringBuilder();
-				url.append("https://api.polygon.io/v2/snapshot/locale/us/markets/stocks/tickers?");
+				url.append("/v2/snapshot/locale/us/markets/stocks/tickers?");
 				int count = 0;
-				for (String string : tickers) {
+				for (String string : runTickers) {
 					if (count == 0) {
 						url.append(string);
 					} else {
@@ -287,9 +299,24 @@ public class PolygonFeed {
 					count++;
 				}
 				String endpoint = url.toString();
-				HttpResponse<String> response = restClient.get(endpoint);
+				HttpResponse<String> response = null;
+				try {
+					 response = restClient.get(endpoint);		
+					 System.out.println("returned snapshot response " + response.body());
+					 
+				} catch (Exception e) {
+					System.err.println("exception snapshot invoke " + e.toString());
+					
+					// TODO: handle exception
+				}
+				if(1 == 1) { 
+					return;
+				}
 				PolygonSnapshot[] snapshots = null;
 				try {
+					String out = response.body();
+					System.out.println(out);
+					System.out.println(System.lineSeparator());
 					snapshots = DJson.getObjectMapper().readValue(response.body(), PolygonSnapshot[].class);
 				} catch (Exception e) {
 					logger.error("Exception parsing snapshot batch response " + e.toString());
