@@ -33,7 +33,7 @@ import com.dunkware.trade.tick.service.protocol.service.spec.FeedServiceState;
 import com.dunkware.trade.tick.service.protocol.service.spec.FeedServiceStats;
 import com.dunkware.trade.tick.service.server.feed.repository.FeedProviderDO;
 import com.dunkware.trade.tick.service.server.feed.repository.FeedRepository;
-import com.dunkware.trade.tick.service.server.logging.LoggingService;
+import com.dunkware.trade.tick.service.server.logging.TickLoggingService;
 import com.dunkware.trade.tick.service.server.ticker.repsoitory.TickerListSubscribeDO;
 import com.dunkware.trade.tick.service.server.ticker.repsoitory.TickerListSubscribeRepo;
 import com.dunkware.trade.tick.service.server.ticker.repsoitory.TickerListTickerDO;
@@ -63,7 +63,7 @@ public class FeedService {
 	private List<FeedStream> streams = new ArrayList<FeedStream>();
 
 	@Autowired
-	private LoggingService logging;
+	private TickLoggingService logging;
 
 	private Marker logMarker = null;
 	

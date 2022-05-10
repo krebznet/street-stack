@@ -8,7 +8,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 @Service
-public class LoggingService {
+public class TickLoggingService {
 
 	@Value("${logging.marker}")
 	private String markerName; 
