@@ -10,8 +10,8 @@ import com.dunkware.trade.tick.api.feed.TickFeed;
 import com.dunkware.trade.tick.model.feed.TickFeedSpec;
 import com.dunkware.trade.tick.model.feed.TickFeedTicker;
 import com.dunkware.trade.tick.model.provider.TickProviderSpec;
+import com.dunkware.trade.tick.model.provider.TickProviderState;
 import com.dunkware.trade.tick.model.provider.TickProviderStatsSpec;
-import com.dunkware.trade.tick.model.provider.TickProviderStatus;
 import com.dunkware.trade.tick.model.ticker.TradeTickerSpec;
 
 public interface TickProvider extends TickStream {
@@ -22,7 +22,7 @@ public interface TickProvider extends TickStream {
 	
 	public Collection<TickProviderSubscription> getSubscriptions();
 	
-	public void subscribeTickers(List<String> tickers);
+	public void subscribeTickers(Collection<TradeTickerSpec> tickers);
 	
 	/**
 	 * Returns a tick provider subscription 
@@ -76,13 +76,13 @@ public interface TickProvider extends TickStream {
 	 * Returns the status so we know if its connected,disconnected etc. 
 	 * @return
 	 */
-	public TickProviderStatus getProviderStatus();
+	public TickProviderState getState();
 	
 	/**
 	 * Returns the stats for the provier. 
 	 * @return
 	 */
-	public TickProviderStatsSpec getProviderStats();
+	public TickProviderStatsSpec getStats();
 	
 	/**
 	 * Returns the connection error if status is equal to Error
@@ -96,4 +96,11 @@ public interface TickProvider extends TickStream {
 	 * @return
 	 */
 	public TickFeedTicker getFeedTicker(String symbol);
+	
+	public List<TradeTickerSpec> getValidatedSubscriptions();
+	
+	public List<TradeTickerSpec> getInValidatedSubscriptions();
+	
+	
+	
 }

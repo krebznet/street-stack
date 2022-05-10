@@ -18,7 +18,7 @@ public class TickProviderFactory {
 			return;
 		}
 		
-		Reflections reflections = new Reflections("com.dunkware.trade.tick");
+		Reflections reflections = new Reflections("com.dunkware.trade");
 		
 		Set<Class<?>> classes = reflections.getTypesAnnotatedWith(ATickProvider.class);
 		for (Class<?> provider : classes) {

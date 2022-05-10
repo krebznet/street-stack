@@ -7,7 +7,8 @@ import com.dunkware.net.cluster.node.Cluster;
 import com.dunkware.trade.tick.api.provider.TickProvider;
 import com.dunkware.trade.tick.api.provider.TickProviderFactory;
 import com.dunkware.trade.tick.model.provider.TickProviderSpec;
-import com.dunkware.trade.tick.model.provider.TickProviderStatus;
+import com.dunkware.trade.tick.model.provider.TickProviderState;
+import com.dunkware.trade.tick.model.provider.TickProviderStatsSpec;
 import com.dunkware.trade.tick.service.server.feed.repository.FeedProviderDO;
 import com.dunkware.trade.tick.service.server.ticker.TickerService;
 
@@ -36,8 +37,8 @@ public class FeedServiceProvider {
 	}
 	
 	
-	public TickProviderStatus getProviderStatus() { 
-		return provider.getProviderStatus();
+	public TickProviderStatsSpec getProviderStats() { 
+		return provider.getStats();
 	}
 	
 	public FeedProviderDO getEntity() { 

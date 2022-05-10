@@ -1,5 +1,5 @@
 package com.dunkware.trade.tick.model.provider;
 
-public enum TickProviderStatus {
+public enum TickProviderState {
 	CREATED,DISCONNECTED,CONNECTING,CONNECTED,ERROR;
 }

@@ -2,6 +2,7 @@ package com.dunkware.trade.tick.provider.atick;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collection;
 import java.util.List;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.ConcurrentHashMap;
@@ -19,8 +20,8 @@ import com.dunkware.trade.tick.api.provider.TradeSymbolService;
 import com.dunkware.trade.tick.api.provider.impl.TickProviderImpl;
 import com.dunkware.trade.tick.model.feed.TickFeedTicker;
 import com.dunkware.trade.tick.model.provider.TickProviderSpec;
+import com.dunkware.trade.tick.model.provider.TickProviderState;
 import com.dunkware.trade.tick.model.provider.TickProviderStatsSpec;
-import com.dunkware.trade.tick.model.provider.TickProviderStatus;
 import com.dunkware.trade.tick.model.ticker.TradeTickerSpec;
 import com.dunkware.trade.tick.provider.atick.impl.ATProviderSession;
 
@@ -117,32 +118,32 @@ public class ActiveTickProvider extends TickProviderImpl {
 			}
 			switch (response.loginResponse.m_atLoginResponseType) {
 			case ATServerAPIDefines.ATLoginResponseType.LoginResponseSuccess:
-				setStatus(TickProviderStatus.CONNECTED);
+				setStatus(TickProviderState.CONNECTED);
 				logger.info("Connected");
 				break;
 			case ATServerAPIDefines.ATLoginResponseType.LoginResponseInvalidUserid:
-				setStatus(TickProviderStatus.ERROR);
+				setStatus(TickProviderState.ERROR);
 				setConnectionError("Invalid Username " + username);
 				logger.error("Failed Login Response Invalid User");
 				throw new TickProviderException("Invalid Username " + username);
 			case ATServerAPIDefines.ATLoginResponseType.LoginResponseInvalidPassword:
 				logger.error("Failed Login Response Invalid Password");
-				setStatus(TickProviderStatus.ERROR);
+				setStatus(TickProviderState.ERROR);
 				throw new TickProviderException("Invalid Password " + password);
 			case ATServerAPIDefines.ATLoginResponseType.LoginResponseInvalidRequest:
 				logger.error("Failed Login Response Invalid Request");
-				setStatus(TickProviderStatus.ERROR);
+				setStatus(TickProviderState.ERROR);
 				throw new TickProviderException("Invalid Login Request");
 			case ATServerAPIDefines.ATLoginResponseType.LoginResponseLoginDenied:
-				setStatus(TickProviderStatus.ERROR);
+				setStatus(TickProviderState.ERROR);
 				logger.error("Login Denied");
 				throw new TickProviderException("Login Denied");
 			case ATServerAPIDefines.ATLoginResponseType.LoginResponseServerError:
 				logger.error("Failed Login Server Error");
-				setStatus(TickProviderStatus.ERROR);
+				setStatus(TickProviderState.ERROR);
 				throw new TickProviderException("Server Error");
 			default:
-				setStatus(TickProviderStatus.ERROR);
+				setStatus(TickProviderState.ERROR);
 				logger.info("Failed Login Response Unknown");
 				throw new TickProviderException(
 						"Unknown Login Response value " + response.loginResponse.m_atLoginResponseType);
@@ -151,23 +152,20 @@ public class ActiveTickProvider extends TickProviderImpl {
 			snapshotRunner.start();
 			
 		} catch (InterruptedException e) {
-			setStatus(TickProviderStatus.ERROR);
+			setStatus(TickProviderState.ERROR);
 			throw new TickProviderException("Thread Interrupted during connect");
 		}
 	}
 	
 	
 
-	@Override
-	public void subscribeTickers(List<String> tickers) {
-		for (String string : tickers) {
-			try {
-				subscribe(string);				
-			} catch (Exception e) {
-				logger.error("Exception subscribing ticker " + e.toString());
-			}
 
-		}
+	
+	
+
+	@Override
+	public void subscribeTickers(Collection<TradeTickerSpec> tickers) {
+		logger.error("Implement ActiveTick subsribe tickers");
 	}
 
 	@Override
@@ -178,6 +176,14 @@ public class ActiveTickProvider extends TickProviderImpl {
 
 	@Override
 	public TickFeedTicker getFeedTicker(String symbol) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+	
+	
+
+	@Override
+	public List<TradeTickerSpec> getInValidatedSubscriptions() {
 		// TODO Auto-generated method stub
 		return null;
 	}
@@ -311,12 +317,27 @@ public class ActiveTickProvider extends TickProviderImpl {
 	}
 
 	@Override
-	public TickProviderStatsSpec getProviderStats() {
+	public TickProviderStatsSpec getStats() {
 		TickProviderStatsSpec stats = new TickProviderStatsSpec();
-		stats.setStatus(this.getProviderStatus());
+		stats.setState(TickProviderState.DISCONNECTED);
 		stats.setSubscriptionCount(this.getSubscriptions().size());
 		return stats;
 	}
+
+	@Override
+	public TickProviderState getState() {
+		return TickProviderState.DISCONNECTED;
+	}
+
+	@Override
+	public List<TradeTickerSpec> getValidatedSubscriptions() {
+		logger.error("implement active tick validated subscriptions");
+		return null;
+	}
+	
+	
+	
+	
 
 	
 }

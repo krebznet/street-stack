@@ -1,6 +1,5 @@
 package com.dunkware.trade.tick.provider.polygon;
 
-import java.net.http.HttpResponse;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
@@ -17,9 +16,8 @@ import org.slf4j.LoggerFactory;
 import com.dunkware.common.util.executor.DExecutor;
 import com.dunkware.common.util.json.DJson;
 import com.dunkware.trade.tick.provider.polygon.core.PolygonIO;
-import com.dunkware.trade.tick.provider.polygon.core.PolygonIO.Rest;
-import com.dunkware.trade.tick.provider.polygon.core.PolygonSnapshot;
 import com.dunkware.trade.tick.provider.polygon.core.event.PolygonAggEvent;
+import com.dunkware.trade.tick.provider.polygon.core.event.PolygonQuote;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
@@ -31,7 +29,7 @@ public class PolygonFeed {
 	private static final int EVENT_HANDLER_COUNT = 1;
 
 	private PolygonIO.WebSockets webSocket;
-	//private PolygonIO.Rest restClient;
+	// private PolygonIO.Rest restClient;
 
 	private String apiKey;
 
@@ -45,22 +43,27 @@ public class PolygonFeed {
 
 	private AtomicInteger problemCount = new AtomicInteger(0);
 
-	private SnapshotRunner snapshotRunner;
-
 	private List<EventHandler> eventHandlers = new ArrayList<EventHandler>();
 
+	private Map<String,PolygonTicker> validatedTickers = new ConcurrentHashMap<String,PolygonTicker>();
+
+	private SecondUpdater secondUpdater = new SecondUpdater();
+	
+	private PolygonFeedMetrics metrics;
 	
 	public void connect(String apiKey, List<String> subscriptions, DExecutor executor) throws Exception {
 		this.apiKey = apiKey;
-	//	restClient = new PolygonIO.Rest(apiKey);
+		metrics = new PolygonFeedMetrics(this);
+		// restClient = new PolygonIO.Rest(apiKey);
 		this.executor = executor;
-		if(subscriptions != null) { 
+		if (subscriptions != null) {
 			this.subscriptions = subscriptions;
 			for (String symbol : subscriptions) {
 				// create the Polygon Tickers upfront
 				PolygonTicker ticker = new PolygonTicker(symbol);
 				tickers.put(symbol, ticker);
-			}	
+				metrics.tickerAdded(ticker);
+			}
 		}
 		try {
 			// Create web socket
@@ -70,10 +73,10 @@ public class PolygonFeed {
 			for (String string : subscriptions) {
 				try {
 					webSocket.subscribe("A." + string);
+					webSocket.subscribe("Q." + string);
 				} catch (Exception e) {
+					logger.error("Exception subscribing stock Q,A for " + string);
 					throw new Exception("Exeception subscribing sec agg for ticker " + string + " " + e.toString()); // TODO:
-																														// handle
-																														// exception
 				}
 			}
 			int i = 0;
@@ -86,22 +89,43 @@ public class PolygonFeed {
 		} catch (Exception e) {
 			throw new Exception("Exception connecting " + e.toString());
 		}
+		secondUpdater.start();
 
-		snapshotRunner = new SnapshotRunner();
-		snapshotRunner.start();
+		
 	}
+	
+	public int getValidatedTickerCount() { 
+		return validatedTickers.size();
+	}
+	
+	public int getMessageQueueSize() { 
+		return eventQueue.size();
+	}
+	
+	public void close() { 
+		secondUpdater.interrupt();
+	}
+	
 
 	public void subscribe(List<String> symbols) {
 		for (String string : symbols) {
-			if (tickers.get(string) == null) {
-				PolygonTicker tiker = new PolygonTicker(string);
-				tickers.put(string, tiker);
+			if(tickers.get(string) == null) { 
+				PolygonTicker ticker = new PolygonTicker(string);
+				tickers.put(string, ticker);
+				try {
+					webSocket.subscribe("A." + string);
+					webSocket.subscribe("Q." + string);
+					ticker.setValid(true);
+				} catch (Exception e) {
+					ticker.setValid(false);
+					logger.error("Exception subscribing ticker on web socket " + e.toString() + " " + string);
+				}
+				
 			}
 		}
 	}
 
 	public void disconnect() {
-		snapshotRunner.interrupt();
 		webSocket.close();
 		for (EventHandler eventHandler : eventHandlers) {
 			eventHandler.interrupt();
@@ -111,8 +135,8 @@ public class PolygonFeed {
 	public void unsubscribe(String ticker) {
 		this.tickers.remove(ticker);
 	}
-	
-	public Collection<PolygonTicker> getTickers() { 
+
+	public Collection<PolygonTicker> getTickers() {
 		return tickers.values();
 	}
 
@@ -120,9 +144,33 @@ public class PolygonFeed {
 		this.eventQueue.add(e);
 		return null;
 	};
-	
-	public PolygonTicker getTicker(String symbol) { 
+
+	public PolygonTicker getTicker(String symbol) {
 		return tickers.get(symbol);
+	}
+	
+	public PolygonFeedMetrics getMetrics() { 
+		return metrics;
+	}
+	
+	public List<String> getInValidatedSymbols() { 
+		List<String> results = new ArrayList<String>();
+		for (PolygonTicker ticker : tickers.values()) {
+			if(ticker.isValidated() == false) { 
+				results.add(ticker.getSymbol());
+			}
+		}
+		return results;
+	}
+	
+	public List<String> getValidatedSymbols() { 
+		List<String> results = new ArrayList<String>();
+		for (PolygonTicker ticker : tickers.values()) {
+			if(ticker.isValidated()) { 
+				results.add(ticker.getSymbol());
+			}
+		}
+		return results;
 	}
 
 	private class EventHandler extends Thread {
@@ -166,7 +214,8 @@ public class PolygonFeed {
 								PolygonAggEvent aggEvent = null;
 								try {
 									String value = object.toString();
-									aggEvent = DJson.getObjectMapper().readValue(childElement.toString(), PolygonAggEvent.class);
+									aggEvent = DJson.getObjectMapper().readValue(childElement.toString(),
+											PolygonAggEvent.class);
 								} catch (Exception e) {
 									problemCount.incrementAndGet();
 									logger.error("Exception Parsing 1 Sec Agg Event " + e.toString());
@@ -180,8 +229,31 @@ public class PolygonFeed {
 											+ aggEvent.getSymbol());
 									continue;
 								}
+								metrics.aggEvent(aggEvent);
+								validatedTickers.put(ticker.getSymbol(), ticker);
 								ticker.agg(aggEvent);
 							}
+							if (eventType.equals("Q")) {
+								PolygonQuote quote = null;
+								try {
+									quote = DJson.getObjectMapper().readValue(childElement.toString(),
+											PolygonQuote.class);
+
+								} catch (Exception e) {
+									logger.error("Exception parsing quote " + e.toString());
+									continue;
+								}
+								PolygonTicker ticker = tickers.get(quote.getSymbol());
+								metrics.quoteEvent(quote);
+			
+								if (ticker == null) {
+									problemCount.incrementAndGet();
+									logger.error(
+											"Exception getting polygon ticker quote event symbol " + quote.getSymbol());
+									continue;
+								}
+							}
+
 						} catch (Exception e) {
 							problemCount.incrementAndGet();
 							logger.error("Outer Parse Web Socket Event Exception " + e.toString());
@@ -190,155 +262,36 @@ public class PolygonFeed {
 
 					}
 
-					try {
-						// polyEvent = DJson.getObjectMapper().readValue(event, PolygonEvent.class);
-						// need to parse a JsonObject
-						// String object.get("eve"))
-						String eventType = null;
-						if (event.equals("A")) {
-							PolygonTicker ticker = tickers.get("jsonobject.get(symb)");
-							// volume / avgtrade size
-							// tickcount
-							// ticker.getTradeCount().addAndGet(SNAPSHOT_TICKER_LIMIT)
-							//
-
-						}
-						// if a quote update the quote
-						// if a trade update trade count by 1;
-
-						// we can do this 2 ways, quote/trade subscriptions.
-
-					} catch (Exception e) {
-						// logger error
-						continue;
-					}
-					// if second agg;
-					// get ticker set shit on it
-					//
 
 				} catch (Exception e) {
-					// TODO: handle exception
-				}
-			}
-		}
-	}
-
-	private class SnapshotRunner extends Thread {
-
-		public void run() {
-			while (true) {
-				List<SnapshotBatch> requests = new ArrayList<SnapshotBatch>();
-				int count = 0;
-				List<String> requestTickers = new ArrayList<String>();
-				for (PolygonTicker ticker : tickers.values()) {
-					if (count == SNAPSHOT_TICKER_LIMIT) {
-						SnapshotBatch req = new SnapshotBatch(requestTickers.toArray(new String[requestTickers.size()]));
-						requests.add(req);
-						count = 0;
-						requestTickers.clear();
-					} else {
-						requestTickers.add(ticker.getSymbol());
-						count++;
-					}
-				}
-				if(requestTickers.size() > 0) { 
-					// add last batch 
-					SnapshotBatch req = new SnapshotBatch(requestTickers.toArray(new String[requestTickers.size()]));
-					requests.add(req);
-					requestTickers.clear();
-				}
-				for (SnapshotBatch request : requests) {
-					executor.execute(request);
-				}
-				requests.clear();
-				try {
-					Thread.sleep(1000);
-				} catch (Exception e) {
-					if (e instanceof InterruptedException) {
+					if (e instanceof InterruptedException) { 
 						return;
 					}
-					logger.error("Exception Outer Snapshot Runner " + e.toString());
-					problemCount.incrementAndGet();
-
+					logger.error("Outer Event Handler Exception " + e.toString());
 				}
 			}
-
 		}
 	}
-
-	/**
-	 * Snapshot Batch
-	 * 
-	 * @author duncankrebs
-	 *
-	 */
-	private class SnapshotBatch implements Runnable {
-
-		final private String[] runTickers;
-
-		public SnapshotBatch(String[] tickers) {
-			this.runTickers = tickers;
-		}
-
-		@Override
-		public void run() {
-			 PolygonIO.Rest restClient = new Rest(apiKey);
-
-			try {
-				System.out.println("Running Snapshot Batch for tickers " + runTickers.toString());
-				StringBuilder url = new StringBuilder();
-				url.append("/v2/snapshot/locale/us/markets/stocks/tickers?");
-				int count = 0;
-				for (String string : runTickers) {
-					if (count == 0) {
-						url.append(string);
-					} else {
-						url.append(",");
-						url.append(string);
-					}
-					count++;
-				}
-				String endpoint = url.toString();
-				HttpResponse<String> response = null;
+	
+	
+	private class SecondUpdater extends Thread { 
+		
+		public void run() { 
+			while(!interrupted()) { 
 				try {
-					 response = restClient.get(endpoint);		
-					 System.out.println("returned snapshot response " + response.body());
-					 
+					Thread.sleep(1000);
+					for (PolygonTicker ticker : tickers.values()) {
+						ticker.secondUpdate();
+					}
+					metrics.secondUpdate();
 				} catch (Exception e) {
-					System.err.println("exception snapshot invoke " + e.toString());
-					
 					// TODO: handle exception
 				}
-				if(1 == 1) { 
-					return;
-				}
-				PolygonSnapshot[] snapshots = null;
-				try {
-					String out = response.body();
-					System.out.println(out);
-					System.out.println(System.lineSeparator());
-					snapshots = DJson.getObjectMapper().readValue(response.body(), PolygonSnapshot[].class);
-				} catch (Exception e) {
-					logger.error("Exception parsing snapshot batch response " + e.toString());
-					problemCount.incrementAndGet();
-					return;
-				}
-				for (PolygonSnapshot snapshot : snapshots) {
-					PolygonTicker ticker = PolygonFeed.this.tickers.get(snapshot.getTicker());
-					if (ticker == null) {
-						logger.error("Snapshot polygon ticker not found " + snapshot.getTicker());
-						problemCount.incrementAndGet();
-						continue;
-					}
-					ticker.snapshot(snapshot);
-				}
-			} catch (Exception e) {
-				problemCount.incrementAndGet();
-				logger.error("Outer snapshot batch exception " + e.toString());
 			}
-
 		}
-
 	}
 
+	
+	
+	
 }

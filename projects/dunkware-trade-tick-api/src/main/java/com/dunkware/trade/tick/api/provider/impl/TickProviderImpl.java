@@ -18,7 +18,7 @@ import com.dunkware.trade.tick.api.provider.TickProviderException;
 import com.dunkware.trade.tick.api.provider.TickProviderListener;
 import com.dunkware.trade.tick.api.provider.TickProviderSubscription;
 import com.dunkware.trade.tick.model.feed.TickFeedSpec;
-import com.dunkware.trade.tick.model.provider.TickProviderStatus;
+import com.dunkware.trade.tick.model.provider.TickProviderState;
 import com.dunkware.trade.tick.model.ticker.TradeTickerSpec;
 
 public abstract class TickProviderImpl extends TickStreamImpl implements TickProvider {
@@ -27,7 +27,7 @@ public abstract class TickProviderImpl extends TickStreamImpl implements TickPro
 	
 	protected ConcurrentHashMap<TradeTickerSpec, TickProviderSubscription> subscriptions = new ConcurrentHashMap<TradeTickerSpec, TickProviderSubscription>();
 	protected String connectionError = null;
-	private TickProviderStatus status = TickProviderStatus.CREATED;
+	private TickProviderState status = TickProviderState.CREATED;
 	private List<TickProviderListener> providerListeners = new ArrayList<TickProviderListener>();
 	private Semaphore providerListenerLock = new Semaphore(1);
 
@@ -112,10 +112,7 @@ public abstract class TickProviderImpl extends TickStreamImpl implements TickPro
 		}
 	}
 	
-	@Override
-	public TickProviderStatus getProviderStatus() {
-		return status;
-	}
+	
 
 	@Override
 	public String getConnectionError() {
@@ -126,7 +123,7 @@ public abstract class TickProviderImpl extends TickStreamImpl implements TickPro
 		this.connectionError = error;
 	}
 	
-	protected void setStatus(TickProviderStatus status) { 
+	protected void setStatus(TickProviderState status) { 
 		if(this.status != status) { 
 			this.status = status;
 			notifyStatusUpdate();

@@ -89,5 +89,10 @@ public class DConverter {
 			throw e;
 		}
 	}
+	
+	public static Integer longToInt(Long value) { 
+		long longValue = value; 
+		return (int) longValue;
+	}
 
 }

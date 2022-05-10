@@ -1,12 +1,9 @@
 package com.dunkware.trade.service.tick.client;
 
 import com.dunkware.trade.tick.model.feed.TickFeedSpec;
-import com.dunkware.trade.tick.service.protocol.service.spec.TickServiceStatusSpec;
 import com.dunkware.trade.tick.service.protocol.ticker.spec.TradeTickerListSpec;
 
 public interface TickServiceClient {
-	
-	public TickServiceStatusSpec getStatus() throws TickServiceClientException;
 	
 	public void connect(String endpoint) throws TickServiceClientException;
 
@@ -20,4 +17,5 @@ public interface TickServiceClient {
 
 	public TradeTickerListSpec getTickerList(String listId) throws TickServiceClientException;
 
+	public void ping() throws Exception;
 }

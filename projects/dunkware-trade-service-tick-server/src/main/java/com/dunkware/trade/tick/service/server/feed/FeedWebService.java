@@ -17,6 +17,7 @@ import org.springframework.web.server.ResponseStatusException;
 
 import com.dunkware.trade.tick.service.protocol.feed.TickFeedStartReq;
 import com.dunkware.trade.tick.service.protocol.feed.TickFeedStartResp;
+import com.dunkware.trade.tick.service.protocol.feed.TickFeedSubscriptions;
 import com.dunkware.trade.tick.service.protocol.feed.TickFeedUpdateReq;
 import com.dunkware.trade.tick.service.protocol.feed.TickFeedUpdateResp;
 import com.dunkware.trade.tick.service.protocol.provider.TickProviderAddReq;
@@ -29,6 +30,7 @@ import com.dunkware.trade.tick.service.protocol.provider.TickProviderAddResp;
  * @author dkrebs
  *
  */
+import com.dunkware.trade.tick.service.protocol.service.spec.FeedServiceStats;
 @RestController
 @Profile("FeedWebService")
 @CrossOrigin(origins = "*", allowedHeaders = "*")
@@ -51,7 +53,7 @@ public class FeedWebService {
 			FeedServiceProvider provider = tickService.addServiceProvider(request.getSpec());
 			TickProviderAddResp resp = new TickProviderAddResp();
 			resp.setCode("SUCCESS");
-			resp.setStatus(provider.getProviderStatus().name());
+			resp.setStatus(provider.getProviderStats().getName());
 			return resp;
 		} catch (Exception e) {
 			TickProviderAddResp resp = new TickProviderAddResp();
@@ -118,6 +120,26 @@ public class FeedWebService {
 		return this.tickService.getFeedTicker(symbol);
 		
 	}
+	
+	@GetMapping(path = "/tick/service/stats")
+	public @ResponseBody() FeedServiceStats getFeedServiceStats() { 
+		return tickService.getStats();
+	}
+	
+	@GetMapping(path = "/tick/service/validsubscriptions")
+	public @ResponseBody TickFeedSubscriptions getValidatedSubscriptions() { 
+		TickFeedSubscriptions sub = new TickFeedSubscriptions();
+		sub.setTickers(tickService.getValidatedSubscriptions());
+		return sub;
+	}
+	
+	@GetMapping(path = "/tick/feed/invalidsubscriptions")
+	public @ResponseBody TickFeedSubscriptions getInValidatedSubscriptions() { 
+		TickFeedSubscriptions sub = new TickFeedSubscriptions();
+		sub.setTickers(tickService.getInvalidatedSubscriptions());
+		return sub;
+	}
+	
 	
 
 

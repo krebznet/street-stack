@@ -1,81 +1,87 @@
 package com.dunkware.trade.tick.model.instrument;
 
 import com.dunkware.common.util.dtime.DDateTime;
-import com.dunkware.trade.tick.model.ticker.TradeTickerSpec;
 
 public class EquityQuote {
 	
-	private String symbol;
-	private double last; 
-	private double askPrice; 
-	private double bidPrice; 
-	private int askSize; 
+	private String event; 
+	private String symbol; 
 	private int bidSize; 
+	private double bidPrice; 
+	private double askPrice; 
+	private int askSize; 
+	private double lastPrice; 
+	private int tradeCount; 
+	private int volume; 
+	private DDateTime lastQuote; 
+	private DDateTime lastTrade; 
 	
-	private DDateTime time; 
-	
-	
-	public EquityQuote() { 
-		
+	public String getEvent() {
+		return event;
 	}
-	// Equity EquityListener equityQuote
-	// EquityQuoteListener
-	public double getLast() {
-		return last;
+	public void setEvent(String event) {
+		this.event = event;
 	}
-	public void setLast(double last) {
-		this.last = last;
-	}
-	
 	public String getSymbol() {
 		return symbol;
 	}
-	
 	public void setSymbol(String symbol) {
 		this.symbol = symbol;
 	}
-
-	public double getAskPrice() {
-		return askPrice;
-	}
-
-	public void setAskPrice(double askPrice) {
-		this.askPrice = askPrice;
-	}
-
-	public double getBidPrice() {
-		return bidPrice;
-	}
-
-	public void setBidPrice(double bidPrice) {
-		this.bidPrice = bidPrice;
-	}
-
-	public int getAskSize() {
-		return askSize;
-	}
-
-	public void setAskSize(int askSize) {
-		this.askSize = askSize;
-	}
-
 	public int getBidSize() {
 		return bidSize;
 	}
-
 	public void setBidSize(int bidSize) {
 		this.bidSize = bidSize;
 	}
-
-	public DDateTime getTime() {
-		return time;
+	public double getBidPrice() {
+		return bidPrice;
 	}
-
-	public void setTime(DDateTime time) {
-		this.time = time;
+	public void setBidPrice(double bidPrice) {
+		this.bidPrice = bidPrice;
 	}
-	
-	
+	public double getAskPrice() {
+		return askPrice;
+	}
+	public void setAskPrice(double askPrice) {
+		this.askPrice = askPrice;
+	}
+	public int getAskSize() {
+		return askSize;
+	}
+	public void setAskSize(int askSize) {
+		this.askSize = askSize;
+	}
+	public double getLastPrice() {
+		return lastPrice;
+	}
+	public void setLastPrice(double lastPrice) {
+		this.lastPrice = lastPrice;
+	}
+	public int getTradeCount() {
+		return tradeCount;
+	}
+	public void setTradeCount(int tradeCount) {
+		this.tradeCount = tradeCount;
+	}
+	public int getVolume() {
+		return volume;
+	}
+	public void setVolume(int volume) {
+		this.volume = volume;
+	}
+	public DDateTime getLastQuote() {
+		return lastQuote;
+	}
+	public void setLastQuote(DDateTime lastQuote) {
+		this.lastQuote = lastQuote;
+	}
+	public DDateTime getLastTrade() {
+		return lastTrade;
+	}
+	public void setLastTrade(DDateTime lastTrade) {
+		this.lastTrade = lastTrade;
+	}
 	
 	
 

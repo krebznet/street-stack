@@ -47,15 +47,17 @@ public class StreamTickService {
 	 */
 	public boolean isOnline() throws Exception { 
 		// fuck you 
-		if(1 == 1) return true;
 		try {
 			logger.debug("isOnline Calling");
 			if(client == null) { 
 				throw new Exception("Tick service client is null mother fucker");
 			}
-			client.getStatus();
-			logger.debug("isOnline Called");
-			return true; 
+			try {
+				client.ping();
+				return true;
+			} catch (Exception e) {
+				return false;
+			}
 		} catch (Exception e) {
 			throw new Exception("Tick Service isOnline throws Exception " + e.fillInStackTrace().getStackTrace().toString());
 		}

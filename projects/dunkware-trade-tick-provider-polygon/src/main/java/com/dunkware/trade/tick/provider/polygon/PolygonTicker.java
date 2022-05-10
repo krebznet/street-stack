@@ -6,6 +6,7 @@ import java.util.concurrent.atomic.AtomicLong;
 
 import com.dunkware.trade.tick.provider.polygon.core.PolygonSnapshot;
 import com.dunkware.trade.tick.provider.polygon.core.event.PolygonAggEvent;
+import com.dunkware.trade.tick.provider.polygon.core.event.PolygonQuote;
 
 public class PolygonTicker {
 	
@@ -21,10 +22,23 @@ public class PolygonTicker {
 	private double change = -1;
 	private double percentChange = -1; 
 	
-	private LocalDateTime lastUpdate = null;
+	private LocalDateTime lastQuote = null;
+	private LocalDateTime lastAgg = null;
 	
-	private volatile int aggCount = 0;
-	private volatile int snapshotCount = 0; 
+	
+	private AtomicInteger aggCount = new AtomicInteger();
+	private AtomicInteger quoteQuote = new AtomicInteger(); 
+	
+	private volatile int secondAggCount = -1;
+	private volatile int secondQuoteCount = -1;
+	
+	private int qps = 0; 
+	private int aps = 0;
+	
+	private boolean valid = true; 
+	
+	private boolean quoteSet = false; 
+	private boolean aggSet = false; 
 	
 	public PolygonTicker(String s) { 
 		this.symbol = s;
@@ -78,15 +92,6 @@ public class PolygonTicker {
 		this.bidSize = bidSize;
 	} 
 	
-	public double getLastPrice() {
-		return lastPrice;
-	}
-	public LocalDateTime getLastUpdate() {
-		return lastUpdate;
-	}
-	public int getAggCount() {
-		return aggCount;
-	}
 	
 	public double getTickVwap() {
 		return tickVwap;
@@ -97,29 +102,79 @@ public class PolygonTicker {
 	public double getPercentChange() {
 		return percentChange;
 	}
-	public int getSnapshotCount() {
-		return snapshotCount;
+	
+	public double getLastPrice() {
+		return lastPrice;
+	}
+
+	public void setLastPrice(double lastPrice) {
+		this.lastPrice = lastPrice;
+	}
+
+	public boolean isValidated() { 
+		if(aggSet && quoteSet) { 
+			return true;
+		}
+		return false; 
 	}
 	public void agg(PolygonAggEvent event) { 
+		aggSet = true;
 		this.volume = event.getVolume();
 		int tickTradeCount = event.getTickVolume() / event.getTickAverageTradeSize();
 		tradeCount.addAndGet(tickTradeCount);
 		this.tickVwap = event.getTickVwap();
 		// parse the lastUpdate; 
 		this.lastPrice = event.getTickClose();
-		this.aggCount++;
+		this.aggCount.incrementAndGet();
 	}
 	
-	public void snapshot(PolygonSnapshot snapshot) { 
-		this.snapshotCount++;
-		this.askPrice = snapshot.getLastQuote().getAskPrice();
-		this.bidPrice = snapshot.getLastQuote().getBidPrice();
-		this.askSize = snapshot.getLastQuote().getAskSize();
-		this.bidSize = snapshot.getLastQuote().getBidSize();
-		this.change = snapshot.getTodaysChange();
-		this.change = snapshot.getTodaysChangePercent();
-		
+	public void quote(PolygonQuote quote) {
+		quoteSet = true;
+		this.askPrice = quote.getAskPrice();
+		this.askSize = quote.getAskSize(); 
+		this.bidPrice = quote.getBidPrice();
+		this.bidSize = quote.getBidSize();
+		this.quoteQuote.incrementAndGet();
 	}
+	
+	public int getQuoteCount() { 
+		return quoteQuote.get();
+	}
+	
+	public int getAggCount() { 
+		return aggCount.get();
+	}
+	
+	public int getQPS() { 
+		return qps;
+	}
+	
+	public int getAPS() {
+		return aps;
+	}
+	
+	public void secondUpdate() { 
+		if(secondAggCount == -1) { 
+			secondAggCount = aggCount.get();
+		} else { 
+			secondAggCount = aggCount.get() - secondAggCount;
+		}
+		if(secondQuoteCount == -1) { 
+			secondQuoteCount = aggCount.get();
+		} else { 
+			secondQuoteCount = quoteQuote.get() - secondQuoteCount;
+		}
+	}
+
+	public boolean isValid() {
+		return valid;
+	}
+
+	public void setValid(boolean valid) {
+		this.valid = valid;
+	}
+	
+	
 	
 	
 

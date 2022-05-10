@@ -39,6 +39,17 @@ public class TradeTicks {
 	public static final int FieldOpenPrice = 2;
 	public static final int FieldClosePrice = 4;
 	
+	public static final int FieldSnapshotLastPrice = 300; 
+	public static final int FieldSnapshotVolume = 301; 
+	public static final int FieldSnapshotTradeCount = 302; 
+	public static final int FieldSnapshotChange = 303; 
+	public static final int FieldSnapshotChangePercent = 304; 
+	public static final int FieldSnapshotAskPrice = 305; 
+	public static final int FieldSnapshotBidPrice = 306;
+	public static final int FieldSnapshotBidSize = 307; 
+	public static final int FieldSnapshotAskSize = 308; 
+	
+	
 	
 
 }

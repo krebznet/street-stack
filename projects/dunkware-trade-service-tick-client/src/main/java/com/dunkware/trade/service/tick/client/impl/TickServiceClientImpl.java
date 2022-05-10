@@ -6,11 +6,9 @@ import com.dunkware.trade.service.tick.client.TickServiceClient;
 import com.dunkware.trade.service.tick.client.TickServiceClientException;
 import com.dunkware.trade.service.tick.client.TickServiceClientFeed;
 import com.dunkware.trade.tick.model.feed.TickFeedSpec;
-import com.dunkware.trade.tick.service.protocol.service.spec.TickServiceStatusSpec;
 import com.dunkware.trade.tick.service.protocol.ticker.TSTickerListGetReq;
 import com.dunkware.trade.tick.service.protocol.ticker.TickerListGetResp;
 import com.dunkware.trade.tick.service.protocol.ticker.spec.TradeTickerListSpec;
-import com.fasterxml.jackson.databind.json.JsonMapper;
 
 public class TickServiceClientImpl implements TickServiceClient  {
 
@@ -24,29 +22,29 @@ public class TickServiceClientImpl implements TickServiceClient  {
 		this.endpoint = endpoint;
 		
 		try {
-			getStatus();
+			ping();
 		} catch (Exception e) {
-			throw new TickServiceClientException("Connect Exception " + e.toString());
+			int count = 0; 
+			while(true) { 
+				try {
+					if(count > 5) { 
+						throw new TickServiceClientException("Can not ping server after 5 seconds");
+					}
+					Thread.sleep(1000);
+					try {
+						ping();
+						return;
+					} catch (Exception e2) {
+						count++;
+					}
+				} catch (Exception e2) {
+					throw new TickServiceClientException("Can not ping server after 5 seconds");
+				}
+			}
 		}
 	}
 	
-	@Override
-	public TickServiceStatusSpec getStatus() throws TickServiceClientException {
-		try {
-			System.err.println("connection endpoint is" +  endpoint + "/monitor/status");
-			String content = DHttpHelper.getURLContent(endpoint + "/monitor/status", 90000);			
-			JsonMapper mapper = new JsonMapper();
-			return mapper.readValue(content, TickServiceStatusSpec.class);
-		} catch (Exception e) {
-			System.err.println("exception getting tick service status spec " + e.toString());
-			throw new TickServiceClientException("Exception Getting Status " + e.toString());
-		}
-		
-		
 
-		
-	//	DHttpHelper.getURLContent(endpoint)
-	}
 
 	@Override
 	public String getEndpoint() {
@@ -61,8 +59,6 @@ public class TickServiceClientImpl implements TickServiceClient  {
 		
 	}
 
-	
-	
 
 	@Override
 	public Object postResponseObject(String path, Object request, Class responseClass) throws TickServiceClientException {
@@ -74,6 +70,19 @@ public class TickServiceClientImpl implements TickServiceClient  {
 		}
 		
 	}
+	
+
+	@Override
+	public void ping() throws Exception {
+		try {
+			String endpoint = this.endpoint + "/ticker/echo?name=hello";
+			DHttpHelper.getURLContent(endpoint);
+		} catch (Exception e) {
+			throw new Exception("Echo request failed " + e.toString());
+		}
+	}
+
+
 
 	@Override
 	public void post(String path, Object request) throws TickServiceClientException {
