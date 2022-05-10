@@ -66,6 +66,13 @@ public class ActiveTickProvider extends TickProviderImpl {
 		return symbolService;
 	}
 	
+	
+	@Override
+	public void resetDay() {
+	
+	}
+
+
 	@Override
 	public void connect(TickProviderSpec spec, TradeSymbolService symbolService, DExecutor executor) throws TickProviderException {
 		this.symbolService = symbolService; 

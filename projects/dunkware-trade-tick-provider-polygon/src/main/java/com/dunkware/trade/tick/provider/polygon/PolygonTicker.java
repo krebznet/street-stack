@@ -25,6 +25,7 @@ public class PolygonTicker {
 	private LocalDateTime lastQuote = null;
 	private LocalDateTime lastAgg = null;
 	
+	private boolean resetDay = false; 
 	
 	private AtomicInteger aggCount = new AtomicInteger();
 	private AtomicInteger quoteQuote = new AtomicInteger(); 
@@ -59,10 +60,10 @@ public class PolygonTicker {
 		return volume;
 	}
 	
-	public void setTradeCount(AtomicInteger tradeCount) {
-		this.tradeCount = tradeCount;
+	public void resetDay() { 
+		resetDay = true; 
 	}
-
+	
 	public void setVolume(int volume) {
 		this.volume = volume;
 	}
@@ -121,6 +122,10 @@ public class PolygonTicker {
 		aggSet = true;
 		this.volume = event.getVolume();
 		int tickTradeCount = event.getTickVolume() / event.getTickAverageTradeSize();
+		if(resetDay) { 
+			tradeCount.set(0);
+			resetDay = false;
+		}
 		tradeCount.addAndGet(tickTradeCount);
 		this.tickVwap = event.getTickVwap();
 		// parse the lastUpdate; 

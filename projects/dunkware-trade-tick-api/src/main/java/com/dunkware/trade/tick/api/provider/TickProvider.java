@@ -101,6 +101,8 @@ public interface TickProvider extends TickStream {
 	
 	public List<TradeTickerSpec> getInValidatedSubscriptions();
 	
+	public void resetDay(); 
+	
 	
 	
 }

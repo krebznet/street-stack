@@ -1,7 +1,5 @@
 package com.dunkware.trade.service.data.service.stream.session.writers;
 
-import java.time.LocalDateTime;
-import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -14,7 +12,6 @@ import com.dunkware.common.util.helpers.DProtoHelper;
 import com.dunkware.common.util.stopwatch.DStopWatch;
 import com.dunkware.net.proto.stream.GEntitySnapshot;
 import com.dunkware.net.proto.stream.GStreamSessionStop;
-import com.dunkware.trade.service.data.json.stream.writer.DataStreamSnapshotWriterSessionStats;
 import com.dunkware.trade.service.data.json.stream.writer.DataStreamSnapshotWriterSessionStats2;
 import com.google.common.util.concurrent.AtomicDouble;
 
@@ -35,6 +32,8 @@ public class DataStreamSessionSnapshotWriterMetrics2 {
 	private DDateTime startTime;
 	private DataStreamSessionSnapshotWriter2 writer;
 
+	private DDateTime stopTime; 
+	
 	public void start(DataStreamSessionSnapshotWriter2 writer) {
 		this.writer = writer;
 		startTime = DDateTime.now(writer.getSession().getStream().getTimeZone());
@@ -69,6 +68,14 @@ public class DataStreamSessionSnapshotWriterMetrics2 {
 	public void consumerPaused() {
 		pauseCount++;
 		pauseStopWatch.start();
+	}
+
+	public DDateTime getStopTime() {
+		return stopTime;
+	}
+
+	public void setStopTime(DDateTime stopTime) {
+		this.stopTime = stopTime;
 	}
 
 	public DataStreamSnapshotWriterSessionStats2 getStats() {

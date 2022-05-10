@@ -83,7 +83,7 @@ public class DataStreamSession {
 	
 	private EntityPersister entityPersister;
 
-	
+	private DataStreamSessionState state = DataStreamSessionState.Pending;
 	private boolean snapshotWriterComplete = false; 
 	private boolean signalWriterComplete = false; 
 	
@@ -147,6 +147,8 @@ public class DataStreamSession {
 		
 		entityPersister = new EntityPersister();
 		entityPersister.start();
+		
+		state = DataStreamSessionState.Running;
 	
 		
 	}
@@ -173,10 +175,12 @@ public class DataStreamSession {
 			ent.setStreamName(stream.getName());
 			ent.setSignalCount(0);
 			ent.setSnapshotCount(0);
+			this.saveInstruments();
 			inst.start(DataStreamSession.this, ent);
 			instruments.put(snapshot.getIdentifier(), inst);
 			
 		}		
+		
 		inst.snapshot(snapshot);
 		this.sessionEntity.setSnapshotCount(sessionEntity.getSnapshotCount() + 1);
 	}
@@ -205,10 +209,15 @@ public class DataStreamSession {
 	
 	@Transactional
 	public void saveInstruments() {
-		List<DataStreamInstrumentEntity> ents = new ArrayList<DataStreamInstrumentEntity>();
-		for (DataStreamSessionInstrument instrument : instruments.values()) {
-			ents.add(instrument.getEntity());
+		List<DataStreamInstrumentEntity> writes = new ArrayList<DataStreamInstrumentEntity>();
+		Iterable<DataStreamInstrumentEntity> ents = instrumentRepo.findAll();
+		for (DataStreamInstrumentEntity ent : ents) {
+			DataStreamSessionInstrument instrument = instruments.get(ent.getInstIdentifier());
+			ent.setSignalCount(instrument.getSignalCount());
+			ent.setSnapshotCount(instrument.getSnapshotCount());
+			writes.add(ent);
 		}
+		
 		try {
 			instrumentRepo.saveAll(ents);	
 		} catch (Exception e) {
@@ -224,9 +233,14 @@ public class DataStreamSession {
 	
 	public void controllerStop() { 
 		//RIGHT HERE! 
+		logger.info("Controller Stop on Data Stream Session " + spec.getSessionId());
+		state = DataStreamSessionState.Persisting;
 		logger.info("Controller Stop Method Invoked");
 		sessionEntity.setControllerStopTime(LocalDateTime.now(DTimeZone.toZoneId(spec.getTimeZone())));
 		sessionEntity.setState(DataStreamSessionState.Persisting);
+		snapshotWriter.sessionStopped();
+		signalWriter.sessionStopped();
+		entityPersister.interrupt();
 		timeConsumer.dispose();
 		saveSession();
 		// who will update session enetity
@@ -246,6 +260,8 @@ public class DataStreamSession {
 		stats.setState(this.sessionEntity.getState());
 		stats.setSignalStats(signalWriter.getStats());
 		stats.setSnapshotStats(writerStats);
+		stats.setState(state);
+		
 		return stats;
 	}
 	
@@ -262,10 +278,7 @@ public class DataStreamSession {
 	}
 	
 	public void snapshotWriterComplete() { 
-		
 		snapshotWriterComplete = true;
-		sessionEntity.setSnapshotCompleteTime(LocalDateTime.now(DTimeZone.toZoneId(stream.getTimeZone())));
-		saveSession();
 		completeSession();
 	}
 	
@@ -293,12 +306,16 @@ public class DataStreamSession {
 			return;
 		}
 		if(signalWriterComplete && snapshotWriterComplete) {
-			
+			sessionEntity.setSnapshotCompleteTime(LocalDateTime.now(DTimeZone.toZoneId(stream.getTimeZone())));
+			sessionEntity.setSnapshotCount(snapshotWriter.getStats().getInserteCount());
 			LocalDateTime now = LocalDateTime.now(DTimeZone.toZoneId(stream.getTimeZone()));
 			sessionEntity.setSessionStopTime(now);
 			sessionEntity.setState(DataStreamSessionState.Completed);
 			entityPersister.interrupt();
+			timeConsumer.dispose();
 			saveSession();	
+			state = DataStreamSessionState.Completed;
+			logger.info("Data Session Completed " + spec.getSessionId());
 		}
 		
 	}
@@ -326,7 +343,7 @@ public class DataStreamSession {
 		public void run() { 
 			while(!interrupted()) { 
 				try {
-					Thread.sleep(5000);
+					Thread.sleep(3000);
 					saveInstruments();
 					metricsService.setGauge("stream.us_equity.stats.data.entities", instruments.size());
 					DataStreamSnapshotWriterSessionStats2 writerStats = snapshotWriter.getStats();

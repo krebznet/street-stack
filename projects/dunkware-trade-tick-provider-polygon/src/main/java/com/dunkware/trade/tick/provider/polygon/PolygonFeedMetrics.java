@@ -36,6 +36,17 @@ public class PolygonFeedMetrics {
 		
 	}
 	
+	public void resetDay() { 
+		quotes.set(0);
+		aggs.set(0);
+		qps = -1;
+		agps = -1;
+		mps = -1;
+		for (String key : tickers.keySet()) {
+			tickers.get(key).reset();
+		}
+	}
+	
 	public void quoteEvent(PolygonQuote quote) {
 		tickers.get(quote.getSymbol()).quotes.incrementAndGet();
 		quotes.incrementAndGet();
@@ -105,6 +116,11 @@ public class PolygonFeedMetrics {
 		public String symbol;
 		public AtomicInteger quotes = new AtomicInteger(0); 
 		public AtomicInteger aggs = new AtomicInteger(0);
+		
+		public void reset() { 
+			quotes.set(0);
+			aggs.set(0);
+		}
 		
 	}
 }

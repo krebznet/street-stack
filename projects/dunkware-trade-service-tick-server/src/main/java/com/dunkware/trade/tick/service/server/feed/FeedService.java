@@ -1,5 +1,6 @@
 package com.dunkware.trade.tick.service.server.feed;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
@@ -19,7 +20,6 @@ import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Component;
 
 import com.dunkware.common.kafka.admin.DKafkaAdmin;
-import com.dunkware.common.tick.reactor.impl.TickReactor;
 import com.dunkware.common.util.dtime.DDateTime;
 import com.dunkware.common.util.dtime.DTimeZone;
 import com.dunkware.common.util.helpers.DConverter;
@@ -75,9 +75,16 @@ public class FeedService {
 
 	private FeedServiceProvider activeServiceProvider = null;
 	
+	LocalDate today = null;
+	
+	private ResetDayChecker dayChecker;
+	
 	@PostConstruct
 	private void load() {
+		today = LocalDate.now(DTimeZone.toZoneId(DTimeZone.NewYork));
 		startTime = DDateTime.now(DTimeZone.NewYork);
+		dayChecker = new ResetDayChecker();
+		dayChecker.start();
 		logMarker = logging.getMarker();
 		List<FeedProviderDO> providers = providerRepo.getProviders();
 		for (FeedProviderDO tickProviderEntity : providers) {
@@ -289,6 +296,29 @@ public class FeedService {
 		stats.setMessageQueueSize(providerStats.getMessageQueueSize());
 		stats.setFeedCount(this.streams.size());
 		return stats;
+	}
+	
+	
+	private class ResetDayChecker extends Thread { 
+		
+		public void run() { 
+			try {
+				while(!interrupted()) { 
+					LocalDate rightNow = LocalDate.now(DTimeZone.toZoneId(DTimeZone.NewYork));
+					if(rightNow.isAfter(today)) { 
+						logger.info("Feed Service Reset Day Triggered");
+						for (FeedServiceProvider feedServiceProvider : serviceProviders) {
+							feedServiceProvider.getProvider().resetDay();
+						}
+						today = rightNow;
+					}
+					Thread.sleep(5000);
+				}
+			} catch (Exception e) {
+				logger.error("Reset day checker exception " + e.toString());
+			}
+		}
+		
 	}
 
 }

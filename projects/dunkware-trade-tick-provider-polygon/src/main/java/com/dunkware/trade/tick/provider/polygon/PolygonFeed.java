@@ -124,6 +124,16 @@ public class PolygonFeed {
 			}
 		}
 	}
+	
+	public void resetDay() { 
+		if(logger.isDebugEnabled()) { 
+			logger.debug("Reseting Day on Polygon Tickers");
+		}
+		for (PolygonTicker ticker : tickers.values()) {
+			ticker.resetDay();
+		}
+		metrics.resetDay();
+	}
 
 	public void disconnect() {
 		webSocket.close();

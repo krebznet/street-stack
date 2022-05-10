@@ -197,6 +197,11 @@ public class PolygonTickProvider extends TickProviderImpl {
 	}
 
 
+	@Override
+	public void resetDay() {
+		feed.resetDay();
+	}
+
 
 
 	@Override

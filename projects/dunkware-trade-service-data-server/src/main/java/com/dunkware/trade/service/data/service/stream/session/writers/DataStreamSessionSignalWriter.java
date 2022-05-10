@@ -110,6 +110,12 @@ public class DataStreamSessionSignalWriter implements DKafkaByteHandler2 {
 
 	}
 	
+	
+	public void sessionStopped() { 
+		DisposeRunner runner = new DisposeRunner();
+		runner.start();
+	}
+	
 	public DataStreamSignalWriterSessionStats getStats() { 
 		return metrics.getStats();
 	}
@@ -139,25 +145,34 @@ public class DataStreamSessionSignalWriter implements DKafkaByteHandler2 {
 	
 	private class DisposeRunner extends Thread { 
 		
-		public void start() { 
+		public void run() { 
+			logger.info("Starting Session writer dispose runner");
 			int count = 0;
 			kafkaConsumer.dispose();
 			while(writeQueue.isEmpty() == false) { 
 				try {
-					Thread.sleep(500);
+					Thread.sleep(1000);
 					count++;
 					if(count > 20) {
 						logger.error(DataMarkers.getServiceMarker(), "Signal Writer Q Not Empty After 10 Seconds");
-						break;
+						closeWirer();
+						return;
 					}
 				} catch (Exception e) {
 					// TODO: handle exception
 				}
 			}
+			closeWirer();
+			
+		}
+		
+		public void closeWirer() { 
+			logger.debug("Closing Signal Writer");
 			writer.interrupt();
+			writer.writePendingSignals();
 			metrics.stop();
 			mongoClient.close();
-		
+			logger.debug("Calling singal writer complete on session");
 			session.signalWriterComplete();
 			
 		}
@@ -175,12 +190,21 @@ public class DataStreamSessionSignalWriter implements DKafkaByteHandler2 {
 
 		private List<InsertOneModel<Document>> pendingWrites = new ArrayList<InsertOneModel<Document>>();
 		private List<GEntitySignal> pendingSignalWrites = new ArrayList<GEntitySignal>();
+		
+		public void writePendingSignals() { 
+			if(pendingSignalWrites.size() > 0) {
+				signalCollection.bulkWrite(pendingWrites);
+				pendingWrites.clear();
+				pendingSignalWrites.clear();
+			}
+		}
+		
 		public void run() {
 			DStopWatch watch = DStopWatch.create();
 			while (!interrupted()) {
 				try {
 					// just publish all signals received every 5 seconds
-					Thread.sleep(3000);
+					Thread.sleep(1000);
 					List<GEntitySignal> signals = new ArrayList<GEntitySignal>();
 					writeQueue.removeAll(signals);
 					if (signals.size() == 0) {

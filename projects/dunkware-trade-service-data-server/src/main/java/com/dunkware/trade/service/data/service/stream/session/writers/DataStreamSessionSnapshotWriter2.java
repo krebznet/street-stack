@@ -21,6 +21,7 @@ import com.dunkware.common.spec.kafka.DKafkaByteConsumer2Spec;
 import com.dunkware.common.spec.kafka.DKafkaByteConsumer2Spec.ConsumerType;
 import com.dunkware.common.spec.kafka.DKafkaByteConsumer2Spec.OffsetType;
 import com.dunkware.common.spec.kafka.DKafkaByteConsumer2SpecBuilder;
+import com.dunkware.common.util.dtime.DDateTime;
 import com.dunkware.common.util.dtime.DTimeZone;
 import com.dunkware.common.util.stopwatch.DStopWatch;
 import com.dunkware.common.util.uuid.DUUID;
@@ -81,9 +82,19 @@ public class DataStreamSessionSnapshotWriter2 implements DKafkaByteHandler2 {
 	private GStreamSessionStop stopEvent;
 	
 	private String mongoCollectionName;
+	
+	volatile boolean paused = false;
 
+	private boolean writerClosed = false; 
+	
 	public DataStreamSessionSnapshotWriter2() {
 
+	}
+	
+	public void sessionStopped() { 
+		logger.debug("Snapshot Writer handling session stopped, starting session stopper");
+		StreamSessionStopper stopper = new StreamSessionStopper();
+		stopper.start();
 	}
 
 	public void start(DataStreamSession session) throws Exception {
@@ -168,8 +179,6 @@ public class DataStreamSessionSnapshotWriter2 implements DKafkaByteHandler2 {
 			//
 			if (event.getType() == GStreamEventType.SessionStop) {
 				stopEvent = event.getSessionStop();
-				WriterDisposer disposer = new WriterDisposer();
-				disposer.start();
 				return;
 			}
 			if (event.getType() == GStreamEventType.EntitySnapshot) {
@@ -189,37 +198,11 @@ public class DataStreamSessionSnapshotWriter2 implements DKafkaByteHandler2 {
 
 	}
 
-	private class WriterDisposer extends Thread {
-
-		public void start() {
-			
-				 int count = 0;
-				 kafkaConsumer.dispose();
-				 while(writeQueue.isEmpty() == false) { 
-					 try {
-						Thread.sleep(1000);
-						count++;
-						
-						if(count > 60) {
-							logger.error(DataMarkers.getServiceMarker(), "Snapshot writer disposer timed out after snapshot write queue not emptied in 60 seconds");
-						}
-					} catch (Exception e) {
-						// TODO: handle exception
-					}
-				 }
-				
-				 mongoClient.close();
-				 snapshotWriter.interrupt();
-				 queueMonitor.interrupt();
-				 session.snapshotWriterComplete();
-				  
-		}
-	}
+	
 
 	
 	private class QueueMonitor extends Thread {
 
-		volatile boolean paused = false;
 
 		public void run() {
 			while (!interrupted()) {
@@ -254,11 +237,104 @@ public class DataStreamSessionSnapshotWriter2 implements DKafkaByteHandler2 {
 		return completed;
 	}
 
+	
+	private class StreamSessionStopper extends Thread { 
+		
+		public void run() { 
+			logger.debug("Starting SnapshotWrtier Stopper");
+			logger.debug("Invoking Finished Writing method");
+			int count = 1;
+			while(!finishedWriting()) { 
+				try {
+					Thread.sleep(1000);
+					logger.debug("Not Finished Writing Count " + count);
+					count++;
+					if(count > 300) { 
+						logger.error("Stream Session Stopper Not Finished Writing After 10 minutes "
+								+ "last snapshot write time is " + DDateTime.toSqlTimestamp(metrics.getStats().getLastWriteTime()) + "force stopping writer");
+						closeWriter();
+						return;
+					}
+			
+				} catch (Exception e) {
+					logger.error("Exception in StremSessionStopper " + e.toString());
+					if(!writerClosed)
+						closeWriter();
+					return;
+				}
+			}
+			closeWriter();
+			
+		}
+		
+		private void closeWriter() { 
+			logger.debug("Closing Snapshot Writer");
+			 mongoClient.close();
+			 snapshotWriter.interrupt();
+			 snapshotWriter.writePendingSnapshots();
+			 queueMonitor.interrupt();
+			 metrics.setStopTime(DDateTime.now(session.getStream().getTimeZone()));
+			 kafkaConsumer.dispose();
+			 logger.info("Snapshot Writer invoking complete method on session");
+			 session.snapshotWriterComplete();
+			 writerClosed = true;
+		}
+		
+		public boolean finishedWriting() { 
+
+			while(true) { 
+				int count = 0;
+				while(paused) { 
+					if(count == 0)
+						logger.debug("SnapshotWriter Stopper Detected Consumer Paused");
+					try {
+						Thread.sleep(1000);
+						count++;
+					} catch (Exception e) {
+					}
+				}
+				logger.debug("SnapshotWriter Stopper Detected Consumer Unpaused");
+				count = 0;
+				while(writeQueue.size() > 0) { 
+					try {
+						if(count == 0)
+							logger.debug("Snapshot Detector Detected Write Queue Size Not Empty");
+						count++;
+					} catch (Exception e) {
+						// TODO: handle exception
+					}
+				}
+				logger.debug("Snapshot Stopper Detected Write Queue is empty");
+				if(paused) { 
+					return false;
+				}
+				return true;
+			}
+		}
+	}
+	
 	private class SnapshotWriter extends Thread {
 
 		private DStopWatch sw = DStopWatch.create();
 		private List<InsertOneModel<Document>> pendingWrites = new ArrayList<InsertOneModel<Document>>();
 		private List<GEntitySnapshot> pendingWriteSnapshots = new ArrayList<GEntitySnapshot>();
+		
+		public void writePendingSnapshots() { 
+			
+			if(pendingWrites.size() > 0) { 
+				if(logger.isDebugEnabled()) { 
+					logger.debug("Snapshot Writer inserting pending writes after interruption " + pendingWrites.size());
+				}
+				sw.start();
+				snapshotCollection.bulkWrite(pendingWrites);
+				sw.stop();
+				//metrics.bucketWriteBatch(pendingWrites.size(), bucketBatchSize);
+				metrics.snapshotInsert(pendingWriteSnapshots, pendingWrites.size(), sw.getCompletedSeconds());
+				pendingWrites.clear();
+				pendingWriteSnapshots.clear();
+			}
+		}
+		
 		public void run() {
 			while (!interrupted()) {
 				GEntitySnapshot snapshot = null;

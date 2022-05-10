@@ -66,9 +66,6 @@ public class DataStreamSessionSnapshotWriterMetrics {
 
 	}
 
-	public void sessionStopEvent(GStreamSessionStop stop) {
-
-	}
 
 	public void bucketWriteBatch(List<DataStreamSessionSnapshotWriterBucket> buckets, int size, double speed) {
 		lastBucketWriteSpeed = speed;
@@ -104,16 +101,16 @@ public class DataStreamSessionSnapshotWriterMetrics {
 		stats.setSnapshotWriteCount(snapshotWriteCount);
 		if(lastWriteBucket != null) { 
 			lastWriteBucket.getStop();
-			stats.setLastWriteStreamTime(DDateTime.from(lastWriteBucket.getStop()));
+			stats.setLastWriteStreamTime(DDateTime.toSqlTimestamp(DDateTime.from(lastBucketWriteTime())));
 		}
 		stats.setEntityCount(entitySnapshotCounts.keySet().size());
 		stats.setMongoCollection(writer.getMongoCollection());
 		stats.setMongoDatabase(writer.getMongoDatabase());
 		stats.setQueueSize(writer.getQueueSize());
 		stats.setSnapshotWriteCount(snapshotWriteCount);
-		stats.setStartTime(startTime);
+		stats.setStartTime(DDateTime.toSqlTimestamp(startTime));
 		stats.setProblemCount(this.errors.size());
-		stats.setLastWriteStreamTime(DDateTime.from(writer.getSession().getSessionTime()));
+		stats.setLastWriteStreamTime(DDateTime.toSqlTimestamp(DDateTime.from(writer.getSession().getSessionTime())));
 		LocalDateTime d = LocalDateTime.now();
 		LocalDateTime s = LocalDateTime.now();
 		if(lastBucketWriteTime() != null) {

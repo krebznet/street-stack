@@ -9,7 +9,7 @@ public class DataStreamSnapshotWriterSessionStats {
 	private long snapshotWriteCount;
 	private long snapshotConsumeCount; 
 	private long queueSize; 
-	private DDateTime lastWriteStreamTime; 
+	private String lastWriteStreamTime; 
 	private int lastWriteSize;
 	private double lastWriteDuration;
 	private int bucketCount; 
@@ -19,7 +19,8 @@ public class DataStreamSnapshotWriterSessionStats {
 	private String mongoURL;
 	private String mongoCollection; 
 	private String mongoDatabase;
-	private DDateTime startTime;
+	private String startTime;
+	private String stopTime; 
 	private int problemCount; 
 	private double writeLagTime;
 	
@@ -48,17 +49,6 @@ public class DataStreamSnapshotWriterSessionStats {
 		this.queueSize = queueSize;
 	}
 	
-
-	
-	public DDateTime getLastWriteStreamTime() {
-		return lastWriteStreamTime;
-	}
-	public void setLastWriteStreamTime(DDateTime lastWriteStreamTime) {
-		this.lastWriteStreamTime = lastWriteStreamTime;
-	}
-	public void setStartTime(DDateTime startTime) {
-		this.startTime = startTime;
-	}
 	public int getLastWriteSize() {
 		return lastWriteSize;
 	}
@@ -119,15 +109,36 @@ public class DataStreamSnapshotWriterSessionStats {
 	public void setProblemCount(int problemCount) {
 		this.problemCount = problemCount;
 	}
-	public DDateTime getStartTime() {
-		return startTime;
-	}
+	
 	public double getWriteLagTime() {
 		return writeLagTime;
 	}
 	public void setWriteLagTime(double writeLagTime) {
 		this.writeLagTime = writeLagTime;
 	}
+	public String getLastWriteStreamTime() {
+		return lastWriteStreamTime;
+	}
+	public void setLastWriteStreamTime(String lastWriteStreamTime) {
+		this.lastWriteStreamTime = lastWriteStreamTime;
+	}
+	public String getStartTime() {
+		return startTime;
+	}
+	public void setStartTime(String startTime) {
+		this.startTime = startTime;
+	}
+	public String getStopTime() {
+		return stopTime;
+	}
+	public void setStopTime(String stopTime) {
+		this.stopTime = stopTime;
+	}
+	
+	
+	
+	
+	
 	
 	
 	
