@@ -52,7 +52,7 @@
 			<module>projects/dunkware-net-cluster-util</module>
 			<module>projects/dunkware-net-cluster-server</module>
     	<module>projects/dunkware-net-cluster-json</module>
-
+	    <module>projects/dunkware-net-cluster-spring</module>
   </modules>
 
 
