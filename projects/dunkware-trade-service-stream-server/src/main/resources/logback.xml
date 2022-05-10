@@ -14,21 +14,17 @@
 	
 	
     
-	
 	<appender name="FLUENT"
 		class="ch.qos.logback.more.appenders.DataFluentAppender">
-		<tag>streettest</tag>
-		<label>fuckyou</label>
-		<remoteHost>testrock2.dunkware.net</remoteHost>
-		<port>5678</port>
+		<tag>myrock</tag>
+		<label>stream</label>
+	<remoteHost>172.16.16.55</remoteHost>
+		<port>32759</port>
 		<additionalField>
 			<key>node</key>
 			<value>stream</value>
 		</additionalField>
 	</appender>
-	
-
-
 
 <logger name="com.dunkware.net.cluster.server.publishers.GrpcNodeUpdateStream" level="TRACE">
 		<appender-ref ref="FLUENT" additivity="false" />

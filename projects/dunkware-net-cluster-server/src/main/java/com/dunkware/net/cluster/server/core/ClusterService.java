@@ -24,7 +24,6 @@ public class ClusterService {
 
 	@PostConstruct
 	public void load() { 
-		logger.error("Starting Cluster Fuck" );
 		nodeManger = new ClusterNodeService();
 		ac.getAutowireCapableBeanFactory().autowireBean(nodeManger);;
 		try {

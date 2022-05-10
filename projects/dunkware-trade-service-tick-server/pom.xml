@@ -16,7 +16,7 @@
 	<description>Dunkware Trade Tick Service Server</description>
 
 	<properties>
-		<java.version>8</java.version>
+		<java.version>11</java.version>
 		<dockerfile-maven-plugin.version>1.3.3</dockerfile-maven-plugin.version>
 		<private.registry.url>505030817635.dkr.ecr.us-east-1.amazonaws.com</private.registry.url>
 	</properties>
@@ -99,9 +99,9 @@
 
 		</dependency>
 		<dependency>
-		  <groupId>net.logstash.logback</groupId>
-    <artifactId>logstash-logback-encoder</artifactId>
-    <version>7.1.1</version>
+			<groupId>net.logstash.logback</groupId>
+			<artifactId>logstash-logback-encoder</artifactId>
+			<version>7.1.1</version>
 		</dependency>
 
 		<dependency>
@@ -131,6 +131,11 @@
 
 		<!-- Dunkware Dependnecies -->
 
+		<dependency>
+			<groupId>com.dunkware.trade.tick</groupId>
+			<artifactId>dunkware-trade-tick-provider-polygon</artifactId>			
+			<version>1.0.0-SNAPSHOT</version>
+		</dependency>
 		<dependency>
 			<groupId>com.dunkware.net.cluster</groupId>
 			<artifactId>dunkware-net-cluster-node</artifactId>
@@ -169,16 +174,16 @@
 			<version>1.3.0-SNAPSHOT</version>
 		</dependency>
 
-<dependency>
-    <groupId>com.google.guava</groupId>
-    <artifactId>guava</artifactId>
-    <version>23.6-jre</version>
-</dependency> 
-<dependency>
-    <groupId>org.apache.httpcomponents</groupId>
-    <artifactId>httpcore</artifactId>
-    <version>4.4.8</version>
-</dependency>
+		<dependency>
+			<groupId>com.google.guava</groupId>
+			<artifactId>guava</artifactId>
+			<version>23.6-jre</version>
+		</dependency>
+		<dependency>
+			<groupId>org.apache.httpcomponents</groupId>
+			<artifactId>httpcore</artifactId>
+			<version>4.4.8</version>
+		</dependency>
 	</dependencies>
 
 

@@ -17,12 +17,10 @@
 	
 	<appender name="FLUENT"
 		class="ch.qos.logback.more.appenders.DataFluentAppender">
-		<tag>devstreet</tag>
+		<tag>myrock</tag>
 		<label>cluster</label>
-		
-		<remoteHost>testrock2.dunkware.net</remoteHost>
-		<port>24224</port>
-
+	<remoteHost>172.16.16.55</remoteHost>
+		<port>32759</port>
 		<additionalField>
 			<key>node</key>
 			<value>cluster</value>
@@ -33,22 +31,6 @@
 
 		<appender-ref ref="CONSOLE" additivity="false" />
 	</root>
-
-<logger name="com.dunkware.net.cluster.server.publishers.GrpcNodeUpdateStream" level="TRACE">
-		<appender-ref ref="FLUENT" additivity="false" />
-			<appender-ref ref="CONSOLE" additivity="false" />
-</logger>
-
-<logger name="com.dunkware.net.cluster.node.internal.ClusterNodeServiceImpl" level="TRACE">
-		<appender-ref ref="FLUENT" additivity="false" />
-			<appender-ref ref="CONSOLE" additivity="false" />
-</logger>
-
-<logger name="com.dunkware.net.cluster.server.core.ClusterNodeService" level="TRACE">
-		<appender-ref ref="FLUENT" additivity="false" />
-			<appender-ref ref="CONSOLE" additivity="false" />
-		
-</logger>
 
 
 	<logger name="com.dunkware" level="DEBUG">

@@ -112,6 +112,7 @@ public class PolygonFeed {
 			if(tickers.get(string) == null) { 
 				PolygonTicker ticker = new PolygonTicker(string);
 				tickers.put(string, ticker);
+				metrics.tickerAdded(ticker);
 				try {
 					webSocket.subscribe("A." + string);
 					webSocket.subscribe("Q." + string);
@@ -254,14 +255,16 @@ public class PolygonFeed {
 									continue;
 								}
 								PolygonTicker ticker = tickers.get(quote.getSymbol());
-								metrics.quoteEvent(quote);
-			
+								
 								if (ticker == null) {
 									problemCount.incrementAndGet();
 									logger.error(
 											"Exception getting polygon ticker quote event symbol " + quote.getSymbol());
 									continue;
 								}
+								ticker.quote(quote);
+								metrics.quoteEvent(quote);
+								
 							}
 
 						} catch (Exception e) {

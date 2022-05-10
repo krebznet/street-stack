@@ -5,6 +5,7 @@ import java.util.List;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -21,7 +22,7 @@ public class TickerListDO {
 	private long id; 
 	private String name; 
 	
-	@OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
+	@OneToMany(cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)
 	@JoinColumn(name = "list_id")
 	private List<TickerListTickerDO> tickers = new ArrayList<TickerListTickerDO>();
 	

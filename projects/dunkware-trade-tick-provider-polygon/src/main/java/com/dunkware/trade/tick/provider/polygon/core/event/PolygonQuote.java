@@ -26,6 +26,8 @@ public class PolygonQuote {
 	private int askExchange; 
 	@JsonProperty(value = "bx")
 	private int bidExchange;
+	@JsonProperty(value = "q")
+	private int unknown; 
 	
 	public String getEvent() {
 		return event;
@@ -92,7 +94,15 @@ public class PolygonQuote {
 	}
 	public void setBidExchange(int bidExchange) {
 		this.bidExchange = bidExchange;
+	}
+	public int getUnknown() {
+		return unknown;
+	}
+	public void setUnknown(int unknown) {
+		this.unknown = unknown;
 	} 
+	
+	
 	
 	
 

@@ -50,12 +50,13 @@ public class PolygonTickProvider extends TickProviderImpl {
 
 	@Override
 	public void connect(TickProviderSpec type, TradeSymbolService idProvider, DExecutor executor) throws TickProviderException {
-		this.apikey = type.getProperties().get("apikey").toString();
+		this.apikey = type.getProperties().get("apiKey").toString();
 		stats = new TickProviderStatsSpec();
 		stats.setName("Polygon");
-		
+		feed = new PolygonFeed();
 		try {
-			feed.connect(apikey, null, executor);
+			List<String> symbols = new ArrayList<String>();
+			feed.connect(this.apikey,symbols,executor);
 			
 		} catch (Exception e) {
 			throw new TickProviderException("Exception connecting Polygon feed " + e.toString());
