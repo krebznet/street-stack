@@ -1,4 +1,4 @@
-package com.dunkware.trade.service.stream.server.bootstrap;
+package com.dunkware.net.cluster.spring.logging;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -7,38 +7,37 @@ import javax.annotation.PostConstruct;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.context.annotation.Profile;
-import org.springframework.stereotype.Component;
+import org.slf4j.MarkerFactory;
+import org.springframework.stereotype.Service;
 
 import ch.qos.logback.classic.LoggerContext;
 import ch.qos.logback.classic.joran.JoranConfigurator;
 
-@Component
-@Profile("LoggingConfig")
-public class LoggingConfigure {
+@Service
+public class LoggingService {
 
 	private Logger logger = LoggerFactory.getLogger(getClass());
 	
 	@PostConstruct
 	public void configure() { 
+		String loggingConfig = System.getenv("LOGGING_CONFIG");
+		if(loggingConfig == null) { 
+			logger.info("LOGGING_CONFIG ENV NOT SET");
+			return;
+		}
 		LoggerContext loggerContext = (LoggerContext) LoggerFactory.getILoggerFactory();
 		loggerContext.reset();
 		JoranConfigurator configurator = new JoranConfigurator();
-		String loggingConfig = System.getenv("LOGGING_CONFIG");
-		if(loggingConfig == null) { 
-			logger.error("Logging Config Env Variable Not Found!! ");
-			return;
-		}
+		
 		try {
 			FileInputStream configStream = new FileInputStream(new File(loggingConfig));
 			configurator.setContext(loggerContext);
 			configurator.doConfigure(configStream); // loads logback file
 			configStream.close();
-			System.out.println("Logging Configured with " + loggingConfig);
+			logger.info("Logging Configuration loaded from " + loggingConfig);
 		} catch (Exception e) {
-			logger.error("Exception loading logging configure " + e.toString());
-			System.err.println("logging config error " + e.toString());
-			e.printStackTrace();
+			logger.error(MarkerFactory.getMarker("Crash"),"Exception loading logging configure " + e.toString());
+			System.exit(-1);
 		}
 		
 	}

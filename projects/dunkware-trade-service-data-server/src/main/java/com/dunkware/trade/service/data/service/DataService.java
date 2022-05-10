@@ -13,7 +13,7 @@ import org.springframework.integration.config.EnableIntegration;
 //@EnableTransactionManagement
 
 //@EnableAutoConfiguration(exclude={ MongoAutoConfiguration.class, MongoDataAutoConfiguration.class})
-@SpringBootApplication(scanBasePackages = "com.dunkware.net.cluster.node, com.dunkware.trade.service.data.service")
+@SpringBootApplication(scanBasePackages = "com.dunkware.net.cluster.node, com.dunkware.net.cluster.spring, com.dunkware.trade.service.data.service")
 
 @EnableAutoConfiguration(exclude={MongoAutoConfiguration.class, MongoDataAutoConfiguration.class})
 @EnableIntegration 
