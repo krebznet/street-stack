@@ -2,9 +2,7 @@ package com.dunkware.trade.tick.provider.polygon;
 
 import java.time.LocalDateTime;
 import java.util.concurrent.atomic.AtomicInteger;
-import java.util.concurrent.atomic.AtomicLong;
 
-import com.dunkware.trade.tick.provider.polygon.core.PolygonSnapshot;
 import com.dunkware.trade.tick.provider.polygon.core.event.PolygonAggEvent;
 import com.dunkware.trade.tick.provider.polygon.core.event.PolygonQuote;
 

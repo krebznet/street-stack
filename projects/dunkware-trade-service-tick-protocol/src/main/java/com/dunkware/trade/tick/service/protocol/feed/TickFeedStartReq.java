@@ -1,23 +1,20 @@
 package com.dunkware.trade.tick.service.protocol.feed;
 
-import java.util.List;
-
-import com.dunkware.trade.tick.model.feed.TickFeedSpec;
-import com.dunkware.trade.tick.model.ticker.TradeTickerSpec;
+import com.dunkware.trade.tick.model.consumer.TickConsumerSpec;
 
 public class TickFeedStartReq {
 	
-	private TickFeedSpec spec;
+	private TickConsumerSpec spec;
 
 	public TickFeedStartReq() { 
 		
 	}
 	
-	public TickFeedSpec getSpec() {
+	public TickConsumerSpec getSpec() {
 		return spec;
 	}
 
-	public void setSpec(TickFeedSpec spec) {
+	public void setSpec(TickConsumerSpec spec) {
 		this.spec = spec;
 	} 
 	

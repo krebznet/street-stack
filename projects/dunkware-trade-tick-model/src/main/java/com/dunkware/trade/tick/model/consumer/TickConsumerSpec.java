@@ -1,16 +1,16 @@
-package com.dunkware.trade.tick.model.feed;
+package com.dunkware.trade.tick.model.consumer;
 
 import java.util.List;
 
 import com.dunkware.trade.tick.model.ticker.TradeTickerSpec;
 
-public class TickFeedSpec {
+public class TickConsumerSpec {
 	
 	private String name; 
 	private List<TradeTickerSpec> tickers;
 	private Integer[] tickTypes;
 	
-	public TickFeedSpec() { 
+	public TickConsumerSpec() { 
 		
 	}
 	

@@ -1,13 +1,13 @@
 package com.dunkware.trade.tick.service.protocol.feed;
 
+import com.dunkware.trade.tick.model.consumer.TickConsumerSession;
+
 public class TickFeedStartResp {
 
 	private String code; 
 	private String error; 
-	private String id;
 	
-	private String brokers;
-	private String topic;
+	private TickConsumerSession session;
 	
 	public TickFeedStartResp() { 
 		
@@ -25,24 +25,15 @@ public class TickFeedStartResp {
 	public void setError(String error) {
 		this.error = error;
 	}
-	public String getId() {
-		return id;
+
+	public TickConsumerSession getSession() {
+		return session;
 	}
-	public void setId(String id) {
-		this.id = id;
+
+	public void setSession(TickConsumerSession session) {
+		this.session = session;
 	}
-	public String getBrokers() {
-		return brokers;
-	}
-	public void setBrokers(String brokers) {
-		this.brokers = brokers;
-	}
-	public String getTopic() {
-		return topic;
-	}
-	public void setTopic(String topic) {
-		this.topic = topic;
-	} 
+	
 	
 	
 	

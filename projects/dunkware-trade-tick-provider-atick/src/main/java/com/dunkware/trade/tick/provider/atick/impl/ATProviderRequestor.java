@@ -6,25 +6,25 @@ import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 import java.util.Vector;
 import java.util.concurrent.BlockingQueue;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.LinkedBlockingQueue;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicBoolean;
-import java.util.concurrent.atomic.AtomicLong;
+import java.util.concurrent.atomic.AtomicInteger;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.dunkware.common.tick.proto.TickProto;
-import com.dunkware.common.tick.proto.TickProto.Tick;
-import com.dunkware.common.tick.proto.TickProto.Tick.TickFieldType;
+import com.dunkware.common.util.dtime.DDateTime;
 import com.dunkware.common.util.dtime.DTimeZone;
 import com.dunkware.common.util.dtime.DZonedClock;
 import com.dunkware.common.util.dtime.DZonedClockListener;
 import com.dunkware.common.util.dtime.DZonedClockUpdater;
 import com.dunkware.common.util.dtime.DZonedDateTime;
-import com.dunkware.trade.tick.model.TradeTicks;
+import com.dunkware.trade.tick.model.feed.TickFeedSnapshot;
 import com.dunkware.trade.tick.provider.atick.ActiveTickProvider;
 
 import at.feedapi.Helpers;
@@ -56,11 +56,8 @@ public class ATProviderRequestor extends at.feedapi.ActiveTickServerRequester {
 	private AtomicBoolean extendedHours = new AtomicBoolean(false); 
 	private ExtendedHoursController extendedHoursController = null;
 
-	private AtomicLong snapshotCount = new AtomicLong();
-	private LogThread logThread;
-	
-	private BlockingQueue<Tick> tickQueue = new LinkedBlockingQueue<TickProto.Tick>();
-	private TickDispatcher tickDispatcher;
+	private Map<String,AtomicInteger> counts = new ConcurrentHashMap<String,AtomicInteger>() ;
+
 	
 	public ATProviderRequestor(ActiveTickProvider provider, ATProviderSession apiSession, ATProviderStreamer streamer) {
 		super(apiSession.GetServerAPI(), apiSession.GetSession(), streamer);
@@ -68,16 +65,14 @@ public class ATProviderRequestor extends at.feedapi.ActiveTickServerRequester {
 		this.session = apiSession;
 		extendedHoursController = new ExtendedHoursController();
 		extendedHoursController.start();
-		logThread = new LogThread();
-		logThread.start();
-		tickDispatcher = new TickDispatcher();
-		tickDispatcher.start();
+		
 	}
 	
 	
 	public void OnQuoteDbResponse(long origRequest, ATServerAPIDefines.ATQuoteDbResponseType responseType,
 			Vector<ATServerAPIDefines.QuoteDbResponseItem> vecData) {
 		ActiveTickStatsLogger.get().incrementResponse();
+		Integer req = provider.getPendingSnapshotRequests().remove(origRequest);
 		String strResponseType = "";
 		switch (responseType.m_atQuoteDbResponseType) {
 		case ATQuoteDbResponseType.QuoteDbResponseSuccess:
@@ -85,8 +80,8 @@ public class ATProviderRequestor extends at.feedapi.ActiveTickServerRequester {
 			break;
 		case ATQuoteDbResponseType.QuoteDbResponseInvalidRequest:
 			strResponseType = "QuoteDbResponseInvalidRequest";
-			logger.error("QuoteFuckInvalidRequest {} ",provider.getQuoteRequests().get(origRequest));
-			logger.error("QuoteDbResponseInvalidRequest");
+			logger.error("QuoteFuckInvalidRequest {} ");
+			logger.error("QuoteDB Invalid Reequest, where is the error "+  responseType.toString());
 			break;
 		case ATQuoteDbResponseType.QuoteDbResponseDenied:
 			strResponseType = "QuoteDbResponseDenied";
@@ -119,11 +114,18 @@ public class ATProviderRequestor extends at.feedapi.ActiveTickServerRequester {
 				break;
 			}
 			String strItemSymbol = new String(responseItem.m_atResponse.symbol.symbol);
+			if(counts.get(strItemSymbol) == null) { 
+				counts.put(strItemSymbol, new AtomicInteger(1));
+			}  else { 
+				counts.get(strItemSymbol).incrementAndGet();
+			}
 			int plainItemSymbolIndex = strItemSymbol.indexOf((byte) 0);
 			strItemSymbol = strItemSymbol.substring(0, plainItemSymbolIndex);
-			List<Tick.TickField> fields = new ArrayList<Tick.TickField>();
-			fields.add(Tick.TickField.newBuilder().setId(TradeTicks.FieldSymbol).setType(TickFieldType.STRING).setStringValue(strItemSymbol).build());
-			fields.add(Tick.TickField.newBuilder().setId(TradeTicks.FieldSymbolId).setType(TickFieldType.INT).setIntValue(this.provider.getSymbolService().getSymbolId(strItemSymbol)).build());
+			TickFeedSnapshot snapshot = new TickFeedSnapshot();
+			snapshot.setTime(DDateTime.now(DTimeZone.NewYork));
+			snapshot.setSymbol(strItemSymbol);
+			//TODO: item
+			//fields.add(Tick.TickField.newBuilder().setId(TradeTicks.FieldSymbolId).setType(TickFieldType.INT).setIntValue(this.provider.getSymbolService().getSymbolId(strItemSymbol)).build());
 			
 			for (QuoteDbDataItem dataItem : responseItem.m_vecDataItems) {
 			//while (responseItem.m_atResponse.status.m_atSymbolStatus == ATSymbolStatus.SymbolStatusSuccess
@@ -136,7 +138,7 @@ public class ATProviderRequestor extends at.feedapi.ActiveTickServerRequester {
 					case ATQuoteFieldType.Symbol:
 						dataType = STRING;
 						try {
-							fields.add(Tick.TickField.newBuilder().setId(TradeTicks.FieldSymbol).setType(TickFieldType.STRING).setStringValue((String)getItemValue(dataItem, dataType)).build());
+							snapshot.setSymbol((String)(getItemValue(dataItem, STRING)));	
 							break;	
 						} catch (Exception e) {
 							logger.error("symbol tick exception " + e.toString());
@@ -144,86 +146,88 @@ public class ATProviderRequestor extends at.feedapi.ActiveTickServerRequester {
 					case ATQuoteFieldType.LastPrice:
 						dataType = DOUBLE;
 						// if we are in extended trading hours lets not even set this value
-					
-						fields.add(Tick.TickField.newBuilder().setId(TradeTicks.FieldLastPrice).setType(TickFieldType.DOUBLE).setDoubleValue((Double)getItemValue(dataItem, dataType)).build());	
-					
-						break;
+						Double lastPrice = (Double)getItemValue(dataItem, DOUBLE);
+						snapshot.setLast(lastPrice);	
 					case ATQuoteFieldType.LowPrice:
-						dataType = DOUBLE;
-						fields.add(Tick.TickField.newBuilder().setId(TradeTicks.FieldLowPrice).setType(TickFieldType.DOUBLE).setDoubleValue((Double)getItemValue(dataItem, dataType)).build());
+						
 						break;
 					case ATQuoteFieldType.PreMarketVolume:
 						dataType = LONG;
-						fields.add(Tick.TickField.newBuilder().setId(TradeTicks.FieldPreMarketVolume).setType(TickFieldType.LONG).setLongValue((Long)getItemValue(dataItem, dataType)).build());
-						
-						
+						Long preMarketVolume = (Long)getItemValue(dataItem, LONG);
+						snapshot.setPremarketVolume(preMarketVolume);
 						break;
 										
 					case ATQuoteFieldType.TradeCount:
 						dataType = INT;
-						fields.add(Tick.TickField.newBuilder().setId(TradeTicks.FieldTradeCount).setType(TickFieldType.INT).setIntValue((Integer)getItemValue(dataItem, dataType)).build());
-						break;
+						int tradeCount = (Integer)getItemValue(dataItem, dataType);
+						snapshot.setTradeCount(tradeCount);
 					case ATQuoteFieldType.PreMarketTradeCount:
 						dataType = INT;
-						fields.add(Tick.TickField.newBuilder().setId(TradeTicks.FieldPreMarketTradeCount).setType(TickFieldType.INT).setIntValue((Integer)getItemValue(dataItem, dataType)).build());
+						int premarketTradeCount = (Integer)getItemValue(dataItem, dataType);
+						snapshot.setPremarketTradeCount(premarketTradeCount);
 						break;
 					case ATQuoteFieldType.Volume:
 						dataType = LONG;
-						fields.add(Tick.TickField.newBuilder().setId(TradeTicks.FieldVolume).setType(TickFieldType.LONG).setLongValue((Long)getItemValue(dataItem, dataType)).build());
+						long volume = (Long)getItemValue(dataItem, dataType);
+						snapshot.setVolume(volume);
 						break;
 					case ATQuoteFieldType.AfterMarketClosePrice:
 						dataType = DOUBLE;
 						Double price = (Double)getItemValue(dataItem, dataType);
-						System.out.println("After Market Close Price " + price);
-						fields.add(Tick.TickField.newBuilder().setId(TradeTicks.FieldAfterMarketClosePrice).setType(TickFieldType.DOUBLE).setDoubleValue((Double)getItemValue(dataItem, dataType)).build());
+						snapshot.setAfterMarketClosePrice(price);
 						break;
 					case ATQuoteFieldType.AfterMarketTradeCount:
 						dataType = INT;
-						fields.add(Tick.TickField.newBuilder().setId(TradeTicks.FieldAfterMarketTradeCount).setType(TickFieldType.INT).setDoubleValue((Integer)getItemValue(dataItem, dataType)).build());
+						int amtc = (Integer)getItemValue(dataItem, dataType);
+						snapshot.setAfterMarketTradeCount(amtc);
 						break;
 					case ATQuoteFieldType.AfterMarketVolume:
-						fields.add(Tick.TickField.newBuilder().setId(TradeTicks.FieldAfterMarketVolume).setType(TickFieldType.LONG).setLongValue((Long)getItemValue(dataItem, dataType)).build());
-						dataType = LONG;
+						Long amv = (Long)getItemValue(dataItem, dataType);
+						snapshot.setAfterMarketVolume(amv);
 						break;
 					case ATQuoteFieldType.AskExchange:
 						dataType = STRING;
 						break;
 					case ATQuoteFieldType.AskPrice:
 						dataType = DOUBLE;
-						fields.add(Tick.TickField.newBuilder().setId(TradeTicks.FieldAskPrice).setType(TickFieldType.DOUBLE).setDoubleValue((Double)getItemValue(dataItem, dataType)).build());
+						Double askPrice = (Double)getItemValue(dataItem, dataType);
+						snapshot.setAskPrice(askPrice);
 						break;
 					case ATQuoteFieldType.AskSize:
 						dataType = INT;
-						fields.add(Tick.TickField.newBuilder().setId(TradeTicks.FieldAskSize).setType(TickFieldType.INT).setIntValue((Integer)getItemValue(dataItem, dataType)).build());
+						int askSize = (Integer)getItemValue(dataItem, dataType);
+						snapshot.setAskSize(askSize);
 						break;
 					case ATQuoteFieldType.BidExchange:
 						dataType = STRING;
 						break;
 					case ATQuoteFieldType.BidPrice:
 						dataType = DOUBLE;
-						fields.add(Tick.TickField.newBuilder().setId(TradeTicks.FieldBidPrice).setType(TickFieldType.DOUBLE).setDoubleValue((Double)getItemValue(dataItem, dataType)).build());
+						double bp = (Double)getItemValue(dataItem, dataType);
+						snapshot.setBidPrice(bp);
 						break;
 					case ATQuoteFieldType.BidSize:
 						dataType = INT;
-						fields.add(Tick.TickField.newBuilder().setId(TradeTicks.FieldBidSize).setType(TickFieldType.INT).setIntValue((Integer)getItemValue(dataItem, dataType)).build());
+						int bs = (Integer)getItemValue(dataItem, dataType);
+						snapshot.setBidSize(bs);
 						break;
 					case ATQuoteFieldType.ClosePrice:
 						dataType = DOUBLE;
-						fields.add(Tick.TickField.newBuilder().setId(TradeTicks.FieldClosePrice).setType(TickFieldType.DOUBLE).setDoubleValue((Double)getItemValue(dataItem, dataType)).build());
+						//fields.add(Tick.TickField.newBuilder().setId(TradeTicks.FieldClosePrice).setType(TickFieldType.DOUBLE).setDoubleValue((Double)getItemValue(dataItem, dataType)).build());
 						break;
 					case ATQuoteFieldType.HighPrice:
 						dataType = DOUBLE;
-						fields.add(Tick.TickField.newBuilder().setId(TradeTicks.FieldHighPrice).setType(TickFieldType.DOUBLE).setDoubleValue((Double)getItemValue(dataItem, dataType)).build());
+						//fields.add(Tick.TickField.newBuilder().setId(TradeTicks.FieldHighPrice).setType(TickFieldType.DOUBLE).setDoubleValue((Double)getItemValue(dataItem, dataType)).build());
 						break;
 					case ATQuoteFieldType.OpenPrice:
 						dataType = DOUBLE;
-						fields.add(Tick.TickField.newBuilder().setId(TradeTicks.FieldOpenPrice).setType(TickFieldType.DOUBLE).setDoubleValue((Double)getItemValue(dataItem, dataType)).build());
+						//fields.add(Tick.TickField.newBuilder().setId(TradeTicks.FieldOpenPrice).setType(TickFieldType.DOUBLE).setDoubleValue((Double)getItemValue(dataItem, dataType)).build());
 						break;
 					case ATQuoteFieldType.DayHighDateTime:
 						dataType = INT;
 						break;
 					case ATQuoteFieldType.DayHighPrice:
-						fields.add(Tick.TickField.newBuilder().setId(TradeTicks.FieldDayHighPrice).setType(TickFieldType.DOUBLE).setDoubleValue((Double)getItemValue(dataItem, dataType)).build());
+						//fields.add(Tick.TickField.newBuilder().setId(TradeTicks.FieldDayHighPrice).setType(TickFieldType.DOUBLE).setDoubleValue((Double)getItemValue(dataItem, dataType)).build());
 						dataType = DOUBLE;
 						break;
 					case ATQuoteFieldType.DayLowDateTime:
@@ -231,13 +235,12 @@ public class ATProviderRequestor extends at.feedapi.ActiveTickServerRequester {
 						break;
 					case ATQuoteFieldType.DayLowPrice:
 						dataType = DOUBLE;
-						fields.add(Tick.TickField.newBuilder().setId(TradeTicks.FieldDayLowPrice).setType(TickFieldType.DOUBLE).setDoubleValue((Double)getItemValue(dataItem, dataType)).build());
+						//fields.add(Tick.TickField.newBuilder().setId(TradeTicks.FieldDayLowPrice).setType(TickFieldType.DOUBLE).setDoubleValue((Double)getItemValue(dataItem, dataType)).build());
 						break;
 					case ATQuoteFieldType.ExtendedHoursLastPrice:
 						dataType = DOUBLE;
-						
-						fields.add(Tick.TickField.newBuilder().setId(TradeTicks.FieldExtendedHoursLastPrice).setType(TickFieldType.DOUBLE).setDoubleValue((Double)getItemValue(dataItem, dataType)).build());
-						
+						Double extendedLast = (Double)getItemValue(dataItem, dataType);
+						snapshot.setExtendedHoursLastPrice(extendedLast);
 						break;
 					case ATQuoteFieldType.LastTradeDateTime:
 						//getItemValue(item, dataType)
@@ -251,18 +254,14 @@ public class ATProviderRequestor extends at.feedapi.ActiveTickServerRequester {
 					}
 							
 				} catch (Exception e) {
-					System.err.println(e.toString());
+				
 					logger.error("Data Type Conversion Exception " + e.toString());
 					continue;
 				}
 			
 				
 			}
-			
-			Tick tick = Tick.newBuilder().setType(TradeTicks.TickSnapshot).addAllTickFields(fields).build();
-			snapshotCount.incrementAndGet();
-			ActiveTickStatsLogger.get().incrementQuoteCount();
-			tickQueue.add(tick);
+			provider.onSnapshot(snapshot);	
 		}
 	}
 	
@@ -580,39 +579,7 @@ public class ATProviderRequestor extends at.feedapi.ActiveTickServerRequester {
 	}
 	
 	
-	private class LogThread extends Thread { 
-		
-		public void run() {
-			while(!interrupted()) { 
-				try {
-					Thread.sleep(5000);
-					//logger.debug("Snapshot Count {}",snapshotCount.get());
-				} catch (Exception e) {
-					// TODO: handle exception
-				}
-			}
-		}
-	}
-	
-	
-	private class TickDispatcher extends Thread { 
-		
-		public void run() { 
-			while(!interrupted()) { 
-				try {
-					Tick tick = tickQueue.take();
-					provider.streamTick(tick);
-				} catch (Exception e) {
-					if (e instanceof InterruptedException) {
-						return;
-					}
-					logger.error("Error Dispatching Tick " + e.toString(),e);
-				}
-			}
-		}
-	}
-	
-	
+
 	private class ExtendedHoursController extends Thread implements DZonedClockListener { 
 		
 		private DZonedClock clock;

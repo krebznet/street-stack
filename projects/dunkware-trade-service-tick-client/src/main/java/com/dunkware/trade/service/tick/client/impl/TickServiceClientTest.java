@@ -8,8 +8,8 @@ import com.dunkware.trade.service.tick.client.TickServiceClient;
 import com.dunkware.trade.service.tick.client.TickServiceClientFactory;
 import com.dunkware.trade.service.tick.client.TickServiceClientFeed;
 import com.dunkware.trade.tick.model.TradeTicks;
-import com.dunkware.trade.tick.model.feed.TickFeedSpec;
-import com.dunkware.trade.tick.model.feed.TickFeedSpecBuilder;
+import com.dunkware.trade.tick.model.consumer.TickConsumerSpec;
+import com.dunkware.trade.tick.model.consumer.TickConsumerSpecBuilder;
 
 public class TickServiceClientTest implements TickHandler {
 
@@ -25,7 +25,7 @@ public class TickServiceClientTest implements TickHandler {
 			TickServiceClient client = TickServiceClientFactory.connect("http://localhost:8987");
 
 			System.out.println("success");
-			TickFeedSpec spec = TickFeedSpecBuilder.newInstance("Test" + DUUID.randomUUID(5)).addEquity("GRUB")
+			TickConsumerSpec spec = TickConsumerSpecBuilder.newInstance("Test" + DUUID.randomUUID(5)).addEquity("GRUB")
 					.addEquity("GOOG").addEquity("JPM").addTickType(TradeTicks.TickSnapshot).build();
 			TickServiceClientFeed feed = client.createFeed(spec);
 			feed.getTickStream().addTickHandler(this);

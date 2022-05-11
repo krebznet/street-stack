@@ -10,8 +10,8 @@ import com.dunkware.trade.service.stream.server.session.StreamSessionNode;
 import com.dunkware.trade.service.stream.server.session.anot.AStreamSessionExt;
 import com.dunkware.trade.service.stream.server.tick.StreamTickService;
 import com.dunkware.trade.tick.model.TradeTicks;
-import com.dunkware.trade.tick.model.feed.TickFeedSpec;
-import com.dunkware.trade.tick.model.feed.TickFeedSpecBuilder;
+import com.dunkware.trade.tick.model.consumer.TickConsumerSpec;
+import com.dunkware.trade.tick.model.consumer.TickConsumerSpecBuilder;
 import com.dunkware.trade.tick.model.ticker.TradeTickerSpec;
 
 @AStreamSessionExt
@@ -31,16 +31,19 @@ public class TickFeedExtension implements StreamSessionExtension {
 	public void nodeStarting(StreamSessionNode node) {
 		TickFeedExtType type = new TickFeedExtType();
 		//type.setServiceEndpoint(null);
-		TickFeedSpecBuilder builder = TickFeedSpecBuilder.newInstance(session.getStream().getName() + "_" + node.getNode().getId() + "_" + DUUID.randomUUID(4));
+		TickConsumerSpecBuilder builder = TickConsumerSpecBuilder.newInstance(session.getStream().getName() + "_" + node.getNode().getId() + "_" + DUUID.randomUUID(4));
 			//	DunkTime.formatHHMMSS(LocalDateTime.now(DTimeZone.toZoneId(node.getStream().getTimeZone())));
+		type.getDataTicks().put(TradeTicks.TickSnapshot, TradeTicks.FieldSymbol);
+		
 		builder.addTickType(TradeTicks.TickSnapshot);
+		
+		
 		for (TradeTickerSpec ticker : node.getTickers()) {
 			builder.addTicker(ticker);
 		}
-		TickFeedSpec spec = builder.build();
+		TickConsumerSpec spec = builder.build();
 		type.setFeedSpec(spec);
 		type.setServiceEndpoint(tickService.getClient().getEndpoint());
-		type.getDataTicks().put(TradeTicks.TickSnapshot, TradeTicks.FieldSymbol);
 		node.getStreamBundle().getExtensions().add(type);
 		
 	}

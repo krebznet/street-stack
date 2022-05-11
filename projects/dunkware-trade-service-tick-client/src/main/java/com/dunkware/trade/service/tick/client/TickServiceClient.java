@@ -1,13 +1,13 @@
 package com.dunkware.trade.service.tick.client;
 
-import com.dunkware.trade.tick.model.feed.TickFeedSpec;
+import com.dunkware.trade.tick.model.consumer.TickConsumerSpec;
 import com.dunkware.trade.tick.service.protocol.ticker.spec.TradeTickerListSpec;
 
 public interface TickServiceClient {
 	
 	public void connect(String endpoint) throws TickServiceClientException;
 
-	public TickServiceClientFeed createFeed(TickFeedSpec spec) throws TickServiceClientException;
+	public TickServiceClientFeed createFeed(TickConsumerSpec spec) throws TickServiceClientException;
 
 	public String getEndpoint();
 	

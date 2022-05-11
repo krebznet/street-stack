@@ -50,7 +50,7 @@ public class StreamTest3 {
 			spec.setStopTime(DTime.of(18, 0, 0));
 			spec.setTickers("Alpha3500");
 			spec.setTimeZone(DTimeZone.NewYork);
-			spec.setVersion(1);
+			spec.setVersion(4);
 			spec.setSchedule(false);
 			AddStreamReq req = new AddStreamReq();
 			req.setSpec(spec);;

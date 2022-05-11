@@ -1,22 +1,37 @@
 package com.dunkware.trade.tick.api.feed;
 
-import com.dunkware.common.tick.stream.TickStream;
-import com.dunkware.trade.tick.model.feed.TickFeedSpec;
-import com.dunkware.trade.tick.model.feed.TickFeedStatsSpec;
-import com.dunkware.trade.tick.model.feed.TickFeedStatus;
+import java.util.Collection;
+import java.util.List;
 
-public interface TickFeed extends TickStream {
+import com.dunkware.common.util.executor.DExecutor;
+import com.dunkware.trade.tick.api.provider.TickProvider;
+import com.dunkware.trade.tick.model.feed.TickFeedBean;
+import com.dunkware.trade.tick.model.ticker.TradeTickerSpec;
 
-	/**
-	 * Disposes a stream and releases associated resources
-	 */
-	public void dispose();
+public interface TickFeed  {
+
+	public void start(TickProvider provider, DExecutor exector, String kafkaBrokers) throws TickFeedException;
 	
-	public TickFeedStatus getStatus();
+	public void subscribe(Collection<TradeTickerSpec> specs) throws TickFeedException;
 	
-	public TickFeedStatsSpec getStats();
+	public void addListener(TickFeedListener listener);
 	
-	public void update(TickFeedSpec spec) throws TickFeedException; 
+	public void removeListener(TickFeedListener listener);
 	
+	public Collection<TickFeedSubscription> getSubscriptions();
+	
+	public TickFeedSubscription getSubscription(String ticker) throws TickFeedException;
+	
+	public TickFeedBean getBean();
+	
+	public DExecutor getExecutor();
+	
+	public boolean hasSubscription(String ticker);
+	
+	public String getConsumerBrokers();
+	
+	public int getSymbolId(String symbol);
+	
+	public TradeTickerSpec getTickerSpec(String symbol);
 }
 

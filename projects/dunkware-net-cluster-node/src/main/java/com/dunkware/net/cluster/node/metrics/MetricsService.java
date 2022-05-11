@@ -2,6 +2,9 @@ package com.dunkware.net.cluster.node.metrics;
 
 import java.util.List;
 
+import javax.annotation.PostConstruct;
+
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import io.micrometer.core.instrument.Meter;
@@ -10,7 +13,9 @@ import io.micrometer.core.instrument.MeterRegistry;
 @Service()
 public class MetricsService {
 
+	@Autowired
 	MeterRegistry registry; 
+	
 	
 	public MetricsService(MeterRegistry registry) { 
 		registry = this.registry;

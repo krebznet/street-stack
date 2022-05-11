@@ -38,7 +38,7 @@ public class TradeTickerSpec {
 	}
 	@Override
 	public String toString() {
-		return type.toString() + ":" + symbol;
+		return symbol;
 	}
 	public String getName() {
 		return name;

@@ -26,7 +26,7 @@ import com.google.gson.JsonParser;
 public class PolygonFeed {
 
 	private static final int SNAPSHOT_TICKER_LIMIT = 150;
-	private static final int EVENT_HANDLER_COUNT = 1;
+	private static final int EVENT_HANDLER_COUNT = 5;
 
 	private PolygonIO.WebSockets webSocket;
 	// private PolygonIO.Rest restClient;
@@ -53,6 +53,12 @@ public class PolygonFeed {
 	
 	public void connect(String apiKey, List<String> subscriptions, DExecutor executor) throws Exception {
 		this.apiKey = apiKey;
+		subscriptions.add("BAC");
+		subscriptions.add("JPM");
+		
+		subscriptions.add("SCHW");
+		subscriptions.add("SPY");
+		
 		metrics = new PolygonFeedMetrics(this);
 		// restClient = new PolygonIO.Rest(apiKey);
 		this.executor = executor;
@@ -72,7 +78,7 @@ public class PolygonFeed {
 			webSocket.connect("stocks");
 			for (String string : subscriptions) {
 				try {
-					webSocket.subscribe("A." + string);
+					//webSocket.subscribe("A." + string);
 					webSocket.subscribe("Q." + string);
 				} catch (Exception e) {
 					logger.error("Exception subscribing stock Q,A for " + string);
@@ -114,7 +120,7 @@ public class PolygonFeed {
 				tickers.put(string, ticker);
 				metrics.tickerAdded(ticker);
 				try {
-					webSocket.subscribe("A." + string);
+					//webSocket.subscribe("A." + string);
 					webSocket.subscribe("Q." + string);
 					ticker.setValid(true);
 				} catch (Exception e) {
@@ -164,6 +170,8 @@ public class PolygonFeed {
 		return metrics;
 	}
 	
+	
+	
 	public List<String> getInValidatedSymbols() { 
 		List<String> results = new ArrayList<String>();
 		for (PolygonTicker ticker : tickers.values()) {
@@ -190,6 +198,8 @@ public class PolygonFeed {
 			while (!interrupted()) {
 				try {
 					String event = eventQueue.take();
+					if (1 == 1)
+						continue;
 					JsonElement element = null;
 					try {
 						element = JsonParser.parseString(event);
@@ -222,9 +232,11 @@ public class PolygonFeed {
 							object = childElement.getAsJsonObject();
 							String eventType = object.get("ev").getAsString();
 							if (eventType.equals("A")) {
+								
 								PolygonAggEvent aggEvent = null;
 								try {
 									String value = object.toString();
+									logger.error("Aggregation " + value);
 									aggEvent = DJson.getObjectMapper().readValue(childElement.toString(),
 											PolygonAggEvent.class);
 								} catch (Exception e) {
@@ -247,6 +259,7 @@ public class PolygonFeed {
 							if (eventType.equals("Q")) {
 								PolygonQuote quote = null;
 								try {
+								//	System.out.println("Quote " + childElement.toString());
 									quote = DJson.getObjectMapper().readValue(childElement.toString(),
 											PolygonQuote.class);
 

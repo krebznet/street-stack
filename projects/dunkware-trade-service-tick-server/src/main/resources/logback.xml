@@ -30,7 +30,7 @@
 	</root>
 
 
-	<logger name="com.dunkware" level="DEBUG">
+	<logger name="com.dunkware" level="INFO">
 		<appender-ref ref="FLUENT" additivity="false" />
 
 	</logger>

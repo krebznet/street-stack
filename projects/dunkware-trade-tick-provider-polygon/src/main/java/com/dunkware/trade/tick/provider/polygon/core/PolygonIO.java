@@ -7,6 +7,9 @@ import java.net.http.WebSocket;
 import java.util.concurrent.CompletionStage;
 import java.util.function.Function;
 
+import com.google.gson.JsonElement;
+import com.google.gson.JsonParser;
+
 public class PolygonIO {
     public static class Rest {
         private String apiKey;
@@ -98,7 +101,15 @@ public class PolygonIO {
 
             @Override
             public CompletionStage<?> onText(WebSocket webSocket, CharSequence data, boolean last) {
-                this.function.apply(data.toString());
+                System.out.println(data.toString());
+                try {
+					JsonElement element = JsonParser.parseString(data.toString());
+					System.out.println("good!!!!");
+				} catch (Exception e) {
+					System.out.println("badd!! " + e.toString());
+					// TODO: handle exception
+				}
+            	this.function.apply(data.toString());
                 WebSockets.this.webSocket = webSocket;
                 return WebSocket.Listener.super.onText(webSocket, data, last);
             }

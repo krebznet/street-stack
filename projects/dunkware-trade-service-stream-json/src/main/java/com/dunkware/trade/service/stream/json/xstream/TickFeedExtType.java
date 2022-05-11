@@ -3,20 +3,20 @@ package com.dunkware.trade.service.stream.json.xstream;
 import java.util.HashMap;
 import java.util.Map;
 
-import com.dunkware.trade.tick.model.feed.TickFeedSpec;
+import com.dunkware.trade.tick.model.consumer.TickConsumerSpec;
 import com.dunkware.xstream.xproject.model.XStreamExtensionType;
 
 public class TickFeedExtType extends XStreamExtensionType {
 	
-	private TickFeedSpec feedSpec;
+	private TickConsumerSpec feedSpec;
 	private String serviceEndpoint; 
 	private Map<Integer,Integer> dataTicks = new HashMap<Integer,Integer>();
 
-	public TickFeedSpec getFeedSpec() {
+	public TickConsumerSpec getFeedSpec() {
 		return feedSpec;
 	}
 
-	public void setFeedSpec(TickFeedSpec feedSpec) {
+	public void setFeedSpec(TickConsumerSpec feedSpec) {
 		this.feedSpec = feedSpec;
 	}
 

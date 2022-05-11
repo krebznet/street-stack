@@ -3,7 +3,6 @@ package com.dunkware.trade.tick.service.server.ticker;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.Statement;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -17,22 +16,18 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Service;
 
-import com.dunkware.common.util.helpers.DConverter;
 import com.dunkware.net.cluster.node.Cluster;
-import com.dunkware.trade.tick.api.provider.TradeSymbolService;
-import com.dunkware.trade.tick.model.ticker.TradeTickerSpec;
 import com.dunkware.trade.tick.service.server.spring.DatabaseService;
 import com.dunkware.trade.tick.service.server.ticker.repsoitory.TickerDO;
 import com.dunkware.trade.tick.service.server.ticker.repsoitory.TickerListDO;
 import com.dunkware.trade.tick.service.server.ticker.repsoitory.TickerListDoRepo;
-import com.dunkware.trade.tick.service.server.ticker.repsoitory.TickerListSubscribeDO;
 import com.dunkware.trade.tick.service.server.ticker.repsoitory.TickerListSubscribeRepo;
 import com.dunkware.trade.tick.service.server.ticker.repsoitory.TickerListTickerDO;
 import com.dunkware.trade.tick.service.server.ticker.repsoitory.TickerRepository;
 
 @Service
 @Profile("TickerService")
-public class TickerService implements TradeSymbolService {
+public class TickerService  {
 
 	private Logger logger = LoggerFactory.getLogger(getClass());
 	@Autowired

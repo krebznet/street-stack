@@ -1,20 +1,18 @@
 package com.dunkware.trade.tick.service.protocol.feed;
 
-import com.dunkware.trade.tick.model.feed.TickFeedStatsSpec;
-
 public class TickFeedStatsResp {
 
-	private TickFeedStatsSpec spec;
+	private TickFeedStats stats;
 	private String error; 
 	private String code; 
-	
 
-	public TickFeedStatsSpec getSpec() {
-		return spec;
+
+	public TickFeedStats getStats() {
+		return stats;
 	}
 
-	public void setSpec(TickFeedStatsSpec spec) {
-		this.spec = spec;
+	public void setStats(TickFeedStats stats) {
+		this.stats = stats;
 	}
 
 	public String getError() {

@@ -1,8 +1,5 @@
 package com.dunkware.trade.tick.service.server.feed;
 
-import java.util.HashMap;
-import java.util.Map;
-
 import org.springframework.beans.factory.annotation.Autowired;
 
 import com.dunkware.common.util.json.DJson;
@@ -25,28 +22,13 @@ public class FeedServiceProvider {
 	
 	@Autowired
 	private Cluster cluster; 
+
 	
-	public static void main(String[] args) {
-		TickProviderSpec spec = new TickProviderSpec();
-		spec.setName("Polygon");
-		spec.setType("Polygon");
-		Map<String,Object> props = new HashMap<String,Object>();
-		props.put("apiKey", "n95x4f7AK_Am6AZ9qNSxcn9u4obpKsMA");
-		spec.setProperties(props);
-		try {
-			String out = DJson.serialize(spec);
-			System.out.println(out);
-		} catch (Exception e) {
-			e.printStackTrace();
-			// TODO: handle exception
-		}
-	}
-	
-	public void load(FeedProviderDO ent) throws Exception { 
+	public void load(FeedProviderDO ent, FeedService service) throws Exception { 
 		this.ent = ent; 
 		TickProviderSpec type = DJson.getObjectMapper().readValue(ent.getJson(), TickProviderSpec.class);
 		provider = TickProviderFactory.createProvider(type);
-		provider.connect(type,tickerService,cluster.getExecutor());
+		provider.connect(type, service.getFeed(), cluster.getExecutor());
 		
 	}
 	

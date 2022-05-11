@@ -426,8 +426,8 @@ public class StreamSessionImpl implements StreamSession {
 				while(!interrupted()) { 
 					Thread.sleep(10000);
 					StreamSessionStatus stats = getStatus();
-					metricsService.setGauge(METRIC_NODE_COUNT, stats.getNodeCount());
-					metricsService.setGauge(METRIC_PENDING_TASK_COUNT, stats.getPendingTasks());	
+				//	metricsService.setGauge(METRIC_NODE_COUNT, stats.getNodeCount());
+				//	metricsService.setGauge(METRIC_PENDING_TASK_COUNT, stats.getPendingTasks());	
 				}
 			} catch (Exception e) {
 				if (e instanceof InterruptedException) {

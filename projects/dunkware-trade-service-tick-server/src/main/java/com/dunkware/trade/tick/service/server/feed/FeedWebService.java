@@ -15,11 +15,11 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.server.ResponseStatusException;
 
+import com.dunkware.trade.tick.api.consumer.TickConsumer;
+import com.dunkware.trade.tick.model.consumer.TickConsumerSession;
 import com.dunkware.trade.tick.service.protocol.feed.TickFeedStartReq;
 import com.dunkware.trade.tick.service.protocol.feed.TickFeedStartResp;
 import com.dunkware.trade.tick.service.protocol.feed.TickFeedSubscriptions;
-import com.dunkware.trade.tick.service.protocol.feed.TickFeedUpdateReq;
-import com.dunkware.trade.tick.service.protocol.feed.TickFeedUpdateResp;
 import com.dunkware.trade.tick.service.protocol.provider.TickProviderAddReq;
 import com.dunkware.trade.tick.service.protocol.provider.TickProviderAddResp;
 /**
@@ -70,10 +70,8 @@ public class FeedWebService {
 		try {
 			
 			TickFeedStartResp resp = new TickFeedStartResp();
-			FeedStream stream = tickService.startFeed(request.getSpec());
-			resp.setBrokers(stream.getKafkaBrokers());
-			resp.setId(stream.getId());
-			resp.setTopic(stream.getKafkaTopic());
+			TickConsumerSession session = tickService.createConsumer(request.getSpec());
+			resp.setSession(session);
 			resp.setCode("SUCCESS");
 			return resp;
 		} catch (Exception e) {
@@ -86,40 +84,24 @@ public class FeedWebService {
 	
 	@RequestMapping(path = "/tick/feed/ping")
 	public void feedPing(@RequestParam(name = "id")String id) { 
-		FeedStream stream = tickService.getStream(id);
-		if(stream == null) { 
+		TickConsumer consumer = tickService.getConsumer(id);
+		if(consumer == null) { 
 			throw new ResponseStatusException(org.springframework.http.HttpStatus.BAD_REQUEST);
 		}
-		stream.ping();
+		consumer.clientHeartbeat();
 	}
 
-	@PostMapping(path = "/tick/feed/update")
-	public @ResponseBody()TickFeedUpdateResp feedUpdate(@RequestBody()TickFeedUpdateReq request) { 
-		FeedStream stream = tickService.getStream(request.getId());
-		if(stream == null) { 
-			TickFeedUpdateResp resp = new TickFeedUpdateResp();
-			resp.setCode("ERROR");
-			resp.setError("Feed Stream " + request.getId() + " not found in ticker service, was it disposed ?");
-			return resp;
-		}
-		try {
-			stream.update(request.getSpec());	
-		} catch (Exception e) {
-			TickFeedUpdateResp resp = new TickFeedUpdateResp();
-			resp.setCode("ERROR");
-			resp.setError("Tick Feed Update Exeption " + e.toString());
-			return resp;
-		}
-		TickFeedUpdateResp resp = new TickFeedUpdateResp();
-		resp.setCode("SUCCESS");
-		return resp;
-	}
 	
-	@GetMapping(path = "/tick/feed/ticker")
-	public @ResponseBody() com.dunkware.trade.tick.model.feed.TickFeedTicker getTicker(@RequestBody() String symbol) throws Exception { 
-		return this.tickService.getFeedTicker(symbol);
+	@RequestMapping(path = "/tick/feed/stop")
+	public void feedStop(@RequestParam(name = "id")String id) { 
+		TickConsumer consumer = tickService.getConsumer(id);
+		if(consumer == null) { 
+			throw new ResponseStatusException(org.springframework.http.HttpStatus.BAD_REQUEST);
+		}
+		tickService.disposeConsumer(id);
 		
 	}
+
 	
 	@GetMapping(path = "/tick/service/stats")
 	public @ResponseBody() FeedServiceStats getFeedServiceStats() { 

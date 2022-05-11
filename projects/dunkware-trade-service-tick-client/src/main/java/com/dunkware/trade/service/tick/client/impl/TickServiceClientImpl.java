@@ -5,7 +5,7 @@ import com.dunkware.common.util.json.DJson;
 import com.dunkware.trade.service.tick.client.TickServiceClient;
 import com.dunkware.trade.service.tick.client.TickServiceClientException;
 import com.dunkware.trade.service.tick.client.TickServiceClientFeed;
-import com.dunkware.trade.tick.model.feed.TickFeedSpec;
+import com.dunkware.trade.tick.model.consumer.TickConsumerSpec;
 import com.dunkware.trade.tick.service.protocol.ticker.TSTickerListGetReq;
 import com.dunkware.trade.tick.service.protocol.ticker.TickerListGetResp;
 import com.dunkware.trade.tick.service.protocol.ticker.spec.TradeTickerListSpec;
@@ -52,7 +52,7 @@ public class TickServiceClientImpl implements TickServiceClient  {
 	}
 
 	@Override
-	public TickServiceClientFeed createFeed(TickFeedSpec spec) throws TickServiceClientException {
+	public TickServiceClientFeed createFeed(TickConsumerSpec spec) throws TickServiceClientException {
 		TickServiceClientFeedImpl feed = new TickServiceClientFeedImpl();
 		feed.start(spec, this);
 		return feed;

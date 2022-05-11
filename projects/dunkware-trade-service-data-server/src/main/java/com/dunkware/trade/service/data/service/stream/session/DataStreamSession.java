@@ -161,6 +161,7 @@ public class DataStreamSession {
 	 * Called by the writer when its written all messages
 	 * @param writer
 	 */
+
 	public void entitySnapshot(GEntitySnapshot snapshot) { 
 	
 		DataStreamSessionInstrument inst = instruments.get(snapshot.getIdentifier());
@@ -175,16 +176,26 @@ public class DataStreamSession {
 			ent.setStreamName(stream.getName());
 			ent.setSignalCount(0);
 			ent.setSnapshotCount(0);
-			this.saveInstruments();
-			inst.start(DataStreamSession.this, ent);
 			instruments.put(snapshot.getIdentifier(), inst);
+			logger.debug("Inserting Instrument Entity " + ent.getInstId());
+			saveInstrument(ent);
+			inst.start(DataStreamSession.this, ent);	
 			
-		}		
+		} 		
 		
 		inst.snapshot(snapshot);
 		this.sessionEntity.setSnapshotCount(sessionEntity.getSnapshotCount() + 1);
 	}
 	
+	@Transactional
+	public void saveInstrument(DataStreamInstrumentEntity ent) { 
+		try {
+			instrumentRepo.save(ent);
+		} catch (Exception e) {
+			logger.error("Exception saving instrument " + e.toString());
+			// TODO: handle exception
+		}
+	}
 	public void entitySignal(GEntitySignal signal) {
 		DataStreamSessionInstrument inst = instruments.get(signal.getEntityIdentifier());
 		if(inst == null) { 
