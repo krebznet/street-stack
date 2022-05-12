@@ -4,10 +4,12 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.slf4j.MarkerFactory;
+
 import com.dunkware.common.tick.proto.TickProto.Tick;
-import com.dunkware.common.tick.proto.TickProto.Tick.TickFieldType;
 import com.dunkware.common.util.helpers.DConverter;
-import com.dunkware.trade.tick.model.TradeTicks;
 import com.dunkware.trade.tick.model.feed.TickFeedQuote;
 import com.dunkware.trade.tick.model.feed.TickFeedTrade;
 import com.dunkware.trade.tick.provider.atick.ActiveTickProvider;
@@ -21,6 +23,8 @@ public class ATProviderStreamer extends ActiveTickStreamListener {
 
 	private ATProviderSession session; 
 	private ActiveTickProvider provider;
+	
+	private Logger logger = LoggerFactory.getLogger(getClass());
 	
 	public ATProviderStreamer(ATProviderSession session, ActiveTickProvider provider) {
 		super(session.GetSession(),false);
@@ -42,6 +46,9 @@ public class ATProviderStreamer extends ActiveTickStreamListener {
 		quote.setBidPrice(update.bidPrice.price);
 		quote.setBidSize(DConverter.longToInt(update.bidSize));
 		quote.setAskSize(DConverter.longToInt(update.askSize));
+		if(strSymbol.equals("SPY")) { 
+			logger.info(MarkerFactory.getMarker("SPYQ"),"AP{} AS{} BP{} BS{}", quote.getAskPrice(), quote.getAskSize(), quote.getBidPrice(), quote.getBidSize());
+		}
 		//TODO: time 
 		provider.onQuote(quote);
 		
@@ -72,7 +79,9 @@ public class ATProviderStreamer extends ActiveTickStreamListener {
 		// okay we can get it here; 
 		List<Tick.TickField> fields = new ArrayList<Tick.TickField>();
 //		fields.add(Tick.TickField.newBuilder().setId(TradeTicks.FieldLastTradeDateTime).setType(TickFieldType.LONG).setLongValue(lastDateTime).build());
-		
+		if(strSymbol.equals("SPY")) { 
+			logger.info(MarkerFactory.getMarker("SPYT"),"SIZE{} PRICE{}", trade.getSize(), trade.getPrice());
+		}
 		provider.onTrade(trade);
 	}
 	
