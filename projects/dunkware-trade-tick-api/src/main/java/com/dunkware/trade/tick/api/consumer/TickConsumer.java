@@ -63,7 +63,7 @@ public class TickConsumer {
 		String sessionid = ("tick_consumer" + "_" + DUUID.randomUUID(5));
 		session.setSessionId(sessionid);
 		session.setKafkaBroker(kafkaBrokers);
-		session.setKafkaTopic(topicPrefix + "_" + session.getSessionId());
+		session.setKafkaTopic(topicPrefix + "_" + sessionid);
 
 		try {
 			kafkaProducer = DKafkaByteProducer.newInstance(kafkaBrokers, session.getKafkaTopic(), DUUID.randomUUID(5));

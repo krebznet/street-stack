@@ -111,6 +111,11 @@ public class StreamSessionImpl implements StreamSession {
 		logger.info(MarkerFactory.getMarker(sessionId), "Starting Session");
 		List<List<TradeTickerSpec>> nodeTickers = StreamSessionHelper.nodeTickers(input.getWorkerNodes().size(),
 				input.getTickers());
+		List<TradeTickerSpec> dupes = StreamSessionHelper.searchForDups(nodeTickers);
+		if(dupes.size() > 0) { 
+			logger.error(MarkerFactory.getMarker("BUG"), "Duplicate Tickers in node subscriptions size " + dupes.size());
+		}
+		logger.debug("Created {} Ticker Lists for nodes", nodeTickers.size());
 		int nodeIndex = 0;
 		extensionTypes = sessionService.createExtensions();
 		for (StreamSessionExtension ext : extensionTypes) {
