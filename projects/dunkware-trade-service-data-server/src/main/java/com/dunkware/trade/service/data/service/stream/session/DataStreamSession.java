@@ -25,12 +25,15 @@ import com.dunkware.common.spec.kafka.DKafkaByteConsumer2SpecBuilder;
 import com.dunkware.common.util.dtime.DDateTime;
 import com.dunkware.common.util.dtime.DTimeZone;
 import com.dunkware.common.util.helpers.DProtoHelper;
+import com.dunkware.common.util.time.DunkTime;
 import com.dunkware.common.util.uuid.DUUID;
 import com.dunkware.net.cluster.node.metrics.MetricsService;
+import com.dunkware.net.core.runtime.core.helpers.GProtoHelper;
 import com.dunkware.net.proto.stream.GEntitySignal;
 import com.dunkware.net.proto.stream.GEntitySnapshot;
 import com.dunkware.net.proto.stream.GStreamEvent;
 import com.dunkware.trade.service.data.json.enums.DataStreamSessionState;
+import com.dunkware.trade.service.data.json.stream.session.DataStreamSessionEntityStats;
 import com.dunkware.trade.service.data.json.stream.session.DataStreamSessionStats;
 import com.dunkware.trade.service.data.json.stream.writer.DataStreamSnapshotWriterSessionStats2;
 import com.dunkware.trade.service.data.service.config.RuntimeConfig;
@@ -63,6 +66,8 @@ public class DataStreamSession {
 	
 	@Autowired
 	private MetricsService metricsService; 
+	
+	private Map<String,DataStreamSessionEntityStats> webEntities = new ConcurrentHashMap<String, DataStreamSessionEntityStats>();
 	
 	private Map<String,DataStreamSessionInstrument> instruments = new ConcurrentHashMap<String,DataStreamSessionInstrument>();
 	
@@ -157,13 +162,32 @@ public class DataStreamSession {
 		return sessionEntity.getState();
 	}
 	
+	public Map<String,DataStreamSessionEntityStats> getWebEntityStats() { 
+		return webEntities;
+	}
 	/**
 	 * Called by the writer when its written all messages
 	 * @param writer
 	 */
 
 	public void entitySnapshot(GEntitySnapshot snapshot) { 
-	
+		DataStreamSessionEntityStats webEnt = webEntities.get(snapshot.getIdentifier());
+		if(webEnt == null) { 
+			webEnt = new DataStreamSessionEntityStats();
+			webEnt.setId(snapshot.getId());
+			webEnt.setIdent(snapshot.getIdentifier());
+			webEnt.setLastSnapshot(GProtoHelper.toTimeStringTimeStamp(snapshot.getTime(), getStream().getTimeZone()));
+			webEnt.setSnapshotCount(1);
+			webEnt.setSignalCount(0);
+			webEnt.setLastSignal(null);
+			webEnt.setCreatedTime(DunkTime.toStringTimeStamp(LocalTime.now(DTimeZone.toZoneId(getStream().getTimeZone()))));
+			webEntities.put(webEnt.getIdent(), webEnt);
+		} else { 
+			webEnt.setLastSnapshot(GProtoHelper.toTimeStringTimeStamp(snapshot.getTime(), getStream().getTimeZone()));
+			webEnt.setSnapshotCount(webEnt.getSnapshotCount() + 1);
+			webEntities.put(webEnt.getIdent(), webEnt);
+		}
+		
 		DataStreamSessionInstrument inst = instruments.get(snapshot.getIdentifier());
 		if(inst == null) { 
 			inst = new DataStreamSessionInstrument();

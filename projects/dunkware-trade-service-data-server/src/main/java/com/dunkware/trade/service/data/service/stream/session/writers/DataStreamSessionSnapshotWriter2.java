@@ -3,9 +3,12 @@ package com.dunkware.trade.service.data.service.stream.session.writers;
 import java.time.ZoneId;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.concurrent.BlockingQueue;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.LinkedBlockingQueue;
 import java.util.concurrent.TimeUnit;
+import java.util.concurrent.atomic.AtomicInteger;
 
 import org.apache.kafka.clients.consumer.ConsumerRecord;
 import org.bson.Document;
@@ -65,6 +68,7 @@ public class DataStreamSessionSnapshotWriter2 implements DKafkaByteHandler2 {
 	private DataStream stream;
 	private DataStreamSession session;
 	
+	private Map<String,AtomicInteger> entities = new ConcurrentHashMap<String,AtomicInteger>();
 
 	private DataStreamSessionSnapshotWriterMetrics2 metrics;
 	
@@ -186,6 +190,7 @@ public class DataStreamSessionSnapshotWriter2 implements DKafkaByteHandler2 {
 				session.entitySnapshot(snapshot);
 				metrics.snapshotConsume(snapshot);
 				writeQueue.put(snapshot);
+			
 			} else {
 				return;
 			}
@@ -328,6 +333,9 @@ public class DataStreamSessionSnapshotWriter2 implements DKafkaByteHandler2 {
 				sw.start();
 				snapshotCollection.bulkWrite(pendingWrites);
 				sw.stop();
+				if(logger.isDebugEnabled()) { 
+					logger.debug("Snapshot Write Size " + pendingWrites.size() + " time " + sw.getCompletedSeconds());
+				}
 				//metrics.bucketWriteBatch(pendingWrites.size(), bucketBatchSize);
 				metrics.snapshotInsert(pendingWriteSnapshots, pendingWrites.size(), sw.getCompletedSeconds());
 				pendingWrites.clear();
@@ -365,6 +373,16 @@ public class DataStreamSessionSnapshotWriter2 implements DKafkaByteHandler2 {
 				try {
 	
 					Document document = DataStreamWriterHelper.buildSnapshot(snapshot, session.getStream().getTimeZone());
+					if(entities.get(snapshot.getIdentifier()) == null) { 
+						entities.put(snapshot.getIdentifier(), new AtomicInteger(1));
+						if(logger.isDebugEnabled()) { 
+							logger.debug(MarkerFactory.getMarker("NewEntitySnapshotWrite"), "{} {}", snapshot.getIdentifier(), session.getSpec().getSessionId());
+						}
+					} else { 
+						entities.get(snapshot.getIdentifier()).incrementAndGet();
+					}
+					
+					
 					pendingWrites.add(new InsertOneModel<Document>(document));
 					pendingWriteSnapshots.add(snapshot);
 					

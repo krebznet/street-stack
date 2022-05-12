@@ -8,6 +8,7 @@ import java.util.concurrent.Semaphore;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.slf4j.MarkerFactory;
 
 import com.dunkware.xstream.api.XStream;
 import com.dunkware.xstream.api.XStreamClock;
@@ -139,6 +140,9 @@ public class XStreamImpl implements XStream {
 	
 	@Override
 	public XStreamRow createRow(String rowId, int rowIdentifier) {
+		if(logger.isDebugEnabled()) { 
+			logger.debug(MarkerFactory.getMarker("EntityCreated"), "{} {} {}",rowId, rowIdentifier, input.getSessionId());
+		}
 		XStreamRowImpl row = new XStreamRowImpl();
 		row.start(rowId, rowIdentifier,this);
 		row.addRowListener(rowListener);

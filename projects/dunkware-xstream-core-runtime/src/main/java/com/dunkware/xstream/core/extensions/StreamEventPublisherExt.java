@@ -7,16 +7,15 @@ import java.util.Map;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.LinkedBlockingQueue;
+import java.util.concurrent.atomic.AtomicInteger;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.slf4j.MarkerFactory;
 
-import com.dunkware.common.kafka.admin.DKafkaAdmin;
 import com.dunkware.common.kafka.producer.DKafkaByteProducer;
 import com.dunkware.common.util.dtime.DTimeZone;
 import com.dunkware.common.util.helpers.DProtoHelper;
-import com.dunkware.common.util.time.DunkTime;
-import com.dunkware.net.proto.stream.GStreamEntitySpec;
 import com.dunkware.net.proto.stream.GStreamEvent;
 import com.dunkware.net.proto.stream.GStreamEventType;
 import com.dunkware.net.proto.stream.GStreamTimeUpdate;
@@ -44,7 +43,8 @@ public class StreamEventPublisherExt implements XStreamExtension, XStreamRowList
 	// listen for signals;
 	// need status here -- Signal Event Count - Snapshot Event Count -
 
-	private DKafkaByteProducer kafkaProducer;
+	private Map<String,AtomicInteger> snapshotCounts = new ConcurrentHashMap<String, AtomicInteger>();
+	private DKafkaByteProducer snapshotProducer;
 	private EventPublisher eventPublisher;
 	private EntitySnapshotBuilder snapshotRunnable;
 	private DKafkaByteProducer timeProducer;
@@ -62,7 +62,7 @@ public class StreamEventPublisherExt implements XStreamExtension, XStreamRowList
 		this.stream = stream;
 		this.type = (StreamEventPublisherExtType) type;
 		try {
-			kafkaProducer = DKafkaByteProducer.newInstance(this.type.getKafkaBrokers(), this.type.getSnapshotTopic(),
+			snapshotProducer = DKafkaByteProducer.newInstance(this.type.getKafkaBrokers(), this.type.getSnapshotTopic(),
 					this.type.getKafkaIdentifier());
 		} catch (Exception e) {
 			logger.error("Exception Creating Kafka Producer From Brokers " + this.type.getKafkaBrokers() + e.toString(),
@@ -132,7 +132,7 @@ public class StreamEventPublisherExt implements XStreamExtension, XStreamRowList
 			}
 		}
 
-		kafkaProducer.dispose();
+		snapshotProducer.dispose();
 		signalProducer.dispose();
 		timePublisher.interrupt();
 		timeProducer.dispose();
@@ -158,7 +158,10 @@ public class StreamEventPublisherExt implements XStreamExtension, XStreamRowList
 			@Override
 			public void run() {
 				try {
-
+					if(logger.isDebugEnabled()) { 
+						logger.debug(MarkerFactory.getMarker("SignalPublish"), "{} {}", signal.getSignalType().getName(), stream.getInput().getIdentifier());	
+					}
+					
 					GStreamEvent event = XStreamEventHelper.buildEntitySignalEvent(row, signal);
 					signalProducer.sendBytes(event.toByteArray());
 				} catch (Exception e) {
@@ -205,7 +208,7 @@ public class StreamEventPublisherExt implements XStreamExtension, XStreamRowList
 				for (XStreamRow row : stream.getRows()) {
 					try {
 						// so here #1 we need to pull signals of the queue
-						// update the schema to have signals
+						// update the schema to NewEntitySnapshotPublish have signals
 						// then clear the queue
 						List<XStreamRowSignal> signals = snapshotSignals.remove(row.getId());
 						if (signals == null) {
@@ -240,7 +243,14 @@ public class StreamEventPublisherExt implements XStreamExtension, XStreamRowList
 
 				try {
 					if (event.getType() == GStreamEventType.EntitySnapshot) {
-						kafkaProducer.sendBytes(event.toByteArray());
+						if(snapshotCounts.get(event.getEntitySnapshot().getIdentifier()) == null) {
+							if(logger.isDebugEnabled()) { 
+								logger.debug(MarkerFactory.getMarker("NewSnapshotPublish"), "Entity {} Session {}", event.getEntitySnapshot().getIdentifier(),stream.getInput().getSessionId());
+							} else { 
+								snapshotCounts.get(event.getEntitySnapshot().getIdentifier()).incrementAndGet();
+							}
+						}
+						snapshotProducer.sendBytes(event.toByteArray());
 					}
 
 				} catch (Exception e) {

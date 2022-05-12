@@ -13,6 +13,7 @@ import org.slf4j.LoggerFactory;
 import com.dunkware.common.util.dtime.DTime;
 import com.dunkware.common.util.dtime.DTimeZone;
 import com.dunkware.common.util.helpers.DProtoHelper;
+import com.dunkware.common.util.time.DunkTime;
 import com.dunkware.common.util.time.range.CalendarDateTimeRange;
 import com.dunkware.common.util.time.range.CalendarRange;
 import com.dunkware.net.proto.core.GCalendarRange;
@@ -41,6 +42,17 @@ public class GProtoHelper {
 		return LocalTime.of(time.getHour(), time.getMinute(),time.getSecond());	
 	}
 	
+	public static LocalTime toLocalTime(Timestamp ts, DTimeZone zone) { 
+		return Instant
+		.ofEpochSecond( ts.getSeconds() , ts.getNanos() ) 
+		.atZone( DTimeZone.toZoneId(zone) ) 
+		.toLocalTime();
+	}
+	
+	public static String toTimeStringTimeStamp(Timestamp ts, DTimeZone zone) { 
+		LocalTime time = toLocalTime(ts,zone);
+		return DunkTime.toStringTimeStamp(time);
+	}
 
 	public static Timestamp toTimeStamp(LocalDateTime dt, DTimeZone timezone) {
 		Instant instant = dt.toInstant(DProtoHelper.timeZoneToOffset(timezone));

@@ -30,6 +30,14 @@ public class DunkTime {
 		
 	}
 	
+	public static String toStringTimeStamp(LocalTime time) { 
+		return format(time,HH_MMM_SS);
+	}
+	
+	public static String toStringTimeStamp(LocalDateTime time) { 
+		return format(time,HH_MMM_SS);
+	}
+	
 	public static String formatHHMMSS(LocalDateTime dt) { 
 		return format(dt,HH_MMM_SS);
 	}

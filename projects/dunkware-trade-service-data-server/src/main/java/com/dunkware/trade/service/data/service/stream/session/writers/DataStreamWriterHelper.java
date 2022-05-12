@@ -120,9 +120,11 @@ public class DataStreamWriterHelper {
 
 		Document container = new Document();
 		container.append("time", DProtoHelper.toLocalDateTime(snapshot.getTime(), timeZone));
-		container.append("entityId", snapshot.getId());
-		container.append("entity", snapshot.getIdentifier());
+		container.append("id", snapshot.getId());
+		container.append("ident", snapshot.getIdentifier());
 		boolean handled = false;
+	
+		container.append("vars", buildVarSnapshotDocument(snapshot.getVarsList()));
 		List<Document> signals = new ArrayList<Document>();
 		for (GEntitySnapshot.GSnapshotSignal signal : snapshot.getSignalsList()) {
 			Document sigdoc = new Document();
@@ -131,11 +133,50 @@ public class DataStreamWriterHelper {
 			signals.add(sigdoc);
 		}
 		container.append("signals", signals);
-		container.append("vars", buildVarSnapshots(snapshot.getVarsList()));
-	
 		return container;
 	}
 
+	public static Document buildVarSnapshotDocument(List<GEntityVarSnapshot> snapshots) throws Exception { 
+		Document varDoc = new Document();
+		for (GEntityVarSnapshot var : snapshots) {
+			varDoc.append("id", var.getId());
+			boolean handled = false;
+			if (var.getValueCase() == GEntityVarSnapshot.ValueCase.BOOLEANVALUE) {
+				varDoc.append("value", var.getBooleanValue());
+				handled = true;
+			}
+			if (var.getValueCase() == GEntityVarSnapshot.ValueCase.DOUBLEVALUE) {
+				varDoc.append("value", var.getDoubleValue());
+				handled = true;
+			}
+			if (var.getValueCase() == GEntityVarSnapshot.ValueCase.INTVALUE) {
+				varDoc.append("value", var.getIntValue());
+				handled = true;
+			}
+			if (var.getValueCase() == GEntityVarSnapshot.ValueCase.LONGVALUE) {
+				varDoc.append("value", var.getLongValue());
+				handled = true;
+			}
+			if (var.getValueCase() == GEntityVarSnapshot.ValueCase.STRINGVALUE) {
+				varDoc.append("value", var.getStringValue());
+				handled = true;
+			}
+			if (var.getValueCase() == GEntityVarSnapshot.ValueCase.NULLVALUE) {
+				varDoc.append("value", var.getNullValue());
+				handled = true;
+			}
+			
+			if (!handled) {
+				throw new Exception(
+						"Var Type " + var.getValueCase().name() + " Not Handled In Build Snapshot MongoDB Object");
+			}
+	
+			
+		}
+		return varDoc;
+
+		
+	}
 	public static List<Document> buildVarSnapshots(List<GEntityVarSnapshot> snapshots) throws Exception{
 		List<Document> vars = new ArrayList<Document>();
 		

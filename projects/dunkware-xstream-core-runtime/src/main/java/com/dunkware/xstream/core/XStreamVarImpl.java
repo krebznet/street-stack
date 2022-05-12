@@ -1,11 +1,18 @@
 package com.dunkware.xstream.core;
 
+import java.math.BigDecimal;
+import java.math.MathContext;
+import java.math.RoundingMode;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.Semaphore;
 import java.util.concurrent.atomic.AtomicLong;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.slf4j.MarkerFactory;
 
 import com.dunkware.xstream.api.XStreamExpression;
 import com.dunkware.xstream.api.XStreamExpressionListener;
@@ -14,12 +21,15 @@ import com.dunkware.xstream.api.XStreamRuntimeException;
 import com.dunkware.xstream.api.XStreamVar;
 import com.dunkware.xstream.api.XStreamVarListener;
 import com.dunkware.xstream.model.metrics.XStreamVarMetrics;
+import com.dunkware.xstream.xScript.DataType;
 import com.dunkware.xstream.xScript.VarType;
 
 public class XStreamVarImpl implements XStreamVar, XStreamExpressionListener, XStreamVarListener {
 
 	private XStreamRow row;
 	private VarType varType;
+	
+	private Logger logger = LoggerFactory.getLogger(getClass());
 
 	private XStreamExpression expression;
 
@@ -27,6 +37,8 @@ public class XStreamVarImpl implements XStreamVar, XStreamExpressionListener, XS
 
 	private volatile Integer maxSize = 5000;
 	private volatile boolean maxSizeEnabled = true;
+	
+	private DataType dataType;
 
 	private volatile Integer currentIndex = -1;
 //	private volatile Integer updateCount = 0;
@@ -48,6 +60,7 @@ public class XStreamVarImpl implements XStreamVar, XStreamExpressionListener, XS
 	public void init(XStreamRow row, VarType varType) {
 		this.row = row;
 		this.varType = varType;
+		this.dataType = varType.getType();
 		expression = row.getStream().getInput().getRegistry().createVarExpression(varType.getExpression());
 		expression.init(row, varType.getExpression());
 	}
@@ -89,6 +102,17 @@ public class XStreamVarImpl implements XStreamVar, XStreamExpressionListener, XS
 
 	@Override
 	public void setValue(Object value) {
+		if(value == null) { 
+			if(logger.isDebugEnabled()) {
+				logger.debug(MarkerFactory.getMarker("NullVarValue"), "Var {} Session {}", varType.getName(), row.getStream().getInput().getSessionId());
+				return;
+			}
+		}
+		if(dataType == DataType.DUB) {
+			BigDecimal bd = new BigDecimal(Double.toString((Double)value), MathContext.DECIMAL64);
+			bd.setScale(2, RoundingMode.UP);
+			value = bd.doubleValue();
+		}
 		// value.toString());
 		if (currentIndex == -1) {
 			currentIndex = 0;
@@ -225,8 +249,7 @@ public class XStreamVarImpl implements XStreamVar, XStreamExpressionListener, XS
 	@Override
 	public void update() {
 		if (expression.canExecute()) {
-			boolean results = expression.execute();
-
+			expression.execute();
 			setValue(expression.getValue());
 
 		}
