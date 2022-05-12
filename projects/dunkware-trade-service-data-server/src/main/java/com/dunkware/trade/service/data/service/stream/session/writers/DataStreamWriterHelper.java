@@ -4,6 +4,7 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.concurrent.atomic.AtomicInteger;
 
 import org.bson.Document;
 
@@ -16,6 +17,7 @@ import com.dunkware.net.proto.stream.GEntityVarSnapshot;
 
 public class DataStreamWriterHelper {
 
+	public static AtomicInteger counter = new AtomicInteger(0);
 	public static void main(String[] args) {
 		Date fuck = new Date();
 		String me = fuck.toInstant().toString();
@@ -54,6 +56,14 @@ public class DataStreamWriterHelper {
 			signals.add(signal.getId());
 		}
 		container.append("signals", signals);
+		if(counter.get() == 0) { 
+			System.out.println(container.toJson());
+		}
+		counter.incrementAndGet();
+		if(counter.get() == 100) { 
+			System.out.println(container.toJson());
+			counter.set(0);
+		}
 		return container;
 		
 	}
@@ -109,11 +119,11 @@ public class DataStreamWriterHelper {
 		Document container = new Document();
 		LocalDateTime dt = DProtoHelper.toLocalDateTime(signal.getTime(), timeZone);
 		container.append("time", dt);
-		container.append("signalId", signal.getId());
-		container.append("signal", signal.getIdentifier());
-		container.append("entity", signal.getEntityIdentifier());
-		container.append("entityId", signal.getEntityId());
-		container.append("vars", buildVarSnapshots(signal.getVarsList()));
+		container.append("id", signal.getId());
+		container.append("ident", signal.getIdentifier());
+		container.append("eid", signal.getEntityIdentifier());
+		container.append("eident", signal.getEntityId());
+		container.append("vars", buildVarSnapshotDocument(signal.getEntityId(),signal.getVarsList()));
 		return container;
 	}
 	public static Document buildSnapshot(GEntitySnapshot snapshot, DTimeZone timeZone) throws Exception {
@@ -122,48 +132,48 @@ public class DataStreamWriterHelper {
 		container.append("time", DProtoHelper.toLocalDateTime(snapshot.getTime(), timeZone));
 		container.append("id", snapshot.getId());
 		container.append("ident", snapshot.getIdentifier());
-		boolean handled = false;
-	
-		container.append("vars", buildVarSnapshotDocument(snapshot.getVarsList()));
+		container.append("vars", buildVarSnapshotDocument(snapshot.getId(),snapshot.getVarsList()));
 		List<Document> signals = new ArrayList<Document>();
 		for (GEntitySnapshot.GSnapshotSignal signal : snapshot.getSignalsList()) {
 			Document sigdoc = new Document();
-			sigdoc.append("signalId", signal.getId());
-			sigdoc.append("signalName", signal.getIdentifier());
+			sigdoc.append("id", signal.getId());
+			sigdoc.append("ident", signal.getIdentifier());
 			signals.add(sigdoc);
 		}
 		container.append("signals", signals);
 		return container;
+		
 	}
 
-	public static Document buildVarSnapshotDocument(List<GEntityVarSnapshot> snapshots) throws Exception { 
+	public static Document buildVarSnapshotDocument(int entityId, List<GEntityVarSnapshot> snapshots) throws Exception { 
 		Document varDoc = new Document();
+		varDoc.append("id", entityId);
 		for (GEntityVarSnapshot var : snapshots) {
-			varDoc.append("id", var.getId());
 			boolean handled = false;
 			if (var.getValueCase() == GEntityVarSnapshot.ValueCase.BOOLEANVALUE) {
-				varDoc.append("value", var.getBooleanValue());
+				varDoc.append(String.valueOf(String.valueOf(var.getId())), var.getBooleanValue());
 				handled = true;
 			}
 			if (var.getValueCase() == GEntityVarSnapshot.ValueCase.DOUBLEVALUE) {
-				varDoc.append("value", var.getDoubleValue());
+				varDoc.append(String.valueOf(var.getId()), var.getDoubleValue());
 				handled = true;
 			}
 			if (var.getValueCase() == GEntityVarSnapshot.ValueCase.INTVALUE) {
-				varDoc.append("value", var.getIntValue());
+				varDoc.append(String.valueOf(var.getId()), var.getIntValue());
 				handled = true;
 			}
 			if (var.getValueCase() == GEntityVarSnapshot.ValueCase.LONGVALUE) {
-				varDoc.append("value", var.getLongValue());
+				varDoc.append(String.valueOf(var.getId()), var.getLongValue());
 				handled = true;
 			}
 			if (var.getValueCase() == GEntityVarSnapshot.ValueCase.STRINGVALUE) {
-				varDoc.append("value", var.getStringValue());
+				varDoc.append(String.valueOf(var.getId()), var.getStringValue());
 				handled = true;
 			}
 			if (var.getValueCase() == GEntityVarSnapshot.ValueCase.NULLVALUE) {
-				varDoc.append("value", var.getNullValue());
 				handled = true;
+				continue;
+				
 			}
 			
 			if (!handled) {

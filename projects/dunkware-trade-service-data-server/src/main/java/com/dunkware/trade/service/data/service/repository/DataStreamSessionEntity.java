@@ -53,13 +53,13 @@ public class DataStreamSessionEntity {
 	private DataStreamSessionState state;
 	
 	@Column(name = "Signals")
-	private long signalCount;
+	private long signalCount = 0;
 	
 	@Column(name = "Snapshots")
-	private long snapshotCount;
+	private long snapshotCount = 0;
 	
 	@Column(name = "Instruments")
-	private long instrumentCount;;
+	private long instrumentCount = 0;
 	
 	@Column(name = "SnapshotCompletion")
 	private LocalDateTime snapshotCompleteTime;

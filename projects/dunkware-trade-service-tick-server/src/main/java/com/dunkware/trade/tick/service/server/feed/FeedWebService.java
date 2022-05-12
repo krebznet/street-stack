@@ -1,5 +1,8 @@
 package com.dunkware.trade.tick.service.server.feed;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import javax.annotation.PostConstruct;
 
 import org.slf4j.Logger;
@@ -16,40 +19,34 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.server.ResponseStatusException;
 
 import com.dunkware.trade.tick.api.consumer.TickConsumer;
+import com.dunkware.trade.tick.api.feed.TickFeedSubscription;
 import com.dunkware.trade.tick.model.consumer.TickConsumerSession;
+import com.dunkware.trade.tick.model.feed.TickFeedStats;
+import com.dunkware.trade.tick.model.feed.TickFeedSubscriptionBean;
 import com.dunkware.trade.tick.service.protocol.feed.TickFeedStartReq;
 import com.dunkware.trade.tick.service.protocol.feed.TickFeedStartResp;
-import com.dunkware.trade.tick.service.protocol.feed.TickFeedSubscriptions;
 import com.dunkware.trade.tick.service.protocol.provider.TickProviderAddReq;
 import com.dunkware.trade.tick.service.protocol.provider.TickProviderAddResp;
-/**
- * /provider/add 
- * /feed/start
- * /feed/ping
- * /feed/update
- * @author dkrebs
- *
- */
-import com.dunkware.trade.tick.service.protocol.service.spec.FeedServiceStats;
+
 @RestController
 @Profile("FeedWebService")
 @CrossOrigin(origins = "*", allowedHeaders = "*")
 public class FeedWebService {
-	
+
 	private Logger logger = org.slf4j.LoggerFactory.getLogger(getClass());
-	
+
 	@Autowired
 	private FeedService tickService;
 
 	@PostConstruct
-	private void load() { 
+	private void load() {
 		logger.info("Starting Tick Feed Web Service");
 	}
-	
+
 	@PostMapping(path = "/tick/provider/add")
-	public @ResponseBody()TickProviderAddResp addProvider(@RequestBody()TickProviderAddReq request) { 
+	public @ResponseBody() TickProviderAddResp addProvider(@RequestBody() TickProviderAddReq request) {
 		try {
-			
+
 			FeedServiceProvider provider = tickService.addServiceProvider(request.getSpec());
 			TickProviderAddResp resp = new TickProviderAddResp();
 			resp.setCode("SUCCESS");
@@ -60,15 +57,15 @@ public class FeedWebService {
 			resp.setCode("ERROR");
 			resp.setError(e.toString());
 			return resp;
-			
+
 		}
-		
+
 	}
-	
+
 	@PostMapping(path = "/tick/feed/start")
-	public @ResponseBody()TickFeedStartResp feedStart(@RequestBody()TickFeedStartReq request) { 
+	public @ResponseBody() TickFeedStartResp feedStart(@RequestBody() TickFeedStartReq request) {
 		try {
-			
+
 			TickFeedStartResp resp = new TickFeedStartResp();
 			TickConsumerSession session = tickService.createConsumer(request.getSpec());
 			resp.setSession(session);
@@ -81,49 +78,47 @@ public class FeedWebService {
 			return resp;
 		}
 	}
-	
+
 	@RequestMapping(path = "/tick/feed/ping")
-	public void feedPing(@RequestParam(name = "id")String id) { 
+	public void feedPing(@RequestParam(name = "id") String id) {
 		TickConsumer consumer = tickService.getConsumer(id);
-		if(consumer == null) { 
+		if (consumer == null) {
 			throw new ResponseStatusException(org.springframework.http.HttpStatus.BAD_REQUEST);
 		}
 		consumer.clientHeartbeat();
 	}
 
-	
 	@RequestMapping(path = "/tick/feed/stop")
-	public void feedStop(@RequestParam(name = "id")String id) { 
+	public void feedStop(@RequestParam(name = "id") String id) {
 		TickConsumer consumer = tickService.getConsumer(id);
-		if(consumer == null) { 
+		if (consumer == null) {
 			throw new ResponseStatusException(org.springframework.http.HttpStatus.BAD_REQUEST);
 		}
 		tickService.disposeConsumer(id);
-		
+
 	}
 
-	
-	@GetMapping(path = "/tick/service/stats")
-	public @ResponseBody() FeedServiceStats getFeedServiceStats() { 
-		return tickService.getStats();
-	}
-	
-	@GetMapping(path = "/tick/service/validsubscriptions")
-	public @ResponseBody TickFeedSubscriptions getValidatedSubscriptions() { 
-		TickFeedSubscriptions sub = new TickFeedSubscriptions();
-		sub.setTickers(tickService.getValidatedSubscriptions());
-		return sub;
-	}
-	
-	@GetMapping(path = "/tick/feed/invalidsubscriptions")
-	public @ResponseBody TickFeedSubscriptions getInValidatedSubscriptions() { 
-		TickFeedSubscriptions sub = new TickFeedSubscriptions();
-		sub.setTickers(tickService.getInvalidatedSubscriptions());
-		return sub;
-	}
-	
-	
+	@RequestMapping(path = "/feed/subscription")
+	public @ResponseBody() TickFeedSubscriptionBean getFeedSubscription(@RequestParam() String symbol) {
+		try {
+			return tickService.getFeed().getSubscription(symbol).getBean();
+		} catch (Exception e) {
+			TickFeedSubscriptionBean bean = new TickFeedSubscriptionBean();
+			bean.setSymbol(symbol + " not found");
+			return bean;
+		}
 
+	}
 
+	@RequestMapping(path = "/feed/subscriptions")
+	public @ResponseBody() List<TickFeedSubscriptionBean> getFeedSubscriptions() {
+		return tickService.getFeed().getSubscriptionBeans();
+
+	}
+
+	@GetMapping(path = "/feed/stats")
+	public @ResponseBody TickFeedStats getInValidatedSubscriptions() {
+		return tickService.getFeed().getStats();
+	}
 
 }

@@ -13,6 +13,7 @@ import javax.transaction.Transactional;
 import org.apache.kafka.clients.consumer.ConsumerRecord;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.slf4j.MarkerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 
@@ -50,66 +51,70 @@ import com.dunkware.trade.service.stream.json.controller.model.StreamSessionSpec
 import com.dunkware.xstream.data.cache.CacheStream;
 
 public class DataStreamSession {
-	
-	
+
 	@Autowired
-	private RuntimeConfig configService; 
-	
+	private RuntimeConfig configService;
+
 	@Autowired
 	private DataStreamSessionEntityRepo sessionRepo;
-	
+
 	@Autowired
 	private DataStreamInstrumentEntityRepo instrumentRepo;
-	
+
 	@Autowired
 	private ApplicationContext ac;
-	
+
 	@Autowired
-	private MetricsService metricsService; 
-	
-	private Map<String,DataStreamSessionEntityStats> webEntities = new ConcurrentHashMap<String, DataStreamSessionEntityStats>();
-	
-	private Map<String,DataStreamSessionInstrument> instruments = new ConcurrentHashMap<String,DataStreamSessionInstrument>();
-	
+	private MetricsService metricsService;
+
+	private Map<String, DataStreamSessionEntityStats> webEntities = new ConcurrentHashMap<String, DataStreamSessionEntityStats>();
+
+	private Map<String, DataStreamSessionInstrument> instruments = new ConcurrentHashMap<String, DataStreamSessionInstrument>();
+
 	private Logger logger = LoggerFactory.getLogger(getClass());
-	private DataStream stream; 
-	private StreamSessionSpec spec; 
+	private DataStream stream;
+	private StreamSessionSpec spec;
 	private CacheStream cache;
-	
-	private LocalDateTime startTime; 
-	
-	private DataStreamSessionSnapshotWriter2 snapshotWriter; 
+
+	private LocalDateTime startTime;
+
+	private DataStreamSessionSnapshotWriter2 snapshotWriter;
 	private DataStreamSessionSignalWriter signalWriter;
-	
-	// Entities 
-	private DataStreamSessionEntity sessionEntity; 
-	
+
+	// Entities
+	private DataStreamSessionEntity sessionEntity;
+
 	private DKafkaByteConsumer2 timeConsumer;
-	
+
 	private EntityPersister entityPersister;
 
 	private DataStreamSessionState state = DataStreamSessionState.Pending;
-	private boolean snapshotWriterComplete = false; 
-	private boolean signalWriterComplete = false; 
-	
-	private boolean completed = false; 
-	
+	private boolean snapshotWriterComplete = false;
+	private boolean signalWriterComplete = false;
+
+	private boolean completed = false;
+
 	private volatile LocalDateTime sessionTime;
 	private TimeUpdateHandler timeUpdateHandler;
-	
-	public void init() { 
-		
+
+	public void init() {
+
 	}
-	
+
 	@Transactional
-	public void controllerStart(DataStream stream, StreamSessionSpec spec) throws Exception { 
+	public void controllerStart(DataStream stream, StreamSessionSpec spec) throws Exception {
 		this.stream = stream;
-		this.spec = spec; 
-		this.startTime = LocalDateTime.of(LocalDate.now(DTimeZone.toZoneId(spec.getTimeZone())), LocalTime.now(DTimeZone.toZoneId(spec.getTimeZone())));
-		logger.info("Starting Data Stream Session {} Stream {}",spec.getSessionId(),stream.getName());
+		this.spec = spec;
+		this.startTime = LocalDateTime.of(LocalDate.now(DTimeZone.toZoneId(spec.getTimeZone())),
+				LocalTime.now(DTimeZone.toZoneId(spec.getTimeZone())));
+		logger.info("Starting Data Stream Session {} Stream {}", spec.getSessionId(), stream.getName());
 		try {
-			DKafkaByteConsumer2Spec consumerSpec = DKafkaByteConsumer2SpecBuilder.newBuilder(ConsumerType.AllPartitions, OffsetType.Latest).setBrokerString(spec.getKafkaBrokers())
-					.addTopic("stream_" + this.stream.getName().toLowerCase() + "_event_time").setClientAndGroup("DataStreamTimeConsumer " + DUUID.randomUUID(4), "DataStremTimeConsimer" + DUUID.randomUUID(4)).build();
+			DKafkaByteConsumer2Spec consumerSpec = DKafkaByteConsumer2SpecBuilder
+					.newBuilder(ConsumerType.AllPartitions, OffsetType.Latest).setBrokerString(spec.getKafkaBrokers())
+					.addTopic("stream_" + this.stream.getName().toLowerCase() + "_event_time")
+					.setClientAndGroup("DataStreamTimeConsumer " + DUUID.randomUUID(4),
+							"DataStremTimeConsimer" + DUUID.randomUUID(4))
+					.build();
 			timeConsumer = DKafkaByteConsumer2.newInstance(consumerSpec);
 			timeConsumer.start();
 			timeUpdateHandler = new TimeUpdateHandler();
@@ -128,17 +133,19 @@ public class DataStreamSession {
 		try {
 			sessionRepo.save(sessionEntity);
 		} catch (Exception e) {
-			logger.error(DataMarkers.getServiceMarker(), " Data Repo Persist new stream entity failed we are fucked " + e.toString());
+			logger.error(DataMarkers.getServiceMarker(),
+					" Data Repo Persist new stream entity failed we are fucked " + e.toString());
 			throw e;
 		}
-		
+
 		try {
 			snapshotWriter = new DataStreamSessionSnapshotWriter2();
 			ac.getAutowireCapableBeanFactory().autowireBean(snapshotWriter);
 			snapshotWriter.start(this);
 			logger.info("Started Snapshot Writer Session {}", spec.getSessionId());
 		} catch (Exception e) {
-			logger.error(DataMarkers.getServiceMarker(), "Exception starting data stream session snapshot writer " + e.toString());
+			logger.error(DataMarkers.getServiceMarker(),
+					"Exception starting data stream session snapshot writer " + e.toString());
 			throw e;
 		}
 		try {
@@ -149,30 +156,31 @@ public class DataStreamSession {
 			logger.error(DataMarkers.getServiceMarker(), "Exception starting session signal writer " + e.toString());
 			// TODO: handle exception
 		}
-		
+
 		entityPersister = new EntityPersister();
 		entityPersister.start();
-		
+
 		state = DataStreamSessionState.Running;
-	
-		
+
 	}
-	
-	public DataStreamSessionState getState() { 
+
+	public DataStreamSessionState getState() {
 		return sessionEntity.getState();
 	}
-	
-	public Map<String,DataStreamSessionEntityStats> getWebEntityStats() { 
+
+	public Map<String, DataStreamSessionEntityStats> getWebEntityStats() {
 		return webEntities;
 	}
+
 	/**
 	 * Called by the writer when its written all messages
+	 * 
 	 * @param writer
 	 */
 
-	public void entitySnapshot(GEntitySnapshot snapshot) { 
+	public void entitySnapshot(GEntitySnapshot snapshot) {
 		DataStreamSessionEntityStats webEnt = webEntities.get(snapshot.getIdentifier());
-		if(webEnt == null) { 
+		if (webEnt == null) {
 			webEnt = new DataStreamSessionEntityStats();
 			webEnt.setId(snapshot.getId());
 			webEnt.setIdent(snapshot.getIdentifier());
@@ -180,16 +188,17 @@ public class DataStreamSession {
 			webEnt.setSnapshotCount(1);
 			webEnt.setSignalCount(0);
 			webEnt.setLastSignal(null);
-			webEnt.setCreatedTime(DunkTime.toStringTimeStamp(LocalTime.now(DTimeZone.toZoneId(getStream().getTimeZone()))));
+			webEnt.setCreatedTime(
+					DunkTime.toStringTimeStamp(LocalTime.now(DTimeZone.toZoneId(getStream().getTimeZone()))));
 			webEntities.put(webEnt.getIdent(), webEnt);
-		} else { 
+		} else {
 			webEnt.setLastSnapshot(GProtoHelper.toTimeStringTimeStamp(snapshot.getTime(), getStream().getTimeZone()));
 			webEnt.setSnapshotCount(webEnt.getSnapshotCount() + 1);
 			webEntities.put(webEnt.getIdent(), webEnt);
 		}
-		
+
 		DataStreamSessionInstrument inst = instruments.get(snapshot.getIdentifier());
-		if(inst == null) { 
+		if (inst == null) {
 			inst = new DataStreamSessionInstrument();
 			ac.getAutowireCapableBeanFactory().autowireBean(inst);
 			DataStreamInstrumentEntity ent = new DataStreamInstrumentEntity();
@@ -201,18 +210,22 @@ public class DataStreamSession {
 			ent.setSignalCount(0);
 			ent.setSnapshotCount(0);
 			instruments.put(snapshot.getIdentifier(), inst);
-			logger.debug("Inserting Instrument Entity " + ent.getInstId());
+			if (logger.isDebugEnabled()) {
+				logger.debug(MarkerFactory.getMarker("NewSessionInstrument"), "{} {}", ent.getInstIdentifier(),
+						getSpec().getSessionId());
+			}
 			saveInstrument(ent);
-			inst.start(DataStreamSession.this, ent);	
-			
-		} 		
-		
+			this.sessionEntity.setInstrumentCount(sessionEntity.getInstrumentCount() + 1);
+			inst.start(DataStreamSession.this, ent);
+
+		}
+
 		inst.snapshot(snapshot);
 		this.sessionEntity.setSnapshotCount(sessionEntity.getSnapshotCount() + 1);
 	}
-	
+
 	@Transactional
-	public void saveInstrument(DataStreamInstrumentEntity ent) { 
+	public void saveInstrument(DataStreamInstrumentEntity ent) {
 		try {
 			instrumentRepo.save(ent);
 		} catch (Exception e) {
@@ -220,28 +233,19 @@ public class DataStreamSession {
 			// TODO: handle exception
 		}
 	}
+
 	public void entitySignal(GEntitySignal signal) {
 		DataStreamSessionInstrument inst = instruments.get(signal.getEntityIdentifier());
-		if(inst == null) { 
-			inst = new DataStreamSessionInstrument();
-			ac.getAutowireCapableBeanFactory().autowireBean(inst);
-			DataStreamInstrumentEntity ent = new DataStreamInstrumentEntity();
-			ent.setInstId(signal.getEntityId());
-			ent.setInstIdentifier(signal.getEntityIdentifier());
-			ent.setScriptVersion(DataStreamSession.this.spec.getStreamScript().getVersion());
-			ent.setSessionIdentifier(getIdentifier());
-			ent.setStreamName(stream.getName());
-			ent.setSignalCount(0);
-			ent.setSnapshotCount(0);
-			
-			inst.start(DataStreamSession.this, ent);
-			inst.signal(signal);
-			instruments.put(signal.getEntityIdentifier(), inst);
-			this.sessionEntity.setSignalCount(sessionEntity.getSignalCount() + 1);
-			
-		}		
+		if (inst == null) {
+			logger.error("Signal Created Before Snapshot Written? {}", signal.getIdentifier());
+			return;
+		}
+		this.sessionEntity.setSignalCount(sessionEntity.getSignalCount() + 1);
+
 	}
 	
+	
+
 	@Transactional
 	public void saveInstruments() {
 		List<DataStreamInstrumentEntity> writes = new ArrayList<DataStreamInstrumentEntity>();
@@ -252,22 +256,22 @@ public class DataStreamSession {
 			ent.setSnapshotCount(instrument.getSnapshotCount());
 			writes.add(ent);
 		}
-		
+
 		try {
-			instrumentRepo.saveAll(ents);	
+			instrumentRepo.saveAll(ents);
 		} catch (Exception e) {
 			logger.error("Exception saving instruments " + e.toString());
 		}
-		
+
 	}
-	
+
 	@Transactional
-	public void saveSession() { 
+	public void saveSession() {
 		sessionRepo.save(sessionEntity);
 	}
-	
-	public void controllerStop() { 
-		//RIGHT HERE! 
+
+	public void controllerStop() {
+		// RIGHT HERE!
 		logger.info("Controller Stop on Data Stream Session " + spec.getSessionId());
 		state = DataStreamSessionState.Persisting;
 		logger.info("Controller Stop Method Invoked");
@@ -280,13 +284,13 @@ public class DataStreamSession {
 		saveSession();
 		// who will update session enetity
 	}
-	
-	public DataStream getStream() { 
+
+	public DataStream getStream() {
 		return this.stream;
 	}
-	
-	public DataStreamSessionStats getStats() { 
-		DataStreamSessionStats stats = new  DataStreamSessionStats();
+
+	public DataStreamSessionStats getStats() {
+		DataStreamSessionStats stats = new DataStreamSessionStats();
 		stats.setIdentifier(spec.getSessionId());
 		stats.setStream(spec.getStreamIdentifier());
 		DataStreamSnapshotWriterSessionStats2 writerStats = snapshotWriter.getStats();
@@ -296,51 +300,51 @@ public class DataStreamSession {
 		stats.setSignalStats(signalWriter.getStats());
 		stats.setSnapshotStats(writerStats);
 		stats.setState(state);
-		
+
 		return stats;
 	}
-	
-	public LocalDateTime getStartDateTime() { 
-		return startTime; 
+
+	public LocalDateTime getStartDateTime() {
+		return startTime;
 	}
-	
-	public LocalTime getStartTime() { 
+
+	public LocalTime getStartTime() {
 		return startTime.toLocalTime();
 	}
-	
-	public StreamSessionSpec getSpec() { 
+
+	public StreamSessionSpec getSpec() {
 		return spec;
 	}
-	
-	public void snapshotWriterComplete() { 
+
+	public void snapshotWriterComplete() {
 		snapshotWriterComplete = true;
 		completeSession();
 	}
-	
-	public void signalWriterComplete() { 
-	
+
+	public void signalWriterComplete() {
+
 		signalWriterComplete = true;
 		completeSession();
-		
+
 	}
-	
-	public CacheStream getCache() { 
-		return cache; 
+
+	public CacheStream getCache() {
+		return cache;
 	}
-	
-	public String getIdentifier() { 
+
+	public String getIdentifier() {
 		return sessionEntity.getSessionIdentifier();
 	}
-	
-	public DataStreamSessionEntity getEntity() { 
+
+	public DataStreamSessionEntity getEntity() {
 		return sessionEntity;
 	}
-	
-	private void completeSession() { 
-		if(completed) { 
+
+	private void completeSession() {
+		if (completed) {
 			return;
 		}
-		if(signalWriterComplete && snapshotWriterComplete) {
+		if (signalWriterComplete && snapshotWriterComplete) {
 			sessionEntity.setSnapshotCompleteTime(LocalDateTime.now(DTimeZone.toZoneId(stream.getTimeZone())));
 			sessionEntity.setSnapshotCount(snapshotWriter.getStats().getInserteCount());
 			LocalDateTime now = LocalDateTime.now(DTimeZone.toZoneId(stream.getTimeZone()));
@@ -348,17 +352,17 @@ public class DataStreamSession {
 			sessionEntity.setState(DataStreamSessionState.Completed);
 			entityPersister.interrupt();
 			timeConsumer.dispose();
-			saveSession();	
+			saveSession();
 			state = DataStreamSessionState.Completed;
 			logger.info("Data Session Completed " + spec.getSessionId());
 		}
-		
+
 	}
-	
-	public LocalDateTime getSessionTime() { 
+
+	public LocalDateTime getSessionTime() {
 		return sessionTime;
 	}
-	
+
 	private class TimeUpdateHandler implements DKafkaByteHandler2 {
 
 		@Override
@@ -369,32 +373,35 @@ public class DataStreamSession {
 			} catch (Exception e) {
 				logger.error("Exception consuming Time update event " + e.toString());
 			}
-		} 
-		
+		}
+
 	}
-	
-	private class EntityPersister extends Thread { 
-		
-		public void run() { 
-			while(!interrupted()) { 
+
+	private class EntityPersister extends Thread {
+
+		public void run() {
+			while (!interrupted()) {
 				try {
 					Thread.sleep(3000);
 					saveInstruments();
+					saveSession();
 					metricsService.setGauge("stream.us_equity.stats.data.entities", instruments.size());
 					DataStreamSnapshotWriterSessionStats2 writerStats = snapshotWriter.getStats();
-					metricsService.setGauge("stream.us_equity.stats.data.snapshotwriter.pausecount",writerStats.getConsumerPauseCount());
-					metricsService.setGauge("stream.us_equity.stats.data.snapshotwriter.pausetime",writerStats.getConsumerPauseCount());
-					metricsService.setGauge("stream.us_equity.stats.data.snapshotwriter.snapshotcount",writerStats.getInserteCount());
-					
-					// fuck update some metrics here 
+					metricsService.setGauge("stream.us_equity.stats.data.snapshotwriter.pausecount",
+							writerStats.getConsumerPauseCount());
+					metricsService.setGauge("stream.us_equity.stats.data.snapshotwriter.pausetime",
+							writerStats.getConsumerPauseCount());
+					metricsService.setGauge("stream.us_equity.stats.data.snapshotwriter.snapshotcount",
+							writerStats.getInserteCount());
+
+					// fuck update some metrics here
 				} catch (Exception e) {
-				
-					// TODO: handle exception
+					logger.error("Exception in entity persister " + e.toString());
+
 				}
-				
-				
+
 			}
 		}
 	}
-	
+
 }

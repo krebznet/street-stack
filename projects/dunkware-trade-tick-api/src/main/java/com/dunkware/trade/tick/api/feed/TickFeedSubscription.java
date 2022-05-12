@@ -6,6 +6,10 @@ import java.util.concurrent.atomic.AtomicLong;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.dunkware.common.util.dtime.DDateTime;
+import com.dunkware.common.util.dtime.DTimeZone;
+import com.dunkware.common.util.executor.DExecutor;
+import com.dunkware.common.util.time.DunkTime;
 import com.dunkware.trade.tick.model.feed.TickFeedQuote;
 import com.dunkware.trade.tick.model.feed.TickFeedSnapshot;
 import com.dunkware.trade.tick.model.feed.TickFeedSubscriptionBean;
@@ -19,6 +23,9 @@ public class TickFeedSubscription {
 	private AtomicInteger quoteCount = new AtomicInteger();
 	private AtomicInteger tradeCount = new AtomicInteger();
 	private AtomicInteger snapshotCount = new AtomicInteger();
+	
+	private int tps = -1;
+	private int qps = -1;
 	
 	
 	private TickFeedQuote lastQuote; 
@@ -53,10 +60,8 @@ public class TickFeedSubscription {
 		bean.setLastPrice(snapshot.getLast());
 		bean.setVolume(snapshot.getVolume());
 		bean.setTrades(snapshot.getTradeCount());
-		bean.setLastSnapshotUpdate(snapshot.getTime());
-		if(logger.isTraceEnabled()) { 
-			logger.trace("SUB-NEW SYM={} VOL{} LAST{} TC{}",this.symbol,this.volume,this.lastPrice,this.tradeCount);
-		}
+		bean.setLastSnapshotUpdate(DunkTime.toStringTimeStamp(snapshot.getTime().get()));
+	
 	}
 	
 	public int getIdentifier() { 
@@ -74,6 +79,7 @@ public class TickFeedSubscription {
 	}
 	public void setLastQuote(TickFeedQuote lastQuote) {
 		this.lastQuote = lastQuote;
+		this.lastQuote.setTime(DDateTime.now(DTimeZone.NewYork));
 		quoteCount.incrementAndGet();
 		askPrice = lastQuote.getAskPrice();
 		bidPrice = lastQuote.getBidPrice();
@@ -90,6 +96,7 @@ public class TickFeedSubscription {
 	public void setLastTrade(TickFeedTrade lastTrade) {
 		this.lastTrade = lastTrade;
 		this.lastPrice = lastTrade.getPrice();
+		this.lastTrade.setTime(DDateTime.now(DTimeZone.NewYork));
 		this.volume.addAndGet(lastTrade.getSize());
 		tradeCount.incrementAndGet();
 		trades.incrementAndGet();
@@ -154,7 +161,22 @@ public class TickFeedSubscription {
 		bean.setQuoteCount(quoteCount.get());
 		bean.setTradeCount(tradeCount.get());
 		bean.setSnapshotCount(snapshotCount.get());
-		bean.setLastTradeUpdate(lastTrade.getTime());
+		bean.setSymbol(symbol);
+		if(lastTrade != null) { 
+			bean.setLastTradeUpdate(DunkTime.toStringTimeStamp(lastTrade.getTime().get()));			
+			
+		}
+		if(lastQuote != null) { 
+			bean.setLastQuoteUpdate(DunkTime.toStringTimeStamp(lastQuote.getTime().get()));
+			bean.setAskPrice(lastQuote.getAskPrice());
+			bean.setBidSize(lastQuote.getBidSize());
+			bean.setAskSize(lastQuote.getAskSize());
+			bean.setBidPrice(lastQuote.getBidPrice());
+		}
+		bean.setTrades(getTrades());
+		bean.setVolume(getVolume());
+		bean.setLastPrice(getLastPrice());
+		
 		return bean;
 	}
 	
@@ -167,8 +189,23 @@ public class TickFeedSubscription {
 	}
 	
 	public void newDay() { 
-		
+		this.tradeCount.set(0);
+		this.quoteCount.set(0);
+		this.snapshotCount.set(0);
 	}
 	
+
+	public void secondUpdate() { 
+		if(qps == -1) { 
+			qps = quoteCount.get();
+		} else { 
+			qps = quoteCount.get() - qps;
+		}
+		if(tps == -1) { 
+			tps = tradeCount.get();
+		} else { 
+			tps = tradeCount.get() - tps;
+		}
+	}
 
 }

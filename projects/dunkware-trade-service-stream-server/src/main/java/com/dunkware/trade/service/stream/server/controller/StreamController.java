@@ -1,7 +1,5 @@
 package com.dunkware.trade.service.stream.server.controller;
 
-import static org.hamcrest.CoreMatchers.instanceOf;
-
 import java.time.DayOfWeek;
 import java.util.ArrayList;
 import java.util.List;
@@ -26,8 +24,8 @@ import com.dunkware.net.cluster.node.Cluster;
 import com.dunkware.net.cluster.node.ClusterNode;
 import com.dunkware.net.proto.stream.GStreamSpec;
 import com.dunkware.trade.service.stream.json.controller.spec.StreamSpec;
-import com.dunkware.trade.service.stream.json.controller.spec.StreamStats;
 import com.dunkware.trade.service.stream.json.controller.spec.StreamState;
+import com.dunkware.trade.service.stream.json.controller.spec.StreamStats;
 import com.dunkware.trade.service.stream.server.controller.repository.StreamDO;
 import com.dunkware.trade.service.stream.server.controller.repository.StreamRepo;
 import com.dunkware.trade.service.stream.server.controller.repository.StreamVersionDO;
@@ -39,7 +37,6 @@ import com.dunkware.trade.service.stream.server.session.StreamSessionInput;
 import com.dunkware.trade.service.stream.server.session.events.EStreamSessionEvent;
 import com.dunkware.trade.service.stream.server.session.events.EStreamSessionException;
 import com.dunkware.trade.service.stream.server.session.events.EStreamSessionStarted;
-import com.dunkware.trade.service.stream.server.session.events.EStreamSessionStarting;
 import com.dunkware.trade.service.stream.server.session.events.EStreamSessionStopped;
 import com.dunkware.trade.service.stream.server.session.events.EStreamSessionStopping;
 import com.dunkware.trade.service.stream.server.spring.ConfigService;

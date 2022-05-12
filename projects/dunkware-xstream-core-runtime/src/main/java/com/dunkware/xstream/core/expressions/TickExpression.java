@@ -1,5 +1,9 @@
 package com.dunkware.xstream.core.expressions;
 
+import java.math.BigDecimal;
+import java.math.MathContext;
+import java.math.RoundingMode;
+
 import com.dunkware.common.tick.TickHandler;
 import com.dunkware.common.tick.TickHelper;
 import com.dunkware.common.tick.filter.TickFilterBuilder;
@@ -78,6 +82,9 @@ public class TickExpression extends XStreamExpressionImpl implements TickHandler
 
 		if (tickFieldDataType == DataType.DUB_VALUE) {
 			Double dubValue = field.getDoubleValue();
+			BigDecimal bd = new BigDecimal(Double.toString((Double)dubValue), MathContext.DECIMAL64);
+			bd.setScale(2, RoundingMode.UP);
+			dubValue = bd.doubleValue();
 			setValue(dubValue);
 
 		}

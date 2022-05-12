@@ -146,6 +146,7 @@ public class StreamEventPublisherExt implements XStreamExtension, XStreamRowList
 		// add it to our snapshot queue
 		if (snapshotSignals.get(row.getId()) == null) {
 			List<XStreamRowSignal> signals = new ArrayList<XStreamRowSignal>();
+			signals.add(signal);
 			this.snapshotSignals.put(row.getId(), signals);
 		} else {
 			List<XStreamRowSignal> signals = snapshotSignals.get(row.getId());

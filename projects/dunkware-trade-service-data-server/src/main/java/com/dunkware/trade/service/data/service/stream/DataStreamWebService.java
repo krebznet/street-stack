@@ -31,7 +31,7 @@ public class DataStreamWebService {
 		return results;
 	}
 	
-	@RequestMapping(path = "/steam/session/entitites")
+	@RequestMapping(path = "/stream/session/entities")
 	public @ResponseBody()Collection<DataStreamSessionEntityStats> getSessionEntityStats(@RequestParam() String stream) { 
 		DataStream ds = streamService.getStream(stream);
 		if(ds == null) { 

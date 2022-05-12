@@ -5,8 +5,12 @@ import java.util.List;
 
 import com.dunkware.common.util.executor.DExecutor;
 import com.dunkware.trade.tick.api.provider.TickProvider;
-import com.dunkware.trade.tick.model.feed.TickFeedBean;
+import com.dunkware.trade.tick.model.feed.TickFeedQuote;
+import com.dunkware.trade.tick.model.feed.TickFeedStats;
+import com.dunkware.trade.tick.model.feed.TickFeedSubscriptionBean;
+import com.dunkware.trade.tick.model.feed.TickFeedTrade;
 import com.dunkware.trade.tick.model.ticker.TradeTickerSpec;
+
 
 public interface TickFeed  {
 
@@ -22,7 +26,15 @@ public interface TickFeed  {
 	
 	public TickFeedSubscription getSubscription(String ticker) throws TickFeedException;
 	
-	public TickFeedBean getBean();
+	public TickFeedSubscriptionBean getSubscriptionBean(String symbol) throws TickFeedException; 
+	
+	public List<TickFeedSubscriptionBean> getSubscriptionBeans();
+	
+	public int getSubscriptionCount();
+	
+	public int getTradeTickCount();
+	
+	public TickFeedStats getStats();
 	
 	public DExecutor getExecutor();
 	
@@ -33,5 +45,9 @@ public interface TickFeed  {
 	public int getSymbolId(String symbol);
 	
 	public TradeTickerSpec getTickerSpec(String symbol);
+	
+	public void onTrade(TickFeedTrade trade);
+	
+	public void onQuote(TickFeedQuote quote);
 }
 

@@ -206,13 +206,13 @@ public class DataStreamSessionSignalWriter implements DKafkaByteHandler2 {
 					// just publish all signals received every 5 seconds
 					Thread.sleep(1000);
 					List<GEntitySignal> signals = new ArrayList<GEntitySignal>();
-					writeQueue.removeAll(signals);
+					writeQueue.drainTo(signals);
 					if (signals.size() == 0) {
 						continue;
 					}
 					try {
 						for (GEntitySignal gEntitySignal : signals) {
-							Document signalDocument = MongoCaptureHelper.buildEntitySignal(gEntitySignal,
+							Document signalDocument = DataStreamWriterHelper.buildEntitySignal(gEntitySignal,
 									stream.getTimeZone());
 							pendingWrites.add(new InsertOneModel<Document>(signalDocument));
 							pendingSignalWrites.add(gEntitySignal);

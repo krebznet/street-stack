@@ -1,6 +1,5 @@
 package com.dunkware.trade.tick.model.feed;
 
-import com.dunkware.common.util.dtime.DDateTime;
 import com.dunkware.trade.tick.model.ticker.TradeTickerSpec;
 
 public class TickFeedSubscriptionBean {
@@ -16,10 +15,15 @@ public class TickFeedSubscriptionBean {
 	private int askSize; 
 	private long volume; 
 	private long trades;
+	private double bidPrice; 
 	
-	private DDateTime lastTradeUpdate; 
-	private DDateTime lastQuoteUpdate; 
-	private DDateTime lastSnapshotUpdate;
+	private String lastTradeUpdate; 
+	private String lastQuoteUpdate; 
+	private String lastSnapshotUpdate;
+	
+	private int tps; 
+	private int qps; 
+	
 	
 	private TradeTickerSpec tickerSpec;
 	
@@ -83,30 +87,53 @@ public class TickFeedSubscriptionBean {
 	public void setTrades(long trades) {
 		this.trades = trades;
 	}
-	public DDateTime getLastTradeUpdate() {
-		return lastTradeUpdate;
-	}
-	public void setLastTradeUpdate(DDateTime lastTradeUpdate) {
-		this.lastTradeUpdate = lastTradeUpdate;
-	}
-	public DDateTime getLastQuoteUpdate() {
-		return lastQuoteUpdate;
-	}
-	public void setLastQuoteUpdate(DDateTime lastQuoteUpdate) {
-		this.lastQuoteUpdate = lastQuoteUpdate;
-	}
-	public DDateTime getLastSnapshotUpdate() {
-		return lastSnapshotUpdate;
-	}
-	public void setLastSnapshotUpdate(DDateTime lastSnapshotUpdate) {
-		this.lastSnapshotUpdate = lastSnapshotUpdate;
-	}
+	
 	public TradeTickerSpec getTickerSpec() {
 		return tickerSpec;
 	}
 	public void setTickerSpec(TradeTickerSpec tickerSpec) {
 		this.tickerSpec = tickerSpec;
+	}
+	public String getLastTradeUpdate() {
+		return lastTradeUpdate;
+	}
+	public void setLastTradeUpdate(String lastTradeUpdate) {
+		this.lastTradeUpdate = lastTradeUpdate;
+	}
+	public String getLastQuoteUpdate() {
+		return lastQuoteUpdate;
+	}
+	public void setLastQuoteUpdate(String lastQuoteUpdate) {
+		this.lastQuoteUpdate = lastQuoteUpdate;
+	}
+	public String getLastSnapshotUpdate() {
+		return lastSnapshotUpdate;
+	}
+	public void setLastSnapshotUpdate(String lastSnapshotUpdate) {
+		this.lastSnapshotUpdate = lastSnapshotUpdate;
+	}
+	public int getTps() {
+		return tps;
+	}
+	public void setTps(int tps) {
+		this.tps = tps;
+	}
+	public int getQps() {
+		return qps;
+	}
+	public void setQps(int qps) {
+		this.qps = qps;
+	}
+	public double getBidPrice() {
+		return bidPrice;
+	}
+	public void setBidPrice(double bidPrice) {
+		this.bidPrice = bidPrice;
 	} 
+	
+	
+	
+	
 	
 	
 	

@@ -316,6 +316,7 @@ public class ActiveTickProvider implements TickProvider {
 	}
 	
 	public void onQuote(TickFeedQuote quote) { 
+		
 		messgeQueue.add(quote);
 	}
 
@@ -462,6 +463,7 @@ public class ActiveTickProvider implements TickProvider {
 		TickProviderStatsSpec stats = new TickProviderStatsSpec();
 		stats.setState(state);
 		stats.setSubscriptionCount(this.feedSubscriptions.size());
+		stats.setMessageCount(this.quotes.get() + this.trades.get() + this.snapshotCounter.incrementAndGet());
 		return stats;
 	}
 
@@ -489,6 +491,7 @@ public class ActiveTickProvider implements TickProvider {
 					Object message = messgeQueue.take();
 					if (message instanceof TickFeedQuote) {
 						TickFeedQuote quote = (TickFeedQuote)message;
+						feed.onQuote(quote);
 						SymbolUpdates updat = updates.get(quote.getSymbol());
 						if(updat == null) { 
 							updat = new SymbolUpdates();
@@ -503,6 +506,7 @@ public class ActiveTickProvider implements TickProvider {
 					}
 					if(message instanceof TickFeedTrade) { 
 						TickFeedTrade trade = (TickFeedTrade)message;
+						feed.onTrade(trade);
 						SymbolUpdates updat = updates.get(trade.getSymbol());
 						if(updat == null) { 
 							updat = new SymbolUpdates();
