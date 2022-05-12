@@ -336,7 +336,9 @@ public class StreamEventPublisherExt implements XStreamExtension, XStreamRowList
 				
 				GStreamEvent event = null;
 				try {
+				
 					event = publishQueue.take();
+					
 				} catch (Exception e) {
 					logger.error("Exception taking event from  " + e.toString());
 					continue;
@@ -345,6 +347,12 @@ public class StreamEventPublisherExt implements XStreamExtension, XStreamRowList
 				try {
 					if (event.getType() == GStreamEventType.EntitySnapshot) {
 						try {
+							if(logger.isDebugEnabled()) { 
+								logger.debug("GSnapshot Event Pulled " + event.getEntitySnapshot().getIdentifier());
+							}
+							if(snapshotProducer == null) { 
+								logger.error(MarkerFactory.getMarker("BUG"), "Fucking snapshot producer is null WTF");
+							}
 							snapshotProducer.sendBytes(event.toByteArray());							
 						} catch (Exception e) {
 							logger.error("Exception sending message on snapshot producer " + e.toString());
