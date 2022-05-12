@@ -14,6 +14,7 @@ import java.util.concurrent.atomic.AtomicInteger;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.slf4j.MarkerFactory;
 
 import com.dunkware.common.util.executor.DExecutor;
 import com.dunkware.trade.tick.api.feed.TickFeed;
@@ -372,8 +373,10 @@ public class ActiveTickProvider implements TickProvider {
 		loginResponse.add(response);
 		statRunner = new Runner();
 		statRunner.start();
+		
 		streamSubsriber = new StreamSubscriber();
 		streamSubsriber.start();
+		
 		checker = new SnapshotChecker();
 		checker.start();
 		
@@ -444,8 +447,6 @@ public class ActiveTickProvider implements TickProvider {
 					lt = trades.get() - lt;
 					
 
-					System.out.println("tickers " + updates.size() + " " +  quotes.get() + " trades " + trades.get() + " TPS " + lt +	" QPS " + lq);
-					
 					
 					
 				} catch (Exception e) {
@@ -521,7 +522,7 @@ public class ActiveTickProvider implements TickProvider {
 					
 				}
 			} catch (Exception e) {
-				// TODO: handle exception
+				logger.error(MarkerFactory.getMarker("CRASH"), "Exception in consuming tick data " + e.toString());
 			}
 		}
 		
