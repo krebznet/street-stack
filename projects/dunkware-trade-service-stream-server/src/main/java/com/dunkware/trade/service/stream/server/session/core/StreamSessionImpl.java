@@ -139,6 +139,7 @@ public class StreamSessionImpl implements StreamSession {
 			logger.info(MarkerFactory.getMarker(sessionId), "Starting session node on worker " + workerNode.getId());
 			nodes.add(sessionNode);
 			sessionNode.startNode(nodeInput);
+			nodeIndex++;
 
 		}
 		handleSessionStarted();
