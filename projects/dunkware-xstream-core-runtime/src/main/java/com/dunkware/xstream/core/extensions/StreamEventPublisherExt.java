@@ -18,6 +18,7 @@ import com.dunkware.common.kafka.producer.DKafkaByteProducer;
 import com.dunkware.common.util.dtime.DTimeZone;
 import com.dunkware.common.util.helpers.DProtoHelper;
 import com.dunkware.common.util.time.DunkTime;
+import com.dunkware.common.util.uuid.DUUID;
 import com.dunkware.net.proto.stream.GStreamEvent;
 import com.dunkware.net.proto.stream.GStreamEventType;
 import com.dunkware.net.proto.stream.GStreamTimeUpdate;
@@ -73,7 +74,7 @@ public class StreamEventPublisherExt implements XStreamExtension, XStreamRowList
 		this.type = (StreamEventPublisherExtType) type;
 		try {
 			snapshotProducer = DKafkaByteProducer.newInstance(this.type.getKafkaBrokers(), this.type.getSnapshotTopic(),
-					this.type.getKafkaIdentifier());
+					this.type.getKafkaIdentifier() + DUUID.randomUUID(4));
 		} catch (Exception e) {
 			logger.error("Exception Creating Kafka Producer From Brokers " + this.type.getKafkaBrokers() + e.toString(),
 					e);
@@ -106,6 +107,10 @@ public class StreamEventPublisherExt implements XStreamExtension, XStreamRowList
 
 	@Override
 	public void start() throws XStreamException {
+
+		eventPublisher = new EventPublisher();
+		eventPublisher.start();
+		
 		timeListener = new TimeListener();
 		stream.getClock().addListener(timeListener);
 		timePublisher.start();
@@ -115,8 +120,6 @@ public class StreamEventPublisherExt implements XStreamExtension, XStreamRowList
 		snapshotRunnable = new EntitySnapshotBuilder();
 		//stream.getClock().scheduleRunnable(snapshotRunnable, 1);
 		
-		eventPublisher = new EventPublisher();
-		eventPublisher.start();
 		
 		signalPublisher = new SignalPublisher();
 		signalPublisher.start();
@@ -160,6 +163,7 @@ public class StreamEventPublisherExt implements XStreamExtension, XStreamRowList
 		eventPublisher.interrupt();
 		stream.getClock().unscheduleRunnable(snapshotRunnable);
 		signalPublisher.interrupt();
+		
 		for (SnapshotConsumer consumer : snapshotConsumers) {
 			consumer.interrupt();
 		}
@@ -340,14 +344,12 @@ public class StreamEventPublisherExt implements XStreamExtension, XStreamRowList
 
 				try {
 					if (event.getType() == GStreamEventType.EntitySnapshot) {
-						if(snapshotCounts.get(event.getEntitySnapshot().getIdentifier()) == null) {
-							if(logger.isDebugEnabled()) { 
-								logger.debug(MarkerFactory.getMarker("NewSnapshotPublish"), "Entity {} Session {}", event.getEntitySnapshot().getIdentifier(),stream.getInput().getSessionId());
-							} else { 
-								snapshotCounts.get(event.getEntitySnapshot().getIdentifier()).incrementAndGet();
-							}
+						try {
+							snapshotProducer.sendBytes(event.toByteArray());							
+						} catch (Exception e) {
+							logger.error("Exception sending message on snapshot producer " + e.toString());
 						}
-						snapshotProducer.sendBytes(event.toByteArray());
+
 					}
 
 				} catch (Exception e) {
