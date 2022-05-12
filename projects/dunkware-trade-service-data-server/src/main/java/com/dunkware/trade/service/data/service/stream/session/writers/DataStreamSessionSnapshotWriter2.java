@@ -116,7 +116,7 @@ public class DataStreamSessionSnapshotWriter2 implements DKafkaByteHandler2 {
 			mongoDatabase = mongoClient.getDatabase(config.getMongoDatabase());
 			String ident = session.getIdentifier();
 			System.out.println(ident);
-			mongoCollectionName = "stream_" + session.getStream().getName().toLowerCase() + "_snapshots";
+			mongoCollectionName = "stream_" + session.getStream().getName().toLowerCase() + "_snapshot";
 			snapshotCollection = mongoDatabase
 					.getCollection(mongoCollectionName)
 					.withWriteConcern(wc);
