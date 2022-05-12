@@ -62,7 +62,7 @@ public class StreamSessionNodeImpl implements StreamSessionNode {
 		input.getSession().getStream().getSpec().getBundle();
 		Thread starter = new Thread() {
 
-			public void start() {
+			public void run() {
 				xstreamBundle = new XStreamBundle();
 				xstreamBundle.setDate(DDate.now());
 				xstreamBundle.setTimeZone(DTimeZone.NewYork);
