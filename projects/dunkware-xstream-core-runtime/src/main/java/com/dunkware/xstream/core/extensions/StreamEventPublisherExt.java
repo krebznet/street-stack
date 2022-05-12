@@ -307,6 +307,9 @@ public class StreamEventPublisherExt implements XStreamExtension, XStreamRowList
 					lastSnapshots.put(snapshot.row.getId(), snapshot.time);
 					GStreamEvent event = XStreamEventHelper.buildEntitySnapshotEvent(snapshot.row,
 							DTimeZone.toZoneId(stream.getInput().getTimeZone()), snapshot.signals,snapshot.time);
+					if(logger.isDebugEnabled()) { 
+						logger.debug(MarkerFactory.getMarker("SnapshotPublish"), "{} {} {}",snapshot.row.getId(),DunkTime.toStringTimeStamp(snapshot.time),type.getNode());
+					}
 					publishQueue.add(event);
 				} catch (Exception e) {
 					if (e instanceof InterruptedException) { 

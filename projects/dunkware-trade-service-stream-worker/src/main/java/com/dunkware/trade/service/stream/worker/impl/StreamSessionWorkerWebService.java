@@ -61,6 +61,8 @@ public class StreamSessionWorkerWebService {
 		}
 
 	}
+	
+	
 
 	/*
 	 * @PostMapping(path = "/stream/worker/start") public @ResponseBody()
@@ -111,7 +113,7 @@ public class StreamSessionWorkerWebService {
 		try {
 			StreamSessionWorkerStats stats = workerService.getWorker(workerId).getStats();
 			resp.setSpec(stats);
-			resp.setCode("SUCCESS");
+			resp.setCode("SUCCESS"); 
 			return resp;
 		} catch (Exception e) {
 			resp.setCode("ERROR");
@@ -119,5 +121,7 @@ public class StreamSessionWorkerWebService {
 			return resp;
 		}
 	}
+	
+	 
 
 }
