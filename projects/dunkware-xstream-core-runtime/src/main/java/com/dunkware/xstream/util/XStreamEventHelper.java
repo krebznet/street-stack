@@ -33,9 +33,10 @@ public class XStreamEventHelper {
 	 * @return
 	 * @throws XStreamEventException
 	 */
-	public static GStreamEvent buildEntitySnapshotEvent(XStreamRow row, ZoneId timeZoneId,List<XStreamRowSignal> signals)
+	public static GStreamEvent buildEntitySnapshotEvent(XStreamRow row, ZoneId timeZoneId,List<XStreamRowSignal> signals, LocalDateTime time)
 			throws XStreamEventException {
-		GEntitySnapshot snapshot = buildEntitySnapshot(row, timeZoneId,signals);
+		GEntitySnapshot snapshot = buildEntitySnapshot(row, timeZoneId,signals,time);
+		
 		return GStreamEvent.newBuilder().setEntitySnapshot(snapshot).setType(GStreamEventType.EntitySnapshot)
 				.setStreamId(row.getStream().getInput().getIdentifier())
 				.setSessionId(row.getStream().getInput().getSessionId()).build();
@@ -65,14 +66,14 @@ public class XStreamEventHelper {
 	 * @return
 	 * @throws XStreamEventException
 	 */
-	public static GEntitySnapshot buildEntitySnapshot(XStreamRow row, ZoneId timeZoneId, List<XStreamRowSignal> signals)
+	public static GEntitySnapshot buildEntitySnapshot(XStreamRow row, ZoneId timeZoneId, List<XStreamRowSignal> signals, LocalDateTime time)
 			throws XStreamEventException {
 		GEntitySnapshot.Builder builder = GEntitySnapshot.newBuilder();
 		builder.setId(row.getIdentifier());
 		builder.setIdentifier(row.getId());
 		builder.setStreamId(row.getStream().getInput().getIdentifier());
 		builder.setSessionId(row.getStream().getInput().getSessionId());
-		builder.setTime(DProtoHelper.toTimeStamp(row.getStream().getClock().getLocalDateTime(), row.getStream().getInput().getTimeZone()));
+		builder.setTime(DProtoHelper.toTimeStamp(time,DTimeZone.NewYork));
 		List<GEntityVarSnapshot> vars = buildVarSnapshots(row);
 		if(signals == null) { 
 			signals = new ArrayList<XStreamRowSignal>();

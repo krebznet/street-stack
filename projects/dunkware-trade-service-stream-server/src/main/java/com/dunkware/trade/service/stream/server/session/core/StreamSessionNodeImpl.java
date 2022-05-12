@@ -97,7 +97,7 @@ public class StreamSessionNodeImpl implements StreamSessionNode {
 					try {
 						StreamSessionWorkerStartReq reqParsed = DJson.getObjectMapper().readValue(serialized,
 								StreamSessionWorkerStartReq.class);
-						logger.error("Parsed serialized fine");
+
 					} catch (Exception e) {
 						logger.error("session node can't deserialize its own fucking request " + e.toString(), e);
 						// TODO: handle exception

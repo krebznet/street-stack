@@ -55,7 +55,9 @@ public class StreamTest3 {
 			AddStreamReq req = new AddStreamReq();
 			req.setSpec(spec);;
 			XScriptProject d = new XScriptProject(bundle);
+			
 			System.out.println(DJson.serialize(req));
+			System.out.println(DJson.serialize(bundle));
 			System.exit(-1);
 				
 		} catch (Exception e) {

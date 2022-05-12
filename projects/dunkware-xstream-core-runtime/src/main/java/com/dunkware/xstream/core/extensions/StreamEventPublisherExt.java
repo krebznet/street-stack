@@ -1,5 +1,6 @@
 package com.dunkware.xstream.core.extensions;
 
+import java.time.Duration;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -16,6 +17,7 @@ import org.slf4j.MarkerFactory;
 import com.dunkware.common.kafka.producer.DKafkaByteProducer;
 import com.dunkware.common.util.dtime.DTimeZone;
 import com.dunkware.common.util.helpers.DProtoHelper;
+import com.dunkware.common.util.time.DunkTime;
 import com.dunkware.net.proto.stream.GStreamEvent;
 import com.dunkware.net.proto.stream.GStreamEventType;
 import com.dunkware.net.proto.stream.GStreamTimeUpdate;
@@ -49,14 +51,22 @@ public class StreamEventPublisherExt implements XStreamExtension, XStreamRowList
 	private EntitySnapshotBuilder snapshotRunnable;
 	private DKafkaByteProducer timeProducer;
 	private DKafkaByteProducer signalProducer;
+	
+	private BlockingQueue<RowSnapshot> snapshotQueue = new LinkedBlockingQueue<RowSnapshot>();
+	private BlockingQueue<XStreamRowSignal> signalQueue = new LinkedBlockingQueue<XStreamRowSignal>();
 
 	private TimeListener timeListener;
 	private TimePublisher timePublisher = new TimePublisher();
 
-	private BlockingQueue<GStreamEvent> timeUpdateQueue = new LinkedBlockingQueue<GStreamEvent>();
+	private BlockingQueue<LocalDateTime> timeUpdateQueue = new LinkedBlockingQueue<LocalDateTime>();
 
 	private Map<String, List<XStreamRowSignal>> snapshotSignals = new ConcurrentHashMap<String, List<XStreamRowSignal>>();
 
+	private SignalPublisher signalPublisher; 
+	private List<SnapshotConsumer> snapshotConsumers = new ArrayList<SnapshotConsumer>();
+	
+	private Map<String,LocalDateTime> lastSnapshots = new ConcurrentHashMap<String, LocalDateTime>();
+	
 	@Override
 	public void init(XStream stream, XStreamExtensionType type) throws XStreamException {
 		this.stream = stream;
@@ -103,10 +113,21 @@ public class StreamEventPublisherExt implements XStreamExtension, XStreamRowList
 		stream.addRowListener(this);
 
 		snapshotRunnable = new EntitySnapshotBuilder();
-		stream.getClock().scheduleRunnable(snapshotRunnable, 1);
+		//stream.getClock().scheduleRunnable(snapshotRunnable, 1);
 		
 		eventPublisher = new EventPublisher();
 		eventPublisher.start();
+		
+		signalPublisher = new SignalPublisher();
+		signalPublisher.start();
+		int count = 4; 
+		int i = 0;
+		while(i < count) { 
+			SnapshotConsumer con = new SnapshotConsumer();
+			con.start();
+			snapshotConsumers.add(con);
+			i++;
+		}
 
 	}
 
@@ -138,6 +159,10 @@ public class StreamEventPublisherExt implements XStreamExtension, XStreamRowList
 		timeProducer.dispose();
 		eventPublisher.interrupt();
 		stream.getClock().unscheduleRunnable(snapshotRunnable);
+		signalPublisher.interrupt();
+		for (SnapshotConsumer consumer : snapshotConsumers) {
+			consumer.interrupt();
+		}
 
 	}
 
@@ -154,47 +179,50 @@ public class StreamEventPublisherExt implements XStreamExtension, XStreamRowList
 			snapshotSignals.put(row.getId(), signals);
 
 		}
-		stream.getExecutor().execute(new Runnable() {
-
-			@Override
-			public void run() {
-				try {
-					if(logger.isDebugEnabled()) { 
-						logger.debug(MarkerFactory.getMarker("SignalPublish"), "{} {}", signal.getSignalType().getName(), stream.getInput().getIdentifier());	
-					}
-					
-					GStreamEvent event = XStreamEventHelper.buildEntitySignalEvent(row, signal);
-					signalProducer.sendBytes(event.toByteArray());
-				} catch (Exception e) {
-					logger.error("Exception creating and sending signal eventl " + e.toString());
-					// TODO: handle exception
-				}
-
-			}
-		});
-
+		signalQueue.add(signal);
+		
 	}
+	
+	
 
 	private class TimeListener implements XStreamClockListener {
 
 		@Override
 		public void timeUpdate(XStreamClock clock, LocalDateTime time) {
-			timeUpdateQueue
-					.add(GStreamEvent.newBuilder().setType(GStreamEventType.TimeUpdate)
-							.setTimeUpdate(GStreamTimeUpdate.newBuilder()
-									.setTime(DProtoHelper.toTimeStamp(time, stream.getInput().getTimeZone())).build())
-							.build());
+				logger.debug(MarkerFactory.getMarker("TimeUpdate"), DunkTime.toStringTimeStamp(time));
+				timeUpdateQueue.add(time);
+				// in the same thread iterating through rows
+				// can't be that long 
+				for (XStreamRow row : stream.getRows()) {
+					RowSnapshot snapshot = new RowSnapshot();
+					snapshot.row = row;
+					snapshot.time = time;
+					snapshot.signals = snapshotSignals.remove(row.getId());
+					snapshotQueue.add(snapshot);
+				}
 		}
 
 	}
 
 	private class TimePublisher extends Thread {
 
+		private LocalDateTime lastUpdate = null;
 		public void run() {
 			while (!interrupted()) {
 				try {
-					GStreamEvent timeEvent = timeUpdateQueue.take();
-					timeProducer.sendBytes(timeEvent.toByteArray());
+					LocalDateTime time = timeUpdateQueue.take();
+					GStreamEvent event = GStreamEvent.newBuilder().setType(GStreamEventType.TimeUpdate)
+					.setTimeUpdate(GStreamTimeUpdate.newBuilder()
+							.setTime(DProtoHelper.toTimeStamp(time, stream.getInput().getTimeZone())).build())
+					.build();
+					timeProducer.sendBytes(event.toByteArray());
+					if(lastUpdate != null) { 
+						Duration duration = Duration.between(lastUpdate, time);
+						if(duration.getSeconds() > 1) { 
+							logger.error("Stream Clock Not Right, Last Time receieved was {} current is {}",DunkTime.toStringTimeStamp(lastUpdate),DunkTime.toStringTimeStamp(time));
+						}
+					}
+					lastUpdate = time;
 				} catch (Exception e) {
 					logger.error("Exception sending time update " + e.toString());
 					// TODO: handle exception
@@ -203,6 +231,7 @@ public class StreamEventPublisherExt implements XStreamExtension, XStreamRowList
 		}
 	}
 
+	// use system time? 
 	public class EntitySnapshotBuilder implements Runnable {
 		public void run() {
 			try {
@@ -212,13 +241,14 @@ public class StreamEventPublisherExt implements XStreamExtension, XStreamRowList
 						// update the schema to NewEntitySnapshotPublish have signals
 						// then clear the queue
 						List<XStreamRowSignal> signals = snapshotSignals.remove(row.getId());
+						
 						if (signals == null) {
 							signals = new ArrayList<XStreamRowSignal>();
 						}
 
-						GStreamEvent event = XStreamEventHelper.buildEntitySnapshotEvent(row,
-								DTimeZone.toZoneId(stream.getInput().getTimeZone()), signals);
-						publishQueue.add(event);
+						//GStreamEvent event = XStreamEventHelper.buildEntitySnapshotEvent(row,
+						//		DTimeZone.toZoneId(stream.getInput().getTimeZone()), signals);
+						//publishQueue.add(event);
 					} catch (Exception e) {
 						logger.error("Exception creating entity snapshot event " + e.toString());
 						// TODO: handle exception
@@ -229,11 +259,74 @@ public class StreamEventPublisherExt implements XStreamExtension, XStreamRowList
 			}
 		}
 	}
+	
+	private class SignalPublisher extends Thread { 
+		
+		public void run() { 
+			while(!interrupted()) { 
+				try {
+					XStreamRowSignal signal = signalQueue.take();
+					GStreamEvent event = XStreamEventHelper.buildEntitySignalEvent(signal.getRow(), signal);
+					signalProducer.sendBytes(event.toByteArray());
+					
+				} catch (Exception e) {
+					if (e instanceof InterruptedException) { 
+						return;
+					}
+					logger.error("Exception taking/publishing signal " + e.toString());
+				}
+			}
+		}
+	}
+	
+	
+	
+	private class RowSnapshot { 
+		
+		public List<XStreamRowSignal> signals;
+		public LocalDateTime time; 
+		public XStreamRow row; 
+	}
+	
+	
+	private class SnapshotConsumer extends Thread { 
+		
+		public void run() { 
+			
+			while(!interrupted()) { 
+				try {
+					RowSnapshot snapshot = snapshotQueue.take();
+					LocalDateTime lastSnapshotTime = lastSnapshots.get(snapshot.row.getId());
+					if(lastSnapshotTime != null) { 
+						if(lastSnapshotTime.isEqual(snapshot.time)) { 
+							logger.error(MarkerFactory.getMarker("SnapshotDuplicate"), "sending a snapshot on {} with same time stamp as last snapshot " + DunkTime.toStringTimeStamp(lastSnapshotTime) + " " + DunkTime.toStringTimeStamp(snapshot.time),snapshot.row);
+							lastSnapshotTime = snapshot.time;
+							continue;
+						}
+					}
+					lastSnapshots.put(snapshot.row.getId(), snapshot.time);
+					GStreamEvent event = XStreamEventHelper.buildEntitySnapshotEvent(snapshot.row,
+							DTimeZone.toZoneId(stream.getInput().getTimeZone()), snapshot.signals,snapshot.time);
+					publishQueue.add(event);
+				} catch (Exception e) {
+					if (e instanceof InterruptedException) { 
+						return;
+					}
+					logger.error("Exception in snapshot consumer " + e.toString());
+				}
+
+				
+			}
+		}
+		
+	}
 
 	public class EventPublisher extends Thread {
 
 		public void run() {
+		
 			while (!interrupted()) {
+				
 				GStreamEvent event = null;
 				try {
 					event = publishQueue.take();
