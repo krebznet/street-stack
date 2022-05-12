@@ -14,6 +14,7 @@ import org.apache.kafka.clients.consumer.ConsumerRecord;
 import org.bson.Document;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.slf4j.Marker;
 import org.slf4j.MarkerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -82,6 +83,8 @@ public class DataStreamSessionSnapshotWriter2 implements DKafkaByteHandler2 {
 	private String kafkaBrokers;
 
 	private boolean completed = false;
+	
+	private int consumeCounter = 0;
 
 	private GStreamSessionStop stopEvent;
 	
@@ -90,6 +93,8 @@ public class DataStreamSessionSnapshotWriter2 implements DKafkaByteHandler2 {
 	volatile boolean paused = false;
 
 	private boolean writerClosed = false; 
+	
+	private Marker marker = MarkerFactory.getMarker("SnapshotWriter");
 	
 	public DataStreamSessionSnapshotWriter2() {
 
@@ -116,11 +121,12 @@ public class DataStreamSessionSnapshotWriter2 implements DKafkaByteHandler2 {
 			mongoDatabase = mongoClient.getDatabase(config.getMongoDatabase());
 			String ident = session.getIdentifier();
 			System.out.println(ident);
-			mongoCollectionName = "stream_" + session.getStream().getName().toLowerCase() + "_snapshot";
+			mongoCollectionName = "stream_" + session.getStream().getName().toLowerCase() + "_snapshots";
 			snapshotCollection = mongoDatabase
 					.getCollection(mongoCollectionName)
 					.withWriteConcern(wc);
-			logger.info("Created mongo client");
+			logger.info(MarkerFactory.getMarker("SnapshotWriter"),"Created mongo client to " + mongoDatabase + " " + mongoCollectionName);;
+			
 		} catch (Exception e) {
 		
 			logger.error(DataMarkers.getServiceMarker(),
@@ -128,11 +134,12 @@ public class DataStreamSessionSnapshotWriter2 implements DKafkaByteHandler2 {
 					session.getIdentifier());
 			throw new Exception("Mongo Setup/Connection Exception " + e.getLocalizedMessage(), e);
 		}
-
+		String snapshotTopic = "stream_" + session.getStream().getName().toLowerCase() + "_event_snapshot";
+		
 		DKafkaByteConsumer2Spec spec = DKafkaByteConsumer2SpecBuilder.newBuilder(ConsumerType.Auto, OffsetType.Latest)
-				.setBrokerString(session.getSpec().getKafkaBrokers()).addTopic("stream_" + session.getStream().getName().toLowerCase() + "_event_snapshot")
+				.setBrokerString(session.getSpec().getKafkaBrokers()).addTopic(snapshotTopic)
 				.setClientAndGroup("d" + DUUID.randomUUID(5), "d" + DUUID.randomUUID(6)).build();
-
+			logger.info(marker, "Consuming snapshot topics from " + snapshotTopic);
 		try {
 			
 			kafkaConsumer = DKafkaByteConsumer2.newInstance(spec);
@@ -186,6 +193,11 @@ public class DataStreamSessionSnapshotWriter2 implements DKafkaByteHandler2 {
 				return;
 			}
 			if (event.getType() == GStreamEventType.EntitySnapshot) {
+				if(consumeCounter == 0) { 
+					logger.info(marker, "Consumed First Snapshot Message From Kafka Topic");
+				}
+				consumeCounter++;
+				
 				snapshot = event.getEntitySnapshot();
 				session.entitySnapshot(snapshot);
 				metrics.snapshotConsume(snapshot);

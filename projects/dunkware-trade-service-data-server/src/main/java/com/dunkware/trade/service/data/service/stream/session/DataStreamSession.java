@@ -267,7 +267,12 @@ public class DataStreamSession {
 
 	@Transactional
 	public void saveSession() {
-		sessionRepo.save(sessionEntity);
+		try {
+			sessionRepo.save(sessionEntity);
+		} catch (Exception e) {
+			logger.error("Exception saving session entity " + e.toString());
+		}
+
 	}
 
 	public void controllerStop() {
@@ -385,15 +390,7 @@ public class DataStreamSession {
 					Thread.sleep(3000);
 					saveInstruments();
 					saveSession();
-					metricsService.setGauge("stream.us_equity.stats.data.entities", instruments.size());
-					DataStreamSnapshotWriterSessionStats2 writerStats = snapshotWriter.getStats();
-					metricsService.setGauge("stream.us_equity.stats.data.snapshotwriter.pausecount",
-							writerStats.getConsumerPauseCount());
-					metricsService.setGauge("stream.us_equity.stats.data.snapshotwriter.pausetime",
-							writerStats.getConsumerPauseCount());
-					metricsService.setGauge("stream.us_equity.stats.data.snapshotwriter.snapshotcount",
-							writerStats.getInserteCount());
-
+					
 					// fuck update some metrics here
 				} catch (Exception e) {
 					logger.error("Exception in entity persister " + e.toString());
