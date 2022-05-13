@@ -19,12 +19,9 @@ import org.slf4j.Marker;
 import org.slf4j.MarkerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.threeten.bp.LocalDate;
 
 import com.dunkware.common.kafka.consumer.DKafkaByteConsumer2;
 import com.dunkware.common.kafka.consumer.DKafkaByteHandler2;
-import com.dunkware.common.mongo.DMongoClient;
-import com.dunkware.common.mongo.DMongoDatabase;
 import com.dunkware.common.spec.kafka.DKafkaByteConsumer2Spec;
 import com.dunkware.common.spec.kafka.DKafkaByteConsumer2Spec.ConsumerType;
 import com.dunkware.common.spec.kafka.DKafkaByteConsumer2Spec.OffsetType;
@@ -44,10 +41,11 @@ import com.dunkware.trade.service.data.service.stream.DataStream;
 import com.dunkware.trade.service.data.service.stream.session.DataStreamSession;
 import com.dunkware.trade.service.data.service.util.DataMarkers;
 import com.mongodb.WriteConcern;
+import com.mongodb.client.MongoClient;
+import com.mongodb.client.MongoClients;
 import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoDatabase;
 import com.mongodb.client.model.InsertOneModel;
-import com.mongodb.client.model.TimeSeriesGranularity;
 
 public class DataStreamSessionSnapshotWriter2 implements DKafkaByteHandler2 {
 
@@ -60,8 +58,8 @@ public class DataStreamSessionSnapshotWriter2 implements DKafkaByteHandler2 {
 
 	private DKafkaByteConsumer2 kafkaConsumer;
 
-	private DMongoClient mongoClient;
-	private DMongoDatabase mongoDatabase;
+	private MongoClient mongoClient;
+	private MongoDatabase mongoDatabase;
 
 	private MongoCollection<Document> snapshotCollection;
 
@@ -120,28 +118,20 @@ public class DataStreamSessionSnapshotWriter2 implements DKafkaByteHandler2 {
 		logger.info(MarkerFactory.getMarker(session.getIdentifier()), "Starting Snapshot Writer");
 		timeZone = DTimeZone.toZoneId(session.getStream().getTimeZone());
 		try {
-			mongoClient = DMongoClient.connect(config.getMongoURL());
+
+			mongoClient = MongoClients.create(config.getMongoURL());
+			WriteConcern wc = new WriteConcern(0).withJournal(false);
 			mongoDatabase = mongoClient.getDatabase(config.getMongoDatabase());
+			String ident = session.getIdentifier();
+			System.out.println(ident);
 			// check if the database exists
 			LocalDateTime dt = LocalDateTime.now(DTimeZone.toZoneId(session.getStream().getTimeZone()));
 			String Timestamp = DunkTime.format(dt, DunkTime.YYMMDD);
-
 			mongoCollectionName = "snapshot_" + session.getStream().getName() + "_" + Timestamp;
-			if (mongoDatabase.collectionExists(mongoCollectionName) == false) {
-				logger.info(marker, "Creating snapshot collection " + mongoCollectionName);
-				try {
-					mongoDatabase.createTimeSerriesCollection(mongoCollectionName, "time", "vars",
-							TimeSeriesGranularity.SECONDS);
-				} catch (Exception e) {
-					logger.error(marker, "Exception creating mongo collection for snapshots ! " + e.toString());
-					throw new Exception("Exception creating mongo collection " + e.toString());
-				}
-			}
-
-			// snapshot_us_equity_YYMMDD
-			WriteConcern wc = new WriteConcern(0).withJournal(false);
-
-			snapshotCollection = mongoDatabase.get().getCollection(mongoCollectionName).withWriteConcern(wc);
+			snapshotCollection = mongoDatabase.getCollection(mongoCollectionName).withWriteConcern(wc);
+			logger.info(MarkerFactory.getMarker("SnapshotWriter"),
+					"Created mongo client to " + mongoDatabase + " " + mongoCollectionName);
+			;
 
 			logger.info(MarkerFactory.getMarker("SnapshotWriter"),
 					"Created mongo client to " + mongoDatabase + " " + mongoCollectionName);
