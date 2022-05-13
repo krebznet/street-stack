@@ -8,7 +8,7 @@
 		<groupId>com.dunkware.maven</groupId>
 		<artifactId>dunkware-maven-parent</artifactId>
 		<version>6-SNAPSHOT</version>
-	  <relativePath>../dunkware-maven-parent/pom.xml</relativePath>
+		<relativePath>../dunkware-maven-parent/pom.xml</relativePath>
 	</parent>
 	<groupId>com.dunkware.common</groupId>
 	<artifactId>dunkware-common-util</artifactId>
@@ -26,10 +26,10 @@
 	</scm>
 
 	<properties>
-	  <!-- Considering src/app will have all your sourcr java code -->
-  <project.build.sourceDirectory>src/mainjava</project.build.sourceDirectory>
-  <!-- Considering all your junit tests are in src/test/unit -->
-  <project.build.testSourceDirectory>src/test/java</project.build.testSourceDirectory>
+		<!-- Considering src/app will have all your sourcr java code -->
+		<project.build.sourceDirectory>src/mainjava</project.build.sourceDirectory>
+		<!-- Considering all your junit tests are in src/test/unit -->
+		<project.build.testSourceDirectory>src/test/java</project.build.testSourceDirectory>
 
 	</properties>
 
@@ -38,9 +38,9 @@
 		<dependency>
 			<groupId>junit</groupId>
 			<artifactId>junit</artifactId>
-						<version>4.12</version>
-			
-	 <scope>test</scope>
+			<version>4.12</version>
+
+			<scope>test</scope>
 		</dependency>
 
 		<!-- https://mvnrepository.com/artifact/org.slf4j/slf4j-api -->
@@ -89,22 +89,31 @@
 		</dependency>
 
 		<!-- Mongo DB -->
+		<dependency>
+			<groupId>org.mongodb</groupId>
+			<artifactId>mongodb-driver-core</artifactId>
+			<version>4.6.0</version>
+		</dependency>
 
-	
-		
+
 		<!-- https://mvnrepository.com/artifact/org.mongodb/mongodb-driver-core -->
-<dependency>
-    <groupId>org.mongodb</groupId>
-    <artifactId>mongodb-driver-core</artifactId>
-    <version>4.0.4</version>
-</dependency>
+		<dependency>
+			<groupId>org.mongodb</groupId>
+			<artifactId>mongodb-driver-core</artifactId>
+			<version>4.6.0</version>
+		</dependency>
 
+		<dependency>
+			<groupId>org.mongodb</groupId>
+			<artifactId>mongodb-driver-sync</artifactId>
+			<version>4.6.0</version>
+		</dependency>
 	</dependencies>
 
 	<build>
-	 <testSourceDirectory>${project.basedir}/src/test/java</testSourceDirectory>
+		<testSourceDirectory>${project.basedir}/src/test/java</testSourceDirectory>
 
-		<pluginManagement><!-- lock down plugins versions to avoid using Maven
+		<pluginManagement><!-- lock down plugins versions to avoid using Maven 
 				defaults (may be moved to parent pom) -->
 			<plugins>
 				<plugin>

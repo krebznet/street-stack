@@ -15,18 +15,14 @@ public class DunkTime {
 	public final static String YYYY_MM_DD = "yyyy-MM-dd";
 	public final static String YYYY_MM_DD_HH_MM_SS = "yyyy-MM-dd HH:mm:ss";
 	public final static String HH_MMM_SS = "HH:mm:ss";
+	public static final String YYMMDD = "yyMMdd";
     public static final String ISO_FORMAT = "yyyy-MM-dd'T'HH:mm:ssZ";
     
 	public static void main(String[] args) {
 		LocalDateTime dt = LocalDateTime.now(DTimeZone.toZoneId(DTimeZone.NewYork));
-		String timeString = DunkTime.format(dt, YYYY_MM_DD_HH_MM_SS);
-		DateTimeFormatter formatter = DateTimeFormatter.ofPattern(YYYY_MM_DD_HH_MM_SS);
-		LocalDateTime dt2  = LocalDateTime.parse(timeString,formatter);
-		System.out.println(DunkTime.format(dt, DunkTime.YYYY_MM_DD_HH_MM_SS));
-		System.out.println(DunkTime.format(dt2, DunkTime.YYYY_MM_DD_HH_MM_SS));
-		Date date = DunkTime.toDate(dt);
+		System.out.println(format(dt, YYMMDD));
 		
-	
+	// YYMMDD
 		
 	}
 	
