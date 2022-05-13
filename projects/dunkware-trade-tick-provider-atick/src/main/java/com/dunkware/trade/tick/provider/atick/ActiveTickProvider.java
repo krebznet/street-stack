@@ -76,7 +76,7 @@ public class ActiveTickProvider implements TickProvider {
 	private LocalDateTime lastStreamMessage = LocalDateTime.now();
 	private LocalDateTime lastSnapshotMessage = LocalDateTime.now();
 	
-	private SnapshotChecker checker; 
+//	private SnapshotChecker checker; 
 	
 	private TickProviderState state = TickProviderState.CREATED;
 	
@@ -321,6 +321,7 @@ public class ActiveTickProvider implements TickProvider {
 			
 		} else { 
 			TickFeedSubscription sub = feedSubscriptions.get(snapshot.getSymbol()); 
+			sub.setLastSnapshot(snapshot);
 				System.out.println("SNAP-CHECK " + sub.getSymbol()+  " SNAP-VOL=" + snapshot.getVolume() + " SUB-VOL=" + sub.getVolume() +  " SNAP-TC=" + snapshot.getTradeCount() + " SUB-TC=" + sub.getTrades());
 			
 		}
@@ -387,8 +388,8 @@ public class ActiveTickProvider implements TickProvider {
 		streamSubsriber = new StreamSubscriber();
 		streamSubsriber.start();
 		
-		checker = new SnapshotChecker();
-		checker.start();
+	//	checker = new SnapshotChecker();
+	//	checker.start();
 		
 		snapshotSender = new SnapshotSender();
 		snapshotSender.start();
@@ -526,6 +527,7 @@ public class ActiveTickProvider implements TickProvider {
 					long request = session.GetRequestor().SendATQuoteDbRequest(symbolList, lstFieldTypes,
 							ActiveTickServerAPI.DEFAULT_REQUEST_TIMEOUT); // this must only return 500
 					snapshotRequests.put(request, snapshotRequestCount.incrementAndGet());
+					Thread.sleep(1000);
 				} catch (Exception e) {
 					logger.error("Exception sending snapshot request in snapshot sender " + e.toString());
 					
