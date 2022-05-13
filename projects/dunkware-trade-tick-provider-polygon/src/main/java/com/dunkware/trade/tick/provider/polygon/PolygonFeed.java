@@ -80,6 +80,7 @@ public class PolygonFeed {
 				try {
 					//webSocket.subscribe("A." + string);
 					webSocket.subscribe("Q." + string);
+					webSocket.subscribe("T." + string);
 				} catch (Exception e) {
 					logger.error("Exception subscribing stock Q,A for " + string);
 					throw new Exception("Exeception subscribing sec agg for ticker " + string + " " + e.toString()); // TODO:

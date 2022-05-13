@@ -10,6 +10,9 @@ public class TickFeedStats {
 	private int subscriptionRequestCount; 
 	private int subscriptionCount;
 	private int messageCount;
+	private String lastSnapshotMessage; 
+	private String lastStreamMessage; 
+	
 	public int getTradeCount() {
 		return tradeCount;
 	}
@@ -59,6 +62,22 @@ public class TickFeedStats {
 	public void setMps(int mps) {
 		this.mps = mps;
 	}
+	public String getLastSnapshotMessage() {
+		return lastSnapshotMessage;
+	}
+	public void setLastSnapshotMessage(String lastSnapshotMessage) {
+		this.lastSnapshotMessage = lastSnapshotMessage;
+	}
+	public String getLastStreamMessage() {
+		return lastStreamMessage;
+	}
+	public void setLastStreamMessage(String lastStreamMessage) {
+		this.lastStreamMessage = lastStreamMessage;
+	}
+	
+	
+	
+	
 	
 	
 	

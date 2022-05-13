@@ -50,7 +50,7 @@ public class AggTest1 {
 				
 				Bson match = match(eq("ident","CVAC"));
 				
-				Bson group = group("$ident",max("max", "$vars"), min("min","$vars"));
+				Bson group = group("$ident",avg("max", "$vars"), min("min","$vars"));
 			
 				List<Document> results = collection.get().
 						aggregate(Arrays.asList(match,group)).into(new ArrayList<>());			

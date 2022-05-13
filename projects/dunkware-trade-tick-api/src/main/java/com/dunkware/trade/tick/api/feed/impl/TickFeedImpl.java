@@ -18,6 +18,7 @@ import com.dunkware.trade.tick.model.feed.TickFeedQuote;
 import com.dunkware.trade.tick.model.feed.TickFeedStats;
 import com.dunkware.trade.tick.model.feed.TickFeedSubscriptionBean;
 import com.dunkware.trade.tick.model.feed.TickFeedTrade;
+import com.dunkware.trade.tick.model.provider.TickProviderStatsSpec;
 import com.dunkware.trade.tick.model.ticker.TradeTickerSpec;
 
 public class TickFeedImpl implements TickFeed {
@@ -112,7 +113,9 @@ public class TickFeedImpl implements TickFeed {
 		stats.setQps(qps);
 		stats.setTps(tps);
 		stats.setMps(mps);
-		stats.setSubscriptionRequestCount(this.tradeTickers.size());
+		TickProviderStatsSpec pStats = this.provider.getStats();
+		stats.setLastStreamMessage(pStats.getLastStreamMessage());
+		stats.setLastSnapshotMessage(pStats.getLastSnapshotMessage());
 		return stats;
 	}
 	

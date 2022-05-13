@@ -21,6 +21,8 @@ public class TickFeedSubscriptionBean {
 	private String lastQuoteUpdate; 
 	private String lastSnapshotUpdate;
 	
+	
+	
 	private int tps; 
 	private int qps; 
 	

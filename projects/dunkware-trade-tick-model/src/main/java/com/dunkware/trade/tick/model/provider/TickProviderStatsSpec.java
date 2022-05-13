@@ -17,6 +17,8 @@ public class TickProviderStatsSpec {
 	private int aps; 
 	private int messageQueueSize; 
 	private int validatedSubscriptions; 
+	private String lastStreamMessage; 
+	private String lastSnapshotMessage; 
 	
 	private TickProviderState state;
 	
@@ -133,6 +135,28 @@ public class TickProviderStatsSpec {
 	public void setValidatedSubscriptions(int validatedSubscriptions) {
 		this.validatedSubscriptions = validatedSubscriptions;
 	}
+
+
+	public String getLastStreamMessage() {
+		return lastStreamMessage;
+	}
+
+
+	public void setLastStreamMessage(String lastStreamMessage) {
+		this.lastStreamMessage = lastStreamMessage;
+	}
+
+
+	public String getLastSnapshotMessage() {
+		return lastSnapshotMessage;
+	}
+
+
+	public void setLastSnapshotMessage(String lastSnapshotMessage) {
+		this.lastSnapshotMessage = lastSnapshotMessage;
+	}
+	
+	
 
 	
 	

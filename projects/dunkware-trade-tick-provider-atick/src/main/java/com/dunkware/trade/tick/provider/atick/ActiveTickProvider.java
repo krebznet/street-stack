@@ -1,5 +1,6 @@
 package com.dunkware.trade.tick.provider.atick;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.LinkedList;
@@ -15,8 +16,12 @@ import java.util.concurrent.atomic.AtomicInteger;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.slf4j.MarkerFactory;
+import org.slf4j.spi.LocationAwareLogger;
 
+import com.dunkware.common.util.dtime.DTimeZone;
+import com.dunkware.common.util.dtime.json.DTimeDeserializer;
 import com.dunkware.common.util.executor.DExecutor;
+import com.dunkware.common.util.time.DunkTime;
 import com.dunkware.trade.tick.api.feed.TickFeed;
 import com.dunkware.trade.tick.api.feed.TickFeedSubscription;
 import com.dunkware.trade.tick.api.provider.ATickProvider;
@@ -30,7 +35,6 @@ import com.dunkware.trade.tick.model.provider.TickProviderState;
 import com.dunkware.trade.tick.model.provider.TickProviderStatsSpec;
 import com.dunkware.trade.tick.model.ticker.TradeTickerSpec;
 import com.dunkware.trade.tick.provider.atick.impl.ATProviderSession;
-
 
 import at.feedapi.ActiveTickServerAPI;
 import at.feedapi.Helpers;
@@ -69,6 +73,9 @@ public class ActiveTickProvider implements TickProvider {
 	private String password;
 	private String apiKey;
 
+	private LocalDateTime lastStreamMessage = LocalDateTime.now();
+	private LocalDateTime lastSnapshotMessage = LocalDateTime.now();
+	
 	private SnapshotChecker checker; 
 	
 	private TickProviderState state = TickProviderState.CREATED;
@@ -92,6 +99,7 @@ public class ActiveTickProvider implements TickProvider {
 	
 	private List<MessageHandler> messageHandlers = new ArrayList<MessageHandler>();
 	
+	private SnapshotSender snapshotSender;
 	
 	
 	public void tradeUpdate(String ticker) {
@@ -291,6 +299,8 @@ public class ActiveTickProvider implements TickProvider {
 	}
 	
 	public void onSnapshot(TickFeedSnapshot snapshot) { 
+		lastSnapshotMessage = LocalDateTime.now(DTimeZone.toZoneId(DTimeZone.NewYork));
+		this.lastStreamMessage = LocalDateTime.now(DTimeZone.toZoneId(DTimeZone.NewYork));
 		SymbolUpdates updat = updates.get(snapshot.getSymbol());
 		if(updat == null) { 
 			updat = new SymbolUpdates();
@@ -317,7 +327,7 @@ public class ActiveTickProvider implements TickProvider {
 	}
 	
 	public void onQuote(TickFeedQuote quote) { 
-		
+		lastStreamMessage = LocalDateTime.now(DTimeZone.toZoneId(DTimeZone.NewYork));		
 		messgeQueue.add(quote);
 	}
 
@@ -380,6 +390,8 @@ public class ActiveTickProvider implements TickProvider {
 		checker = new SnapshotChecker();
 		checker.start();
 		
+		snapshotSender = new SnapshotSender();
+		snapshotSender.start();
 	}
 	
 	private void subscribeStream(List<TickFeedSubscription> subscriptions) { 
@@ -465,6 +477,8 @@ public class ActiveTickProvider implements TickProvider {
 		stats.setState(state);
 		stats.setSubscriptionCount(this.feedSubscriptions.size());
 		stats.setMessageCount(this.quotes.get() + this.trades.get() + this.snapshotCounter.incrementAndGet());
+		stats.setLastSnapshotMessage(DunkTime.toStringTimeStamp(lastSnapshotMessage));
+		stats.setLastStreamMessage(DunkTime.toStringTimeStamp(lastStreamMessage));
 		return stats;
 	}
 
@@ -483,7 +497,42 @@ public class ActiveTickProvider implements TickProvider {
 		return true;
 	}
 
-	
+	private class SnapshotSender extends Thread { 
+		
+		public void run() { 
+			while(!interrupted()) { 
+				try {
+					List<ATSYMBOL> symbolList = new ArrayList<ATSYMBOL>();
+					for (TickFeedSubscription sub : feedSubscriptions.values()) {
+						ATSYMBOL symbol = Helpers.StringToSymbol(sub.getSymbol());
+						symbolList.add(symbol);
+					}
+					List<ATQuoteFieldType> lstFieldTypes = new ArrayList<ATQuoteFieldType>();
+					ATServerAPIDefines atServerAPIDefines = new ATServerAPIDefines();
+					lstFieldTypes.add(atServerAPIDefines.new ATQuoteFieldType(ATQuoteFieldType.Symbol));
+					lstFieldTypes.add(atServerAPIDefines.new ATQuoteFieldType(ATQuoteFieldType.LastPrice));
+					lstFieldTypes.add(atServerAPIDefines.new ATQuoteFieldType(ATQuoteFieldType.Volume));
+					lstFieldTypes.add(atServerAPIDefines.new ATQuoteFieldType(ATQuoteFieldType.LastTradeDateTime));
+					lstFieldTypes.add(atServerAPIDefines.new ATQuoteFieldType(ATQuoteFieldType.OpenPrice));
+					lstFieldTypes.add(atServerAPIDefines.new ATQuoteFieldType(ATQuoteFieldType.ClosePrice));
+					lstFieldTypes.add(atServerAPIDefines.new ATQuoteFieldType(ATQuoteFieldType.HighPrice));
+					lstFieldTypes.add(atServerAPIDefines.new ATQuoteFieldType(ATQuoteFieldType.LowPrice));
+					lstFieldTypes.add(atServerAPIDefines.new ATQuoteFieldType(ATQuoteFieldType.AfterMarketTradeCount));
+					lstFieldTypes.add(atServerAPIDefines.new ATQuoteFieldType(ATQuoteFieldType.ExtendedHoursLastPrice));
+					lstFieldTypes.add(atServerAPIDefines.new ATQuoteFieldType(ATQuoteFieldType.PreMarketVolume));
+					lstFieldTypes.add(atServerAPIDefines.new ATQuoteFieldType(ATQuoteFieldType.PreMarketTradeCount));
+					lstFieldTypes.add(atServerAPIDefines.new ATQuoteFieldType(ATQuoteFieldType.TradeCount));
+
+					long request = session.GetRequestor().SendATQuoteDbRequest(symbolList, lstFieldTypes,
+							ActiveTickServerAPI.DEFAULT_REQUEST_TIMEOUT); // this must only return 500
+					snapshotRequests.put(request, snapshotRequestCount.incrementAndGet());
+				} catch (Exception e) {
+					logger.error("Exception sending snapshot request in snapshot sender " + e.toString());
+					
+				}
+			}
+		}
+	}
 	private class MessageHandler extends Thread { 
 		
 		public void run() { 
