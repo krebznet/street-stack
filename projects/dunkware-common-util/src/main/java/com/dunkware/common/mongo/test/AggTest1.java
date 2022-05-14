@@ -34,7 +34,7 @@ public class AggTest1 {
 		try {
 			 client = DMongoClient.connect("mongodb://192.168.23.100:27017");
 			 database = client.getDatabase("street");
-			 collection = database.getCollection("stream_us_equity_snapshots");
+			 collection = database.getCollection("snapshot_us_equity_220513");
 			 test1();
 			 ///coundDocumentsByIdent();
 		} catch (Exception e) {
@@ -48,9 +48,9 @@ public class AggTest1 {
 			try {
 				
 				
-				Bson match = match(eq("ident","CVAC"));
+				Bson match = match(eq("ident","BBI"));
 				
-				Bson group = group("$ident",avg("max", "$vars"), min("min","$vars"));
+				Bson group = group("$ident",max("max", "$vars"), min("min","$vars"));
 			
 				List<Document> results = collection.get().
 						aggregate(Arrays.asList(match,group)).into(new ArrayList<>());			

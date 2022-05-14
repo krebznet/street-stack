@@ -18,18 +18,6 @@
 	<description>Dunkware Polygon Provider</description>
 
 
-	<scm>
-		<connection>scm:git:ssh://git@github.com:krebznet/dunkware-trade-tick-provider-atick.git</connection>
-		<developerConnection>scm:git:ssh://git@github.com/krebznet/dunkware-trade-tick-provider-atick.git</developerConnection>
-		<url>https://github.com/krebznet/dunkware-trade-tick-provider-atick.git</url>
-		<tag>v1.0.0</tag>
-		<!-- Considering src/app will have all your sourcr java code -->
-	
-		<!-- Considering all your junit tests are in src/test/unit -->
-	
-
-	</scm>
-
 	<properties>
 		<java.version>11</java.version>
 	</properties>
@@ -80,19 +68,12 @@
 			<artifactId>jetty-server</artifactId>
 			<version>9.4.19.v20190610</version>
 		</dependency>
-		<!-- https://mvnrepository.com/artifact/javax.json/javax.json-api -->
-		<!-- https://mvnrepository.com/artifact/com.google.code.gson/gson -->
-		<dependency>
-			<groupId>com.google.code.gson</groupId>
-			<artifactId>gson</artifactId>
-			<version>2.9.0</version>
-		</dependency>
 
 
 	</dependencies>
 
 	<build>
-		<pluginManagement><!-- lock down plugins versions to avoid using Maven 
+		<pluginManagement><!-- lock down plugins versions to avoid using Maven
 				defaults (may be moved to parent pom) -->
 			<plugins>
 				<plugin>
