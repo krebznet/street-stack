@@ -68,6 +68,7 @@ public class TickFeedSubscription {
 		bean.setVolume(snapshot.getVolume());
 		bean.setTrades(snapshot.getTradeCount());
 		bean.setLastSnapshotUpdate(DunkTime.toStringTimeStamp(snapshot.getTime().get()));
+		bean.setId(tickerSpec.getId());
 	
 	}
 	

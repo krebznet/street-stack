@@ -21,6 +21,7 @@ public class TickFeedSubscriptionBean {
 	private String lastQuoteUpdate; 
 	private String lastSnapshotUpdate;
 	
+	private int id; 
 	
 	
 	private int tps; 
@@ -131,6 +132,12 @@ public class TickFeedSubscriptionBean {
 	}
 	public void setBidPrice(double bidPrice) {
 		this.bidPrice = bidPrice;
+	}
+	public int getId() {
+		return id;
+	}
+	public void setId(int id) {
+		this.id = id;
 	} 
 	
 	
