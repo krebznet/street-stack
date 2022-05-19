@@ -1,0 +1,126 @@
+
+syntax = "proto3";
+
+package dunkware.netstream;
+
+
+option java_multiple_files = true;
+option java_package = "com.dunkware.net.proto.netstream";
+option java_outer_classname = "GNetStreamProto";
+
+import "core.proto";
+
+import "google/protobuf/timestamp.proto";
+
+/** Net Stream Matchers **/
+message GEntityMatcher {
+  repeated GEntityVarCriteria varCriterias = 1;
+}
+enum GEntityCriteriaVarType {
+  VALUE_NOW = 0;
+  VALUE_RELATIVE = 1;
+  VALUE_ABSOLUTE = 2;
+  RANGE_RELATIVE = 3;
+  RANGE_ABSOLUTE = 4;
+  AGGREGATION_DAY = 5;
+}
+enum GEntityCriteriaVarRangeFunction {
+  MAX = 0;
+  MIN = 1;
+  AVG = 3;
+}
+enum GEntityCriteriaVarAggFunction {
+  AGG_MAX = 0;
+  AGG_MIN = 1;
+  AGG_AVG = 2;
+}
+message GEntityCriteriaVar {
+  int32 id = 1;
+  string ident = 2;
+  GEntityCriteriaVarType type = 3;
+  dunkware.core.GCalendarRange timeRange = 4;
+  core.GTime valueAbsoluteTime = 5;
+  GEntityCriteriaVarRangeFunction rangeFunction = 6;
+  GEntityCriteriaVarAggFunction aggFunction = 7;
+  int32 aggDays = 8;
+}
+message GEntityCriteria {
+  repeated GEntityVarCriteria varCriterias = 1;
+}
+message GEntityVarCriteria {
+  GEntityCriteriaVar var = 1;
+  core.GOperator operator = 2;
+  string value = 3; // needs to be casted at some point
+}
+
+message GNetEntityScannerStartRequest {
+  string scannerIdent = 1;
+  GEntityMatcher matcher = 3;
+  repeated string retVars = 4;
+}
+message GNetEntityScannerStartResponse {
+  string scannerIdent = 1;
+  bool created = 2;
+  string error =3; // if not created tell us why
+
+}
+message GNetScannerStopRequest {
+  string scannerIdent = 1;
+}
+
+message GNetEntityScannerUpdate {
+  string scannerIdent = 1;
+  repeated GNetEntityScannerItem updates = 2;
+  repeated  GNetEntityScannerUpdate inserts = 3;
+  repeated int32 deletes = 4;
+}
+
+message GNetEntityScannerItem {
+  string id = 1;
+  string ident = 2;
+  int64 seconds = 3; // how long in scanner
+  string vars = 4; // JSON -> be nice to parse as a Map
+  
+}
+
+message GNetTimeUpdate {
+  google.protobuf.Timestamp time = 1;
+}
+
+message GNetTimeUpdateAck {
+  google.protobuf.Timestamp time = 1;
+}
+
+
+message GNetClientConnect {
+  string clientIdent = 1;
+}
+
+message GNetServerMessage {
+  oneof type {
+    GNetEntityScannerStartResponse entityScannerStart = 1;
+    GNetTimeUpdate timeUpdate = 2;
+    GNetEntityScannerUpdate entityScannerUpdate = 3;
+  }
+}
+
+
+message GNetClientMessage {
+  oneof type {
+    GNetClientConnect connect = 4;
+    GNetEntityScannerStartRequest scannerStart = 1;
+    GNetTimeUpdateAck timeUpdateAck = 2;
+    GNetScannerStopRequest scannerStop = 3;
+  }
+}
+
+
+
+
+
+
+
+
+
+
+

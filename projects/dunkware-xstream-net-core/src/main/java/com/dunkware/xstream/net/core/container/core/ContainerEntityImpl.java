@@ -1,0 +1,299 @@
+package com.dunkware.xstream.net.core.container.core;
+
+import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+import java.util.Vector;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.Semaphore;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import com.dunkware.net.core.runtime.core.helpers.GProtoHelper;
+import com.dunkware.net.proto.core.GCalendarRange;
+import com.dunkware.net.proto.core.GCalendarRangeType;
+import com.dunkware.net.proto.core.GDurationRange;
+import com.dunkware.net.proto.netstream.GEntityCriteriaVar;
+import com.dunkware.net.proto.netstream.GEntityCriteriaVarType;
+import com.dunkware.xstream.net.core.container.Container;
+import com.dunkware.xstream.net.core.container.ContainerEntity;
+import com.dunkware.xstream.net.core.container.ContainerEntityListener;
+import com.dunkware.xstream.net.core.container.ContainerEntitySignal;
+import com.dunkware.xstream.net.core.container.ContainerEntitySnapshot;
+import com.dunkware.xstream.net.core.container.ContainerException;
+import com.dunkware.xstream.net.core.container.ContainerSearchException;
+import com.dunkware.xstream.net.core.container.util.ContainerHelper;
+
+public class ContainerEntityImpl implements ContainerEntity  {
+	
+	
+	private Logger logger = LoggerFactory.getLogger(getClass());
+	
+	private List<ContainerEntitySnapshot> snapshotList = new ArrayList<ContainerEntitySnapshot>();
+	private Semaphore snapshotListLock = new Semaphore(1);
+	private Map<LocalDateTime,ContainerEntitySnapshot> snapshots = new ConcurrentHashMap<LocalDateTime,ContainerEntitySnapshot>();
+	private Vector<ContainerEntitySignal> signals = new Vector<ContainerEntitySignal>();
+	private Semaphore signalLock = new Semaphore(1);
+	private Vector<ContainerEntityListener> listeners = new Vector<ContainerEntityListener>();
+	private Semaphore listenerLock = new Semaphore(1);
+	
+	private int id; 
+	private String identifier; 
+	
+	
+	private ContainerEntitySnapshot lastSnapshot;
+	
+	private Container container; 
+	
+	private boolean snapshotHistory; 
+	
+	public void init(Container container, int id, String identifier) { 
+		this.id = id;
+		this.identifier = identifier;
+		this.container = container; 
+		this.snapshotHistory = container.getInput().isSnapshotHistory();
+	}
+
+
+	@Override
+	public int getId() {
+		return id;
+	}
+
+	@Override
+	public Container getContainer() {
+		return container;
+	}
+
+	@Override
+	public int getSnapshotCount() {
+		return snapshots.values().size();
+	}
+
+	@Override
+	public List<ContainerEntitySignal> getSignals(LocalDateTime start, LocalDateTime stop) {
+		try {
+			List<ContainerEntitySignal> results = new ArrayList<ContainerEntitySignal>();
+			signalLock.acquire();
+			for (ContainerEntitySignal signal : signals) {
+				if(signal.getTime().isAfter(start) == true && signal.getTime().isAfter(stop) == false) { 
+					results.add(signal);
+				}
+			}
+			return results;
+		} catch (Exception e) {
+			//TOOD: log
+			return new ArrayList<ContainerEntitySignal>();
+		} finally {
+			signalLock.release();
+		}
+	}
+
+	@Override
+	public List<ContainerEntitySignal> getSignals(LocalDateTime start, LocalDateTime stop, String... signalTypes) {
+		try {
+			List<ContainerEntitySignal> results = new ArrayList<ContainerEntitySignal>();
+			signalLock.acquire();
+			for (ContainerEntitySignal cacheEntitySignal : signals) {
+				boolean ofType = false;
+				for (String type : signalTypes) {
+					if(cacheEntitySignal.getIdent().equals(type)) { 
+						ofType = true;
+						break;
+					}
+				}
+				if(!ofType) { 
+					continue;
+				}
+				
+				if(cacheEntitySignal.getTime().isAfter(start) == true && cacheEntitySignal.getTime().isAfter(stop) == false) { 
+					results.add(cacheEntitySignal);
+				}
+			}
+			return results;
+		} catch (Exception e) {
+			//TOOD: log
+			return new ArrayList<ContainerEntitySignal>();
+		} finally {
+			signalLock.release();
+		}
+	}
+
+
+	@Override
+	public void addListener(ContainerEntityListener listener) {
+		try {
+			listenerLock.acquire();
+			listeners.add(listener);
+		} catch (Exception e) {
+			// TODO: handle exception
+		}	 finally { 
+			listenerLock.release();
+		}
+	}
+
+	@Override
+	public void removeListener(ContainerEntityListener listener) {
+		try {
+			listenerLock.acquire();
+			listeners.add(listener);
+		} catch (Exception e) {
+			// TODO: handle exception
+		}	 finally { 
+			listenerLock.release();
+		}
+		
+	}
+
+	@Override
+	public Map<LocalDateTime, ContainerEntitySnapshot> getSnapshots() {
+		return snapshots;
+	}
+
+
+	@Override
+	public String getIdent() {
+		return identifier;
+	}
+
+
+
+	@Override
+	public Vector<ContainerEntitySignal> getSignals() {
+		return signals;
+	}
+
+
+	@Override
+	public void consumeSignal(ContainerEntitySignal signal) {
+		try {
+			this.signalLock.acquire();
+			signals.add(signal);
+		} catch (Exception e) {
+			// TODO: handle exception
+		} finally { 
+			signalLock.release();
+		}
+	}
+
+
+	@Override
+	public ContainerEntitySnapshot getLastSnapshot() {
+		return lastSnapshot;
+	}
+
+
+	@Override
+	public void consumeSnapshot(ContainerEntitySnapshot snap) {
+		try {
+		
+			this.snapshots.put(snap.getTime(), snap);
+			snapshotListLock.acquire();
+			this.snapshotList.add(snap);
+		} catch (Exception e) {
+			logger.error("Exception consuming snapshot " + e.toString());
+		} finally { 
+			snapshotListLock.release();
+		}
+	}
+
+
+	@Override
+	public int getSignalCount(LocalDateTime from, LocalDateTime to, String... types) {
+		try {
+			signalLock.acquire();
+			int counter = 0; 
+			for (ContainerEntitySignal cacheEntitySignal : signals) {
+				boolean ofType = false;
+				for (String type : types) {
+					if(cacheEntitySignal.getIdent().equals(type)) { 
+						ofType = true;
+						break;
+					}
+				}
+				if(!ofType) { 
+					continue;
+				}
+				
+				if(cacheEntitySignal.getTime().isAfter(from) == true && cacheEntitySignal.getTime().isAfter(to) == false) { 
+					counter++;
+				}
+			}
+			return counter;
+		} catch (Exception e) {
+			return 0;
+		} finally {
+			signalLock.release();
+		}
+		
+	}
+	
+	
+	@Override
+	public ContainerEntitySnapshot getBackSnapshot(int backCount) throws ContainerSearchException {
+		try {
+			snapshotListLock.acquire();
+			int index = snapshotList.size() - backCount; 
+			if(snapshotList.size() < index + 1)  {
+				throw new ContainerSearchException("Exception getting previous snapshot backcount list size is " + snapshotList.size() + " back count is " + backCount);
+			}
+			return snapshotList.get(index);
+		} catch (Exception e) {
+			throw new ContainerSearchException("Unahdled exception in getPrevious snapshot " + e.toString());
+		} finally { 
+			snapshotListLock.release();
+		}
+	}
+
+
+	@Override
+	public Object resolveCriteriaVar(GEntityCriteriaVar var) throws ContainerException, ContainerSearchException {
+		if(var.getType() == GEntityCriteriaVarType.VALUE_NOW) { 
+			return lastSnapshot.getVars().getValue(var.getIdent());
+		}
+		if(var.getType() == GEntityCriteriaVarType.VALUE_RELATIVE) { 
+			GCalendarRange range = var.getTimeRange();
+			if(range.getType() == GCalendarRangeType.TIME_DURATION == false) {
+				throw new ContainerSearchException("Criteria Var configured as VALUE_RELATIVE but range type is " + range.getType().name() );
+			}
+			// okay so we assume that every 1 second is that. 
+			GDurationRange duration = range.getDurationRange();
+			int durationSeconds = 0;
+			try {
+				 durationSeconds = GProtoHelper.getDurationRangeSeconds(duration);
+			} catch (Exception e) {
+				throw new ContainerSearchException("Exception getting duration range seconds " + e.toString());
+			}
+			if(getSnapshotCount() < durationSeconds) { 
+				return null;
+				// null means it can't resolve. 
+			} else { 
+				ContainerEntitySnapshot snapshot = getBackSnapshot(durationSeconds);
+				Object value = snapshot.getVars().getValue(var.getIdent());
+				if(value == null) { 
+					throw new ContainerSearchException("Relative value variable not found on snapshot var " + var.getIdent());
+				}
+			}
+
+		}
+		// TODO Auto-generated method stub
+		return null;
+	}
+	
+	
+
+	
+
+
+	
+	
+
+	
+
+	
+	
+	
+
+}

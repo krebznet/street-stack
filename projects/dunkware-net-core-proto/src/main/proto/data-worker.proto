@@ -1,0 +1,14 @@
+syntax = "proto3";
+
+package dunkware.data.worker;
+
+option java_multiple_files = true;
+option java_package = "com.dunkware.net.proto.data.worker";
+option java_outer_classname = "GDataWorkerProto";
+
+
+
+
+
+
+ 

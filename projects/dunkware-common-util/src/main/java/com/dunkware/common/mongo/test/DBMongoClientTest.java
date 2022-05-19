@@ -10,9 +10,9 @@ public class DBMongoClientTest {
 
 	public static void main(String[] args) {
 		try {
-			DMongoClient client = DMongoClient.connect("mongodb://192.168.23.100:27017");
+			DMongoClient client = DMongoClient.connect("mongodb://192.168.23.101:27017");
 			DMongoDatabase db = client.getDatabase("street");
-			String collectionName = "snapshot_us_equity_220513"; 
+			String collectionName = "snapshot_us_equity_220519"; 
 			db.createTimeSerriesCollection(collectionName, "time", "vars", TimeSeriesGranularity.SECONDS);
 			List<String> collections = db.collectionNames();
 			for (String string : collections) {

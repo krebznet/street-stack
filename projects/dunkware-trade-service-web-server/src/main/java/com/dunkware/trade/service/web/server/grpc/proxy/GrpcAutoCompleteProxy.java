@@ -66,6 +66,7 @@ public class GrpcAutoCompleteProxy {
 			stub = GStreamServiceGrpc.newStub(channels.getStreamServiceChannel());
 			request = stub.autoCompleteSearch(responseListener);
 			
+			
 		} catch (Exception e) {
 			logger.error("Exception connecting to stream service grpc channel in auto complete proxy " + e.toString(),e);
 		}

@@ -53,6 +53,11 @@
 			<module>projects/dunkware-net-cluster-server</module>
     	<module>projects/dunkware-net-cluster-json</module>
 	    <module>projects/dunkware-net-cluster-spring</module>
+
+			<module>projects/dunkware-xstream-net-json</module>
+     	<module>projects/dunkware-xstream-net-core</module>
+     	<module>projects/dunkware-xstream-net-client</module>
+			<module>projects/dunkware-xstream-net-server</module>
   </modules>
 
 

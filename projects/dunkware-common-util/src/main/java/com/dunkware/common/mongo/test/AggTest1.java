@@ -7,6 +7,8 @@ import static com.mongodb.client.model.Filters.eq;
 import static com.mongodb.client.model.Accumulators.max;
 import static com.mongodb.client.model.Accumulators.min;
 import static com.mongodb.client.model.Accumulators.avg;
+
+import java.time.LocalTime;
 //import static com.mongodb.client.Pr
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -19,6 +21,8 @@ import org.bson.conversions.Bson;
 import com.dunkware.common.mongo.DMongoClient;
 import com.dunkware.common.mongo.DMongoCollection;
 import com.dunkware.common.mongo.DMongoDatabase;
+import com.dunkware.common.util.stopwatch.DStopWatch;
+import com.dunkware.common.util.time.DunkTime;
 import com.mongodb.internal.client.model.AggregationLevel;
 
 public class AggTest1 {
@@ -32,9 +36,9 @@ public class AggTest1 {
 	private DMongoCollection collection;
 	public AggTest1() { 
 		try {
-			 client = DMongoClient.connect("mongodb://192.168.23.100:27017");
+			 client = DMongoClient.connect("mongodb://data2.dunkware.net:27017");
 			 database = client.getDatabase("street");
-			 collection = database.getCollection("snapshot_us_equity_220513");
+			 collection = database.getCollection("snapshot_us_equity_220518");
 			 test1();
 			 ///coundDocumentsByIdent();
 		} catch (Exception e) {
@@ -48,12 +52,18 @@ public class AggTest1 {
 			try {
 				
 				
-				Bson match = match(eq("ident","BBI"));
+				Bson match = match(eq("ident","AMZN"));
 				
 				Bson group = group("$ident",max("max", "$vars"), min("min","$vars"));
 			
+				DStopWatch sw = DStopWatch.create();
+				sw.start();
+				System.out.println("starting aggregation " + DunkTime.toStringTimeStamp(LocalTime.now()));
 				List<Document> results = collection.get().
-						aggregate(Arrays.asList(match,group)).into(new ArrayList<>());			
+						aggregate(Arrays.asList(match,group)).into(new ArrayList<>());		
+				sw.stop();
+				System.out.println("Agg Time " + sw.getCompletedSeconds());
+				System.out.println("completed aggregation " + DunkTime.toStringTimeStamp(LocalTime.now()));
 				for (Document document : results) {
 					System.out.println(document.toJson());
 				}

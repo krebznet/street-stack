@@ -87,6 +87,15 @@
 			<artifactId>protobuf-java</artifactId>
 			<version>3.13.0</version>
 		</dependency>
+		
+
+
+
+		<dependency>
+			<groupId>com.googlecode.protobuf-java-format</groupId>
+			<artifactId>protobuf-java-format</artifactId>
+			<version>1.4</version>
+		</dependency>
 
 		<!-- Mongo DB -->
 		<dependency>
@@ -113,7 +122,7 @@
 	<build>
 		<testSourceDirectory>${project.basedir}/src/test/java</testSourceDirectory>
 
-		<pluginManagement><!-- lock down plugins versions to avoid using Maven 
+		<pluginManagement><!-- lock down plugins versions to avoid using Maven
 				defaults (may be moved to parent pom) -->
 			<plugins>
 				<plugin>

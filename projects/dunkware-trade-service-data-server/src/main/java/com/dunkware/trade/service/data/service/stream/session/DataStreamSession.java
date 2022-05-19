@@ -48,7 +48,6 @@ import com.dunkware.trade.service.data.service.stream.session.writers.DataStream
 import com.dunkware.trade.service.data.service.stream.session.writers.DataStreamSessionSnapshotWriter2;
 import com.dunkware.trade.service.data.service.util.DataMarkers;
 import com.dunkware.trade.service.stream.json.controller.model.StreamSessionSpec;
-import com.dunkware.xstream.data.cache.CacheStream;
 
 public class DataStreamSession {
 
@@ -74,7 +73,7 @@ public class DataStreamSession {
 	private Logger logger = LoggerFactory.getLogger(getClass());
 	private DataStream stream;
 	private StreamSessionSpec spec;
-	private CacheStream cache;
+	
 
 	private LocalDateTime startTime;
 
@@ -333,9 +332,6 @@ public class DataStreamSession {
 
 	}
 
-	public CacheStream getCache() {
-		return cache;
-	}
 
 	public String getIdentifier() {
 		return sessionEntity.getSessionIdentifier();

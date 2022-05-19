@@ -92,6 +92,19 @@ public class GProtoHelper {
 		return datTime;
 	}
 	
+	public static int getDurationRangeSeconds(GDurationRange range) throws Exception { 
+		if(range.getTimeUnit() == GTimeUnit.SECOND) { 
+			return range.getValue();
+		}
+		if(range.getTimeUnit() == GTimeUnit.MINUTE) { 
+			return range.getValue() * 60;
+		}
+		if(range.getTimeUnit() == GTimeUnit.HOUR) { 
+			return range.getValue() * 3600;
+		}
+		
+		throw new Exception("Time Unit " + range.getTimeUnit().name() + " not handled in get duration range seconds");
+	}
 	public static LocalDateTime toLocalDateTime(GDurationRange durationRange, LocalDateTime now) throws Exception { 
 		LocalDateTime ret = now;
 		if(durationRange.getTimeUnit() == GTimeUnit.DAY) { 
