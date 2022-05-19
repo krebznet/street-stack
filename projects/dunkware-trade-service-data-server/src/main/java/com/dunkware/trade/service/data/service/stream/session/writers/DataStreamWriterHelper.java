@@ -50,7 +50,9 @@ public class DataStreamWriterHelper {
 				varDoc.append(String.valueOf(var.getId()), var.getStringValue());
 			}
 		}
-		container.append("vars", varDoc);
+		List<Document> varDocs = buildVarSnapshots(snapshot.getVarsList());
+		
+		container.append("vars", varDocs);
 		List<Integer> signals = new ArrayList<Integer>();
 		for (GEntitySnapshot.GSnapshotSignal signal : snapshot.getSignalsList()) {
 			signals.add(signal.getId());
