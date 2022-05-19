@@ -134,7 +134,7 @@ public class DataStreamWriterHelper {
 		container.append("time", DProtoHelper.toLocalDateTime(snapshot.getTime(), timeZone));
 		container.append("id", snapshot.getId());
 		container.append("ident", snapshot.getIdentifier());
-		container.append("vars", buildVarSnapshotDocument(snapshot.getId(),snapshot.getVarsList()));
+		container.append("vars", buildVarSnapshots(snapshot.getVarsList()));
 		List<Document> signals = new ArrayList<Document>();
 		for (GEntitySnapshot.GSnapshotSignal signal : snapshot.getSignalsList()) {
 			Document sigdoc = new Document();
