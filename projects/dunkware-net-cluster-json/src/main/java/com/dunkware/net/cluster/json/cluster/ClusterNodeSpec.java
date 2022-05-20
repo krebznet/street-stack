@@ -10,6 +10,7 @@ public class ClusterNodeSpec {
 	private ClusterNodeState state;
 	private ClusterNodeType type;
 	private ClusterNodeStats status;
+	private String reserver;
 
 	public String getId() {
 		return id;
@@ -41,7 +42,18 @@ public class ClusterNodeSpec {
 
 	public void setStatus(ClusterNodeStats status) {
 		this.status = status;
-	} 
+	}
+
+	public String getReserver() {
+		return reserver;
+	}
+
+	public void setReserver(String reserver) {
+		this.reserver = reserver;
+	}
+	
+	
+
 	
 	
 	

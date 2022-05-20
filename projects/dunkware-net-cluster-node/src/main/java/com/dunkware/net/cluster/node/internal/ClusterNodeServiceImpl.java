@@ -6,6 +6,7 @@ import java.util.Map;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.LinkedBlockingDeque;
+import java.util.concurrent.atomic.AtomicInteger;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -21,6 +22,11 @@ import com.dunkware.net.cluster.node.ClusterNodeService;
 import com.dunkware.net.proto.cluster.GNodeUpdate;
 import com.dunkware.net.proto.cluster.GNodeUpdateRequest;
 import com.dunkware.net.proto.cluster.GNodeUpdateResponse;
+import com.dunkware.net.proto.cluster.GReleaseWorkerNodesRequest;
+import com.dunkware.net.proto.cluster.GReleaseWorkerNodesResponse;
+import com.dunkware.net.proto.cluster.GReserveWorkerNodesRequest;
+import com.dunkware.net.proto.cluster.GReserveWorkerNodesResponse;
+import com.dunkware.net.proto.cluster.GReserveWorkerNodesResponse.GrantedNode;
 import com.dunkware.net.proto.cluster.service.GClustererviceGrpc;
 import com.dunkware.net.proto.cluster.service.GClustererviceGrpc.GClustererviceStub;
 
@@ -94,6 +100,110 @@ public class ClusterNodeServiceImpl implements ClusterNodeService {
 		
 	
 	}
+
+	
+	
+	
+	
+	@Override
+	public void releaseWorkerNodes(String owner) {
+	GReleaseWorkerNodesRequest req = GReleaseWorkerNodesRequest.newBuilder().setIdentifier(owner).build();
+	
+	StreamObserver<GReleaseWorkerNodesResponse> fucker = new StreamObserver<GReleaseWorkerNodesResponse>() {
+		
+		@Override
+		public void onNext(GReleaseWorkerNodesResponse value) {
+			// TODO Auto-generated method stub
+			
+		}
+		
+		@Override
+		public void onError(Throwable t) {
+			// TODO Auto-generated method stub
+			
+		}
+		
+		@Override
+		public void onCompleted() {
+			// TODO Auto-generated method stub
+			
+		}
+	};
+	stub.releaseWorkerNodes(req, fucker);
+		return;
+	}
+
+
+
+
+	@Override
+	public ClusterNode getNode(String nodeId) throws ClusterNodeException {
+		return nodes.get(nodeId);
+	}
+
+
+
+
+
+	@Override
+	public List<ClusterNode> reserveWorkerNodes(String owner, int requested) throws Exception {
+		GReserveWorkerNodesRequest request = GReserveWorkerNodesRequest.newBuilder().setIdentifier(owner).setRequestedNodes(requested).build();
+		 List<ClusterNode> obtained = new ArrayList<ClusterNode>();
+		 AtomicInteger fucker = new AtomicInteger(0);
+		 stub.reserveWorkerNodes(request, new StreamObserver<GReserveWorkerNodesResponse>() {
+
+			@Override
+			public void onNext(GReserveWorkerNodesResponse value) {
+				for (GrantedNode granted : value.getGrantedNodesList()) {
+					try {
+						obtained.add(getNode(granted.getNodeId()));
+					} catch (Exception e) {
+						logger.error("error getting granted noded wtf " +  e.toString());
+						
+					}
+					
+				}
+			}
+
+			@Override
+			public void onError(Throwable t) {
+				// TODO Auto-generated method stub
+				
+			}
+
+			@Override
+			public void onCompleted() {
+				fucker.incrementAndGet();
+			}
+		
+		
+		});
+		 
+		 int count  = 1;
+		 while(fucker.get() == 0) { 
+			 try {
+				Thread.sleep(300);
+				count++;
+				if(count > 14) { 
+					throw new Exception("Fuck you nothing back");
+				}
+			} catch (Exception e) {
+				// TODO: handle exception
+			}
+		 }
+		return obtained;
+		// TODO Auto-generated method stub
+		
+	}
+
+
+
+
+
+
+
+
+
 
 	@Override
 	public List<ClusterNode> getAvailablWorkereNodes(int count) throws ClusterNodeException {

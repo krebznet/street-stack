@@ -1,5 +1,6 @@
 package com.dunkware.net.cluster.server.core;
 
+import com.dunkware.net.cluster.json.cluster.ClusterNodeSpec;
 import com.dunkware.net.cluster.json.node.ClusterNodeState;
 import com.dunkware.net.cluster.json.node.ClusterNodeStats;
 import com.dunkware.net.cluster.json.node.ClusterNodeUpdate;
@@ -17,6 +18,8 @@ public class ClusterNode {
 	private ClusterNodeState nodeState;
 	
 	private ManagedChannel nodeChannel;
+	
+	private String reserver = null;
 	
 	public void start(ClusterNodeStats stats) { 
 		this.lastStats = stats;
@@ -45,11 +48,33 @@ public class ClusterNode {
 		return nodeState;
 	}
 	
+	public void setState(ClusterNodeState state) { 
+		this.nodeState = state; 
+	}
 	
-	public void updateNodeState(ClusterNodeStats stats) { 
+	public void setReserver(String reserver) { 
+		this.reserver = reserver;
+	}
+	
+	public ClusterNodeSpec getNodeSpec() { 
+		ClusterNodeSpec spec = new ClusterNodeSpec();
+		spec.setId(getStats().getId());
+		spec.setState(getState());
+		spec.setStatus(getStats());
+		spec.setType(getStats().getType());
+		if(getState() == ClusterNodeState.Reserved) { 
+			spec.setReserver(reserver);
+		}
+		return spec;
+	}
+	
+	public String getReserver() {
+		return reserver;
+	}
+
+	public void updateStats(ClusterNodeStats stats) { 
 		// here we should look at like pending task
 		// memroy ussage for now return available;
-		nodeState = ClusterNodeState.Available;
 		lastStats = stats;
 	}
 	
