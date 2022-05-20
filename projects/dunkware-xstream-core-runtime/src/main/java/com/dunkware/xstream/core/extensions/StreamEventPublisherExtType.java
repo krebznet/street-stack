@@ -9,6 +9,7 @@ public class StreamEventPublisherExtType extends XStreamExtensionType {
 	private String signalTopic;
 	private String timeTopic;
 	private String kafkaIdentifier; 
+	private String eventTopic;
 	private String node; 
 	
 	
@@ -51,6 +52,13 @@ public class StreamEventPublisherExtType extends XStreamExtensionType {
 	public void setNode(String node) {
 		this.node = node;
 	}
+	public String getEventTopic() {
+		return eventTopic;
+	}
+	public void setEventTopic(String eventTopic) {
+		this.eventTopic = eventTopic;
+	}
+	
 	
 	
 	

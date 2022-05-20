@@ -48,11 +48,12 @@ public class StreamEventPublisherExt implements XStreamExtension, XStreamRowList
 
 	private Map<String,AtomicInteger> snapshotCounts = new ConcurrentHashMap<String, AtomicInteger>();
 	private DKafkaByteProducer snapshotProducer;
-	private EventPublisher eventPublisher;
+	private SnapshotPublisher snapshotPublisher;
 	private EntitySnapshotBuilder snapshotRunnable;
+	private DKafkaByteProducer eventProducer;
 	private DKafkaByteProducer timeProducer;
 	private DKafkaByteProducer signalProducer;
-	
+	private EventPublisher eventPublisher;
 	private BlockingQueue<RowSnapshot> snapshotQueue = new LinkedBlockingQueue<RowSnapshot>();
 	private BlockingQueue<XStreamRowSignal> signalQueue = new LinkedBlockingQueue<XStreamRowSignal>();
 
@@ -63,6 +64,8 @@ public class StreamEventPublisherExt implements XStreamExtension, XStreamRowList
 
 	private Map<String, List<XStreamRowSignal>> snapshotSignals = new ConcurrentHashMap<String, List<XStreamRowSignal>>();
 
+	private BlockingQueue<GStreamEvent> eventQueue = new LinkedBlockingQueue<GStreamEvent>();
+	
 	private SignalPublisher signalPublisher; 
 	private List<SnapshotConsumer> snapshotConsumers = new ArrayList<SnapshotConsumer>();
 	
@@ -96,6 +99,14 @@ public class StreamEventPublisherExt implements XStreamExtension, XStreamRowList
 					e);
 			throw new XStreamException("Stream Event Publisher Init Kafka Connection Failed " + e.toString());
 		}
+		try {
+			eventProducer = DKafkaByteProducer.newInstance(this.type.getKafkaBrokers(), this.type.getEventTopic(),
+					this.type.getKafkaIdentifier());
+		} catch (Exception e) {
+			logger.error("Exception Creating Kafka Producer From Brokers " + this.type.getKafkaBrokers() + e.toString(),
+					e);
+			throw new XStreamException("Stream Event Publisher Init Kafka Connection Failed " + e.toString());
+		}
 
 	}
 
@@ -110,6 +121,9 @@ public class StreamEventPublisherExt implements XStreamExtension, XStreamRowList
 
 		eventPublisher = new EventPublisher();
 		eventPublisher.start();
+		
+		snapshotPublisher = new SnapshotPublisher();
+		snapshotPublisher.start();
 		
 		timeListener = new TimeListener();
 		stream.getClock().addListener(timeListener);
@@ -155,12 +169,14 @@ public class StreamEventPublisherExt implements XStreamExtension, XStreamRowList
 				break;
 			}
 		}
-
+		
+		eventProducer.dispose();
+		eventPublisher.interrupt();
 		snapshotProducer.dispose();
 		signalProducer.dispose();
 		timePublisher.interrupt();
 		timeProducer.dispose();
-		eventPublisher.interrupt();
+		snapshotPublisher.interrupt();
 		stream.getClock().unscheduleRunnable(snapshotRunnable);
 		signalPublisher.interrupt();
 		
@@ -219,6 +235,8 @@ public class StreamEventPublisherExt implements XStreamExtension, XStreamRowList
 					.setTimeUpdate(GStreamTimeUpdate.newBuilder()
 							.setTime(DProtoHelper.toTimeStamp(time, stream.getInput().getTimeZone())).build())
 					.build();
+					// add time to event queue
+					eventQueue.add(event);
 					timeProducer.sendBytes(event.toByteArray());
 					if(lastUpdate != null) { 
 						Duration duration = Duration.between(lastUpdate, time);
@@ -272,7 +290,8 @@ public class StreamEventPublisherExt implements XStreamExtension, XStreamRowList
 					XStreamRowSignal signal = signalQueue.take();
 					GStreamEvent event = XStreamEventHelper.buildEntitySignalEvent(signal.getRow(), signal);
 					signalProducer.sendBytes(event.toByteArray());
-					
+					// add signal to event queue
+					eventQueue.add(event);
 				} catch (Exception e) {
 					if (e instanceof InterruptedException) { 
 						return;
@@ -314,6 +333,7 @@ public class StreamEventPublisherExt implements XStreamExtension, XStreamRowList
 					if(logger.isDebugEnabled()) { 
 						logger.debug(MarkerFactory.getMarker("SnapshotPublish"), "{} {} {}",snapshot.row.getId(),DunkTime.toStringTimeStamp(snapshot.time),type.getNode());
 					}
+					eventQueue.add(event);
 					publishQueue.add(event);
 				} catch (Exception e) {
 					if (e instanceof InterruptedException) { 
@@ -328,7 +348,7 @@ public class StreamEventPublisherExt implements XStreamExtension, XStreamRowList
 		
 	}
 
-	public class EventPublisher extends Thread {
+	public class SnapshotPublisher extends Thread {
 
 		public void run() {
 		
@@ -367,6 +387,34 @@ public class StreamEventPublisherExt implements XStreamExtension, XStreamRowList
 			}
 		}
 	}
+	
+	public class EventPublisher extends Thread {
+
+		public void run() {
+		
+			while (!interrupted()) {
+				
+				GStreamEvent event = null;
+				try {
+				
+					event = eventQueue.take();
+					
+				} catch (Exception e) {
+					logger.error("Exception taking event from  " + e.toString());
+					continue;
+				}
+
+				try {
+					eventProducer.sendBytes(event.toByteArray());
+
+				} catch (Exception e) {
+					logger.error("Exception Publishing Stream Event " + e.toString());
+				}
+
+			}
+		}
+	}
+
 
 	// needs a row signal map
 	// <entiyidentifier,List<signals>)

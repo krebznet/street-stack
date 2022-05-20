@@ -18,8 +18,13 @@ public class WorkerContainerWebService {
 	private WorkerContainerService service; 
 	
 	@PostMapping(path = "/worker/stream/container/start")
-	public @ResponseBody DataStreamWorkerContainerStartResp startWorker(@RequestBody() DataStreamWorkerContainerStartReq req) { 
+	public @ResponseBody DataStreamWorkerContainerStartResp startWorkerContainer(@RequestBody() DataStreamWorkerContainerStartReq req) { 
 		return service.createContainer(req);
+	}
+	
+	@GetMapping(path = "/worker/stream/container/stop")
+	public void stopWorkerContainer(@RequestParam() String workerId) { 
+		
 	}
 	
 	@GetMapping(path = "/worker/ping")

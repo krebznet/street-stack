@@ -1,12 +1,10 @@
 package com.dunkware.common.mongo.test;
 
-import static com.mongodb.client.model.Accumulators.sum;
+import static com.mongodb.client.model.Accumulators.max;
+import static com.mongodb.client.model.Accumulators.min;
 import static com.mongodb.client.model.Aggregates.group;
 import static com.mongodb.client.model.Aggregates.match;
 import static com.mongodb.client.model.Filters.eq;
-import static com.mongodb.client.model.Accumulators.max;
-import static com.mongodb.client.model.Accumulators.min;
-import static com.mongodb.client.model.Accumulators.avg;
 
 import java.time.LocalTime;
 //import static com.mongodb.client.Pr
@@ -14,7 +12,6 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-import org.apache.kafka.common.metrics.stats.Count;
 import org.bson.Document;
 import org.bson.conversions.Bson;
 
@@ -23,7 +20,6 @@ import com.dunkware.common.mongo.DMongoCollection;
 import com.dunkware.common.mongo.DMongoDatabase;
 import com.dunkware.common.util.stopwatch.DStopWatch;
 import com.dunkware.common.util.time.DunkTime;
-import com.mongodb.internal.client.model.AggregationLevel;
 
 public class AggTest1 {
 
@@ -38,7 +34,7 @@ public class AggTest1 {
 		try {
 			 client = DMongoClient.connect("mongodb://data2.dunkware.net:27017");
 			 database = client.getDatabase("street");
-			 collection = database.getCollection("snapshot_us_equity_220518");
+			 collection = database.getCollection("snapshot_us_equity_220519");
 			 test1();
 			 ///coundDocumentsByIdent();
 		} catch (Exception e) {

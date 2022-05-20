@@ -1,0 +1,94 @@
+syntax = "proto3";
+
+package dunkware.data.cluster;
+
+option java_multiple_files = true;
+option java_package = "com.dunkware.net.proto.data.cluster";
+option java_outer_classname = "GDataClusterProto";
+
+import 'netstream.proto';
+import 'stream.proto';
+// sent to the workers topic to
+// start a entity search
+message GEntitySearchRequest {
+  int32 searchId = 1;
+  netstream.GEntityMatcher matcher = 2;
+}
+message GEntitySearchException {
+  int32 searchId = 1;
+  string workerId = 2;
+  string exception = 3;
+}
+message GEntitySearchComplete {
+  int32 searchId = 1;
+  string  workerId = 2;
+}
+message GEntitySearchResults {
+  int32 searchId = 1;
+  string workerId = 2;
+  repeated GContainerEntity entities = 3;
+}
+message GContainerEntity {
+   int32 entId = 1;
+   string entIdent = 2;
+   string vars = 3;
+}
+message GContainerSignal {
+  int32 sigId = 1;
+  string sigIdent = 2;
+  int32 entId = 3;
+  string entIdent = 4;
+  string vars = 5;
+}
+
+message GEntityScannerRequest {
+  string scannerIdent = 1;
+  netstream.GEntityMatcher entityMatcher = 2;
+  int32 scanInterval = 3;
+}
+
+message GEntityScannerDispose {
+  string scannerIdent = 1;
+}
+
+message GEntityScannerException {
+  string scannerIdent = 1;
+  string workerId = 2;
+  string exception = 3;
+}
+
+message GEntityScannerUpdate {
+  string scannerIdent = 1;
+  string workerId = 2;
+  netstream.GNetEntityScannerUpdate update = 3;
+}
+
+message GContainerWorkersMessage {
+  oneof Type {
+    GEntityScannerRequest entityScannerRequest = 1;
+    GEntitySearchRequest entitySearchRequest = 2;
+  }
+}
+
+message GContainerWorkerMessage {
+ oneof type {
+   stream.GStreamEvent streamEvent = 1;
+ }
+}
+
+message GContainerServerMessage {
+ oneof type {
+   GEntitySearchResults entitySearchResults = 1;
+   GEntitySearchException entitySearchException =2;
+   GEntityScannerUpdate entityScannerUpdate = 3;
+   GEntityScannerException entityScannerException = 4;
+
+ }
+}
+
+
+
+
+
+
+
