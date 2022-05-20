@@ -1,6 +1,7 @@
 package com.dunkware.xstream.net.core.container;
 
 import java.time.LocalDateTime;
+import java.util.Collection;
 import java.util.List;
 import java.util.function.Predicate;
 
@@ -36,6 +37,10 @@ public interface Container {
 	public void removeTimeListener(ContainerTimeListener listener);
 	
 	public List<ContainerEntitySignal> entitySignals(ContainerEntity entity, GTimeUnit timeUnit, int timeValue, String signalType);
+	
+	public void deleteContainer();
+	
+	public ContainerSearchResults<ContainerEntity> entitySearch(GEntityMatcher matcher) throws ContainerException;
 	
 	public ContainerSearchResults<ContainerEntity> entitySearch(List<Predicate<ContainerEntity>> predicates);
 	

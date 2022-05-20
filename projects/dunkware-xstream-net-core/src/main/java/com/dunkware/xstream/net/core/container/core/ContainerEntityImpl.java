@@ -2,6 +2,7 @@ package com.dunkware.xstream.net.core.container.core;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 import java.util.Vector;
@@ -11,17 +12,23 @@ import java.util.concurrent.Semaphore;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.dunkware.common.util.json.DJson;
+import com.dunkware.common.util.time.DunkTime;
 import com.dunkware.net.core.runtime.core.helpers.GProtoHelper;
 import com.dunkware.net.proto.core.GCalendarRange;
 import com.dunkware.net.proto.core.GCalendarRangeType;
 import com.dunkware.net.proto.core.GDurationRange;
 import com.dunkware.net.proto.netstream.GEntityCriteriaVar;
 import com.dunkware.net.proto.netstream.GEntityCriteriaVarType;
+import com.dunkware.net.proto.stream.GEntitySignal;
+import com.dunkware.net.proto.stream.GEntitySnapshot;
+import com.dunkware.net.proto.stream.GEntityVarSnapshot;
 import com.dunkware.xstream.net.core.container.Container;
 import com.dunkware.xstream.net.core.container.ContainerEntity;
 import com.dunkware.xstream.net.core.container.ContainerEntityListener;
 import com.dunkware.xstream.net.core.container.ContainerEntitySignal;
 import com.dunkware.xstream.net.core.container.ContainerEntitySnapshot;
+import com.dunkware.xstream.net.core.container.ContainerEntityVar;
 import com.dunkware.xstream.net.core.container.ContainerException;
 import com.dunkware.xstream.net.core.container.ContainerSearchException;
 import com.dunkware.xstream.net.core.container.util.ContainerHelper;
@@ -30,11 +37,11 @@ public class ContainerEntityImpl implements ContainerEntity  {
 	
 	
 	private Logger logger = LoggerFactory.getLogger(getClass());
+	private Map<String,ContainerEntityVar> vars = new ConcurrentHashMap<String,ContainerEntityVar>();
+	private Map<String,Object> varLastValues = new ConcurrentHashMap<String, Object>();
 	
-	private List<ContainerEntitySnapshot> snapshotList = new ArrayList<ContainerEntitySnapshot>();
 	private Semaphore snapshotListLock = new Semaphore(1);
 	private Map<LocalDateTime,ContainerEntitySnapshot> snapshots = new ConcurrentHashMap<LocalDateTime,ContainerEntitySnapshot>();
-	private Vector<ContainerEntitySignal> signals = new Vector<ContainerEntitySignal>();
 	private Semaphore signalLock = new Semaphore(1);
 	private Vector<ContainerEntityListener> listeners = new Vector<ContainerEntityListener>();
 	private Semaphore listenerLock = new Semaphore(1);
@@ -43,7 +50,8 @@ public class ContainerEntityImpl implements ContainerEntity  {
 	private String identifier; 
 	
 	
-	private ContainerEntitySnapshot lastSnapshot;
+	private GEntitySnapshot lastSnapshot;
+	private LocalDateTime lastSnapshotTime; 
 	
 	private Container container; 
 	
@@ -61,6 +69,40 @@ public class ContainerEntityImpl implements ContainerEntity  {
 	public int getId() {
 		return id;
 	}
+	
+
+	@Override
+	public Collection<ContainerEntityVar> getVars() {
+		return vars.values();
+	}
+	
+	
+
+	@Override
+	public Object getLastVarValue(String ident) {
+		return getLastVarValue(ident);
+		
+	}
+
+
+	@Override
+	public String getCurrentVarValuesJson() throws ContainerException {
+		try {
+			String json = DJson.serialize(varLastValues);
+			return json;
+		} catch (Exception e) {
+			throw new ContainerException("Exception serializing json var last values map " + e.toString());
+		}
+	}
+
+	@Override
+	public ContainerEntityVar getVar(String ident) throws ContainerException{
+		ContainerEntityVar var = vars.get(ident);
+		if(var == null) { 
+			throw new ContainerException("Variable ident " + ident + " not found");
+		}
+		return var;
+	}
 
 	@Override
 	public Container getContainer() {
@@ -74,51 +116,34 @@ public class ContainerEntityImpl implements ContainerEntity  {
 
 	@Override
 	public List<ContainerEntitySignal> getSignals(LocalDateTime start, LocalDateTime stop) {
-		try {
-			List<ContainerEntitySignal> results = new ArrayList<ContainerEntitySignal>();
-			signalLock.acquire();
-			for (ContainerEntitySignal signal : signals) {
-				if(signal.getTime().isAfter(start) == true && signal.getTime().isAfter(stop) == false) { 
-					results.add(signal);
-				}
-			}
-			return results;
-		} catch (Exception e) {
-			//TOOD: log
-			return new ArrayList<ContainerEntitySignal>();
-		} finally {
-			signalLock.release();
-		}
+		return null;
+		/*
+		 * try { List<ContainerEntitySignal> results = new
+		 * ArrayList<ContainerEntitySignal>(); signalLock.acquire(); for
+		 * (ContainerEntitySignal signal : signals) { if(signal.getTime().isAfter(start)
+		 * == true && signal.getTime().isAfter(stop) == false) { results.add(signal); }
+		 * } return results; } catch (Exception e) { //TOOD: log return new
+		 * ArrayList<ContainerEntitySignal>(); } finally { signalLock.release(); }
+		 */
 	}
 
 	@Override
 	public List<ContainerEntitySignal> getSignals(LocalDateTime start, LocalDateTime stop, String... signalTypes) {
-		try {
-			List<ContainerEntitySignal> results = new ArrayList<ContainerEntitySignal>();
-			signalLock.acquire();
-			for (ContainerEntitySignal cacheEntitySignal : signals) {
-				boolean ofType = false;
-				for (String type : signalTypes) {
-					if(cacheEntitySignal.getIdent().equals(type)) { 
-						ofType = true;
-						break;
-					}
-				}
-				if(!ofType) { 
-					continue;
-				}
-				
-				if(cacheEntitySignal.getTime().isAfter(start) == true && cacheEntitySignal.getTime().isAfter(stop) == false) { 
-					results.add(cacheEntitySignal);
-				}
-			}
-			return results;
-		} catch (Exception e) {
-			//TOOD: log
-			return new ArrayList<ContainerEntitySignal>();
-		} finally {
-			signalLock.release();
-		}
+		return null;
+		/*
+		 * try { List<ContainerEntitySignal> results = new
+		 * ArrayList<ContainerEntitySignal>(); signalLock.acquire(); for
+		 * (ContainerEntitySignal cacheEntitySignal : signals) { boolean ofType = false;
+		 * for (String type : signalTypes) {
+		 * if(cacheEntitySignal.getIdent().equals(type)) { ofType = true; break; } }
+		 * if(!ofType) { continue; }
+		 * 
+		 * if(cacheEntitySignal.getTime().isAfter(start) == true &&
+		 * cacheEntitySignal.getTime().isAfter(stop) == false) {
+		 * results.add(cacheEntitySignal); } } return results; } catch (Exception e) {
+		 * //TOOD: log return new ArrayList<ContainerEntitySignal>(); } finally {
+		 * signalLock.release(); }
+		 */
 	}
 
 
@@ -147,10 +172,6 @@ public class ContainerEntityImpl implements ContainerEntity  {
 		
 	}
 
-	@Override
-	public Map<LocalDateTime, ContainerEntitySnapshot> getSnapshots() {
-		return snapshots;
-	}
 
 
 	@Override
@@ -160,17 +181,12 @@ public class ContainerEntityImpl implements ContainerEntity  {
 
 
 
-	@Override
-	public Vector<ContainerEntitySignal> getSignals() {
-		return signals;
-	}
-
 
 	@Override
-	public void consumeSignal(ContainerEntitySignal signal) {
+	public void consumeSignal(GEntitySignal signal) {
 		try {
 			this.signalLock.acquire();
-			signals.add(signal);
+			
 		} catch (Exception e) {
 			// TODO: handle exception
 		} finally { 
@@ -180,18 +196,36 @@ public class ContainerEntityImpl implements ContainerEntity  {
 
 
 	@Override
-	public ContainerEntitySnapshot getLastSnapshot() {
+	public GEntitySnapshot getLastSnapshot() {
 		return lastSnapshot;
 	}
 
 
 	@Override
-	public void consumeSnapshot(ContainerEntitySnapshot snap) {
+	public void consumeSnapshot(GEntitySnapshot snap) {
 		try {
-		
-			this.snapshots.put(snap.getTime(), snap);
+			lastSnapshot = snap;
+			
+			LocalDateTime time = DunkTime.toLocalDateTime(snap.getTime(),container.getTimeZone());
+			lastSnapshotTime = time;
+			for (GEntityVarSnapshot var : snap.getVarsList()) {
+				Object varValue = ContainerHelper.getSnapshotVarValue(var);
+				if(varValue == null) { 
+					logger.error("Null Variable Detected in snapsht var name " + var.getIdentifier());
+					return;
+				}
+				varLastValues.put(var.getIdentifier(), varValue);
+				ContainerEntityVar cVar = vars.get(var.getIdentifier());
+				if(cVar == null) { 
+					
+					ContainerEntityVarImpl varImpl = new ContainerEntityVarImpl(this,var.getIdentifier(),var.getId(),varValue,time);
+					vars.put(var.getIdentifier(), varImpl);
+				} else { 
+					cVar.setValue(time, varValue);
+				}
+			}
 			snapshotListLock.acquire();
-			this.snapshotList.add(snap);
+			
 		} catch (Exception e) {
 			logger.error("Exception consuming snapshot " + e.toString());
 		} finally { 
@@ -202,56 +236,27 @@ public class ContainerEntityImpl implements ContainerEntity  {
 
 	@Override
 	public int getSignalCount(LocalDateTime from, LocalDateTime to, String... types) {
-		try {
-			signalLock.acquire();
-			int counter = 0; 
-			for (ContainerEntitySignal cacheEntitySignal : signals) {
-				boolean ofType = false;
-				for (String type : types) {
-					if(cacheEntitySignal.getIdent().equals(type)) { 
-						ofType = true;
-						break;
-					}
-				}
-				if(!ofType) { 
-					continue;
-				}
-				
-				if(cacheEntitySignal.getTime().isAfter(from) == true && cacheEntitySignal.getTime().isAfter(to) == false) { 
-					counter++;
-				}
-			}
-			return counter;
-		} catch (Exception e) {
-			return 0;
-		} finally {
-			signalLock.release();
-		}
+		return 0;
+		/*
+		 * try { signalLock.acquire(); int counter = 0; for (ContainerEntitySignal
+		 * cacheEntitySignal : signals) { boolean ofType = false; for (String type :
+		 * types) { if(cacheEntitySignal.getIdent().equals(type)) { ofType = true;
+		 * break; } } if(!ofType) { continue; }
+		 * 
+		 * if(cacheEntitySignal.getTime().isAfter(from) == true &&
+		 * cacheEntitySignal.getTime().isAfter(to) == false) { counter++; } } return
+		 * counter; } catch (Exception e) { return 0; } finally { signalLock.release();
+		 * }
+		 */
 		
 	}
 	
 	
-	@Override
-	public ContainerEntitySnapshot getBackSnapshot(int backCount) throws ContainerSearchException {
-		try {
-			snapshotListLock.acquire();
-			int index = snapshotList.size() - backCount; 
-			if(snapshotList.size() < index + 1)  {
-				throw new ContainerSearchException("Exception getting previous snapshot backcount list size is " + snapshotList.size() + " back count is " + backCount);
-			}
-			return snapshotList.get(index);
-		} catch (Exception e) {
-			throw new ContainerSearchException("Unahdled exception in getPrevious snapshot " + e.toString());
-		} finally { 
-			snapshotListLock.release();
-		}
-	}
-
 
 	@Override
 	public Object resolveCriteriaVar(GEntityCriteriaVar var) throws ContainerException, ContainerSearchException {
 		if(var.getType() == GEntityCriteriaVarType.VALUE_NOW) { 
-			return lastSnapshot.getVars().getValue(var.getIdent());
+			return varLastValues.get(var.getIdent());
 		}
 		if(var.getType() == GEntityCriteriaVarType.VALUE_RELATIVE) { 
 			GCalendarRange range = var.getTimeRange();
@@ -270,11 +275,11 @@ public class ContainerEntityImpl implements ContainerEntity  {
 				return null;
 				// null means it can't resolve. 
 			} else { 
-				ContainerEntitySnapshot snapshot = getBackSnapshot(durationSeconds);
-				Object value = snapshot.getVars().getValue(var.getIdent());
-				if(value == null) { 
-					throw new ContainerSearchException("Relative value variable not found on snapshot var " + var.getIdent());
-				}
+				//ContainerEntitySnapshot snapshot = getBackSnapshot(durationSeconds);
+				//Object value = snapshot.getVars().getValue(var.getIdent());
+				//if(value == null) { 
+				//	throw new ContainerSearchException("Relative value variable not found on snapshot var " + var.getIdent());
+				//}
 			}
 
 		}

@@ -29,12 +29,12 @@ public class EntityVariablePredicate implements Predicate<ContainerEntity> {
 		if(t.getLastSnapshot() == null) { 
 			return false; 
 		}
-		if(t.getLastSnapshot().getVars().hasValue(var) == false) { 
+		if(t.getLastVarValue(var) == null) { 
 			return false; 
 		}
 		double compare;
 		try {
-		 Number bumer = (Number)t.getLastSnapshot().getVars().getValue(var);
+		 Number bumer = (Number)t.getLastVarValue(var);
 		 compare = bumer.doubleValue();
 		} catch (Exception e) {
 			return false; 

@@ -2,6 +2,7 @@ package com.dunkware.xstream.net.core.container.core;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
@@ -26,6 +27,7 @@ import com.dunkware.xstream.net.core.container.Container;
 import com.dunkware.xstream.net.core.container.ContainerEntity;
 import com.dunkware.xstream.net.core.container.ContainerEntitySignal;
 import com.dunkware.xstream.net.core.container.ContainerEntitySnapshot;
+import com.dunkware.xstream.net.core.container.ContainerEntityVar;
 import com.dunkware.xstream.net.core.container.ContainerException;
 import com.dunkware.xstream.net.core.container.ContainerExtension;
 import com.dunkware.xstream.net.core.container.ContainerExtensionType;
@@ -34,6 +36,7 @@ import com.dunkware.xstream.net.core.container.ContainerObserver;
 import com.dunkware.xstream.net.core.container.ContainerRegistry;
 import com.dunkware.xstream.net.core.container.ContainerSearchResults;
 import com.dunkware.xstream.net.core.container.ContainerTimeListener;
+import com.dunkware.xstream.net.core.container.search.ContainerEntityMatcherPredicateBuilder;
 import com.dunkware.xstream.net.core.container.search.ContainerSignalSearchBuilder;
 import com.dunkware.xstream.net.core.container.util.ContainerHelper;
 import com.dunkware.xstream.net.core.scanner.StreamEntityScanner;
@@ -42,6 +45,8 @@ public class ContainerImpl implements Container {
 
 	private Logger logger = LoggerFactory.getLogger(getClass());
 
+	private Map<String,ContainerEntityVar> vars = new ConcurrentHashMap<String,ContainerEntityVar>();
+	
 	private List<ContainerEntity> entities = new ArrayList<ContainerEntity>();
 	private Map<String,Integer> entityIndex = new ConcurrentHashMap<String,Integer>();
 	private List<ContainerEntitySignal> signals = new ArrayList<ContainerEntitySignal>();
@@ -50,6 +55,7 @@ public class ContainerImpl implements Container {
 	private List<ContainerTimeListener> timeListeners = new ArrayList<ContainerTimeListener>();
 	private Semaphore timeListenerLock = new Semaphore(1);
 	private List<ContainerExtension> extensions = new ArrayList<ContainerExtension>();
+	
 	
 	private ContainerInput input;
 
@@ -176,7 +182,26 @@ public class ContainerImpl implements Container {
 	}
 	
 
-	
+
+	@Override
+	public void deleteContainer() {
+		entities.clear();
+		entityIndex.clear();
+		signals.clear();
+		
+	}
+
+	@Override
+	public ContainerSearchResults<ContainerEntity> entitySearch(GEntityMatcher matcher) throws ContainerException {
+		List<Predicate<ContainerEntity>> predicates = null;
+		try {
+			predicates = ContainerEntityMatcherPredicateBuilder.build(matcher, this);	
+		} catch (Exception e) {
+			throw new ContainerException("Exception building GEntityMatrcher predicates " + e.toString());
+		}
+		return entitySearch(predicates);
+
+	}
 
 	@Override
 	public ContainerSearchResults<ContainerEntity> entitySearch(List<Predicate<ContainerEntity>> predicates) {
@@ -284,8 +309,7 @@ public class ContainerImpl implements Container {
 	public void consumeStreamSnapshot(GEntitySnapshot snapshot) {
 		ContainerEntity entity = getOrCreateEntity(snapshot.getId(), snapshot.getIdentifier());
 		try {
-			ContainerEntitySnapshot snap = ContainerHelper.createSnapshot(snapshot, this);
-			entity.consumeSnapshot(snap);
+			entity.consumeSnapshot(snapshot);
 		} catch (Exception e) {
 			logger.error("Exception creating Container Entity Snapshot " + e.toString());
 		}
@@ -300,7 +324,7 @@ public class ContainerImpl implements Container {
 				signals.add(sig);
 				ContainerEntity ent = getEntity(sig.getEntityIdent());
 				if(ent != null) { 
-					ent.consumeSignal(sig);
+					ent.consumeSignal(signal);
 				}
 			} catch (Exception e) {
 				logger.error("signal lock aquire exception" + e.toString());

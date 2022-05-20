@@ -10,6 +10,7 @@ import com.dunkware.net.proto.stream.GEntitySnapshot;
 import com.dunkware.net.proto.stream.GEntityVarSnapshot;
 import com.dunkware.net.proto.stream.GEntityVarSnapshot.ValueCase;
 import com.dunkware.xstream.net.core.container.Container;
+import com.dunkware.xstream.net.core.container.ContainerDataType;
 import com.dunkware.xstream.net.core.container.ContainerEntitySignal;
 import com.dunkware.xstream.net.core.container.ContainerEntitySnapshot;
 import com.dunkware.xstream.net.core.container.ContainerException;
@@ -39,6 +40,11 @@ public class ContainerHelper {
 				dt,
 				vars);
 		return impl;
+		
+	}
+	
+	public static class TypeVarValue {
+		public static Object value; 
 		
 	}
 	
@@ -78,5 +84,47 @@ public class ContainerHelper {
 			
 		}
 		return set;
+	}
+	
+	public static Object getSnapshotVarValue(GEntityVarSnapshot snapshot) { 
+		if(snapshot.getValueCase() == GEntityVarSnapshot.ValueCase.BOOLEANVALUE) { 
+			return snapshot.getBooleanValue();
+		}
+		if(snapshot.getValueCase() == GEntityVarSnapshot.ValueCase.DOUBLEVALUE) { 
+			return snapshot.getDoubleValue();
+		}
+		if(snapshot.getValueCase() == GEntityVarSnapshot.ValueCase.INTVALUE) { 
+			return snapshot.getIntValue();
+		}
+		if(snapshot.getValueCase() == GEntityVarSnapshot.ValueCase.LONGVALUE) { 
+			return snapshot.getLongValue();
+		}
+		if(snapshot.getValueCase() == GEntityVarSnapshot.ValueCase.STRINGVALUE) { 
+			return snapshot.getStringValue();
+		}
+		if(snapshot.getValueCase() == GEntityVarSnapshot.ValueCase.NULLVALUE) { 
+			return null;
+		}
+		return null;
+	}
+	
+	public static ContainerDataType getDataType(Object value) throws ContainerException { 
+		if (value instanceof Double) {
+			return ContainerDataType.DOUBLE;
+		}
+		if (value instanceof Long) {
+			return ContainerDataType.LONG;
+		}
+		if (value instanceof Integer) {
+			return ContainerDataType.INT;
+		}
+		if (value instanceof String) {
+			return ContainerDataType.STRING;
+		}
+		if (value instanceof Boolean) {
+			return ContainerDataType.BOOL;
+		}
+		throw new ContainerException("Object type " + value.getClass().getName() + " is not matching COntainer data type");
+		
 	}
 }
