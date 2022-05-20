@@ -59,5 +59,18 @@ public interface GContainerServerMessageOrBuilder extends
    */
   com.dunkware.net.proto.data.cluster.GEntityScannerExceptionOrBuilder getEntityScannerExceptionOrBuilder();
 
+  /**
+   * <code>.dunkware.data.cluster.GEntitySearchComplete entitySearchComplete = 5;</code>
+   */
+  boolean hasEntitySearchComplete();
+  /**
+   * <code>.dunkware.data.cluster.GEntitySearchComplete entitySearchComplete = 5;</code>
+   */
+  com.dunkware.net.proto.data.cluster.GEntitySearchComplete getEntitySearchComplete();
+  /**
+   * <code>.dunkware.data.cluster.GEntitySearchComplete entitySearchComplete = 5;</code>
+   */
+  com.dunkware.net.proto.data.cluster.GEntitySearchCompleteOrBuilder getEntitySearchCompleteOrBuilder();
+
   public com.dunkware.net.proto.data.cluster.GContainerServerMessage.TypeCase getTypeCase();
 }

@@ -82,6 +82,7 @@ message GContainerServerMessage {
    GEntitySearchException entitySearchException =2;
    GEntityScannerUpdate entityScannerUpdate = 3;
    GEntityScannerException entityScannerException = 4;
+   GEntitySearchComplete entitySearchComplete = 5;
 
  }
 }

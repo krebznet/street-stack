@@ -13,7 +13,7 @@ import com.dunkware.trade.service.data.service.stream.DataStream;
 import com.dunkware.trade.service.data.service.stream.DataStreamService;
 
 @Service()
-public class DataStreamContainerService {
+public class StreamContainerService {
 
 	private Logger logger = LoggerFactory.getLogger(getClass());
 	

@@ -119,7 +119,7 @@ public final class GDataClusterProto {
       "+.dunkware.data.cluster.GEntitySearchReq" +
       "uestH\000B\006\n\004Type\"W\n\027GContainerWorkerMessag" +
       "e\0224\n\013streamEvent\030\001 \001(\0132\035.dunkware.stream" +
-      ".GStreamEventH\000B\006\n\004type\"\333\002\n\027GContainerSe" +
+      ".GStreamEventH\000B\006\n\004type\"\251\003\n\027GContainerSe" +
       "rverMessage\022J\n\023entitySearchResults\030\001 \001(\013" +
       "2+.dunkware.data.cluster.GEntitySearchRe" +
       "sultsH\000\022N\n\025entitySearchException\030\002 \001(\0132-" +
@@ -128,9 +128,10 @@ public final class GDataClusterProto {
       "unkware.data.cluster.GEntityScannerUpdat" +
       "eH\000\022P\n\026entityScannerException\030\004 \001(\0132..du" +
       "nkware.data.cluster.GEntityScannerExcept" +
-      "ionH\000B\006\n\004typeB:\n#com.dunkware.net.proto." +
-      "data.clusterB\021GDataClusterProtoP\001b\006proto" +
-      "3"
+      "ionH\000\022L\n\024entitySearchComplete\030\005 \001(\0132,.du" +
+      "nkware.data.cluster.GEntitySearchComplet" +
+      "eH\000B\006\n\004typeB:\n#com.dunkware.net.proto.da" +
+      "ta.clusterB\021GDataClusterProtoP\001b\006proto3"
     };
     com.google.protobuf.Descriptors.FileDescriptor.InternalDescriptorAssigner assigner =
         new com.google.protobuf.Descriptors.FileDescriptor.    InternalDescriptorAssigner() {
@@ -223,7 +224,7 @@ public final class GDataClusterProto {
     internal_static_dunkware_data_cluster_GContainerServerMessage_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_dunkware_data_cluster_GContainerServerMessage_descriptor,
-        new java.lang.String[] { "EntitySearchResults", "EntitySearchException", "EntityScannerUpdate", "EntityScannerException", "Type", });
+        new java.lang.String[] { "EntitySearchResults", "EntitySearchException", "EntityScannerUpdate", "EntityScannerException", "EntitySearchComplete", "Type", });
     com.dunkware.net.proto.netstream.GNetStreamProto.getDescriptor();
     com.dunkware.net.proto.stream.GStreamProto.getDescriptor();
   }

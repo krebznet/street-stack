@@ -41,4 +41,24 @@ import "google/protobuf/timestamp.proto";
   repeated GNodeUpdate updates = 1;
  
  }
- 
+
+ message GReserveWorkerNodesRequest {
+  int32  requestedNodes = 1;
+  string identifier = 2;
+ }
+
+ message GReserveWorkerNodesResponse {
+   repeated GrantedNode grantedNodes = 1;
+
+   message GrantedNode {
+     string nodeId = 1;
+   }
+ }
+
+ message GReleaseWorkerNodesRequest {
+   string identifier = 1;
+ }
+
+ message GReleaseWorkerNodesResponse {
+   repeated string releasedNodes = 1;
+ }

@@ -48,7 +48,7 @@ public class AggTest1 {
 			try {
 				
 				
-				Bson match = match(eq("ident","AMZN"));
+				Bson match = match(eq("ident","DIS"));
 				
 				Bson group = group("$ident",max("max", "$vars"), min("min","$vars"));
 			

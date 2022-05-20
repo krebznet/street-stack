@@ -47,6 +47,7 @@ import com.dunkware.trade.tick.service.protocol.ticker.spec.TradeTickerListSpec;
 import com.dunkware.xstream.xproject.XScriptProject;
 import com.dunkware.xstream.xproject.bundle.XscriptBundleHelper;
 import com.dunkware.xstream.xproject.model.XScriptBundle;
+import com.google.api.client.util.Value;
 
 public class StreamController {
 
@@ -56,6 +57,9 @@ public class StreamController {
 
 	@Autowired
 	private StreamRepo streamRepo;
+	
+	@Value("${session.worker.node.count}")
+	private int sessionWorkerNodeCount; 
 	
 	private StreamSchedule schedule;
 
@@ -235,7 +239,14 @@ public class StreamController {
 			input.setTickers(tickers);
 			input.setController(this);
 			cluster.getNodeSevice().getAvailableWorkerNodes();
-			List<ClusterNode> nodes = cluster.getNodeSevice().getAvailableWorkerNodes();
+			List<ClusterNode> nodes = null;
+			try {
+				nodes = cluster.getNodeSevice().reserveWorkerNodes(getName() + "_session",sessionWorkerNodeCount);	
+			} catch (Exception e) {
+				logger.error("exception requesting worker nodes " + e.toString());
+				throw new StreamSessionException("Exception getting worker nodes " + e.toString());
+			}
+
 			if (nodes.size() == 0) {
 				logger.error("Exception Starting Stream {} Session, available worker nodes is 0", getName());
 				stats.setState(StreamState.Exception);

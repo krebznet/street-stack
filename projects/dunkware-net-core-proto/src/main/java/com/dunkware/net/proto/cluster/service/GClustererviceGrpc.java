@@ -59,6 +59,70 @@ public final class GClustererviceGrpc {
      return getNodeUpdateStreamMethod;
   }
 
+  private static volatile io.grpc.MethodDescriptor<com.dunkware.net.proto.cluster.GReserveWorkerNodesRequest,
+      com.dunkware.net.proto.cluster.GReserveWorkerNodesResponse> getReserveWorkerNodesMethod;
+
+  @io.grpc.stub.annotations.RpcMethod(
+      fullMethodName = SERVICE_NAME + '/' + "reserveWorkerNodes",
+      requestType = com.dunkware.net.proto.cluster.GReserveWorkerNodesRequest.class,
+      responseType = com.dunkware.net.proto.cluster.GReserveWorkerNodesResponse.class,
+      methodType = io.grpc.MethodDescriptor.MethodType.UNARY)
+  public static io.grpc.MethodDescriptor<com.dunkware.net.proto.cluster.GReserveWorkerNodesRequest,
+      com.dunkware.net.proto.cluster.GReserveWorkerNodesResponse> getReserveWorkerNodesMethod() {
+    io.grpc.MethodDescriptor<com.dunkware.net.proto.cluster.GReserveWorkerNodesRequest, com.dunkware.net.proto.cluster.GReserveWorkerNodesResponse> getReserveWorkerNodesMethod;
+    if ((getReserveWorkerNodesMethod = GClustererviceGrpc.getReserveWorkerNodesMethod) == null) {
+      synchronized (GClustererviceGrpc.class) {
+        if ((getReserveWorkerNodesMethod = GClustererviceGrpc.getReserveWorkerNodesMethod) == null) {
+          GClustererviceGrpc.getReserveWorkerNodesMethod = getReserveWorkerNodesMethod = 
+              io.grpc.MethodDescriptor.<com.dunkware.net.proto.cluster.GReserveWorkerNodesRequest, com.dunkware.net.proto.cluster.GReserveWorkerNodesResponse>newBuilder()
+              .setType(io.grpc.MethodDescriptor.MethodType.UNARY)
+              .setFullMethodName(generateFullMethodName(
+                  "dunkware.cluster.GClusterervice", "reserveWorkerNodes"))
+              .setSampledToLocalTracing(true)
+              .setRequestMarshaller(io.grpc.protobuf.ProtoUtils.marshaller(
+                  com.dunkware.net.proto.cluster.GReserveWorkerNodesRequest.getDefaultInstance()))
+              .setResponseMarshaller(io.grpc.protobuf.ProtoUtils.marshaller(
+                  com.dunkware.net.proto.cluster.GReserveWorkerNodesResponse.getDefaultInstance()))
+                  .setSchemaDescriptor(new GClustererviceMethodDescriptorSupplier("reserveWorkerNodes"))
+                  .build();
+          }
+        }
+     }
+     return getReserveWorkerNodesMethod;
+  }
+
+  private static volatile io.grpc.MethodDescriptor<com.dunkware.net.proto.cluster.GReleaseWorkerNodesRequest,
+      com.dunkware.net.proto.cluster.GReleaseWorkerNodesResponse> getReleaseWorkerNodesMethod;
+
+  @io.grpc.stub.annotations.RpcMethod(
+      fullMethodName = SERVICE_NAME + '/' + "releaseWorkerNodes",
+      requestType = com.dunkware.net.proto.cluster.GReleaseWorkerNodesRequest.class,
+      responseType = com.dunkware.net.proto.cluster.GReleaseWorkerNodesResponse.class,
+      methodType = io.grpc.MethodDescriptor.MethodType.UNARY)
+  public static io.grpc.MethodDescriptor<com.dunkware.net.proto.cluster.GReleaseWorkerNodesRequest,
+      com.dunkware.net.proto.cluster.GReleaseWorkerNodesResponse> getReleaseWorkerNodesMethod() {
+    io.grpc.MethodDescriptor<com.dunkware.net.proto.cluster.GReleaseWorkerNodesRequest, com.dunkware.net.proto.cluster.GReleaseWorkerNodesResponse> getReleaseWorkerNodesMethod;
+    if ((getReleaseWorkerNodesMethod = GClustererviceGrpc.getReleaseWorkerNodesMethod) == null) {
+      synchronized (GClustererviceGrpc.class) {
+        if ((getReleaseWorkerNodesMethod = GClustererviceGrpc.getReleaseWorkerNodesMethod) == null) {
+          GClustererviceGrpc.getReleaseWorkerNodesMethod = getReleaseWorkerNodesMethod = 
+              io.grpc.MethodDescriptor.<com.dunkware.net.proto.cluster.GReleaseWorkerNodesRequest, com.dunkware.net.proto.cluster.GReleaseWorkerNodesResponse>newBuilder()
+              .setType(io.grpc.MethodDescriptor.MethodType.UNARY)
+              .setFullMethodName(generateFullMethodName(
+                  "dunkware.cluster.GClusterervice", "releaseWorkerNodes"))
+              .setSampledToLocalTracing(true)
+              .setRequestMarshaller(io.grpc.protobuf.ProtoUtils.marshaller(
+                  com.dunkware.net.proto.cluster.GReleaseWorkerNodesRequest.getDefaultInstance()))
+              .setResponseMarshaller(io.grpc.protobuf.ProtoUtils.marshaller(
+                  com.dunkware.net.proto.cluster.GReleaseWorkerNodesResponse.getDefaultInstance()))
+                  .setSchemaDescriptor(new GClustererviceMethodDescriptorSupplier("releaseWorkerNodes"))
+                  .build();
+          }
+        }
+     }
+     return getReleaseWorkerNodesMethod;
+  }
+
   /**
    * Creates a new async stub that supports all call types for the service
    */
@@ -93,6 +157,20 @@ public final class GClustererviceGrpc {
       asyncUnimplementedUnaryCall(getNodeUpdateStreamMethod(), responseObserver);
     }
 
+    /**
+     */
+    public void reserveWorkerNodes(com.dunkware.net.proto.cluster.GReserveWorkerNodesRequest request,
+        io.grpc.stub.StreamObserver<com.dunkware.net.proto.cluster.GReserveWorkerNodesResponse> responseObserver) {
+      asyncUnimplementedUnaryCall(getReserveWorkerNodesMethod(), responseObserver);
+    }
+
+    /**
+     */
+    public void releaseWorkerNodes(com.dunkware.net.proto.cluster.GReleaseWorkerNodesRequest request,
+        io.grpc.stub.StreamObserver<com.dunkware.net.proto.cluster.GReleaseWorkerNodesResponse> responseObserver) {
+      asyncUnimplementedUnaryCall(getReleaseWorkerNodesMethod(), responseObserver);
+    }
+
     @java.lang.Override public final io.grpc.ServerServiceDefinition bindService() {
       return io.grpc.ServerServiceDefinition.builder(getServiceDescriptor())
           .addMethod(
@@ -102,6 +180,20 @@ public final class GClustererviceGrpc {
                 com.dunkware.net.proto.cluster.GNodeUpdateRequest,
                 com.dunkware.net.proto.cluster.GNodeUpdateResponse>(
                   this, METHODID_NODE_UPDATE_STREAM)))
+          .addMethod(
+            getReserveWorkerNodesMethod(),
+            asyncUnaryCall(
+              new MethodHandlers<
+                com.dunkware.net.proto.cluster.GReserveWorkerNodesRequest,
+                com.dunkware.net.proto.cluster.GReserveWorkerNodesResponse>(
+                  this, METHODID_RESERVE_WORKER_NODES)))
+          .addMethod(
+            getReleaseWorkerNodesMethod(),
+            asyncUnaryCall(
+              new MethodHandlers<
+                com.dunkware.net.proto.cluster.GReleaseWorkerNodesRequest,
+                com.dunkware.net.proto.cluster.GReleaseWorkerNodesResponse>(
+                  this, METHODID_RELEASE_WORKER_NODES)))
           .build();
     }
   }
@@ -131,6 +223,22 @@ public final class GClustererviceGrpc {
       asyncServerStreamingCall(
           getChannel().newCall(getNodeUpdateStreamMethod(), getCallOptions()), request, responseObserver);
     }
+
+    /**
+     */
+    public void reserveWorkerNodes(com.dunkware.net.proto.cluster.GReserveWorkerNodesRequest request,
+        io.grpc.stub.StreamObserver<com.dunkware.net.proto.cluster.GReserveWorkerNodesResponse> responseObserver) {
+      asyncUnaryCall(
+          getChannel().newCall(getReserveWorkerNodesMethod(), getCallOptions()), request, responseObserver);
+    }
+
+    /**
+     */
+    public void releaseWorkerNodes(com.dunkware.net.proto.cluster.GReleaseWorkerNodesRequest request,
+        io.grpc.stub.StreamObserver<com.dunkware.net.proto.cluster.GReleaseWorkerNodesResponse> responseObserver) {
+      asyncUnaryCall(
+          getChannel().newCall(getReleaseWorkerNodesMethod(), getCallOptions()), request, responseObserver);
+    }
   }
 
   /**
@@ -158,6 +266,20 @@ public final class GClustererviceGrpc {
       return blockingServerStreamingCall(
           getChannel(), getNodeUpdateStreamMethod(), getCallOptions(), request);
     }
+
+    /**
+     */
+    public com.dunkware.net.proto.cluster.GReserveWorkerNodesResponse reserveWorkerNodes(com.dunkware.net.proto.cluster.GReserveWorkerNodesRequest request) {
+      return blockingUnaryCall(
+          getChannel(), getReserveWorkerNodesMethod(), getCallOptions(), request);
+    }
+
+    /**
+     */
+    public com.dunkware.net.proto.cluster.GReleaseWorkerNodesResponse releaseWorkerNodes(com.dunkware.net.proto.cluster.GReleaseWorkerNodesRequest request) {
+      return blockingUnaryCall(
+          getChannel(), getReleaseWorkerNodesMethod(), getCallOptions(), request);
+    }
   }
 
   /**
@@ -177,9 +299,27 @@ public final class GClustererviceGrpc {
         io.grpc.CallOptions callOptions) {
       return new GClustererviceFutureStub(channel, callOptions);
     }
+
+    /**
+     */
+    public com.google.common.util.concurrent.ListenableFuture<com.dunkware.net.proto.cluster.GReserveWorkerNodesResponse> reserveWorkerNodes(
+        com.dunkware.net.proto.cluster.GReserveWorkerNodesRequest request) {
+      return futureUnaryCall(
+          getChannel().newCall(getReserveWorkerNodesMethod(), getCallOptions()), request);
+    }
+
+    /**
+     */
+    public com.google.common.util.concurrent.ListenableFuture<com.dunkware.net.proto.cluster.GReleaseWorkerNodesResponse> releaseWorkerNodes(
+        com.dunkware.net.proto.cluster.GReleaseWorkerNodesRequest request) {
+      return futureUnaryCall(
+          getChannel().newCall(getReleaseWorkerNodesMethod(), getCallOptions()), request);
+    }
   }
 
   private static final int METHODID_NODE_UPDATE_STREAM = 0;
+  private static final int METHODID_RESERVE_WORKER_NODES = 1;
+  private static final int METHODID_RELEASE_WORKER_NODES = 2;
 
   private static final class MethodHandlers<Req, Resp> implements
       io.grpc.stub.ServerCalls.UnaryMethod<Req, Resp>,
@@ -201,6 +341,14 @@ public final class GClustererviceGrpc {
         case METHODID_NODE_UPDATE_STREAM:
           serviceImpl.nodeUpdateStream((com.dunkware.net.proto.cluster.GNodeUpdateRequest) request,
               (io.grpc.stub.StreamObserver<com.dunkware.net.proto.cluster.GNodeUpdateResponse>) responseObserver);
+          break;
+        case METHODID_RESERVE_WORKER_NODES:
+          serviceImpl.reserveWorkerNodes((com.dunkware.net.proto.cluster.GReserveWorkerNodesRequest) request,
+              (io.grpc.stub.StreamObserver<com.dunkware.net.proto.cluster.GReserveWorkerNodesResponse>) responseObserver);
+          break;
+        case METHODID_RELEASE_WORKER_NODES:
+          serviceImpl.releaseWorkerNodes((com.dunkware.net.proto.cluster.GReleaseWorkerNodesRequest) request,
+              (io.grpc.stub.StreamObserver<com.dunkware.net.proto.cluster.GReleaseWorkerNodesResponse>) responseObserver);
           break;
         default:
           throw new AssertionError();
@@ -264,6 +412,8 @@ public final class GClustererviceGrpc {
           serviceDescriptor = result = io.grpc.ServiceDescriptor.newBuilder(SERVICE_NAME)
               .setSchemaDescriptor(new GClustererviceFileDescriptorSupplier())
               .addMethod(getNodeUpdateStreamMethod())
+              .addMethod(getReserveWorkerNodesMethod())
+              .addMethod(getReleaseWorkerNodesMethod())
               .build();
         }
       }

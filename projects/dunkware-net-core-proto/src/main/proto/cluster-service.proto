@@ -13,7 +13,8 @@ import "cluster.proto";
 
 service GClusterervice  {
     rpc nodeUpdateStream( dunkware.cluster.GNodeUpdateRequest) returns (stream dunkware.cluster.GNodeUpdateResponse) {}
-	
+	  rpc reserveWorkerNodes(dunkware.cluster.GReserveWorkerNodesRequest) returns (dunkware.cluster.GReserveWorkerNodesResponse){}
+    rpc releaseWorkerNodes(dunkware.cluster.GReleaseWorkerNodesRequest) returns (dunkware.cluster.GReleaseWorkerNodesResponse) {}
 	
 	
  }

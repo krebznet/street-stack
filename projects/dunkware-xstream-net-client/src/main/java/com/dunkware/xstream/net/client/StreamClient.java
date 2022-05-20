@@ -1,6 +1,9 @@
 package com.dunkware.xstream.net.client;
 
+import java.util.List;
+
 import com.dunkware.common.util.executor.DExecutor;
+import com.dunkware.net.proto.data.cluster.GContainerEntity;
 import com.dunkware.net.proto.netstream.GEntityMatcher;
 import com.dunkware.net.proto.netstream.GNetClientMessage;
 import com.dunkware.xstream.net.core.scanner.StreamEntityScanner;
@@ -25,5 +28,5 @@ public interface StreamClient {
 	
 	public void removeMessageHandler(StreamClientMessageHandler handler);
 	
-	
+	List<GContainerEntity> entitySearch(GEntityMatcher matcher) throws StreamClientException;
 }

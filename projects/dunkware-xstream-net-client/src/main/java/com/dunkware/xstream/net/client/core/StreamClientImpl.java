@@ -1,9 +1,12 @@
 package com.dunkware.xstream.net.client.core;
 
+import java.util.List;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.dunkware.common.util.executor.DExecutor;
+import com.dunkware.net.proto.data.cluster.GContainerEntity;
 import com.dunkware.net.proto.netstream.GEntityMatcher;
 import com.dunkware.net.proto.netstream.GNetClientMessage;
 import com.dunkware.net.proto.netstream.GNetEntityScannerStartRequest;
@@ -83,6 +86,14 @@ public class StreamClientImpl implements StreamClient {
 		// TODO Auto-generated method stub
 		
 	}
+
+	@Override
+	public List<GContainerEntity> entitySearch(GEntityMatcher matcher) throws StreamClientException {
+		// TODO Auto-generated method stub
+		return null;
+	}
+	
+	
 
 	
 	
