@@ -128,30 +128,30 @@ public final class GNetStreamProto {
       "\001(\t\":\n\016GNetTimeUpdate\022(\n\004time\030\001 \001(\0132\032.go" +
       "ogle.protobuf.Timestamp\"=\n\021GNetTimeUpdat" +
       "eAck\022(\n\004time\030\001 \001(\0132\032.google.protobuf.Tim" +
-      "estamp\"(\n\021GNetClientConnect\022\023\n\013clientIde" +
-      "nt\030\001 \001(\t\"\363\001\n\021GNetServerMessage\022P\n\022entity" +
-      "ScannerStart\030\001 \001(\01322.dunkware.netstream." +
-      "GNetEntityScannerStartResponseH\000\0228\n\ntime" +
-      "Update\030\002 \001(\0132\".dunkware.netstream.GNetTi" +
-      "meUpdateH\000\022J\n\023entityScannerUpdate\030\003 \001(\0132" +
-      "+.dunkware.netstream.GNetEntityScannerUp" +
-      "dateH\000B\006\n\004type\"\243\002\n\021GNetClientMessage\0228\n\007" +
-      "connect\030\004 \001(\0132%.dunkware.netstream.GNetC" +
-      "lientConnectH\000\022I\n\014scannerStart\030\001 \001(\01321.d" +
-      "unkware.netstream.GNetEntityScannerStart" +
-      "RequestH\000\022>\n\rtimeUpdateAck\030\002 \001(\0132%.dunkw" +
-      "are.netstream.GNetTimeUpdateAckH\000\022A\n\013sca" +
-      "nnerStop\030\003 \001(\0132*.dunkware.netstream.GNet" +
-      "ScannerStopRequestH\000B\006\n\004type*\214\001\n\026GEntity" +
-      "CriteriaVarType\022\r\n\tVALUE_NOW\020\000\022\022\n\016VALUE_" +
-      "RELATIVE\020\001\022\022\n\016VALUE_ABSOLUTE\020\002\022\022\n\016RANGE_" +
-      "RELATIVE\020\003\022\022\n\016RANGE_ABSOLUTE\020\004\022\023\n\017AGGREG" +
-      "ATION_DAY\020\005*<\n\037GEntityCriteriaVarRangeFu" +
-      "nction\022\007\n\003MAX\020\000\022\007\n\003MIN\020\001\022\007\n\003AVG\020\003*F\n\035GEn" +
-      "tityCriteriaVarAggFunction\022\013\n\007AGG_MAX\020\000\022" +
-      "\013\n\007AGG_MIN\020\001\022\013\n\007AGG_AVG\020\002B5\n com.dunkwar" +
-      "e.net.proto.netstreamB\017GNetStreamProtoP\001" +
-      "b\006proto3"
+      "estamp\"8\n\021GNetClientConnect\022\023\n\013clientIde" +
+      "nt\030\001 \001(\t\022\016\n\006stream\030\002 \001(\t\"\363\001\n\021GNetServerM" +
+      "essage\022P\n\022entityScannerStart\030\001 \001(\01322.dun" +
+      "kware.netstream.GNetEntityScannerStartRe" +
+      "sponseH\000\0228\n\ntimeUpdate\030\002 \001(\0132\".dunkware." +
+      "netstream.GNetTimeUpdateH\000\022J\n\023entityScan" +
+      "nerUpdate\030\003 \001(\0132+.dunkware.netstream.GNe" +
+      "tEntityScannerUpdateH\000B\006\n\004type\"\243\002\n\021GNetC" +
+      "lientMessage\0228\n\007connect\030\004 \001(\0132%.dunkware" +
+      ".netstream.GNetClientConnectH\000\022I\n\014scanne" +
+      "rStart\030\001 \001(\01321.dunkware.netstream.GNetEn" +
+      "tityScannerStartRequestH\000\022>\n\rtimeUpdateA" +
+      "ck\030\002 \001(\0132%.dunkware.netstream.GNetTimeUp" +
+      "dateAckH\000\022A\n\013scannerStop\030\003 \001(\0132*.dunkwar" +
+      "e.netstream.GNetScannerStopRequestH\000B\006\n\004" +
+      "type*\214\001\n\026GEntityCriteriaVarType\022\r\n\tVALUE" +
+      "_NOW\020\000\022\022\n\016VALUE_RELATIVE\020\001\022\022\n\016VALUE_ABSO" +
+      "LUTE\020\002\022\022\n\016RANGE_RELATIVE\020\003\022\022\n\016RANGE_ABSO" +
+      "LUTE\020\004\022\023\n\017AGGREGATION_DAY\020\005*<\n\037GEntityCr" +
+      "iteriaVarRangeFunction\022\007\n\003MAX\020\000\022\007\n\003MIN\020\001" +
+      "\022\007\n\003AVG\020\003*F\n\035GEntityCriteriaVarAggFuncti" +
+      "on\022\013\n\007AGG_MAX\020\000\022\013\n\007AGG_MIN\020\001\022\013\n\007AGG_AVG\020" +
+      "\002B5\n com.dunkware.net.proto.netstreamB\017G" +
+      "NetStreamProtoP\001b\006proto3"
     };
     com.google.protobuf.Descriptors.FileDescriptor.InternalDescriptorAssigner assigner =
         new com.google.protobuf.Descriptors.FileDescriptor.    InternalDescriptorAssigner() {
@@ -238,7 +238,7 @@ public final class GNetStreamProto {
     internal_static_dunkware_netstream_GNetClientConnect_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_dunkware_netstream_GNetClientConnect_descriptor,
-        new java.lang.String[] { "ClientIdent", });
+        new java.lang.String[] { "ClientIdent", "Stream", });
     internal_static_dunkware_netstream_GNetServerMessage_descriptor =
       getDescriptor().getMessageTypes().get(12);
     internal_static_dunkware_netstream_GNetServerMessage_fieldAccessorTable = new

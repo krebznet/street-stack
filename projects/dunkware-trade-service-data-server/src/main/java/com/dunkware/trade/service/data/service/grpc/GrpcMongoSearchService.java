@@ -1,6 +1,8 @@
 package com.dunkware.trade.service.data.service.grpc;
 
 import com.dunkware.net.proto.data.service.GDataServiceGrpc.GDataServiceImplBase;
+import com.dunkware.net.proto.netstream.GNetClientMessage;
+import com.dunkware.net.proto.netstream.GNetServerMessage;
 import com.dunkware.net.proto.stream.GEntitySignalQuery;
 import com.dunkware.net.proto.stream.GEntitySignalSearchRequest;
 import com.dunkware.net.proto.stream.GEntitySignalSearchResponse;
@@ -31,6 +33,16 @@ public class GrpcMongoSearchService extends GDataServiceImplBase {
 			
 		super.signalSearch(request, responseObserver);
 	}
+
+	@Override
+	public StreamObserver<GNetClientMessage> streamClient(StreamObserver<GNetServerMessage> responseObserver) {
+		// TODO Auto-generated method stub
+		// StreamObserver<GNetServerMessage> responseObserver --> this is our outbound message sender
+		// we implement a StreamObserver for incoming client messages; 
+		
+		return super.streamClient(responseObserver);
+	}
+	
 	
 	
 

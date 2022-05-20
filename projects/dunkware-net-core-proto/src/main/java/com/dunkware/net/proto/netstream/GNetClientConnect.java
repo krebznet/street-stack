@@ -17,6 +17,7 @@ private static final long serialVersionUID = 0L;
   }
   private GNetClientConnect() {
     clientIdent_ = "";
+    stream_ = "";
   }
 
   @java.lang.Override
@@ -47,6 +48,12 @@ private static final long serialVersionUID = 0L;
             java.lang.String s = input.readStringRequireUtf8();
 
             clientIdent_ = s;
+            break;
+          }
+          case 18: {
+            java.lang.String s = input.readStringRequireUtf8();
+
+            stream_ = s;
             break;
           }
           default: {
@@ -115,6 +122,40 @@ private static final long serialVersionUID = 0L;
     }
   }
 
+  public static final int STREAM_FIELD_NUMBER = 2;
+  private volatile java.lang.Object stream_;
+  /**
+   * <code>string stream = 2;</code>
+   */
+  public java.lang.String getStream() {
+    java.lang.Object ref = stream_;
+    if (ref instanceof java.lang.String) {
+      return (java.lang.String) ref;
+    } else {
+      com.google.protobuf.ByteString bs = 
+          (com.google.protobuf.ByteString) ref;
+      java.lang.String s = bs.toStringUtf8();
+      stream_ = s;
+      return s;
+    }
+  }
+  /**
+   * <code>string stream = 2;</code>
+   */
+  public com.google.protobuf.ByteString
+      getStreamBytes() {
+    java.lang.Object ref = stream_;
+    if (ref instanceof java.lang.String) {
+      com.google.protobuf.ByteString b = 
+          com.google.protobuf.ByteString.copyFromUtf8(
+              (java.lang.String) ref);
+      stream_ = b;
+      return b;
+    } else {
+      return (com.google.protobuf.ByteString) ref;
+    }
+  }
+
   private byte memoizedIsInitialized = -1;
   @java.lang.Override
   public final boolean isInitialized() {
@@ -132,6 +173,9 @@ private static final long serialVersionUID = 0L;
     if (!getClientIdentBytes().isEmpty()) {
       com.google.protobuf.GeneratedMessageV3.writeString(output, 1, clientIdent_);
     }
+    if (!getStreamBytes().isEmpty()) {
+      com.google.protobuf.GeneratedMessageV3.writeString(output, 2, stream_);
+    }
     unknownFields.writeTo(output);
   }
 
@@ -143,6 +187,9 @@ private static final long serialVersionUID = 0L;
     size = 0;
     if (!getClientIdentBytes().isEmpty()) {
       size += com.google.protobuf.GeneratedMessageV3.computeStringSize(1, clientIdent_);
+    }
+    if (!getStreamBytes().isEmpty()) {
+      size += com.google.protobuf.GeneratedMessageV3.computeStringSize(2, stream_);
     }
     size += unknownFields.getSerializedSize();
     memoizedSize = size;
@@ -162,6 +209,8 @@ private static final long serialVersionUID = 0L;
     boolean result = true;
     result = result && getClientIdent()
         .equals(other.getClientIdent());
+    result = result && getStream()
+        .equals(other.getStream());
     result = result && unknownFields.equals(other.unknownFields);
     return result;
   }
@@ -175,6 +224,8 @@ private static final long serialVersionUID = 0L;
     hash = (19 * hash) + getDescriptor().hashCode();
     hash = (37 * hash) + CLIENTIDENT_FIELD_NUMBER;
     hash = (53 * hash) + getClientIdent().hashCode();
+    hash = (37 * hash) + STREAM_FIELD_NUMBER;
+    hash = (53 * hash) + getStream().hashCode();
     hash = (29 * hash) + unknownFields.hashCode();
     memoizedHashCode = hash;
     return hash;
@@ -310,6 +361,8 @@ private static final long serialVersionUID = 0L;
       super.clear();
       clientIdent_ = "";
 
+      stream_ = "";
+
       return this;
     }
 
@@ -337,6 +390,7 @@ private static final long serialVersionUID = 0L;
     public com.dunkware.net.proto.netstream.GNetClientConnect buildPartial() {
       com.dunkware.net.proto.netstream.GNetClientConnect result = new com.dunkware.net.proto.netstream.GNetClientConnect(this);
       result.clientIdent_ = clientIdent_;
+      result.stream_ = stream_;
       onBuilt();
       return result;
     }
@@ -387,6 +441,10 @@ private static final long serialVersionUID = 0L;
       if (other == com.dunkware.net.proto.netstream.GNetClientConnect.getDefaultInstance()) return this;
       if (!other.getClientIdent().isEmpty()) {
         clientIdent_ = other.clientIdent_;
+        onChanged();
+      }
+      if (!other.getStream().isEmpty()) {
+        stream_ = other.stream_;
         onChanged();
       }
       this.mergeUnknownFields(other.unknownFields);
@@ -483,6 +541,75 @@ private static final long serialVersionUID = 0L;
   checkByteStringIsUtf8(value);
       
       clientIdent_ = value;
+      onChanged();
+      return this;
+    }
+
+    private java.lang.Object stream_ = "";
+    /**
+     * <code>string stream = 2;</code>
+     */
+    public java.lang.String getStream() {
+      java.lang.Object ref = stream_;
+      if (!(ref instanceof java.lang.String)) {
+        com.google.protobuf.ByteString bs =
+            (com.google.protobuf.ByteString) ref;
+        java.lang.String s = bs.toStringUtf8();
+        stream_ = s;
+        return s;
+      } else {
+        return (java.lang.String) ref;
+      }
+    }
+    /**
+     * <code>string stream = 2;</code>
+     */
+    public com.google.protobuf.ByteString
+        getStreamBytes() {
+      java.lang.Object ref = stream_;
+      if (ref instanceof String) {
+        com.google.protobuf.ByteString b = 
+            com.google.protobuf.ByteString.copyFromUtf8(
+                (java.lang.String) ref);
+        stream_ = b;
+        return b;
+      } else {
+        return (com.google.protobuf.ByteString) ref;
+      }
+    }
+    /**
+     * <code>string stream = 2;</code>
+     */
+    public Builder setStream(
+        java.lang.String value) {
+      if (value == null) {
+    throw new NullPointerException();
+  }
+  
+      stream_ = value;
+      onChanged();
+      return this;
+    }
+    /**
+     * <code>string stream = 2;</code>
+     */
+    public Builder clearStream() {
+      
+      stream_ = getDefaultInstance().getStream();
+      onChanged();
+      return this;
+    }
+    /**
+     * <code>string stream = 2;</code>
+     */
+    public Builder setStreamBytes(
+        com.google.protobuf.ByteString value) {
+      if (value == null) {
+    throw new NullPointerException();
+  }
+  checkByteStringIsUtf8(value);
+      
+      stream_ = value;
       onChanged();
       return this;
     }

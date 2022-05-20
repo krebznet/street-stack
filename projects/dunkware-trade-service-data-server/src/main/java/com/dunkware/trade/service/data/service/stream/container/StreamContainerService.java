@@ -11,6 +11,7 @@ import org.springframework.stereotype.Service;
 
 import com.dunkware.trade.service.data.service.stream.DataStream;
 import com.dunkware.trade.service.data.service.stream.DataStreamService;
+import com.dunkware.trade.service.data.service.stream.container.connector.GrpcStreamConnector;
 
 @Service()
 public class StreamContainerService {
@@ -26,6 +27,11 @@ public class StreamContainerService {
 		for (DataStream dataStream : dataStreams) {
 			
 		}
+	}
+	
+	public void newConnector(GrpcStreamConnector connector) { 
+		// get that first message find a stream controller
+		// then create a new connection. 
 	}
 	
 	private class StreamContainerBuilder implements Runnable {

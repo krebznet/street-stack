@@ -91,6 +91,38 @@ public final class GDataServiceGrpc {
      return getEntitySearchMethod;
   }
 
+  private static volatile io.grpc.MethodDescriptor<com.dunkware.net.proto.netstream.GNetClientMessage,
+      com.dunkware.net.proto.netstream.GNetServerMessage> getStreamClientMethod;
+
+  @io.grpc.stub.annotations.RpcMethod(
+      fullMethodName = SERVICE_NAME + '/' + "streamClient",
+      requestType = com.dunkware.net.proto.netstream.GNetClientMessage.class,
+      responseType = com.dunkware.net.proto.netstream.GNetServerMessage.class,
+      methodType = io.grpc.MethodDescriptor.MethodType.CLIENT_STREAMING)
+  public static io.grpc.MethodDescriptor<com.dunkware.net.proto.netstream.GNetClientMessage,
+      com.dunkware.net.proto.netstream.GNetServerMessage> getStreamClientMethod() {
+    io.grpc.MethodDescriptor<com.dunkware.net.proto.netstream.GNetClientMessage, com.dunkware.net.proto.netstream.GNetServerMessage> getStreamClientMethod;
+    if ((getStreamClientMethod = GDataServiceGrpc.getStreamClientMethod) == null) {
+      synchronized (GDataServiceGrpc.class) {
+        if ((getStreamClientMethod = GDataServiceGrpc.getStreamClientMethod) == null) {
+          GDataServiceGrpc.getStreamClientMethod = getStreamClientMethod = 
+              io.grpc.MethodDescriptor.<com.dunkware.net.proto.netstream.GNetClientMessage, com.dunkware.net.proto.netstream.GNetServerMessage>newBuilder()
+              .setType(io.grpc.MethodDescriptor.MethodType.CLIENT_STREAMING)
+              .setFullMethodName(generateFullMethodName(
+                  "dunkware.data.service.GDataService", "streamClient"))
+              .setSampledToLocalTracing(true)
+              .setRequestMarshaller(io.grpc.protobuf.ProtoUtils.marshaller(
+                  com.dunkware.net.proto.netstream.GNetClientMessage.getDefaultInstance()))
+              .setResponseMarshaller(io.grpc.protobuf.ProtoUtils.marshaller(
+                  com.dunkware.net.proto.netstream.GNetServerMessage.getDefaultInstance()))
+                  .setSchemaDescriptor(new GDataServiceMethodDescriptorSupplier("streamClient"))
+                  .build();
+          }
+        }
+     }
+     return getStreamClientMethod;
+  }
+
   /**
    * Creates a new async stub that supports all call types for the service
    */
@@ -132,6 +164,13 @@ public final class GDataServiceGrpc {
       asyncUnimplementedUnaryCall(getEntitySearchMethod(), responseObserver);
     }
 
+    /**
+     */
+    public io.grpc.stub.StreamObserver<com.dunkware.net.proto.netstream.GNetClientMessage> streamClient(
+        io.grpc.stub.StreamObserver<com.dunkware.net.proto.netstream.GNetServerMessage> responseObserver) {
+      return asyncUnimplementedStreamingCall(getStreamClientMethod(), responseObserver);
+    }
+
     @java.lang.Override public final io.grpc.ServerServiceDefinition bindService() {
       return io.grpc.ServerServiceDefinition.builder(getServiceDescriptor())
           .addMethod(
@@ -148,6 +187,13 @@ public final class GDataServiceGrpc {
                 com.dunkware.net.proto.stream.GEntitySearchRequest,
                 com.dunkware.net.proto.stream.GEntitySearchResponse>(
                   this, METHODID_ENTITY_SEARCH)))
+          .addMethod(
+            getStreamClientMethod(),
+            asyncClientStreamingCall(
+              new MethodHandlers<
+                com.dunkware.net.proto.netstream.GNetClientMessage,
+                com.dunkware.net.proto.netstream.GNetServerMessage>(
+                  this, METHODID_STREAM_CLIENT)))
           .build();
     }
   }
@@ -184,6 +230,14 @@ public final class GDataServiceGrpc {
         io.grpc.stub.StreamObserver<com.dunkware.net.proto.stream.GEntitySearchResponse> responseObserver) {
       asyncUnaryCall(
           getChannel().newCall(getEntitySearchMethod(), getCallOptions()), request, responseObserver);
+    }
+
+    /**
+     */
+    public io.grpc.stub.StreamObserver<com.dunkware.net.proto.netstream.GNetClientMessage> streamClient(
+        io.grpc.stub.StreamObserver<com.dunkware.net.proto.netstream.GNetServerMessage> responseObserver) {
+      return asyncClientStreamingCall(
+          getChannel().newCall(getStreamClientMethod(), getCallOptions()), responseObserver);
     }
   }
 
@@ -257,6 +311,7 @@ public final class GDataServiceGrpc {
 
   private static final int METHODID_SIGNAL_SEARCH = 0;
   private static final int METHODID_ENTITY_SEARCH = 1;
+  private static final int METHODID_STREAM_CLIENT = 2;
 
   private static final class MethodHandlers<Req, Resp> implements
       io.grpc.stub.ServerCalls.UnaryMethod<Req, Resp>,
@@ -293,6 +348,9 @@ public final class GDataServiceGrpc {
     public io.grpc.stub.StreamObserver<Req> invoke(
         io.grpc.stub.StreamObserver<Resp> responseObserver) {
       switch (methodId) {
+        case METHODID_STREAM_CLIENT:
+          return (io.grpc.stub.StreamObserver<Req>) serviceImpl.streamClient(
+              (io.grpc.stub.StreamObserver<com.dunkware.net.proto.netstream.GNetServerMessage>) responseObserver);
         default:
           throw new AssertionError();
       }
@@ -346,6 +404,7 @@ public final class GDataServiceGrpc {
               .setSchemaDescriptor(new GDataServiceFileDescriptorSupplier())
               .addMethod(getSignalSearchMethod())
               .addMethod(getEntitySearchMethod())
+              .addMethod(getStreamClientMethod())
               .build();
         }
       }

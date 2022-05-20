@@ -24,14 +24,17 @@ public final class GDataServiceProto {
   static {
     java.lang.String[] descriptorData = {
       "\n\022data-service.proto\022\025dunkware.data.serv" +
-      "ice\032\014stream.proto\032\ndata.proto2\324\001\n\014GDataS" +
-      "ervice\022g\n\014signalSearch\022).dunkware.data.G" +
-      "EntitySignalSearchRequest\032*.dunkware.dat" +
-      "a.GEntitySignalSearchResponse\"\000\022[\n\014entit" +
-      "ySearch\022#.dunkware.data.GEntitySearchReq" +
-      "uest\032$.dunkware.data.GEntitySearchRespon" +
-      "se\"\000B:\n#com.dunkware.net.proto.data.serv" +
-      "iceB\021GDataServiceProtoP\001b\006proto3"
+      "ice\032\014stream.proto\032\ndata.proto\032\017netstream" +
+      ".proto2\266\002\n\014GDataService\022g\n\014signalSearch\022" +
+      ").dunkware.data.GEntitySignalSearchReque" +
+      "st\032*.dunkware.data.GEntitySignalSearchRe" +
+      "sponse\"\000\022[\n\014entitySearch\022#.dunkware.data" +
+      ".GEntitySearchRequest\032$.dunkware.data.GE" +
+      "ntitySearchResponse\"\000\022`\n\014streamClient\022%." +
+      "dunkware.netstream.GNetClientMessage\032%.d" +
+      "unkware.netstream.GNetServerMessage\"\000(\001B" +
+      ":\n#com.dunkware.net.proto.data.serviceB\021" +
+      "GDataServiceProtoP\001b\006proto3"
     };
     com.google.protobuf.Descriptors.FileDescriptor.InternalDescriptorAssigner assigner =
         new com.google.protobuf.Descriptors.FileDescriptor.    InternalDescriptorAssigner() {
@@ -46,9 +49,11 @@ public final class GDataServiceProto {
         new com.google.protobuf.Descriptors.FileDescriptor[] {
           com.dunkware.net.proto.stream.GStreamProto.getDescriptor(),
           com.dunkware.net.proto.stream.GDataProto.getDescriptor(),
+          com.dunkware.net.proto.netstream.GNetStreamProto.getDescriptor(),
         }, assigner);
     com.dunkware.net.proto.stream.GStreamProto.getDescriptor();
     com.dunkware.net.proto.stream.GDataProto.getDescriptor();
+    com.dunkware.net.proto.netstream.GNetStreamProto.getDescriptor();
   }
 
   // @@protoc_insertion_point(outer_class_scope)

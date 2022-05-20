@@ -16,4 +16,14 @@ public interface GNetClientConnectOrBuilder extends
    */
   com.google.protobuf.ByteString
       getClientIdentBytes();
+
+  /**
+   * <code>string stream = 2;</code>
+   */
+  java.lang.String getStream();
+  /**
+   * <code>string stream = 2;</code>
+   */
+  com.google.protobuf.ByteString
+      getStreamBytes();
 }

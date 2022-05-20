@@ -94,6 +94,7 @@ message GNetTimeUpdateAck {
 
 message GNetClientConnect {
   string clientIdent = 1;
+  string stream = 2;
 }
 
 message GNetServerMessage {
