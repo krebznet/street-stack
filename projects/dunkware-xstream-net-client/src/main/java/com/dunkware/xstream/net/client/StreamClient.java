@@ -3,9 +3,9 @@ package com.dunkware.xstream.net.client;
 import java.util.List;
 
 import com.dunkware.common.util.executor.DExecutor;
-import com.dunkware.net.proto.data.cluster.GContainerEntity;
-import com.dunkware.net.proto.netstream.GEntityMatcher;
 import com.dunkware.net.proto.netstream.GNetClientMessage;
+import com.dunkware.net.proto.netstream.GNetEntity;
+import com.dunkware.net.proto.netstream.GNetEntityMatcher;
 import com.dunkware.xstream.net.core.scanner.StreamEntityScanner;
 
 public interface StreamClient {
@@ -16,7 +16,7 @@ public interface StreamClient {
 	
 	public boolean isConnected();
 	
-	public StreamEntityScanner entityScanner(GEntityMatcher entityMatcher, String identifier) throws StreamClientException;
+	public StreamEntityScanner entityScanner(GNetEntityMatcher entityMatcher, int updateInterval, String retVars) throws StreamClientException;
 	
 	public DExecutor getExecutor();
 	
@@ -24,9 +24,9 @@ public interface StreamClient {
 	
 	public void sendMessage(GNetClientMessage message) throws StreamClientException;
 	
-	public void addMessageHandler(StreamClientMessageHandler handler);
+	public void addMessageHandler(StreamClientHandler handler);
 	
-	public void removeMessageHandler(StreamClientMessageHandler handler);
+	public void removeMessageHandler(StreamClientHandler handler);
 	
-	List<GContainerEntity> entitySearch(GEntityMatcher matcher) throws StreamClientException;
+	public StreamClientEntitySearch entitySearch(GNetEntityMatcher matcher, String retVars, StreamClientEntitySearchObserver searchObserver) throws StreamClientException;
 }

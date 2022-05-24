@@ -8,14 +8,9 @@ public interface GNetEntityScannerUpdateOrBuilder extends
     com.google.protobuf.MessageOrBuilder {
 
   /**
-   * <code>string scannerIdent = 1;</code>
+   * <code>int32 scannerId = 1;</code>
    */
-  java.lang.String getScannerIdent();
-  /**
-   * <code>string scannerIdent = 1;</code>
-   */
-  com.google.protobuf.ByteString
-      getScannerIdentBytes();
+  int getScannerId();
 
   /**
    * <code>repeated .dunkware.netstream.GNetEntityScannerItem updates = 2;</code>

@@ -1,5 +1,7 @@
 package com.dunkware.trade.service.data.worker.stream.net.container;
 
+import javax.annotation.PostConstruct;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -16,6 +18,11 @@ public class WorkerContainerWebService {
 
 	@Autowired
 	private WorkerContainerService service; 
+	
+	@PostConstruct
+	public void test() { 
+		System.out.println("loading worker container web service");
+	}
 	
 	@PostMapping(path = "/worker/stream/container/start")
 	public @ResponseBody DataStreamWorkerContainerStartResp startWorkerContainer(@RequestBody() DataStreamWorkerContainerStartReq req) { 

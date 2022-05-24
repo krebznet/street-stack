@@ -10,10 +10,8 @@ import org.springframework.context.ApplicationContext;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.CrossOrigin;
 
-import com.dunkware.net.proto.chart.Grid;
 import com.dunkware.net.proto.stream.GAutoCompleteRequest;
 import com.dunkware.net.proto.stream.GAutoCompleteResponse;
-import com.dunkware.net.proto.stream.GEntitySignalQuery;
 import com.dunkware.net.proto.web.GWebServiceGrpc.GWebServiceImplBase;
 import com.dunkware.trade.service.web.server.autosearch.AutoSearchService;
 import com.dunkware.trade.service.web.server.grpc.proxy.GrpcAutoCompleteProxy;
@@ -48,11 +46,7 @@ public class GrpcWebService extends GWebServiceImplBase {
 	// this will have connector to stream service
 	// this will have connector to beach service
 
-	@Override
-	public void testSignalGrid(GEntitySignalQuery request, StreamObserver<Grid> responseObserver) {
-		
-
-	}
+	
 
 	@Override
 	public StreamObserver<GAutoCompleteRequest> autoCompleteSearch(

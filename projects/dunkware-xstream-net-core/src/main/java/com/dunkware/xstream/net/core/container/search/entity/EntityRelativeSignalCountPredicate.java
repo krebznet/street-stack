@@ -6,25 +6,25 @@ import java.util.function.Predicate;
 
 import com.dunkware.net.proto.core.GOperator;
 import com.dunkware.net.proto.core.GTimeUnit;
+import com.dunkware.xstream.net.core.container.Container;
 import com.dunkware.xstream.net.core.container.ContainerEntity;
 import com.dunkware.xstream.net.core.container.ContainerEntitySignal;
-import com.dunkware.xstream.net.core.container.ContainerSearchResults;
-import com.dunkware.xstream.net.core.container.Container;
 import com.dunkware.xstream.net.core.container.ContainerObserver;
 import com.dunkware.xstream.net.core.container.search.ContainerSignalSearchBuilder;
 
 /**
- * Only want to search for 
+ * Only want to search for
+ * 
  * @author duncankrebs
  *
  */
 public class EntityRelativeSignalCountPredicate extends ContainerObserver implements Predicate<ContainerEntity> {
 
-	
-	public static EntityRelativeSignalCountPredicate newInstance(String entity, String signalType, GOperator operator, GTimeUnit timeUnit, int TimeValue, int count)  {
+	public static EntityRelativeSignalCountPredicate newInstance(String entity, String signalType, GOperator operator,
+			GTimeUnit timeUnit, int TimeValue, int count) {
 		return new EntityRelativeSignalCountPredicate(entity, signalType, operator, timeUnit, count, TimeValue);
 	}
-	
+
 	private String signalType;
 	private int count;
 	private GOperator operator;
@@ -33,11 +33,11 @@ public class EntityRelativeSignalCountPredicate extends ContainerObserver implem
 	private LocalDateTime minTime;
 	private Container stream;
 	private String entity;
-	
+
 	private List<Predicate<ContainerEntitySignal>> signalCountSearch = null;
 
-	private EntityRelativeSignalCountPredicate(String entity, String signalType, GOperator operator, GTimeUnit timeUnit, int count,
-			int TimeValue) {
+	private EntityRelativeSignalCountPredicate(String entity, String signalType, GOperator operator, GTimeUnit timeUnit,
+			int count, int TimeValue) {
 		this.signalType = signalType;
 		this.entity = entity;
 		this.operator = operator;
@@ -47,7 +47,7 @@ public class EntityRelativeSignalCountPredicate extends ContainerObserver implem
 
 	@Override
 	public void update(Container stream) {
-		this.stream = stream; 
+		this.stream = stream;
 		minTime = stream.getTime();
 		if (timeUnit == GTimeUnit.DAY) {
 			minTime = minTime.minusDays(timeValue);
@@ -61,11 +61,12 @@ public class EntityRelativeSignalCountPredicate extends ContainerObserver implem
 		if (timeUnit == GTimeUnit.HOUR) {
 			minTime = minTime.minusHours(timeValue);
 		}
-		 
-		signalCountSearch =  ContainerSignalSearchBuilder.newBuilder().relativeTimeRange(timeUnit, count).includeEntity(entity).includeSignalType(signalType).build();
+
+		signalCountSearch = ContainerSignalSearchBuilder.newBuilder().relativeTimeRange(timeUnit, count)
+				.includeEntity(entity).includeSignalType(signalType).build();
 		for (Predicate<ContainerEntitySignal> predicate : signalCountSearch) {
 			if (predicate instanceof ContainerObserver) {
-				ContainerObserver obs = (ContainerObserver)predicate;
+				ContainerObserver obs = (ContainerObserver) predicate;
 				obs.update(this.stream);
 			}
 		}
@@ -73,48 +74,24 @@ public class EntityRelativeSignalCountPredicate extends ContainerObserver implem
 
 	@Override
 	public boolean test(ContainerEntity t) {
-		// fun part 
-		// new query for signal 
-		ContainerSearchResults<ContainerEntitySignal> results  = stream.signalSearch(signalCountSearch);
-		int signalCount = results.getResults().size();
-		if(operator == GOperator.GT) { 
-			if(count > signalCount) { 
-				return true; 
-			}
-			return false; 
-		}
-		if(operator == GOperator.LT) { 
-			if(count < signalCount) { 
-				return true; 
-			}
-			return false; 
-		}
-		if(operator == GOperator.GTE) { 
-			if(count > signalCount || count == signalCount) { 
-				return true; 
-			}
-			return false; 
-		}
-		if(operator == GOperator.LTE) { 
-			if(count < signalCount || count == signalCount) { 
-				return true; 
-			}
-			return false; 
-		}
-		if(operator == GOperator.EQ) { 
-			if( count == signalCount) { 
-				return true; 
-			}
-			return false; 
-		}
-		if(operator == GOperator.NQ) { 
-			if( count != signalCount) { 
-				return true; 
-			}
-			return false; 
-		}
-		
+		// fun part
+		// new query for signal
 		return false;
-	}
+		/*
+		 * ContainerSearchResults<ContainerEntitySignal> results =
+		 * stream.signalSearch(signalCountSearch); int signalCount =
+		 * results.getResults().size(); if(operator == GOperator.GT) { if(count >
+		 * signalCount) { return true; } return false; } if(operator == GOperator.LT) {
+		 * if(count < signalCount) { return true; } return false; } if(operator ==
+		 * GOperator.GTE) { if(count > signalCount || count == signalCount) { return
+		 * true; } return false; } if(operator == GOperator.LTE) { if(count <
+		 * signalCount || count == signalCount) { return true; } return false; }
+		 * if(operator == GOperator.EQ) { if( count == signalCount) { return true; }
+		 * return false; } if(operator == GOperator.NQ) { if( count != signalCount) {
+		 * return true; } return false; }
+		 * 
+		 * return false; }
+		 */
 
+	}
 }

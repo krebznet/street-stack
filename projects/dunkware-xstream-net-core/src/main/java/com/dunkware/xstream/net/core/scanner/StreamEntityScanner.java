@@ -12,5 +12,5 @@ public interface StreamEntityScanner {
 	
 	public void dispose(); 
 	
-	public String getIdentifier();
+	public int scannerId();
 }

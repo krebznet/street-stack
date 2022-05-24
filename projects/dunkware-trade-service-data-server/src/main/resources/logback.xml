@@ -14,51 +14,28 @@
 	</appender>
 
 
-
-			<appender name="FLUENT"
+	
+  	<appender name="FLUENT"
 		class="ch.qos.logback.more.appenders.DataFluentAppender">
 		<tag>myrock</tag>
-		<label>data</label>
+		<label>cluster</label>
 	<remoteHost>172.16.16.55</remoteHost>
 		<port>32759</port>
 		<additionalField>
 			<key>node</key>
-			<value>data</value>
+			<value>cluster</value>
 		</additionalField>
 	</appender>
-		
-	
-  
-	
 
 	<root level="INFO">
+
 		<appender-ref ref="CONSOLE" additivity="false" />
 	</root>
 
-	
-	<logger name="com.dunkware" level="DEBUG" additivity="false">
-		
-		<appender-ref ref="CONSOLE" additivity="false" />
-		<appender-ref ref="FLUENT" additivity="false" />
-	
-	
+
+	<logger name="com.dunkware" level="INFO">
+	  <appender-ref ref="FLUENT" />
+		<appender-ref ref="CONSOLE" additivity="false"/>
 	</logger>
-	
-	
-	
-	<logger name="com.dunkware.trade.service.data.service.stream.session.writers.SessionMongoSnapshotWriter" level="DEBUG" additivity="false">
-		<appender-ref ref="CONSOLE" additivity="false" />
-	<appender-ref ref="FLUENT" additivity="false" />
-	</logger>
-	
-	<logger name="com.dunkware.trade.tick.api.feed.TickFeedSubscription" level="TRACE">
-		<appender-ref ref="CONSOLE" additivity="false" level="TRACE" />
-	<appender-ref ref="FLUENT" additivity="false" level="TRACE" />
-	</logger>
-	
-
-
-
-
 
 </configuration>

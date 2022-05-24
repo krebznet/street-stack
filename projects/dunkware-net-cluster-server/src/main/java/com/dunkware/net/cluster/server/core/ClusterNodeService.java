@@ -23,6 +23,7 @@ import com.dunkware.common.spec.kafka.DKafkaByteConsumer2Spec.OffsetType;
 import com.dunkware.common.spec.kafka.DKafkaByteConsumer2SpecBuilder;
 import com.dunkware.common.util.json.DJson;
 import com.dunkware.common.util.time.DunkTime;
+import com.dunkware.common.util.uuid.DUUID;
 import com.dunkware.net.cluster.json.node.ClusterNodeState;
 import com.dunkware.net.cluster.json.node.ClusterNodeStats;
 import com.dunkware.net.cluster.json.node.ClusterNodeType;
@@ -53,8 +54,7 @@ public class ClusterNodeService implements DKafkaByteHandler2 {
 		try {
 			spec = DKafkaByteConsumer2SpecBuilder.newBuilder(ConsumerType.Auto, OffsetType.Latest)
 					.addBroker(config.getKafkaBrokers()).addTopic("cluster_core_node_stats")
-					.setClientAndGroup("ClusterPingConsumer" + DunkTime.formatHHMMSS(LocalDateTime.now()),
-							DunkTime.formatHHMMSS(LocalDateTime.now()))
+					.setClientAndGroup("ClusterPingConsumer_" + DUUID.randomUUID(5), "ClusterPingConsumerGroup_" + DUUID.randomUUID(5))
 					.build();
 			statConsumer = DKafkaByteConsumer2.newInstance(spec);
 			statConsumer.start();

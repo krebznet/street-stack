@@ -6,17 +6,17 @@ package dunkware.netstream;
 
 option java_multiple_files = true;
 option java_package = "com.dunkware.net.proto.netstream";
-option java_outer_classname = "GNetStreamProto";
+option java_outer_classname = "GNetProto";
 
 import "core.proto";
 
 import "google/protobuf/timestamp.proto";
 
 /** Net Stream Matchers **/
-message GEntityMatcher {
-  repeated GEntityVarCriteria varCriterias = 1;
+message GNetEntityMatcher {
+  repeated GNetEntityCriteria varCriterias = 1;
 }
-enum GEntityCriteriaVarType {
+enum GNetEntityVarValueType {
   VALUE_NOW = 0;
   VALUE_RELATIVE = 1;
   VALUE_ABSOLUTE = 2;
@@ -24,63 +24,109 @@ enum GEntityCriteriaVarType {
   RANGE_ABSOLUTE = 4;
   AGGREGATION_DAY = 5;
 }
-enum GEntityCriteriaVarRangeFunction {
+enum GNetEntityVarRangeType {
   MAX = 0;
   MIN = 1;
   AVG = 3;
 }
-enum GEntityCriteriaVarAggFunction {
+enum GNetEntityVarAggType {
   AGG_MAX = 0;
   AGG_MIN = 1;
   AGG_AVG = 2;
 }
-message GEntityCriteriaVar {
+message GNetEntityVarValue {
   int32 id = 1;
   string ident = 2;
-  GEntityCriteriaVarType type = 3;
+  GNetEntityVarValueType type = 3;
   dunkware.core.GCalendarRange timeRange = 4;
   core.GTime valueAbsoluteTime = 5;
-  GEntityCriteriaVarRangeFunction rangeFunction = 6;
-  GEntityCriteriaVarAggFunction aggFunction = 7;
+  GNetEntityVarRangeType rangeFunction = 6;
+  GNetEntityVarAggType aggFunction = 7;
   int32 aggDays = 8;
 }
-message GEntityCriteria {
-  repeated GEntityVarCriteria varCriterias = 1;
+message GNetEntityCriteria {
+  repeated GNetEntityVarCriteria varCriterias = 1;
 }
-message GEntityVarCriteria {
-  GEntityCriteriaVar var = 1;
+message GNetEntityVarCriteria {
+  GNetEntityVarValue var = 1;
   core.GOperator operator = 2;
   string value = 3; // needs to be casted at some point
 }
 
-message GNetEntityScannerStartRequest {
-  string scannerIdent = 1;
-  GEntityMatcher matcher = 3;
-  repeated string retVars = 4;
+message GNetEntitySearchRequest {
+  int32 searchId = 1;
+  GNetEntityMatcher matcher = 3;
+  string retVars = 4;
+  string source = 5;
 }
-message GNetEntityScannerStartResponse {
-  string scannerIdent = 1;
-  bool created = 2;
-  string error =3; // if not created tell us why
 
+message GNetEntitySearchResults {
+  int32 searchId = 1;
+  repeated  GNetEntity entities = 2;
+  string source = 3;
 }
-message GNetScannerStopRequest {
-  string scannerIdent = 1;
+
+message GNetEntitySearchComplete {
+  int32 searchId = 1;
+  string source = 2;
+}
+message GNetEntitySearchException {
+  int32 searchId = 1;
+  string exception = 2;
+  string source = 3;
+}
+message GNetEntitySearchResponse {
+   int32 searchId = 1;
+   string source = 2;
+}
+
+message GNetEntityScannerRequest {
+  int32 scannerId = 1;
+  GNetEntityMatcher matcher = 3;
+  string retVars = 4;
+  string source = 5;
+  int32 scanInterval = 6;
+}
+message GNetEntityScannerResponse {
+  int32 scannerId = 1;
+  string source = 2;
+}
+
+message GNetEntityScannerException {
+  int32 scannerId =1;
+  string exception = 2;
+  string source = 3;
+}
+
+message GNetEntityScannerStopRequest {
+ int32 scannerId = 1;
+}
+
+message GNetEntity {
+  int32 entId = 1;
+  string entIdent = 2;
+  string vars = 3;
+}
+message GNetSignal {
+  int32 sigId = 1;
+  string sigIdent = 2;
+  int32 entId = 3;
+  string entIdent = 4;
+  string vars = 5;
+  google.protobuf.Timestamp time = 6;
+
 }
 
 message GNetEntityScannerUpdate {
-  string scannerIdent = 1;
+  int32 scannerId = 1;
   repeated GNetEntityScannerItem updates = 2;
   repeated  GNetEntityScannerUpdate inserts = 3;
   repeated int32 deletes = 4;
 }
 
 message GNetEntityScannerItem {
-  string id = 1;
-  string ident = 2;
-  int64 seconds = 3; // how long in scanner
-  string vars = 4; // JSON -> be nice to parse as a Map
-  
+  int64 duration = 1; // how long in scanner
+  GNetEntity entity = 2;
 }
 
 message GNetTimeUpdate {
@@ -91,28 +137,41 @@ message GNetTimeUpdateAck {
   google.protobuf.Timestamp time = 1;
 }
 
+message GNetClientConnectResponse {
+  bool  connected = 1;
+  string error = 2;
+}
 
-message GNetClientConnect {
+message GNetClientConnectRequest {
   string clientIdent = 1;
   string stream = 2;
 }
 
 message GNetServerMessage {
   oneof type {
-    GNetEntityScannerStartResponse entityScannerStart = 1;
+    GNetEntityScannerResponse entityScannerResponse = 1;
     GNetTimeUpdate timeUpdate = 2;
     GNetEntityScannerUpdate entityScannerUpdate = 3;
+    GNetClientConnectResponse connectResponse = 4;
+    GNetEntitySearchResponse entitySearchResponse = 5;
+    GNetEntitySearchException entitySearchException = 6;
+    GNetEntitySearchComplete entitySearchComplete = 7;
+    GNetEntitySearchResults entitySearchResults = 8;
+    // just get an exception or not;
+    // ACK -> 300/ LIMIT
   }
 }
 
-
 message GNetClientMessage {
   oneof type {
-    GNetClientConnect connect = 4;
-    GNetEntityScannerStartRequest scannerStart = 1;
-    GNetTimeUpdateAck timeUpdateAck = 2;
-    GNetScannerStopRequest scannerStop = 3;
+    GNetClientConnectRequest connectRequest = 1;
+    GNetEntityScannerRequest entityScannerRequest = 2;
+    GNetEntitySearchRequest entitySearchRequest = 3;
+    GNetTimeUpdateAck timeUpdateAck = 4;
+    GNetEntityScannerStopRequest entityScannerStopRequest = 5;
   }
+
+
 }
 
 

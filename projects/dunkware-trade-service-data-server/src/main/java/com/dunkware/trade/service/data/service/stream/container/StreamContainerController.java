@@ -1,3 +1,4 @@
+
 package com.dunkware.trade.service.data.service.stream.container;
 
 import java.util.ArrayList;
@@ -6,6 +7,7 @@ import java.util.Map;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.LinkedBlockingQueue;
+import java.util.concurrent.Semaphore;
 
 import org.apache.kafka.clients.consumer.ConsumerRecord;
 import org.slf4j.Logger;
@@ -16,7 +18,6 @@ import org.springframework.context.ApplicationContext;
 
 import com.dunkware.common.kafka.consumer.DKafkaByteConsumer2;
 import com.dunkware.common.kafka.consumer.DKafkaByteHandler2;
-import com.dunkware.common.kafka.producer.DKafkaByteProducer;
 import com.dunkware.common.spec.kafka.DKafkaByteConsumer2Spec;
 import com.dunkware.common.spec.kafka.DKafkaByteConsumer2Spec.ConsumerType;
 import com.dunkware.common.spec.kafka.DKafkaByteConsumer2Spec.OffsetType;
@@ -26,11 +27,14 @@ import com.dunkware.common.util.uuid.DUUID;
 import com.dunkware.net.cluster.node.Cluster;
 import com.dunkware.net.cluster.node.ClusterNode;
 import com.dunkware.net.proto.data.cluster.GContainerServerMessage;
+import com.dunkware.net.proto.data.cluster.GContainerWorkerMessage;
+import com.dunkware.net.proto.stream.GEntitySignal;
 import com.dunkware.net.proto.stream.GEntitySnapshot;
 import com.dunkware.net.proto.stream.GStreamEvent;
 import com.dunkware.net.proto.stream.GStreamEventType;
 import com.dunkware.trade.service.data.json.worker.container.DataStreamWorkerContainerStartReq;
 import com.dunkware.trade.service.data.service.stream.DataStream;
+import com.dunkware.trade.service.data.util.proto.GContainerProto;
 
 public class StreamContainerController implements DKafkaByteHandler2 {
 
@@ -40,8 +44,8 @@ public class StreamContainerController implements DKafkaByteHandler2 {
 	@Value("${kafka.brokers}")
 	private String kafkaBrokers;
 
-	@Value("${stream.container.node.count}")
-	private int workerNodeCount;
+	@Value("${stream.container.worker.nodes}")
+	private String sessionWorkerNodeIds;
 	
 	@Autowired
 	private ApplicationContext ac;
@@ -52,8 +56,6 @@ public class StreamContainerController implements DKafkaByteHandler2 {
 	
 	private DKafkaByteConsumer2 serverConsumer;
 
-	private DKafkaByteProducer workersProducer; 
-	
 	private BlockingQueue<GContainerServerMessage> serverMessageQueue = new LinkedBlockingQueue<GContainerServerMessage>();
 	
 	private DataStream dataStream;
@@ -66,6 +68,9 @@ public class StreamContainerController implements DKafkaByteHandler2 {
 	
 	private int entityAssignmentIndex = 0; 
 	
+	private List<StreamContainerHandler> messageHandlers = new ArrayList<StreamContainerHandler>();
+	private Semaphore messageHandlerLock = new Semaphore(1);
+	
 	private ServerMessageController serverMessageController;
 	
 	// workers 
@@ -75,11 +80,23 @@ public class StreamContainerController implements DKafkaByteHandler2 {
 	public DataStream getStream() { 
 		return dataStream;
 	}
-	public void start(DataStream dataStream, DExecutor executor) throws Exception {
+	public void start(DataStream dataStream) throws Exception {
 		this.dataStream = dataStream;
-		List<ClusterNode> workers = null;
+		final List<ClusterNode> workers = new ArrayList<ClusterNode>();
 		try {
-			cluster.getNodeSevice().reserveWorkerNodes("stream-data-container", workerNodeCount);
+			String[] configuredWorkers = sessionWorkerNodeIds.split(",");
+			// sometimes this starts too soon before the node receives other node updates
+			Thread.sleep(5000);
+			for (String nodeId : configuredWorkers) {
+				ClusterNode node = cluster.getNodeSevice().getNode(nodeId);
+				if(node == null) { 
+					logger.error("Configured worker node " + nodeId + " not found");
+					
+				} else { 
+					workers.add(node);
+				}
+			}
+			
 		} catch (Exception e) {
 			logger.error("Exception Getting Worker Nodes " + e.toString());
 			return;
@@ -96,7 +113,6 @@ public class StreamContainerController implements DKafkaByteHandler2 {
 						req.setKafkaBroker(kafkaBrokers);
 						req.setServerTopic(dataStream.getName() + "_container_server");
 						req.setStreamIdentifier(dataStream.getName());
-						req.setWorkersTopic(dataStream.getName() + "container_workers");
 						req.setWorkerTopic(dataStream.getName() + "_" + req.getWorkerId());
 						req.setTimeZone(dataStream.getTimeZone());
 						StreamContainerWorker worker = new StreamContainerWorker();
@@ -104,6 +120,7 @@ public class StreamContainerController implements DKafkaByteHandler2 {
 						try {
 							worker.start(clusterNode, req, StreamContainerController.this);
 							StreamContainerController.this.workers.add(worker);
+							
 						} catch (Exception e) {
 							logger.error("Worker container node " + count + " failed " + e.toString());;
 						}
@@ -126,7 +143,7 @@ public class StreamContainerController implements DKafkaByteHandler2 {
 					ServerMessageConsumer mConsumer = new ServerMessageConsumer();
 					serverConsumer.addStreamHandler(mConsumer);
 					// handler 
-					String eventTopic = "stream_" + dataStream.getName().toLowerCase() + "_events_all";
+					String eventTopic = "stream_" + dataStream.getName().toLowerCase() + "_event_all";
 					DKafkaByteConsumer2Spec spec2 = DKafkaByteConsumer2SpecBuilder
 							.newBuilder(ConsumerType.Auto, OffsetType.Latest).addBroker(kafkaBrokers)
 							.addTopic(eventTopic).setClientAndGroup("DataContainerCluster_" + DUUID.randomUUID(4),
@@ -134,10 +151,18 @@ public class StreamContainerController implements DKafkaByteHandler2 {
 							.build();
 					eventConsumer = DKafkaByteConsumer2.newInstance(spec2);
 					eventConsumer.start();
+					eventConsumer.addStreamHandler(StreamContainerController.this);
 					
 					serverMessageController = new ServerMessageController();
 					serverMessageController.start();
 					// then we need shit. 
+					int i = 0;
+					while(i < 3) { 
+						EventPublisher publisher = new EventPublisher();
+						publisher.start();
+						eventPublishers.add(publisher);
+						i++;
+					}
 					
 					
 				} catch (Exception e) {
@@ -151,13 +176,61 @@ public class StreamContainerController implements DKafkaByteHandler2 {
 		starter.start();
 	}
 	
+	public DExecutor getExecutor() { 
+		return cluster.getExecutor();
+	}
 	
+	public List<StreamContainerWorker> getWorkers() { 
+		return workers;
+	}
+	
+	
+	public void addMessageHandler(StreamContainerHandler handler) { 
+		try {
+			messageHandlerLock.acquire();
+			messageHandlers.add(handler);
+		} catch (Exception e) {
+			logger.error("exception adding message handler " + e.toString());
+		} finally { 
+			messageHandlerLock.release();
+		}
+	}
+	
+	public void removeMessageHandler(StreamContainerHandler handler) { 
+		try {
+			messageHandlerLock.acquire();
+			messageHandlers.remove(handler);
+		} catch (Exception e) {
+			logger.error("exception removing message handler " + e.toString());
+		} finally { 
+			messageHandlerLock.release();
+		}
+	}
 
+	public void notifyHandlerMessage(GContainerServerMessage message) { 
+		try {
+			messageHandlerLock.acquire();
+			for (StreamContainerHandler handler : messageHandlers) {
+				try {
+					handler.onControllerMessage(message);
+				} catch (Exception e) {
+					logger.error("Handler on Server message exception handler " + handler.getClass().getName() + e.toString());
+				}
+			}
+		} catch (Exception e) {
+			logger.error("exception notify message handler " + e.toString());
+		} finally { 
+			messageHandlerLock.release();
+		}
+	}
+	
 	@Override
 	public void record(ConsumerRecord<String, byte[]> record) {
 		try {
 			GStreamEvent event = GStreamEvent.parseFrom(record.value());
+			
 			eventQueue.add(event);
+			System.out.println(eventQueue.size());
 		} catch (Exception e) {
 			logger.error("Exception consuming event " + e.toString());
 		}
@@ -178,8 +251,6 @@ public class StreamContainerController implements DKafkaByteHandler2 {
 		} 
 	}
 
-
-	
 	private StreamContainerWorker nextEntityWorker() { 
 		if(entityAssignmentIndex == workers.size() - 1) { 
 			entityAssignmentIndex = 0;
@@ -211,19 +282,23 @@ public class StreamContainerController implements DKafkaByteHandler2 {
 						worker = nextEntityWorker();
 						entityAssignments.put(snapshot.getIdentifier(), worker);
 					}
-					worker.streamEvent(event);
+					worker.sendMessage(GContainerProto.snapshotMessage(snapshot));
 					
 				}
 				if(event.getType() == GStreamEventType.EntitySignal) { 
+					GEntitySignal signal = event.getEntitySignal();
+					GContainerWorkerMessage message = GContainerProto.signalMessage(signal);
 					for (StreamContainerWorker worker : workers) {
-						worker.streamEvent(event);
+						worker.sendMessage(message);
 					}
 				}
 				if(event.getType() == GStreamEventType.TimeUpdate) { 
 					for (StreamContainerWorker worker : workers) {
-						worker.streamEvent(event);
+						worker.sendMessage(GContainerProto.timeUpdateMessage(event.getTimeUpdate()));
 					}
 				}
+				
+				
 				
 				
 			}
@@ -236,10 +311,14 @@ public class StreamContainerController implements DKafkaByteHandler2 {
 		public void run() { 
 			while(!interrupted()) { 
 				try {
-					GContainerServerMessage message = serverMessageQueue.take();
 					
+					GContainerServerMessage message = serverMessageQueue.take();
+					notifyHandlerMessage(message);
 				} catch (Exception e) {
-					// TODO: handle exception
+					if (e instanceof InterruptedException) { 
+						return;
+					}
+					logger.error("Exception in server message controller " + e.toString());
 				}
 				
 			}

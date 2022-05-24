@@ -13,7 +13,6 @@ public class DataStreamWorkerContainerStartReq {
 	private List<ContainerExtensionType> containerExtensions = new ArrayList<ContainerExtensionType>();
 	private String kafkaBroker; 
 	private String serverTopic; 
-	private String workersTopic; 
 	private String workerTopic; 
 	private DTimeZone timeZone; 
 	
@@ -44,12 +43,7 @@ public class DataStreamWorkerContainerStartReq {
 	public void setServerTopic(String serverTopic) {
 		this.serverTopic = serverTopic;
 	}
-	public String getWorkersTopic() {
-		return workersTopic;
-	}
-	public void setWorkersTopic(String workersTopic) {
-		this.workersTopic = workersTopic;
-	}
+	
 	public String getWorkerTopic() {
 		return workerTopic;
 	}

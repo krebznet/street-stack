@@ -16,7 +16,7 @@ private static final long serialVersionUID = 0L;
     super(builder);
   }
   private GNetEntityScannerUpdate() {
-    scannerIdent_ = "";
+    scannerId_ = 0;
     updates_ = java.util.Collections.emptyList();
     inserts_ = java.util.Collections.emptyList();
     deletes_ = java.util.Collections.emptyList();
@@ -46,10 +46,9 @@ private static final long serialVersionUID = 0L;
           case 0:
             done = true;
             break;
-          case 10: {
-            java.lang.String s = input.readStringRequireUtf8();
+          case 8: {
 
-            scannerIdent_ = s;
+            scannerId_ = input.readInt32();
             break;
           }
           case 18: {
@@ -121,50 +120,25 @@ private static final long serialVersionUID = 0L;
   }
   public static final com.google.protobuf.Descriptors.Descriptor
       getDescriptor() {
-    return com.dunkware.net.proto.netstream.GNetStreamProto.internal_static_dunkware_netstream_GNetEntityScannerUpdate_descriptor;
+    return com.dunkware.net.proto.netstream.GNetProto.internal_static_dunkware_netstream_GNetEntityScannerUpdate_descriptor;
   }
 
   @java.lang.Override
   protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
       internalGetFieldAccessorTable() {
-    return com.dunkware.net.proto.netstream.GNetStreamProto.internal_static_dunkware_netstream_GNetEntityScannerUpdate_fieldAccessorTable
+    return com.dunkware.net.proto.netstream.GNetProto.internal_static_dunkware_netstream_GNetEntityScannerUpdate_fieldAccessorTable
         .ensureFieldAccessorsInitialized(
             com.dunkware.net.proto.netstream.GNetEntityScannerUpdate.class, com.dunkware.net.proto.netstream.GNetEntityScannerUpdate.Builder.class);
   }
 
   private int bitField0_;
-  public static final int SCANNERIDENT_FIELD_NUMBER = 1;
-  private volatile java.lang.Object scannerIdent_;
+  public static final int SCANNERID_FIELD_NUMBER = 1;
+  private int scannerId_;
   /**
-   * <code>string scannerIdent = 1;</code>
+   * <code>int32 scannerId = 1;</code>
    */
-  public java.lang.String getScannerIdent() {
-    java.lang.Object ref = scannerIdent_;
-    if (ref instanceof java.lang.String) {
-      return (java.lang.String) ref;
-    } else {
-      com.google.protobuf.ByteString bs = 
-          (com.google.protobuf.ByteString) ref;
-      java.lang.String s = bs.toStringUtf8();
-      scannerIdent_ = s;
-      return s;
-    }
-  }
-  /**
-   * <code>string scannerIdent = 1;</code>
-   */
-  public com.google.protobuf.ByteString
-      getScannerIdentBytes() {
-    java.lang.Object ref = scannerIdent_;
-    if (ref instanceof java.lang.String) {
-      com.google.protobuf.ByteString b = 
-          com.google.protobuf.ByteString.copyFromUtf8(
-              (java.lang.String) ref);
-      scannerIdent_ = b;
-      return b;
-    } else {
-      return (com.google.protobuf.ByteString) ref;
-    }
+  public int getScannerId() {
+    return scannerId_;
   }
 
   public static final int UPDATES_FIELD_NUMBER = 2;
@@ -275,8 +249,8 @@ private static final long serialVersionUID = 0L;
   public void writeTo(com.google.protobuf.CodedOutputStream output)
                       throws java.io.IOException {
     getSerializedSize();
-    if (!getScannerIdentBytes().isEmpty()) {
-      com.google.protobuf.GeneratedMessageV3.writeString(output, 1, scannerIdent_);
+    if (scannerId_ != 0) {
+      output.writeInt32(1, scannerId_);
     }
     for (int i = 0; i < updates_.size(); i++) {
       output.writeMessage(2, updates_.get(i));
@@ -300,8 +274,9 @@ private static final long serialVersionUID = 0L;
     if (size != -1) return size;
 
     size = 0;
-    if (!getScannerIdentBytes().isEmpty()) {
-      size += com.google.protobuf.GeneratedMessageV3.computeStringSize(1, scannerIdent_);
+    if (scannerId_ != 0) {
+      size += com.google.protobuf.CodedOutputStream
+        .computeInt32Size(1, scannerId_);
     }
     for (int i = 0; i < updates_.size(); i++) {
       size += com.google.protobuf.CodedOutputStream
@@ -341,8 +316,8 @@ private static final long serialVersionUID = 0L;
     com.dunkware.net.proto.netstream.GNetEntityScannerUpdate other = (com.dunkware.net.proto.netstream.GNetEntityScannerUpdate) obj;
 
     boolean result = true;
-    result = result && getScannerIdent()
-        .equals(other.getScannerIdent());
+    result = result && (getScannerId()
+        == other.getScannerId());
     result = result && getUpdatesList()
         .equals(other.getUpdatesList());
     result = result && getInsertsList()
@@ -360,8 +335,8 @@ private static final long serialVersionUID = 0L;
     }
     int hash = 41;
     hash = (19 * hash) + getDescriptor().hashCode();
-    hash = (37 * hash) + SCANNERIDENT_FIELD_NUMBER;
-    hash = (53 * hash) + getScannerIdent().hashCode();
+    hash = (37 * hash) + SCANNERID_FIELD_NUMBER;
+    hash = (53 * hash) + getScannerId();
     if (getUpdatesCount() > 0) {
       hash = (37 * hash) + UPDATES_FIELD_NUMBER;
       hash = (53 * hash) + getUpdatesList().hashCode();
@@ -478,13 +453,13 @@ private static final long serialVersionUID = 0L;
       com.dunkware.net.proto.netstream.GNetEntityScannerUpdateOrBuilder {
     public static final com.google.protobuf.Descriptors.Descriptor
         getDescriptor() {
-      return com.dunkware.net.proto.netstream.GNetStreamProto.internal_static_dunkware_netstream_GNetEntityScannerUpdate_descriptor;
+      return com.dunkware.net.proto.netstream.GNetProto.internal_static_dunkware_netstream_GNetEntityScannerUpdate_descriptor;
     }
 
     @java.lang.Override
     protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
         internalGetFieldAccessorTable() {
-      return com.dunkware.net.proto.netstream.GNetStreamProto.internal_static_dunkware_netstream_GNetEntityScannerUpdate_fieldAccessorTable
+      return com.dunkware.net.proto.netstream.GNetProto.internal_static_dunkware_netstream_GNetEntityScannerUpdate_fieldAccessorTable
           .ensureFieldAccessorsInitialized(
               com.dunkware.net.proto.netstream.GNetEntityScannerUpdate.class, com.dunkware.net.proto.netstream.GNetEntityScannerUpdate.Builder.class);
     }
@@ -509,7 +484,7 @@ private static final long serialVersionUID = 0L;
     @java.lang.Override
     public Builder clear() {
       super.clear();
-      scannerIdent_ = "";
+      scannerId_ = 0;
 
       if (updatesBuilder_ == null) {
         updates_ = java.util.Collections.emptyList();
@@ -531,7 +506,7 @@ private static final long serialVersionUID = 0L;
     @java.lang.Override
     public com.google.protobuf.Descriptors.Descriptor
         getDescriptorForType() {
-      return com.dunkware.net.proto.netstream.GNetStreamProto.internal_static_dunkware_netstream_GNetEntityScannerUpdate_descriptor;
+      return com.dunkware.net.proto.netstream.GNetProto.internal_static_dunkware_netstream_GNetEntityScannerUpdate_descriptor;
     }
 
     @java.lang.Override
@@ -553,7 +528,7 @@ private static final long serialVersionUID = 0L;
       com.dunkware.net.proto.netstream.GNetEntityScannerUpdate result = new com.dunkware.net.proto.netstream.GNetEntityScannerUpdate(this);
       int from_bitField0_ = bitField0_;
       int to_bitField0_ = 0;
-      result.scannerIdent_ = scannerIdent_;
+      result.scannerId_ = scannerId_;
       if (updatesBuilder_ == null) {
         if (((bitField0_ & 0x00000002) == 0x00000002)) {
           updates_ = java.util.Collections.unmodifiableList(updates_);
@@ -626,9 +601,8 @@ private static final long serialVersionUID = 0L;
 
     public Builder mergeFrom(com.dunkware.net.proto.netstream.GNetEntityScannerUpdate other) {
       if (other == com.dunkware.net.proto.netstream.GNetEntityScannerUpdate.getDefaultInstance()) return this;
-      if (!other.getScannerIdent().isEmpty()) {
-        scannerIdent_ = other.scannerIdent_;
-        onChanged();
+      if (other.getScannerId() != 0) {
+        setScannerId(other.getScannerId());
       }
       if (updatesBuilder_ == null) {
         if (!other.updates_.isEmpty()) {
@@ -722,71 +696,28 @@ private static final long serialVersionUID = 0L;
     }
     private int bitField0_;
 
-    private java.lang.Object scannerIdent_ = "";
+    private int scannerId_ ;
     /**
-     * <code>string scannerIdent = 1;</code>
+     * <code>int32 scannerId = 1;</code>
      */
-    public java.lang.String getScannerIdent() {
-      java.lang.Object ref = scannerIdent_;
-      if (!(ref instanceof java.lang.String)) {
-        com.google.protobuf.ByteString bs =
-            (com.google.protobuf.ByteString) ref;
-        java.lang.String s = bs.toStringUtf8();
-        scannerIdent_ = s;
-        return s;
-      } else {
-        return (java.lang.String) ref;
-      }
+    public int getScannerId() {
+      return scannerId_;
     }
     /**
-     * <code>string scannerIdent = 1;</code>
+     * <code>int32 scannerId = 1;</code>
      */
-    public com.google.protobuf.ByteString
-        getScannerIdentBytes() {
-      java.lang.Object ref = scannerIdent_;
-      if (ref instanceof String) {
-        com.google.protobuf.ByteString b = 
-            com.google.protobuf.ByteString.copyFromUtf8(
-                (java.lang.String) ref);
-        scannerIdent_ = b;
-        return b;
-      } else {
-        return (com.google.protobuf.ByteString) ref;
-      }
-    }
-    /**
-     * <code>string scannerIdent = 1;</code>
-     */
-    public Builder setScannerIdent(
-        java.lang.String value) {
-      if (value == null) {
-    throw new NullPointerException();
-  }
-  
-      scannerIdent_ = value;
+    public Builder setScannerId(int value) {
+      
+      scannerId_ = value;
       onChanged();
       return this;
     }
     /**
-     * <code>string scannerIdent = 1;</code>
+     * <code>int32 scannerId = 1;</code>
      */
-    public Builder clearScannerIdent() {
+    public Builder clearScannerId() {
       
-      scannerIdent_ = getDefaultInstance().getScannerIdent();
-      onChanged();
-      return this;
-    }
-    /**
-     * <code>string scannerIdent = 1;</code>
-     */
-    public Builder setScannerIdentBytes(
-        com.google.protobuf.ByteString value) {
-      if (value == null) {
-    throw new NullPointerException();
-  }
-  checkByteStringIsUtf8(value);
-      
-      scannerIdent_ = value;
+      scannerId_ = 0;
       onChanged();
       return this;
     }

@@ -15,7 +15,7 @@
 
 
 	
-	<appender name="FLUENT"
+ 	<appender name="FLUENT"
 		class="ch.qos.logback.more.appenders.DataFluentAppender">
 		<tag>myrock</tag>
 		<label>cluster</label>
@@ -34,8 +34,8 @@
 
 
 	<logger name="com.dunkware" level="INFO">
-		<appender-ref ref="FLUENT" />
-
+	  <appender-ref ref="FLUENT" />
+		<appender-ref ref="CONSOLE" additivity="false"/>
 	</logger>
 
 </configuration>

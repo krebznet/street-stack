@@ -2,6 +2,8 @@ package com.dunkware.xstream.net.client.core.registry;
 
 import com.dunkware.xstream.net.client.StreamClientConnector;
 import com.dunkware.xstream.net.client.connector.StreamClientConnectorType;
+import com.dunkware.xstream.net.client.connector.StreamClientGrpcConnectorType;
+import com.dunkware.xstream.net.client.core.connector.StreamClientGrpcConnector;
 
 public class StreamClientRegistry {
 
@@ -15,6 +17,9 @@ public class StreamClientRegistry {
 	}
 	
 	public StreamClientConnector createConnector(StreamClientConnectorType connectorType) throws Exception { 
-		return null;
+		if (connectorType instanceof StreamClientGrpcConnectorType) { 
+			return new StreamClientGrpcConnector();
+		}
+		throw new Exception("Connector type not registered " + connectorType.getClass().getName());
 	}
 }

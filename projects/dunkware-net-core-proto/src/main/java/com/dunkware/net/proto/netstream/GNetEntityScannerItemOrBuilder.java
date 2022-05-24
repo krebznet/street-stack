@@ -8,49 +8,24 @@ public interface GNetEntityScannerItemOrBuilder extends
     com.google.protobuf.MessageOrBuilder {
 
   /**
-   * <code>string id = 1;</code>
-   */
-  java.lang.String getId();
-  /**
-   * <code>string id = 1;</code>
-   */
-  com.google.protobuf.ByteString
-      getIdBytes();
-
-  /**
-   * <code>string ident = 2;</code>
-   */
-  java.lang.String getIdent();
-  /**
-   * <code>string ident = 2;</code>
-   */
-  com.google.protobuf.ByteString
-      getIdentBytes();
-
-  /**
    * <pre>
    * how long in scanner
    * </pre>
    *
-   * <code>int64 seconds = 3;</code>
+   * <code>int64 duration = 1;</code>
    */
-  long getSeconds();
+  long getDuration();
 
   /**
-   * <pre>
-   * JSON -&gt; be nice to parse as a Map
-   * </pre>
-   *
-   * <code>string vars = 4;</code>
+   * <code>.dunkware.netstream.GNetEntity entity = 2;</code>
    */
-  java.lang.String getVars();
+  boolean hasEntity();
   /**
-   * <pre>
-   * JSON -&gt; be nice to parse as a Map
-   * </pre>
-   *
-   * <code>string vars = 4;</code>
+   * <code>.dunkware.netstream.GNetEntity entity = 2;</code>
    */
-  com.google.protobuf.ByteString
-      getVarsBytes();
+  com.dunkware.net.proto.netstream.GNetEntity getEntity();
+  /**
+   * <code>.dunkware.netstream.GNetEntity entity = 2;</code>
+   */
+  com.dunkware.net.proto.netstream.GNetEntityOrBuilder getEntityOrBuilder();
 }

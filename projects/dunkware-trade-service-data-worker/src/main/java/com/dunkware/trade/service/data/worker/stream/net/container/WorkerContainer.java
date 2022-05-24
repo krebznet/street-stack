@@ -15,18 +15,16 @@ import com.dunkware.common.spec.kafka.DKafkaByteConsumer2Spec;
 import com.dunkware.common.spec.kafka.DKafkaByteConsumer2Spec.ConsumerType;
 import com.dunkware.common.spec.kafka.DKafkaByteConsumer2Spec.OffsetType;
 import com.dunkware.common.spec.kafka.DKafkaByteConsumer2SpecBuilder;
+import com.dunkware.common.util.dtime.DTimeZone;
 import com.dunkware.common.util.uuid.DUUID;
 import com.dunkware.net.cluster.node.Cluster;
 import com.dunkware.net.proto.data.cluster.GContainerServerMessage;
 import com.dunkware.net.proto.data.cluster.GContainerWorkerMessage;
 import com.dunkware.net.proto.data.cluster.GContainerWorkerMessage.TypeCase;
-import com.dunkware.net.proto.data.cluster.GContainerWorkersMessage;
-import com.dunkware.net.proto.stream.GEntitySignal;
+import com.dunkware.net.proto.netstream.GNetEntitySearchRequest;
 import com.dunkware.net.proto.stream.GEntitySnapshot;
-import com.dunkware.net.proto.stream.GStreamEvent;
-import com.dunkware.net.proto.stream.GStreamEventType;
-import com.dunkware.net.proto.stream.GStreamTimeUpdate;
 import com.dunkware.trade.service.data.json.worker.container.DataStreamWorkerContainerStartReq;
+import com.dunkware.trade.service.data.worker.stream.net.container.agents.WorkerEntitySearch;
 import com.dunkware.xstream.net.core.container.Container;
 import com.dunkware.xstream.net.core.container.ContainerBuilder;
 
@@ -46,33 +44,18 @@ public class WorkerContainer {
 	private DKafkaByteProducer serverProducer;
 
 	private BlockingQueue<GContainerWorkerMessage> workerMessageQueue = new LinkedBlockingQueue<GContainerWorkerMessage>();
-	private BlockingQueue<GContainerWorkersMessage> workersMessageQueue = new LinkedBlockingQueue<GContainerWorkersMessage>();
 
 	private WorkerContainerMetrics metrics;
-
-	private WorkersMessageConsumer workersMessageConsumer;
 	private WorkerMessageConsumer workerMessageConsumer;
 
 	private WorkerMessageHandler workerMessageHandler;
+	
+	
 
 	public void start(DataStreamWorkerContainerStartReq req) throws Exception {
 		metrics = new WorkerContainerMetrics(this);
 		this.req = req;
-		try {
-			DKafkaByteConsumer2Spec spec = DKafkaByteConsumer2SpecBuilder
-					.newBuilder(ConsumerType.Auto, OffsetType.Latest).addBroker(req.getKafkaBroker())
-					.addTopic(req.getWorkersTopic())
-					.setClientAndGroup("DataContainerWorker_" + req.getWorkerId() + "_" + DUUID.randomUUID(4),
-							"DataContainerWorker_" + req.getWorkerId() + "_" + DUUID.randomUUID(4))
-					.build();
-			workersConsumer = DKafkaByteConsumer2.newInstance(spec);
-			workersConsumer.start();
-			workersMessageConsumer = new WorkersMessageConsumer();
-			workersConsumer.addStreamHandler(workersMessageConsumer);
-		} catch (Exception e) {
-			logger.error("Exception creating workers consumer " + e.toString());
-			throw new Exception("Exception creating workers kafka consumer " + e.toString());
-		}
+		
 		try {
 			DKafkaByteConsumer2Spec spec = DKafkaByteConsumer2SpecBuilder
 					.newBuilder(ConsumerType.Auto, OffsetType.Latest).addBroker(req.getKafkaBroker())
@@ -84,6 +67,8 @@ public class WorkerContainer {
 			workerConsumer.start();
 			workerMessageConsumer = new WorkerMessageConsumer();
 			workerConsumer.addStreamHandler(workerMessageConsumer);
+			workerMessageHandler  = new WorkerMessageHandler();
+			workerMessageHandler.start();
 		} catch (Exception e) {
 			logger.error("Exception creating workers consumer " + e.toString());
 			throw new Exception("Exception creating worker kafka consumer " + e.toString());
@@ -107,14 +92,23 @@ public class WorkerContainer {
 	}
 
 	public void resetContainer() {
-
+		container.deleteContainer();
+	}
+	
+	public Container getContainer() { 
+		return container;
 	}
 
+	public DTimeZone getTimeZone() { 
+		return req.getTimeZone();
+	}
+	public String getWorkerId() { 
+		return req.getWorkerId();
+	}
 	public void dispose() {
 		workerConsumer.dispose();
 		workersConsumer.dispose();
 		serverProducer.dispose();
-
 	}
 
 	public Container getStreamContainer() {
@@ -147,23 +141,7 @@ public class WorkerContainer {
 
 	}
 
-	private class WorkersMessageConsumer implements DKafkaByteHandler2 {
-
-		@Override
-		public void record(ConsumerRecord<String, byte[]> record) {
-			try {
-				GContainerWorkersMessage workersMessage = GContainerWorkersMessage.parseFrom(record.value());
-				workersMessageQueue.add(workersMessage);
-			} catch (Exception e) {
-				if (e instanceof InterruptedException) {
-					return;
-				}
-				logger.error("Exception consuming workers message " + e.toString());
-			}
-
-		}
-
-	}
+	
 
 	public DataStreamWorkerContainerStartReq getReq() {
 		return req;
@@ -176,24 +154,22 @@ public class WorkerContainer {
 				GContainerWorkerMessage message = null;
 				try {
 					message = workerMessageQueue.take();
-					if (message.getTypeCase() == TypeCase.STREAMEVENT) {
-						GStreamEvent event = message.getStreamEvent();
-						if (event.getType() == GStreamEventType.EntitySnapshot) {
-							GEntitySnapshot snapshot = event.getEntitySnapshot();
-							metrics.entitySnapshot(snapshot);
-							container.consumeStreamSnapshot(snapshot);
-						}
-						if (event.getType() == GStreamEventType.EntitySignal) {
-							GEntitySignal signal = event.getEntitySignal();
-							metrics.entitySignal(signal);
-							container.consumeStreamSignal(signal);
-						}
-						if (event.getType() == GStreamEventType.TimeUpdate) {
-							GStreamTimeUpdate update = event.getTimeUpdate();
-							metrics.timeUpdate(update);
-							container.consumeStreamTime(update);
-						}
+					if(message.getTypeCase() == TypeCase.ENTITYSEARCHREQUEST) {
+						GNetEntitySearchRequest req = message.getEntitySearchRequest();
+						WorkerEntitySearch search = new WorkerEntitySearch(req,WorkerContainer.this);
+						cluster.getExecutor().execute(search);
 					}
+					if(message.getTypeCase() == TypeCase.ENTITYSNAPSHOT) {
+						GEntitySnapshot snapshot = message.getEntitySnapshot();
+						container.consumeStreamSnapshot(snapshot);
+					}
+					if(message.getTypeCase() == TypeCase.TIMEUPDATE) {
+						container.consumeStreamTime(message.getTimeUpdate());
+					}
+					if(message.getTypeCase() == TypeCase.ENTITYSIGNAL) { 
+						container.consumeStreamSignal(message.getEntitySignal());
+					}
+					
 				} catch (Exception e) {
 					if (e instanceof InterruptedException) {
 						return;
@@ -204,28 +180,6 @@ public class WorkerContainer {
 		}
 	}
 
-	private class WorkersMessageHandler extends Thread {
-
-		public void run() {
-			while (!interrupted()) {
-				GContainerWorkersMessage workersMessage = null;
-				try {
-					workersMessage = workersMessageQueue.take();
-					if (workersMessage.getTypeCase() == GContainerWorkersMessage.TypeCase.ENTITYSEARCHREQUEST) {
-
-					}
-
-					if (workersMessage.getTypeCase() == GContainerWorkersMessage.TypeCase.ENTITYSCANNERREQUEST) {
-
-					}
-				} catch (Exception e) {
-					if (e instanceof InterruptedException) {
-						return;
-					}
-					logger.error("Exception Handling Workers Message " + e.toString());
-				}
-			}
-		}
-	}
+	
 
 }

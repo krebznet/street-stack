@@ -1,7 +1,6 @@
 package com.dunkware.xstream.net.core.container.core;
 
 import java.time.LocalDateTime;
-import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import java.util.Map;
@@ -14,12 +13,8 @@ import org.slf4j.LoggerFactory;
 
 import com.dunkware.common.util.json.DJson;
 import com.dunkware.common.util.time.DunkTime;
-import com.dunkware.net.core.runtime.core.helpers.GProtoHelper;
-import com.dunkware.net.proto.core.GCalendarRange;
-import com.dunkware.net.proto.core.GCalendarRangeType;
-import com.dunkware.net.proto.core.GDurationRange;
-import com.dunkware.net.proto.netstream.GEntityCriteriaVar;
-import com.dunkware.net.proto.netstream.GEntityCriteriaVarType;
+import com.dunkware.net.proto.netstream.GNetEntityVarValue;
+import com.dunkware.net.proto.netstream.GNetEntityVarValueType;
 import com.dunkware.net.proto.stream.GEntitySignal;
 import com.dunkware.net.proto.stream.GEntitySnapshot;
 import com.dunkware.net.proto.stream.GEntityVarSnapshot;
@@ -80,28 +75,28 @@ public class ContainerEntityImpl implements ContainerEntity  {
 
 	@Override
 	public Object getLastVarValue(String ident) {
-		return getLastVarValue(ident);
-		
+		return vars.get(ident).getLastValue();
+	}
+	
+	@Override
+	public Map<String, Object> getLastVarValues() {
+		return varLastValues;
 	}
 
 
 	@Override
-	public String getCurrentVarValuesJson() throws ContainerException {
-		try {
-			String json = DJson.serialize(varLastValues);
-			return json;
-		} catch (Exception e) {
-			throw new ContainerException("Exception serializing json var last values map " + e.toString());
+	public boolean varExists(String ident) {
+		if(vars.get(ident) == null) { 
+			return false; 
 		}
+		return true;
 	}
 
+	
+
 	@Override
-	public ContainerEntityVar getVar(String ident) throws ContainerException{
-		ContainerEntityVar var = vars.get(ident);
-		if(var == null) { 
-			throw new ContainerException("Variable ident " + ident + " not found");
-		}
-		return var;
+	public ContainerEntityVar getVar(String ident)  {
+		return  vars.get(ident);
 	}
 
 	@Override
@@ -254,37 +249,32 @@ public class ContainerEntityImpl implements ContainerEntity  {
 	
 
 	@Override
-	public Object resolveCriteriaVar(GEntityCriteriaVar var) throws ContainerException, ContainerSearchException {
-		if(var.getType() == GEntityCriteriaVarType.VALUE_NOW) { 
+	public Object resolveCriteriaVar(GNetEntityVarValue var) throws ContainerException, ContainerSearchException {
+		if(var.getType() == GNetEntityVarValueType.VALUE_NOW) { 
 			return varLastValues.get(var.getIdent());
 		}
-		if(var.getType() == GEntityCriteriaVarType.VALUE_RELATIVE) { 
-			GCalendarRange range = var.getTimeRange();
-			if(range.getType() == GCalendarRangeType.TIME_DURATION == false) {
-				throw new ContainerSearchException("Criteria Var configured as VALUE_RELATIVE but range type is " + range.getType().name() );
-			}
-			// okay so we assume that every 1 second is that. 
-			GDurationRange duration = range.getDurationRange();
-			int durationSeconds = 0;
-			try {
-				 durationSeconds = GProtoHelper.getDurationRangeSeconds(duration);
-			} catch (Exception e) {
-				throw new ContainerSearchException("Exception getting duration range seconds " + e.toString());
-			}
-			if(getSnapshotCount() < durationSeconds) { 
-				return null;
-				// null means it can't resolve. 
-			} else { 
-				//ContainerEntitySnapshot snapshot = getBackSnapshot(durationSeconds);
-				//Object value = snapshot.getVars().getValue(var.getIdent());
-				//if(value == null) { 
-				//	throw new ContainerSearchException("Relative value variable not found on snapshot var " + var.getIdent());
-				//}
-			}
-
-		}
-		// TODO Auto-generated method stub
-		return null;
+		throw new ContainerSearchException("GNetEntityVarValue type " + var.getType().name() + " not implemented");
+		
+		/*
+		 * if(var.getType() == GEntityCriteriaVarType.VALUE_RELATIVE) { GCalendarRange
+		 * range = var.getTimeRange(); if(range.getType() ==
+		 * GCalendarRangeType.TIME_DURATION == false) { throw new
+		 * ContainerSearchException("Criteria Var configured as VALUE_RELATIVE but range type is "
+		 * + range.getType().name() ); } // okay so we assume that every 1 second is
+		 * that. GDurationRange duration = range.getDurationRange(); int durationSeconds
+		 * = 0; try { durationSeconds = GProtoHelper.getDurationRangeSeconds(duration);
+		 * } catch (Exception e) { throw new
+		 * ContainerSearchException("Exception getting duration range seconds " +
+		 * e.toString()); } if(getSnapshotCount() < durationSeconds) { return null; //
+		 * null means it can't resolve. } else { //ContainerEntitySnapshot snapshot =
+		 * getBackSnapshot(durationSeconds); //Object value =
+		 * snapshot.getVars().getValue(var.getIdent()); //if(value == null) { // throw
+		 * new
+		 * ContainerSearchException("Relative value variable not found on snapshot var "
+		 * + var.getIdent()); //} }
+		 * 
+		 * } // TODO Auto-generated method stub return null;
+		 */
 	}
 	
 	

@@ -8,6 +8,7 @@ import java.util.concurrent.TimeUnit;
 import org.slf4j.Logger;
 import org.slf4j.MarkerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.ApplicationContext;
 
 import com.dunkware.common.spec.locale.DCountry;
@@ -47,7 +48,6 @@ import com.dunkware.trade.tick.service.protocol.ticker.spec.TradeTickerListSpec;
 import com.dunkware.xstream.xproject.XScriptProject;
 import com.dunkware.xstream.xproject.bundle.XscriptBundleHelper;
 import com.dunkware.xstream.xproject.model.XScriptBundle;
-import com.google.api.client.util.Value;
 
 public class StreamController {
 
@@ -58,8 +58,8 @@ public class StreamController {
 	@Autowired
 	private StreamRepo streamRepo;
 	
-	@Value("${session.worker.node.count}")
-	private int sessionWorkerNodeCount; 
+	@Value("${session.worker.nodes}")
+	private String confgiredWorkerNodes; 
 	
 	private StreamSchedule schedule;
 
@@ -238,10 +238,19 @@ public class StreamController {
 			// TOODO: here right -->
 			input.setTickers(tickers);
 			input.setController(this);
-			cluster.getNodeSevice().getAvailableWorkerNodes();
-			List<ClusterNode> nodes = null;
+			//cluster.getNodeSevice().getAvailableWorkerNodes();
+			List<ClusterNode> nodes = new ArrayList<ClusterNode>();
+			String[] configedNodes = confgiredWorkerNodes.split(",");
 			try {
-				nodes = cluster.getNodeSevice().reserveWorkerNodes(getName() + "_session",sessionWorkerNodeCount);	
+				for (String nodeId : configedNodes) {
+					ClusterNode node = cluster.getNodeSevice().getNode(nodeId);
+					if(node == null) { 
+						logger.error("Stream Worker Configured Node not found " + nodeId);
+				 	} else { 
+				 		nodes.add(node);
+				 	}
+				} 
+	
 			} catch (Exception e) {
 				logger.error("exception requesting worker nodes " + e.toString());
 				throw new StreamSessionException("Exception getting worker nodes " + e.toString());

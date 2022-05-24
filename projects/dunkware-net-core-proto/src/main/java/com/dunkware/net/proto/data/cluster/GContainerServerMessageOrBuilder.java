@@ -8,69 +8,95 @@ public interface GContainerServerMessageOrBuilder extends
     com.google.protobuf.MessageOrBuilder {
 
   /**
-   * <code>.dunkware.data.cluster.GEntitySearchResults entitySearchResults = 1;</code>
+   * <code>.dunkware.netstream.GNetEntitySearchResponse entitySearchResponse = 1;</code>
    */
-  boolean hasEntitySearchResults();
+  boolean hasEntitySearchResponse();
   /**
-   * <code>.dunkware.data.cluster.GEntitySearchResults entitySearchResults = 1;</code>
+   * <code>.dunkware.netstream.GNetEntitySearchResponse entitySearchResponse = 1;</code>
    */
-  com.dunkware.net.proto.data.cluster.GEntitySearchResults getEntitySearchResults();
+  com.dunkware.net.proto.netstream.GNetEntitySearchResponse getEntitySearchResponse();
   /**
-   * <code>.dunkware.data.cluster.GEntitySearchResults entitySearchResults = 1;</code>
+   * <code>.dunkware.netstream.GNetEntitySearchResponse entitySearchResponse = 1;</code>
    */
-  com.dunkware.net.proto.data.cluster.GEntitySearchResultsOrBuilder getEntitySearchResultsOrBuilder();
+  com.dunkware.net.proto.netstream.GNetEntitySearchResponseOrBuilder getEntitySearchResponseOrBuilder();
 
   /**
-   * <code>.dunkware.data.cluster.GEntitySearchException entitySearchException = 2;</code>
+   * <code>.dunkware.netstream.GNetEntityScannerRequest entityScannerRequest = 2;</code>
    */
-  boolean hasEntitySearchException();
+  boolean hasEntityScannerRequest();
   /**
-   * <code>.dunkware.data.cluster.GEntitySearchException entitySearchException = 2;</code>
+   * <code>.dunkware.netstream.GNetEntityScannerRequest entityScannerRequest = 2;</code>
    */
-  com.dunkware.net.proto.data.cluster.GEntitySearchException getEntitySearchException();
+  com.dunkware.net.proto.netstream.GNetEntityScannerRequest getEntityScannerRequest();
   /**
-   * <code>.dunkware.data.cluster.GEntitySearchException entitySearchException = 2;</code>
+   * <code>.dunkware.netstream.GNetEntityScannerRequest entityScannerRequest = 2;</code>
    */
-  com.dunkware.net.proto.data.cluster.GEntitySearchExceptionOrBuilder getEntitySearchExceptionOrBuilder();
+  com.dunkware.net.proto.netstream.GNetEntityScannerRequestOrBuilder getEntityScannerRequestOrBuilder();
 
   /**
-   * <code>.dunkware.data.cluster.GEntityScannerUpdate entityScannerUpdate = 3;</code>
+   * <code>.dunkware.netstream.GNetEntityScannerUpdate entityScannerUpdate = 3;</code>
    */
   boolean hasEntityScannerUpdate();
   /**
-   * <code>.dunkware.data.cluster.GEntityScannerUpdate entityScannerUpdate = 3;</code>
+   * <code>.dunkware.netstream.GNetEntityScannerUpdate entityScannerUpdate = 3;</code>
    */
-  com.dunkware.net.proto.data.cluster.GEntityScannerUpdate getEntityScannerUpdate();
+  com.dunkware.net.proto.netstream.GNetEntityScannerUpdate getEntityScannerUpdate();
   /**
-   * <code>.dunkware.data.cluster.GEntityScannerUpdate entityScannerUpdate = 3;</code>
+   * <code>.dunkware.netstream.GNetEntityScannerUpdate entityScannerUpdate = 3;</code>
    */
-  com.dunkware.net.proto.data.cluster.GEntityScannerUpdateOrBuilder getEntityScannerUpdateOrBuilder();
+  com.dunkware.net.proto.netstream.GNetEntityScannerUpdateOrBuilder getEntityScannerUpdateOrBuilder();
 
   /**
-   * <code>.dunkware.data.cluster.GEntityScannerException entityScannerException = 4;</code>
-   */
-  boolean hasEntityScannerException();
-  /**
-   * <code>.dunkware.data.cluster.GEntityScannerException entityScannerException = 4;</code>
-   */
-  com.dunkware.net.proto.data.cluster.GEntityScannerException getEntityScannerException();
-  /**
-   * <code>.dunkware.data.cluster.GEntityScannerException entityScannerException = 4;</code>
-   */
-  com.dunkware.net.proto.data.cluster.GEntityScannerExceptionOrBuilder getEntityScannerExceptionOrBuilder();
-
-  /**
-   * <code>.dunkware.data.cluster.GEntitySearchComplete entitySearchComplete = 5;</code>
+   * <code>.dunkware.netstream.GNetEntitySearchComplete entitySearchComplete = 5;</code>
    */
   boolean hasEntitySearchComplete();
   /**
-   * <code>.dunkware.data.cluster.GEntitySearchComplete entitySearchComplete = 5;</code>
+   * <code>.dunkware.netstream.GNetEntitySearchComplete entitySearchComplete = 5;</code>
    */
-  com.dunkware.net.proto.data.cluster.GEntitySearchComplete getEntitySearchComplete();
+  com.dunkware.net.proto.netstream.GNetEntitySearchComplete getEntitySearchComplete();
   /**
-   * <code>.dunkware.data.cluster.GEntitySearchComplete entitySearchComplete = 5;</code>
+   * <code>.dunkware.netstream.GNetEntitySearchComplete entitySearchComplete = 5;</code>
    */
-  com.dunkware.net.proto.data.cluster.GEntitySearchCompleteOrBuilder getEntitySearchCompleteOrBuilder();
+  com.dunkware.net.proto.netstream.GNetEntitySearchCompleteOrBuilder getEntitySearchCompleteOrBuilder();
+
+  /**
+   * <code>.dunkware.netstream.GNetEntitySearchResults entitySearchResults = 6;</code>
+   */
+  boolean hasEntitySearchResults();
+  /**
+   * <code>.dunkware.netstream.GNetEntitySearchResults entitySearchResults = 6;</code>
+   */
+  com.dunkware.net.proto.netstream.GNetEntitySearchResults getEntitySearchResults();
+  /**
+   * <code>.dunkware.netstream.GNetEntitySearchResults entitySearchResults = 6;</code>
+   */
+  com.dunkware.net.proto.netstream.GNetEntitySearchResultsOrBuilder getEntitySearchResultsOrBuilder();
+
+  /**
+   * <code>.dunkware.netstream.GNetEntitySearchException entitySearchException = 7;</code>
+   */
+  boolean hasEntitySearchException();
+  /**
+   * <code>.dunkware.netstream.GNetEntitySearchException entitySearchException = 7;</code>
+   */
+  com.dunkware.net.proto.netstream.GNetEntitySearchException getEntitySearchException();
+  /**
+   * <code>.dunkware.netstream.GNetEntitySearchException entitySearchException = 7;</code>
+   */
+  com.dunkware.net.proto.netstream.GNetEntitySearchExceptionOrBuilder getEntitySearchExceptionOrBuilder();
+
+  /**
+   * <code>.dunkware.netstream.GNetEntityScannerException entityScannerException = 8;</code>
+   */
+  boolean hasEntityScannerException();
+  /**
+   * <code>.dunkware.netstream.GNetEntityScannerException entityScannerException = 8;</code>
+   */
+  com.dunkware.net.proto.netstream.GNetEntityScannerException getEntityScannerException();
+  /**
+   * <code>.dunkware.netstream.GNetEntityScannerException entityScannerException = 8;</code>
+   */
+  com.dunkware.net.proto.netstream.GNetEntityScannerExceptionOrBuilder getEntityScannerExceptionOrBuilder();
 
   public com.dunkware.net.proto.data.cluster.GContainerServerMessage.TypeCase getTypeCase();
 }

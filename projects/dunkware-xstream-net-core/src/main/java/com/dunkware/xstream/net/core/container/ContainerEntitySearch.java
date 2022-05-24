@@ -2,14 +2,14 @@ package com.dunkware.xstream.net.core.container;
 
 import java.time.LocalDateTime;
 
-import com.dunkware.net.proto.netstream.GEntityMatcher;
+import com.dunkware.net.proto.netstream.GNetEntityMatcher;
 
 public class ContainerEntitySearch {
 	
 	private LocalDateTime startTime; 
 	private LocalDateTime stopTime; 
 	
-	private GEntityMatcher matcher; 
+	private GNetEntityMatcher matcher; 
 	
 
 }

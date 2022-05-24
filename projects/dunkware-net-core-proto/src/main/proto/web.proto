@@ -7,15 +7,13 @@
     option java_outer_classname = "GWebProto";
 
     
-    import "data.proto";
+
+
     import "stream.proto";
     import "chart.proto";
     service GWebService  {
-        rpc testSignalGrid(dunkware.data.GEntitySignalQuery) returns (dunkware.chart.Grid) {}
-        rpc testEntityGrid(dunkware.data.GEntityQuery) returns (dunkware.chart.Grid) {}
+
         rpc getStreamSpec( dunkware.stream.GStreamSpecRequest) returns (dunkware.stream.GStreamSpecResponse) {}
-        rpc signalSearch( dunkware.data.GEntitySignalSearchRequest) returns (dunkware.data.GEntitySignalSearchResponse) {} 
-        rpc entitySearch( dunkware.data.GEntitySearchRequest) returns (dunkware.data.GEntitySearchResponse) {} 
         rpc autoCompleteSearch(stream dunkware.stream.GAutoCompleteRequest) returns (stream dunkware.stream.GAutoCompleteResponse) {}
         
     }

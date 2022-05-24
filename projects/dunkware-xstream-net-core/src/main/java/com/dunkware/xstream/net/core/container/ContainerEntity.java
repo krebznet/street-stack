@@ -4,9 +4,8 @@ import java.time.LocalDateTime;
 import java.util.Collection;
 import java.util.List;
 import java.util.Map;
-import java.util.Vector;
 
-import com.dunkware.net.proto.netstream.GEntityCriteriaVar;
+import com.dunkware.net.proto.netstream.GNetEntityVarValue;
 import com.dunkware.net.proto.stream.GEntitySignal;
 import com.dunkware.net.proto.stream.GEntitySnapshot;
 
@@ -20,15 +19,17 @@ public interface ContainerEntity {
 
 	public Collection<ContainerEntityVar> getVars();
 
-	public String getCurrentVarValuesJson() throws ContainerException;
-
-	public ContainerEntityVar getVar(String ident) throws ContainerException;
+	public ContainerEntityVar getVar(String ident);
 
 	public int getSnapshotCount();
 
 	public Object getLastVarValue(String ident);
 	
+	public Map<String,Object> getLastVarValues();
+	
 	void consumeSignal(GEntitySignal signal);
+	
+	public boolean varExists(String ident);
 
 	public void consumeSnapshot(GEntitySnapshot snapshot);
 
@@ -44,6 +45,6 @@ public interface ContainerEntity {
 
 	public Container getContainer();
 
-	public Object resolveCriteriaVar(GEntityCriteriaVar var) throws ContainerException, ContainerSearchException;
+	public Object resolveCriteriaVar(GNetEntityVarValue var) throws ContainerException, ContainerSearchException;
 
 }

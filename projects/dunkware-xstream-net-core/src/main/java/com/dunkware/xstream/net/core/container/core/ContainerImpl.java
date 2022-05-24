@@ -2,7 +2,6 @@ package com.dunkware.xstream.net.core.container.core;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
@@ -19,14 +18,14 @@ import com.dunkware.common.util.dtime.DTimeZone;
 import com.dunkware.common.util.executor.DExecutor;
 import com.dunkware.common.util.stopwatch.DStopWatch;
 import com.dunkware.net.proto.core.GTimeUnit;
-import com.dunkware.net.proto.netstream.GEntityMatcher;
+import com.dunkware.net.proto.netstream.GNetEntityMatcher;
+import com.dunkware.net.proto.netstream.GNetEntityScannerRequest;
 import com.dunkware.net.proto.stream.GEntitySignal;
 import com.dunkware.net.proto.stream.GEntitySnapshot;
 import com.dunkware.net.proto.stream.GStreamTimeUpdate;
 import com.dunkware.xstream.net.core.container.Container;
 import com.dunkware.xstream.net.core.container.ContainerEntity;
 import com.dunkware.xstream.net.core.container.ContainerEntitySignal;
-import com.dunkware.xstream.net.core.container.ContainerEntitySnapshot;
 import com.dunkware.xstream.net.core.container.ContainerEntityVar;
 import com.dunkware.xstream.net.core.container.ContainerException;
 import com.dunkware.xstream.net.core.container.ContainerExtension;
@@ -37,7 +36,6 @@ import com.dunkware.xstream.net.core.container.ContainerRegistry;
 import com.dunkware.xstream.net.core.container.ContainerSearchResults;
 import com.dunkware.xstream.net.core.container.ContainerTimeListener;
 import com.dunkware.xstream.net.core.container.search.ContainerEntityMatcherPredicateBuilder;
-import com.dunkware.xstream.net.core.container.search.ContainerSignalSearchBuilder;
 import com.dunkware.xstream.net.core.container.util.ContainerHelper;
 import com.dunkware.xstream.net.core.scanner.StreamEntityScanner;
 
@@ -149,16 +147,17 @@ public class ContainerImpl implements Container {
 
 	@Override
 	public List<ContainerEntitySignal> entitySignals(ContainerEntity entity, GTimeUnit timeUnit, int timeValue, String signalType) {
-		List<Predicate<ContainerEntitySignal>> predicates =  ContainerSignalSearchBuilder.newBuilder().
-				relativeTimeRange(timeUnit,timeValue).includeEntity(entity.getIdent()).includeSignalType(signalType).build();
-		for (Predicate<ContainerEntitySignal> predicate : predicates) {
-			if (predicate instanceof ContainerObserver) { 
-				ContainerObserver obs = (ContainerObserver)predicate;
-				obs.update(this);
-			}
-		}
-		ContainerSearchResults<ContainerEntitySignal> results = signalSearch(predicates);
-		return results.getResults();
+		/*
+		 * List<Predicate<ContainerEntitySignal>> predicates =
+		 * ContainerSignalSearchBuilder.newBuilder().
+		 * relativeTimeRange(timeUnit,timeValue).includeEntity(entity.getIdent()).
+		 * includeSignalType(signalType).build(); for (Predicate<ContainerEntitySignal>
+		 * predicate : predicates) { if (predicate instanceof ContainerObserver) {
+		 * ContainerObserver obs = (ContainerObserver)predicate; obs.update(this); } }
+		 * ContainerSearchResults<ContainerEntitySignal> results =
+		 * signalSearch(predicates); return results.getResults();
+		 */
+		return new ArrayList<ContainerEntitySignal>();
 	}
 
 	@Override
@@ -191,8 +190,10 @@ public class ContainerImpl implements Container {
 		
 	}
 
+	
 	@Override
-	public ContainerSearchResults<ContainerEntity> entitySearch(GEntityMatcher matcher) throws ContainerException {
+	public ContainerSearchResults<ContainerEntity> entitySearch(GNetEntityMatcher matcher)
+			throws ContainerException {
 		List<Predicate<ContainerEntity>> predicates = null;
 		try {
 			predicates = ContainerEntityMatcherPredicateBuilder.build(matcher, this);	
@@ -203,8 +204,10 @@ public class ContainerImpl implements Container {
 
 	}
 
+
+
 	@Override
-	public ContainerSearchResults<ContainerEntity> entitySearch(List<Predicate<ContainerEntity>> predicates) {
+	public ContainerSearchResults<ContainerEntity> entitySearch(List<Predicate<ContainerEntity>> predicates ) {
 		for (Predicate<ContainerEntity> signalPredicate : predicates) {
 			if (signalPredicate instanceof ContainerObserver) { 
 				ContainerObserver obs = (ContainerObserver)signalPredicate;
@@ -240,41 +243,33 @@ public class ContainerImpl implements Container {
 	}
 	
 	
-	@Override
-	public ContainerSearchResults<ContainerEntitySignal> signalSearch(List<Predicate<ContainerEntitySignal>> predicates) {
-		for (Predicate<ContainerEntitySignal> signalPredicate : predicates) {
-			if (signalPredicate instanceof ContainerObserver) { 
-				ContainerObserver obs = (ContainerObserver)signalPredicate;
-				obs.update(this);
-				
-			}
-		}
-		ContainerSearchResults<ContainerEntitySignal> results = new ContainerSearchResults<ContainerEntitySignal>();
-		DStopWatch watch = DStopWatch.create();
-		
-		try {
-			if(logger.isDebugEnabled()) { 
-				logger.debug("Starting Signal Search With Signal Count of " + signals.size() + " predicate count " + predicates.size());;
-			}
-			signalLock.acquire();
-			watch.start();
-			Predicate<ContainerEntitySignal> composite = predicates.stream()
-			        .reduce(x -> true, Predicate::and);
-			List<ContainerEntitySignal> goods = signals.parallelStream().filter(composite).collect(Collectors.toList());
-			watch.stop();
-			if(logger.isDebugEnabled()) { 
-				logger.debug("Finished signal search in " + watch.getCompletedSeconds() + " with result size of " + goods.size());
-			}
-			results.setData(goods, watch.getCompletedSeconds());
-			return results;
-		} catch (Exception e) {
-			results.setError("thrown exception " + e.toString());
-			return results;
-		} finally {
-			signalLock.release();
-		}
-		
-	}
+	/*
+	 * @Override public ContainerSearchResults<ContainerEntitySignal>
+	 * signalSearch(List<Predicate<ContainerEntitySignal>> predicates) { for
+	 * (Predicate<ContainerEntitySignal> signalPredicate : predicates) { if
+	 * (signalPredicate instanceof ContainerObserver) { ContainerObserver obs =
+	 * (ContainerObserver)signalPredicate; obs.update(this);
+	 * 
+	 * } } ContainerSearchResults<ContainerEntitySignal> results = new
+	 * ContainerSearchResults<ContainerEntitySignal>(); DStopWatch watch =
+	 * DStopWatch.create();
+	 * 
+	 * try { if(logger.isDebugEnabled()) {
+	 * logger.debug("Starting Signal Search With Signal Count of " + signals.size()
+	 * + " predicate count " + predicates.size());; } signalLock.acquire();
+	 * watch.start(); Predicate<ContainerEntitySignal> composite =
+	 * predicates.stream() .reduce(x -> true, Predicate::and);
+	 * List<ContainerEntitySignal> goods =
+	 * signals.parallelStream().filter(composite).collect(Collectors.toList());
+	 * watch.stop(); if(logger.isDebugEnabled()) {
+	 * logger.debug("Finished signal search in " + watch.getCompletedSeconds() +
+	 * " with result size of " + goods.size()); } results.setData(goods,
+	 * watch.getCompletedSeconds()); return results; } catch (Exception e) {
+	 * results.setError("thrown exception " + e.toString()); return results; }
+	 * finally { signalLock.release(); }
+	 * 
+	 * }
+	 */
 	
 	
 
@@ -286,13 +281,6 @@ public class ContainerImpl implements Container {
 	
 	
 
-	@Override
-	public StreamEntityScanner createEntityScanner(GEntityMatcher entityMatcher) throws ContainerException {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	
 	
 	@Override
 	public DTimeZone getTimeZone() {

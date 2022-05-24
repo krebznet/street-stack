@@ -8,17 +8,69 @@ public interface GContainerWorkerMessageOrBuilder extends
     com.google.protobuf.MessageOrBuilder {
 
   /**
-   * <code>.dunkware.stream.GStreamEvent streamEvent = 1;</code>
+   * <code>.dunkware.stream.GEntitySnapshot entitySnapshot = 1;</code>
    */
-  boolean hasStreamEvent();
+  boolean hasEntitySnapshot();
   /**
-   * <code>.dunkware.stream.GStreamEvent streamEvent = 1;</code>
+   * <code>.dunkware.stream.GEntitySnapshot entitySnapshot = 1;</code>
    */
-  com.dunkware.net.proto.stream.GStreamEvent getStreamEvent();
+  com.dunkware.net.proto.stream.GEntitySnapshot getEntitySnapshot();
   /**
-   * <code>.dunkware.stream.GStreamEvent streamEvent = 1;</code>
+   * <code>.dunkware.stream.GEntitySnapshot entitySnapshot = 1;</code>
    */
-  com.dunkware.net.proto.stream.GStreamEventOrBuilder getStreamEventOrBuilder();
+  com.dunkware.net.proto.stream.GEntitySnapshotOrBuilder getEntitySnapshotOrBuilder();
+
+  /**
+   * <code>.dunkware.stream.GEntitySignal entitySignal = 2;</code>
+   */
+  boolean hasEntitySignal();
+  /**
+   * <code>.dunkware.stream.GEntitySignal entitySignal = 2;</code>
+   */
+  com.dunkware.net.proto.stream.GEntitySignal getEntitySignal();
+  /**
+   * <code>.dunkware.stream.GEntitySignal entitySignal = 2;</code>
+   */
+  com.dunkware.net.proto.stream.GEntitySignalOrBuilder getEntitySignalOrBuilder();
+
+  /**
+   * <code>.dunkware.stream.GStreamTimeUpdate timeUpdate = 3;</code>
+   */
+  boolean hasTimeUpdate();
+  /**
+   * <code>.dunkware.stream.GStreamTimeUpdate timeUpdate = 3;</code>
+   */
+  com.dunkware.net.proto.stream.GStreamTimeUpdate getTimeUpdate();
+  /**
+   * <code>.dunkware.stream.GStreamTimeUpdate timeUpdate = 3;</code>
+   */
+  com.dunkware.net.proto.stream.GStreamTimeUpdateOrBuilder getTimeUpdateOrBuilder();
+
+  /**
+   * <code>.dunkware.netstream.GNetEntityScannerRequest entityScannerRequest = 4;</code>
+   */
+  boolean hasEntityScannerRequest();
+  /**
+   * <code>.dunkware.netstream.GNetEntityScannerRequest entityScannerRequest = 4;</code>
+   */
+  com.dunkware.net.proto.netstream.GNetEntityScannerRequest getEntityScannerRequest();
+  /**
+   * <code>.dunkware.netstream.GNetEntityScannerRequest entityScannerRequest = 4;</code>
+   */
+  com.dunkware.net.proto.netstream.GNetEntityScannerRequestOrBuilder getEntityScannerRequestOrBuilder();
+
+  /**
+   * <code>.dunkware.netstream.GNetEntitySearchRequest entitySearchRequest = 5;</code>
+   */
+  boolean hasEntitySearchRequest();
+  /**
+   * <code>.dunkware.netstream.GNetEntitySearchRequest entitySearchRequest = 5;</code>
+   */
+  com.dunkware.net.proto.netstream.GNetEntitySearchRequest getEntitySearchRequest();
+  /**
+   * <code>.dunkware.netstream.GNetEntitySearchRequest entitySearchRequest = 5;</code>
+   */
+  com.dunkware.net.proto.netstream.GNetEntitySearchRequestOrBuilder getEntitySearchRequestOrBuilder();
 
   public com.dunkware.net.proto.data.cluster.GContainerWorkerMessage.TypeCase getTypeCase();
 }

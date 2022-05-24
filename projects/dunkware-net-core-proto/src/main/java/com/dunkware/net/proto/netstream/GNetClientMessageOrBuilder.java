@@ -8,56 +8,69 @@ public interface GNetClientMessageOrBuilder extends
     com.google.protobuf.MessageOrBuilder {
 
   /**
-   * <code>.dunkware.netstream.GNetClientConnect connect = 4;</code>
+   * <code>.dunkware.netstream.GNetClientConnectRequest connectRequest = 1;</code>
    */
-  boolean hasConnect();
+  boolean hasConnectRequest();
   /**
-   * <code>.dunkware.netstream.GNetClientConnect connect = 4;</code>
+   * <code>.dunkware.netstream.GNetClientConnectRequest connectRequest = 1;</code>
    */
-  com.dunkware.net.proto.netstream.GNetClientConnect getConnect();
+  com.dunkware.net.proto.netstream.GNetClientConnectRequest getConnectRequest();
   /**
-   * <code>.dunkware.netstream.GNetClientConnect connect = 4;</code>
+   * <code>.dunkware.netstream.GNetClientConnectRequest connectRequest = 1;</code>
    */
-  com.dunkware.net.proto.netstream.GNetClientConnectOrBuilder getConnectOrBuilder();
+  com.dunkware.net.proto.netstream.GNetClientConnectRequestOrBuilder getConnectRequestOrBuilder();
 
   /**
-   * <code>.dunkware.netstream.GNetEntityScannerStartRequest scannerStart = 1;</code>
+   * <code>.dunkware.netstream.GNetEntityScannerRequest entityScannerRequest = 2;</code>
    */
-  boolean hasScannerStart();
+  boolean hasEntityScannerRequest();
   /**
-   * <code>.dunkware.netstream.GNetEntityScannerStartRequest scannerStart = 1;</code>
+   * <code>.dunkware.netstream.GNetEntityScannerRequest entityScannerRequest = 2;</code>
    */
-  com.dunkware.net.proto.netstream.GNetEntityScannerStartRequest getScannerStart();
+  com.dunkware.net.proto.netstream.GNetEntityScannerRequest getEntityScannerRequest();
   /**
-   * <code>.dunkware.netstream.GNetEntityScannerStartRequest scannerStart = 1;</code>
+   * <code>.dunkware.netstream.GNetEntityScannerRequest entityScannerRequest = 2;</code>
    */
-  com.dunkware.net.proto.netstream.GNetEntityScannerStartRequestOrBuilder getScannerStartOrBuilder();
+  com.dunkware.net.proto.netstream.GNetEntityScannerRequestOrBuilder getEntityScannerRequestOrBuilder();
 
   /**
-   * <code>.dunkware.netstream.GNetTimeUpdateAck timeUpdateAck = 2;</code>
+   * <code>.dunkware.netstream.GNetEntitySearchRequest entitySearchRequest = 3;</code>
+   */
+  boolean hasEntitySearchRequest();
+  /**
+   * <code>.dunkware.netstream.GNetEntitySearchRequest entitySearchRequest = 3;</code>
+   */
+  com.dunkware.net.proto.netstream.GNetEntitySearchRequest getEntitySearchRequest();
+  /**
+   * <code>.dunkware.netstream.GNetEntitySearchRequest entitySearchRequest = 3;</code>
+   */
+  com.dunkware.net.proto.netstream.GNetEntitySearchRequestOrBuilder getEntitySearchRequestOrBuilder();
+
+  /**
+   * <code>.dunkware.netstream.GNetTimeUpdateAck timeUpdateAck = 4;</code>
    */
   boolean hasTimeUpdateAck();
   /**
-   * <code>.dunkware.netstream.GNetTimeUpdateAck timeUpdateAck = 2;</code>
+   * <code>.dunkware.netstream.GNetTimeUpdateAck timeUpdateAck = 4;</code>
    */
   com.dunkware.net.proto.netstream.GNetTimeUpdateAck getTimeUpdateAck();
   /**
-   * <code>.dunkware.netstream.GNetTimeUpdateAck timeUpdateAck = 2;</code>
+   * <code>.dunkware.netstream.GNetTimeUpdateAck timeUpdateAck = 4;</code>
    */
   com.dunkware.net.proto.netstream.GNetTimeUpdateAckOrBuilder getTimeUpdateAckOrBuilder();
 
   /**
-   * <code>.dunkware.netstream.GNetScannerStopRequest scannerStop = 3;</code>
+   * <code>.dunkware.netstream.GNetEntityScannerStopRequest entityScannerStopRequest = 5;</code>
    */
-  boolean hasScannerStop();
+  boolean hasEntityScannerStopRequest();
   /**
-   * <code>.dunkware.netstream.GNetScannerStopRequest scannerStop = 3;</code>
+   * <code>.dunkware.netstream.GNetEntityScannerStopRequest entityScannerStopRequest = 5;</code>
    */
-  com.dunkware.net.proto.netstream.GNetScannerStopRequest getScannerStop();
+  com.dunkware.net.proto.netstream.GNetEntityScannerStopRequest getEntityScannerStopRequest();
   /**
-   * <code>.dunkware.netstream.GNetScannerStopRequest scannerStop = 3;</code>
+   * <code>.dunkware.netstream.GNetEntityScannerStopRequest entityScannerStopRequest = 5;</code>
    */
-  com.dunkware.net.proto.netstream.GNetScannerStopRequestOrBuilder getScannerStopOrBuilder();
+  com.dunkware.net.proto.netstream.GNetEntityScannerStopRequestOrBuilder getEntityScannerStopRequestOrBuilder();
 
   public com.dunkware.net.proto.netstream.GNetClientMessage.TypeCase getTypeCase();
 }

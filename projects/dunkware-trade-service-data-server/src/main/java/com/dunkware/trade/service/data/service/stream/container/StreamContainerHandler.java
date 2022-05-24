@@ -4,6 +4,6 @@ import com.dunkware.net.proto.data.cluster.GContainerServerMessage;
 
 public interface StreamContainerHandler {
 	
-	public void onServerMessage(GContainerServerMessage message);
-
+	public void onControllerMessage(GContainerServerMessage message);
+	
 }

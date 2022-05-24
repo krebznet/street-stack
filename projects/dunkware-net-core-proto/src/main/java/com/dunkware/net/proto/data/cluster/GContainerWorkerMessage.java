@@ -43,17 +43,73 @@ private static final long serialVersionUID = 0L;
             done = true;
             break;
           case 10: {
-            com.dunkware.net.proto.stream.GStreamEvent.Builder subBuilder = null;
+            com.dunkware.net.proto.stream.GEntitySnapshot.Builder subBuilder = null;
             if (typeCase_ == 1) {
-              subBuilder = ((com.dunkware.net.proto.stream.GStreamEvent) type_).toBuilder();
+              subBuilder = ((com.dunkware.net.proto.stream.GEntitySnapshot) type_).toBuilder();
             }
             type_ =
-                input.readMessage(com.dunkware.net.proto.stream.GStreamEvent.parser(), extensionRegistry);
+                input.readMessage(com.dunkware.net.proto.stream.GEntitySnapshot.parser(), extensionRegistry);
             if (subBuilder != null) {
-              subBuilder.mergeFrom((com.dunkware.net.proto.stream.GStreamEvent) type_);
+              subBuilder.mergeFrom((com.dunkware.net.proto.stream.GEntitySnapshot) type_);
               type_ = subBuilder.buildPartial();
             }
             typeCase_ = 1;
+            break;
+          }
+          case 18: {
+            com.dunkware.net.proto.stream.GEntitySignal.Builder subBuilder = null;
+            if (typeCase_ == 2) {
+              subBuilder = ((com.dunkware.net.proto.stream.GEntitySignal) type_).toBuilder();
+            }
+            type_ =
+                input.readMessage(com.dunkware.net.proto.stream.GEntitySignal.parser(), extensionRegistry);
+            if (subBuilder != null) {
+              subBuilder.mergeFrom((com.dunkware.net.proto.stream.GEntitySignal) type_);
+              type_ = subBuilder.buildPartial();
+            }
+            typeCase_ = 2;
+            break;
+          }
+          case 26: {
+            com.dunkware.net.proto.stream.GStreamTimeUpdate.Builder subBuilder = null;
+            if (typeCase_ == 3) {
+              subBuilder = ((com.dunkware.net.proto.stream.GStreamTimeUpdate) type_).toBuilder();
+            }
+            type_ =
+                input.readMessage(com.dunkware.net.proto.stream.GStreamTimeUpdate.parser(), extensionRegistry);
+            if (subBuilder != null) {
+              subBuilder.mergeFrom((com.dunkware.net.proto.stream.GStreamTimeUpdate) type_);
+              type_ = subBuilder.buildPartial();
+            }
+            typeCase_ = 3;
+            break;
+          }
+          case 34: {
+            com.dunkware.net.proto.netstream.GNetEntityScannerRequest.Builder subBuilder = null;
+            if (typeCase_ == 4) {
+              subBuilder = ((com.dunkware.net.proto.netstream.GNetEntityScannerRequest) type_).toBuilder();
+            }
+            type_ =
+                input.readMessage(com.dunkware.net.proto.netstream.GNetEntityScannerRequest.parser(), extensionRegistry);
+            if (subBuilder != null) {
+              subBuilder.mergeFrom((com.dunkware.net.proto.netstream.GNetEntityScannerRequest) type_);
+              type_ = subBuilder.buildPartial();
+            }
+            typeCase_ = 4;
+            break;
+          }
+          case 42: {
+            com.dunkware.net.proto.netstream.GNetEntitySearchRequest.Builder subBuilder = null;
+            if (typeCase_ == 5) {
+              subBuilder = ((com.dunkware.net.proto.netstream.GNetEntitySearchRequest) type_).toBuilder();
+            }
+            type_ =
+                input.readMessage(com.dunkware.net.proto.netstream.GNetEntitySearchRequest.parser(), extensionRegistry);
+            if (subBuilder != null) {
+              subBuilder.mergeFrom((com.dunkware.net.proto.netstream.GNetEntitySearchRequest) type_);
+              type_ = subBuilder.buildPartial();
+            }
+            typeCase_ = 5;
             break;
           }
           default: {
@@ -92,7 +148,11 @@ private static final long serialVersionUID = 0L;
   private java.lang.Object type_;
   public enum TypeCase
       implements com.google.protobuf.Internal.EnumLite {
-    STREAMEVENT(1),
+    ENTITYSNAPSHOT(1),
+    ENTITYSIGNAL(2),
+    TIMEUPDATE(3),
+    ENTITYSCANNERREQUEST(4),
+    ENTITYSEARCHREQUEST(5),
     TYPE_NOT_SET(0);
     private final int value;
     private TypeCase(int value) {
@@ -108,7 +168,11 @@ private static final long serialVersionUID = 0L;
 
     public static TypeCase forNumber(int value) {
       switch (value) {
-        case 1: return STREAMEVENT;
+        case 1: return ENTITYSNAPSHOT;
+        case 2: return ENTITYSIGNAL;
+        case 3: return TIMEUPDATE;
+        case 4: return ENTITYSCANNERREQUEST;
+        case 5: return ENTITYSEARCHREQUEST;
         case 0: return TYPE_NOT_SET;
         default: return null;
       }
@@ -124,30 +188,134 @@ private static final long serialVersionUID = 0L;
         typeCase_);
   }
 
-  public static final int STREAMEVENT_FIELD_NUMBER = 1;
+  public static final int ENTITYSNAPSHOT_FIELD_NUMBER = 1;
   /**
-   * <code>.dunkware.stream.GStreamEvent streamEvent = 1;</code>
+   * <code>.dunkware.stream.GEntitySnapshot entitySnapshot = 1;</code>
    */
-  public boolean hasStreamEvent() {
+  public boolean hasEntitySnapshot() {
     return typeCase_ == 1;
   }
   /**
-   * <code>.dunkware.stream.GStreamEvent streamEvent = 1;</code>
+   * <code>.dunkware.stream.GEntitySnapshot entitySnapshot = 1;</code>
    */
-  public com.dunkware.net.proto.stream.GStreamEvent getStreamEvent() {
+  public com.dunkware.net.proto.stream.GEntitySnapshot getEntitySnapshot() {
     if (typeCase_ == 1) {
-       return (com.dunkware.net.proto.stream.GStreamEvent) type_;
+       return (com.dunkware.net.proto.stream.GEntitySnapshot) type_;
     }
-    return com.dunkware.net.proto.stream.GStreamEvent.getDefaultInstance();
+    return com.dunkware.net.proto.stream.GEntitySnapshot.getDefaultInstance();
   }
   /**
-   * <code>.dunkware.stream.GStreamEvent streamEvent = 1;</code>
+   * <code>.dunkware.stream.GEntitySnapshot entitySnapshot = 1;</code>
    */
-  public com.dunkware.net.proto.stream.GStreamEventOrBuilder getStreamEventOrBuilder() {
+  public com.dunkware.net.proto.stream.GEntitySnapshotOrBuilder getEntitySnapshotOrBuilder() {
     if (typeCase_ == 1) {
-       return (com.dunkware.net.proto.stream.GStreamEvent) type_;
+       return (com.dunkware.net.proto.stream.GEntitySnapshot) type_;
     }
-    return com.dunkware.net.proto.stream.GStreamEvent.getDefaultInstance();
+    return com.dunkware.net.proto.stream.GEntitySnapshot.getDefaultInstance();
+  }
+
+  public static final int ENTITYSIGNAL_FIELD_NUMBER = 2;
+  /**
+   * <code>.dunkware.stream.GEntitySignal entitySignal = 2;</code>
+   */
+  public boolean hasEntitySignal() {
+    return typeCase_ == 2;
+  }
+  /**
+   * <code>.dunkware.stream.GEntitySignal entitySignal = 2;</code>
+   */
+  public com.dunkware.net.proto.stream.GEntitySignal getEntitySignal() {
+    if (typeCase_ == 2) {
+       return (com.dunkware.net.proto.stream.GEntitySignal) type_;
+    }
+    return com.dunkware.net.proto.stream.GEntitySignal.getDefaultInstance();
+  }
+  /**
+   * <code>.dunkware.stream.GEntitySignal entitySignal = 2;</code>
+   */
+  public com.dunkware.net.proto.stream.GEntitySignalOrBuilder getEntitySignalOrBuilder() {
+    if (typeCase_ == 2) {
+       return (com.dunkware.net.proto.stream.GEntitySignal) type_;
+    }
+    return com.dunkware.net.proto.stream.GEntitySignal.getDefaultInstance();
+  }
+
+  public static final int TIMEUPDATE_FIELD_NUMBER = 3;
+  /**
+   * <code>.dunkware.stream.GStreamTimeUpdate timeUpdate = 3;</code>
+   */
+  public boolean hasTimeUpdate() {
+    return typeCase_ == 3;
+  }
+  /**
+   * <code>.dunkware.stream.GStreamTimeUpdate timeUpdate = 3;</code>
+   */
+  public com.dunkware.net.proto.stream.GStreamTimeUpdate getTimeUpdate() {
+    if (typeCase_ == 3) {
+       return (com.dunkware.net.proto.stream.GStreamTimeUpdate) type_;
+    }
+    return com.dunkware.net.proto.stream.GStreamTimeUpdate.getDefaultInstance();
+  }
+  /**
+   * <code>.dunkware.stream.GStreamTimeUpdate timeUpdate = 3;</code>
+   */
+  public com.dunkware.net.proto.stream.GStreamTimeUpdateOrBuilder getTimeUpdateOrBuilder() {
+    if (typeCase_ == 3) {
+       return (com.dunkware.net.proto.stream.GStreamTimeUpdate) type_;
+    }
+    return com.dunkware.net.proto.stream.GStreamTimeUpdate.getDefaultInstance();
+  }
+
+  public static final int ENTITYSCANNERREQUEST_FIELD_NUMBER = 4;
+  /**
+   * <code>.dunkware.netstream.GNetEntityScannerRequest entityScannerRequest = 4;</code>
+   */
+  public boolean hasEntityScannerRequest() {
+    return typeCase_ == 4;
+  }
+  /**
+   * <code>.dunkware.netstream.GNetEntityScannerRequest entityScannerRequest = 4;</code>
+   */
+  public com.dunkware.net.proto.netstream.GNetEntityScannerRequest getEntityScannerRequest() {
+    if (typeCase_ == 4) {
+       return (com.dunkware.net.proto.netstream.GNetEntityScannerRequest) type_;
+    }
+    return com.dunkware.net.proto.netstream.GNetEntityScannerRequest.getDefaultInstance();
+  }
+  /**
+   * <code>.dunkware.netstream.GNetEntityScannerRequest entityScannerRequest = 4;</code>
+   */
+  public com.dunkware.net.proto.netstream.GNetEntityScannerRequestOrBuilder getEntityScannerRequestOrBuilder() {
+    if (typeCase_ == 4) {
+       return (com.dunkware.net.proto.netstream.GNetEntityScannerRequest) type_;
+    }
+    return com.dunkware.net.proto.netstream.GNetEntityScannerRequest.getDefaultInstance();
+  }
+
+  public static final int ENTITYSEARCHREQUEST_FIELD_NUMBER = 5;
+  /**
+   * <code>.dunkware.netstream.GNetEntitySearchRequest entitySearchRequest = 5;</code>
+   */
+  public boolean hasEntitySearchRequest() {
+    return typeCase_ == 5;
+  }
+  /**
+   * <code>.dunkware.netstream.GNetEntitySearchRequest entitySearchRequest = 5;</code>
+   */
+  public com.dunkware.net.proto.netstream.GNetEntitySearchRequest getEntitySearchRequest() {
+    if (typeCase_ == 5) {
+       return (com.dunkware.net.proto.netstream.GNetEntitySearchRequest) type_;
+    }
+    return com.dunkware.net.proto.netstream.GNetEntitySearchRequest.getDefaultInstance();
+  }
+  /**
+   * <code>.dunkware.netstream.GNetEntitySearchRequest entitySearchRequest = 5;</code>
+   */
+  public com.dunkware.net.proto.netstream.GNetEntitySearchRequestOrBuilder getEntitySearchRequestOrBuilder() {
+    if (typeCase_ == 5) {
+       return (com.dunkware.net.proto.netstream.GNetEntitySearchRequest) type_;
+    }
+    return com.dunkware.net.proto.netstream.GNetEntitySearchRequest.getDefaultInstance();
   }
 
   private byte memoizedIsInitialized = -1;
@@ -165,7 +333,19 @@ private static final long serialVersionUID = 0L;
   public void writeTo(com.google.protobuf.CodedOutputStream output)
                       throws java.io.IOException {
     if (typeCase_ == 1) {
-      output.writeMessage(1, (com.dunkware.net.proto.stream.GStreamEvent) type_);
+      output.writeMessage(1, (com.dunkware.net.proto.stream.GEntitySnapshot) type_);
+    }
+    if (typeCase_ == 2) {
+      output.writeMessage(2, (com.dunkware.net.proto.stream.GEntitySignal) type_);
+    }
+    if (typeCase_ == 3) {
+      output.writeMessage(3, (com.dunkware.net.proto.stream.GStreamTimeUpdate) type_);
+    }
+    if (typeCase_ == 4) {
+      output.writeMessage(4, (com.dunkware.net.proto.netstream.GNetEntityScannerRequest) type_);
+    }
+    if (typeCase_ == 5) {
+      output.writeMessage(5, (com.dunkware.net.proto.netstream.GNetEntitySearchRequest) type_);
     }
     unknownFields.writeTo(output);
   }
@@ -178,7 +358,23 @@ private static final long serialVersionUID = 0L;
     size = 0;
     if (typeCase_ == 1) {
       size += com.google.protobuf.CodedOutputStream
-        .computeMessageSize(1, (com.dunkware.net.proto.stream.GStreamEvent) type_);
+        .computeMessageSize(1, (com.dunkware.net.proto.stream.GEntitySnapshot) type_);
+    }
+    if (typeCase_ == 2) {
+      size += com.google.protobuf.CodedOutputStream
+        .computeMessageSize(2, (com.dunkware.net.proto.stream.GEntitySignal) type_);
+    }
+    if (typeCase_ == 3) {
+      size += com.google.protobuf.CodedOutputStream
+        .computeMessageSize(3, (com.dunkware.net.proto.stream.GStreamTimeUpdate) type_);
+    }
+    if (typeCase_ == 4) {
+      size += com.google.protobuf.CodedOutputStream
+        .computeMessageSize(4, (com.dunkware.net.proto.netstream.GNetEntityScannerRequest) type_);
+    }
+    if (typeCase_ == 5) {
+      size += com.google.protobuf.CodedOutputStream
+        .computeMessageSize(5, (com.dunkware.net.proto.netstream.GNetEntitySearchRequest) type_);
     }
     size += unknownFields.getSerializedSize();
     memoizedSize = size;
@@ -201,8 +397,24 @@ private static final long serialVersionUID = 0L;
     if (!result) return false;
     switch (typeCase_) {
       case 1:
-        result = result && getStreamEvent()
-            .equals(other.getStreamEvent());
+        result = result && getEntitySnapshot()
+            .equals(other.getEntitySnapshot());
+        break;
+      case 2:
+        result = result && getEntitySignal()
+            .equals(other.getEntitySignal());
+        break;
+      case 3:
+        result = result && getTimeUpdate()
+            .equals(other.getTimeUpdate());
+        break;
+      case 4:
+        result = result && getEntityScannerRequest()
+            .equals(other.getEntityScannerRequest());
+        break;
+      case 5:
+        result = result && getEntitySearchRequest()
+            .equals(other.getEntitySearchRequest());
         break;
       case 0:
       default:
@@ -220,8 +432,24 @@ private static final long serialVersionUID = 0L;
     hash = (19 * hash) + getDescriptor().hashCode();
     switch (typeCase_) {
       case 1:
-        hash = (37 * hash) + STREAMEVENT_FIELD_NUMBER;
-        hash = (53 * hash) + getStreamEvent().hashCode();
+        hash = (37 * hash) + ENTITYSNAPSHOT_FIELD_NUMBER;
+        hash = (53 * hash) + getEntitySnapshot().hashCode();
+        break;
+      case 2:
+        hash = (37 * hash) + ENTITYSIGNAL_FIELD_NUMBER;
+        hash = (53 * hash) + getEntitySignal().hashCode();
+        break;
+      case 3:
+        hash = (37 * hash) + TIMEUPDATE_FIELD_NUMBER;
+        hash = (53 * hash) + getTimeUpdate().hashCode();
+        break;
+      case 4:
+        hash = (37 * hash) + ENTITYSCANNERREQUEST_FIELD_NUMBER;
+        hash = (53 * hash) + getEntityScannerRequest().hashCode();
+        break;
+      case 5:
+        hash = (37 * hash) + ENTITYSEARCHREQUEST_FIELD_NUMBER;
+        hash = (53 * hash) + getEntitySearchRequest().hashCode();
         break;
       case 0:
       default:
@@ -388,10 +616,38 @@ private static final long serialVersionUID = 0L;
     public com.dunkware.net.proto.data.cluster.GContainerWorkerMessage buildPartial() {
       com.dunkware.net.proto.data.cluster.GContainerWorkerMessage result = new com.dunkware.net.proto.data.cluster.GContainerWorkerMessage(this);
       if (typeCase_ == 1) {
-        if (streamEventBuilder_ == null) {
+        if (entitySnapshotBuilder_ == null) {
           result.type_ = type_;
         } else {
-          result.type_ = streamEventBuilder_.build();
+          result.type_ = entitySnapshotBuilder_.build();
+        }
+      }
+      if (typeCase_ == 2) {
+        if (entitySignalBuilder_ == null) {
+          result.type_ = type_;
+        } else {
+          result.type_ = entitySignalBuilder_.build();
+        }
+      }
+      if (typeCase_ == 3) {
+        if (timeUpdateBuilder_ == null) {
+          result.type_ = type_;
+        } else {
+          result.type_ = timeUpdateBuilder_.build();
+        }
+      }
+      if (typeCase_ == 4) {
+        if (entityScannerRequestBuilder_ == null) {
+          result.type_ = type_;
+        } else {
+          result.type_ = entityScannerRequestBuilder_.build();
+        }
+      }
+      if (typeCase_ == 5) {
+        if (entitySearchRequestBuilder_ == null) {
+          result.type_ = type_;
+        } else {
+          result.type_ = entitySearchRequestBuilder_.build();
         }
       }
       result.typeCase_ = typeCase_;
@@ -444,8 +700,24 @@ private static final long serialVersionUID = 0L;
     public Builder mergeFrom(com.dunkware.net.proto.data.cluster.GContainerWorkerMessage other) {
       if (other == com.dunkware.net.proto.data.cluster.GContainerWorkerMessage.getDefaultInstance()) return this;
       switch (other.getTypeCase()) {
-        case STREAMEVENT: {
-          mergeStreamEvent(other.getStreamEvent());
+        case ENTITYSNAPSHOT: {
+          mergeEntitySnapshot(other.getEntitySnapshot());
+          break;
+        }
+        case ENTITYSIGNAL: {
+          mergeEntitySignal(other.getEntitySignal());
+          break;
+        }
+        case TIMEUPDATE: {
+          mergeTimeUpdate(other.getTimeUpdate());
+          break;
+        }
+        case ENTITYSCANNERREQUEST: {
+          mergeEntityScannerRequest(other.getEntityScannerRequest());
+          break;
+        }
+        case ENTITYSEARCHREQUEST: {
+          mergeEntitySearchRequest(other.getEntitySearchRequest());
           break;
         }
         case TYPE_NOT_SET: {
@@ -497,67 +769,67 @@ private static final long serialVersionUID = 0L;
 
 
     private com.google.protobuf.SingleFieldBuilderV3<
-        com.dunkware.net.proto.stream.GStreamEvent, com.dunkware.net.proto.stream.GStreamEvent.Builder, com.dunkware.net.proto.stream.GStreamEventOrBuilder> streamEventBuilder_;
+        com.dunkware.net.proto.stream.GEntitySnapshot, com.dunkware.net.proto.stream.GEntitySnapshot.Builder, com.dunkware.net.proto.stream.GEntitySnapshotOrBuilder> entitySnapshotBuilder_;
     /**
-     * <code>.dunkware.stream.GStreamEvent streamEvent = 1;</code>
+     * <code>.dunkware.stream.GEntitySnapshot entitySnapshot = 1;</code>
      */
-    public boolean hasStreamEvent() {
+    public boolean hasEntitySnapshot() {
       return typeCase_ == 1;
     }
     /**
-     * <code>.dunkware.stream.GStreamEvent streamEvent = 1;</code>
+     * <code>.dunkware.stream.GEntitySnapshot entitySnapshot = 1;</code>
      */
-    public com.dunkware.net.proto.stream.GStreamEvent getStreamEvent() {
-      if (streamEventBuilder_ == null) {
+    public com.dunkware.net.proto.stream.GEntitySnapshot getEntitySnapshot() {
+      if (entitySnapshotBuilder_ == null) {
         if (typeCase_ == 1) {
-          return (com.dunkware.net.proto.stream.GStreamEvent) type_;
+          return (com.dunkware.net.proto.stream.GEntitySnapshot) type_;
         }
-        return com.dunkware.net.proto.stream.GStreamEvent.getDefaultInstance();
+        return com.dunkware.net.proto.stream.GEntitySnapshot.getDefaultInstance();
       } else {
         if (typeCase_ == 1) {
-          return streamEventBuilder_.getMessage();
+          return entitySnapshotBuilder_.getMessage();
         }
-        return com.dunkware.net.proto.stream.GStreamEvent.getDefaultInstance();
+        return com.dunkware.net.proto.stream.GEntitySnapshot.getDefaultInstance();
       }
     }
     /**
-     * <code>.dunkware.stream.GStreamEvent streamEvent = 1;</code>
+     * <code>.dunkware.stream.GEntitySnapshot entitySnapshot = 1;</code>
      */
-    public Builder setStreamEvent(com.dunkware.net.proto.stream.GStreamEvent value) {
-      if (streamEventBuilder_ == null) {
+    public Builder setEntitySnapshot(com.dunkware.net.proto.stream.GEntitySnapshot value) {
+      if (entitySnapshotBuilder_ == null) {
         if (value == null) {
           throw new NullPointerException();
         }
         type_ = value;
         onChanged();
       } else {
-        streamEventBuilder_.setMessage(value);
+        entitySnapshotBuilder_.setMessage(value);
       }
       typeCase_ = 1;
       return this;
     }
     /**
-     * <code>.dunkware.stream.GStreamEvent streamEvent = 1;</code>
+     * <code>.dunkware.stream.GEntitySnapshot entitySnapshot = 1;</code>
      */
-    public Builder setStreamEvent(
-        com.dunkware.net.proto.stream.GStreamEvent.Builder builderForValue) {
-      if (streamEventBuilder_ == null) {
+    public Builder setEntitySnapshot(
+        com.dunkware.net.proto.stream.GEntitySnapshot.Builder builderForValue) {
+      if (entitySnapshotBuilder_ == null) {
         type_ = builderForValue.build();
         onChanged();
       } else {
-        streamEventBuilder_.setMessage(builderForValue.build());
+        entitySnapshotBuilder_.setMessage(builderForValue.build());
       }
       typeCase_ = 1;
       return this;
     }
     /**
-     * <code>.dunkware.stream.GStreamEvent streamEvent = 1;</code>
+     * <code>.dunkware.stream.GEntitySnapshot entitySnapshot = 1;</code>
      */
-    public Builder mergeStreamEvent(com.dunkware.net.proto.stream.GStreamEvent value) {
-      if (streamEventBuilder_ == null) {
+    public Builder mergeEntitySnapshot(com.dunkware.net.proto.stream.GEntitySnapshot value) {
+      if (entitySnapshotBuilder_ == null) {
         if (typeCase_ == 1 &&
-            type_ != com.dunkware.net.proto.stream.GStreamEvent.getDefaultInstance()) {
-          type_ = com.dunkware.net.proto.stream.GStreamEvent.newBuilder((com.dunkware.net.proto.stream.GStreamEvent) type_)
+            type_ != com.dunkware.net.proto.stream.GEntitySnapshot.getDefaultInstance()) {
+          type_ = com.dunkware.net.proto.stream.GEntitySnapshot.newBuilder((com.dunkware.net.proto.stream.GEntitySnapshot) type_)
               .mergeFrom(value).buildPartial();
         } else {
           type_ = value;
@@ -565,18 +837,18 @@ private static final long serialVersionUID = 0L;
         onChanged();
       } else {
         if (typeCase_ == 1) {
-          streamEventBuilder_.mergeFrom(value);
+          entitySnapshotBuilder_.mergeFrom(value);
         }
-        streamEventBuilder_.setMessage(value);
+        entitySnapshotBuilder_.setMessage(value);
       }
       typeCase_ = 1;
       return this;
     }
     /**
-     * <code>.dunkware.stream.GStreamEvent streamEvent = 1;</code>
+     * <code>.dunkware.stream.GEntitySnapshot entitySnapshot = 1;</code>
      */
-    public Builder clearStreamEvent() {
-      if (streamEventBuilder_ == null) {
+    public Builder clearEntitySnapshot() {
+      if (entitySnapshotBuilder_ == null) {
         if (typeCase_ == 1) {
           typeCase_ = 0;
           type_ = null;
@@ -587,49 +859,593 @@ private static final long serialVersionUID = 0L;
           typeCase_ = 0;
           type_ = null;
         }
-        streamEventBuilder_.clear();
+        entitySnapshotBuilder_.clear();
       }
       return this;
     }
     /**
-     * <code>.dunkware.stream.GStreamEvent streamEvent = 1;</code>
+     * <code>.dunkware.stream.GEntitySnapshot entitySnapshot = 1;</code>
      */
-    public com.dunkware.net.proto.stream.GStreamEvent.Builder getStreamEventBuilder() {
-      return getStreamEventFieldBuilder().getBuilder();
+    public com.dunkware.net.proto.stream.GEntitySnapshot.Builder getEntitySnapshotBuilder() {
+      return getEntitySnapshotFieldBuilder().getBuilder();
     }
     /**
-     * <code>.dunkware.stream.GStreamEvent streamEvent = 1;</code>
+     * <code>.dunkware.stream.GEntitySnapshot entitySnapshot = 1;</code>
      */
-    public com.dunkware.net.proto.stream.GStreamEventOrBuilder getStreamEventOrBuilder() {
-      if ((typeCase_ == 1) && (streamEventBuilder_ != null)) {
-        return streamEventBuilder_.getMessageOrBuilder();
+    public com.dunkware.net.proto.stream.GEntitySnapshotOrBuilder getEntitySnapshotOrBuilder() {
+      if ((typeCase_ == 1) && (entitySnapshotBuilder_ != null)) {
+        return entitySnapshotBuilder_.getMessageOrBuilder();
       } else {
         if (typeCase_ == 1) {
-          return (com.dunkware.net.proto.stream.GStreamEvent) type_;
+          return (com.dunkware.net.proto.stream.GEntitySnapshot) type_;
         }
-        return com.dunkware.net.proto.stream.GStreamEvent.getDefaultInstance();
+        return com.dunkware.net.proto.stream.GEntitySnapshot.getDefaultInstance();
       }
     }
     /**
-     * <code>.dunkware.stream.GStreamEvent streamEvent = 1;</code>
+     * <code>.dunkware.stream.GEntitySnapshot entitySnapshot = 1;</code>
      */
     private com.google.protobuf.SingleFieldBuilderV3<
-        com.dunkware.net.proto.stream.GStreamEvent, com.dunkware.net.proto.stream.GStreamEvent.Builder, com.dunkware.net.proto.stream.GStreamEventOrBuilder> 
-        getStreamEventFieldBuilder() {
-      if (streamEventBuilder_ == null) {
+        com.dunkware.net.proto.stream.GEntitySnapshot, com.dunkware.net.proto.stream.GEntitySnapshot.Builder, com.dunkware.net.proto.stream.GEntitySnapshotOrBuilder> 
+        getEntitySnapshotFieldBuilder() {
+      if (entitySnapshotBuilder_ == null) {
         if (!(typeCase_ == 1)) {
-          type_ = com.dunkware.net.proto.stream.GStreamEvent.getDefaultInstance();
+          type_ = com.dunkware.net.proto.stream.GEntitySnapshot.getDefaultInstance();
         }
-        streamEventBuilder_ = new com.google.protobuf.SingleFieldBuilderV3<
-            com.dunkware.net.proto.stream.GStreamEvent, com.dunkware.net.proto.stream.GStreamEvent.Builder, com.dunkware.net.proto.stream.GStreamEventOrBuilder>(
-                (com.dunkware.net.proto.stream.GStreamEvent) type_,
+        entitySnapshotBuilder_ = new com.google.protobuf.SingleFieldBuilderV3<
+            com.dunkware.net.proto.stream.GEntitySnapshot, com.dunkware.net.proto.stream.GEntitySnapshot.Builder, com.dunkware.net.proto.stream.GEntitySnapshotOrBuilder>(
+                (com.dunkware.net.proto.stream.GEntitySnapshot) type_,
                 getParentForChildren(),
                 isClean());
         type_ = null;
       }
       typeCase_ = 1;
       onChanged();;
-      return streamEventBuilder_;
+      return entitySnapshotBuilder_;
+    }
+
+    private com.google.protobuf.SingleFieldBuilderV3<
+        com.dunkware.net.proto.stream.GEntitySignal, com.dunkware.net.proto.stream.GEntitySignal.Builder, com.dunkware.net.proto.stream.GEntitySignalOrBuilder> entitySignalBuilder_;
+    /**
+     * <code>.dunkware.stream.GEntitySignal entitySignal = 2;</code>
+     */
+    public boolean hasEntitySignal() {
+      return typeCase_ == 2;
+    }
+    /**
+     * <code>.dunkware.stream.GEntitySignal entitySignal = 2;</code>
+     */
+    public com.dunkware.net.proto.stream.GEntitySignal getEntitySignal() {
+      if (entitySignalBuilder_ == null) {
+        if (typeCase_ == 2) {
+          return (com.dunkware.net.proto.stream.GEntitySignal) type_;
+        }
+        return com.dunkware.net.proto.stream.GEntitySignal.getDefaultInstance();
+      } else {
+        if (typeCase_ == 2) {
+          return entitySignalBuilder_.getMessage();
+        }
+        return com.dunkware.net.proto.stream.GEntitySignal.getDefaultInstance();
+      }
+    }
+    /**
+     * <code>.dunkware.stream.GEntitySignal entitySignal = 2;</code>
+     */
+    public Builder setEntitySignal(com.dunkware.net.proto.stream.GEntitySignal value) {
+      if (entitySignalBuilder_ == null) {
+        if (value == null) {
+          throw new NullPointerException();
+        }
+        type_ = value;
+        onChanged();
+      } else {
+        entitySignalBuilder_.setMessage(value);
+      }
+      typeCase_ = 2;
+      return this;
+    }
+    /**
+     * <code>.dunkware.stream.GEntitySignal entitySignal = 2;</code>
+     */
+    public Builder setEntitySignal(
+        com.dunkware.net.proto.stream.GEntitySignal.Builder builderForValue) {
+      if (entitySignalBuilder_ == null) {
+        type_ = builderForValue.build();
+        onChanged();
+      } else {
+        entitySignalBuilder_.setMessage(builderForValue.build());
+      }
+      typeCase_ = 2;
+      return this;
+    }
+    /**
+     * <code>.dunkware.stream.GEntitySignal entitySignal = 2;</code>
+     */
+    public Builder mergeEntitySignal(com.dunkware.net.proto.stream.GEntitySignal value) {
+      if (entitySignalBuilder_ == null) {
+        if (typeCase_ == 2 &&
+            type_ != com.dunkware.net.proto.stream.GEntitySignal.getDefaultInstance()) {
+          type_ = com.dunkware.net.proto.stream.GEntitySignal.newBuilder((com.dunkware.net.proto.stream.GEntitySignal) type_)
+              .mergeFrom(value).buildPartial();
+        } else {
+          type_ = value;
+        }
+        onChanged();
+      } else {
+        if (typeCase_ == 2) {
+          entitySignalBuilder_.mergeFrom(value);
+        }
+        entitySignalBuilder_.setMessage(value);
+      }
+      typeCase_ = 2;
+      return this;
+    }
+    /**
+     * <code>.dunkware.stream.GEntitySignal entitySignal = 2;</code>
+     */
+    public Builder clearEntitySignal() {
+      if (entitySignalBuilder_ == null) {
+        if (typeCase_ == 2) {
+          typeCase_ = 0;
+          type_ = null;
+          onChanged();
+        }
+      } else {
+        if (typeCase_ == 2) {
+          typeCase_ = 0;
+          type_ = null;
+        }
+        entitySignalBuilder_.clear();
+      }
+      return this;
+    }
+    /**
+     * <code>.dunkware.stream.GEntitySignal entitySignal = 2;</code>
+     */
+    public com.dunkware.net.proto.stream.GEntitySignal.Builder getEntitySignalBuilder() {
+      return getEntitySignalFieldBuilder().getBuilder();
+    }
+    /**
+     * <code>.dunkware.stream.GEntitySignal entitySignal = 2;</code>
+     */
+    public com.dunkware.net.proto.stream.GEntitySignalOrBuilder getEntitySignalOrBuilder() {
+      if ((typeCase_ == 2) && (entitySignalBuilder_ != null)) {
+        return entitySignalBuilder_.getMessageOrBuilder();
+      } else {
+        if (typeCase_ == 2) {
+          return (com.dunkware.net.proto.stream.GEntitySignal) type_;
+        }
+        return com.dunkware.net.proto.stream.GEntitySignal.getDefaultInstance();
+      }
+    }
+    /**
+     * <code>.dunkware.stream.GEntitySignal entitySignal = 2;</code>
+     */
+    private com.google.protobuf.SingleFieldBuilderV3<
+        com.dunkware.net.proto.stream.GEntitySignal, com.dunkware.net.proto.stream.GEntitySignal.Builder, com.dunkware.net.proto.stream.GEntitySignalOrBuilder> 
+        getEntitySignalFieldBuilder() {
+      if (entitySignalBuilder_ == null) {
+        if (!(typeCase_ == 2)) {
+          type_ = com.dunkware.net.proto.stream.GEntitySignal.getDefaultInstance();
+        }
+        entitySignalBuilder_ = new com.google.protobuf.SingleFieldBuilderV3<
+            com.dunkware.net.proto.stream.GEntitySignal, com.dunkware.net.proto.stream.GEntitySignal.Builder, com.dunkware.net.proto.stream.GEntitySignalOrBuilder>(
+                (com.dunkware.net.proto.stream.GEntitySignal) type_,
+                getParentForChildren(),
+                isClean());
+        type_ = null;
+      }
+      typeCase_ = 2;
+      onChanged();;
+      return entitySignalBuilder_;
+    }
+
+    private com.google.protobuf.SingleFieldBuilderV3<
+        com.dunkware.net.proto.stream.GStreamTimeUpdate, com.dunkware.net.proto.stream.GStreamTimeUpdate.Builder, com.dunkware.net.proto.stream.GStreamTimeUpdateOrBuilder> timeUpdateBuilder_;
+    /**
+     * <code>.dunkware.stream.GStreamTimeUpdate timeUpdate = 3;</code>
+     */
+    public boolean hasTimeUpdate() {
+      return typeCase_ == 3;
+    }
+    /**
+     * <code>.dunkware.stream.GStreamTimeUpdate timeUpdate = 3;</code>
+     */
+    public com.dunkware.net.proto.stream.GStreamTimeUpdate getTimeUpdate() {
+      if (timeUpdateBuilder_ == null) {
+        if (typeCase_ == 3) {
+          return (com.dunkware.net.proto.stream.GStreamTimeUpdate) type_;
+        }
+        return com.dunkware.net.proto.stream.GStreamTimeUpdate.getDefaultInstance();
+      } else {
+        if (typeCase_ == 3) {
+          return timeUpdateBuilder_.getMessage();
+        }
+        return com.dunkware.net.proto.stream.GStreamTimeUpdate.getDefaultInstance();
+      }
+    }
+    /**
+     * <code>.dunkware.stream.GStreamTimeUpdate timeUpdate = 3;</code>
+     */
+    public Builder setTimeUpdate(com.dunkware.net.proto.stream.GStreamTimeUpdate value) {
+      if (timeUpdateBuilder_ == null) {
+        if (value == null) {
+          throw new NullPointerException();
+        }
+        type_ = value;
+        onChanged();
+      } else {
+        timeUpdateBuilder_.setMessage(value);
+      }
+      typeCase_ = 3;
+      return this;
+    }
+    /**
+     * <code>.dunkware.stream.GStreamTimeUpdate timeUpdate = 3;</code>
+     */
+    public Builder setTimeUpdate(
+        com.dunkware.net.proto.stream.GStreamTimeUpdate.Builder builderForValue) {
+      if (timeUpdateBuilder_ == null) {
+        type_ = builderForValue.build();
+        onChanged();
+      } else {
+        timeUpdateBuilder_.setMessage(builderForValue.build());
+      }
+      typeCase_ = 3;
+      return this;
+    }
+    /**
+     * <code>.dunkware.stream.GStreamTimeUpdate timeUpdate = 3;</code>
+     */
+    public Builder mergeTimeUpdate(com.dunkware.net.proto.stream.GStreamTimeUpdate value) {
+      if (timeUpdateBuilder_ == null) {
+        if (typeCase_ == 3 &&
+            type_ != com.dunkware.net.proto.stream.GStreamTimeUpdate.getDefaultInstance()) {
+          type_ = com.dunkware.net.proto.stream.GStreamTimeUpdate.newBuilder((com.dunkware.net.proto.stream.GStreamTimeUpdate) type_)
+              .mergeFrom(value).buildPartial();
+        } else {
+          type_ = value;
+        }
+        onChanged();
+      } else {
+        if (typeCase_ == 3) {
+          timeUpdateBuilder_.mergeFrom(value);
+        }
+        timeUpdateBuilder_.setMessage(value);
+      }
+      typeCase_ = 3;
+      return this;
+    }
+    /**
+     * <code>.dunkware.stream.GStreamTimeUpdate timeUpdate = 3;</code>
+     */
+    public Builder clearTimeUpdate() {
+      if (timeUpdateBuilder_ == null) {
+        if (typeCase_ == 3) {
+          typeCase_ = 0;
+          type_ = null;
+          onChanged();
+        }
+      } else {
+        if (typeCase_ == 3) {
+          typeCase_ = 0;
+          type_ = null;
+        }
+        timeUpdateBuilder_.clear();
+      }
+      return this;
+    }
+    /**
+     * <code>.dunkware.stream.GStreamTimeUpdate timeUpdate = 3;</code>
+     */
+    public com.dunkware.net.proto.stream.GStreamTimeUpdate.Builder getTimeUpdateBuilder() {
+      return getTimeUpdateFieldBuilder().getBuilder();
+    }
+    /**
+     * <code>.dunkware.stream.GStreamTimeUpdate timeUpdate = 3;</code>
+     */
+    public com.dunkware.net.proto.stream.GStreamTimeUpdateOrBuilder getTimeUpdateOrBuilder() {
+      if ((typeCase_ == 3) && (timeUpdateBuilder_ != null)) {
+        return timeUpdateBuilder_.getMessageOrBuilder();
+      } else {
+        if (typeCase_ == 3) {
+          return (com.dunkware.net.proto.stream.GStreamTimeUpdate) type_;
+        }
+        return com.dunkware.net.proto.stream.GStreamTimeUpdate.getDefaultInstance();
+      }
+    }
+    /**
+     * <code>.dunkware.stream.GStreamTimeUpdate timeUpdate = 3;</code>
+     */
+    private com.google.protobuf.SingleFieldBuilderV3<
+        com.dunkware.net.proto.stream.GStreamTimeUpdate, com.dunkware.net.proto.stream.GStreamTimeUpdate.Builder, com.dunkware.net.proto.stream.GStreamTimeUpdateOrBuilder> 
+        getTimeUpdateFieldBuilder() {
+      if (timeUpdateBuilder_ == null) {
+        if (!(typeCase_ == 3)) {
+          type_ = com.dunkware.net.proto.stream.GStreamTimeUpdate.getDefaultInstance();
+        }
+        timeUpdateBuilder_ = new com.google.protobuf.SingleFieldBuilderV3<
+            com.dunkware.net.proto.stream.GStreamTimeUpdate, com.dunkware.net.proto.stream.GStreamTimeUpdate.Builder, com.dunkware.net.proto.stream.GStreamTimeUpdateOrBuilder>(
+                (com.dunkware.net.proto.stream.GStreamTimeUpdate) type_,
+                getParentForChildren(),
+                isClean());
+        type_ = null;
+      }
+      typeCase_ = 3;
+      onChanged();;
+      return timeUpdateBuilder_;
+    }
+
+    private com.google.protobuf.SingleFieldBuilderV3<
+        com.dunkware.net.proto.netstream.GNetEntityScannerRequest, com.dunkware.net.proto.netstream.GNetEntityScannerRequest.Builder, com.dunkware.net.proto.netstream.GNetEntityScannerRequestOrBuilder> entityScannerRequestBuilder_;
+    /**
+     * <code>.dunkware.netstream.GNetEntityScannerRequest entityScannerRequest = 4;</code>
+     */
+    public boolean hasEntityScannerRequest() {
+      return typeCase_ == 4;
+    }
+    /**
+     * <code>.dunkware.netstream.GNetEntityScannerRequest entityScannerRequest = 4;</code>
+     */
+    public com.dunkware.net.proto.netstream.GNetEntityScannerRequest getEntityScannerRequest() {
+      if (entityScannerRequestBuilder_ == null) {
+        if (typeCase_ == 4) {
+          return (com.dunkware.net.proto.netstream.GNetEntityScannerRequest) type_;
+        }
+        return com.dunkware.net.proto.netstream.GNetEntityScannerRequest.getDefaultInstance();
+      } else {
+        if (typeCase_ == 4) {
+          return entityScannerRequestBuilder_.getMessage();
+        }
+        return com.dunkware.net.proto.netstream.GNetEntityScannerRequest.getDefaultInstance();
+      }
+    }
+    /**
+     * <code>.dunkware.netstream.GNetEntityScannerRequest entityScannerRequest = 4;</code>
+     */
+    public Builder setEntityScannerRequest(com.dunkware.net.proto.netstream.GNetEntityScannerRequest value) {
+      if (entityScannerRequestBuilder_ == null) {
+        if (value == null) {
+          throw new NullPointerException();
+        }
+        type_ = value;
+        onChanged();
+      } else {
+        entityScannerRequestBuilder_.setMessage(value);
+      }
+      typeCase_ = 4;
+      return this;
+    }
+    /**
+     * <code>.dunkware.netstream.GNetEntityScannerRequest entityScannerRequest = 4;</code>
+     */
+    public Builder setEntityScannerRequest(
+        com.dunkware.net.proto.netstream.GNetEntityScannerRequest.Builder builderForValue) {
+      if (entityScannerRequestBuilder_ == null) {
+        type_ = builderForValue.build();
+        onChanged();
+      } else {
+        entityScannerRequestBuilder_.setMessage(builderForValue.build());
+      }
+      typeCase_ = 4;
+      return this;
+    }
+    /**
+     * <code>.dunkware.netstream.GNetEntityScannerRequest entityScannerRequest = 4;</code>
+     */
+    public Builder mergeEntityScannerRequest(com.dunkware.net.proto.netstream.GNetEntityScannerRequest value) {
+      if (entityScannerRequestBuilder_ == null) {
+        if (typeCase_ == 4 &&
+            type_ != com.dunkware.net.proto.netstream.GNetEntityScannerRequest.getDefaultInstance()) {
+          type_ = com.dunkware.net.proto.netstream.GNetEntityScannerRequest.newBuilder((com.dunkware.net.proto.netstream.GNetEntityScannerRequest) type_)
+              .mergeFrom(value).buildPartial();
+        } else {
+          type_ = value;
+        }
+        onChanged();
+      } else {
+        if (typeCase_ == 4) {
+          entityScannerRequestBuilder_.mergeFrom(value);
+        }
+        entityScannerRequestBuilder_.setMessage(value);
+      }
+      typeCase_ = 4;
+      return this;
+    }
+    /**
+     * <code>.dunkware.netstream.GNetEntityScannerRequest entityScannerRequest = 4;</code>
+     */
+    public Builder clearEntityScannerRequest() {
+      if (entityScannerRequestBuilder_ == null) {
+        if (typeCase_ == 4) {
+          typeCase_ = 0;
+          type_ = null;
+          onChanged();
+        }
+      } else {
+        if (typeCase_ == 4) {
+          typeCase_ = 0;
+          type_ = null;
+        }
+        entityScannerRequestBuilder_.clear();
+      }
+      return this;
+    }
+    /**
+     * <code>.dunkware.netstream.GNetEntityScannerRequest entityScannerRequest = 4;</code>
+     */
+    public com.dunkware.net.proto.netstream.GNetEntityScannerRequest.Builder getEntityScannerRequestBuilder() {
+      return getEntityScannerRequestFieldBuilder().getBuilder();
+    }
+    /**
+     * <code>.dunkware.netstream.GNetEntityScannerRequest entityScannerRequest = 4;</code>
+     */
+    public com.dunkware.net.proto.netstream.GNetEntityScannerRequestOrBuilder getEntityScannerRequestOrBuilder() {
+      if ((typeCase_ == 4) && (entityScannerRequestBuilder_ != null)) {
+        return entityScannerRequestBuilder_.getMessageOrBuilder();
+      } else {
+        if (typeCase_ == 4) {
+          return (com.dunkware.net.proto.netstream.GNetEntityScannerRequest) type_;
+        }
+        return com.dunkware.net.proto.netstream.GNetEntityScannerRequest.getDefaultInstance();
+      }
+    }
+    /**
+     * <code>.dunkware.netstream.GNetEntityScannerRequest entityScannerRequest = 4;</code>
+     */
+    private com.google.protobuf.SingleFieldBuilderV3<
+        com.dunkware.net.proto.netstream.GNetEntityScannerRequest, com.dunkware.net.proto.netstream.GNetEntityScannerRequest.Builder, com.dunkware.net.proto.netstream.GNetEntityScannerRequestOrBuilder> 
+        getEntityScannerRequestFieldBuilder() {
+      if (entityScannerRequestBuilder_ == null) {
+        if (!(typeCase_ == 4)) {
+          type_ = com.dunkware.net.proto.netstream.GNetEntityScannerRequest.getDefaultInstance();
+        }
+        entityScannerRequestBuilder_ = new com.google.protobuf.SingleFieldBuilderV3<
+            com.dunkware.net.proto.netstream.GNetEntityScannerRequest, com.dunkware.net.proto.netstream.GNetEntityScannerRequest.Builder, com.dunkware.net.proto.netstream.GNetEntityScannerRequestOrBuilder>(
+                (com.dunkware.net.proto.netstream.GNetEntityScannerRequest) type_,
+                getParentForChildren(),
+                isClean());
+        type_ = null;
+      }
+      typeCase_ = 4;
+      onChanged();;
+      return entityScannerRequestBuilder_;
+    }
+
+    private com.google.protobuf.SingleFieldBuilderV3<
+        com.dunkware.net.proto.netstream.GNetEntitySearchRequest, com.dunkware.net.proto.netstream.GNetEntitySearchRequest.Builder, com.dunkware.net.proto.netstream.GNetEntitySearchRequestOrBuilder> entitySearchRequestBuilder_;
+    /**
+     * <code>.dunkware.netstream.GNetEntitySearchRequest entitySearchRequest = 5;</code>
+     */
+    public boolean hasEntitySearchRequest() {
+      return typeCase_ == 5;
+    }
+    /**
+     * <code>.dunkware.netstream.GNetEntitySearchRequest entitySearchRequest = 5;</code>
+     */
+    public com.dunkware.net.proto.netstream.GNetEntitySearchRequest getEntitySearchRequest() {
+      if (entitySearchRequestBuilder_ == null) {
+        if (typeCase_ == 5) {
+          return (com.dunkware.net.proto.netstream.GNetEntitySearchRequest) type_;
+        }
+        return com.dunkware.net.proto.netstream.GNetEntitySearchRequest.getDefaultInstance();
+      } else {
+        if (typeCase_ == 5) {
+          return entitySearchRequestBuilder_.getMessage();
+        }
+        return com.dunkware.net.proto.netstream.GNetEntitySearchRequest.getDefaultInstance();
+      }
+    }
+    /**
+     * <code>.dunkware.netstream.GNetEntitySearchRequest entitySearchRequest = 5;</code>
+     */
+    public Builder setEntitySearchRequest(com.dunkware.net.proto.netstream.GNetEntitySearchRequest value) {
+      if (entitySearchRequestBuilder_ == null) {
+        if (value == null) {
+          throw new NullPointerException();
+        }
+        type_ = value;
+        onChanged();
+      } else {
+        entitySearchRequestBuilder_.setMessage(value);
+      }
+      typeCase_ = 5;
+      return this;
+    }
+    /**
+     * <code>.dunkware.netstream.GNetEntitySearchRequest entitySearchRequest = 5;</code>
+     */
+    public Builder setEntitySearchRequest(
+        com.dunkware.net.proto.netstream.GNetEntitySearchRequest.Builder builderForValue) {
+      if (entitySearchRequestBuilder_ == null) {
+        type_ = builderForValue.build();
+        onChanged();
+      } else {
+        entitySearchRequestBuilder_.setMessage(builderForValue.build());
+      }
+      typeCase_ = 5;
+      return this;
+    }
+    /**
+     * <code>.dunkware.netstream.GNetEntitySearchRequest entitySearchRequest = 5;</code>
+     */
+    public Builder mergeEntitySearchRequest(com.dunkware.net.proto.netstream.GNetEntitySearchRequest value) {
+      if (entitySearchRequestBuilder_ == null) {
+        if (typeCase_ == 5 &&
+            type_ != com.dunkware.net.proto.netstream.GNetEntitySearchRequest.getDefaultInstance()) {
+          type_ = com.dunkware.net.proto.netstream.GNetEntitySearchRequest.newBuilder((com.dunkware.net.proto.netstream.GNetEntitySearchRequest) type_)
+              .mergeFrom(value).buildPartial();
+        } else {
+          type_ = value;
+        }
+        onChanged();
+      } else {
+        if (typeCase_ == 5) {
+          entitySearchRequestBuilder_.mergeFrom(value);
+        }
+        entitySearchRequestBuilder_.setMessage(value);
+      }
+      typeCase_ = 5;
+      return this;
+    }
+    /**
+     * <code>.dunkware.netstream.GNetEntitySearchRequest entitySearchRequest = 5;</code>
+     */
+    public Builder clearEntitySearchRequest() {
+      if (entitySearchRequestBuilder_ == null) {
+        if (typeCase_ == 5) {
+          typeCase_ = 0;
+          type_ = null;
+          onChanged();
+        }
+      } else {
+        if (typeCase_ == 5) {
+          typeCase_ = 0;
+          type_ = null;
+        }
+        entitySearchRequestBuilder_.clear();
+      }
+      return this;
+    }
+    /**
+     * <code>.dunkware.netstream.GNetEntitySearchRequest entitySearchRequest = 5;</code>
+     */
+    public com.dunkware.net.proto.netstream.GNetEntitySearchRequest.Builder getEntitySearchRequestBuilder() {
+      return getEntitySearchRequestFieldBuilder().getBuilder();
+    }
+    /**
+     * <code>.dunkware.netstream.GNetEntitySearchRequest entitySearchRequest = 5;</code>
+     */
+    public com.dunkware.net.proto.netstream.GNetEntitySearchRequestOrBuilder getEntitySearchRequestOrBuilder() {
+      if ((typeCase_ == 5) && (entitySearchRequestBuilder_ != null)) {
+        return entitySearchRequestBuilder_.getMessageOrBuilder();
+      } else {
+        if (typeCase_ == 5) {
+          return (com.dunkware.net.proto.netstream.GNetEntitySearchRequest) type_;
+        }
+        return com.dunkware.net.proto.netstream.GNetEntitySearchRequest.getDefaultInstance();
+      }
+    }
+    /**
+     * <code>.dunkware.netstream.GNetEntitySearchRequest entitySearchRequest = 5;</code>
+     */
+    private com.google.protobuf.SingleFieldBuilderV3<
+        com.dunkware.net.proto.netstream.GNetEntitySearchRequest, com.dunkware.net.proto.netstream.GNetEntitySearchRequest.Builder, com.dunkware.net.proto.netstream.GNetEntitySearchRequestOrBuilder> 
+        getEntitySearchRequestFieldBuilder() {
+      if (entitySearchRequestBuilder_ == null) {
+        if (!(typeCase_ == 5)) {
+          type_ = com.dunkware.net.proto.netstream.GNetEntitySearchRequest.getDefaultInstance();
+        }
+        entitySearchRequestBuilder_ = new com.google.protobuf.SingleFieldBuilderV3<
+            com.dunkware.net.proto.netstream.GNetEntitySearchRequest, com.dunkware.net.proto.netstream.GNetEntitySearchRequest.Builder, com.dunkware.net.proto.netstream.GNetEntitySearchRequestOrBuilder>(
+                (com.dunkware.net.proto.netstream.GNetEntitySearchRequest) type_,
+                getParentForChildren(),
+                isClean());
+        type_ = null;
+      }
+      typeCase_ = 5;
+      onChanged();;
+      return entitySearchRequestBuilder_;
     }
     @java.lang.Override
     public final Builder setUnknownFields(

@@ -8,15 +8,11 @@ option java_outer_classname = "GDataServiceProto";
 
 
 
-import "stream.proto";
-import "data.proto";
+
 import "netstream.proto";
 
 service GDataService  {
-    rpc signalSearch( dunkware.data.GEntitySignalSearchRequest) returns (dunkware.data.GEntitySignalSearchResponse) {}
-	  rpc entitySearch( dunkware.data.GEntitySearchRequest) returns (dunkware.data.GEntitySearchResponse) {}
-	  rpc streamClient(stream netstream.GNetClientMessage) returns (netstream.GNetServerMessage) {}
-	
-	
+    rpc streamClient(stream netstream.GNetClientMessage) returns (netstream.GNetServerMessage) {}
+
  }
 
