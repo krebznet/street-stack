@@ -7,6 +7,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.dunkware.net.proto.netstream.GNetClientConnectRequest;
+import com.dunkware.net.proto.netstream.GNetClientConnectResponse;
 import com.dunkware.net.proto.netstream.GNetClientMessage;
 import com.dunkware.net.proto.netstream.GNetServerMessage;
 import com.dunkware.trade.service.data.service.stream.container.StreamContainerConnector;
@@ -24,9 +25,34 @@ public class GrpcStreamConnector implements StreamContainerConnector, StreamObse
 	
 	public GrpcStreamConnector(StreamObserver<GNetServerMessage> responseObserver) { 
 		this.responseObserver = responseObserver;
+		Thread fucker = new Thread() {
+			public void run() { 
+				while(!interrupted()) { 
+					try {
+						Thread.sleep(500);
+						
+						responseObserver.onNext(GNetServerMessage.newBuilder().setConnectResponse(GNetClientConnectResponse.newBuilder().setConnected(true).build()).build());
+						
+					} catch (Exception e) {
+						// TODO: handle exception
+					}
+				}
+			}
+		};
+		fucker.start();
+				
 		
 	}
 	
+	
+	
+	@Override
+	public String getIdentifier() {
+		return "Fuck You GRPC";
+	}
+
+
+
 	@Override
 	public void onNext(GNetClientMessage value) {
 		System.out.println("Grpc Net client message received ");

@@ -1,6 +1,6 @@
 package com.dunkware.xstream.net.client;
 
-public interface StreamClientEntitySearchObserver {
+public interface StreamClientEntitySearchCallBack {
 	
 	public void onResponse(StreamClientEntitySearch search); 
 	

@@ -26,16 +26,25 @@ public class GContainerProto {
 		return GContainerWorkerMessage.newBuilder().setEntitySearchRequest(req).build();
 	}
 	
-	public static boolean isSearchResults(GContainerServerMessage message, int searchId) { 
+	public static boolean isEntitySearchResults(GContainerServerMessage message, int searchId) { 
 		if(message.getTypeCase() == TypeCase.ENTITYSEARCHRESULTS) {
-			if(message.getEntitySearchResponse().getSearchId() == searchId) { 
+			if(message.getEntitySearchResults().getSearchId() == searchId) { 
 				return true;
 			}
 		}
 		return false; 
 	}
 	
-	public static boolean isSearchComplete(GContainerServerMessage message, int searchId) { 
+	public static boolean isEntitySearchException(GContainerServerMessage message, int searchId) { 
+		if(message.getTypeCase() == TypeCase.ENTITYSEARCHEXCEPTION) {
+			if(message.getEntitySearchException().getSearchId() == searchId) { 
+				return true;
+			}
+		}
+		return false; 
+	}
+	
+	public static boolean isEntitySearchComplete(GContainerServerMessage message, int searchId) { 
 		if(message.getTypeCase() == TypeCase.ENTITYSEARCHCOMPLETE) {
 			if(message.getEntitySearchComplete().getSearchId() == searchId) { 
 				return true;
@@ -43,7 +52,7 @@ public class GContainerProto {
 		}
 		return false; 
 	}
-	public static boolean isSearchResponse(GContainerServerMessage message, int searchId) { 
+	public static boolean isEntitySearchResponse(GContainerServerMessage message, int searchId) { 
 		if(message.getTypeCase() == TypeCase.ENTITYSEARCHRESPONSE) {
 			if(message.getEntitySearchResponse().getSearchId() == searchId) { 
 				return true;

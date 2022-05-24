@@ -18,6 +18,13 @@ public class StreamClientProto {
 		return false;
 	}
 	
+	public static boolean isConnectionResponse(GNetServerMessage message) { 
+		if(message.getTypeCase() == TypeCase.CONNECTRESPONSE) { 
+			return true;
+		}
+		return false; 
+	}
+	
 	public static boolean isEntitySearchException(GNetServerMessage message	, int searchId) { 
 		if(message.getTypeCase() == TypeCase.ENTITYSEARCHEXCEPTION) { 
 			if(message.getEntitySearchException().getSearchId() == searchId) { 

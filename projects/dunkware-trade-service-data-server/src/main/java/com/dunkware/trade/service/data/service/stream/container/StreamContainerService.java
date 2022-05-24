@@ -14,6 +14,7 @@ import org.springframework.stereotype.Service;
 
 import com.dunkware.trade.service.data.service.stream.DataStream;
 import com.dunkware.trade.service.data.service.stream.DataStreamService;
+import com.dunkware.trade.service.data.service.stream.container.connection.StreamContainerConnection;
 import com.dunkware.trade.service.data.service.stream.container.connector.GrpcStreamConnector;
 import com.dunkware.xstream.net.core.util.GNetProto;
 
@@ -50,6 +51,9 @@ public class StreamContainerService {
 		}
 	}
 	
+	public StreamContainerController getStreamContainer(String stream) { 
+		return containers.get(stream);
+	}
 
 	public void newConnector(GrpcStreamConnector connector) { 
 		if(connector.getHandshake() == null) { 
@@ -59,12 +63,20 @@ public class StreamContainerService {
 			} catch (Exception e) {
 				logger.error("Could not send back server connect response error no handshake " + e.toString());
 			}
-			String connectorStream = connector.getHandshake().getStream();
-			StreamContainerController controller = containers.get(connectorStream);
-			if(controller == null) { 
-				connector.sendMessage(GNetProto.connectResponse(false, "Stream Container " + connectorStream + " not found"));
-				connector.close();
-			}
+			
+		}
+		String connectorStream = connector.getHandshake().getStream();
+		StreamContainerController controller = containers.get(connectorStream);
+		if(controller == null) { 
+			connector.sendMessage(GNetProto.connectResponse(false, "Stream Container " + connectorStream + " not found"));
+			connector.close();
+			return;
+		}
+		StreamContainerConnection connection = new StreamContainerConnection();
+		try {
+			connection.start(connector, controller);	
+		} catch (Exception e) {
+			logger.error("Exception starting container connnection " + e.toString());
 		}
 		connector.sendMessage(GNetProto.connectResponse(true, "All Good Connected"));
 		System.out.println("stop here need to see if handshake");

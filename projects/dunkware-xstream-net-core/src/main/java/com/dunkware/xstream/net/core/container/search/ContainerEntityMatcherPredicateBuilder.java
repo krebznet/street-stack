@@ -12,6 +12,7 @@ import com.dunkware.xstream.net.core.container.Container;
 import com.dunkware.xstream.net.core.container.ContainerEntity;
 import com.dunkware.xstream.net.core.container.ContainerException;
 import com.dunkware.xstream.net.core.container.ContainerSearchException;
+import com.dunkware.xstream.net.core.container.search.entity.EntityVarCriteriaPredicate;
 
 public class ContainerEntityMatcherPredicateBuilder {
 
@@ -22,7 +23,8 @@ public class ContainerEntityMatcherPredicateBuilder {
 			// okay fucked up here but whatever its for angular
 			for (GNetEntityVarCriteria varCriteria : entityCriteria.getVarCriteriasList()) {
 				if (varCriteria.getVar().getType() == GNetEntityVarValueType.VALUE_NOW) {
-
+					EntityVarCriteriaPredicate pred = new EntityVarCriteriaPredicate(varCriteria);
+					preds.add(pred);
 				}
 
 				if (varCriteria.getVar().getType() == GNetEntityVarValueType.RANGE_RELATIVE) {

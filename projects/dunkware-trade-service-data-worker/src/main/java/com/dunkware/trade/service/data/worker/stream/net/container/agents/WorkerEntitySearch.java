@@ -25,6 +25,7 @@ public class WorkerEntitySearch implements Runnable {
 	public WorkerEntitySearch(GNetEntitySearchRequest req, WorkerContainer container) { 
 		this.container = container; 
 		this.request = req;
+		this.searchId = request.getSearchId();
 	}
 
 	@Override

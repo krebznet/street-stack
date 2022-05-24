@@ -18,5 +18,7 @@ public interface StreamContainerConnector {
 	
 	public void close();
 	
+	public String getIdentifier();
+	
 	
 }

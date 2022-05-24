@@ -34,6 +34,7 @@ import com.dunkware.net.proto.stream.GStreamEvent;
 import com.dunkware.net.proto.stream.GStreamEventType;
 import com.dunkware.trade.service.data.json.worker.container.DataStreamWorkerContainerStartReq;
 import com.dunkware.trade.service.data.service.stream.DataStream;
+import com.dunkware.trade.service.data.service.stream.container.connection.StreamContainerConnection;
 import com.dunkware.trade.service.data.util.proto.GContainerProto;
 
 public class StreamContainerController implements DKafkaByteHandler2 {
@@ -71,6 +72,9 @@ public class StreamContainerController implements DKafkaByteHandler2 {
 	private List<StreamContainerHandler> messageHandlers = new ArrayList<StreamContainerHandler>();
 	private Semaphore messageHandlerLock = new Semaphore(1);
 	
+	private List<StreamContainerConnection> connections = new ArrayList<StreamContainerConnection>();
+	
+	
 	private ServerMessageController serverMessageController;
 	
 	// workers 
@@ -80,6 +84,8 @@ public class StreamContainerController implements DKafkaByteHandler2 {
 	public DataStream getStream() { 
 		return dataStream;
 	}
+	
+	
 	public void start(DataStream dataStream) throws Exception {
 		this.dataStream = dataStream;
 		final List<ClusterNode> workers = new ArrayList<ClusterNode>();
@@ -176,6 +182,14 @@ public class StreamContainerController implements DKafkaByteHandler2 {
 		starter.start();
 	}
 	
+	public List<StreamContainerConnection> getConnections() { 
+		return connections;
+	}
+	
+	public void addConnection(StreamContainerConnection connection) { 
+		this.connections.add(connection);
+	}
+	
 	public DExecutor getExecutor() { 
 		return cluster.getExecutor();
 	}
@@ -186,25 +200,37 @@ public class StreamContainerController implements DKafkaByteHandler2 {
 	
 	
 	public void addMessageHandler(StreamContainerHandler handler) { 
-		try {
-			messageHandlerLock.acquire();
-			messageHandlers.add(handler);
-		} catch (Exception e) {
-			logger.error("exception adding message handler " + e.toString());
-		} finally { 
-			messageHandlerLock.release();
-		}
+		Runnable adder =  new Runnable() {
+			public void run() {
+				try {
+					messageHandlerLock.acquire();
+					messageHandlers.add(handler);
+				} catch (Exception e) {
+					logger.error("exception adding message handler " + e.toString());
+				} finally { 
+					messageHandlerLock.release();
+				}		
+			}
+		};
+		getExecutor().execute(adder);
+		
+		
 	}
 	
 	public void removeMessageHandler(StreamContainerHandler handler) { 
-		try {
-			messageHandlerLock.acquire();
-			messageHandlers.remove(handler);
-		} catch (Exception e) {
-			logger.error("exception removing message handler " + e.toString());
-		} finally { 
-			messageHandlerLock.release();
-		}
+		Runnable adder =  new Runnable() {
+			public void run() {
+				try {
+					messageHandlerLock.acquire();
+					messageHandlers.remove(handler);
+				} catch (Exception e) {
+					logger.error("exception adding message handler " + e.toString());
+				} finally { 
+					messageHandlerLock.release();
+				}		
+			}
+		};
+		getExecutor().execute(adder);
 	}
 
 	public void notifyHandlerMessage(GContainerServerMessage message) { 

@@ -28,5 +28,7 @@ public interface StreamClient {
 	
 	public void removeMessageHandler(StreamClientHandler handler);
 	
-	public StreamClientEntitySearch entitySearch(GNetEntityMatcher matcher, String retVars, StreamClientEntitySearchObserver searchObserver) throws StreamClientException;
+	public StreamClientEntitySearch entitySearch(GNetEntityMatcher matcher, String retVars, StreamClientEntitySearchCallBack searchObserver) throws StreamClientException;
+	
+	public void execute(Runnable runnable);
 }

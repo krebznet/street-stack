@@ -3,6 +3,7 @@ package com.dunkware.xstream.net.client.core.actions;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.dunkware.common.util.executor.DExecutor;
 import com.dunkware.common.util.helpers.DRandom;
 import com.dunkware.net.proto.netstream.GNetClientMessage;
 import com.dunkware.net.proto.netstream.GNetEntity;
@@ -10,14 +11,14 @@ import com.dunkware.net.proto.netstream.GNetEntityMatcher;
 import com.dunkware.net.proto.netstream.GNetServerMessage;
 import com.dunkware.xstream.net.client.StreamClient;
 import com.dunkware.xstream.net.client.StreamClientEntitySearch;
-import com.dunkware.xstream.net.client.StreamClientEntitySearchObserver;
+import com.dunkware.xstream.net.client.StreamClientEntitySearchCallBack;
 import com.dunkware.xstream.net.client.StreamClientEntitySearchStatus;
 import com.dunkware.xstream.net.client.StreamClientHandler;
 import com.dunkware.xstream.net.client.core.StreamClientProto;
 
 public class StreamClientEntitySearchImpl implements StreamClientEntitySearch, StreamClientHandler {
 
-	private StreamClientEntitySearchObserver observer;
+	private StreamClientEntitySearchCallBack observer;
 	private List<GNetEntity> results = new ArrayList<GNetEntity>();
 	private int searchId;
 	private StreamClient client;
@@ -27,36 +28,39 @@ public class StreamClientEntitySearchImpl implements StreamClientEntitySearch, S
 	private StreamClientEntitySearchStatus status = StreamClientEntitySearchStatus.PENDING;
 
 	// state ==
-	public void init(GNetEntityMatcher matcher, String retValues, StreamClientEntitySearchObserver observer,
+	public void init(GNetEntityMatcher matcher, String retValues, StreamClientEntitySearchCallBack observer,
 			StreamClient client) {
 		this.client = client;
 		this.searchId = DRandom.getRandom(1, 50000);
 		this.observer = observer;
 		this.client = client;
+		this.retValues = retValues;
 		this.matcher = matcher;
-		execute();
+		Thread runner = new Thread() {
+
+			public void run() {
+
+				execute();
+			}
+		};
+
+		runner.start();
+
 	}
 
 	public void execute() {
 		client.addMessageHandler(this);
-		Runnable runner = new Runnable() {
+		GNetClientMessage searchRequest = StreamClientProto.entitySearchRequest(matcher, retValues, searchId);
+		try {
+			client.sendMessage(searchRequest);
+			status = StreamClientEntitySearchStatus.SUBMITTED;
+		} catch (Exception e) {
+			exception = "Client Send Search Request Message Failed " + e.toString();
+			status = StreamClientEntitySearchStatus.EXCEPTION;
+			observer.onException(StreamClientEntitySearchImpl.this);
 
-			@Override
-			public void run() {
-				GNetClientMessage searchRequest = StreamClientProto.entitySearchRequest(matcher, retValues, searchId);
-				try {
-					client.sendMessage(searchRequest);
-					status = StreamClientEntitySearchStatus.SUBMITTED;
-				} catch (Exception e) {
-					exception = "Client Send Search Request Message Failed " + e.toString();
-					status = StreamClientEntitySearchStatus.EXCEPTION;
-					observer.onException(StreamClientEntitySearchImpl.this);
+		}
 
-				}
-
-			}
-		};
-		client.getExecutor().execute(runner);
 	}
 
 	@Override
@@ -91,18 +95,18 @@ public class StreamClientEntitySearchImpl implements StreamClientEntitySearch, S
 			status = StreamClientEntitySearchStatus.EXCEPTION;
 			exception = message.getEntitySearchException().getException();
 			observer.onException(StreamClientEntitySearchImpl.this);
+			client.removeMessageHandler(this);
 			// remove client handler -- has to happen in its own thread.
 		}
-		if(StreamClientProto.isEntitySearchResults(message, searchId)) { 
-			results.addAll(message.getEntitySearchResults().getEntitiesList()); 
+		if (StreamClientProto.isEntitySearchResults(message, searchId)) {
+			results.addAll(message.getEntitySearchResults().getEntitiesList());
 		}
-		if(StreamClientProto.isEntitySearchComplete(message, searchId)) { 
+		if (StreamClientProto.isEntitySearchComplete(message, searchId)) {
 			status = StreamClientEntitySearchStatus.COMPLETED;
 			observer.onComplete(StreamClientEntitySearchImpl.this);
+			client.removeMessageHandler(this);
 			// remove client handler;
 		}
-		
-		
 
 	}
 
