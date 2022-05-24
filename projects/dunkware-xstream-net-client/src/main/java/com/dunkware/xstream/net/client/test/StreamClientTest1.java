@@ -5,7 +5,6 @@ import com.dunkware.net.proto.core.GOperator;
 import com.dunkware.net.proto.netstream.GNetEntity;
 import com.dunkware.net.proto.netstream.GNetEntityCriteria;
 import com.dunkware.net.proto.netstream.GNetEntityMatcher;
-import com.dunkware.net.proto.netstream.GNetEntityVarAggType;
 import com.dunkware.net.proto.netstream.GNetEntityVarCriteria;
 import com.dunkware.net.proto.netstream.GNetEntityVarValue;
 import com.dunkware.net.proto.netstream.GNetEntityVarValueType;
@@ -14,7 +13,6 @@ import com.dunkware.xstream.net.client.StreamClientEntitySearch;
 import com.dunkware.xstream.net.client.StreamClientEntitySearchCallBack;
 import com.dunkware.xstream.net.client.StreamClientFactory;
 import com.dunkware.xstream.net.client.StreamClientInput;
-import com.dunkware.xstream.net.client.connector.StreamClientGrpcConnectorType;
 import com.dunkware.xstream.net.client.connector.StreamClientKafkaConnectorType;
 
 public class StreamClientTest1 {

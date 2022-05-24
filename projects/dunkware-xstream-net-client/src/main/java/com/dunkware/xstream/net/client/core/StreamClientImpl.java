@@ -85,10 +85,9 @@ public class StreamClientImpl implements StreamClient {
 
 	@Override
 	public void addMessageHandler(final StreamClientHandler handler) {
-		Runnable adder = new Runnable() {
+		Thread runner = new Thread() { 
 			
-			@Override
-			public void run() {
+			public void run() { 
 				try {
 					handlerLock.acquire();
 					handlers.add(handler);
@@ -97,9 +96,13 @@ public class StreamClientImpl implements StreamClient {
 				} finally { 
 					handlerLock.release();
 				}
+			
 			}
 		};
-		execute(adder);
+		
+		runner.start();
+		
+
 	}
 
 
@@ -111,10 +114,9 @@ public class StreamClientImpl implements StreamClient {
 
 	@Override
 	public void removeMessageHandler(StreamClientHandler handler) {
-		Runnable adder = new Runnable() {
+	Thread runner = new Thread() { 
 			
-			@Override
-			public void run() {
+			public void run() { 
 				try {
 					handlerLock.acquire();
 					handlers.remove(handler);
@@ -123,9 +125,11 @@ public class StreamClientImpl implements StreamClient {
 				} finally { 
 					handlerLock.release();
 				}
+			
 			}
 		};
-		execute(adder);
+		
+		runner.start();
 
 	}
 
