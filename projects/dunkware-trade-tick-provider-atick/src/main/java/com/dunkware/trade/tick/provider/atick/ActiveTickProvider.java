@@ -396,6 +396,9 @@ public class ActiveTickProvider implements TickProvider {
 	}
 	
 	private void subscribeStream(List<TickFeedSubscription> subscriptions) { 
+		if(1 == 1) { 
+			return;
+		}
 		List<ATSYMBOL> atSymbols = new ArrayList<ATSYMBOL>();
 		for (TickFeedSubscription sub : subscriptions) {
 			ATSYMBOL atSymbol = Helpers.StringToSymbol(sub.getSymbol());
