@@ -14,6 +14,8 @@ import com.dunkware.xstream.net.client.StreamClientEntitySearchCallBack;
 import com.dunkware.xstream.net.client.StreamClientFactory;
 import com.dunkware.xstream.net.client.StreamClientInput;
 import com.dunkware.xstream.net.client.connector.StreamClientKafkaConnectorType;
+import com.dunkware.xstream.net.client.core.actions.StreamClientEntitySearchImpl;
+import com.squareup.okhttp.Callback;
 
 public class StreamClientTest1 {
 	
@@ -25,7 +27,7 @@ public class StreamClientTest1 {
 			} catch (Exception e) {
 				// TODO: handle exception
 			}
-		}
+		} //"SES:23" // DLogging.marker(prefix, id); 
 	}
 	
 	
@@ -48,26 +50,7 @@ public class StreamClientTest1 {
 			return;
 		}
 		
-		StreamClientEntitySearchCallBack callback = new StreamClientEntitySearchCallBack() {
-			
-			@Override
-			public void onResponse(StreamClientEntitySearch search) {
-				System.out.println("on response invoked");
-			}
-			
-			@Override
-			public void onException(StreamClientEntitySearch search) {
-				System.out.println("on search exception " + search.getException());
-			}
-			
-			@Override
-			public void onComplete(StreamClientEntitySearch search) {
-				System.out.println("on search compelte!");
-				for (GNetEntity entity : search.getResults()) {
-					System.out.println(entity.getEntIdent() + ":" + entity.getVars());
-				}
-			}
-		}; 
+		
 		GNetEntityVarValue value = GNetEntityVarValue.newBuilder().setType(GNetEntityVarValueType.VALUE_NOW).setIdent("AAPL").setId(9).build();
 		GNetEntityVarCriteria varCrit = GNetEntityVarCriteria.newBuilder().setVar(value).setValue("AAPL").setOperator(GOperator.EQ).build();
 		GNetEntityCriteria crit = GNetEntityCriteria.newBuilder().addVarCriterias(varCrit).build();
@@ -80,5 +63,30 @@ public class StreamClientTest1 {
 		}
 		
 	}
+	
+	 StreamClientEntitySearchCallBack callback = new StreamClientEntitySearchCallBack() {
+			
+			@Override
+			public void onResponse(StreamClientEntitySearch search) {
+				System.out.println("on response invoked");
+			}
+			
+			@Override
+			public void onException(StreamClientEntitySearch search) {
+				System.out.println("on search exception " + search.getException());
+			}
+			
+			@Override
+			public void onComplete(final StreamClientEntitySearch search) {
+				System.out.println("on search compelte!");
+				for (GNetEntity entity : search.getResults()) {
+					System.out.println(entity.getEntIdent() + ":" + entity.getVars());
+				}
+				// OKAY WE ARE GOOD HERE -- WE HAVE RESULTS THEN LETS DO SOMETHING WITH IT 
+				// WTF IT WILL BLOCK ON 
+				
+			
+			}
+		}; 
 
 }

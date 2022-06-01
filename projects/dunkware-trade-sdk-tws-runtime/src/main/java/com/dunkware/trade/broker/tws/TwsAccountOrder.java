@@ -65,9 +65,11 @@ public class TwsAccountOrder implements Order {
 		spec.setKind(type.getKind());
 		spec.setStatus(OrderStatus.Created);
 		spec.setTransmit(true);
+		spec.setLimitPrice(type.getLimit());
 		spec.setTrailingPercent(type.getTrailingPercent());
 		spec.setStopTrigger(type.getStopTrigger());
 		spec.setTrailingStopPrice(type.getTrailingStopPrice());
+		
 		getSpec().setRemaining(getSpec().getSize());
 		this.eventNode = account.getEventNode().createChild("orders/" + getSpec().getId());
 
@@ -153,7 +155,8 @@ public class TwsAccountOrder implements Order {
 		}
 		twsOrder.m_account = account.getIdentifier();
 		twsOrder.m_orderType = getSpec().getKind().name();
-		twsOrder.m_outsideRth = getSpec().isOutsideRth();
+		twsOrder.m_outsideRth = true;
+	    twsOrder. m_tif = "DAY";
 		twsOrder.m_orderId = twsOrderId;
 		twsOrder.m_transmit = getSpec().isTransmit();
 		twsOrder.m_whatIf = getSpec().isWhatif();

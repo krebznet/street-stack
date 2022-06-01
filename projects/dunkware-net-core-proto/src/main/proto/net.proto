@@ -1,0 +1,101 @@
+
+syntax = "proto3";
+
+package dunkware.netstream;
+
+
+option java_multiple_files = true;
+option java_package = "com.dunkware.net.proto.service";
+option java_outer_classname = "GNetProto";
+
+import "core.proto";
+
+import "google/protobuf/timestamp.proto";
+
+// net-service --> going to hook up to a socket ->
+
+message GNetRequest {
+  int32 reqId = 1;
+  GNetRequestType type = 2;
+  repeated GNetKeyValue params = 3;
+  string endpoint = 4;
+  string sessionId = 5;
+}
+
+message GNetResponse {
+  GNetResponseCode code = 1;
+  repeated  GNetKeyValue params = 2;
+  string errorMessage = 3;
+}
+
+enum GNetResponseCode {
+  SUCCESS = 0;
+  SERVICE_NOT_FOUND = 1;
+  INVALID_PARAMS =3 ;
+}
+message GNetKeyValue {
+  string key = 1;
+  GNetValue value = 2;
+}
+
+message GNetValue {
+  oneof type {
+    GNetString string = 1;
+    GNetInteger integer = 2;
+    GNetBean bean = 3;
+    GNetList list = 4;
+  }
+}
+
+message GNetString {
+  string value = 1;
+}
+
+message GNetInteger {
+  int32  value = 1;
+}
+
+enum GNetRequestType {
+   OPERATION = 0;
+   DATA = 1;
+   DATA_STREAM = 2;
+}
+
+message GNetData {
+  repeated GNetList lists = 1;
+  repeated  GNetBean beans = 2;
+}
+
+message GNetBean {
+
+ int32 id = 1;
+ // data;
+ // params;
+}
+message GNetList {
+  int32 id = 1;
+  string ident = 2;
+  repeated  GNetBean beans = 3;
+}
+
+message GNetDataStreamUpdate {
+  // list bean update
+  // bean update
+  // list bean delete
+}
+
+
+// Stream Messages
+
+// string type;
+// int32 contextId;
+//
+// response
+// data set update
+//  // listBeanUpdate
+    // listBeanDelete
+    // listBeanInsert
+    // BeanUpdate
+
+
+

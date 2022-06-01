@@ -34,7 +34,7 @@ public class AggTest1 {
 		try {
 			 client = DMongoClient.connect("mongodb://data2.dunkware.net:27017");
 			 database = client.getDatabase("street");
-			 collection = database.getCollection("snapshot_us_equity_220519");
+			 collection = database.getCollection("snapshot_us_equity_220601");
 			 test1();
 			 ///coundDocumentsByIdent();
 		} catch (Exception e) {

@@ -33,6 +33,11 @@ public class OrderTypeBuilder {
 		return this; 
 	}
 	
+	public OrderTypeBuilder limit(double limit) { 
+		this.type.setLimit(limit);
+		return this;
+	}
+	
 	public OrderTypeBuilder outsideRth(boolean value) { 
 		this.type.setOutsiderth(value); 
 		return this;

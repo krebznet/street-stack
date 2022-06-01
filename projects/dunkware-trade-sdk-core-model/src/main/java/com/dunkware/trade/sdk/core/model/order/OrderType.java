@@ -12,6 +12,7 @@ public class OrderType {
 	private OrderStopTrigger stopTrigger; 
 	private double trailingPercent = Double.MIN_VALUE;
 	private double trailingStopPrice = Double.MIN_VALUE;
+	private double limit = Double.MIN_VALUE;
 	
 	public OrderType() { 
 		
@@ -64,6 +65,14 @@ public class OrderType {
 	public void setTrailingStopPrice(double trailingStopPrice) {
 		this.trailingStopPrice = trailingStopPrice;
 	}
+	public double getLimit() {
+		return limit;
+	}
+	public void setLimit(double limit) {
+		this.limit = limit;
+	}
+	
+	
 	
 	
 	

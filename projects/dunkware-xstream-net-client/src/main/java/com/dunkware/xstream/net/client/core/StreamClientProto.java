@@ -45,7 +45,7 @@ public class StreamClientProto {
 	
 	public static boolean isEntitySearchComplete(GNetServerMessage message, int searchId) { 
 		if(message.getTypeCase() == TypeCase.ENTITYSEARCHCOMPLETE) { 
-			if(message.getEntitySearchResults().getSearchId() == searchId) {
+			if(message.getEntitySearchComplete().getSearchId() == searchId) {
 				return true;
 			}
 		}

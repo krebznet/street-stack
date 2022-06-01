@@ -166,7 +166,7 @@ public class ContainerImpl implements Container {
 		if(index == null) { 
 			throw new ContainerException("Getting an entity does not exist in index " + identifier);
 		}
-		return entities.get(index);
+		return entities.get(index -1);
 		
 	}
 
@@ -373,7 +373,7 @@ public class ContainerImpl implements Container {
 			entityIndex.put(ident,Integer.valueOf(size + 1));
 			return entity;
 		} else { 
-			return entities.get(entityIndex.get(ident));
+			return entities.get(entityIndex.get(ident) - 1);
 		}
 		
 

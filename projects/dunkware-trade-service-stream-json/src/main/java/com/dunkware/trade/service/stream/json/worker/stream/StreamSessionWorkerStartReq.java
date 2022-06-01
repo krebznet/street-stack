@@ -22,6 +22,7 @@ public class StreamSessionWorkerStartReq {
 	}
 
 	public String getStream() {
+		
 		return stream;
 	}
 

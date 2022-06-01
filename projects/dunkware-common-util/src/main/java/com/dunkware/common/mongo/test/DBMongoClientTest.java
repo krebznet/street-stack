@@ -12,7 +12,7 @@ public class DBMongoClientTest {
 		try {
 			DMongoClient client = DMongoClient.connect("mongodb://data2.dunkware.net:27017");
 			DMongoDatabase db = client.getDatabase("street");
-			String collectionName = "snapshot_us_equity_220524"; 
+			String collectionName = "snapshot_us_equity_2200601"; 
 			db.createTimeSerriesCollection(collectionName, "time", "vars", TimeSeriesGranularity.SECONDS);
 			List<String> collections = db.collectionNames();
 			for (String string : collections) {
