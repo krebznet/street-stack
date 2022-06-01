@@ -134,8 +134,12 @@ public class ATProviderSession extends ATCallback implements ATLoginResponseCall
 		default:
 			break;
 		}
+		
 		if(strStatusType.length() == 0) { 
-			logger.error("Status Change No Code in Switch  " +  type.m_atSessionStatusType);
+			if(type.m_atSessionStatusType == 4) { 
+				logger.error("Session Disconnected Inactivity WTF");
+			} else 
+				logger.error("Status Change No Code in Switch  " +  type.m_atSessionStatusType);
 		} else { 
 			logger.info("Status Change Code " + strStatusType);
 		}

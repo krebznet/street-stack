@@ -431,7 +431,8 @@ public class ActiveTickProvider implements TickProvider {
 					list.addAll(pendingStreamSubscriptions);
 				    pendingStreamSubscriptions.clear();
 				    if(list.size() > 0) { 
-					    subscribeStream(list);;				    	
+					   subscribeStream(list);    	
+				    
 				    }
 					
 				}
@@ -527,7 +528,7 @@ public class ActiveTickProvider implements TickProvider {
 					long request = session.GetRequestor().SendATQuoteDbRequest(symbolList, lstFieldTypes,
 							ActiveTickServerAPI.DEFAULT_REQUEST_TIMEOUT); // this must only return 500
 					snapshotRequests.put(request, snapshotRequestCount.incrementAndGet());
-					Thread.sleep(1000);
+					Thread.sleep(1100);
 				} catch (Exception e) {
 					logger.error("Exception sending snapshot request in snapshot sender " + e.toString());
 					
