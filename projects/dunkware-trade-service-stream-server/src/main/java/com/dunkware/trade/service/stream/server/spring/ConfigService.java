@@ -6,6 +6,12 @@ import org.springframework.stereotype.Service;
 @Service
 public class ConfigService {
 	
+	@Value("${mongo.url}")
+	private String mongoURL; 
+	
+	@Value("${mongo.db}") 
+	private String mongoDatabase; 
+	
 	@Value("${kafka.brokers}")
 	private String kafkaBrokers; 
 	@Value("{session.node.ticker.limit}")
@@ -27,6 +33,16 @@ public class ConfigService {
 	public boolean isScheduleStreams() {
 		return scheduleStreams;
 	}
+
+	public String getMongoURL() {
+		return mongoURL;
+	}
+
+	public String getMongoDatabase() {
+		return mongoDatabase;
+	}
+	
+	
 	
 	
 	

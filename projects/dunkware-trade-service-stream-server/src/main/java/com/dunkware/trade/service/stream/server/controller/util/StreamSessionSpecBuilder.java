@@ -8,7 +8,7 @@ import com.dunkware.common.util.dtime.DDate;
 import com.dunkware.common.util.dtime.DTimeZone;
 import com.dunkware.trade.service.stream.json.controller.model.StreamEntitySpec;
 import com.dunkware.trade.service.stream.json.controller.model.StreamSessionSpec;
-import com.dunkware.trade.service.stream.server.session.StreamSession;
+import com.dunkware.trade.service.stream.server.controller.session.StreamSession;
 import com.dunkware.trade.tick.model.ticker.TradeTickerSpec;
 import com.dunkware.trade.tick.service.protocol.ticker.spec.TradeTickerListSpec;
 import com.dunkware.xstream.model.enums.XScriptDataType;

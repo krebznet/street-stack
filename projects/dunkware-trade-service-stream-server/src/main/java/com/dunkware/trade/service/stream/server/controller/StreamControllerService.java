@@ -10,18 +10,15 @@ import org.slf4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.ApplicationContext;
-import org.springframework.context.annotation.Profile;
-import org.springframework.context.annotation.Scope;
-import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.dunkware.common.util.json.DJson;
 import com.dunkware.trade.service.stream.json.controller.spec.StreamSpec;
-import com.dunkware.trade.service.stream.server.controller.repository.StreamDO;
-import com.dunkware.trade.service.stream.server.controller.repository.StreamRepo;
-import com.dunkware.trade.service.stream.server.controller.repository.StreamVersionDO;
-import com.dunkware.trade.service.stream.server.controller.repository.StreamVersionDORepo;
+import com.dunkware.trade.service.stream.server.repository.StreamEntity;
+import com.dunkware.trade.service.stream.server.repository.StreamRepo;
+import com.dunkware.trade.service.stream.server.repository.StreamVersionEntity;
+import com.dunkware.trade.service.stream.server.repository.StreamVersionRepo;
 import com.dunkware.trade.service.stream.server.tick.StreamTickService;
 
 
@@ -36,7 +33,7 @@ public class StreamControllerService {
 	private StreamRepo streamRepo;
 
 	@Autowired
-	private StreamVersionDORepo versionRepo;
+	private StreamVersionRepo versionRepo;
 
 	@Autowired
 	private ApplicationContext ac;
@@ -55,8 +52,8 @@ public class StreamControllerService {
 			public void run() { 
 				try {
 					//Thread.sleep(500);
-					Iterable<StreamDO> ents = streamRepo.findAll();
-					for (StreamDO ent : ents) {
+					Iterable<StreamEntity> ents = streamRepo.findAll();
+					for (StreamEntity ent : ents) {
 						if (logger.isInfoEnabled()) {
 							logger.info("Initializing Stream Controller " + ent.getName());
 						}
@@ -78,7 +75,7 @@ public class StreamControllerService {
 	
 	@Transactional
 	public StreamController addStream(StreamSpec spec) throws Exception {
-		StreamDO ent = new StreamDO();
+		StreamEntity ent = new StreamEntity();
 		String[] tickerLists = spec.getTickers().split(",");
 		// we should validate these lists
 		for (String list : tickerLists) {
@@ -93,7 +90,7 @@ public class StreamControllerService {
 		ent.setSpec(DJson.serialize(spec));
 		ent.setName(spec.getName());
 		ent.setCountry(spec.getCountry());
-		StreamVersionDO ver = new StreamVersionDO();
+		StreamVersionEntity ver = new StreamVersionEntity();
 		ver.setStream(ent);
 		ver.setVersion(spec.getVersion());
 		ver.setBundle(DJson.serialize(spec.getBundle()));
@@ -131,14 +128,14 @@ public class StreamControllerService {
 	public void updateStream(StreamSpec spec) throws Exception {
 		StreamController stream = getStreamByName(spec.getName());
 		Double newVersion = spec.getVersion();
-		StreamVersionDO newVersionDO = new StreamVersionDO();
+		StreamVersionEntity newVersionDO = new StreamVersionEntity();
 		newVersionDO.setStream(stream.getEntity());
 		newVersionDO.setVersion(newVersion);
 		newVersionDO.setBundle(DJson.serialize(spec.getBundle()));
 		newVersionDO.setTimestamp(LocalDateTime.now());
-		List<StreamVersionDO> versions = versionRepo.findByStreamOrderByVersion(stream.getEntity());
+		List<StreamVersionEntity> versions = versionRepo.findByStreamOrderByVersion(stream.getEntity());
 		boolean specVerisionGreater = true;
-		for (StreamVersionDO version : versions) {
+		for (StreamVersionEntity version : versions) {
 			if (spec.getVersion() < version.getVersion() || spec.getVersion() == version.getVersion()) {
 				specVerisionGreater = false;
 			}

@@ -234,6 +234,14 @@ public class ClusterNodeImpl implements ClusterNode {
 		return endpoint;
 
 	}
+	
+	public boolean hasChannelService(String endpoint) { 
+		return false; 
+	}
+	
+	public boolean hasRequestService(String endpoint) { 
+		return false; 
+	}
 
 	/**
 	 * This will check and monitor grpc channel is not terminated

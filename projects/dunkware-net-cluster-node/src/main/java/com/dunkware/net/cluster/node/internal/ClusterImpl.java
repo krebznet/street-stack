@@ -16,6 +16,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.springframework.stereotype.Service;
 
+import com.dunkware.common.kafka.consumer.DKafkaByteConsumer2;
 import com.dunkware.common.kafka.producer.DKafkaByteProducer;
 import com.dunkware.common.util.dtime.DDateTime;
 import com.dunkware.common.util.dtime.DTimeZone;
@@ -55,6 +56,8 @@ public class ClusterImpl implements Cluster {
 	private DExecutor executor;
 
 	private DKafkaByteProducer eventProducer;
+	
+	private DKafkaByteConsumer2 messageConsumer;
 
 	private DDateTime startTime;
 
@@ -71,10 +74,14 @@ public class ClusterImpl implements Cluster {
 	private ClusterNodeServiceImpl nodeService;
 
 	private ManagedChannel serverChannel;
+	
+	private List<ClusterNodeService> services = new ArrayList<ClusterNodeService>();
 
 	@PostConstruct
 	public void load() {
 		try {
+			// need to build our service registry 
+			
 			serverChannel = ManagedChannelBuilder.forTarget(clusterConfig.getClusterGrpc()).usePlaintext().build();
 			ConnectivityState channelState = serverChannel.getState(true);
 			if(channelState == ConnectivityState.TRANSIENT_FAILURE) { 
@@ -240,6 +247,8 @@ public class ClusterImpl implements Cluster {
 		}
 		stats.setRunningJobCount(activeJobs);
 		stats.setType(clusterConfig.getNodeType());
+		
+		// now we need the other stuff -
 		return stats;
 	}
 

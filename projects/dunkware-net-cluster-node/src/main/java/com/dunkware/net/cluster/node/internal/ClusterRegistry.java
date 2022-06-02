@@ -1,6 +1,5 @@
 package com.dunkware.net.cluster.node.internal;
 
-import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -17,6 +16,9 @@ public class ClusterRegistry {
 	
 	private Logger logger = LoggerFactory.getLogger(getClass());
 	
+	private List<ChannelServiceRegistry> channelServices  = new ArrayList<ClusterRegistry.ChannelServiceRegistry>();
+	private List<RequestServiceRegistry> requestServices = new ArrayList<ClusterRegistry.RequestServiceRegistry>();
+	
 	private ClusterImpl cluster;
 	
 	public void start(ClusterImpl cluster)   { 
@@ -32,9 +34,46 @@ public class ClusterRegistry {
 		
 	}
 	
+
 	
 	public void removeComponent(Object component) { 
 		
+	}
+	
+	private class RequestServiceRegistry  { 
+		private String endpoint; 
+		private Class clazz;
+		public String getEndpoint() {
+			return endpoint;
+		}
+		public void setEndpoint(String endpoint) {
+			this.endpoint = endpoint;
+		}
+		public Class getClazz() {
+			return clazz;
+		}
+		public void setClazz(Class clazz) {
+			this.clazz = clazz;
+		} 
+	
+	}
+	
+	private class ChannelServiceRegistry { 
+		private String endpoint; 
+		private Class clazz;
+		public String getEndpoint() {
+			return endpoint;
+		}
+		public void setEndpoint(String endpoint) {
+			this.endpoint = endpoint;
+		}
+		public Class getClazz() {
+			return clazz;
+		}
+		public void setClazz(Class clazz) {
+			this.clazz = clazz;
+		} 
+	
 	}
 	
 	

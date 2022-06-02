@@ -17,7 +17,7 @@ import com.dunkware.net.proto.stream.GStreamSessionStop;
 import com.dunkware.net.proto.stream.GStreamSpec;
 import com.dunkware.net.proto.stream.GStreamVarSpec;
 import com.dunkware.trade.service.stream.server.controller.StreamController;
-import com.dunkware.trade.service.stream.server.session.StreamSession;
+import com.dunkware.trade.service.stream.server.controller.session.StreamSession;
 import com.dunkware.trade.tick.model.ticker.TradeTickerSpec;
 import com.dunkware.xstream.xScript.DataType;
 import com.dunkware.xstream.xScript.SignalType;

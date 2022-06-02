@@ -17,7 +17,7 @@ public class DunkTime {
 	public final static String HH_MMM_SS = "HH:mm:ss";
 	public static final String YYMMDD = "yyMMdd";
     public static final String ISO_FORMAT = "yyyy-MM-dd'T'HH:mm:ssZ";
-    
+    public static final String YYYY_MM_DD_HH_mm_ss = "YYYY-MM-DD HH:mm:ss";
 	public static void main(String[] args) {
 		LocalDateTime dt = LocalDateTime.now(DTimeZone.toZoneId(DTimeZone.NewYork));
 		System.out.println(format(dt, YYMMDD));
@@ -56,7 +56,7 @@ public class DunkTime {
 	
 	public static String formatDateTimeStamp(long time) { 
 		LocalDateTime dt = toLocalDateTime(new Date(time));
-		return DunkTime.format(dt, DunkTime.YYYY_MM_DD_HH_MM_SS);
+		return DunkTime.format(dt, DunkTime.YYYY_MM_DD_HH_mm_ss);
 	}
 	
 	public static LocalDateTime toLocalDateTime(Date dateToConvert) {

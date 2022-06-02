@@ -27,19 +27,19 @@ import com.dunkware.net.proto.stream.GStreamSpec;
 import com.dunkware.trade.service.stream.json.controller.spec.StreamSpec;
 import com.dunkware.trade.service.stream.json.controller.spec.StreamState;
 import com.dunkware.trade.service.stream.json.controller.spec.StreamStats;
-import com.dunkware.trade.service.stream.server.controller.repository.StreamDO;
-import com.dunkware.trade.service.stream.server.controller.repository.StreamRepo;
-import com.dunkware.trade.service.stream.server.controller.repository.StreamVersionDO;
+import com.dunkware.trade.service.stream.server.controller.session.StreamSession;
+import com.dunkware.trade.service.stream.server.controller.session.StreamSessionException;
+import com.dunkware.trade.service.stream.server.controller.session.StreamSessionFactory;
+import com.dunkware.trade.service.stream.server.controller.session.StreamSessionInput;
+import com.dunkware.trade.service.stream.server.controller.session.events.EStreamSessionEvent;
+import com.dunkware.trade.service.stream.server.controller.session.events.EStreamSessionException;
+import com.dunkware.trade.service.stream.server.controller.session.events.EStreamSessionStarted;
+import com.dunkware.trade.service.stream.server.controller.session.events.EStreamSessionStopped;
+import com.dunkware.trade.service.stream.server.controller.session.events.EStreamSessionStopping;
 import com.dunkware.trade.service.stream.server.controller.util.GStreamHelper;
-import com.dunkware.trade.service.stream.server.session.StreamSession;
-import com.dunkware.trade.service.stream.server.session.StreamSessionException;
-import com.dunkware.trade.service.stream.server.session.StreamSessionFactory;
-import com.dunkware.trade.service.stream.server.session.StreamSessionInput;
-import com.dunkware.trade.service.stream.server.session.events.EStreamSessionEvent;
-import com.dunkware.trade.service.stream.server.session.events.EStreamSessionException;
-import com.dunkware.trade.service.stream.server.session.events.EStreamSessionStarted;
-import com.dunkware.trade.service.stream.server.session.events.EStreamSessionStopped;
-import com.dunkware.trade.service.stream.server.session.events.EStreamSessionStopping;
+import com.dunkware.trade.service.stream.server.repository.StreamEntity;
+import com.dunkware.trade.service.stream.server.repository.StreamRepo;
+import com.dunkware.trade.service.stream.server.repository.StreamVersionEntity;
 import com.dunkware.trade.service.stream.server.spring.ConfigService;
 import com.dunkware.trade.service.stream.server.spring.RuntimeService;
 import com.dunkware.trade.service.stream.server.tick.StreamTickService;
@@ -53,7 +53,7 @@ public class StreamController {
 
 	private Logger logger = org.slf4j.LoggerFactory.getLogger(getClass());
 
-	private StreamDO ent;
+	private StreamEntity ent;
 
 	@Autowired
 	private StreamRepo streamRepo;
@@ -101,7 +101,7 @@ public class StreamController {
 
 	private XScriptProject scriptProject;
 
-	private StreamVersionDO streamVersion;
+	private StreamVersionEntity streamVersion;
 
 	private List<TradeTickerSpec> tickers;
 
@@ -109,7 +109,7 @@ public class StreamController {
 
 	}
 
-	public void start(StreamDO ent) throws Exception {
+	public void start(StreamEntity ent) throws Exception {
 		logger.info(":Starting Stream Controller " + ent.getName());
 		// set member variabbes
 		this.ent = ent;
@@ -181,7 +181,7 @@ public class StreamController {
 		return spec.getTimeZone();
 	}
 
-	public StreamVersionDO getStreamVersion() {
+	public StreamVersionEntity getStreamVersion() {
 		return streamVersion;
 	}
 
@@ -197,7 +197,7 @@ public class StreamController {
 		return service;
 	}
 
-	public StreamDO getEntity() {
+	public StreamEntity getEntity() {
 		return ent;
 	}
 
@@ -289,10 +289,10 @@ public class StreamController {
 		
 	}
 
-	public StreamVersionDO getCurrentVersion() {
-		List<StreamVersionDO> versions = ent.getVersions();
-		StreamVersionDO lateset = versions.get(0);
-		for (StreamVersionDO streamVersionDO : versions) {
+	public StreamVersionEntity getCurrentVersion() {
+		List<StreamVersionEntity> versions = ent.getVersions();
+		StreamVersionEntity lateset = versions.get(0);
+		for (StreamVersionEntity streamVersionDO : versions) {
 			if (streamVersionDO.getVersion() > lateset.getVersion()) {
 				lateset = streamVersionDO;
 			}

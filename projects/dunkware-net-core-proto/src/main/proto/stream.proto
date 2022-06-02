@@ -25,6 +25,8 @@ enum GStreamEventType {
     TimeUpdate = 4;
 }
 
+// it would be hard to build var criteria;
+
 // Generic Object Contains 1 type of event
 message GStreamEvent  {
     string streamId = 1;

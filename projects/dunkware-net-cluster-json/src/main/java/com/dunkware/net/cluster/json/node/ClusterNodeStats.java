@@ -3,7 +3,6 @@ package com.dunkware.net.cluster.json.node;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.dunkware.common.util.dtime.DDateTime;
 import com.dunkware.common.util.executor.DExecutorStats;
 import com.dunkware.net.cluster.json.job.ClusterJobStats;
 import com.fasterxml.jackson.annotation.JsonInclude;
@@ -25,6 +24,8 @@ public class ClusterNodeStats {
 	private double totalMemory;
 	private DExecutorStats executorStats;
 	private int runningJobCount;
+	private List<ClusterNodeService> services = new ArrayList<ClusterNodeService>();
+
 	
 	public ClusterNodeType getType() {
 		return type;
@@ -106,6 +107,14 @@ public class ClusterNodeStats {
 	public void setRunningJobCount(int runningJobCount) {
 		this.runningJobCount = runningJobCount;
 	}
+	public List<ClusterNodeService> getServices() {
+		return services;
+	}
+	public void setServices(List<ClusterNodeService> services) {
+		this.services = services;
+	}
+	
+	
 	
 	
 	
