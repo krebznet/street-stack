@@ -8,7 +8,7 @@ import java.util.Map;
 import com.dunkware.common.util.dtime.DTimeZone;
 import com.dunkware.common.util.helpers.DProtoHelper;
 import com.dunkware.common.util.json.DJson;
-import com.dunkware.net.core.runtime.core.helpers.GProtoHelper;
+import com.dunkware.net.core.util.GProtoHelper;
 import com.dunkware.net.proto.core.GOperator;
 import com.dunkware.net.proto.netstream.GNetEntity;
 import com.dunkware.net.proto.stream.GEntitySignal;

@@ -29,7 +29,7 @@ import com.dunkware.common.util.helpers.DProtoHelper;
 import com.dunkware.common.util.time.DunkTime;
 import com.dunkware.common.util.uuid.DUUID;
 import com.dunkware.net.cluster.node.metrics.MetricsService;
-import com.dunkware.net.core.runtime.core.helpers.GProtoHelper;
+import com.dunkware.net.core.util.GProtoHelper;
 import com.dunkware.net.proto.stream.GEntitySignal;
 import com.dunkware.net.proto.stream.GEntitySnapshot;
 import com.dunkware.net.proto.stream.GStreamEvent;

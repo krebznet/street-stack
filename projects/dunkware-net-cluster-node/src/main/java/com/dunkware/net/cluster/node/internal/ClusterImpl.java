@@ -1,5 +1,6 @@
 package com.dunkware.net.cluster.node.internal;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -18,11 +19,15 @@ import org.springframework.stereotype.Service;
 
 import com.dunkware.common.kafka.consumer.DKafkaByteConsumer2;
 import com.dunkware.common.kafka.producer.DKafkaByteProducer;
+import com.dunkware.common.spec.kafka.DKafkaByteConsumer2SpecBuilder;
+import com.dunkware.common.spec.kafka.DKafkaByteConsumer2Spec.ConsumerType;
+import com.dunkware.common.spec.kafka.DKafkaByteConsumer2Spec.OffsetType;
 import com.dunkware.common.util.dtime.DDateTime;
 import com.dunkware.common.util.dtime.DTimeZone;
 import com.dunkware.common.util.events.DEventTree;
 import com.dunkware.common.util.executor.DExecutor;
 import com.dunkware.common.util.logging.Markers;
+import com.dunkware.common.util.time.DunkTime;
 import com.dunkware.net.cluster.json.job.ClusterJobState;
 import com.dunkware.net.cluster.json.node.ClusterNodeStats;
 import com.dunkware.net.cluster.json.node.ClusterNodeUpdate;
@@ -81,7 +86,17 @@ public class ClusterImpl implements Cluster {
 	public void load() {
 		try {
 			// need to build our service registry 
-			
+			// create the kafka consume r
+			String messageTopic = clusterConfig.getNodeId() + "_" + DunkTime.format(LocalDateTime.now(), DunkTime.YYYY_MM_DD_HH_MM_SS);
+		
+			try {
+				messageConsumer = DKafkaByteConsumer2.newInstance(	DKafkaByteConsumer2SpecBuilder.newBuilder(ConsumerType.Auto,OffsetType.Latest).
+						addBroker(clusterConfig.getServerBrokers()).setClientAndGroup(messageTopic,messageTopic).setTopicString(messageTopic).build());
+				messageConsumer.start();
+			} catch (Exception e) {
+				logger.error(MarkerFactory.getMarker("Crash"), "Getting Kafka Consumer Creation Exception " + e.toString());
+				System.exit(-1);
+			}
 			serverChannel = ManagedChannelBuilder.forTarget(clusterConfig.getClusterGrpc()).usePlaintext().build();
 			ConnectivityState channelState = serverChannel.getState(true);
 			if(channelState == ConnectivityState.TRANSIENT_FAILURE) { 

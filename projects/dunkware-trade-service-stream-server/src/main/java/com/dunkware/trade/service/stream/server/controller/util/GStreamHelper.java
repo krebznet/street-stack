@@ -4,7 +4,7 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.dunkware.net.core.runtime.core.helpers.GProtoHelper;
+import com.dunkware.net.core.util.GProtoHelper;
 import com.dunkware.net.proto.core.GDataType;
 import com.dunkware.net.proto.stream.GEntitySignalSpec;
 import com.dunkware.net.proto.stream.GStreamEntitySpec;

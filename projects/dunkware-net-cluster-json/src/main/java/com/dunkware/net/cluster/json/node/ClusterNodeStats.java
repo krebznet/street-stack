@@ -24,7 +24,7 @@ public class ClusterNodeStats {
 	private double totalMemory;
 	private DExecutorStats executorStats;
 	private int runningJobCount;
-	private List<ClusterNodeService> services = new ArrayList<ClusterNodeService>();
+	private List<ClusterNodeServiceDescriptor> services = new ArrayList<ClusterNodeServiceDescriptor>();
 
 	
 	public ClusterNodeType getType() {
@@ -107,10 +107,10 @@ public class ClusterNodeStats {
 	public void setRunningJobCount(int runningJobCount) {
 		this.runningJobCount = runningJobCount;
 	}
-	public List<ClusterNodeService> getServices() {
+	public List<ClusterNodeServiceDescriptor> getServices() {
 		return services;
 	}
-	public void setServices(List<ClusterNodeService> services) {
+	public void setServices(List<ClusterNodeServiceDescriptor> services) {
 		this.services = services;
 	}
 	
