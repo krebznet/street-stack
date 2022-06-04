@@ -111,7 +111,7 @@ public enum GNetEntityVarValueType
   }
   public static final com.google.protobuf.Descriptors.EnumDescriptor
       getDescriptor() {
-    return com.dunkware.net.proto.netstream.GNetProto.getDescriptor().getEnumTypes().get(0);
+    return com.dunkware.net.proto.netstream.GNetStreamProto.getDescriptor().getEnumTypes().get(0);
   }
 
   private static final GNetEntityVarValueType[] VALUES = values();

@@ -26,17 +26,16 @@ import com.dunkware.common.util.executor.DExecutor;
 import com.dunkware.common.util.uuid.DUUID;
 import com.dunkware.net.cluster.node.Cluster;
 import com.dunkware.net.cluster.node.ClusterNode;
-import com.dunkware.net.proto.data.cluster.GContainerServerMessage;
-import com.dunkware.net.proto.data.cluster.GContainerWorkerMessage;
+import com.dunkware.net.proto.cluster.GContainerServerMessage;
+import com.dunkware.net.proto.cluster.GContainerWorkerMessage;
 import com.dunkware.net.proto.stream.GEntitySignal;
 import com.dunkware.net.proto.stream.GEntitySnapshot;
 import com.dunkware.net.proto.stream.GStreamEvent;
 import com.dunkware.net.proto.stream.GStreamEventType;
-import com.dunkware.trade.service.data.json.worker.container.DataStreamWorkerContainerStartReq;
+import com.dunkware.trade.service.data.util.proto.GContainerProto;
 import com.dunkware.trade.service.stream.server.controller.StreamController;
 import com.dunkware.trade.service.stream.server.controller.session.StreamSession;
 import com.dunkware.trade.service.stream.server.controller.session.container.connection.SessionContainerConnection;
-import com.dunkware.trade.service.stream.util.GContainerProto;
 
 public class SessionContainer implements DKafkaByteHandler2 {
 
@@ -98,7 +97,7 @@ public class SessionContainer implements DKafkaByteHandler2 {
 			// sometimes this starts too soon before the node receives other node updates
 			Thread.sleep(5000);
 			for (String nodeId : configuredWorkers) {
-				ClusterNode node = cluster.getNodeSevice().getNode(nodeId);
+				ClusterNode node = cluster.getNode(nodeId);
 				if(node == null) { 
 					logger.error("Configured worker node " + nodeId + " not found");
 					

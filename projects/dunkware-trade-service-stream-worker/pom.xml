@@ -1,8 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<project xmlns="http://maven.apache.org/POM/4.0.0"
-	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 	<parent>
 		<groupId>com.dunkware.maven</groupId>
@@ -55,6 +53,11 @@
 			<version>1.2.0-SNAPSHOT</version>
 		</dependency>
 
+<dependency>
+			<groupId>com.dunkware.net.cluster</groupId>
+			<artifactId>dunkware-net-cluster-node</artifactId>
+			<version>1.0.0-SNAPSHOT</version>
+		</dependency>
 		<dependency>
 			<groupId>com.dunkware.trade.service</groupId>
 			<artifactId>dunkware-trade-service-stream-json</artifactId>
@@ -68,8 +71,7 @@
 
 
 		</dependency>
-		
-		
+
 
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
@@ -108,7 +110,26 @@
 			<version>1.0.0-SNAPSHOT</version>
 
 		</dependency>
+		<dependency>
+			<groupId>com.dunkware.trade.service</groupId>
+			<artifactId>dunkware-trade-service-stream-util</artifactId>
+			<version>1.0.0-SNAPSHOT</version>
 
+		</dependency>
+
+
+		<dependency>
+			<groupId>com.dunkware.net.cluster</groupId>
+			<artifactId>dunkware-net-cluster-json</artifactId>
+			<version>1.0.0-SNAPSHOT</version>
+		</dependency>
+
+		<dependency>
+			<groupId>com.dunkware.net.cluster</groupId>
+			<artifactId>dunkware-net-cluster-util</artifactId>
+			<version>1.0.0-SNAPSHOT</version>
+
+		</dependency>
 		<dependency>
 			<groupId>com.dunkware.common</groupId>
 			<artifactId>dunkware-common-util</artifactId>
@@ -174,7 +195,6 @@
 		<dependency>
 
 
-
 			<groupId>net.devh</groupId>
 			<artifactId>grpc-client-spring-boot-starter</artifactId>
 			<version>2.7.0.RELEASE</version>
@@ -187,11 +207,11 @@
 		</dependency>
 
 
-
 	</dependencies>
 
 	<build>
-		<pluginManagement><!-- lock down plugins versions to avoid using Maven 
+		<pluginManagement>
+			<!-- lock down plugins versions to avoid using Maven 
 				defaults (may be moved to parent pom) -->
 			<plugins>
 				<plugin>

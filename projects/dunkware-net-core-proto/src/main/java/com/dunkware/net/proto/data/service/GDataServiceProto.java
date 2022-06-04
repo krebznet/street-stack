@@ -42,9 +42,9 @@ public final class GDataServiceProto {
     com.google.protobuf.Descriptors.FileDescriptor
       .internalBuildGeneratedFileFrom(descriptorData,
         new com.google.protobuf.Descriptors.FileDescriptor[] {
-          com.dunkware.net.proto.netstream.GNetProto.getDescriptor(),
+          com.dunkware.net.proto.netstream.GNetStreamProto.getDescriptor(),
         }, assigner);
-    com.dunkware.net.proto.netstream.GNetProto.getDescriptor();
+    com.dunkware.net.proto.netstream.GNetStreamProto.getDescriptor();
   }
 
   // @@protoc_insertion_point(outer_class_scope)

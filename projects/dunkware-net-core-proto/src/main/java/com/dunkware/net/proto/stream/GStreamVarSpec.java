@@ -181,18 +181,18 @@ private static final long serialVersionUID = 0L;
   public static final int DATATYPE_FIELD_NUMBER = 4;
   private int dataType_;
   /**
-   * <code>.dunkware.core.GDataType dataType = 4;</code>
+   * <code>.dunkware.data.GDataType dataType = 4;</code>
    */
   public int getDataTypeValue() {
     return dataType_;
   }
   /**
-   * <code>.dunkware.core.GDataType dataType = 4;</code>
+   * <code>.dunkware.data.GDataType dataType = 4;</code>
    */
-  public com.dunkware.net.proto.core.GDataType getDataType() {
+  public com.dunkware.net.proto.data.GDataType getDataType() {
     @SuppressWarnings("deprecation")
-    com.dunkware.net.proto.core.GDataType result = com.dunkware.net.proto.core.GDataType.valueOf(dataType_);
-    return result == null ? com.dunkware.net.proto.core.GDataType.UNRECOGNIZED : result;
+    com.dunkware.net.proto.data.GDataType result = com.dunkware.net.proto.data.GDataType.valueOf(dataType_);
+    return result == null ? com.dunkware.net.proto.data.GDataType.UNRECOGNIZED : result;
   }
 
   private byte memoizedIsInitialized = -1;
@@ -218,7 +218,7 @@ private static final long serialVersionUID = 0L;
     if (!getLabelBytes().isEmpty()) {
       com.google.protobuf.GeneratedMessageV3.writeString(output, 3, label_);
     }
-    if (dataType_ != com.dunkware.net.proto.core.GDataType.STRING_TYPE.getNumber()) {
+    if (dataType_ != com.dunkware.net.proto.data.GDataType.STRING_TYPE.getNumber()) {
       output.writeEnum(4, dataType_);
     }
     unknownFields.writeTo(output);
@@ -240,7 +240,7 @@ private static final long serialVersionUID = 0L;
     if (!getLabelBytes().isEmpty()) {
       size += com.google.protobuf.GeneratedMessageV3.computeStringSize(3, label_);
     }
-    if (dataType_ != com.dunkware.net.proto.core.GDataType.STRING_TYPE.getNumber()) {
+    if (dataType_ != com.dunkware.net.proto.data.GDataType.STRING_TYPE.getNumber()) {
       size += com.google.protobuf.CodedOutputStream
         .computeEnumSize(4, dataType_);
     }
@@ -714,13 +714,13 @@ private static final long serialVersionUID = 0L;
 
     private int dataType_ = 0;
     /**
-     * <code>.dunkware.core.GDataType dataType = 4;</code>
+     * <code>.dunkware.data.GDataType dataType = 4;</code>
      */
     public int getDataTypeValue() {
       return dataType_;
     }
     /**
-     * <code>.dunkware.core.GDataType dataType = 4;</code>
+     * <code>.dunkware.data.GDataType dataType = 4;</code>
      */
     public Builder setDataTypeValue(int value) {
       dataType_ = value;
@@ -728,17 +728,17 @@ private static final long serialVersionUID = 0L;
       return this;
     }
     /**
-     * <code>.dunkware.core.GDataType dataType = 4;</code>
+     * <code>.dunkware.data.GDataType dataType = 4;</code>
      */
-    public com.dunkware.net.proto.core.GDataType getDataType() {
+    public com.dunkware.net.proto.data.GDataType getDataType() {
       @SuppressWarnings("deprecation")
-      com.dunkware.net.proto.core.GDataType result = com.dunkware.net.proto.core.GDataType.valueOf(dataType_);
-      return result == null ? com.dunkware.net.proto.core.GDataType.UNRECOGNIZED : result;
+      com.dunkware.net.proto.data.GDataType result = com.dunkware.net.proto.data.GDataType.valueOf(dataType_);
+      return result == null ? com.dunkware.net.proto.data.GDataType.UNRECOGNIZED : result;
     }
     /**
-     * <code>.dunkware.core.GDataType dataType = 4;</code>
+     * <code>.dunkware.data.GDataType dataType = 4;</code>
      */
-    public Builder setDataType(com.dunkware.net.proto.core.GDataType value) {
+    public Builder setDataType(com.dunkware.net.proto.data.GDataType value) {
       if (value == null) {
         throw new NullPointerException();
       }
@@ -748,7 +748,7 @@ private static final long serialVersionUID = 0L;
       return this;
     }
     /**
-     * <code>.dunkware.core.GDataType dataType = 4;</code>
+     * <code>.dunkware.data.GDataType dataType = 4;</code>
      */
     public Builder clearDataType() {
       

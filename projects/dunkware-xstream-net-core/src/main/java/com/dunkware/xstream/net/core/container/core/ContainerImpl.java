@@ -17,9 +17,8 @@ import org.slf4j.LoggerFactory;
 import com.dunkware.common.util.dtime.DTimeZone;
 import com.dunkware.common.util.executor.DExecutor;
 import com.dunkware.common.util.stopwatch.DStopWatch;
-import com.dunkware.net.proto.core.GTimeUnit;
+import com.dunkware.net.proto.data.GTimeUnit;
 import com.dunkware.net.proto.netstream.GNetEntityMatcher;
-import com.dunkware.net.proto.netstream.GNetEntityScannerRequest;
 import com.dunkware.net.proto.stream.GEntitySignal;
 import com.dunkware.net.proto.stream.GEntitySnapshot;
 import com.dunkware.net.proto.stream.GStreamTimeUpdate;
@@ -37,7 +36,6 @@ import com.dunkware.xstream.net.core.container.ContainerSearchResults;
 import com.dunkware.xstream.net.core.container.ContainerTimeListener;
 import com.dunkware.xstream.net.core.container.search.ContainerEntityMatcherPredicateBuilder;
 import com.dunkware.xstream.net.core.container.util.ContainerHelper;
-import com.dunkware.xstream.net.core.scanner.StreamEntityScanner;
 
 public class ContainerImpl implements Container {
 

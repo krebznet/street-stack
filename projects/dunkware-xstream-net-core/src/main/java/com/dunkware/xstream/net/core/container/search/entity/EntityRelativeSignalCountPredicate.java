@@ -4,8 +4,8 @@ import java.time.LocalDateTime;
 import java.util.List;
 import java.util.function.Predicate;
 
-import com.dunkware.net.proto.core.GOperator;
-import com.dunkware.net.proto.core.GTimeUnit;
+import com.dunkware.net.proto.data.GOperator;
+import com.dunkware.net.proto.data.GTimeUnit;
 import com.dunkware.xstream.net.core.container.Container;
 import com.dunkware.xstream.net.core.container.ContainerEntity;
 import com.dunkware.xstream.net.core.container.ContainerEntitySignal;

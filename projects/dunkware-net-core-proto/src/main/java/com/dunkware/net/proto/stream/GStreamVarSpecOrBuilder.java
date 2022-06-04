@@ -33,11 +33,11 @@ public interface GStreamVarSpecOrBuilder extends
       getLabelBytes();
 
   /**
-   * <code>.dunkware.core.GDataType dataType = 4;</code>
+   * <code>.dunkware.data.GDataType dataType = 4;</code>
    */
   int getDataTypeValue();
   /**
-   * <code>.dunkware.core.GDataType dataType = 4;</code>
+   * <code>.dunkware.data.GDataType dataType = 4;</code>
    */
-  com.dunkware.net.proto.core.GDataType getDataType();
+  com.dunkware.net.proto.data.GDataType getDataType();
 }

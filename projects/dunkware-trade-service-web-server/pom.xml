@@ -226,6 +226,12 @@
 			<artifactId>logback-more-appenders</artifactId>
 			<version>1.8.3</version>
 		</dependency>
+		
+		<dependency>
+			<groupId>com.dunkware.net.cluster</groupId>
+			<artifactId>dunkware-net-cluster-node</artifactId>
+			<version>1.0.0-SNAPSHOT</version>
+		</dependency>
 
 
 	</dependencies>

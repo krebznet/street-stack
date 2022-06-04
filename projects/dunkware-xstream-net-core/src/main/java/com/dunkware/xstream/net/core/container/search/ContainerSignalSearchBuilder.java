@@ -5,8 +5,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Predicate;
 
-import com.dunkware.net.proto.core.GOperator;
-import com.dunkware.net.proto.core.GTimeUnit;
+import com.dunkware.net.proto.data.GOperator;
+import com.dunkware.net.proto.data.GTimeUnit;
 import com.dunkware.xstream.net.core.container.ContainerEntitySignal;
 import com.dunkware.xstream.net.core.container.search.signal.SignalEntityPredicate;
 import com.dunkware.xstream.net.core.container.search.signal.SignalRelativeRangePredicate;

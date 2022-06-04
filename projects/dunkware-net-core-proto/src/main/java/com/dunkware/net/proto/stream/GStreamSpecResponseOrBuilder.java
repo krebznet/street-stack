@@ -8,17 +8,17 @@ public interface GStreamSpecResponseOrBuilder extends
     com.google.protobuf.MessageOrBuilder {
 
   /**
-   * <code>.dunkware.core.GError error = 1;</code>
+   * <code>.dunkware.data.GError error = 1;</code>
    */
   boolean hasError();
   /**
-   * <code>.dunkware.core.GError error = 1;</code>
+   * <code>.dunkware.data.GError error = 1;</code>
    */
-  com.dunkware.net.proto.core.GError getError();
+  com.dunkware.net.proto.data.GError getError();
   /**
-   * <code>.dunkware.core.GError error = 1;</code>
+   * <code>.dunkware.data.GError error = 1;</code>
    */
-  com.dunkware.net.proto.core.GErrorOrBuilder getErrorOrBuilder();
+  com.dunkware.net.proto.data.GErrorOrBuilder getErrorOrBuilder();
 
   /**
    * <code>.dunkware.stream.GStreamSpec spec = 2;</code>

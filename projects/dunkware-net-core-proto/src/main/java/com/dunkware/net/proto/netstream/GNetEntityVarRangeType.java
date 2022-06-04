@@ -84,7 +84,7 @@ public enum GNetEntityVarRangeType
   }
   public static final com.google.protobuf.Descriptors.EnumDescriptor
       getDescriptor() {
-    return com.dunkware.net.proto.netstream.GNetProto.getDescriptor().getEnumTypes().get(1);
+    return com.dunkware.net.proto.netstream.GNetStreamProto.getDescriptor().getEnumTypes().get(1);
   }
 
   private static final GNetEntityVarRangeType[] VALUES = values();

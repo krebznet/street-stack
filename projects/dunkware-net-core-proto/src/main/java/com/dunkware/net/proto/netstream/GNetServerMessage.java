@@ -175,13 +175,13 @@ private static final long serialVersionUID = 0L;
   }
   public static final com.google.protobuf.Descriptors.Descriptor
       getDescriptor() {
-    return com.dunkware.net.proto.netstream.GNetProto.internal_static_dunkware_netstream_GNetServerMessage_descriptor;
+    return com.dunkware.net.proto.netstream.GNetStreamProto.internal_static_dunkware_netstream_GNetServerMessage_descriptor;
   }
 
   @java.lang.Override
   protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
       internalGetFieldAccessorTable() {
-    return com.dunkware.net.proto.netstream.GNetProto.internal_static_dunkware_netstream_GNetServerMessage_fieldAccessorTable
+    return com.dunkware.net.proto.netstream.GNetStreamProto.internal_static_dunkware_netstream_GNetServerMessage_fieldAccessorTable
         .ensureFieldAccessorsInitialized(
             com.dunkware.net.proto.netstream.GNetServerMessage.class, com.dunkware.net.proto.netstream.GNetServerMessage.Builder.class);
   }
@@ -744,13 +744,13 @@ private static final long serialVersionUID = 0L;
       com.dunkware.net.proto.netstream.GNetServerMessageOrBuilder {
     public static final com.google.protobuf.Descriptors.Descriptor
         getDescriptor() {
-      return com.dunkware.net.proto.netstream.GNetProto.internal_static_dunkware_netstream_GNetServerMessage_descriptor;
+      return com.dunkware.net.proto.netstream.GNetStreamProto.internal_static_dunkware_netstream_GNetServerMessage_descriptor;
     }
 
     @java.lang.Override
     protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
         internalGetFieldAccessorTable() {
-      return com.dunkware.net.proto.netstream.GNetProto.internal_static_dunkware_netstream_GNetServerMessage_fieldAccessorTable
+      return com.dunkware.net.proto.netstream.GNetStreamProto.internal_static_dunkware_netstream_GNetServerMessage_fieldAccessorTable
           .ensureFieldAccessorsInitialized(
               com.dunkware.net.proto.netstream.GNetServerMessage.class, com.dunkware.net.proto.netstream.GNetServerMessage.Builder.class);
     }
@@ -781,7 +781,7 @@ private static final long serialVersionUID = 0L;
     @java.lang.Override
     public com.google.protobuf.Descriptors.Descriptor
         getDescriptorForType() {
-      return com.dunkware.net.proto.netstream.GNetProto.internal_static_dunkware_netstream_GNetServerMessage_descriptor;
+      return com.dunkware.net.proto.netstream.GNetStreamProto.internal_static_dunkware_netstream_GNetServerMessage_descriptor;
     }
 
     @java.lang.Override

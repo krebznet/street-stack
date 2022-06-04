@@ -32,30 +32,30 @@ public interface GNetEntityVarValueOrBuilder extends
   com.dunkware.net.proto.netstream.GNetEntityVarValueType getType();
 
   /**
-   * <code>.dunkware.core.GCalendarRange timeRange = 4;</code>
+   * <code>.dunkware.data.GCalendarRange timeRange = 4;</code>
    */
   boolean hasTimeRange();
   /**
-   * <code>.dunkware.core.GCalendarRange timeRange = 4;</code>
+   * <code>.dunkware.data.GCalendarRange timeRange = 4;</code>
    */
-  com.dunkware.net.proto.core.GCalendarRange getTimeRange();
+  com.dunkware.net.proto.data.GCalendarRange getTimeRange();
   /**
-   * <code>.dunkware.core.GCalendarRange timeRange = 4;</code>
+   * <code>.dunkware.data.GCalendarRange timeRange = 4;</code>
    */
-  com.dunkware.net.proto.core.GCalendarRangeOrBuilder getTimeRangeOrBuilder();
+  com.dunkware.net.proto.data.GCalendarRangeOrBuilder getTimeRangeOrBuilder();
 
   /**
-   * <code>.dunkware.core.GTime valueAbsoluteTime = 5;</code>
+   * <code>.dunkware.data.GTime valueAbsoluteTime = 5;</code>
    */
   boolean hasValueAbsoluteTime();
   /**
-   * <code>.dunkware.core.GTime valueAbsoluteTime = 5;</code>
+   * <code>.dunkware.data.GTime valueAbsoluteTime = 5;</code>
    */
-  com.dunkware.net.proto.core.GTime getValueAbsoluteTime();
+  com.dunkware.net.proto.data.GTime getValueAbsoluteTime();
   /**
-   * <code>.dunkware.core.GTime valueAbsoluteTime = 5;</code>
+   * <code>.dunkware.data.GTime valueAbsoluteTime = 5;</code>
    */
-  com.dunkware.net.proto.core.GTimeOrBuilder getValueAbsoluteTimeOrBuilder();
+  com.dunkware.net.proto.data.GTimeOrBuilder getValueAbsoluteTimeOrBuilder();
 
   /**
    * <code>.dunkware.netstream.GNetEntityVarRangeType rangeFunction = 6;</code>

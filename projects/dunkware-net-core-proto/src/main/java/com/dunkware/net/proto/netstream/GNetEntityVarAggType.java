@@ -84,7 +84,7 @@ public enum GNetEntityVarAggType
   }
   public static final com.google.protobuf.Descriptors.EnumDescriptor
       getDescriptor() {
-    return com.dunkware.net.proto.netstream.GNetProto.getDescriptor().getEnumTypes().get(2);
+    return com.dunkware.net.proto.netstream.GNetStreamProto.getDescriptor().getEnumTypes().get(2);
   }
 
   private static final GNetEntityVarAggType[] VALUES = values();

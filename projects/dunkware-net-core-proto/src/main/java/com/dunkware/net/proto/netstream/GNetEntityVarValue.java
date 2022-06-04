@@ -66,11 +66,11 @@ private static final long serialVersionUID = 0L;
             break;
           }
           case 34: {
-            com.dunkware.net.proto.core.GCalendarRange.Builder subBuilder = null;
+            com.dunkware.net.proto.data.GCalendarRange.Builder subBuilder = null;
             if (timeRange_ != null) {
               subBuilder = timeRange_.toBuilder();
             }
-            timeRange_ = input.readMessage(com.dunkware.net.proto.core.GCalendarRange.parser(), extensionRegistry);
+            timeRange_ = input.readMessage(com.dunkware.net.proto.data.GCalendarRange.parser(), extensionRegistry);
             if (subBuilder != null) {
               subBuilder.mergeFrom(timeRange_);
               timeRange_ = subBuilder.buildPartial();
@@ -79,11 +79,11 @@ private static final long serialVersionUID = 0L;
             break;
           }
           case 42: {
-            com.dunkware.net.proto.core.GTime.Builder subBuilder = null;
+            com.dunkware.net.proto.data.GTime.Builder subBuilder = null;
             if (valueAbsoluteTime_ != null) {
               subBuilder = valueAbsoluteTime_.toBuilder();
             }
-            valueAbsoluteTime_ = input.readMessage(com.dunkware.net.proto.core.GTime.parser(), extensionRegistry);
+            valueAbsoluteTime_ = input.readMessage(com.dunkware.net.proto.data.GTime.parser(), extensionRegistry);
             if (subBuilder != null) {
               subBuilder.mergeFrom(valueAbsoluteTime_);
               valueAbsoluteTime_ = subBuilder.buildPartial();
@@ -129,13 +129,13 @@ private static final long serialVersionUID = 0L;
   }
   public static final com.google.protobuf.Descriptors.Descriptor
       getDescriptor() {
-    return com.dunkware.net.proto.netstream.GNetProto.internal_static_dunkware_netstream_GNetEntityVarValue_descriptor;
+    return com.dunkware.net.proto.netstream.GNetStreamProto.internal_static_dunkware_netstream_GNetEntityVarValue_descriptor;
   }
 
   @java.lang.Override
   protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
       internalGetFieldAccessorTable() {
-    return com.dunkware.net.proto.netstream.GNetProto.internal_static_dunkware_netstream_GNetEntityVarValue_fieldAccessorTable
+    return com.dunkware.net.proto.netstream.GNetStreamProto.internal_static_dunkware_netstream_GNetEntityVarValue_fieldAccessorTable
         .ensureFieldAccessorsInitialized(
             com.dunkware.net.proto.netstream.GNetEntityVarValue.class, com.dunkware.net.proto.netstream.GNetEntityVarValue.Builder.class);
   }
@@ -201,44 +201,44 @@ private static final long serialVersionUID = 0L;
   }
 
   public static final int TIMERANGE_FIELD_NUMBER = 4;
-  private com.dunkware.net.proto.core.GCalendarRange timeRange_;
+  private com.dunkware.net.proto.data.GCalendarRange timeRange_;
   /**
-   * <code>.dunkware.core.GCalendarRange timeRange = 4;</code>
+   * <code>.dunkware.data.GCalendarRange timeRange = 4;</code>
    */
   public boolean hasTimeRange() {
     return timeRange_ != null;
   }
   /**
-   * <code>.dunkware.core.GCalendarRange timeRange = 4;</code>
+   * <code>.dunkware.data.GCalendarRange timeRange = 4;</code>
    */
-  public com.dunkware.net.proto.core.GCalendarRange getTimeRange() {
-    return timeRange_ == null ? com.dunkware.net.proto.core.GCalendarRange.getDefaultInstance() : timeRange_;
+  public com.dunkware.net.proto.data.GCalendarRange getTimeRange() {
+    return timeRange_ == null ? com.dunkware.net.proto.data.GCalendarRange.getDefaultInstance() : timeRange_;
   }
   /**
-   * <code>.dunkware.core.GCalendarRange timeRange = 4;</code>
+   * <code>.dunkware.data.GCalendarRange timeRange = 4;</code>
    */
-  public com.dunkware.net.proto.core.GCalendarRangeOrBuilder getTimeRangeOrBuilder() {
+  public com.dunkware.net.proto.data.GCalendarRangeOrBuilder getTimeRangeOrBuilder() {
     return getTimeRange();
   }
 
   public static final int VALUEABSOLUTETIME_FIELD_NUMBER = 5;
-  private com.dunkware.net.proto.core.GTime valueAbsoluteTime_;
+  private com.dunkware.net.proto.data.GTime valueAbsoluteTime_;
   /**
-   * <code>.dunkware.core.GTime valueAbsoluteTime = 5;</code>
+   * <code>.dunkware.data.GTime valueAbsoluteTime = 5;</code>
    */
   public boolean hasValueAbsoluteTime() {
     return valueAbsoluteTime_ != null;
   }
   /**
-   * <code>.dunkware.core.GTime valueAbsoluteTime = 5;</code>
+   * <code>.dunkware.data.GTime valueAbsoluteTime = 5;</code>
    */
-  public com.dunkware.net.proto.core.GTime getValueAbsoluteTime() {
-    return valueAbsoluteTime_ == null ? com.dunkware.net.proto.core.GTime.getDefaultInstance() : valueAbsoluteTime_;
+  public com.dunkware.net.proto.data.GTime getValueAbsoluteTime() {
+    return valueAbsoluteTime_ == null ? com.dunkware.net.proto.data.GTime.getDefaultInstance() : valueAbsoluteTime_;
   }
   /**
-   * <code>.dunkware.core.GTime valueAbsoluteTime = 5;</code>
+   * <code>.dunkware.data.GTime valueAbsoluteTime = 5;</code>
    */
-  public com.dunkware.net.proto.core.GTimeOrBuilder getValueAbsoluteTimeOrBuilder() {
+  public com.dunkware.net.proto.data.GTimeOrBuilder getValueAbsoluteTimeOrBuilder() {
     return getValueAbsoluteTime();
   }
 
@@ -533,13 +533,13 @@ private static final long serialVersionUID = 0L;
       com.dunkware.net.proto.netstream.GNetEntityVarValueOrBuilder {
     public static final com.google.protobuf.Descriptors.Descriptor
         getDescriptor() {
-      return com.dunkware.net.proto.netstream.GNetProto.internal_static_dunkware_netstream_GNetEntityVarValue_descriptor;
+      return com.dunkware.net.proto.netstream.GNetStreamProto.internal_static_dunkware_netstream_GNetEntityVarValue_descriptor;
     }
 
     @java.lang.Override
     protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
         internalGetFieldAccessorTable() {
-      return com.dunkware.net.proto.netstream.GNetProto.internal_static_dunkware_netstream_GNetEntityVarValue_fieldAccessorTable
+      return com.dunkware.net.proto.netstream.GNetStreamProto.internal_static_dunkware_netstream_GNetEntityVarValue_fieldAccessorTable
           .ensureFieldAccessorsInitialized(
               com.dunkware.net.proto.netstream.GNetEntityVarValue.class, com.dunkware.net.proto.netstream.GNetEntityVarValue.Builder.class);
     }
@@ -592,7 +592,7 @@ private static final long serialVersionUID = 0L;
     @java.lang.Override
     public com.google.protobuf.Descriptors.Descriptor
         getDescriptorForType() {
-      return com.dunkware.net.proto.netstream.GNetProto.internal_static_dunkware_netstream_GNetEntityVarValue_descriptor;
+      return com.dunkware.net.proto.netstream.GNetStreamProto.internal_static_dunkware_netstream_GNetEntityVarValue_descriptor;
     }
 
     @java.lang.Override
@@ -870,29 +870,29 @@ private static final long serialVersionUID = 0L;
       return this;
     }
 
-    private com.dunkware.net.proto.core.GCalendarRange timeRange_ = null;
+    private com.dunkware.net.proto.data.GCalendarRange timeRange_ = null;
     private com.google.protobuf.SingleFieldBuilderV3<
-        com.dunkware.net.proto.core.GCalendarRange, com.dunkware.net.proto.core.GCalendarRange.Builder, com.dunkware.net.proto.core.GCalendarRangeOrBuilder> timeRangeBuilder_;
+        com.dunkware.net.proto.data.GCalendarRange, com.dunkware.net.proto.data.GCalendarRange.Builder, com.dunkware.net.proto.data.GCalendarRangeOrBuilder> timeRangeBuilder_;
     /**
-     * <code>.dunkware.core.GCalendarRange timeRange = 4;</code>
+     * <code>.dunkware.data.GCalendarRange timeRange = 4;</code>
      */
     public boolean hasTimeRange() {
       return timeRangeBuilder_ != null || timeRange_ != null;
     }
     /**
-     * <code>.dunkware.core.GCalendarRange timeRange = 4;</code>
+     * <code>.dunkware.data.GCalendarRange timeRange = 4;</code>
      */
-    public com.dunkware.net.proto.core.GCalendarRange getTimeRange() {
+    public com.dunkware.net.proto.data.GCalendarRange getTimeRange() {
       if (timeRangeBuilder_ == null) {
-        return timeRange_ == null ? com.dunkware.net.proto.core.GCalendarRange.getDefaultInstance() : timeRange_;
+        return timeRange_ == null ? com.dunkware.net.proto.data.GCalendarRange.getDefaultInstance() : timeRange_;
       } else {
         return timeRangeBuilder_.getMessage();
       }
     }
     /**
-     * <code>.dunkware.core.GCalendarRange timeRange = 4;</code>
+     * <code>.dunkware.data.GCalendarRange timeRange = 4;</code>
      */
-    public Builder setTimeRange(com.dunkware.net.proto.core.GCalendarRange value) {
+    public Builder setTimeRange(com.dunkware.net.proto.data.GCalendarRange value) {
       if (timeRangeBuilder_ == null) {
         if (value == null) {
           throw new NullPointerException();
@@ -906,10 +906,10 @@ private static final long serialVersionUID = 0L;
       return this;
     }
     /**
-     * <code>.dunkware.core.GCalendarRange timeRange = 4;</code>
+     * <code>.dunkware.data.GCalendarRange timeRange = 4;</code>
      */
     public Builder setTimeRange(
-        com.dunkware.net.proto.core.GCalendarRange.Builder builderForValue) {
+        com.dunkware.net.proto.data.GCalendarRange.Builder builderForValue) {
       if (timeRangeBuilder_ == null) {
         timeRange_ = builderForValue.build();
         onChanged();
@@ -920,13 +920,13 @@ private static final long serialVersionUID = 0L;
       return this;
     }
     /**
-     * <code>.dunkware.core.GCalendarRange timeRange = 4;</code>
+     * <code>.dunkware.data.GCalendarRange timeRange = 4;</code>
      */
-    public Builder mergeTimeRange(com.dunkware.net.proto.core.GCalendarRange value) {
+    public Builder mergeTimeRange(com.dunkware.net.proto.data.GCalendarRange value) {
       if (timeRangeBuilder_ == null) {
         if (timeRange_ != null) {
           timeRange_ =
-            com.dunkware.net.proto.core.GCalendarRange.newBuilder(timeRange_).mergeFrom(value).buildPartial();
+            com.dunkware.net.proto.data.GCalendarRange.newBuilder(timeRange_).mergeFrom(value).buildPartial();
         } else {
           timeRange_ = value;
         }
@@ -938,7 +938,7 @@ private static final long serialVersionUID = 0L;
       return this;
     }
     /**
-     * <code>.dunkware.core.GCalendarRange timeRange = 4;</code>
+     * <code>.dunkware.data.GCalendarRange timeRange = 4;</code>
      */
     public Builder clearTimeRange() {
       if (timeRangeBuilder_ == null) {
@@ -952,33 +952,33 @@ private static final long serialVersionUID = 0L;
       return this;
     }
     /**
-     * <code>.dunkware.core.GCalendarRange timeRange = 4;</code>
+     * <code>.dunkware.data.GCalendarRange timeRange = 4;</code>
      */
-    public com.dunkware.net.proto.core.GCalendarRange.Builder getTimeRangeBuilder() {
+    public com.dunkware.net.proto.data.GCalendarRange.Builder getTimeRangeBuilder() {
       
       onChanged();
       return getTimeRangeFieldBuilder().getBuilder();
     }
     /**
-     * <code>.dunkware.core.GCalendarRange timeRange = 4;</code>
+     * <code>.dunkware.data.GCalendarRange timeRange = 4;</code>
      */
-    public com.dunkware.net.proto.core.GCalendarRangeOrBuilder getTimeRangeOrBuilder() {
+    public com.dunkware.net.proto.data.GCalendarRangeOrBuilder getTimeRangeOrBuilder() {
       if (timeRangeBuilder_ != null) {
         return timeRangeBuilder_.getMessageOrBuilder();
       } else {
         return timeRange_ == null ?
-            com.dunkware.net.proto.core.GCalendarRange.getDefaultInstance() : timeRange_;
+            com.dunkware.net.proto.data.GCalendarRange.getDefaultInstance() : timeRange_;
       }
     }
     /**
-     * <code>.dunkware.core.GCalendarRange timeRange = 4;</code>
+     * <code>.dunkware.data.GCalendarRange timeRange = 4;</code>
      */
     private com.google.protobuf.SingleFieldBuilderV3<
-        com.dunkware.net.proto.core.GCalendarRange, com.dunkware.net.proto.core.GCalendarRange.Builder, com.dunkware.net.proto.core.GCalendarRangeOrBuilder> 
+        com.dunkware.net.proto.data.GCalendarRange, com.dunkware.net.proto.data.GCalendarRange.Builder, com.dunkware.net.proto.data.GCalendarRangeOrBuilder> 
         getTimeRangeFieldBuilder() {
       if (timeRangeBuilder_ == null) {
         timeRangeBuilder_ = new com.google.protobuf.SingleFieldBuilderV3<
-            com.dunkware.net.proto.core.GCalendarRange, com.dunkware.net.proto.core.GCalendarRange.Builder, com.dunkware.net.proto.core.GCalendarRangeOrBuilder>(
+            com.dunkware.net.proto.data.GCalendarRange, com.dunkware.net.proto.data.GCalendarRange.Builder, com.dunkware.net.proto.data.GCalendarRangeOrBuilder>(
                 getTimeRange(),
                 getParentForChildren(),
                 isClean());
@@ -987,29 +987,29 @@ private static final long serialVersionUID = 0L;
       return timeRangeBuilder_;
     }
 
-    private com.dunkware.net.proto.core.GTime valueAbsoluteTime_ = null;
+    private com.dunkware.net.proto.data.GTime valueAbsoluteTime_ = null;
     private com.google.protobuf.SingleFieldBuilderV3<
-        com.dunkware.net.proto.core.GTime, com.dunkware.net.proto.core.GTime.Builder, com.dunkware.net.proto.core.GTimeOrBuilder> valueAbsoluteTimeBuilder_;
+        com.dunkware.net.proto.data.GTime, com.dunkware.net.proto.data.GTime.Builder, com.dunkware.net.proto.data.GTimeOrBuilder> valueAbsoluteTimeBuilder_;
     /**
-     * <code>.dunkware.core.GTime valueAbsoluteTime = 5;</code>
+     * <code>.dunkware.data.GTime valueAbsoluteTime = 5;</code>
      */
     public boolean hasValueAbsoluteTime() {
       return valueAbsoluteTimeBuilder_ != null || valueAbsoluteTime_ != null;
     }
     /**
-     * <code>.dunkware.core.GTime valueAbsoluteTime = 5;</code>
+     * <code>.dunkware.data.GTime valueAbsoluteTime = 5;</code>
      */
-    public com.dunkware.net.proto.core.GTime getValueAbsoluteTime() {
+    public com.dunkware.net.proto.data.GTime getValueAbsoluteTime() {
       if (valueAbsoluteTimeBuilder_ == null) {
-        return valueAbsoluteTime_ == null ? com.dunkware.net.proto.core.GTime.getDefaultInstance() : valueAbsoluteTime_;
+        return valueAbsoluteTime_ == null ? com.dunkware.net.proto.data.GTime.getDefaultInstance() : valueAbsoluteTime_;
       } else {
         return valueAbsoluteTimeBuilder_.getMessage();
       }
     }
     /**
-     * <code>.dunkware.core.GTime valueAbsoluteTime = 5;</code>
+     * <code>.dunkware.data.GTime valueAbsoluteTime = 5;</code>
      */
-    public Builder setValueAbsoluteTime(com.dunkware.net.proto.core.GTime value) {
+    public Builder setValueAbsoluteTime(com.dunkware.net.proto.data.GTime value) {
       if (valueAbsoluteTimeBuilder_ == null) {
         if (value == null) {
           throw new NullPointerException();
@@ -1023,10 +1023,10 @@ private static final long serialVersionUID = 0L;
       return this;
     }
     /**
-     * <code>.dunkware.core.GTime valueAbsoluteTime = 5;</code>
+     * <code>.dunkware.data.GTime valueAbsoluteTime = 5;</code>
      */
     public Builder setValueAbsoluteTime(
-        com.dunkware.net.proto.core.GTime.Builder builderForValue) {
+        com.dunkware.net.proto.data.GTime.Builder builderForValue) {
       if (valueAbsoluteTimeBuilder_ == null) {
         valueAbsoluteTime_ = builderForValue.build();
         onChanged();
@@ -1037,13 +1037,13 @@ private static final long serialVersionUID = 0L;
       return this;
     }
     /**
-     * <code>.dunkware.core.GTime valueAbsoluteTime = 5;</code>
+     * <code>.dunkware.data.GTime valueAbsoluteTime = 5;</code>
      */
-    public Builder mergeValueAbsoluteTime(com.dunkware.net.proto.core.GTime value) {
+    public Builder mergeValueAbsoluteTime(com.dunkware.net.proto.data.GTime value) {
       if (valueAbsoluteTimeBuilder_ == null) {
         if (valueAbsoluteTime_ != null) {
           valueAbsoluteTime_ =
-            com.dunkware.net.proto.core.GTime.newBuilder(valueAbsoluteTime_).mergeFrom(value).buildPartial();
+            com.dunkware.net.proto.data.GTime.newBuilder(valueAbsoluteTime_).mergeFrom(value).buildPartial();
         } else {
           valueAbsoluteTime_ = value;
         }
@@ -1055,7 +1055,7 @@ private static final long serialVersionUID = 0L;
       return this;
     }
     /**
-     * <code>.dunkware.core.GTime valueAbsoluteTime = 5;</code>
+     * <code>.dunkware.data.GTime valueAbsoluteTime = 5;</code>
      */
     public Builder clearValueAbsoluteTime() {
       if (valueAbsoluteTimeBuilder_ == null) {
@@ -1069,33 +1069,33 @@ private static final long serialVersionUID = 0L;
       return this;
     }
     /**
-     * <code>.dunkware.core.GTime valueAbsoluteTime = 5;</code>
+     * <code>.dunkware.data.GTime valueAbsoluteTime = 5;</code>
      */
-    public com.dunkware.net.proto.core.GTime.Builder getValueAbsoluteTimeBuilder() {
+    public com.dunkware.net.proto.data.GTime.Builder getValueAbsoluteTimeBuilder() {
       
       onChanged();
       return getValueAbsoluteTimeFieldBuilder().getBuilder();
     }
     /**
-     * <code>.dunkware.core.GTime valueAbsoluteTime = 5;</code>
+     * <code>.dunkware.data.GTime valueAbsoluteTime = 5;</code>
      */
-    public com.dunkware.net.proto.core.GTimeOrBuilder getValueAbsoluteTimeOrBuilder() {
+    public com.dunkware.net.proto.data.GTimeOrBuilder getValueAbsoluteTimeOrBuilder() {
       if (valueAbsoluteTimeBuilder_ != null) {
         return valueAbsoluteTimeBuilder_.getMessageOrBuilder();
       } else {
         return valueAbsoluteTime_ == null ?
-            com.dunkware.net.proto.core.GTime.getDefaultInstance() : valueAbsoluteTime_;
+            com.dunkware.net.proto.data.GTime.getDefaultInstance() : valueAbsoluteTime_;
       }
     }
     /**
-     * <code>.dunkware.core.GTime valueAbsoluteTime = 5;</code>
+     * <code>.dunkware.data.GTime valueAbsoluteTime = 5;</code>
      */
     private com.google.protobuf.SingleFieldBuilderV3<
-        com.dunkware.net.proto.core.GTime, com.dunkware.net.proto.core.GTime.Builder, com.dunkware.net.proto.core.GTimeOrBuilder> 
+        com.dunkware.net.proto.data.GTime, com.dunkware.net.proto.data.GTime.Builder, com.dunkware.net.proto.data.GTimeOrBuilder> 
         getValueAbsoluteTimeFieldBuilder() {
       if (valueAbsoluteTimeBuilder_ == null) {
         valueAbsoluteTimeBuilder_ = new com.google.protobuf.SingleFieldBuilderV3<
-            com.dunkware.net.proto.core.GTime, com.dunkware.net.proto.core.GTime.Builder, com.dunkware.net.proto.core.GTimeOrBuilder>(
+            com.dunkware.net.proto.data.GTime, com.dunkware.net.proto.data.GTime.Builder, com.dunkware.net.proto.data.GTimeOrBuilder>(
                 getValueAbsoluteTime(),
                 getParentForChildren(),
                 isClean());

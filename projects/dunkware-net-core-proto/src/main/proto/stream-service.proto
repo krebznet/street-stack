@@ -11,6 +11,6 @@ option java_outer_classname = "GStreamServiceProto";
 import "stream.proto";
 service GStreamService  {
     rpc streamSpecs( dunkware.stream.GStreamSpecsRequest) returns (dunkware.stream.GStreamSpecsResponse) {}
-    rpc autoCompleteSearch(stream dunkware.stream.GAutoCompleteRequest) returns (stream dunkware.stream.GAutoCompleteResponse) {}
+
         
  }

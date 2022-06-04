@@ -6,13 +6,11 @@ import java.util.function.Predicate;
 
 import com.dunkware.common.util.dtime.DTimeZone;
 import com.dunkware.common.util.executor.DExecutor;
-import com.dunkware.net.proto.core.GTimeUnit;
+import com.dunkware.net.proto.data.GTimeUnit;
 import com.dunkware.net.proto.netstream.GNetEntityMatcher;
-import com.dunkware.net.proto.netstream.GNetEntityScannerRequest;
 import com.dunkware.net.proto.stream.GEntitySignal;
 import com.dunkware.net.proto.stream.GEntitySnapshot;
 import com.dunkware.net.proto.stream.GStreamTimeUpdate;
-import com.dunkware.xstream.net.core.scanner.StreamEntityScanner;
 
 public interface Container {
 	

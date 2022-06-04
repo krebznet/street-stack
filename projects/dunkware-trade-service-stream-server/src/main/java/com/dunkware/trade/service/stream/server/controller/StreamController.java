@@ -243,7 +243,7 @@ public class StreamController {
 			String[] configedNodes = confgiredWorkerNodes.split(",");
 			try {
 				for (String nodeId : configedNodes) {
-					ClusterNode node = cluster.getNodeSevice().getNode(nodeId);
+					ClusterNode node = cluster.getNode(nodeId);
 					if(node == null) { 
 						logger.error("Stream Worker Configured Node not found " + nodeId);
 				 	} else { 

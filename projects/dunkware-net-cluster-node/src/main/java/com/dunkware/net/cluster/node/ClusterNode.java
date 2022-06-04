@@ -4,6 +4,7 @@ import com.dunkware.common.util.dtime.DDateTime;
 import com.dunkware.net.cluster.json.node.ClusterNodeState;
 import com.dunkware.net.cluster.json.node.ClusterNodeStats;
 import com.dunkware.net.cluster.json.node.ClusterNodeType;
+import com.dunkware.net.proto.net.GNetMessage;
 
 import io.grpc.Channel;
 
@@ -42,5 +43,12 @@ public interface ClusterNode {
 	public Channel grpcChannel() throws ClusterNodeException;;
 	
 	public String getException();
+	
+	public void sendNetMessage(GNetMessage message) throws ClusterNodeException;
+	
+	public boolean hasNetCallService(String endpoint);
+	
+	public boolean hasNetChannelService(String endpoint);
+	
 
 }

@@ -6,9 +6,9 @@ package dunkware.netstream;
 
 option java_multiple_files = true;
 option java_package = "com.dunkware.net.proto.netstream";
-option java_outer_classname = "GNetProto";
+option java_outer_classname = "GNetStreamProto";
 
-import "core.proto";
+import "data.proto";
 
 import "google/protobuf/timestamp.proto";
 
@@ -38,8 +38,8 @@ message GNetEntityVarValue {
   int32 id = 1;
   string ident = 2;
   GNetEntityVarValueType type = 3;
-  dunkware.core.GCalendarRange timeRange = 4;
-  core.GTime valueAbsoluteTime = 5;
+  dunkware.data.GCalendarRange timeRange = 4;
+  data.GTime valueAbsoluteTime = 5;
   GNetEntityVarRangeType rangeFunction = 6;
   GNetEntityVarAggType aggFunction = 7;
   int32 aggDays = 8;
@@ -49,7 +49,7 @@ message GNetEntityCriteria {
 }
 message GNetEntityVarCriteria {
   GNetEntityVarValue var = 1;
-  core.GOperator operator = 2;
+  data.GOperator operator = 2;
   string value = 3; // needs to be casted at some point
 }
 

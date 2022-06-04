@@ -2,7 +2,7 @@ package com.dunkware.xstream.net.core.container.search.signal;
 
 import java.util.function.Predicate;
 
-import com.dunkware.net.proto.core.GOperator;
+import com.dunkware.net.proto.data.GOperator;
 import com.dunkware.xstream.net.core.container.ContainerEntitySignal;
 
 public class SignalVariablePredicate implements Predicate<ContainerEntitySignal> {

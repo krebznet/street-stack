@@ -2,16 +2,20 @@ package com.dunkware.net.cluster.node.internal;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 
+import com.dunkware.common.kafka.producer.DKafkaByteProducer;
 import com.dunkware.common.util.dtime.DDateTime;
 import com.dunkware.common.util.helpers.DHttpHelper;
 import com.dunkware.common.util.json.DJson;
+import com.dunkware.common.util.uuid.DUUID;
 import com.dunkware.net.cluster.json.node.ClusterNodeState;
 import com.dunkware.net.cluster.json.node.ClusterNodeStats;
 import com.dunkware.net.cluster.json.node.ClusterNodeType;
 import com.dunkware.net.cluster.json.node.ClusterNodeUpdate;
 import com.dunkware.net.cluster.node.ClusterNode;
 import com.dunkware.net.cluster.node.ClusterNodeException;
+import com.dunkware.net.proto.net.GNetMessage;
 
 import io.grpc.Channel;
 import io.grpc.ConnectivityState;
@@ -20,6 +24,9 @@ import io.grpc.ManagedChannelBuilder;
 
 public class ClusterNodeImpl implements ClusterNode {
 
+	@Autowired
+	private ClusterConfig clusterConfig;
+	
 	private ClusterNodeStats stats;
 
 	private Logger logger = LoggerFactory.getLogger(getClass());
@@ -28,14 +35,23 @@ public class ClusterNodeImpl implements ClusterNode {
 
 	private ClusterNodeUpdate lastUpdate;
 
+	private DKafkaByteProducer netMessageProducer; 
+	
 	private ClusterNodeState state = null;
 
 	private String exception;
 
 	public void start(ClusterNodeUpdate update) {
+		logger.info("Starting Cluster Node {} " + update.getNode());;
 		lastUpdate = update;
 		state = lastUpdate.getState();
 		stats = update.getStats();
+		try {
+			String topic = "cluster_node_" + update.getNode() + "_net_messages";
+			netMessageProducer = DKafkaByteProducer.newInstance(clusterConfig.getServerBrokers(), topic, "peer_node_" + DUUID.randomUUID(5));
+		} catch (Exception e) {
+			logger.error("Exception creating kafka net message producer to diiscovered node " + update.getNode() + " exception " + e.toString());
+		}
 		if (update.getState() == ClusterNodeState.Available) {
 			try {
 				channel = ManagedChannelBuilder.forTarget(stats.getGrpcEndpoint()).usePlaintext().build();
@@ -58,6 +74,24 @@ public class ClusterNodeImpl implements ClusterNode {
 		}
 
 	}
+	
+
+	@Override
+	public boolean hasNetCallService(String endpoint) {
+		//for (stats.getServices() d : iterable) {
+			return false;
+		//
+	}
+
+
+
+	@Override
+	public boolean hasNetChannelService(String endpoint) {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+
 
 	public void update(ClusterNodeUpdate update) {
 		this.lastUpdate = update;
@@ -198,6 +232,18 @@ public class ClusterNodeImpl implements ClusterNode {
 		}
 	
 	}
+	
+
+	@Override
+	public void sendNetMessage(GNetMessage message) throws ClusterNodeException {
+		try {
+			byte[] bytes = message.toByteArray();
+			netMessageProducer.sendBytes(bytes);
+		} catch (Exception e) {
+			logger.error("Exception sending GnetMessage to node " + lastUpdate.getNode() + " " + e.toString());
+			throw new ClusterNodeException("Net Message Send Exception " + e.toString());
+		}
+	}
 
 	@Override
 	public void jsonGetVoid(String path) {
@@ -236,6 +282,7 @@ public class ClusterNodeImpl implements ClusterNode {
 	}
 	
 	public boolean hasChannelService(String endpoint) { 
+		// TODO: convert
 		return false; 
 	}
 	

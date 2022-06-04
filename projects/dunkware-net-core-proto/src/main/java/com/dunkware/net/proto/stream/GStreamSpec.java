@@ -164,18 +164,18 @@ private static final long serialVersionUID = 0L;
   public static final int TIMEZONE_FIELD_NUMBER = 5;
   private int timeZone_;
   /**
-   * <code>.dunkware.core.GTimeZone timeZone = 5;</code>
+   * <code>.dunkware.data.GTimeZone timeZone = 5;</code>
    */
   public int getTimeZoneValue() {
     return timeZone_;
   }
   /**
-   * <code>.dunkware.core.GTimeZone timeZone = 5;</code>
+   * <code>.dunkware.data.GTimeZone timeZone = 5;</code>
    */
-  public com.dunkware.net.proto.core.GTimeZone getTimeZone() {
+  public com.dunkware.net.proto.data.GTimeZone getTimeZone() {
     @SuppressWarnings("deprecation")
-    com.dunkware.net.proto.core.GTimeZone result = com.dunkware.net.proto.core.GTimeZone.valueOf(timeZone_);
-    return result == null ? com.dunkware.net.proto.core.GTimeZone.UNRECOGNIZED : result;
+    com.dunkware.net.proto.data.GTimeZone result = com.dunkware.net.proto.data.GTimeZone.valueOf(timeZone_);
+    return result == null ? com.dunkware.net.proto.data.GTimeZone.UNRECOGNIZED : result;
   }
 
   private byte memoizedIsInitialized = -1;
@@ -198,7 +198,7 @@ private static final long serialVersionUID = 0L;
     if (script_ != null) {
       output.writeMessage(4, getScript());
     }
-    if (timeZone_ != com.dunkware.net.proto.core.GTimeZone.US_EASTERN.getNumber()) {
+    if (timeZone_ != com.dunkware.net.proto.data.GTimeZone.US_EASTERN.getNumber()) {
       output.writeEnum(5, timeZone_);
     }
     unknownFields.writeTo(output);
@@ -217,7 +217,7 @@ private static final long serialVersionUID = 0L;
       size += com.google.protobuf.CodedOutputStream
         .computeMessageSize(4, getScript());
     }
-    if (timeZone_ != com.dunkware.net.proto.core.GTimeZone.US_EASTERN.getNumber()) {
+    if (timeZone_ != com.dunkware.net.proto.data.GTimeZone.US_EASTERN.getNumber()) {
       size += com.google.protobuf.CodedOutputStream
         .computeEnumSize(5, timeZone_);
     }
@@ -720,13 +720,13 @@ private static final long serialVersionUID = 0L;
 
     private int timeZone_ = 0;
     /**
-     * <code>.dunkware.core.GTimeZone timeZone = 5;</code>
+     * <code>.dunkware.data.GTimeZone timeZone = 5;</code>
      */
     public int getTimeZoneValue() {
       return timeZone_;
     }
     /**
-     * <code>.dunkware.core.GTimeZone timeZone = 5;</code>
+     * <code>.dunkware.data.GTimeZone timeZone = 5;</code>
      */
     public Builder setTimeZoneValue(int value) {
       timeZone_ = value;
@@ -734,17 +734,17 @@ private static final long serialVersionUID = 0L;
       return this;
     }
     /**
-     * <code>.dunkware.core.GTimeZone timeZone = 5;</code>
+     * <code>.dunkware.data.GTimeZone timeZone = 5;</code>
      */
-    public com.dunkware.net.proto.core.GTimeZone getTimeZone() {
+    public com.dunkware.net.proto.data.GTimeZone getTimeZone() {
       @SuppressWarnings("deprecation")
-      com.dunkware.net.proto.core.GTimeZone result = com.dunkware.net.proto.core.GTimeZone.valueOf(timeZone_);
-      return result == null ? com.dunkware.net.proto.core.GTimeZone.UNRECOGNIZED : result;
+      com.dunkware.net.proto.data.GTimeZone result = com.dunkware.net.proto.data.GTimeZone.valueOf(timeZone_);
+      return result == null ? com.dunkware.net.proto.data.GTimeZone.UNRECOGNIZED : result;
     }
     /**
-     * <code>.dunkware.core.GTimeZone timeZone = 5;</code>
+     * <code>.dunkware.data.GTimeZone timeZone = 5;</code>
      */
-    public Builder setTimeZone(com.dunkware.net.proto.core.GTimeZone value) {
+    public Builder setTimeZone(com.dunkware.net.proto.data.GTimeZone value) {
       if (value == null) {
         throw new NullPointerException();
       }
@@ -754,7 +754,7 @@ private static final long serialVersionUID = 0L;
       return this;
     }
     /**
-     * <code>.dunkware.core.GTimeZone timeZone = 5;</code>
+     * <code>.dunkware.data.GTimeZone timeZone = 5;</code>
      */
     public Builder clearTimeZone() {
       

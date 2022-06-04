@@ -2,23 +2,23 @@ package com.dunkware.trade.service.stream.server.netservice;
 
 import org.springframework.beans.factory.annotation.Autowired;
 
-import com.dunkware.net.cluster.node.anot.AClusterNetStreamService;
+import com.dunkware.net.core.anot.ANetCallService;
 import com.dunkware.net.core.channel.NetChannel;
 import com.dunkware.net.core.service.NetServiceException;
-import com.dunkware.net.core.service.NetStreamRequest;
-import com.dunkware.net.core.service.NetStreamResponse;
-import com.dunkware.net.core.service.NetStreamService;
+import com.dunkware.net.core.service.NetChannelRequest;
+import com.dunkware.net.core.service.NetChannelResponse;
+import com.dunkware.net.core.service.NetChannelService;
 import com.dunkware.trade.service.stream.server.controller.session.container.SessionContainer;
 import com.dunkware.trade.service.stream.server.controller.session.container.SessionContainerService;
 
-@AClusterNetStreamService(endpoint = "/stream/session/search/entity")
-public class EntitySessionSearchService implements NetStreamService {
+@ANetCallService(endpoint = "/stream/session/search/entity")
+public class EntitySessionSearchService implements NetChannelService {
 
 	@Autowired
 	private SessionContainerService containerService; 
 	
 	@Override
-	public void service(NetStreamRequest req, NetStreamResponse response, NetChannel channel) throws NetServiceException {
+	public void service(NetChannelRequest req, NetChannelResponse response, NetChannel channel) throws NetServiceException {
 		String streamIdent = req.getString("stream");
 		SessionContainer container; 
 		container =  containerService.getStreamContainer(streamIdent);

@@ -2,17 +2,17 @@ package com.dunkware.trade.service.stream.server.controller.session.container.co
 
 import java.util.concurrent.atomic.AtomicInteger;
 
-import com.dunkware.net.proto.data.cluster.GContainerServerMessage;
-import com.dunkware.net.proto.data.cluster.GContainerWorkerMessage;
+import com.dunkware.net.proto.cluster.GContainerServerMessage;
+import com.dunkware.net.proto.cluster.GContainerWorkerMessage;
 import com.dunkware.net.proto.netstream.GNetEntitySearchComplete;
 import com.dunkware.net.proto.netstream.GNetEntitySearchException;
 import com.dunkware.net.proto.netstream.GNetEntitySearchRequest;
 import com.dunkware.net.proto.netstream.GNetEntitySearchResponse;
 import com.dunkware.net.proto.netstream.GNetServerMessage;
+import com.dunkware.trade.service.data.util.proto.GContainerProto;
 import com.dunkware.trade.service.stream.server.controller.session.container.SessionContainerHandler;
 import com.dunkware.trade.service.stream.server.controller.session.container.SessionContainerWorker;
 import com.dunkware.trade.service.stream.server.controller.session.container.connection.SessionContainerConnection;
-import com.dunkware.trade.service.stream.util.GContainerProto;
 
 public class EntitySearchRunner extends Thread implements SessionContainerHandler  {
 

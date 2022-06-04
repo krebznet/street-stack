@@ -1,7 +1,7 @@
 package com.dunkware.xstream.net.client.test;
 
 import com.dunkware.common.util.executor.DExecutor;
-import com.dunkware.net.proto.core.GOperator;
+import com.dunkware.net.proto.data.GOperator;
 import com.dunkware.net.proto.netstream.GNetEntity;
 import com.dunkware.net.proto.netstream.GNetEntityCriteria;
 import com.dunkware.net.proto.netstream.GNetEntityMatcher;
@@ -14,8 +14,6 @@ import com.dunkware.xstream.net.client.StreamClientEntitySearchCallBack;
 import com.dunkware.xstream.net.client.StreamClientFactory;
 import com.dunkware.xstream.net.client.StreamClientInput;
 import com.dunkware.xstream.net.client.connector.StreamClientKafkaConnectorType;
-import com.dunkware.xstream.net.client.core.actions.StreamClientEntitySearchImpl;
-import com.squareup.okhttp.Callback;
 
 public class StreamClientTest1 {
 	

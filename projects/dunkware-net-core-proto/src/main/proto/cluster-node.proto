@@ -11,7 +11,4 @@ import "google/protobuf/timestamp.proto";
 
 import "cluster.proto";
 
-service GClusterNodeService  {
-    
- }
 

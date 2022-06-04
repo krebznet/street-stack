@@ -3,6 +3,8 @@ package com.dunkware.net.core.data;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 
+import com.dunkware.net.proto.data.GBean;
+
 public interface NetBean {
 	
 	void setInt(String key, Integer value);
@@ -30,5 +32,7 @@ public interface NetBean {
 	public void addObserver(NetBeanObserver observer);
 	
 	public void removeObserver(NetBeanObserver observer);
+	
+	public GBean toProtoBean();
 
 }

@@ -90,13 +90,13 @@ private static final long serialVersionUID = 0L;
   }
   public static final com.google.protobuf.Descriptors.Descriptor
       getDescriptor() {
-    return com.dunkware.net.proto.netstream.GNetProto.internal_static_dunkware_netstream_GNetEntityVarCriteria_descriptor;
+    return com.dunkware.net.proto.netstream.GNetStreamProto.internal_static_dunkware_netstream_GNetEntityVarCriteria_descriptor;
   }
 
   @java.lang.Override
   protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
       internalGetFieldAccessorTable() {
-    return com.dunkware.net.proto.netstream.GNetProto.internal_static_dunkware_netstream_GNetEntityVarCriteria_fieldAccessorTable
+    return com.dunkware.net.proto.netstream.GNetStreamProto.internal_static_dunkware_netstream_GNetEntityVarCriteria_fieldAccessorTable
         .ensureFieldAccessorsInitialized(
             com.dunkware.net.proto.netstream.GNetEntityVarCriteria.class, com.dunkware.net.proto.netstream.GNetEntityVarCriteria.Builder.class);
   }
@@ -125,18 +125,18 @@ private static final long serialVersionUID = 0L;
   public static final int OPERATOR_FIELD_NUMBER = 2;
   private int operator_;
   /**
-   * <code>.dunkware.core.GOperator operator = 2;</code>
+   * <code>.dunkware.data.GOperator operator = 2;</code>
    */
   public int getOperatorValue() {
     return operator_;
   }
   /**
-   * <code>.dunkware.core.GOperator operator = 2;</code>
+   * <code>.dunkware.data.GOperator operator = 2;</code>
    */
-  public com.dunkware.net.proto.core.GOperator getOperator() {
+  public com.dunkware.net.proto.data.GOperator getOperator() {
     @SuppressWarnings("deprecation")
-    com.dunkware.net.proto.core.GOperator result = com.dunkware.net.proto.core.GOperator.valueOf(operator_);
-    return result == null ? com.dunkware.net.proto.core.GOperator.UNRECOGNIZED : result;
+    com.dunkware.net.proto.data.GOperator result = com.dunkware.net.proto.data.GOperator.valueOf(operator_);
+    return result == null ? com.dunkware.net.proto.data.GOperator.UNRECOGNIZED : result;
   }
 
   public static final int VALUE_FIELD_NUMBER = 3;
@@ -198,7 +198,7 @@ private static final long serialVersionUID = 0L;
     if (var_ != null) {
       output.writeMessage(1, getVar());
     }
-    if (operator_ != com.dunkware.net.proto.core.GOperator.GT.getNumber()) {
+    if (operator_ != com.dunkware.net.proto.data.GOperator.GT.getNumber()) {
       output.writeEnum(2, operator_);
     }
     if (!getValueBytes().isEmpty()) {
@@ -217,7 +217,7 @@ private static final long serialVersionUID = 0L;
       size += com.google.protobuf.CodedOutputStream
         .computeMessageSize(1, getVar());
     }
-    if (operator_ != com.dunkware.net.proto.core.GOperator.GT.getNumber()) {
+    if (operator_ != com.dunkware.net.proto.data.GOperator.GT.getNumber()) {
       size += com.google.protobuf.CodedOutputStream
         .computeEnumSize(2, operator_);
     }
@@ -371,13 +371,13 @@ private static final long serialVersionUID = 0L;
       com.dunkware.net.proto.netstream.GNetEntityVarCriteriaOrBuilder {
     public static final com.google.protobuf.Descriptors.Descriptor
         getDescriptor() {
-      return com.dunkware.net.proto.netstream.GNetProto.internal_static_dunkware_netstream_GNetEntityVarCriteria_descriptor;
+      return com.dunkware.net.proto.netstream.GNetStreamProto.internal_static_dunkware_netstream_GNetEntityVarCriteria_descriptor;
     }
 
     @java.lang.Override
     protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
         internalGetFieldAccessorTable() {
-      return com.dunkware.net.proto.netstream.GNetProto.internal_static_dunkware_netstream_GNetEntityVarCriteria_fieldAccessorTable
+      return com.dunkware.net.proto.netstream.GNetStreamProto.internal_static_dunkware_netstream_GNetEntityVarCriteria_fieldAccessorTable
           .ensureFieldAccessorsInitialized(
               com.dunkware.net.proto.netstream.GNetEntityVarCriteria.class, com.dunkware.net.proto.netstream.GNetEntityVarCriteria.Builder.class);
     }
@@ -416,7 +416,7 @@ private static final long serialVersionUID = 0L;
     @java.lang.Override
     public com.google.protobuf.Descriptors.Descriptor
         getDescriptorForType() {
-      return com.dunkware.net.proto.netstream.GNetProto.internal_static_dunkware_netstream_GNetEntityVarCriteria_descriptor;
+      return com.dunkware.net.proto.netstream.GNetStreamProto.internal_static_dunkware_netstream_GNetEntityVarCriteria_descriptor;
     }
 
     @java.lang.Override
@@ -649,13 +649,13 @@ private static final long serialVersionUID = 0L;
 
     private int operator_ = 0;
     /**
-     * <code>.dunkware.core.GOperator operator = 2;</code>
+     * <code>.dunkware.data.GOperator operator = 2;</code>
      */
     public int getOperatorValue() {
       return operator_;
     }
     /**
-     * <code>.dunkware.core.GOperator operator = 2;</code>
+     * <code>.dunkware.data.GOperator operator = 2;</code>
      */
     public Builder setOperatorValue(int value) {
       operator_ = value;
@@ -663,17 +663,17 @@ private static final long serialVersionUID = 0L;
       return this;
     }
     /**
-     * <code>.dunkware.core.GOperator operator = 2;</code>
+     * <code>.dunkware.data.GOperator operator = 2;</code>
      */
-    public com.dunkware.net.proto.core.GOperator getOperator() {
+    public com.dunkware.net.proto.data.GOperator getOperator() {
       @SuppressWarnings("deprecation")
-      com.dunkware.net.proto.core.GOperator result = com.dunkware.net.proto.core.GOperator.valueOf(operator_);
-      return result == null ? com.dunkware.net.proto.core.GOperator.UNRECOGNIZED : result;
+      com.dunkware.net.proto.data.GOperator result = com.dunkware.net.proto.data.GOperator.valueOf(operator_);
+      return result == null ? com.dunkware.net.proto.data.GOperator.UNRECOGNIZED : result;
     }
     /**
-     * <code>.dunkware.core.GOperator operator = 2;</code>
+     * <code>.dunkware.data.GOperator operator = 2;</code>
      */
-    public Builder setOperator(com.dunkware.net.proto.core.GOperator value) {
+    public Builder setOperator(com.dunkware.net.proto.data.GOperator value) {
       if (value == null) {
         throw new NullPointerException();
       }
@@ -683,7 +683,7 @@ private static final long serialVersionUID = 0L;
       return this;
     }
     /**
-     * <code>.dunkware.core.GOperator operator = 2;</code>
+     * <code>.dunkware.data.GOperator operator = 2;</code>
      */
     public Builder clearOperator() {
       

@@ -5,7 +5,7 @@ import java.util.function.Predicate;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.dunkware.net.proto.core.GOperator;
+import com.dunkware.net.proto.data.GOperator;
 import com.dunkware.net.proto.netstream.GNetEntityVarCriteria;
 import com.dunkware.net.proto.netstream.GNetEntityVarValueType;
 import com.dunkware.xstream.net.core.container.ContainerEntity;

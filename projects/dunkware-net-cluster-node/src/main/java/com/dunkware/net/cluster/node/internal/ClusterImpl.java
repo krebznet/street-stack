@@ -1,15 +1,19 @@
 package com.dunkware.net.cluster.node.internal;
 
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.LinkedBlockingDeque;
+import java.util.concurrent.LinkedBlockingQueue;
 import java.util.concurrent.Semaphore;
+import java.util.concurrent.atomic.AtomicInteger;
 
 import javax.annotation.PostConstruct;
 
+import org.apache.kafka.clients.consumer.ConsumerRecord;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.slf4j.MarkerFactory;
@@ -18,30 +22,59 @@ import org.springframework.context.ApplicationContext;
 import org.springframework.stereotype.Service;
 
 import com.dunkware.common.kafka.consumer.DKafkaByteConsumer2;
+import com.dunkware.common.kafka.consumer.DKafkaByteHandler2;
 import com.dunkware.common.kafka.producer.DKafkaByteProducer;
-import com.dunkware.common.spec.kafka.DKafkaByteConsumer2SpecBuilder;
+import com.dunkware.common.spec.kafka.DKafkaByteConsumer2Spec;
 import com.dunkware.common.spec.kafka.DKafkaByteConsumer2Spec.ConsumerType;
 import com.dunkware.common.spec.kafka.DKafkaByteConsumer2Spec.OffsetType;
+import com.dunkware.common.spec.kafka.DKafkaByteConsumer2SpecBuilder;
 import com.dunkware.common.util.dtime.DDateTime;
 import com.dunkware.common.util.dtime.DTimeZone;
 import com.dunkware.common.util.events.DEventTree;
 import com.dunkware.common.util.executor.DExecutor;
+import com.dunkware.common.util.json.DJson;
 import com.dunkware.common.util.logging.Markers;
 import com.dunkware.common.util.time.DunkTime;
 import com.dunkware.net.cluster.json.job.ClusterJobState;
+import com.dunkware.net.cluster.json.node.ClusterNodeServiceDescriptor;
+import com.dunkware.net.cluster.json.node.ClusterNodeServiceType;
+import com.dunkware.net.cluster.json.node.ClusterNodeState;
 import com.dunkware.net.cluster.json.node.ClusterNodeStats;
+import com.dunkware.net.cluster.json.node.ClusterNodeType;
 import com.dunkware.net.cluster.json.node.ClusterNodeUpdate;
 import com.dunkware.net.cluster.node.Cluster;
 import com.dunkware.net.cluster.node.ClusterJob;
 import com.dunkware.net.cluster.node.ClusterJobRunner;
 import com.dunkware.net.cluster.node.ClusterNode;
 import com.dunkware.net.cluster.node.ClusterNodeException;
-import com.dunkware.net.cluster.node.ClusterNodeService;
+import com.dunkware.net.core.anot.NetAnnotationRegistry;
+import com.dunkware.net.core.anot.NetCallServiceDescriptor;
+import com.dunkware.net.core.anot.NetStreamServiceDescriptor;
+import com.dunkware.net.core.service.NetCallRequest;
+import com.dunkware.net.core.service.NetCallResponse;
+import com.dunkware.net.core.service.NetCallResponseCallback;
+import com.dunkware.net.core.service.NetChannelRequest;
+import com.dunkware.net.core.service.NetChannelResponse;
+import com.dunkware.net.core.service.NetChannelResponseCallback;
+import com.dunkware.net.core.service.NetMessageHandler;
+import com.dunkware.net.core.service.NetMessageHandler;
 import com.dunkware.net.proto.cluster.GClusterEvent;
+import com.dunkware.net.proto.cluster.GNodeUpdate;
+import com.dunkware.net.proto.cluster.GNodeUpdateRequest;
+import com.dunkware.net.proto.cluster.GNodeUpdateResponse;
+import com.dunkware.net.proto.cluster.GReleaseWorkerNodesRequest;
+import com.dunkware.net.proto.cluster.GReleaseWorkerNodesResponse;
+import com.dunkware.net.proto.cluster.GReserveWorkerNodesRequest;
+import com.dunkware.net.proto.cluster.GReserveWorkerNodesResponse;
+import com.dunkware.net.proto.cluster.GReserveWorkerNodesResponse.GrantedNode;
+import com.dunkware.net.proto.cluster.service.GClustererviceGrpc;
+import com.dunkware.net.proto.cluster.service.GClustererviceGrpc.GClustererviceStub;
+import com.dunkware.net.proto.net.GNetMessage;
 
 import io.grpc.ConnectivityState;
 import io.grpc.ManagedChannel;
 import io.grpc.ManagedChannelBuilder;
+import io.grpc.stub.StreamObserver;
 
 @Service
 public class ClusterImpl implements Cluster {
@@ -61,8 +94,6 @@ public class ClusterImpl implements Cluster {
 	private DExecutor executor;
 
 	private DKafkaByteProducer eventProducer;
-	
-	private DKafkaByteConsumer2 messageConsumer;
 
 	private DDateTime startTime;
 
@@ -76,51 +107,117 @@ public class ClusterImpl implements Cluster {
 
 	private ClusterStatsPublisher statsPublisher;
 
-	private ClusterNodeServiceImpl nodeService;
-
 	private ManagedChannel serverChannel;
+
+	private List<ClusterNodeServiceDescriptor> nodeServiceDescriptors = new ArrayList<ClusterNodeServiceDescriptor>();
+
+	private List<ClusterNodeServiceDescriptor> netServiceDescriptors = new ArrayList<ClusterNodeServiceDescriptor>();
+
+	private List<NetMessageHandler> netMessageHandlers = new ArrayList<NetMessageHandler>();
+
+	private Semaphore netMessageHandlerLock = new Semaphore(1);
+
+	private NodeUpdaterHandler updateHandler;
+
+	private ClusterImpl cluster;
+
+	private GClustererviceStub stub;
 	
-	private List<ClusterNodeService> services = new ArrayList<ClusterNodeService>();
+	private BlockingQueue<GNetMessage> netMessageQueue = new LinkedBlockingQueue<GNetMessage>();
+	
+	private DKafkaByteConsumer2 netMessageConsuer;;
+	
+	private NetMessageRouter netMessageRouter = null;
+
+	private BlockingQueue<GNodeUpdateResponse> responseQueue = new LinkedBlockingDeque<GNodeUpdateResponse>();
+
+	private AtomicInteger pendingRunnables = new AtomicInteger(0);
 
 	@PostConstruct
 	public void load() {
 		try {
-			// need to build our service registry 
+			// need to build our service registry
 			// create the kafka consume r
-			String messageTopic = clusterConfig.getNodeId() + "_" + DunkTime.format(LocalDateTime.now(), DunkTime.YYYY_MM_DD_HH_MM_SS);
-		
 			try {
-				messageConsumer = DKafkaByteConsumer2.newInstance(	DKafkaByteConsumer2SpecBuilder.newBuilder(ConsumerType.Auto,OffsetType.Latest).
-						addBroker(clusterConfig.getServerBrokers()).setClientAndGroup(messageTopic,messageTopic).setTopicString(messageTopic).build());
-				messageConsumer.start();
+				String topic = "cluster_node_" + clusterConfig.getNodeId() + "_net_messages";
+				DKafkaByteConsumer2Spec spec = 
+				DKafkaByteConsumer2SpecBuilder.newBuilder(ConsumerType.Auto, OffsetType.Latest).addBroker(clusterConfig.getServerBrokers()).addTopic(topic).setClientAndGroup(clusterConfig.getNodeId(), 
+						clusterConfig.getNodeId()).build();
+				netMessageConsuer = DKafkaByteConsumer2.newInstance(spec);				
+				netMessageConsuer.start();
+				netMessageConsuer.addStreamHandler(new NetMessageKafkaConsumer());
+				netMessageRouter = new NetMessageRouter();
+				netMessageRouter.start();
+				// sstart the router thread. 
 			} catch (Exception e) {
-				logger.error(MarkerFactory.getMarker("Crash"), "Getting Kafka Consumer Creation Exception " + e.toString());
-				System.exit(-1);
+				logger.error("Exception creating cluster event kafka consumer " + e.toString());
 			}
-			serverChannel = ManagedChannelBuilder.forTarget(clusterConfig.getClusterGrpc()).usePlaintext().build();
-			ConnectivityState channelState = serverChannel.getState(true);
-			if(channelState == ConnectivityState.TRANSIENT_FAILURE) { 
-				logger.error(MarkerFactory.getMarker("Crash"),"Getting Cluster GRPC Channel at " + clusterConfig.getClusterGrpc() + " Returned Transietn Failture");;
+
+			try {
+				for (NetStreamServiceDescriptor servDesc : NetAnnotationRegistry.get()
+						.getNetStreamServiceDescriptors()) {
+					ClusterNodeServiceDescriptor desc = new ClusterNodeServiceDescriptor();
+					desc.setType(ClusterNodeServiceType.STREAM);
+					desc.setClassName(servDesc.getClazz().getName());
+					desc.setEndpoint(servDesc.getEndpoint());
+					netServiceDescriptors.add(desc);
+					ClusterNodeServiceDescriptor descp = new ClusterNodeServiceDescriptor();
+					descp.setClassName(desc.getClassName());
+					descp.setEndpoint(desc.getEndpoint());
+					desc.setType(ClusterNodeServiceType.STREAM);
+					nodeServiceDescriptors.add(descp);
+				}
+
+				for (NetCallServiceDescriptor servDesc : NetAnnotationRegistry.get().getNetCallServiceDescriptors()) {
+					ClusterNodeServiceDescriptor desc = new ClusterNodeServiceDescriptor();
+					desc.setType(ClusterNodeServiceType.CALL);
+					desc.setEndpoint(desc.getEndpoint());
+					desc.setClassName(servDesc.getClazz().getName());
+					netServiceDescriptors.add(desc);
+					ClusterNodeServiceDescriptor descp = new ClusterNodeServiceDescriptor();
+					descp.setClassName(desc.getClassName());
+					descp.setEndpoint(desc.getEndpoint());
+					desc.setType(ClusterNodeServiceType.CALL);
+					nodeServiceDescriptors.add(descp);
+				}
+			} catch (Exception e) {
+				logger.error(MarkerFactory.getMarker(getNodeId()),
+						"Exception parsing or building service descriptors in cluster load " + e.toString());
 				System.exit(-1);
 			}
 
-			if(channelState == ConnectivityState.CONNECTING) { 
+			
+			serverChannel = ManagedChannelBuilder.forTarget(clusterConfig.getClusterGrpc()).usePlaintext().build();
+			ConnectivityState channelState = serverChannel.getState(true);
+			if (channelState == ConnectivityState.TRANSIENT_FAILURE) {
+				logger.error(MarkerFactory.getMarker("Crash"), "Getting Cluster GRPC Channel at "
+						+ clusterConfig.getClusterGrpc() + " Returned Transietn Failture");
+				;
+				System.exit(-1);
+			}
+
+			if (channelState == ConnectivityState.CONNECTING) {
 				int i = 1;
-				while(channelState == ConnectivityState.CONNECTING) { 
+				while (channelState == ConnectivityState.CONNECTING) {
 					i++;
 					try {
 						Thread.sleep(100);
 					} catch (Exception e) {
 						// TODO: handle exception
 					}
-					if(i > 15) { 
-						logger.error(MarkerFactory.getMarker("Crash"),"Getting Cluster GRPC Channel at " + clusterConfig.getClusterGrpc() + " Returned Transietn Failture");;
-						System.exit(-1);;
+					if (i > 15) {
+						logger.error(MarkerFactory.getMarker("Crash"), "Getting Cluster GRPC Channel at "
+								+ clusterConfig.getClusterGrpc() + " Returned Transietn Failture");
+						;
+						System.exit(-1);
+						;
 					}
 				}
 			}
 		} catch (Exception e) {
-			logger.error(MarkerFactory.getMarker("Crash"),"Getting Cluster GRPC Channel at " + clusterConfig.getClusterGrpc() + " Exception " + e.toString());;
+			logger.error(MarkerFactory.getMarker("Crash"),
+					"Getting Cluster GRPC Channel at " + clusterConfig.getClusterGrpc() + " Exception " + e.toString());
+			;
 			System.exit(-1);
 		}
 		startTime = DDateTime.now(DTimeZone.NewYork);
@@ -155,13 +252,50 @@ public class ClusterImpl implements Cluster {
 			System.exit(-1);
 		}
 
-		try {
-			nodeService = new ClusterNodeServiceImpl();
-			nodeService.start(this);
-		} catch (Exception e) {
-			logger.error(MarkerFactory.getMarker("Crash"), "Exception starting cluster node service " + e.toString());
-			System.exit(-1);
-		}
+	}
+
+	@Override
+	public void addNetMessageHandler(final NetMessageHandler handler) {
+		Runnable runner = new Runnable() {
+
+			@Override
+			public void run() {
+				try {
+					netMessageHandlerLock.acquire();
+					netMessageHandlers.add(handler);
+					pendingRunnables.decrementAndGet();
+				} catch (Exception e) {
+					logger.error("Exception adding net message handler " + e.toString());
+				} finally {
+					netMessageHandlerLock.release();
+				}
+			}
+		};
+
+		pendingRunnables.incrementAndGet();
+		getExecutor().execute(runner);
+	}
+
+	@Override
+	public void removeNetMessageHandler(NetMessageHandler handler) {
+		Runnable runner = new Runnable() {
+
+			@Override
+			public void run() {
+				try {
+					netMessageHandlerLock.acquire();
+					netMessageHandlers.remove(handler);
+					pendingRunnables.decrementAndGet();
+				} catch (Exception e) {
+					logger.error("Exception adding net message handler " + e.toString());
+				} finally {
+					netMessageHandlerLock.release();
+				}
+			}
+		};
+
+		pendingRunnables.incrementAndGet();
+		getExecutor().execute(runner);
 	}
 
 	public ClusterRegistry getRegistry() {
@@ -172,7 +306,6 @@ public class ClusterImpl implements Cluster {
 	public DEventTree getEventTree() {
 		return eventTree;
 	}
-	
 
 	@Override
 	public ClusterConfig getConfig() {
@@ -221,11 +354,6 @@ public class ClusterImpl implements Cluster {
 	}
 
 	@Override
-	public ClusterNodeService getNodeSevice() {
-		return nodeService;
-	}
-
-	@Override
 	public ManagedChannel getServerChannel() {
 		return serverChannel;
 	}
@@ -262,9 +390,228 @@ public class ClusterImpl implements Cluster {
 		}
 		stats.setRunningJobCount(activeJobs);
 		stats.setType(clusterConfig.getNodeType());
-		
+		stats.setServices(nodeServiceDescriptors);
+
 		// now we need the other stuff -
 		return stats;
+	}
+
+	public void start(ClusterImpl cluster) {
+		this.cluster = cluster;
+		Thread runner = new Thread() {
+
+			public void run() {
+
+				try {
+
+					Thread.sleep(5000);
+
+				} catch (Exception e) {
+					// TODO: handle exception
+				}
+				try {
+					stub = GClustererviceGrpc.newStub(ManagedChannelBuilder
+							.forTarget(cluster.getConfig().getClusterGrpc()).usePlaintext().build());
+					GNodeUpdateRequest request = GNodeUpdateRequest.newBuilder().setNode(cluster.getNodeId()).build();
+
+					StreamObserver<GNodeUpdateResponse> response = new StreamObserver<GNodeUpdateResponse>() {
+
+						@Override
+						public void onNext(GNodeUpdateResponse value) {
+							if (logger.isDebugEnabled()) {
+								logger.debug(cluster.getNodeId() + " received node update response");
+							}
+							responseQueue.add(value);
+						}
+
+						@Override
+						public void onError(Throwable t) {
+							logger.error("Error returned on Node Update Request " + t.getMessage(), t);
+							t.printStackTrace();
+						}
+
+						@Override
+						public void onCompleted() {
+							// TODO Auto-generated method stub
+
+						}
+
+					};
+
+					stub.nodeUpdateStream(request, response);
+					updateHandler = new NodeUpdaterHandler();
+					updateHandler.start();
+
+				} catch (Exception e) {
+					logger.error(MarkerFactory.getMarker("Crash"),
+							"Exception Start Cluster Node Service GRPC Update Stream Request " + e.toString());
+					System.exit(-1);
+				}
+			}
+		};
+		runner.start();
+
+	}
+
+	@Override
+	public void releaseWorkerNodes(String owner) {
+		GReleaseWorkerNodesRequest req = GReleaseWorkerNodesRequest.newBuilder().setIdentifier(owner).build();
+
+		StreamObserver<GReleaseWorkerNodesResponse> fucker = new StreamObserver<GReleaseWorkerNodesResponse>() {
+
+			@Override
+			public void onNext(GReleaseWorkerNodesResponse value) {
+				// TODO Auto-generated method stub
+
+			}
+
+			@Override
+			public void onError(Throwable t) {
+				// TODO Auto-generated method stub
+
+			}
+
+			@Override
+			public void onCompleted() {
+				// TODO Auto-generated method stub
+
+			}
+		};
+		stub.releaseWorkerNodes(req, fucker);
+		return;
+	}
+
+	@Override
+	public ClusterNode getNode(String nodeId) throws ClusterNodeException {
+		return nodes.get(nodeId);
+	}
+
+	@Override
+	public List<ClusterNode> reserveWorkerNodes(String owner, int requested) throws Exception {
+		GReserveWorkerNodesRequest request = GReserveWorkerNodesRequest.newBuilder().setIdentifier(owner)
+				.setRequestedNodes(requested).build();
+		List<ClusterNode> obtained = new ArrayList<ClusterNode>();
+		AtomicInteger fucker = new AtomicInteger(0);
+		stub.reserveWorkerNodes(request, new StreamObserver<GReserveWorkerNodesResponse>() {
+
+			@Override
+			public void onNext(GReserveWorkerNodesResponse value) {
+				for (GrantedNode granted : value.getGrantedNodesList()) {
+					try {
+						obtained.add(getNode(granted.getNodeId()));
+					} catch (Exception e) {
+						logger.error("error getting granted noded wtf " + e.toString());
+
+					}
+
+				}
+			}
+
+			@Override
+			public void onError(Throwable t) {
+				// TODO Auto-generated method stub
+
+			}
+
+			@Override
+			public void onCompleted() {
+				fucker.incrementAndGet();
+			}
+
+		});
+
+		int count = 1;
+		while (fucker.get() == 0) {
+			try {
+				Thread.sleep(300);
+				count++;
+				if (count > 14) {
+					throw new Exception("Fuck you nothing back");
+				}
+			} catch (Exception e) {
+				// TODO: handle exception
+			}
+		}
+		return obtained;
+		// TODO Auto-generated method stub
+
+	}
+
+	@Override
+	public List<ClusterNode> getAvailablWorkereNodes(int count) throws ClusterNodeException {
+		List<ClusterNode> results = new ArrayList<ClusterNode>();
+		int resultCount = 0;
+		for (String key : nodes.keySet()) {
+			ClusterNode node = nodes.get(key);
+			if (node.getState() == ClusterNodeState.Available) {
+				if (node.getType() == ClusterNodeType.Worker) {
+					results.add(node);
+					resultCount++;
+					if (resultCount == count) {
+						return results;
+					}
+				}
+			}
+		}
+		throw new ClusterNodeException(
+				"Requested " + count + " avaiable nodes is bigger than nodes avaiable which is " + results.size());
+	}
+
+	@Override
+	public int getAvailableWorkerCount() {
+		return getAvailableWorkerNodes().size();
+	}
+
+	@Override
+	public List<ClusterNode> getAvailableWorkerNodes() {
+		List<ClusterNode> results = new ArrayList<ClusterNode>();
+		for (String key : nodes.keySet()) {
+			ClusterNode node = nodes.get(key);
+			if (node.getState() == ClusterNodeState.Available) {
+				if (node.getType() == ClusterNodeType.Worker) {
+					results.add(node);
+				}
+			}
+		}
+		return results;
+	}
+
+	private class NodeUpdaterHandler extends Thread {
+
+		public void run() {
+			while (!interrupted()) {
+				GNodeUpdateResponse response = null;
+				try {
+					response = responseQueue.take();
+					if (logger.isTraceEnabled()) {
+						logger.trace("Handling {} Node Updates on Node " + cluster.getNodeId(),
+								response.getUpdatesList().size());
+					}
+				} catch (Exception e) {
+					logger.error("Exception taking GNodeUpdateResponse from queue " + e.toString());
+					continue;
+				}
+				for (GNodeUpdate gUpdate : response.getUpdatesList()) {
+					ClusterNodeUpdate update = null;
+					try {
+						update = DJson.getObjectMapper().readValue(gUpdate.getJson(), ClusterNodeUpdate.class);
+					} catch (Exception e) {
+						logger.error("Exception deserializing node update " + e.toString());
+						continue;
+					}
+
+					ClusterNodeImpl node = (ClusterNodeImpl) nodes.get(update.getNode());
+					if (node == null) {
+						node = new ClusterNodeImpl();
+						node.start(update);
+						nodes.put(node.getId(), node);
+					} else {
+						node.update(update);
+					}
+				}
+
+			}
+		}
 	}
 
 	void nodeUpdates(List<ClusterNodeUpdate> updates) {
@@ -291,6 +638,87 @@ public class ClusterImpl implements Cluster {
 			}
 		};
 		getExecutor().execute(nodeUpdater);
+	}
+
+	@Override
+	public ClusterNode getCallRequestNode(String endpoint) throws ClusterNodeException {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public boolean hasCallNode(String endpoint) {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	@Override
+	public boolean hasChannelNode(String endpoint) {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	@Override
+	public ClusterNode getChannelRequestNode(String endpoint) {
+		for (ClusterNode node : nodes.values()) {
+			
+		}
+		return null;
+		
+	}
+
+	
+
+	@Override
+	public void netCall(NetCallRequest request, NetCallResponseCallback callback) throws ClusterNodeException {
+		ClusterNetCall netCall = new ClusterNetCall();
+		netCall.invoke(request, cluster, null, callback);
+		getExecutor().execute(netCall);
+		return;
+	}
+
+	@Override
+	public void netChannel(NetChannelRequest request, NetChannelResponseCallback callback) throws ClusterNodeException {
+		// TODO Auto-generated method stub
+		
+	}
+
+	private class NetMessageKafkaConsumer implements DKafkaByteHandler2 {
+
+		@Override
+		public void record(ConsumerRecord<String, byte[]> record) {
+			try {
+				GNetMessage message = GNetMessage.parseFrom(record.value());
+
+			} catch (Exception e) {
+				logger.error("Exception parsing GNetMessage from kafka consumer " + e.toString());
+			}
+		}
+	}
+	
+	private class  NetMessageRouter extends Thread { 
+		
+		public void run() { 
+			while(! interrupted()) { 
+				try {
+					GNetMessage message = netMessageQueue.take();
+					try {
+						netMessageHandlerLock.acquire();
+						for (NetMessageHandler handler : netMessageHandlers) {
+							handler.handle(message);
+						}
+					} catch (Exception e) {
+						logger.error("Exception invoking net message handler " + e.toString());
+					} finally { 
+						netMessageHandlerLock.release();
+					}
+				} catch (Exception e) {
+					// TODO: handle exception
+				}
+			}
+		}
+		
+		
 	}
 
 }

@@ -4,8 +4,8 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.dunkware.net.core.util.GProtoHelper;
-import com.dunkware.net.proto.core.GDataType;
+import com.dunkware.net.core.util.GDataHelper;
+import com.dunkware.net.proto.data.GDataType;
 import com.dunkware.net.proto.stream.GEntitySignalSpec;
 import com.dunkware.net.proto.stream.GStreamEntitySpec;
 import com.dunkware.net.proto.stream.GStreamEvent;
@@ -33,7 +33,7 @@ public class GStreamHelper {
 		builder.setType(GStreamEventType.SessionStart);
 		GStreamSessionStart.Builder startBuilder = GStreamSessionStart.newBuilder();
 		startBuilder.setSession(buildSessionSpec(session));
-		startBuilder.setTime(GProtoHelper.toTimeStamp(LocalDateTime.now(), session.getStream().getTimeZone()));
+		startBuilder.setTime(GDataHelper.toTimeStamp(LocalDateTime.now(), session.getStream().getTimeZone()));
 		builder.setSessionStart(startBuilder.build());
 		return builder.build();
 	}
@@ -43,7 +43,7 @@ public class GStreamHelper {
 		builder.setType(GStreamEventType.SessionStop);
 		GStreamSessionStop.Builder startBuilder = GStreamSessionStop.newBuilder();
 		startBuilder.setSession(buildSessionSpec(session));
-		startBuilder.setTime(GProtoHelper.toTimeStamp(LocalDateTime.now(), session.getStream().getTimeZone()));
+		startBuilder.setTime(GDataHelper.toTimeStamp(LocalDateTime.now(), session.getStream().getTimeZone()));
 		builder.setSessionStop(startBuilder.build());
 		return builder.build();
 	}

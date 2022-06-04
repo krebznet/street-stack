@@ -1,0 +1,286 @@
+syntax = "proto3";
+
+package dunkware.data;
+
+option java_multiple_files = true;
+option java_package = "com.dunkware.net.proto.data";
+option java_outer_classname = "GDataProto";
+
+/**
+ Section 1. Generic Meta Data Model - GClass defines a type of data object
+ and the type of data fields it contains as well as a name and a package.
+*/
+
+
+
+
+import "google/protobuf/timestamp.proto";
+
+
+
+/**
+ Section 2: Generic Data Object For Data Transport Across Networks.
+ These can be optionally have a schema using a GClass
+ **/
+
+// Container of data fields and referenced by either an int or string id
+message GBean {
+  string ident = 1;
+  int32 id = 2;
+  repeated  GField fields = 4;
+}
+
+
+message GField {
+  string name = 1;
+  GValue value = 2;
+}
+
+enum GTimeZone {
+   US_EASTERN = 0;
+   US_CENTRAL = 1;
+   US_MOUNTAIN = 2;
+   US_PACIFIC = 3;
+}
+
+
+
+
+/**
+ ---
+ Section 3. Generic Data List with change notifications using generic data model.
+ ---
+*/
+
+// List that holds a collection of Beans with an Identifier
+message GBeanList {
+  string id = 1;
+  repeated  GBean data = 2;
+}
+
+// List Event That Can Be Different Types of Events
+message GBeanListEvent {
+   string listId = 1;
+   oneof Event {
+       GBeanListUpdate listUpdate = 2;
+   }
+}
+// List update that has a collection of bean inserts/updates/deletes
+message GBeanListUpdate {
+    repeated  GBeanInsert insets = 3;
+    repeated  GBeanUpdate updates = 4;
+    repeated  GBeanDelete deletes = 5;
+}
+
+// Bean Identifier to delete a bean from the list
+message GBeanDelete {
+   string id = 1;
+}
+message GValue {
+ oneof Type {
+   GStringValue string = 1;
+   GIntValue int = 2;
+   GJsonValue json = 3;
+   GDateValue date = 4;
+   GDateTimeValue dateTIme = 5;
+   GTime time = 6;
+   GBeanValue bean = 7;
+   GBeanListValue beanList = 8;
+ }
+}
+
+enum GValueType {
+  STRING = 0;
+  INT = 1;
+  JSON = 2;
+  DOUBLE = 3;
+  DATE = 4;
+  TIME = 5;
+  DATETIME = 6;
+  BYTES = 7;
+  BEANLIST = 8;
+  BEAN = 9;
+
+}
+
+message GStringValue {
+    string value = 1;
+}
+
+
+message GBeanListValue {
+  repeated GBeanList value = 1;
+}
+
+  message GDoubleValue {
+    double value = 1;
+  }
+
+  message GBytesValue {
+    bytes  value = 1;
+  }
+
+  message GIntValue {
+    int32 value = 1;
+  }
+
+  message GDateTimeValue {
+    google.protobuf.Timestamp value = 1;
+  }
+
+  message GTimeValue {
+    google.protobuf.Timestamp value = 1;
+  }
+
+  message GDateValue {
+    google.protobuf.Timestamp value = 1;
+  }
+
+  message GJsonValue {
+    string value = 1;
+  }
+
+message GBeanValue {
+  GBean value = 1;
+}
+
+  // Bean insert into the list
+// identifier is on the bean
+message GBeanInsert {
+     GBean bean = 1;
+}
+
+// Existing bean update with updated fields
+// and identifier to lookup the bean.
+message GBeanUpdate {
+    string id = 1;
+    GBean bean = 2;
+}
+
+/**
+ ---
+ Section 3. Generic Data/Time Ranges and Time Periods
+ ---
+*/
+// High Level Time Model
+enum GTimeUnit {
+    DAY = 0;
+    HOUR = 1;
+    MINUTE = 2;
+    SECOND = 3;
+
+}
+
+// Local Time
+message GTime {
+    int32 hour = 1;
+    int32 minute = 2;
+    int32 second = 3;
+}
+
+// Simple Date
+message GDate {
+    int32 month =1;
+    int32 day = 2;
+    int32 year = 3;
+}
+
+// Simple DateTime
+message GDateTime {
+    GTime time = 1;
+    GDate date = 2;
+}
+
+// Simple Time Duration
+message GDuration {
+    int32 days = 1;
+    int32 hours = 2;
+    int32 minutes = 3;
+    int32 seconds = 4;
+}
+
+
+// Calendar Range Defining a start/stop time range
+message GCalendarRange {
+    GCalendarRangeType type = 1;
+    oneof  Range  {
+        GTimeRange timeRange = 2;
+        GDateTimeRange dateTimeRange= 3;
+        GDateRange dateRange = 4;
+        GDurationRange durationRange = 5;
+    }
+}
+
+// Calendar Range Type Enum
+enum GCalendarRangeType {
+    DATE_RANGE = 0;
+    DATE_TIME_RANGE = 2;
+    TIME_RANGE = 3;
+    TIME_DURATION = 4;
+}
+
+// TimeRange with a start and stop time
+message GTimeRange {
+    GTime startTime = 1;
+    GTime stopTime = 2;
+}
+
+// Time Ruration Range
+message GDurationRange {
+   GTimeUnit timeUnit = 1;
+   int32 value = 2;
+}
+
+// Simple DateRange with a start and stop date
+message GDateRange {
+    GDate startDate = 1;
+    GDate stopDate = 2;
+    // Optional Time range to search within the date range.
+    GTimeRange timeRange = 5;
+}
+
+// Simple DateTimeRange
+message GDateTimeRange {
+    GDateTime start = 1;
+    GDateTime stop = 2;
+}
+
+
+/**
+---
+Section 3. Generic Query Capabilities
+---
+*/
+
+// Math Operator
+enum GOperator {
+    GT = 0;
+    GTE = 1;
+    LT = 2;
+    LTE = 3;
+    EQ = 4;
+    NQ = 5;
+}
+
+ enum GDataType {
+     STRING_TYPE = 0;
+     INT_TYPE = 1;
+     LONG_TYPE = 2;
+     DOUBLE_TYPE = 3;
+     BOOL_TYPE = 4;
+
+}
+
+// Generic Error Message
+message GError {
+  int32 code = 1;
+  string message = 2;
+}
+
+
+
+
+
+
+
+

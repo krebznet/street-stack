@@ -5,7 +5,7 @@ import java.util.List;
 
 import org.slf4j.Logger;
 
-import com.dunkware.net.proto.data.cluster.GContainerServerMessage;
+import com.dunkware.net.proto.cluster.GContainerServerMessage;
 import com.dunkware.net.proto.netstream.GNetEntity;
 import com.dunkware.net.proto.netstream.GNetEntitySearchRequest;
 import com.dunkware.net.proto.netstream.GNetEntitySearchResults;

@@ -1,0 +1,97 @@
+
+syntax = "proto3";
+
+package dunkware.net;
+
+
+option java_multiple_files = true;
+option java_package = "com.dunkware.net.proto.net";
+option java_outer_classname = "GNetProto";
+
+import "data.proto";
+
+import "google/protobuf/timestamp.proto";
+
+message GNetMessage {
+  oneof Value {
+    GNetCallRequest callReq = 2;
+    GNetCallResponse callResp =3;
+    GNetChannelMessage channelReq = 4;
+    GNetChannelResponse chanelResp = 5;
+    GNetChannelMessage channelMsg = 6;
+    GNetEvent eventMsg = 7;
+  }
+}
+
+
+message GNetEvent {
+  int32 id = 1;
+  string ident = 2;
+  data.GBean bean = 3;
+}
+
+enum GNetMessageType {
+  CALL_REQ = 0;
+  CALL_RESP = 1;
+  CHANNEL_RESP = 2;
+  CHANNEL_REQ = 3;
+  CHANNEL_MSG = 4;
+  EVENT_MSG = 5;
+}
+
+
+message GNetCallRequest {
+  int32 requestId = 1;
+  string topic = 2;
+  string endPoint = 3;
+  data.GBean data = 4;
+}
+
+message GNetCallResponse {
+ int32 requestId = 1;
+ GNetCode code = 2;
+ string exception = 3;
+ data.GBean data = 4;
+}
+
+message GNetChannelRequest {
+  int32 requestId = 1;
+  string topic = 2;
+  string endPoint = 3;
+  data.GBean data = 4;
+}
+
+message GNetChannelResponse {
+  int32 requestId = 1;
+  GNetCode code = 2;
+  string exception = 3;
+}
+
+enum GNetCode {
+   OKAY = 0;
+   ERROR = 1;
+}
+
+message GNetChannelMessage {
+  string channelId = 1;
+  data.GBean data = 2;
+  string error = 3;
+  enum Type {
+    DATA = 0;
+    CLOSE = 1;
+    ERROR = 2;
+  }
+}
+
+
+
+
+
+
+
+
+
+
+
+
+

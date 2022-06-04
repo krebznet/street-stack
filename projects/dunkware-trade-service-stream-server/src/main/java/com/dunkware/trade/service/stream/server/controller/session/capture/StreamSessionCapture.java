@@ -33,7 +33,7 @@ import com.dunkware.common.util.helpers.DProtoHelper;
 import com.dunkware.common.util.time.DunkTime;
 import com.dunkware.common.util.uuid.DUUID;
 import com.dunkware.net.cluster.node.metrics.MetricsService;
-import com.dunkware.net.core.util.GProtoHelper;
+import com.dunkware.net.core.util.GDataHelper;
 import com.dunkware.net.proto.stream.GEntitySignal;
 import com.dunkware.net.proto.stream.GEntitySnapshot;
 import com.dunkware.net.proto.stream.GStreamEvent;
@@ -189,7 +189,7 @@ public class StreamSessionCapture {
 			webEnt = new DataStreamSessionEntityStats();
 			webEnt.setId(snapshot.getId());
 			webEnt.setIdent(snapshot.getIdentifier());
-			webEnt.setLastSnapshot(GProtoHelper.toTimeStringTimeStamp(snapshot.getTime(), getStream().getTimeZone()));
+			webEnt.setLastSnapshot(GDataHelper.toTimeStringTimeStamp(snapshot.getTime(), getStream().getTimeZone()));
 			webEnt.setSnapshotCount(1);
 			webEnt.setSignalCount(0);
 			webEnt.setLastSignal(null);
@@ -197,7 +197,7 @@ public class StreamSessionCapture {
 					DunkTime.toStringTimeStamp(LocalTime.now(DTimeZone.toZoneId(getStream().getTimeZone()))));
 			webEntities.put(webEnt.getIdent(), webEnt);
 		} else {
-			webEnt.setLastSnapshot(GProtoHelper.toTimeStringTimeStamp(snapshot.getTime(), getStream().getTimeZone()));
+			webEnt.setLastSnapshot(GDataHelper.toTimeStringTimeStamp(snapshot.getTime(), getStream().getTimeZone()));
 			webEnt.setSnapshotCount(webEnt.getSnapshotCount() + 1);
 			webEntities.put(webEnt.getIdent(), webEnt);
 		}

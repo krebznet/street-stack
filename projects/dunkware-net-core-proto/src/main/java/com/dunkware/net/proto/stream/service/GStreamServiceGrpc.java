@@ -59,38 +59,6 @@ public final class GStreamServiceGrpc {
      return getStreamSpecsMethod;
   }
 
-  private static volatile io.grpc.MethodDescriptor<com.dunkware.net.proto.stream.GAutoCompleteRequest,
-      com.dunkware.net.proto.stream.GAutoCompleteResponse> getAutoCompleteSearchMethod;
-
-  @io.grpc.stub.annotations.RpcMethod(
-      fullMethodName = SERVICE_NAME + '/' + "autoCompleteSearch",
-      requestType = com.dunkware.net.proto.stream.GAutoCompleteRequest.class,
-      responseType = com.dunkware.net.proto.stream.GAutoCompleteResponse.class,
-      methodType = io.grpc.MethodDescriptor.MethodType.BIDI_STREAMING)
-  public static io.grpc.MethodDescriptor<com.dunkware.net.proto.stream.GAutoCompleteRequest,
-      com.dunkware.net.proto.stream.GAutoCompleteResponse> getAutoCompleteSearchMethod() {
-    io.grpc.MethodDescriptor<com.dunkware.net.proto.stream.GAutoCompleteRequest, com.dunkware.net.proto.stream.GAutoCompleteResponse> getAutoCompleteSearchMethod;
-    if ((getAutoCompleteSearchMethod = GStreamServiceGrpc.getAutoCompleteSearchMethod) == null) {
-      synchronized (GStreamServiceGrpc.class) {
-        if ((getAutoCompleteSearchMethod = GStreamServiceGrpc.getAutoCompleteSearchMethod) == null) {
-          GStreamServiceGrpc.getAutoCompleteSearchMethod = getAutoCompleteSearchMethod = 
-              io.grpc.MethodDescriptor.<com.dunkware.net.proto.stream.GAutoCompleteRequest, com.dunkware.net.proto.stream.GAutoCompleteResponse>newBuilder()
-              .setType(io.grpc.MethodDescriptor.MethodType.BIDI_STREAMING)
-              .setFullMethodName(generateFullMethodName(
-                  "dunkware.stream.service.GStreamService", "autoCompleteSearch"))
-              .setSampledToLocalTracing(true)
-              .setRequestMarshaller(io.grpc.protobuf.ProtoUtils.marshaller(
-                  com.dunkware.net.proto.stream.GAutoCompleteRequest.getDefaultInstance()))
-              .setResponseMarshaller(io.grpc.protobuf.ProtoUtils.marshaller(
-                  com.dunkware.net.proto.stream.GAutoCompleteResponse.getDefaultInstance()))
-                  .setSchemaDescriptor(new GStreamServiceMethodDescriptorSupplier("autoCompleteSearch"))
-                  .build();
-          }
-        }
-     }
-     return getAutoCompleteSearchMethod;
-  }
-
   /**
    * Creates a new async stub that supports all call types for the service
    */
@@ -125,13 +93,6 @@ public final class GStreamServiceGrpc {
       asyncUnimplementedUnaryCall(getStreamSpecsMethod(), responseObserver);
     }
 
-    /**
-     */
-    public io.grpc.stub.StreamObserver<com.dunkware.net.proto.stream.GAutoCompleteRequest> autoCompleteSearch(
-        io.grpc.stub.StreamObserver<com.dunkware.net.proto.stream.GAutoCompleteResponse> responseObserver) {
-      return asyncUnimplementedStreamingCall(getAutoCompleteSearchMethod(), responseObserver);
-    }
-
     @java.lang.Override public final io.grpc.ServerServiceDefinition bindService() {
       return io.grpc.ServerServiceDefinition.builder(getServiceDescriptor())
           .addMethod(
@@ -141,13 +102,6 @@ public final class GStreamServiceGrpc {
                 com.dunkware.net.proto.stream.GStreamSpecsRequest,
                 com.dunkware.net.proto.stream.GStreamSpecsResponse>(
                   this, METHODID_STREAM_SPECS)))
-          .addMethod(
-            getAutoCompleteSearchMethod(),
-            asyncBidiStreamingCall(
-              new MethodHandlers<
-                com.dunkware.net.proto.stream.GAutoCompleteRequest,
-                com.dunkware.net.proto.stream.GAutoCompleteResponse>(
-                  this, METHODID_AUTO_COMPLETE_SEARCH)))
           .build();
     }
   }
@@ -176,14 +130,6 @@ public final class GStreamServiceGrpc {
         io.grpc.stub.StreamObserver<com.dunkware.net.proto.stream.GStreamSpecsResponse> responseObserver) {
       asyncUnaryCall(
           getChannel().newCall(getStreamSpecsMethod(), getCallOptions()), request, responseObserver);
-    }
-
-    /**
-     */
-    public io.grpc.stub.StreamObserver<com.dunkware.net.proto.stream.GAutoCompleteRequest> autoCompleteSearch(
-        io.grpc.stub.StreamObserver<com.dunkware.net.proto.stream.GAutoCompleteResponse> responseObserver) {
-      return asyncBidiStreamingCall(
-          getChannel().newCall(getAutoCompleteSearchMethod(), getCallOptions()), responseObserver);
     }
   }
 
@@ -241,7 +187,6 @@ public final class GStreamServiceGrpc {
   }
 
   private static final int METHODID_STREAM_SPECS = 0;
-  private static final int METHODID_AUTO_COMPLETE_SEARCH = 1;
 
   private static final class MethodHandlers<Req, Resp> implements
       io.grpc.stub.ServerCalls.UnaryMethod<Req, Resp>,
@@ -274,9 +219,6 @@ public final class GStreamServiceGrpc {
     public io.grpc.stub.StreamObserver<Req> invoke(
         io.grpc.stub.StreamObserver<Resp> responseObserver) {
       switch (methodId) {
-        case METHODID_AUTO_COMPLETE_SEARCH:
-          return (io.grpc.stub.StreamObserver<Req>) serviceImpl.autoCompleteSearch(
-              (io.grpc.stub.StreamObserver<com.dunkware.net.proto.stream.GAutoCompleteResponse>) responseObserver);
         default:
           throw new AssertionError();
       }
@@ -329,7 +271,6 @@ public final class GStreamServiceGrpc {
           serviceDescriptor = result = io.grpc.ServiceDescriptor.newBuilder(SERVICE_NAME)
               .setSchemaDescriptor(new GStreamServiceFileDescriptorSupplier())
               .addMethod(getStreamSpecsMethod())
-              .addMethod(getAutoCompleteSearchMethod())
               .build();
         }
       }

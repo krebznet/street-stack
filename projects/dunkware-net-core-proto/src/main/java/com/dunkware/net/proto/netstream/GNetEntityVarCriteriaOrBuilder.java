@@ -21,13 +21,13 @@ public interface GNetEntityVarCriteriaOrBuilder extends
   com.dunkware.net.proto.netstream.GNetEntityVarValueOrBuilder getVarOrBuilder();
 
   /**
-   * <code>.dunkware.core.GOperator operator = 2;</code>
+   * <code>.dunkware.data.GOperator operator = 2;</code>
    */
   int getOperatorValue();
   /**
-   * <code>.dunkware.core.GOperator operator = 2;</code>
+   * <code>.dunkware.data.GOperator operator = 2;</code>
    */
-  com.dunkware.net.proto.core.GOperator getOperator();
+  com.dunkware.net.proto.data.GOperator getOperator();
 
   /**
    * <pre>

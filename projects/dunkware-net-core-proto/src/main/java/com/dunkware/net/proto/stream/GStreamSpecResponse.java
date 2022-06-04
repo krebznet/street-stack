@@ -43,11 +43,11 @@ private static final long serialVersionUID = 0L;
             done = true;
             break;
           case 10: {
-            com.dunkware.net.proto.core.GError.Builder subBuilder = null;
+            com.dunkware.net.proto.data.GError.Builder subBuilder = null;
             if (error_ != null) {
               subBuilder = error_.toBuilder();
             }
-            error_ = input.readMessage(com.dunkware.net.proto.core.GError.parser(), extensionRegistry);
+            error_ = input.readMessage(com.dunkware.net.proto.data.GError.parser(), extensionRegistry);
             if (subBuilder != null) {
               subBuilder.mergeFrom(error_);
               error_ = subBuilder.buildPartial();
@@ -101,23 +101,23 @@ private static final long serialVersionUID = 0L;
   }
 
   public static final int ERROR_FIELD_NUMBER = 1;
-  private com.dunkware.net.proto.core.GError error_;
+  private com.dunkware.net.proto.data.GError error_;
   /**
-   * <code>.dunkware.core.GError error = 1;</code>
+   * <code>.dunkware.data.GError error = 1;</code>
    */
   public boolean hasError() {
     return error_ != null;
   }
   /**
-   * <code>.dunkware.core.GError error = 1;</code>
+   * <code>.dunkware.data.GError error = 1;</code>
    */
-  public com.dunkware.net.proto.core.GError getError() {
-    return error_ == null ? com.dunkware.net.proto.core.GError.getDefaultInstance() : error_;
+  public com.dunkware.net.proto.data.GError getError() {
+    return error_ == null ? com.dunkware.net.proto.data.GError.getDefaultInstance() : error_;
   }
   /**
-   * <code>.dunkware.core.GError error = 1;</code>
+   * <code>.dunkware.data.GError error = 1;</code>
    */
-  public com.dunkware.net.proto.core.GErrorOrBuilder getErrorOrBuilder() {
+  public com.dunkware.net.proto.data.GErrorOrBuilder getErrorOrBuilder() {
     return getError();
   }
 
@@ -488,29 +488,29 @@ private static final long serialVersionUID = 0L;
       return this;
     }
 
-    private com.dunkware.net.proto.core.GError error_ = null;
+    private com.dunkware.net.proto.data.GError error_ = null;
     private com.google.protobuf.SingleFieldBuilderV3<
-        com.dunkware.net.proto.core.GError, com.dunkware.net.proto.core.GError.Builder, com.dunkware.net.proto.core.GErrorOrBuilder> errorBuilder_;
+        com.dunkware.net.proto.data.GError, com.dunkware.net.proto.data.GError.Builder, com.dunkware.net.proto.data.GErrorOrBuilder> errorBuilder_;
     /**
-     * <code>.dunkware.core.GError error = 1;</code>
+     * <code>.dunkware.data.GError error = 1;</code>
      */
     public boolean hasError() {
       return errorBuilder_ != null || error_ != null;
     }
     /**
-     * <code>.dunkware.core.GError error = 1;</code>
+     * <code>.dunkware.data.GError error = 1;</code>
      */
-    public com.dunkware.net.proto.core.GError getError() {
+    public com.dunkware.net.proto.data.GError getError() {
       if (errorBuilder_ == null) {
-        return error_ == null ? com.dunkware.net.proto.core.GError.getDefaultInstance() : error_;
+        return error_ == null ? com.dunkware.net.proto.data.GError.getDefaultInstance() : error_;
       } else {
         return errorBuilder_.getMessage();
       }
     }
     /**
-     * <code>.dunkware.core.GError error = 1;</code>
+     * <code>.dunkware.data.GError error = 1;</code>
      */
-    public Builder setError(com.dunkware.net.proto.core.GError value) {
+    public Builder setError(com.dunkware.net.proto.data.GError value) {
       if (errorBuilder_ == null) {
         if (value == null) {
           throw new NullPointerException();
@@ -524,10 +524,10 @@ private static final long serialVersionUID = 0L;
       return this;
     }
     /**
-     * <code>.dunkware.core.GError error = 1;</code>
+     * <code>.dunkware.data.GError error = 1;</code>
      */
     public Builder setError(
-        com.dunkware.net.proto.core.GError.Builder builderForValue) {
+        com.dunkware.net.proto.data.GError.Builder builderForValue) {
       if (errorBuilder_ == null) {
         error_ = builderForValue.build();
         onChanged();
@@ -538,13 +538,13 @@ private static final long serialVersionUID = 0L;
       return this;
     }
     /**
-     * <code>.dunkware.core.GError error = 1;</code>
+     * <code>.dunkware.data.GError error = 1;</code>
      */
-    public Builder mergeError(com.dunkware.net.proto.core.GError value) {
+    public Builder mergeError(com.dunkware.net.proto.data.GError value) {
       if (errorBuilder_ == null) {
         if (error_ != null) {
           error_ =
-            com.dunkware.net.proto.core.GError.newBuilder(error_).mergeFrom(value).buildPartial();
+            com.dunkware.net.proto.data.GError.newBuilder(error_).mergeFrom(value).buildPartial();
         } else {
           error_ = value;
         }
@@ -556,7 +556,7 @@ private static final long serialVersionUID = 0L;
       return this;
     }
     /**
-     * <code>.dunkware.core.GError error = 1;</code>
+     * <code>.dunkware.data.GError error = 1;</code>
      */
     public Builder clearError() {
       if (errorBuilder_ == null) {
@@ -570,33 +570,33 @@ private static final long serialVersionUID = 0L;
       return this;
     }
     /**
-     * <code>.dunkware.core.GError error = 1;</code>
+     * <code>.dunkware.data.GError error = 1;</code>
      */
-    public com.dunkware.net.proto.core.GError.Builder getErrorBuilder() {
+    public com.dunkware.net.proto.data.GError.Builder getErrorBuilder() {
       
       onChanged();
       return getErrorFieldBuilder().getBuilder();
     }
     /**
-     * <code>.dunkware.core.GError error = 1;</code>
+     * <code>.dunkware.data.GError error = 1;</code>
      */
-    public com.dunkware.net.proto.core.GErrorOrBuilder getErrorOrBuilder() {
+    public com.dunkware.net.proto.data.GErrorOrBuilder getErrorOrBuilder() {
       if (errorBuilder_ != null) {
         return errorBuilder_.getMessageOrBuilder();
       } else {
         return error_ == null ?
-            com.dunkware.net.proto.core.GError.getDefaultInstance() : error_;
+            com.dunkware.net.proto.data.GError.getDefaultInstance() : error_;
       }
     }
     /**
-     * <code>.dunkware.core.GError error = 1;</code>
+     * <code>.dunkware.data.GError error = 1;</code>
      */
     private com.google.protobuf.SingleFieldBuilderV3<
-        com.dunkware.net.proto.core.GError, com.dunkware.net.proto.core.GError.Builder, com.dunkware.net.proto.core.GErrorOrBuilder> 
+        com.dunkware.net.proto.data.GError, com.dunkware.net.proto.data.GError.Builder, com.dunkware.net.proto.data.GErrorOrBuilder> 
         getErrorFieldBuilder() {
       if (errorBuilder_ == null) {
         errorBuilder_ = new com.google.protobuf.SingleFieldBuilderV3<
-            com.dunkware.net.proto.core.GError, com.dunkware.net.proto.core.GError.Builder, com.dunkware.net.proto.core.GErrorOrBuilder>(
+            com.dunkware.net.proto.data.GError, com.dunkware.net.proto.data.GError.Builder, com.dunkware.net.proto.data.GErrorOrBuilder>(
                 getError(),
                 getParentForChildren(),
                 isClean());

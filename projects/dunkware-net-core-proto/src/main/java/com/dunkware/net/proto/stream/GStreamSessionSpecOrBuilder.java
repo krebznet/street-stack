@@ -41,13 +41,13 @@ public interface GStreamSessionSpecOrBuilder extends
   com.dunkware.net.proto.stream.GStreamScriptSpecOrBuilder getScriptOrBuilder();
 
   /**
-   * <code>.dunkware.core.GTimeZone timeZone = 5;</code>
+   * <code>.dunkware.data.GTimeZone timeZone = 5;</code>
    */
   int getTimeZoneValue();
   /**
-   * <code>.dunkware.core.GTimeZone timeZone = 5;</code>
+   * <code>.dunkware.data.GTimeZone timeZone = 5;</code>
    */
-  com.dunkware.net.proto.core.GTimeZone getTimeZone();
+  com.dunkware.net.proto.data.GTimeZone getTimeZone();
 
   /**
    * <code>repeated .dunkware.stream.GStreamEntitySpec entities = 6;</code>

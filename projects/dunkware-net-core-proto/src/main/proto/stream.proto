@@ -8,7 +8,7 @@ package dunkware.stream;
  option java_package = "com.dunkware.net.proto.stream";
  option java_outer_classname = "GStreamProto";
 
-import "core.proto";
+import "data.proto";
 
 import "google/protobuf/timestamp.proto";
 
@@ -107,14 +107,14 @@ message GEntitySignal {
 message GStreamSpec {
     string identifier = 1;
     GStreamScriptSpec script = 4;
-    dunkware.core.GTimeZone timeZone = 5;
+    dunkware.data.GTimeZone timeZone = 5;
 }
 
 message GStreamSessionSpec {
     string stream = 1;
     string sessionId = 2;
     GStreamScriptSpec script = 4;
-    dunkware.core.GTimeZone timeZone = 5;
+    dunkware.data.GTimeZone timeZone = 5;
 	repeated GStreamEntitySpec entities = 6;
 }
 
@@ -129,7 +129,7 @@ message GStreamVarSpec {
     int32 id = 1;
     string identifier = 2;
     string label = 3;
-    dunkware.core.GDataType dataType = 4;
+    dunkware.data.GDataType dataType = 4;
 }
 
 message GStreamEntitySpec {
@@ -155,7 +155,7 @@ message GStreamSpecRequest {
 }
 
 message GStreamSpecResponse {
-       dunkware.core.GError error = 1;
+       dunkware.data.GError error = 1;
        dunkware.stream.GStreamSpec spec = 2;
 }
 
@@ -165,18 +165,6 @@ message GStreamSpecsRequest {
 
 message GStreamSpecsResponse {
    repeated dunkware.stream.GStreamSpec specs = 1;
-}
-
-
-
-// AutoComplete 
-
-message GAutoCompleteRequest {
-    string request = 1;
-}
-
-message GAutoCompleteResponse { 
-    string response = 2;
 }
 
 
