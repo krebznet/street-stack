@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import com.dunkware.net.cluster.node.Cluster;
 import com.dunkware.net.core.service.NetCallResponseCallback;
 import com.dunkware.net.core.service.NetChannelResponseCallback;
+import com.dunkware.net.core.util.GNetFactory;
 import com.dunkware.net.proto.net.GNetCallRequest;
 import com.dunkware.net.proto.net.GNetCallResponse;
 import com.dunkware.net.proto.net.GNetChannelResponse;
@@ -31,8 +32,6 @@ public class NetSessionCall {
 					setCode(GNetCode.ERROR).setException("Service Call Endpoint " + req.getEndPoint() 
 					+ " not registered").build()).build();
 		}
-			//session.senmessage
-		// else call and invoke
 	}
 	
 	public void handle(GNetCallRequest request, NetSession session) throws Exception  { 
@@ -40,9 +39,10 @@ public class NetSessionCall {
 		cluster.netCall(req.getEndPoint(), req.getRequestId(), new NetCallResponseCallback() {
 			
 			@Override
-			public void onSuccess(GNetMessage response) {
+			public void onSuccess(GNetCallResponse response) {
 				try {
-					session.sendMessage(response);	
+					GNetMessage resp = GNetFactory.callResponseError(req.getRequestId(), response.getException());
+					session.sendMessage(resp);	
 				} catch (Exception e) {
 					logger.error("Exception sending net call response back to web client " + e.toString());
 				}
@@ -50,9 +50,10 @@ public class NetSessionCall {
 			}
 			
 			@Override
-			public void onError(GNetMessage response) {
+			public void onError(GNetCallResponse response) {
 				try {
-					session.sendMessage(response);	
+					GNetMessage resp = GNetFactory.callResponseOK(response.getRequestId(), response.getData());
+					session.sendMessage(resp);
 				} catch (Exception e) {
 					logger.error("Exception sending net call response back to web client " + e.toString());
 				}

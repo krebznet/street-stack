@@ -5,6 +5,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import com.dunkware.common.kafka.producer.DKafkaByteProducer;
+import com.dunkware.common.util.bitch.BitchLogger;
 import com.dunkware.common.util.dtime.DDateTime;
 import com.dunkware.common.util.helpers.DHttpHelper;
 import com.dunkware.common.util.json.DJson;
@@ -48,6 +49,7 @@ public class ClusterNodeImpl implements ClusterNode {
 		stats = update.getStats();
 		try {
 			String topic = "cluster_node_" + update.getNode() + "_net_messages";
+			BitchLogger.log("Creating producer for node " + update.getNode() + " topic " + topic);
 			netMessageProducer = DKafkaByteProducer.newInstance(clusterConfig.getServerBrokers(), topic, "peer_node_" + DUUID.randomUUID(5));
 		} catch (Exception e) {
 			logger.error("Exception creating kafka net message producer to diiscovered node " + update.getNode() + " exception " + e.toString());

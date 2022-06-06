@@ -5,6 +5,7 @@ import org.slf4j.LoggerFactory;
 import org.slf4j.MarkerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import com.dunkware.common.util.bitch.BitchLogger;
 import com.dunkware.common.util.helpers.DRandom;
 import com.dunkware.net.cluster.node.Cluster;
 import com.dunkware.net.cluster.node.ClusterNode;
@@ -46,19 +47,22 @@ public class ClusterNetCall implements NetCallResponse, Runnable, NetMessageHand
 
 	@Override
 	public void run() {
+		BitchLogger.log("Starting Cluster Net call on node " + cluster.getNodeId() + " to " + endpoint);
 		cluster.addNetMessageHandler(ClusterNetCall.this);
 		try {
 			if(logger.isDebugEnabled()) { 
 				logger.debug(MarkerFactory.getMarker("NETCALL"), "Invoking request to node {}  endpoint {}",node.getId(), endpoint);
 			}
-			GNetMessage mes = GNetFactory.callRequest(endpoint, requestId, cluster.getNetTopic());
+			GNetMessage mes = GNetFactory.callRequest(endpoint, requestId, cluster.getNodeId());
+			BitchLogger.log("Sending GNetMessage net call request to node " + node.getId());
 			node.sendNetMessage(mes);
+			BitchLogger.log("GNetMessage sent");
 		} catch (Exception e) {
 			logger.error(MarkerFactory.getMarker("NETCALL"), "Exception sending message to node {}  endpoint {}  " + e.toString(),node.getId(),endpoint);
 			cluster.removeNetMessageHandler(this);
 			GNetMessage respM = GNetFactory.callResponseError(requestId,
 					"Internal error forwarding request to cluster node " + e.toString());
-			callback.onError(respM);
+			callback.onError(respM.getCallResp());
 			cluster.removeNetMessageHandler(ClusterNetCall.this);
 			return;
 		}
@@ -70,9 +74,9 @@ public class ClusterNetCall implements NetCallResponse, Runnable, NetMessageHand
 			if (message.getCallResp().getRequestId() == requestId) {
 				responseMessage = message.getCallResp();
 				if (responseMessage.getCode() == GNetCode.ERROR) {
-					callback.onError(message);
+					callback.onError(message.getCallResp());
 				} else {
-					callback.onSuccess(message);
+					callback.onSuccess(message.getCallResp());
 				}
 			}
 			cluster.removeNetMessageHandler(ClusterNetCall.this);

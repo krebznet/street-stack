@@ -8,7 +8,9 @@ import org.springframework.boot.autoconfigure.mongo.MongoAutoConfiguration;
 import org.springframework.integration.config.EnableIntegration;
 import org.springframework.web.socket.config.annotation.EnableWebSocketMessageBroker;
 
-@SpringBootApplication
+
+@SpringBootApplication(scanBasePackages = "com.dunkware.net.cluster.node,com.dunkware.net.cluster.spring,com.dunkware.trade.service.web.server")
+
 @EnableIntegration
 @EnableWebSocketMessageBroker 
 @EnableAutoConfiguration(exclude={MongoAutoConfiguration.class, MongoDataAutoConfiguration.class})

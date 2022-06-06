@@ -28,12 +28,14 @@ import com.dunkware.common.spec.kafka.DKafkaByteConsumer2Spec;
 import com.dunkware.common.spec.kafka.DKafkaByteConsumer2Spec.ConsumerType;
 import com.dunkware.common.spec.kafka.DKafkaByteConsumer2Spec.OffsetType;
 import com.dunkware.common.spec.kafka.DKafkaByteConsumer2SpecBuilder;
+import com.dunkware.common.util.bitch.BitchLogger;
 import com.dunkware.common.util.dtime.DDateTime;
 import com.dunkware.common.util.dtime.DTimeZone;
 import com.dunkware.common.util.events.DEventTree;
 import com.dunkware.common.util.executor.DExecutor;
 import com.dunkware.common.util.json.DJson;
 import com.dunkware.common.util.logging.Markers;
+import com.dunkware.common.util.uuid.DUUID;
 import com.dunkware.net.cluster.json.job.ClusterJobState;
 import com.dunkware.net.cluster.json.node.ClusterNodeServiceDescriptor;
 import com.dunkware.net.cluster.json.node.ClusterNodeServiceType;
@@ -46,6 +48,7 @@ import com.dunkware.net.cluster.node.ClusterJob;
 import com.dunkware.net.cluster.node.ClusterJobRunner;
 import com.dunkware.net.cluster.node.ClusterNode;
 import com.dunkware.net.cluster.node.ClusterNodeException;
+import com.dunkware.net.cluster.node.internal.runners.NetCallRequestRunner;
 import com.dunkware.net.core.anot.NetAnnotationRegistry;
 import com.dunkware.net.core.anot.NetCallServiceDescriptor;
 import com.dunkware.net.core.anot.NetChannelServiceDescriptor;
@@ -105,7 +108,6 @@ public class ClusterImpl implements Cluster {
 
 	private Semaphore jobLock = new Semaphore(1);
 
-
 	private ManagedChannel serverChannel;
 
 	private List<ClusterNodeServiceDescriptor> netServiceDescriptors = new ArrayList<ClusterNodeServiceDescriptor>();
@@ -140,16 +142,20 @@ public class ClusterImpl implements Cluster {
 			// create the kafka consume r
 		
 			try {
+				
 				String topic = "cluster_node_" + clusterConfig.getNodeId() + "_net_messages";
 				DKafkaByteConsumer2Spec spec = 
-				DKafkaByteConsumer2SpecBuilder.newBuilder(ConsumerType.Auto, OffsetType.Latest).addBroker(clusterConfig.getServerBrokers()).addTopic(topic).setClientAndGroup(clusterConfig.getNodeId(), 
-						clusterConfig.getNodeId()).build();
-				netMessageConsuer = DKafkaByteConsumer2.newInstance(spec);				
+				DKafkaByteConsumer2SpecBuilder.newBuilder(ConsumerType.Auto, OffsetType.Latest).addBroker(clusterConfig.getServerBrokers()).addTopic(topic).setClientAndGroup(clusterConfig.getNodeId() + "_" + DUUID.randomUUID(5), 
+						clusterConfig.getNodeId() + "_" + DUUID.randomUUID(4)).build();
+				netMessageConsuer = DKafkaByteConsumer2.newInstance(spec);		
+				System.err.println("Consuming topic topic on node " + clusterConfig.getNodeId());
 				netMessageConsuer.start();
+				BitchLogger.log("Started kafka consumer to topic " + topic + " node " + getNodeId());
 				netMessageConsuer.addStreamHandler(new NetMessageKafkaConsumer());
 				netMessageRouter = new NetMessageRouter();
 				netMessageRouter.start();
-				// sstart the router thread. 
+				
+			
 			} catch (Exception e) {
 				logger.error("Exception creating cluster event kafka consumer " + e.toString());
 			}
@@ -249,6 +255,10 @@ public class ClusterImpl implements Cluster {
 		registry = new ClusterRegistry();
 		registry.start(this);
 		executor = new DExecutor(15);
+		NetCallRequestRunner runner = new NetCallRequestRunner(this);
+		ac.getAutowireCapableBeanFactory().autowireBean(runner);
+		addNetMessageHandler(runner);
+		// sstart the router thread. 
 		netDataFactory = NetDataFactory.newInstance(executor);
 		eventTree = DEventTree.newInstance(executor);
 		eventService = new ClusterEventService();
@@ -706,8 +716,16 @@ public class ClusterImpl implements Cluster {
 
 	@Override
 	public ClusterNode getCallRequestNode(String endpoint) throws ClusterNodeException {
-		// TODO Auto-generated method stub
-		return null;
+		for (ClusterNode node : nodes.values()) {
+		for (ClusterNodeServiceDescriptor serv : node.getStats().getServices()) {
+			if(serv.getEndpoint().equals(endpoint)) { 
+				return node;
+			}
+		}
+			
+		}
+		throw new ClusterNodeException("Service not found in cluster for endpoint " + endpoint);
+		
 	}
 
 	@Override
@@ -759,7 +777,8 @@ public class ClusterImpl implements Cluster {
 		public void record(ConsumerRecord<String, byte[]> record) {
 			try {
 				GNetMessage message = GNetMessage.parseFrom(record.value());
-
+				netMessageQueue.add(message);
+				
 			} catch (Exception e) {
 				logger.error("Exception parsing GNetMessage from kafka consumer " + e.toString());
 			}
@@ -773,12 +792,14 @@ public class ClusterImpl implements Cluster {
 				try {
 					GNetMessage message = netMessageQueue.take();
 					try {
-						
+						BitchLogger.log("Net Message Router Recieved Message node " + getNodeId());
 						netMessageHandlerLock.acquire();
 						
 						for (NetMessageHandler handler : netMessageHandlers) {
+							BitchLogger.log("invoking handler " + handler.getClass().getName());
 							handler.handle(message);
 						}
+						BitchLogger.log("finsihed callign handlers");
 					} catch (Exception e) {
 						logger.error("Exception invoking net message handler " + e.toString());
 					} finally { 
