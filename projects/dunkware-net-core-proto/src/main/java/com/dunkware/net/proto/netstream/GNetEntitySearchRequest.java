@@ -51,11 +51,11 @@ private static final long serialVersionUID = 0L;
             break;
           }
           case 26: {
-            com.dunkware.net.proto.netstream.GNetEntityMatcher.Builder subBuilder = null;
+            com.dunkware.net.proto.stream.GEntityMatcher.Builder subBuilder = null;
             if (matcher_ != null) {
               subBuilder = matcher_.toBuilder();
             }
-            matcher_ = input.readMessage(com.dunkware.net.proto.netstream.GNetEntityMatcher.parser(), extensionRegistry);
+            matcher_ = input.readMessage(com.dunkware.net.proto.stream.GEntityMatcher.parser(), extensionRegistry);
             if (subBuilder != null) {
               subBuilder.mergeFrom(matcher_);
               matcher_ = subBuilder.buildPartial();
@@ -117,23 +117,23 @@ private static final long serialVersionUID = 0L;
   }
 
   public static final int MATCHER_FIELD_NUMBER = 3;
-  private com.dunkware.net.proto.netstream.GNetEntityMatcher matcher_;
+  private com.dunkware.net.proto.stream.GEntityMatcher matcher_;
   /**
-   * <code>.dunkware.netstream.GNetEntityMatcher matcher = 3;</code>
+   * <code>.dunkware.stream.GEntityMatcher matcher = 3;</code>
    */
   public boolean hasMatcher() {
     return matcher_ != null;
   }
   /**
-   * <code>.dunkware.netstream.GNetEntityMatcher matcher = 3;</code>
+   * <code>.dunkware.stream.GEntityMatcher matcher = 3;</code>
    */
-  public com.dunkware.net.proto.netstream.GNetEntityMatcher getMatcher() {
-    return matcher_ == null ? com.dunkware.net.proto.netstream.GNetEntityMatcher.getDefaultInstance() : matcher_;
+  public com.dunkware.net.proto.stream.GEntityMatcher getMatcher() {
+    return matcher_ == null ? com.dunkware.net.proto.stream.GEntityMatcher.getDefaultInstance() : matcher_;
   }
   /**
-   * <code>.dunkware.netstream.GNetEntityMatcher matcher = 3;</code>
+   * <code>.dunkware.stream.GEntityMatcher matcher = 3;</code>
    */
-  public com.dunkware.net.proto.netstream.GNetEntityMatcherOrBuilder getMatcherOrBuilder() {
+  public com.dunkware.net.proto.stream.GEntityMatcherOrBuilder getMatcherOrBuilder() {
     return getMatcher();
   }
 
@@ -598,29 +598,29 @@ private static final long serialVersionUID = 0L;
       return this;
     }
 
-    private com.dunkware.net.proto.netstream.GNetEntityMatcher matcher_ = null;
+    private com.dunkware.net.proto.stream.GEntityMatcher matcher_ = null;
     private com.google.protobuf.SingleFieldBuilderV3<
-        com.dunkware.net.proto.netstream.GNetEntityMatcher, com.dunkware.net.proto.netstream.GNetEntityMatcher.Builder, com.dunkware.net.proto.netstream.GNetEntityMatcherOrBuilder> matcherBuilder_;
+        com.dunkware.net.proto.stream.GEntityMatcher, com.dunkware.net.proto.stream.GEntityMatcher.Builder, com.dunkware.net.proto.stream.GEntityMatcherOrBuilder> matcherBuilder_;
     /**
-     * <code>.dunkware.netstream.GNetEntityMatcher matcher = 3;</code>
+     * <code>.dunkware.stream.GEntityMatcher matcher = 3;</code>
      */
     public boolean hasMatcher() {
       return matcherBuilder_ != null || matcher_ != null;
     }
     /**
-     * <code>.dunkware.netstream.GNetEntityMatcher matcher = 3;</code>
+     * <code>.dunkware.stream.GEntityMatcher matcher = 3;</code>
      */
-    public com.dunkware.net.proto.netstream.GNetEntityMatcher getMatcher() {
+    public com.dunkware.net.proto.stream.GEntityMatcher getMatcher() {
       if (matcherBuilder_ == null) {
-        return matcher_ == null ? com.dunkware.net.proto.netstream.GNetEntityMatcher.getDefaultInstance() : matcher_;
+        return matcher_ == null ? com.dunkware.net.proto.stream.GEntityMatcher.getDefaultInstance() : matcher_;
       } else {
         return matcherBuilder_.getMessage();
       }
     }
     /**
-     * <code>.dunkware.netstream.GNetEntityMatcher matcher = 3;</code>
+     * <code>.dunkware.stream.GEntityMatcher matcher = 3;</code>
      */
-    public Builder setMatcher(com.dunkware.net.proto.netstream.GNetEntityMatcher value) {
+    public Builder setMatcher(com.dunkware.net.proto.stream.GEntityMatcher value) {
       if (matcherBuilder_ == null) {
         if (value == null) {
           throw new NullPointerException();
@@ -634,10 +634,10 @@ private static final long serialVersionUID = 0L;
       return this;
     }
     /**
-     * <code>.dunkware.netstream.GNetEntityMatcher matcher = 3;</code>
+     * <code>.dunkware.stream.GEntityMatcher matcher = 3;</code>
      */
     public Builder setMatcher(
-        com.dunkware.net.proto.netstream.GNetEntityMatcher.Builder builderForValue) {
+        com.dunkware.net.proto.stream.GEntityMatcher.Builder builderForValue) {
       if (matcherBuilder_ == null) {
         matcher_ = builderForValue.build();
         onChanged();
@@ -648,13 +648,13 @@ private static final long serialVersionUID = 0L;
       return this;
     }
     /**
-     * <code>.dunkware.netstream.GNetEntityMatcher matcher = 3;</code>
+     * <code>.dunkware.stream.GEntityMatcher matcher = 3;</code>
      */
-    public Builder mergeMatcher(com.dunkware.net.proto.netstream.GNetEntityMatcher value) {
+    public Builder mergeMatcher(com.dunkware.net.proto.stream.GEntityMatcher value) {
       if (matcherBuilder_ == null) {
         if (matcher_ != null) {
           matcher_ =
-            com.dunkware.net.proto.netstream.GNetEntityMatcher.newBuilder(matcher_).mergeFrom(value).buildPartial();
+            com.dunkware.net.proto.stream.GEntityMatcher.newBuilder(matcher_).mergeFrom(value).buildPartial();
         } else {
           matcher_ = value;
         }
@@ -666,7 +666,7 @@ private static final long serialVersionUID = 0L;
       return this;
     }
     /**
-     * <code>.dunkware.netstream.GNetEntityMatcher matcher = 3;</code>
+     * <code>.dunkware.stream.GEntityMatcher matcher = 3;</code>
      */
     public Builder clearMatcher() {
       if (matcherBuilder_ == null) {
@@ -680,33 +680,33 @@ private static final long serialVersionUID = 0L;
       return this;
     }
     /**
-     * <code>.dunkware.netstream.GNetEntityMatcher matcher = 3;</code>
+     * <code>.dunkware.stream.GEntityMatcher matcher = 3;</code>
      */
-    public com.dunkware.net.proto.netstream.GNetEntityMatcher.Builder getMatcherBuilder() {
+    public com.dunkware.net.proto.stream.GEntityMatcher.Builder getMatcherBuilder() {
       
       onChanged();
       return getMatcherFieldBuilder().getBuilder();
     }
     /**
-     * <code>.dunkware.netstream.GNetEntityMatcher matcher = 3;</code>
+     * <code>.dunkware.stream.GEntityMatcher matcher = 3;</code>
      */
-    public com.dunkware.net.proto.netstream.GNetEntityMatcherOrBuilder getMatcherOrBuilder() {
+    public com.dunkware.net.proto.stream.GEntityMatcherOrBuilder getMatcherOrBuilder() {
       if (matcherBuilder_ != null) {
         return matcherBuilder_.getMessageOrBuilder();
       } else {
         return matcher_ == null ?
-            com.dunkware.net.proto.netstream.GNetEntityMatcher.getDefaultInstance() : matcher_;
+            com.dunkware.net.proto.stream.GEntityMatcher.getDefaultInstance() : matcher_;
       }
     }
     /**
-     * <code>.dunkware.netstream.GNetEntityMatcher matcher = 3;</code>
+     * <code>.dunkware.stream.GEntityMatcher matcher = 3;</code>
      */
     private com.google.protobuf.SingleFieldBuilderV3<
-        com.dunkware.net.proto.netstream.GNetEntityMatcher, com.dunkware.net.proto.netstream.GNetEntityMatcher.Builder, com.dunkware.net.proto.netstream.GNetEntityMatcherOrBuilder> 
+        com.dunkware.net.proto.stream.GEntityMatcher, com.dunkware.net.proto.stream.GEntityMatcher.Builder, com.dunkware.net.proto.stream.GEntityMatcherOrBuilder> 
         getMatcherFieldBuilder() {
       if (matcherBuilder_ == null) {
         matcherBuilder_ = new com.google.protobuf.SingleFieldBuilderV3<
-            com.dunkware.net.proto.netstream.GNetEntityMatcher, com.dunkware.net.proto.netstream.GNetEntityMatcher.Builder, com.dunkware.net.proto.netstream.GNetEntityMatcherOrBuilder>(
+            com.dunkware.net.proto.stream.GEntityMatcher, com.dunkware.net.proto.stream.GEntityMatcher.Builder, com.dunkware.net.proto.stream.GEntityMatcherOrBuilder>(
                 getMatcher(),
                 getParentForChildren(),
                 isClean());

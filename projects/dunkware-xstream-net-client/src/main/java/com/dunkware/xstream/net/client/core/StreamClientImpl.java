@@ -10,8 +10,8 @@ import org.slf4j.LoggerFactory;
 import com.dunkware.common.util.executor.DExecutor;
 import com.dunkware.net.proto.netstream.GNetClientConnectResponse;
 import com.dunkware.net.proto.netstream.GNetClientMessage;
-import com.dunkware.net.proto.netstream.GNetEntityMatcher;
 import com.dunkware.net.proto.netstream.GNetServerMessage;
+import com.dunkware.net.proto.stream.GEntityMatcher;
 import com.dunkware.xstream.net.client.StreamClient;
 import com.dunkware.xstream.net.client.StreamClientConnector;
 import com.dunkware.xstream.net.client.StreamClientEntitySearch;
@@ -134,14 +134,14 @@ public class StreamClientImpl implements StreamClient {
 	}
 
 	@Override
-	public StreamEntityScanner entityScanner(GNetEntityMatcher entityMatcher, int updateInterval, String retVars)
+	public StreamEntityScanner entityScanner(GEntityMatcher entityMatcher, int updateInterval, String retVars)
 			throws StreamClientException {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
-	public StreamClientEntitySearch entitySearch(GNetEntityMatcher matcher, String retVars,
+	public StreamClientEntitySearch entitySearch(GEntityMatcher matcher, String retVars,
 			StreamClientEntitySearchCallBack searchObserver) throws StreamClientException {
 		StreamClientEntitySearchImpl search = new StreamClientEntitySearchImpl();
 		search.init(matcher, retVars, searchObserver, this);

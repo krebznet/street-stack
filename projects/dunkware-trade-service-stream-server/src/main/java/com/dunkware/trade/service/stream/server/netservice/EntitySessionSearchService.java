@@ -4,10 +4,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import com.dunkware.net.core.anot.ANetCallService;
 import com.dunkware.net.core.channel.NetChannel;
-import com.dunkware.net.core.service.NetServiceException;
 import com.dunkware.net.core.service.NetChannelRequest;
 import com.dunkware.net.core.service.NetChannelResponse;
 import com.dunkware.net.core.service.NetChannelService;
+import com.dunkware.net.core.service.NetServiceException;
 import com.dunkware.trade.service.stream.server.controller.session.container.SessionContainer;
 import com.dunkware.trade.service.stream.server.controller.session.container.SessionContainerService;
 
@@ -19,7 +19,7 @@ public class EntitySessionSearchService implements NetChannelService {
 	
 	@Override
 	public void service(NetChannelRequest req, NetChannelResponse response, NetChannel channel) throws NetServiceException {
-		String streamIdent = req.getString("stream");
+		String streamIdent = req.getData().getString("sream");
 		SessionContainer container; 
 		container =  containerService.getStreamContainer(streamIdent);
 		if(container == null) { 

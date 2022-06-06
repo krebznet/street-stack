@@ -28,13 +28,12 @@
       <module>projects/dunkware-trade-service-stream-json</module>
       <module>projects/dunkware-trade-service-stream-server</module>
 			<module>projects/dunkware-trade-service-stream-worker</module>
+			<module>projects/dunkware-trade-service-stream-util</module>
+
 
 			<module>projects/dunkware-trade-sdk-tws-runtime</module>
       <module>projects/dunkware-trade-service-web-server</module>
-      <module>projects/dunkware-trade-service-data-server</module>
-			<module>projects/dunkware-trade-service-data-worker</module>
-			<module>projects/dunkware-trade-service-data-util</module>
-    <!--  <module>projects/dunkware-trade-service-data-mock</module>
+
       <module>projects/dunkware-trade-service-data-lib</module>-->
 
 			<module>projects/dunkware-trade-service-worker-server</module>

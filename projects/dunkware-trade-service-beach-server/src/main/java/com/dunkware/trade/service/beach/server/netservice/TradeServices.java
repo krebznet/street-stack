@@ -9,11 +9,11 @@ public class TradeServices implements NetCallService {
 
 	@Override
 	public void service(NetCallRequest req, NetCallResponse resp) throws NetServiceException {
-		String reqType = req.getString("reqType");
+		String reqType = req.getData().getString("reqType");
 		if(reqType.equals("addTwsBroker")) { 
-			String host = req.getString("twsHost");
-			int port  = req.getInt("twsPort");
-			String name = req.getString("twsName");
+			String host = req.getData().getString("twsHost");
+			int port  = req.getData().getInt("twsPort");
+			String name = req.getData().getString("twsName");
 			// add a broker 
 		}
 		

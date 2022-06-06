@@ -4,11 +4,11 @@ syntax = "proto3";
 package dunkware.stream;
 
 
- option java_multiple_files = true;
- option java_package = "com.dunkware.net.proto.stream";
- option java_outer_classname = "GStreamProto";
+option java_multiple_files = true;
+option java_package = "com.dunkware.net.proto.stream";
+option java_outer_classname = "GStreamProto";
 
-import "data.proto";
+import "netdata.proto";
 
 import "google/protobuf/timestamp.proto";
 
@@ -18,153 +18,178 @@ import "google/protobuf/timestamp.proto";
 *  Stream Events 
 */
 enum GStreamEventType {
-    EntitySignal = 0;
-    EntitySnapshot = 1;
-    SessionStart = 2;
-    SessionStop= 3;
-    TimeUpdate = 4;
+  EntitySignal = 0;
+  EntitySnapshot = 1;
+  SessionStart = 2;
+  SessionStop= 3;
+  TimeUpdate = 4;
 }
 
-// it would be hard to build var criteria;
 
-// Generic Object Contains 1 type of event
+
 message GStreamEvent  {
-    string streamId = 1;
-    string sessionId = 3;
-    GStreamEventType type = 4;
-    oneof event {
-        GEntitySnapshot entitySnapshot = 5;
-        GEntitySignal entitySignal = 6;
-        GStreamSessionStop sessionStop = 7;
-        GStreamSessionStart sessionStart = 8;
-        GStreamTimeUpdate timeUpdate = 9;
-    }
+  string streamId = 1;
+  string sessionId = 3;
+  GStreamEventType type = 4;
+  oneof event {
+    GEntitySnapshot entitySnapshot = 5;
+    GEntitySignal entitySignal = 6;
+    GStreamSessionStop sessionStop = 7;
+    GStreamSessionStart sessionStart = 8;
+    GStreamTimeUpdate timeUpdate = 9;
+  }
 
 }
 
-message GStreamTimeUpdate { 
-   google.protobuf.Timestamp time = 1; 
+message GStreamTimeUpdate {
+  google.protobuf.Timestamp time = 1;
 }
+
+
 message GStreamSessionStop {
-    google.protobuf.Timestamp time = 1; 
-	GStreamSessionSpec session = 2;
+  google.protobuf.Timestamp time = 1;
+  GStreamSessionSpec session = 2;
 }
 
 message GStreamSessionStart {
-	google.protobuf.Timestamp time = 1; 
-	GStreamSessionSpec session = 2;
+  google.protobuf.Timestamp time = 1;
+  GStreamSessionSpec session = 2;
 }
 
-// Entity Snapshot Event, datetime, entity id/code
-message GEntitySnapshot {
-    int32 id = 1;
-    string identifier = 2;
-    string streamId = 3;
-    string sessionId = 4;
-    google.protobuf.Timestamp time = 12;
-    repeated GEntityVarSnapshot vars = 7;
-    message GSnapshotSignal {
-        int32 id = 11;
-        string identifier = 12;
-    }
-    repeated GSnapshotSignal signals = 8;
-}
-
-message GEntityVarSnapshot {
-   int32 id = 1;
-   string identifier = 2;
-   int32 dataType = 9;
-   oneof value {
-     bool booleanValue = 3;
-     int32 intValue = 4;
-     string stringValue = 5;
-     double doubleValue = 6;
-     int64 longValue = 7;
-     string nullValue = 8;
-   }
-}
-
-// GEntity Signal Event id/name entity stream/session timestamp type and variable values.
-message GEntitySignal {
-    int32 id = 1;
-    string identifier = 2;
-    int32 entityId = 3;
-    string entityIdentifier =  4;
-     string streamId = 5;
-    string sessionId = 6;
-    google.protobuf.Timestamp time = 12;
-   repeated GEntityVarSnapshot vars = 9;
-}
-/**
-*  End Stream Events --------------------------------------
-*/
-
-
-
-/**
- Stream Resource Specs 
- */
-message GStreamSpec {
-    string identifier = 1;
-    GStreamScriptSpec script = 4;
-    dunkware.data.GTimeZone timeZone = 5;
-}
-
-message GStreamSessionSpec {
+  message GStreamSessionSpec {
     string stream = 1;
     string sessionId = 2;
     GStreamScriptSpec script = 4;
     dunkware.data.GTimeZone timeZone = 5;
-	repeated GStreamEntitySpec entities = 6;
+    repeated GStreamEntitySpec entities = 6;
+  }
+
+
+
+message GStreamSpec {
+  string identifier = 1;
+  GStreamScriptSpec script = 4;
+  dunkware.data.GTimeZone timeZone = 5;
 }
+
 
 message GStreamScriptSpec {
-	string streamIdentifier = 1;
-	double version = 2;
-	repeated GStreamVarSpec variables = 3;
-	repeated GEntitySignalSpec signalTypes = 4;
-}
-
-message GStreamVarSpec {
-    int32 id = 1;
-    string identifier = 2;
-    string label = 3;
-    dunkware.data.GDataType dataType = 4;
+  string streamIdentifier = 1;
+  double version = 2;
+  repeated GStreamVarSpec variables = 3;
+  repeated GEntitySignalSpec signalTypes = 4;
 }
 
 message GStreamEntitySpec {
-    int32 id = 1;
-    string identifier = 2;
-    string label = 3;
+  int32 id = 1;
+  string identifier = 2;
+  string label = 3;
 }
 
 message GEntitySignalSpec {
-    int32 id = 1;
-    string identifier = 2;
-    string label = 3;
+  int32 id = 1;
+  string identifier = 2;
+  string label = 3;
 
+}
+
+message GStreamVarSpec {
+  int32 id = 1;
+  string identifier = 2;
+  string label = 3;
+  dunkware.data.GDataType dataType = 4;
+}
+
+// Entity Snapshot Event, datetime, entity id/code
+message GEntitySnapshot {
+  int32 id = 1;
+  string identifier = 2;
+  string streamId = 3;
+  string sessionId = 4;
+  google.protobuf.Timestamp time = 12;
+  repeated GEntityVarSnapshot vars = 7;
+  message GSnapshotSignal {
+    int32 id = 11;
+    string identifier = 12;
+  }
+  repeated GSnapshotSignal signals = 8;
+}
+
+message GEntityVarSnapshot {
+  int32 id = 1;
+  string identifier = 2;
+  int32 dataType = 9;
+  oneof value {
+    bool booleanValue = 3;
+    int32 intValue = 4;
+    string stringValue = 5;
+    double doubleValue = 6;
+    int64 longValue = 7;
+    string nullValue = 8;
+  }
+}
+
+// GEntity Signal Event id/name entity stream/session timestamp type and variable values.
+message GEntitySignal {
+  int32 id = 1;
+  string identifier = 2;
+  int32 entityId = 3;
+  string entityIdentifier =  4;
+  string streamId = 5;
+  string sessionId = 6;
+  google.protobuf.Timestamp time = 12;
+  repeated GEntityVarSnapshot vars = 9;
+}
+
+/** Net Stream Matchers **/
+message GEntityMatcher {
+  repeated GEntityCriteria varCriterias = 1;
+}
+
+enum GEntityVarRangeFunction {
+  MAX = 0;
+  MIN = 1;
+  AVG = 3;
+}
+enum GEntityVarAggFunction {
+  AGG_MAX = 0;
+  AGG_MIN = 1;
+  AGG_AVG = 2;
+}
+
+enum GEntityCriteriaVarType {
+  VALUE_NOW = 0;
+  VALUE_RELATIVE = 1;
+  VALUE_ABSOLUTE = 2;
+  RANGE_RELATIVE = 3;
+  RANGE_ABSOLUTE = 4;
+  AGGREGATION_DAY = 5;
+}
+message GEntityCriteriaVar {
+  int32 id = 1;
+  string ident = 2;
+  GEntityCriteriaVarType type = 3;
+  dunkware.data.GCalendarRange timeRange = 4;
+  data.GTime valueAbsoluteTime = 5;
+  GEntityVarRangeFunction rangeFunction = 6;
+  GEntityVarAggFunction aggFunction = 7;
+  int32 aggDays = 8;
+}
+
+message GEntityVarCriteria {
+  GEntityCriteriaVar var = 1;
+  data.GOperator operator = 2;
+  string value = 3; // needs to be casted at some point
+}
+
+message GEntityCriteria {
+  oneof Criteria {
+    GEntityVarCriteria varCriteria = 1;
+  }
 }
 
 /**
-*  End GStream Resource Specs 
+*  End Stream Events --------------------------------------
 */
-
-// RPC Messages
-message GStreamSpecRequest {
-    string streamIdentifier = 1;
-}
-
-message GStreamSpecResponse {
-       dunkware.data.GError error = 1;
-       dunkware.stream.GStreamSpec spec = 2;
-}
-
-message GStreamSpecsRequest {
-   int32 hello = 1;
-}
-
-message GStreamSpecsResponse {
-   repeated dunkware.stream.GStreamSpec specs = 1;
-}
 
 

@@ -14,6 +14,6 @@ public interface NetBeanList {
 	
 	public void removeObserver(NetBeanListObserver observer);
 	
-	String getName();
+
 
 }

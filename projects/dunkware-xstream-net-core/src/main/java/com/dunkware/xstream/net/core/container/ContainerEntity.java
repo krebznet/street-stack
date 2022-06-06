@@ -5,7 +5,7 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 
-import com.dunkware.net.proto.netstream.GNetEntityVarValue;
+import com.dunkware.net.proto.stream.GEntityCriteriaVar;
 import com.dunkware.net.proto.stream.GEntitySignal;
 import com.dunkware.net.proto.stream.GEntitySnapshot;
 
@@ -45,6 +45,6 @@ public interface ContainerEntity {
 
 	public Container getContainer();
 
-	public Object resolveCriteriaVar(GNetEntityVarValue var) throws ContainerException, ContainerSearchException;
+	public Object resolveCriteriaVar(GEntityCriteriaVar var) throws ContainerException, ContainerSearchException;
 
 }

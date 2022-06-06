@@ -1,14 +1,15 @@
 package com.dunkware.net.core.util;
 
-import com.dunkware.net.core.service.NetCallRequest;
-import com.dunkware.net.proto.net.GNetCallRequest;
+import com.dunkware.net.proto.net.GNetMessage;
+import com.dunkware.net.proto.net.GNetMessage.ValueCase;
 
 public class GNetHelper {
-	
-	public static GNetCallRequest callRequest(NetCallRequest request) { 
-		return null;
+
+	public static boolean isCallRequest(GNetMessage message) { 
+		if(message.getValueCase() == ValueCase.CALLREQ) { 
+			return true;
+		}
+		return false;
 	}
 	
-	
-
 }

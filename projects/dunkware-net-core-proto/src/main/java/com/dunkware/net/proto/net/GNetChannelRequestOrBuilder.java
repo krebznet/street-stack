@@ -13,14 +13,14 @@ public interface GNetChannelRequestOrBuilder extends
   int getRequestId();
 
   /**
-   * <code>string topic = 2;</code>
+   * <code>string requestSource = 2;</code>
    */
-  java.lang.String getTopic();
+  java.lang.String getRequestSource();
   /**
-   * <code>string topic = 2;</code>
+   * <code>string requestSource = 2;</code>
    */
   com.google.protobuf.ByteString
-      getTopicBytes();
+      getRequestSourceBytes();
 
   /**
    * <code>string endPoint = 3;</code>

@@ -4,10 +4,6 @@
 package com.dunkware.net.proto.stream;
 
 /**
- * <pre>
- * Generic Object Contains 1 type of event
- * </pre>
- *
  * Protobuf type {@code dunkware.stream.GStreamEvent}
  */
 public  final class GStreamEvent extends
@@ -690,10 +686,6 @@ private static final long serialVersionUID = 0L;
     return builder;
   }
   /**
-   * <pre>
-   * Generic Object Contains 1 type of event
-   * </pre>
-   *
    * Protobuf type {@code dunkware.stream.GStreamEvent}
    */
   public static final class Builder extends

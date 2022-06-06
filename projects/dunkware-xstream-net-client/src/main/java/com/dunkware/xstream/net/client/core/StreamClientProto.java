@@ -2,10 +2,10 @@ package com.dunkware.xstream.net.client.core;
 
 import com.dunkware.net.proto.netstream.GNetClientConnectRequest;
 import com.dunkware.net.proto.netstream.GNetClientMessage;
-import com.dunkware.net.proto.netstream.GNetEntityMatcher;
 import com.dunkware.net.proto.netstream.GNetEntitySearchRequest;
 import com.dunkware.net.proto.netstream.GNetServerMessage;
 import com.dunkware.net.proto.netstream.GNetServerMessage.TypeCase;
+import com.dunkware.net.proto.stream.GEntityMatcher;
 
 public class StreamClientProto {
 	
@@ -52,7 +52,7 @@ public class StreamClientProto {
 		return false;
 	}
 	
-	public static GNetClientMessage entitySearchRequest(GNetEntityMatcher matcher, String retVars, int searchId) { 
+	public static GNetClientMessage entitySearchRequest(GEntityMatcher matcher, String retVars, int searchId) { 
 		GNetEntitySearchRequest req = GNetEntitySearchRequest.newBuilder().setSearchId(searchId).setMatcher(matcher).setRetVars(retVars).setSource(retVars).build();
 		return GNetClientMessage.newBuilder().setEntitySearchRequest(req).build();
 	}

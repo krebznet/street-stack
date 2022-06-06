@@ -19,6 +19,7 @@ private static final long serialVersionUID = 0L;
     requestId_ = 0;
     code_ = 0;
     exception_ = "";
+    channelId_ = 0;
   }
 
   @java.lang.Override
@@ -60,6 +61,11 @@ private static final long serialVersionUID = 0L;
             java.lang.String s = input.readStringRequireUtf8();
 
             exception_ = s;
+            break;
+          }
+          case 32: {
+
+            channelId_ = input.readInt32();
             break;
           }
           default: {
@@ -154,6 +160,15 @@ private static final long serialVersionUID = 0L;
     }
   }
 
+  public static final int CHANNELID_FIELD_NUMBER = 4;
+  private int channelId_;
+  /**
+   * <code>int32 channelId = 4;</code>
+   */
+  public int getChannelId() {
+    return channelId_;
+  }
+
   private byte memoizedIsInitialized = -1;
   @java.lang.Override
   public final boolean isInitialized() {
@@ -177,6 +192,9 @@ private static final long serialVersionUID = 0L;
     if (!getExceptionBytes().isEmpty()) {
       com.google.protobuf.GeneratedMessageV3.writeString(output, 3, exception_);
     }
+    if (channelId_ != 0) {
+      output.writeInt32(4, channelId_);
+    }
     unknownFields.writeTo(output);
   }
 
@@ -196,6 +214,10 @@ private static final long serialVersionUID = 0L;
     }
     if (!getExceptionBytes().isEmpty()) {
       size += com.google.protobuf.GeneratedMessageV3.computeStringSize(3, exception_);
+    }
+    if (channelId_ != 0) {
+      size += com.google.protobuf.CodedOutputStream
+        .computeInt32Size(4, channelId_);
     }
     size += unknownFields.getSerializedSize();
     memoizedSize = size;
@@ -218,6 +240,8 @@ private static final long serialVersionUID = 0L;
     result = result && code_ == other.code_;
     result = result && getException()
         .equals(other.getException());
+    result = result && (getChannelId()
+        == other.getChannelId());
     result = result && unknownFields.equals(other.unknownFields);
     return result;
   }
@@ -235,6 +259,8 @@ private static final long serialVersionUID = 0L;
     hash = (53 * hash) + code_;
     hash = (37 * hash) + EXCEPTION_FIELD_NUMBER;
     hash = (53 * hash) + getException().hashCode();
+    hash = (37 * hash) + CHANNELID_FIELD_NUMBER;
+    hash = (53 * hash) + getChannelId();
     hash = (29 * hash) + unknownFields.hashCode();
     memoizedHashCode = hash;
     return hash;
@@ -374,6 +400,8 @@ private static final long serialVersionUID = 0L;
 
       exception_ = "";
 
+      channelId_ = 0;
+
       return this;
     }
 
@@ -403,6 +431,7 @@ private static final long serialVersionUID = 0L;
       result.requestId_ = requestId_;
       result.code_ = code_;
       result.exception_ = exception_;
+      result.channelId_ = channelId_;
       onBuilt();
       return result;
     }
@@ -460,6 +489,9 @@ private static final long serialVersionUID = 0L;
       if (!other.getException().isEmpty()) {
         exception_ = other.exception_;
         onChanged();
+      }
+      if (other.getChannelId() != 0) {
+        setChannelId(other.getChannelId());
       }
       this.mergeUnknownFields(other.unknownFields);
       onChanged();
@@ -626,6 +658,32 @@ private static final long serialVersionUID = 0L;
   checkByteStringIsUtf8(value);
       
       exception_ = value;
+      onChanged();
+      return this;
+    }
+
+    private int channelId_ ;
+    /**
+     * <code>int32 channelId = 4;</code>
+     */
+    public int getChannelId() {
+      return channelId_;
+    }
+    /**
+     * <code>int32 channelId = 4;</code>
+     */
+    public Builder setChannelId(int value) {
+      
+      channelId_ = value;
+      onChanged();
+      return this;
+    }
+    /**
+     * <code>int32 channelId = 4;</code>
+     */
+    public Builder clearChannelId() {
+      
+      channelId_ = 0;
       onChanged();
       return this;
     }

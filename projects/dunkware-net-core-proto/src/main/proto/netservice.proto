@@ -8,7 +8,7 @@ option java_multiple_files = true;
 option java_package = "com.dunkware.net.proto.net";
 option java_outer_classname = "GNetProto";
 
-import "data.proto";
+import "netdata.proto";
 
 import "google/protobuf/timestamp.proto";
 
@@ -42,7 +42,7 @@ enum GNetMessageType {
 
 message GNetCallRequest {
   int32 requestId = 1;
-  string topic = 2;
+  string source = 2;
   string endPoint = 3;
   data.GBean data = 4;
 }
@@ -56,7 +56,7 @@ message GNetCallResponse {
 
 message GNetChannelRequest {
   int32 requestId = 1;
-  string topic = 2;
+  string requestSource = 2;
   string endPoint = 3;
   data.GBean data = 4;
 }
@@ -65,6 +65,7 @@ message GNetChannelResponse {
   int32 requestId = 1;
   GNetCode code = 2;
   string exception = 3;
+  int32 channelId = 4;
 }
 
 enum GNetCode {
@@ -73,7 +74,7 @@ enum GNetCode {
 }
 
 message GNetChannelMessage {
-  string channelId = 1;
+  int32 channelId = 1;
   data.GBean data = 2;
   string error = 3;
   enum Type {

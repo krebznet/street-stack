@@ -6,8 +6,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.dunkware.net.proto.data.GOperator;
-import com.dunkware.net.proto.netstream.GNetEntityVarCriteria;
-import com.dunkware.net.proto.netstream.GNetEntityVarValueType;
+import com.dunkware.net.proto.stream.GEntityCriteriaVarType;
+import com.dunkware.net.proto.stream.GEntityVarCriteria;
 import com.dunkware.xstream.net.core.container.ContainerEntity;
 import com.dunkware.xstream.net.core.container.ContainerSearchContext;
 import com.dunkware.xstream.net.core.container.ContainerSearchException;
@@ -18,18 +18,18 @@ public class EntityVarCriteriaPredicate implements Predicate<ContainerEntity>, C
 
 
 
-	public static EntityVarCriteriaPredicate newInstance(GNetEntityVarCriteria varCritiera) throws ContainerSearchException {
+	public static EntityVarCriteriaPredicate newInstance(GEntityVarCriteria varCritiera) throws ContainerSearchException {
 		return new EntityVarCriteriaPredicate(varCritiera);
 	}
 	
-	GNetEntityVarCriteria criteria;
+	GEntityVarCriteria criteria;
 	GOperator criteriaOperator = null;
 	private ContainerSearchContext context;
 
 	private Logger logger = LoggerFactory.getLogger(getClass());
 	
-	public EntityVarCriteriaPredicate(GNetEntityVarCriteria varCriteria) throws ContainerSearchException {
-		if(varCriteria.getVar().getType() != GNetEntityVarValueType.VALUE_NOW) { 
+	public EntityVarCriteriaPredicate(GEntityVarCriteria varCriteria) throws ContainerSearchException {
+		if(varCriteria.getVar().getType() != GEntityCriteriaVarType.VALUE_NOW) { 
 			throw new ContainerSearchException("Var Value Type " + varCriteria.getVar().getType().name() + " not implemented yet");
 		}
 		this.criteriaOperator = varCriteria.getOperator();
@@ -67,7 +67,7 @@ public class EntityVarCriteriaPredicate implements Predicate<ContainerEntity>, C
 		if(!t.varExists(criteria.getVar().getIdent())) { 
 			return false;
 		}
-		if(criteria.getVar().getType() == GNetEntityVarValueType.VALUE_NOW) {
+		if(criteria.getVar().getType() == GEntityCriteriaVarType.VALUE_NOW) {
 			return testValueNow(t);
 		}
 		context.logError("Var Criteria value type not handled " + criteria.getVar().getType().name());

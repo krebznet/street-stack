@@ -1,13 +1,18 @@
 package com.dunkware.net.cluster.node.internal;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.slf4j.MarkerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+
 import com.dunkware.common.util.helpers.DRandom;
 import com.dunkware.net.cluster.node.Cluster;
 import com.dunkware.net.cluster.node.ClusterNode;
 import com.dunkware.net.core.data.NetBean;
-import com.dunkware.net.core.service.NetCallRequest;
 import com.dunkware.net.core.service.NetCallResponse;
 import com.dunkware.net.core.service.NetCallResponseCallback;
 import com.dunkware.net.core.service.NetMessageHandler;
+import com.dunkware.net.core.util.GNetFactory;
 import com.dunkware.net.proto.net.GNetCallRequest;
 import com.dunkware.net.proto.net.GNetCallResponse;
 import com.dunkware.net.proto.net.GNetCode;
@@ -16,101 +21,68 @@ import com.dunkware.net.proto.net.GNetMessage.ValueCase;
 
 public class ClusterNetCall implements NetCallResponse, Runnable, NetMessageHandler {
 
-	private NetCallRequest request;
+	private GNetMessage requestMessage;
+	private GNetCallResponse responseMessage;
+
 	private ClusterNode node;
+
+	@Autowired
 	private Cluster cluster;
 
-	private GNetCallResponse gResponseMessage;
+	private int requestId;
+	private String endpoint;
 	private NetCallResponseCallback callback;
 
-	private int requestId;
+	private Logger logger = LoggerFactory.getLogger(getClass());
 
-	public void invoke(NetCallRequest request, Cluster cluster, ClusterNode node, NetCallResponseCallback callback) {
+	// timeout would be nice.
+
+	public void invoke(String endpoint, int requestId, ClusterNode node, NetCallResponseCallback callback) {
 		this.node = node;
-		this.request = request;
-		this.cluster = cluster;
 		this.callback = callback;
-		this.requestId = DRandom.getRandom(1, 59999);
-
+		this.requestId = requestId;
+		this.endpoint = endpoint;
 	}
 
 	@Override
 	public void run() {
 		cluster.addNetMessageHandler(ClusterNetCall.this);
-		GNetCallRequest req = GNetCallRequest.newBuilder().setEndPoint(request.getEndpoint())
-				.setData(request.getData().toProtoBean()).setRequestId(requestId).build();
-		GNetMessage reqMe = GNetMessage.newBuilder().setCallReq(req).build();
 		try {
-			node.sendNetMessage(reqMe);
+			if(logger.isDebugEnabled()) { 
+				logger.debug(MarkerFactory.getMarker("NETCALL"), "Invoking request to node {}  endpoint {}",node.getId(), endpoint);
+			}
+			GNetMessage mes = GNetFactory.callRequest(endpoint, requestId, cluster.getNetTopic());
+			node.sendNetMessage(mes);
 		} catch (Exception e) {
+			logger.error(MarkerFactory.getMarker("NETCALL"), "Exception sending message to node {}  endpoint {}  " + e.toString(),node.getId(),endpoint);
 			cluster.removeNetMessageHandler(this);
-			callback.onError(new Exception("Exception sending net call request " + e.toString()));
+			GNetMessage respM = GNetFactory.callResponseError(requestId,
+					"Internal error forwarding request to cluster node " + e.toString());
+			callback.onError(respM);
+			cluster.removeNetMessageHandler(ClusterNetCall.this);
+			return;
 		}
-	}
-
-	@Override
-	public boolean hasException() {
-		if (gResponseMessage == null) {
-			return false;
-		}
-		if (gResponseMessage.getCode() == GNetCode.ERROR) {
-			return true;
-		}
-		return false;
-	}
-
-	@Override
-	public String getException() {
-		return gResponseMessage.getException();
-	}
-
-	@Override
-	public int getRequestId() {
-		return requestId;
-	}
-
-	@Override
-	public NetBean getData() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public void setException(String exception) {
-
-	}
-
-	@Override
-	public void setString(String field, String value) {
-		// TODO Auto-generated method stub
-
-	}
-
-	@Override
-	public void setDouble(String field, Double value) {
-		// TODO Auto-generated method stub
-
-	}
-
-	@Override
-	public void setJson(String field, Object value) {
-		// TODO Auto-generated method stub
-
 	}
 
 	@Override
 	public void handle(GNetMessage message) {
 		if (message.getValueCase() == ValueCase.CALLRESP) {
-			if (message.getCallResp().getRequestId() == request.getRequestId()) {
-				gResponseMessage = message.getCallResp();
-				if (gResponseMessage.getCode() == GNetCode.ERROR) {
-						callback.onError(new Throwable("Server Returned Error on response " + gResponseMessage.getException()));
+			if (message.getCallResp().getRequestId() == requestId) {
+				responseMessage = message.getCallResp();
+				if (responseMessage.getCode() == GNetCode.ERROR) {
+					callback.onError(message);
+				} else {
+					callback.onSuccess(message);
 				}
-				else // its okay 
-					callback.onResponse(gResponseMessage);
 			}
 			cluster.removeNetMessageHandler(ClusterNetCall.this);
 		}
+	}
+
+	@Override
+	public NetBean getNetBean() {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 }

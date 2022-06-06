@@ -2,13 +2,11 @@ package com.dunkware.xstream.net.client.core.registry;
 
 import com.dunkware.xstream.net.client.StreamClientConnector;
 import com.dunkware.xstream.net.client.connector.StreamClientConnectorType;
-import com.dunkware.xstream.net.client.connector.StreamClientGrpcConnectorType;
 import com.dunkware.xstream.net.client.connector.StreamClientKafkaConnectorType;
-import com.dunkware.xstream.net.client.core.connector.StreamClientGrpcConnector;
 import com.dunkware.xstream.net.client.core.connector.StreamClientKafkaConnector;
 
 public class StreamClientRegistry {
-
+	
 	private static StreamClientRegistry instance = null; 
 	
 	public static StreamClientRegistry get() { 
@@ -19,9 +17,7 @@ public class StreamClientRegistry {
 	}
 	
 	public StreamClientConnector createConnector(StreamClientConnectorType connectorType) throws Exception { 
-		if (connectorType instanceof StreamClientGrpcConnectorType) { 
-			return new StreamClientGrpcConnector();
-		}
+	
 		if (connectorType instanceof StreamClientKafkaConnectorType) { 
 			return new StreamClientKafkaConnector();
 		}

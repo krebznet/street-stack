@@ -1,9 +1,7 @@
 package com.dunkware.net.core.data;
 
-public interface NetBeanListObserver {
+public interface NetBeanListObserver extends NetBeanObserver {
 
-	public void beanUpdate(NetBean bean);
-	
 	public void beanInsert(NetBean bean);
 	
 	public void beanRemove(NetBean bean);

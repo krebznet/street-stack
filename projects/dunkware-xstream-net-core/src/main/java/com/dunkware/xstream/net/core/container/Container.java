@@ -7,7 +7,7 @@ import java.util.function.Predicate;
 import com.dunkware.common.util.dtime.DTimeZone;
 import com.dunkware.common.util.executor.DExecutor;
 import com.dunkware.net.proto.data.GTimeUnit;
-import com.dunkware.net.proto.netstream.GNetEntityMatcher;
+import com.dunkware.net.proto.stream.GEntityMatcher;
 import com.dunkware.net.proto.stream.GEntitySignal;
 import com.dunkware.net.proto.stream.GEntitySnapshot;
 import com.dunkware.net.proto.stream.GStreamTimeUpdate;
@@ -38,7 +38,7 @@ public interface Container {
 	
 	public void deleteContainer();
 	
-	public ContainerSearchResults<ContainerEntity> entitySearch(GNetEntityMatcher matcher) throws ContainerException;
+	public ContainerSearchResults<ContainerEntity> entitySearch(GEntityMatcher matcher) throws ContainerException;
 	
 	public ContainerSearchResults<ContainerEntity> entitySearch(List<Predicate<ContainerEntity>> predicates);
 	

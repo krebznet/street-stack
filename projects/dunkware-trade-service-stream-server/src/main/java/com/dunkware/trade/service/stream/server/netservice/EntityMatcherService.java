@@ -22,16 +22,7 @@ public class EntityMatcherService implements NetCallService {
 		// DeleteMatcher
 		// UpdateMatcher
 		// GetMatcherRefs
-		String streamIdent = req.getString("stream");
 		
-		String reqType = req.getString("reqType");
-		if(reqType.equals("getMatcher")) { 
-			int matcherId = req.getInt("matcherId");
-			// find the matcher 
-		}
-		if(reqType.equals("getMatcherRefs")) { 
-			// List Getmatchers
-		}
 	}
 
 	

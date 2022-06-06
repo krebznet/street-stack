@@ -30,4 +30,9 @@ public interface GNetChannelResponseOrBuilder extends
    */
   com.google.protobuf.ByteString
       getExceptionBytes();
+
+  /**
+   * <code>int32 channelId = 4;</code>
+   */
+  int getChannelId();
 }

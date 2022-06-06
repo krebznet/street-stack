@@ -3,11 +3,11 @@ package com.dunkware.xstream.net.client.test;
 import com.dunkware.common.util.executor.DExecutor;
 import com.dunkware.net.proto.data.GOperator;
 import com.dunkware.net.proto.netstream.GNetEntity;
-import com.dunkware.net.proto.netstream.GNetEntityCriteria;
-import com.dunkware.net.proto.netstream.GNetEntityMatcher;
-import com.dunkware.net.proto.netstream.GNetEntityVarCriteria;
-import com.dunkware.net.proto.netstream.GNetEntityVarValue;
-import com.dunkware.net.proto.netstream.GNetEntityVarValueType;
+import com.dunkware.net.proto.stream.GEntityCriteria;
+import com.dunkware.net.proto.stream.GEntityCriteriaVar;
+import com.dunkware.net.proto.stream.GEntityCriteriaVarType;
+import com.dunkware.net.proto.stream.GEntityMatcher;
+import com.dunkware.net.proto.stream.GEntityVarCriteria;
 import com.dunkware.xstream.net.client.StreamClient;
 import com.dunkware.xstream.net.client.StreamClientEntitySearch;
 import com.dunkware.xstream.net.client.StreamClientEntitySearchCallBack;
@@ -49,10 +49,10 @@ public class StreamClientTest1 {
 		}
 		
 		
-		GNetEntityVarValue value = GNetEntityVarValue.newBuilder().setType(GNetEntityVarValueType.VALUE_NOW).setIdent("AAPL").setId(9).build();
-		GNetEntityVarCriteria varCrit = GNetEntityVarCriteria.newBuilder().setVar(value).setValue("AAPL").setOperator(GOperator.EQ).build();
-		GNetEntityCriteria crit = GNetEntityCriteria.newBuilder().addVarCriterias(varCrit).build();
-		GNetEntityMatcher matcher = GNetEntityMatcher.newBuilder().addVarCriterias(crit).build();
+		GEntityCriteriaVar value = GEntityCriteriaVar.newBuilder().setType(GEntityCriteriaVarType.VALUE_NOW).setIdent("AAPL").setId(9).build();
+		GEntityVarCriteria varCrit = GEntityVarCriteria.newBuilder().setVar(value).setValue("AAPL").setOperator(GOperator.EQ).build();
+		GEntityCriteria crit = GEntityCriteria.newBuilder().setVarCriteria(varCrit).build();
+		GEntityMatcher matcher = GEntityMatcher.newBuilder().addVarCriterias(crit).build();
 		try {
 			client.entitySearch(matcher, "*", callback);
 				

@@ -18,7 +18,7 @@ public class StreamSpecService implements NetCallService {
 	
 	@Override
 	public void service(NetCallRequest req, NetCallResponse resp) throws NetServiceException {
-		String streamIdent = req.getString("stream");
+		String streamIdent = req.getData().getString("stream");
 		StreamController stream = null;
 		try {
 			stream = streamService.getStreamByName(streamIdent);

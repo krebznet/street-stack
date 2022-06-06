@@ -17,7 +17,7 @@ private static final long serialVersionUID = 0L;
   }
   private GNetCallRequest() {
     requestId_ = 0;
-    topic_ = "";
+    source_ = "";
     endPoint_ = "";
   }
 
@@ -53,7 +53,7 @@ private static final long serialVersionUID = 0L;
           case 18: {
             java.lang.String s = input.readStringRequireUtf8();
 
-            topic_ = s;
+            source_ = s;
             break;
           }
           case 26: {
@@ -116,34 +116,34 @@ private static final long serialVersionUID = 0L;
     return requestId_;
   }
 
-  public static final int TOPIC_FIELD_NUMBER = 2;
-  private volatile java.lang.Object topic_;
+  public static final int SOURCE_FIELD_NUMBER = 2;
+  private volatile java.lang.Object source_;
   /**
-   * <code>string topic = 2;</code>
+   * <code>string source = 2;</code>
    */
-  public java.lang.String getTopic() {
-    java.lang.Object ref = topic_;
+  public java.lang.String getSource() {
+    java.lang.Object ref = source_;
     if (ref instanceof java.lang.String) {
       return (java.lang.String) ref;
     } else {
       com.google.protobuf.ByteString bs = 
           (com.google.protobuf.ByteString) ref;
       java.lang.String s = bs.toStringUtf8();
-      topic_ = s;
+      source_ = s;
       return s;
     }
   }
   /**
-   * <code>string topic = 2;</code>
+   * <code>string source = 2;</code>
    */
   public com.google.protobuf.ByteString
-      getTopicBytes() {
-    java.lang.Object ref = topic_;
+      getSourceBytes() {
+    java.lang.Object ref = source_;
     if (ref instanceof java.lang.String) {
       com.google.protobuf.ByteString b = 
           com.google.protobuf.ByteString.copyFromUtf8(
               (java.lang.String) ref);
-      topic_ = b;
+      source_ = b;
       return b;
     } else {
       return (com.google.protobuf.ByteString) ref;
@@ -222,8 +222,8 @@ private static final long serialVersionUID = 0L;
     if (requestId_ != 0) {
       output.writeInt32(1, requestId_);
     }
-    if (!getTopicBytes().isEmpty()) {
-      com.google.protobuf.GeneratedMessageV3.writeString(output, 2, topic_);
+    if (!getSourceBytes().isEmpty()) {
+      com.google.protobuf.GeneratedMessageV3.writeString(output, 2, source_);
     }
     if (!getEndPointBytes().isEmpty()) {
       com.google.protobuf.GeneratedMessageV3.writeString(output, 3, endPoint_);
@@ -244,8 +244,8 @@ private static final long serialVersionUID = 0L;
       size += com.google.protobuf.CodedOutputStream
         .computeInt32Size(1, requestId_);
     }
-    if (!getTopicBytes().isEmpty()) {
-      size += com.google.protobuf.GeneratedMessageV3.computeStringSize(2, topic_);
+    if (!getSourceBytes().isEmpty()) {
+      size += com.google.protobuf.GeneratedMessageV3.computeStringSize(2, source_);
     }
     if (!getEndPointBytes().isEmpty()) {
       size += com.google.protobuf.GeneratedMessageV3.computeStringSize(3, endPoint_);
@@ -272,8 +272,8 @@ private static final long serialVersionUID = 0L;
     boolean result = true;
     result = result && (getRequestId()
         == other.getRequestId());
-    result = result && getTopic()
-        .equals(other.getTopic());
+    result = result && getSource()
+        .equals(other.getSource());
     result = result && getEndPoint()
         .equals(other.getEndPoint());
     result = result && (hasData() == other.hasData());
@@ -294,8 +294,8 @@ private static final long serialVersionUID = 0L;
     hash = (19 * hash) + getDescriptor().hashCode();
     hash = (37 * hash) + REQUESTID_FIELD_NUMBER;
     hash = (53 * hash) + getRequestId();
-    hash = (37 * hash) + TOPIC_FIELD_NUMBER;
-    hash = (53 * hash) + getTopic().hashCode();
+    hash = (37 * hash) + SOURCE_FIELD_NUMBER;
+    hash = (53 * hash) + getSource().hashCode();
     hash = (37 * hash) + ENDPOINT_FIELD_NUMBER;
     hash = (53 * hash) + getEndPoint().hashCode();
     if (hasData()) {
@@ -437,7 +437,7 @@ private static final long serialVersionUID = 0L;
       super.clear();
       requestId_ = 0;
 
-      topic_ = "";
+      source_ = "";
 
       endPoint_ = "";
 
@@ -474,7 +474,7 @@ private static final long serialVersionUID = 0L;
     public com.dunkware.net.proto.net.GNetCallRequest buildPartial() {
       com.dunkware.net.proto.net.GNetCallRequest result = new com.dunkware.net.proto.net.GNetCallRequest(this);
       result.requestId_ = requestId_;
-      result.topic_ = topic_;
+      result.source_ = source_;
       result.endPoint_ = endPoint_;
       if (dataBuilder_ == null) {
         result.data_ = data_;
@@ -532,8 +532,8 @@ private static final long serialVersionUID = 0L;
       if (other.getRequestId() != 0) {
         setRequestId(other.getRequestId());
       }
-      if (!other.getTopic().isEmpty()) {
-        topic_ = other.topic_;
+      if (!other.getSource().isEmpty()) {
+        source_ = other.source_;
         onChanged();
       }
       if (!other.getEndPoint().isEmpty()) {
@@ -598,71 +598,71 @@ private static final long serialVersionUID = 0L;
       return this;
     }
 
-    private java.lang.Object topic_ = "";
+    private java.lang.Object source_ = "";
     /**
-     * <code>string topic = 2;</code>
+     * <code>string source = 2;</code>
      */
-    public java.lang.String getTopic() {
-      java.lang.Object ref = topic_;
+    public java.lang.String getSource() {
+      java.lang.Object ref = source_;
       if (!(ref instanceof java.lang.String)) {
         com.google.protobuf.ByteString bs =
             (com.google.protobuf.ByteString) ref;
         java.lang.String s = bs.toStringUtf8();
-        topic_ = s;
+        source_ = s;
         return s;
       } else {
         return (java.lang.String) ref;
       }
     }
     /**
-     * <code>string topic = 2;</code>
+     * <code>string source = 2;</code>
      */
     public com.google.protobuf.ByteString
-        getTopicBytes() {
-      java.lang.Object ref = topic_;
+        getSourceBytes() {
+      java.lang.Object ref = source_;
       if (ref instanceof String) {
         com.google.protobuf.ByteString b = 
             com.google.protobuf.ByteString.copyFromUtf8(
                 (java.lang.String) ref);
-        topic_ = b;
+        source_ = b;
         return b;
       } else {
         return (com.google.protobuf.ByteString) ref;
       }
     }
     /**
-     * <code>string topic = 2;</code>
+     * <code>string source = 2;</code>
      */
-    public Builder setTopic(
+    public Builder setSource(
         java.lang.String value) {
       if (value == null) {
     throw new NullPointerException();
   }
   
-      topic_ = value;
+      source_ = value;
       onChanged();
       return this;
     }
     /**
-     * <code>string topic = 2;</code>
+     * <code>string source = 2;</code>
      */
-    public Builder clearTopic() {
+    public Builder clearSource() {
       
-      topic_ = getDefaultInstance().getTopic();
+      source_ = getDefaultInstance().getSource();
       onChanged();
       return this;
     }
     /**
-     * <code>string topic = 2;</code>
+     * <code>string source = 2;</code>
      */
-    public Builder setTopicBytes(
+    public Builder setSourceBytes(
         com.google.protobuf.ByteString value) {
       if (value == null) {
     throw new NullPointerException();
   }
   checkByteStringIsUtf8(value);
       
-      topic_ = value;
+      source_ = value;
       onChanged();
       return this;
     }

@@ -11,10 +11,9 @@ import java.util.concurrent.Semaphore;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.dunkware.common.util.json.DJson;
 import com.dunkware.common.util.time.DunkTime;
-import com.dunkware.net.proto.netstream.GNetEntityVarValue;
-import com.dunkware.net.proto.netstream.GNetEntityVarValueType;
+import com.dunkware.net.proto.stream.GEntityCriteriaVar;
+import com.dunkware.net.proto.stream.GEntityCriteriaVarType;
 import com.dunkware.net.proto.stream.GEntitySignal;
 import com.dunkware.net.proto.stream.GEntitySnapshot;
 import com.dunkware.net.proto.stream.GEntityVarSnapshot;
@@ -249,8 +248,8 @@ public class ContainerEntityImpl implements ContainerEntity  {
 	
 
 	@Override
-	public Object resolveCriteriaVar(GNetEntityVarValue var) throws ContainerException, ContainerSearchException {
-		if(var.getType() == GNetEntityVarValueType.VALUE_NOW) { 
+	public Object resolveCriteriaVar(GEntityCriteriaVar var) throws ContainerException, ContainerSearchException {
+		if(var.getType() == GEntityCriteriaVarType.VALUE_NOW) { 
 			return varLastValues.get(var.getIdent());
 		}
 		throw new ContainerSearchException("GNetEntityVarValue type " + var.getType().name() + " not implemented");

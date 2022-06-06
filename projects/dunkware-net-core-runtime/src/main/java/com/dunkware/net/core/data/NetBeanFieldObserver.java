@@ -2,6 +2,6 @@ package com.dunkware.net.core.data;
 
 public interface NetBeanFieldObserver {
 	
-	public void fieldUpdate(NetBeanFieldUpdate update);
+	public void onUpdate(NetBean bean);
 
 }

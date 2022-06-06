@@ -34,7 +34,6 @@ import com.dunkware.common.util.events.DEventTree;
 import com.dunkware.common.util.executor.DExecutor;
 import com.dunkware.common.util.json.DJson;
 import com.dunkware.common.util.logging.Markers;
-import com.dunkware.common.util.time.DunkTime;
 import com.dunkware.net.cluster.json.job.ClusterJobState;
 import com.dunkware.net.cluster.json.node.ClusterNodeServiceDescriptor;
 import com.dunkware.net.cluster.json.node.ClusterNodeServiceType;
@@ -50,14 +49,14 @@ import com.dunkware.net.cluster.node.ClusterNodeException;
 import com.dunkware.net.core.anot.NetAnnotationRegistry;
 import com.dunkware.net.core.anot.NetCallServiceDescriptor;
 import com.dunkware.net.core.anot.NetStreamServiceDescriptor;
-import com.dunkware.net.core.service.NetCallRequest;
-import com.dunkware.net.core.service.NetCallResponse;
+import com.dunkware.net.core.data.NetDataFactory;
 import com.dunkware.net.core.service.NetCallResponseCallback;
-import com.dunkware.net.core.service.NetChannelRequest;
-import com.dunkware.net.core.service.NetChannelResponse;
+import com.dunkware.net.core.service.NetCallService;
 import com.dunkware.net.core.service.NetChannelResponseCallback;
+import com.dunkware.net.core.service.NetChannelService;
 import com.dunkware.net.core.service.NetMessageHandler;
-import com.dunkware.net.core.service.NetMessageHandler;
+import com.dunkware.net.core.util.GNetFactory;
+import com.dunkware.net.core.util.GNetHelper;
 import com.dunkware.net.proto.cluster.GClusterEvent;
 import com.dunkware.net.proto.cluster.GNodeUpdate;
 import com.dunkware.net.proto.cluster.GNodeUpdateRequest;
@@ -69,6 +68,8 @@ import com.dunkware.net.proto.cluster.GReserveWorkerNodesResponse;
 import com.dunkware.net.proto.cluster.GReserveWorkerNodesResponse.GrantedNode;
 import com.dunkware.net.proto.cluster.service.GClustererviceGrpc;
 import com.dunkware.net.proto.cluster.service.GClustererviceGrpc.GClustererviceStub;
+import com.dunkware.net.proto.net.GNetCallRequest;
+import com.dunkware.net.proto.net.GNetChannelRequest;
 import com.dunkware.net.proto.net.GNetMessage;
 
 import io.grpc.ConnectivityState;
@@ -92,6 +93,8 @@ public class ClusterImpl implements Cluster {
 	private DEventTree eventTree;
 
 	private DExecutor executor;
+	
+	private NetDataFactory netDataFactory;
 
 	private DKafkaByteProducer eventProducer;
 
@@ -125,11 +128,14 @@ public class ClusterImpl implements Cluster {
 	
 	private BlockingQueue<GNetMessage> netMessageQueue = new LinkedBlockingQueue<GNetMessage>();
 	
-	private DKafkaByteConsumer2 netMessageConsuer;;
+	private DKafkaByteConsumer2 netMessageConsuer;
 	
 	private NetMessageRouter netMessageRouter = null;
 
 	private BlockingQueue<GNodeUpdateResponse> responseQueue = new LinkedBlockingDeque<GNodeUpdateResponse>();
+	
+	private Map<String,NetCallService> callServices = new ConcurrentHashMap<String, NetCallService>();
+	private Map<String,NetChannelService> channelServices = new ConcurrentHashMap<String, NetChannelService>();
 
 	private AtomicInteger pendingRunnables = new AtomicInteger(0);
 
@@ -138,6 +144,7 @@ public class ClusterImpl implements Cluster {
 		try {
 			// need to build our service registry
 			// create the kafka consume r
+		
 			try {
 				String topic = "cluster_node_" + clusterConfig.getNodeId() + "_net_messages";
 				DKafkaByteConsumer2Spec spec = 
@@ -160,6 +167,8 @@ public class ClusterImpl implements Cluster {
 					desc.setType(ClusterNodeServiceType.STREAM);
 					desc.setClassName(servDesc.getClazz().getName());
 					desc.setEndpoint(servDesc.getEndpoint());
+			
+					
 					netServiceDescriptors.add(desc);
 					ClusterNodeServiceDescriptor descp = new ClusterNodeServiceDescriptor();
 					descp.setClassName(desc.getClassName());
@@ -173,6 +182,13 @@ public class ClusterImpl implements Cluster {
 					desc.setType(ClusterNodeServiceType.CALL);
 					desc.setEndpoint(desc.getEndpoint());
 					desc.setClassName(servDesc.getClazz().getName());
+					try {
+						NetCallService callService = (NetCallService)servDesc.getClazz().newInstance();
+						ac.getAutowireCapableBeanFactory().autowireBean(callService);
+						callServices.put(servDesc.getEndpoint(), callService);
+					} catch (Exception e) {
+						logger.error("Exception creating registered net call service " + e.toString());
+					}
 					netServiceDescriptors.add(desc);
 					ClusterNodeServiceDescriptor descp = new ClusterNodeServiceDescriptor();
 					descp.setClassName(desc.getClassName());
@@ -224,6 +240,7 @@ public class ClusterImpl implements Cluster {
 		registry = new ClusterRegistry();
 		registry.start(this);
 		executor = new DExecutor(15);
+		netDataFactory = NetDataFactory.newInstance(executor);
 		eventTree = DEventTree.newInstance(executor);
 		eventService = new ClusterEventService();
 		eventTree = DEventTree.newInstance(executor);
@@ -253,6 +270,36 @@ public class ClusterImpl implements Cluster {
 		}
 
 	}
+	
+	
+	
+
+	@Override
+	public NetDataFactory netDataFactory() {
+		return netDataFactory;
+	}
+
+
+
+
+	@Override
+	public NetCallService netCallService(String endpoint) throws ClusterNodeException {
+		NetCallService serv = callServices.get(endpoint);
+		if(serv == null) { 
+			throw new ClusterNodeException("NetCall Service not found for endpoint" + endpoint);
+		}
+		return serv;
+	}
+
+
+
+	@Override
+	public NetChannelService netChannelService(String endpoint) throws ClusterNodeException {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+
 
 	@Override
 	public void addNetMessageHandler(final NetMessageHandler handler) {
@@ -639,6 +686,14 @@ public class ClusterImpl implements Cluster {
 		};
 		getExecutor().execute(nodeUpdater);
 	}
+	
+	
+
+	@Override
+	public String getNetTopic() {
+		String topic = "cluster_node_" + getNodeId() + "_net_messages";
+		return topic;
+	}
 
 	@Override
 	public ClusterNode getCallRequestNode(String endpoint) throws ClusterNodeException {
@@ -669,16 +724,22 @@ public class ClusterImpl implements Cluster {
 
 	
 
+	
 	@Override
-	public void netCall(NetCallRequest request, NetCallResponseCallback callback) throws ClusterNodeException {
-		ClusterNetCall netCall = new ClusterNetCall();
-		netCall.invoke(request, cluster, null, callback);
-		getExecutor().execute(netCall);
-		return;
+	public void netCall(String endPoint, int requestId, NetCallResponseCallback callback) throws ClusterNodeException {
+		ClusterNetCall call = new ClusterNetCall();
+		ac.getAutowireCapableBeanFactory().autowireBean(call);
+		ClusterNode serviceNode = getCallRequestNode(endPoint);
+		call.invoke(endPoint, requestId, serviceNode,callback);
+		cluster.getExecutor().execute(call);
 	}
 
+	
+
+
+
 	@Override
-	public void netChannel(NetChannelRequest request, NetChannelResponseCallback callback) throws ClusterNodeException {
+	public void netChannel(GNetChannelRequest request, NetChannelResponseCallback callback) throws ClusterNodeException {
 		// TODO Auto-generated method stub
 		
 	}
@@ -703,7 +764,9 @@ public class ClusterImpl implements Cluster {
 				try {
 					GNetMessage message = netMessageQueue.take();
 					try {
+						
 						netMessageHandlerLock.acquire();
+						
 						for (NetMessageHandler handler : netMessageHandlers) {
 							handler.handle(message);
 						}

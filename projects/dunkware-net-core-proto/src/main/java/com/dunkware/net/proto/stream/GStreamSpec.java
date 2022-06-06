@@ -4,11 +4,6 @@
 package com.dunkware.net.proto.stream;
 
 /**
- * <pre>
- **
- *Stream Resource Specs 
- * </pre>
- *
  * Protobuf type {@code dunkware.stream.GStreamSpec}
  */
 public  final class GStreamSpec extends
@@ -360,11 +355,6 @@ private static final long serialVersionUID = 0L;
     return builder;
   }
   /**
-   * <pre>
-   **
-   *Stream Resource Specs 
-   * </pre>
-   *
    * Protobuf type {@code dunkware.stream.GStreamSpec}
    */
   public static final class Builder extends

@@ -8,14 +8,9 @@ public interface GNetChannelMessageOrBuilder extends
     com.google.protobuf.MessageOrBuilder {
 
   /**
-   * <code>string channelId = 1;</code>
+   * <code>int32 channelId = 1;</code>
    */
-  java.lang.String getChannelId();
-  /**
-   * <code>string channelId = 1;</code>
-   */
-  com.google.protobuf.ByteString
-      getChannelIdBytes();
+  int getChannelId();
 
   /**
    * <code>.dunkware.data.GBean data = 2;</code>

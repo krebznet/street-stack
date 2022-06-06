@@ -13,17 +13,17 @@ public interface GNetEntitySearchRequestOrBuilder extends
   int getSearchId();
 
   /**
-   * <code>.dunkware.netstream.GNetEntityMatcher matcher = 3;</code>
+   * <code>.dunkware.stream.GEntityMatcher matcher = 3;</code>
    */
   boolean hasMatcher();
   /**
-   * <code>.dunkware.netstream.GNetEntityMatcher matcher = 3;</code>
+   * <code>.dunkware.stream.GEntityMatcher matcher = 3;</code>
    */
-  com.dunkware.net.proto.netstream.GNetEntityMatcher getMatcher();
+  com.dunkware.net.proto.stream.GEntityMatcher getMatcher();
   /**
-   * <code>.dunkware.netstream.GNetEntityMatcher matcher = 3;</code>
+   * <code>.dunkware.stream.GEntityMatcher matcher = 3;</code>
    */
-  com.dunkware.net.proto.netstream.GNetEntityMatcherOrBuilder getMatcherOrBuilder();
+  com.dunkware.net.proto.stream.GEntityMatcherOrBuilder getMatcherOrBuilder();
 
   /**
    * <code>string retVars = 4;</code>

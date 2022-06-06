@@ -16,7 +16,7 @@ private static final long serialVersionUID = 0L;
     super(builder);
   }
   private GNetChannelMessage() {
-    channelId_ = "";
+    channelId_ = 0;
     error_ = "";
   }
 
@@ -44,10 +44,9 @@ private static final long serialVersionUID = 0L;
           case 0:
             done = true;
             break;
-          case 10: {
-            java.lang.String s = input.readStringRequireUtf8();
+          case 8: {
 
-            channelId_ = s;
+            channelId_ = input.readInt32();
             break;
           }
           case 18: {
@@ -209,37 +208,12 @@ private static final long serialVersionUID = 0L;
   }
 
   public static final int CHANNELID_FIELD_NUMBER = 1;
-  private volatile java.lang.Object channelId_;
+  private int channelId_;
   /**
-   * <code>string channelId = 1;</code>
+   * <code>int32 channelId = 1;</code>
    */
-  public java.lang.String getChannelId() {
-    java.lang.Object ref = channelId_;
-    if (ref instanceof java.lang.String) {
-      return (java.lang.String) ref;
-    } else {
-      com.google.protobuf.ByteString bs = 
-          (com.google.protobuf.ByteString) ref;
-      java.lang.String s = bs.toStringUtf8();
-      channelId_ = s;
-      return s;
-    }
-  }
-  /**
-   * <code>string channelId = 1;</code>
-   */
-  public com.google.protobuf.ByteString
-      getChannelIdBytes() {
-    java.lang.Object ref = channelId_;
-    if (ref instanceof java.lang.String) {
-      com.google.protobuf.ByteString b = 
-          com.google.protobuf.ByteString.copyFromUtf8(
-              (java.lang.String) ref);
-      channelId_ = b;
-      return b;
-    } else {
-      return (com.google.protobuf.ByteString) ref;
-    }
+  public int getChannelId() {
+    return channelId_;
   }
 
   public static final int DATA_FIELD_NUMBER = 2;
@@ -311,8 +285,8 @@ private static final long serialVersionUID = 0L;
   @java.lang.Override
   public void writeTo(com.google.protobuf.CodedOutputStream output)
                       throws java.io.IOException {
-    if (!getChannelIdBytes().isEmpty()) {
-      com.google.protobuf.GeneratedMessageV3.writeString(output, 1, channelId_);
+    if (channelId_ != 0) {
+      output.writeInt32(1, channelId_);
     }
     if (data_ != null) {
       output.writeMessage(2, getData());
@@ -329,8 +303,9 @@ private static final long serialVersionUID = 0L;
     if (size != -1) return size;
 
     size = 0;
-    if (!getChannelIdBytes().isEmpty()) {
-      size += com.google.protobuf.GeneratedMessageV3.computeStringSize(1, channelId_);
+    if (channelId_ != 0) {
+      size += com.google.protobuf.CodedOutputStream
+        .computeInt32Size(1, channelId_);
     }
     if (data_ != null) {
       size += com.google.protobuf.CodedOutputStream
@@ -355,8 +330,8 @@ private static final long serialVersionUID = 0L;
     com.dunkware.net.proto.net.GNetChannelMessage other = (com.dunkware.net.proto.net.GNetChannelMessage) obj;
 
     boolean result = true;
-    result = result && getChannelId()
-        .equals(other.getChannelId());
+    result = result && (getChannelId()
+        == other.getChannelId());
     result = result && (hasData() == other.hasData());
     if (hasData()) {
       result = result && getData()
@@ -376,7 +351,7 @@ private static final long serialVersionUID = 0L;
     int hash = 41;
     hash = (19 * hash) + getDescriptor().hashCode();
     hash = (37 * hash) + CHANNELID_FIELD_NUMBER;
-    hash = (53 * hash) + getChannelId().hashCode();
+    hash = (53 * hash) + getChannelId();
     if (hasData()) {
       hash = (37 * hash) + DATA_FIELD_NUMBER;
       hash = (53 * hash) + getData().hashCode();
@@ -516,7 +491,7 @@ private static final long serialVersionUID = 0L;
     @java.lang.Override
     public Builder clear() {
       super.clear();
-      channelId_ = "";
+      channelId_ = 0;
 
       if (dataBuilder_ == null) {
         data_ = null;
@@ -607,9 +582,8 @@ private static final long serialVersionUID = 0L;
 
     public Builder mergeFrom(com.dunkware.net.proto.net.GNetChannelMessage other) {
       if (other == com.dunkware.net.proto.net.GNetChannelMessage.getDefaultInstance()) return this;
-      if (!other.getChannelId().isEmpty()) {
-        channelId_ = other.channelId_;
-        onChanged();
+      if (other.getChannelId() != 0) {
+        setChannelId(other.getChannelId());
       }
       if (other.hasData()) {
         mergeData(other.getData());
@@ -647,71 +621,28 @@ private static final long serialVersionUID = 0L;
       return this;
     }
 
-    private java.lang.Object channelId_ = "";
+    private int channelId_ ;
     /**
-     * <code>string channelId = 1;</code>
+     * <code>int32 channelId = 1;</code>
      */
-    public java.lang.String getChannelId() {
-      java.lang.Object ref = channelId_;
-      if (!(ref instanceof java.lang.String)) {
-        com.google.protobuf.ByteString bs =
-            (com.google.protobuf.ByteString) ref;
-        java.lang.String s = bs.toStringUtf8();
-        channelId_ = s;
-        return s;
-      } else {
-        return (java.lang.String) ref;
-      }
+    public int getChannelId() {
+      return channelId_;
     }
     /**
-     * <code>string channelId = 1;</code>
+     * <code>int32 channelId = 1;</code>
      */
-    public com.google.protobuf.ByteString
-        getChannelIdBytes() {
-      java.lang.Object ref = channelId_;
-      if (ref instanceof String) {
-        com.google.protobuf.ByteString b = 
-            com.google.protobuf.ByteString.copyFromUtf8(
-                (java.lang.String) ref);
-        channelId_ = b;
-        return b;
-      } else {
-        return (com.google.protobuf.ByteString) ref;
-      }
-    }
-    /**
-     * <code>string channelId = 1;</code>
-     */
-    public Builder setChannelId(
-        java.lang.String value) {
-      if (value == null) {
-    throw new NullPointerException();
-  }
-  
+    public Builder setChannelId(int value) {
+      
       channelId_ = value;
       onChanged();
       return this;
     }
     /**
-     * <code>string channelId = 1;</code>
+     * <code>int32 channelId = 1;</code>
      */
     public Builder clearChannelId() {
       
-      channelId_ = getDefaultInstance().getChannelId();
-      onChanged();
-      return this;
-    }
-    /**
-     * <code>string channelId = 1;</code>
-     */
-    public Builder setChannelIdBytes(
-        com.google.protobuf.ByteString value) {
-      if (value == null) {
-    throw new NullPointerException();
-  }
-  checkByteStringIsUtf8(value);
-      
-      channelId_ = value;
+      channelId_ = 0;
       onChanged();
       return this;
     }

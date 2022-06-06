@@ -3,12 +3,11 @@ package com.dunkware.xstream.net.client.core.actions;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.dunkware.common.util.executor.DExecutor;
 import com.dunkware.common.util.helpers.DRandom;
 import com.dunkware.net.proto.netstream.GNetClientMessage;
 import com.dunkware.net.proto.netstream.GNetEntity;
-import com.dunkware.net.proto.netstream.GNetEntityMatcher;
 import com.dunkware.net.proto.netstream.GNetServerMessage;
+import com.dunkware.net.proto.stream.GEntityMatcher;
 import com.dunkware.xstream.net.client.StreamClient;
 import com.dunkware.xstream.net.client.StreamClientEntitySearch;
 import com.dunkware.xstream.net.client.StreamClientEntitySearchCallBack;
@@ -23,12 +22,12 @@ public class StreamClientEntitySearchImpl implements StreamClientEntitySearch, S
 	private int searchId;
 	private StreamClient client;
 	private String retValues;
-	private GNetEntityMatcher matcher;
+	private GEntityMatcher matcher;
 	private String exception = null;
 	private StreamClientEntitySearchStatus status = StreamClientEntitySearchStatus.PENDING;
 
 	// state ==
-	public void init(GNetEntityMatcher matcher, String retValues, StreamClientEntitySearchCallBack observer,
+	public void init(GEntityMatcher matcher, String retValues, StreamClientEntitySearchCallBack observer,
 			StreamClient client) {
 		this.client = client;
 		this.searchId = DRandom.getRandom(1, 50000);

@@ -5,7 +5,6 @@ import java.util.List;
 import com.dunkware.net.proto.netstream.GNetClientConnectResponse;
 import com.dunkware.net.proto.netstream.GNetClientMessage;
 import com.dunkware.net.proto.netstream.GNetEntity;
-import com.dunkware.net.proto.netstream.GNetEntityMatcher;
 import com.dunkware.net.proto.netstream.GNetEntityScannerRequest;
 import com.dunkware.net.proto.netstream.GNetEntitySearchComplete;
 import com.dunkware.net.proto.netstream.GNetEntitySearchException;
@@ -13,10 +12,11 @@ import com.dunkware.net.proto.netstream.GNetEntitySearchResponse;
 import com.dunkware.net.proto.netstream.GNetEntitySearchResults;
 import com.dunkware.net.proto.netstream.GNetServerMessage;
 import com.dunkware.net.proto.netstream.GNetServerMessage.TypeCase;
+import com.dunkware.net.proto.stream.GEntityMatcher;
 
 public class GNetProto {
 
-	public static GNetClientMessage startEntityScannerRequest(int scannerId, int scanInterval, GNetEntityMatcher matcher, String retValues) { 
+	public static GNetClientMessage startEntityScannerRequest(int scannerId, int scanInterval, GEntityMatcher matcher, String retValues) { 
 		return GNetClientMessage.newBuilder().setEntityScannerRequest(GNetEntityScannerRequest.newBuilder().setMatcher(matcher).setScanInterval(scanInterval).setScannerId(scannerId).setRetVars(retValues).build()).build();
 		
 	}

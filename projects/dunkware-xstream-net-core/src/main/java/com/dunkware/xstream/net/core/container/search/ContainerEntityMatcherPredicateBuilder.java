@@ -4,10 +4,10 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Predicate;
 
-import com.dunkware.net.proto.netstream.GNetEntityCriteria;
-import com.dunkware.net.proto.netstream.GNetEntityMatcher;
-import com.dunkware.net.proto.netstream.GNetEntityVarCriteria;
-import com.dunkware.net.proto.netstream.GNetEntityVarValueType;
+import com.dunkware.net.proto.stream.GEntityCriteria;
+import com.dunkware.net.proto.stream.GEntityCriteriaVarType;
+import com.dunkware.net.proto.stream.GEntityMatcher;
+import com.dunkware.net.proto.stream.GEntityVarCriteria;
 import com.dunkware.xstream.net.core.container.Container;
 import com.dunkware.xstream.net.core.container.ContainerEntity;
 import com.dunkware.xstream.net.core.container.ContainerException;
@@ -16,22 +16,21 @@ import com.dunkware.xstream.net.core.container.search.entity.EntityVarCriteriaPr
 
 public class ContainerEntityMatcherPredicateBuilder {
 
-	public static List<Predicate<ContainerEntity>> build(GNetEntityMatcher matcher, Container container)
+	public static List<Predicate<ContainerEntity>> build(GEntityMatcher matcher, Container container)
 			throws ContainerException, ContainerSearchException {
 		List<Predicate<ContainerEntity>> preds = new ArrayList<Predicate<ContainerEntity>>();
-		for (GNetEntityCriteria entityCriteria : matcher.getVarCriteriasList()) {
-			// okay fucked up here but whatever its for angular
-			for (GNetEntityVarCriteria varCriteria : entityCriteria.getVarCriteriasList()) {
-				if (varCriteria.getVar().getType() == GNetEntityVarValueType.VALUE_NOW) {
-					EntityVarCriteriaPredicate pred = new EntityVarCriteriaPredicate(varCriteria);
-					preds.add(pred);
+		for (GEntityCriteria entityCriteria : matcher.getVarCriteriasList()) {
+			if (entityCriteria.getVarCriteria() != null) {
+				GEntityVarCriteria varCriteria = entityCriteria.getVarCriteria();
+				if(varCriteria.getVar().getType() != GEntityCriteriaVarType.VALUE_NOW) { 
+					throw new ContainerException("Var Value is not now ");
 				}
-
-				if (varCriteria.getVar().getType() == GNetEntityVarValueType.RANGE_RELATIVE) {
-
-				}
+				EntityVarCriteriaPredicate pred = new EntityVarCriteriaPredicate(varCriteria);
+				preds.add(pred);
 			}
+
 		}
+		
 
 		// maybe relative signal count
 		return preds;

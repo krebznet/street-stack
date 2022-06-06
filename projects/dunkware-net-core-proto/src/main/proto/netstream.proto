@@ -8,54 +8,15 @@ option java_multiple_files = true;
 option java_package = "com.dunkware.net.proto.netstream";
 option java_outer_classname = "GNetStreamProto";
 
-import "data.proto";
-
+import "netdata.proto";
+import "stream.proto";
 import "google/protobuf/timestamp.proto";
 
-/** Net Stream Matchers **/
-message GNetEntityMatcher {
-  repeated GNetEntityCriteria varCriterias = 1;
-}
-enum GNetEntityVarValueType {
-  VALUE_NOW = 0;
-  VALUE_RELATIVE = 1;
-  VALUE_ABSOLUTE = 2;
-  RANGE_RELATIVE = 3;
-  RANGE_ABSOLUTE = 4;
-  AGGREGATION_DAY = 5;
-}
-enum GNetEntityVarRangeType {
-  MAX = 0;
-  MIN = 1;
-  AVG = 3;
-}
-enum GNetEntityVarAggType {
-  AGG_MAX = 0;
-  AGG_MIN = 1;
-  AGG_AVG = 2;
-}
-message GNetEntityVarValue {
-  int32 id = 1;
-  string ident = 2;
-  GNetEntityVarValueType type = 3;
-  dunkware.data.GCalendarRange timeRange = 4;
-  data.GTime valueAbsoluteTime = 5;
-  GNetEntityVarRangeType rangeFunction = 6;
-  GNetEntityVarAggType aggFunction = 7;
-  int32 aggDays = 8;
-}
-message GNetEntityCriteria {
-  repeated GNetEntityVarCriteria varCriterias = 1;
-}
-message GNetEntityVarCriteria {
-  GNetEntityVarValue var = 1;
-  data.GOperator operator = 2;
-  string value = 3; // needs to be casted at some point
-}
+
 
 message GNetEntitySearchRequest {
   int32 searchId = 1;
-  GNetEntityMatcher matcher = 3;
+  stream.GEntityMatcher matcher = 3;
   string retVars = 4;
   string source = 5;
 }
@@ -82,7 +43,7 @@ message GNetEntitySearchResponse {
 
 message GNetEntityScannerRequest {
   int32 scannerId = 1;
-  GNetEntityMatcher matcher = 3;
+  stream.GEntityMatcher matcher = 3;
   string retVars = 4;
   string source = 5;
   int32 scanInterval = 6;
