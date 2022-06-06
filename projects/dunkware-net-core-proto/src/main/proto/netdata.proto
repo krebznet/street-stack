@@ -25,9 +25,8 @@ import "google/protobuf/timestamp.proto";
 
 // Container of data fields and referenced by either an int or string id
 message GBean {
-  string ident = 1;
-  int32 id = 2;
-  repeated  GField fields = 4;
+  int32 id = 1;
+  repeated  GField fields = 2;
 }
 
 
@@ -60,7 +59,7 @@ message GBeanList {
 
 // List Event That Can Be Different Types of Events
 message GBeanListEvent {
-   string listId = 1;
+   int32 listId = 1;
    oneof Event {
        GBeanListUpdate listUpdate = 2;
    }
@@ -74,7 +73,7 @@ message GBeanListUpdate {
 
 // Bean Identifier to delete a bean from the list
 message GBeanDelete {
-   string id = 1;
+   int32 id = 1;
 }
 message GValue {
  oneof Type {
@@ -86,6 +85,7 @@ message GValue {
    GTime time = 6;
    GBeanValue bean = 7;
    GBeanListValue beanList = 8;
+   GDoubleValue double = 9;
  }
 }
 
@@ -153,8 +153,8 @@ message GBeanInsert {
 // Existing bean update with updated fields
 // and identifier to lookup the bean.
 message GBeanUpdate {
-    string id = 1;
-    GBean bean = 2;
+    int32 id = 1;
+   repeated GField fields = 2;
 }
 
 /**
