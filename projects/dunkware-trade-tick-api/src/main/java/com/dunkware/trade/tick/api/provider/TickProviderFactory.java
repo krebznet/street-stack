@@ -4,6 +4,9 @@ import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 
 import org.reflections.Reflections;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.slf4j.MarkerFactory;
 
 import com.dunkware.trade.tick.model.provider.TickProviderSpec;
 
@@ -12,6 +15,8 @@ public class TickProviderFactory {
 	private static ConcurrentHashMap<String, Class<?>> providers = new ConcurrentHashMap<String, Class<?>>();
 
 	private static boolean initialized = false;
+	
+	private static Logger logger = LoggerFactory.getLogger(TickProviderFactory.class);
 
 	private static void init() {
 		if (initialized) {
@@ -23,6 +28,7 @@ public class TickProviderFactory {
 		Set<Class<?>> classes = reflections.getTypesAnnotatedWith(ATickProvider.class);
 		for (Class<?> provider : classes) {
 			ATickProvider anot = provider.getDeclaredAnnotation(ATickProvider.class);
+			logger.info(MarkerFactory.getMarker("TickProviderFactory"),"Adding Tick Provider "  + provider.getClass().getName());
 			providers.put(anot.type(), provider);
 		}
 		initialized = true;
