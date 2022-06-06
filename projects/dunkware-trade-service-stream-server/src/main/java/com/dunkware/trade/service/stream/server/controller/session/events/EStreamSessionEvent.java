@@ -9,6 +9,7 @@ public class EStreamSessionEvent extends ESteamEvent {
 	
 	public EStreamSessionEvent(StreamSession session) { 
 		super(session.getStream());
+		this.session = session;
 	}
 
 	public StreamSession getSession() {

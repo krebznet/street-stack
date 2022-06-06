@@ -33,12 +33,11 @@
 
 			<module>projects/dunkware-trade-sdk-tws-runtime</module>
       <module>projects/dunkware-trade-service-web-server</module>
-
-      <module>projects/dunkware-trade-service-data-lib</module>-->
+			<module>projects/dunkware-trade-service-web-mock</module>
 
 			<module>projects/dunkware-trade-service-worker-server</module>
 
-			<module>projects/dunkware-trade-service-data-json</module>
+
 			<module>projects/dunkware-trade-sdk-core-model</module>
 			<module>projects/dunkware-trade-sdk-core-runtime</module>
       <module>projects/dunkware-trade-sdk-lib-model</module>

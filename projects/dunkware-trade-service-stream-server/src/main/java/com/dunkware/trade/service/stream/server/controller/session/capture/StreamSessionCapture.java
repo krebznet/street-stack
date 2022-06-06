@@ -32,7 +32,6 @@ import com.dunkware.common.util.dtime.DTimeZone;
 import com.dunkware.common.util.helpers.DProtoHelper;
 import com.dunkware.common.util.time.DunkTime;
 import com.dunkware.common.util.uuid.DUUID;
-import com.dunkware.net.cluster.node.metrics.MetricsService;
 import com.dunkware.net.core.util.GDataHelper;
 import com.dunkware.net.proto.stream.GEntitySignal;
 import com.dunkware.net.proto.stream.GEntitySnapshot;
@@ -66,8 +65,6 @@ public class StreamSessionCapture {
 	@Autowired
 	private ApplicationContext ac;
 
-	@Autowired
-	private MetricsService metricsService;
 
 	private Map<String, DataStreamSessionEntityStats> webEntities = new ConcurrentHashMap<String, DataStreamSessionEntityStats>();
 
@@ -109,7 +106,7 @@ public class StreamSessionCapture {
 	@Transactional
 	public void controllerStart(StreamSession session) throws Exception {
 		this.session = session;
-
+		this.spec = session.getSessionSpec();
 		this.startTime = LocalDateTime.of(LocalDate.now(DTimeZone.toZoneId(spec.getTimeZone())),
 				LocalTime.now(DTimeZone.toZoneId(spec.getTimeZone())));
 		logger.info("Starting Data Stream Session {} Stream {}", spec.getSessionId(), session.getStream().getName());
@@ -135,6 +132,7 @@ public class StreamSessionCapture {
 		sessionEntity.setSessionIdentifier(spec.getSessionId());
 		sessionEntity.setState(DataStreamSessionState.Running);
 		sessionEntity.setScriptVersion(spec.getStreamScript().getVersion());
+		
 		try {
 			sessionRepo.save(sessionEntity);
 		} catch (Exception e) {
@@ -214,6 +212,7 @@ public class StreamSessionCapture {
 			ent.setStreamName(session.getStream().getName());
 			ent.setSignalCount(0);
 			ent.setSnapshotCount(0);
+			ent.setSession(session.getEntity());
 			entities.put(snapshot.getIdentifier(), inst);
 			if (logger.isDebugEnabled()) {
 				logger.debug(MarkerFactory.getMarker("NewSessionInstrument"), "{} {}", ent.getEntIdentifier(),

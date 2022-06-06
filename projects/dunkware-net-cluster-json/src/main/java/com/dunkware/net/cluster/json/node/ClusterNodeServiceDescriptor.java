@@ -3,8 +3,9 @@ package com.dunkware.net.cluster.json.node;
 public class ClusterNodeServiceDescriptor {
 	
 	private String className; 
-	private ClusterNodeServiceType type;
+	private ClusterNodeServiceType  type;
 	private String endpoint;
+	
 	
 	public ClusterNodeServiceType getType() {
 		return type;

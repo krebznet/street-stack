@@ -260,6 +260,7 @@ public class StreamController {
 				logger.error("Exception Starting Stream {} Session, available worker nodes is 0", getName());
 				stats.setState(StreamState.Exception);
 				stats.setError("Np Available Worker Nodes");;
+				session = null;
 				throw new StreamSessionException("No Available worker nodes to start stream session");
 			}
 			input.setWorkerNodes(nodes);

@@ -15,6 +15,7 @@ import org.springframework.stereotype.Service;
 import com.dunkware.common.util.events.anot.ADEventMethod;
 import com.dunkware.net.cluster.node.Cluster;
 import com.dunkware.trade.service.stream.server.controller.StreamControllerService;
+import com.dunkware.trade.service.stream.server.controller.session.StreamSession;
 import com.dunkware.trade.service.stream.server.controller.session.events.EStreamSessionStarted;
 
 @Service
@@ -60,14 +61,25 @@ public class StreamSessionCaptureService {
 	
 	
 	@ADEventMethod()
-	public void sessionStarted(EStreamSessionStarted started) { 
-		logger.info(marker, "Stream Session Started Event Received");
-		StreamSessionCapture capture = new StreamSessionCapture();
-		ac.getAutowireCapableBeanFactory().autowireBean(capture);
-		try {
-			capture.controllerStart(started.getSession());	
-		} catch (Exception e) {
-			logger.error(marker, "Exception Starting Stream Session Controller");
-		}
+	public void sessionStarted(final EStreamSessionStarted started) {
+		final StreamSession session = started.getSession();
+		Runnable runner = new Runnable() {
+			
+			@Override
+			public void run() {
+				logger.info(marker, "Stream Session Started Event Received");
+				StreamSessionCapture capture = new StreamSessionCapture();
+				ac.getAutowireCapableBeanFactory().autowireBean(capture);
+				try {
+					capture.controllerStart(session);	
+					runningCaptures.add(capture);
+				} catch (Exception e) {
+					logger.error(marker, "Exception Starting Stream Session Controller  " + e.toString());
+				}
+				
+			}
+		};
+		cluster.getExecutor().execute(runner);
+		
 	}
 }

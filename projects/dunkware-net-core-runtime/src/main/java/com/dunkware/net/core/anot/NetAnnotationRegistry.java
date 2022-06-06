@@ -15,7 +15,7 @@ public class NetAnnotationRegistry {
 	private static NetAnnotationRegistry instance = null;
 	
 	private List<NetCallServiceDescriptor> serviceCalls = new ArrayList<NetCallServiceDescriptor>();
-	private List<NetStreamServiceDescriptor> serviceStreams = new ArrayList<NetStreamServiceDescriptor>();
+	private List<NetChannelServiceDescriptor> serviceStreams = new ArrayList<NetChannelServiceDescriptor>();
 	
 	private Logger logger = LoggerFactory.getLogger(getClass());
 	
@@ -41,7 +41,7 @@ public class NetAnnotationRegistry {
 			 expClasses = reflections.getTypesAnnotatedWith(ANetChannelService.class);
 			for (Class<?> expclass : expClasses) {
 				ANetChannelService[] expAnots = expclass.getAnnotationsByType(ANetChannelService.class);
-				NetStreamServiceDescriptor desc = new NetStreamServiceDescriptor();
+				NetChannelServiceDescriptor desc = new NetChannelServiceDescriptor();
 						desc.setClazz(expclass);
 					    desc.setEndpoint(expAnots[0].endpoint());
 					    serviceStreams.add(desc);
@@ -53,11 +53,11 @@ public class NetAnnotationRegistry {
 	}
 	
 	
-	public List<NetStreamServiceDescriptor> getNetStreamServiceDescriptors() { 
+	public List<NetChannelServiceDescriptor> getChannelServiceDescriptors() { 
 		return serviceStreams;
 	}
 	
-	public List<NetCallServiceDescriptor> getNetCallServiceDescriptors() { 
+	public List<NetCallServiceDescriptor> getCallServiceDescriptors() { 
 		return serviceCalls;
 	}
 

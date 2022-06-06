@@ -5,7 +5,7 @@
 	<parent>
 		<groupId>org.springframework.boot</groupId>
 		<artifactId>spring-boot-starter-parent</artifactId>
-		<version>2.4.0</version>
+		<version>2.7.0</version>
 	</parent>
 	<groupId>com.dunkware.trade.service</groupId>
 	<artifactId>dunkware-trade-service-stream-server</artifactId>
@@ -197,25 +197,11 @@
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-actuator</artifactId>
 		</dependency>
-		<dependency>
-			<groupId>io.micrometer</groupId>
-			<artifactId>micrometer-registry-prometheus</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>io.micrometer</groupId>
-			<artifactId>micrometer-core</artifactId>
-		</dependency>
+		
 		<!-- GRPC DEPS -->
 
 		<!-- https://mvnrepository.com/artifact/org.springframework.metrics/spring-metrics -->
-		<dependency>
-			<groupId>org.springframework.boot</groupId>
-			<artifactId>spring-boot-starter-actuator</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>io.micrometer</groupId>
-			<artifactId>micrometer-registry-prometheus</artifactId>
-		</dependency>
+	
 
 		<dependency>
 			<groupId>net.devh</groupId>
@@ -300,8 +286,6 @@
 			<artifactId>micrometer-registry-prometheus</artifactId>
 			<scope>runtime</scope>
 		</dependency>
-
-
 
 
 	</dependencies>

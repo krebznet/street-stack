@@ -2,7 +2,7 @@ package com.dunkware.trade.service.stream.server.netservice;
 
 import org.springframework.beans.factory.annotation.Autowired;
 
-import com.dunkware.net.core.anot.ANetCallService;
+import com.dunkware.net.core.anot.ANetChannelService;
 import com.dunkware.net.core.channel.NetChannel;
 import com.dunkware.net.core.service.NetChannelRequest;
 import com.dunkware.net.core.service.NetChannelResponse;
@@ -11,7 +11,7 @@ import com.dunkware.net.core.service.NetServiceException;
 import com.dunkware.trade.service.stream.server.controller.session.container.SessionContainer;
 import com.dunkware.trade.service.stream.server.controller.session.container.SessionContainerService;
 
-@ANetCallService(endpoint = "/stream/session/search/entity")
+@ANetChannelService(endpoint = "/stream/session/search/entity")
 public class EntitySessionSearchService implements NetChannelService {
 
 	@Autowired

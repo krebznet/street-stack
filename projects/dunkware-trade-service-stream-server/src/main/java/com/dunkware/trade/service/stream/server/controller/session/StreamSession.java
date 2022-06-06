@@ -3,6 +3,7 @@ package com.dunkware.trade.service.stream.server.controller.session;
 import java.util.List;
 
 import com.dunkware.common.util.events.DEventNode;
+import com.dunkware.trade.service.stream.json.controller.model.StreamSessionSpec;
 import com.dunkware.trade.service.stream.json.controller.session.StreamSessionStatus;
 import com.dunkware.trade.service.stream.server.controller.StreamController;
 import com.dunkware.trade.service.stream.server.repository.StreamSessionEntity;
@@ -34,4 +35,6 @@ public interface StreamSession {
 	public StreamSessionEntity getEntity();
 	
 	public List<TradeTickerSpec> getTickers();
+	
+	public StreamSessionSpec getSessionSpec();
 }

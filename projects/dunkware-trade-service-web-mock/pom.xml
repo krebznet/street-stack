@@ -1,0 +1,179 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+
+	<parent>
+		<groupId>org.springframework.boot</groupId>
+		<artifactId>spring-boot-starter-parent</artifactId>
+			<version>2.7.0</version>
+
+	</parent>
+	<groupId>com.dunkware.trade.service</groupId>
+	<artifactId>dunkware-trade-service-web-mock</artifactId>
+	<version>1.0.0-SNAPSHOT</version>
+	<name>Dunkware Trade Web Mock </name>
+	<description>Dunkware Trade Web Mock</description>
+	<properties>
+		<java.version>11</java.version>
+		<org.mapstruct.version>1.4.2.Final</org.mapstruct.version>
+		<flyway.version>7.10.0</flyway.version>
+		<lombok.version>1.18.20</lombok.version>
+		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+		<project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
+		<protoc.version>3.6.1</protoc.version>
+		<protobuf.plugin.version>0.6.1</protobuf.plugin.version>
+		<net-devh-grpc.version>2.0.1.RELEASE</net-devh-grpc.version>
+		<grpc.version>1.15.1</grpc.version>
+		<spring-cloud.version>Hoxton.SR6</spring-cloud.version>
+		<lombok.version>1.18.20</lombok.version>
+	</properties>
+
+	<repositories>
+		<repository>
+			<id>dunkware-internal-release</id>
+			<name>Dunkware Internal Release</name>
+			<url>https://nexus.dunkware.com/repository/dunkware-internal-release/</url>
+		</repository>
+		<repository>
+			<id>central</id>
+			<name>Maven Central</name>
+			<url>https://repo1.maven.org/maven2/</url>
+		</repository>
+		<repository>
+			<id>dunkware-internal-snapshot</id>
+			<name>Dunkware Internal Snapshot</name>
+			<url>https://nexus.dunkware.com/repository/dunkware-internal-snapshot/</url>
+		</repository>
+	</repositories>
+
+
+	<!-- Distribution Repos -->
+	<distributionManagement>
+		<snapshotRepository>
+			<uniqueVersion>false</uniqueVersion>
+			<id>dunkware-internal-snapshot</id>
+			<layout>default</layout>
+			<name>dunkware-internal-snapshot</name>
+			<url>https://nexus.dunkware.com/repository/dunkware-internal-snapshot/</url>
+		</snapshotRepository>
+		<repository>
+			<uniqueVersion>false</uniqueVersion>
+			<id>dunkware-internal-release</id>
+			<layout>default</layout>
+			<name>dunkware-internal-release</name>
+			<url>http://nexus.dunkware.com/repository/dunkware-internal-release/</url>
+		</repository>
+	</distributionManagement>
+
+	<dependencies>
+		
+			<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-websocket</artifactId>
+		</dependency>
+
+		<dependency>
+    <groupId>org.springframework.integration</groupId>
+    <artifactId>spring-integration-core</artifactId>
+
+</dependency>
+<dependency>
+    <groupId>org.springframework.integration</groupId>
+    <artifactId>spring-integration-websocket</artifactId>
+
+</dependency>
+
+		<!-- <dependency> <groupId>org.springframework.boot</groupId> <artifactId>spring-boot-starter-data-jpa</artifactId>
+			</dependency> -->
+		<!-- <dependency> <groupId>org.springframework.boot</groupId> <artifactId>spring-boot-starter-security</artifactId>
+			</dependency> -->
+
+
+		<!-- Metrics/Prometheus -->
+	
+	
+		<!-- <dependency> <groupId>io.jsonwebtoken</groupId> <artifactId>jjwt</artifactId>
+			<version>0.9.1</version> </dependency> -->
+	
+		
+		<!-- <dependency> <groupId>org.flywaydb</groupId> <artifactId>flyway-core</artifactId>
+			<version>${flyway.version}</version> </dependency> -->
+	
+		
+		<!-- GRPC Dependencies -->
+
+
+		<dependency>
+			<groupId>com.google.protobuf</groupId>
+			<artifactId>protobuf-java</artifactId>
+			<version>3.13.0</version>
+		</dependency>
+
+	
+		<!-- GRPC DEPS -->
+		
+	
+
+		<dependency>
+			<groupId>com.dunkware.common</groupId>
+			<artifactId>dunkware-common-util</artifactId>
+			<version>1.3.0-SNAPSHOT</version>
+		</dependency>
+
+		<dependency>
+			<groupId>com.dunkware.net</groupId>
+			<artifactId>dunkware-net-core-runtime</artifactId>
+			<version>1.0.0-SNAPSHOT</version>
+		</dependency>
+
+		<dependency>
+			<groupId>ch.qos.logback</groupId>
+			<artifactId>logback-classic</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>ch.qos.logback</groupId>
+			<artifactId>logback-core</artifactId>
+		</dependency>
+	
+		
+		
+
+	</dependencies>
+
+	
+	<build>
+		<plugins>
+			<plugin>
+				<groupId>org.springframework.boot</groupId>
+				<artifactId>spring-boot-maven-plugin</artifactId>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-compiler-plugin</artifactId>
+				<version>3.8.1</version>
+				<configuration>
+					<annotationProcessorPaths>
+						<path>
+							<groupId>org.projectlombok</groupId>
+							<artifactId>lombok</artifactId>
+							<version>${lombok.version}</version>
+						</path>
+						<path>
+							<groupId>org.projectlombok</groupId>
+							<artifactId>lombok-mapstruct-binding</artifactId>
+							<version>0.2.0</version>
+						</path>
+						<path>
+							<groupId>org.mapstruct</groupId>
+							<artifactId>mapstruct-processor</artifactId>
+							<version>${org.mapstruct.version}</version>
+						</path>
+					</annotationProcessorPaths>
+				</configuration>
+			</plugin>
+		</plugins>
+	</build>
+
+</project>

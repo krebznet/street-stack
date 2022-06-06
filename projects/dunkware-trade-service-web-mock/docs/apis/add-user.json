@@ -1,0 +1,13 @@
+{
+	"fullName": "Vivek","username":"vivekhamar",
+	"email": "vivekhamar@gmail.com",
+	"timezone": "UTC-04",
+	"roles": [
+		"admin",
+		"manager"
+	],
+	"tags": [
+		"java",
+		"spring"
+	]
+}

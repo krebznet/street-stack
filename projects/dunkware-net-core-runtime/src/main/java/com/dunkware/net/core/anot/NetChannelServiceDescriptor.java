@@ -3,13 +3,12 @@ package com.dunkware.net.core.anot;
 import com.dunkware.net.core.service.NetServiceException;
 import com.dunkware.net.core.service.NetChannelService;
 
-public class NetStreamServiceDescriptor {
+public class NetChannelServiceDescriptor {
 	
 	private Class clazz; 
 	private String endpoint; 
 	
-	public NetStreamServiceDescriptor() { 
-		
+	public NetChannelServiceDescriptor() { 
 	}
 
 	public Class getClazz() {
@@ -27,9 +26,6 @@ public class NetStreamServiceDescriptor {
 	public void setEndpoint(String endpoint) {
 		this.endpoint = endpoint;
 	}
-	
-	public NetChannelService createInstance() throws NetServiceException { 
-		return null;
-	}
+
 
 }

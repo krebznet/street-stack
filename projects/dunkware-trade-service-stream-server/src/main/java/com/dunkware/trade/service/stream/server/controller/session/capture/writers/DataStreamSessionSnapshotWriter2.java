@@ -44,7 +44,13 @@ import com.mongodb.client.MongoClient;
 import com.mongodb.client.MongoClients;
 import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoDatabase;
+import com.mongodb.client.model.CreateCollectionOptions;
 import com.mongodb.client.model.InsertOneModel;
+import com.mongodb.client.model.TimeSeriesOptions;
+
+import com.mongodb.client.model.CreateCollectionOptions;
+import com.mongodb.client.model.TimeSeriesGranularity;
+import com.mongodb.client.model.TimeSeriesOptions;
 
 public class DataStreamSessionSnapshotWriter2 implements DKafkaByteHandler2 {
 
@@ -96,6 +102,8 @@ public class DataStreamSessionSnapshotWriter2 implements DKafkaByteHandler2 {
 	private boolean writerClosed = false;
 
 	private Marker marker = MarkerFactory.getMarker("SnapshotWriter");
+	
+	private boolean terminated = false;
 
 	public DataStreamSessionSnapshotWriter2() {
 
@@ -104,6 +112,9 @@ public class DataStreamSessionSnapshotWriter2 implements DKafkaByteHandler2 {
 	public void sessionStopped() {
 		logger.debug("Snapshot Writer handling session stopped, starting session stopper");
 		StreamSessionStopper stopper = new StreamSessionStopper();
+		if(terminated) { 
+			capture.snapshotWriterComplete();
+		}
 		stopper.start();
 	}
 
@@ -117,16 +128,39 @@ public class DataStreamSessionSnapshotWriter2 implements DKafkaByteHandler2 {
 		logger.info(MarkerFactory.getMarker(session.getSessionId()), "Starting Snapshot Writer");
 		timeZone = DTimeZone.toZoneId(session.getStream().getTimeZone());
 		try {
-
+			
 			mongoClient = MongoClients.create(config.getMongoURL());
 			WriteConcern wc = new WriteConcern(0).withJournal(false);
 			mongoDatabase = mongoClient.getDatabase(config.getMongoDatabase());
+			
 			String ident = session.getSessionId();
 			System.out.println(ident);
 			// check if the database exists
 			LocalDateTime dt = LocalDateTime.now(DTimeZone.toZoneId(session.getStream().getTimeZone()));
 			String Timestamp = DunkTime.format(dt, DunkTime.YYMMDD);
 			mongoCollectionName = "snapshot_" + session.getStream().getName() + "_" + Timestamp;
+			boolean exists = false; 
+			for (String colName : mongoDatabase.listCollectionNames()) {
+				if(colName.equals(mongoCollectionName)) {
+					exists = true;
+					break;
+				}
+			}
+			if(!exists) { 
+				logger.error("Creating Time Serries Snapshot Collection " + mongoCollectionName);
+				TimeSeriesOptions tsOptions = new TimeSeriesOptions("time");
+				tsOptions.granularity(TimeSeriesGranularity.SECONDS);
+				tsOptions.metaField("vars");
+				try {
+					CreateCollectionOptions colOptions = new CreateCollectionOptions().timeSeriesOptions(tsOptions);
+					mongoDatabase.createCollection(mongoCollectionName, colOptions);					
+				} catch (Exception e) {
+					logger.error("Collection Snapshot Creation Failed " + e.toString());
+					terminated = true;
+					return;
+				}
+
+			}
 			snapshotCollection = mongoDatabase.getCollection(mongoCollectionName).withWriteConcern(wc);
 			logger.info(MarkerFactory.getMarker("SnapshotWriter"),
 					"Created mongo client to " + mongoDatabase + " " + mongoCollectionName);
@@ -257,11 +291,14 @@ public class DataStreamSessionSnapshotWriter2 implements DKafkaByteHandler2 {
 	}
 
 	public boolean isCompleted() {
+		if(terminated) { 
+			return true;
+		}
 		return completed;
 	}
 
 	private class StreamSessionStopper extends Thread {
-
+	
 		public void run() {
 			logger.debug("Starting SnapshotWrtier Stopper");
 			logger.debug("Invoking Finished Writing method");

@@ -22,7 +22,7 @@ import com.dunkware.common.util.events.DEventNode;
 import com.dunkware.common.util.time.DunkTime;
 import com.dunkware.net.cluster.node.Cluster;
 import com.dunkware.net.cluster.node.ClusterNode;
-import com.dunkware.net.cluster.node.metrics.MetricsService;
+import com.dunkware.trade.service.stream.json.controller.model.StreamSessionSpec;
 import com.dunkware.trade.service.stream.json.controller.session.StreamSessionState;
 import com.dunkware.trade.service.stream.json.controller.session.StreamSessionStatus;
 import com.dunkware.trade.service.stream.json.message.StreamSessionStart;
@@ -40,13 +40,11 @@ import com.dunkware.trade.service.stream.server.controller.session.events.EStrea
 import com.dunkware.trade.service.stream.server.controller.session.events.EStreamSessionStopped;
 import com.dunkware.trade.service.stream.server.controller.session.events.EStreamSessionStopping;
 import com.dunkware.trade.service.stream.server.controller.util.StreamSessionSpecBuilder;
-import com.dunkware.trade.service.stream.server.repository.StreamSessionEntEntity;
 import com.dunkware.trade.service.stream.server.repository.StreamSessionEntity;
 import com.dunkware.trade.service.stream.server.repository.StreamSessionProblemEntity;
 import com.dunkware.trade.service.stream.server.repository.StreamSessionRepo;
 import com.dunkware.trade.service.stream.server.spring.ConfigService;
 import com.dunkware.trade.tick.model.ticker.TradeTickerSpec;
-import com.dunkware.trade.tick.model.ticker.TradeTickerType;
 import com.dunkware.xstream.xproject.XScriptProject;
 
 public class StreamSessionImpl implements StreamSession {
@@ -59,8 +57,7 @@ public class StreamSessionImpl implements StreamSession {
 	private List<StreamSessionNode> nodes = new ArrayList<StreamSessionNode>();
 	private StreamSessionInput input;
 	
-	@Autowired
-	private MetricsService metricsService; 
+
 
 	@Autowired
 	private ConfigService configService;
@@ -96,6 +93,8 @@ public class StreamSessionImpl implements StreamSession {
 	
 	private MetricsUpdater metricsUpdater;
 
+	private StreamSessionSpec sessionSpec;
+	
 	@Override
 	public void startSession(StreamSessionInput input) throws StreamSessionException {
 		this.input = input;
@@ -174,7 +173,8 @@ public class StreamSessionImpl implements StreamSession {
 
 	@Override
 	public StreamSessionStatus getStatus() {
-		status.getNodes().clear();
+		if(status.getNodes() != null)
+			status.getNodes().clear();
 		status.setNodeCount(nodes.size());
 		AtomicLong pendingTasks = new AtomicLong(0);
 		AtomicLong completedTasks = new AtomicLong(0);
@@ -278,10 +278,17 @@ public class StreamSessionImpl implements StreamSession {
 		sessionRepo.save(sessionEntity);
 	}
 
+	
+	@Override
+	public StreamSessionSpec getSessionSpec() {
+		return sessionSpec;
+	}
+
 	private void handleSessionStarted() {
 		StreamSessionStart start = new StreamSessionStart();
 		try {
 			start.setSpec(StreamSessionSpecBuilder.build(this, configService.getKafkaBrokers()));
+			this.sessionSpec = start.getSpec();
 			try {
 
 				cluster.pojoEvent(start);
@@ -297,6 +304,7 @@ public class StreamSessionImpl implements StreamSession {
 			ext.sessionStarted(this);
 		}
 		EStreamSessionStarted started = new EStreamSessionStarted(this);
+		eventNode.event(started);
 		input.getController().sessionEvent(started);
 		metricsUpdater = new MetricsUpdater();
 		metricsUpdater.start();

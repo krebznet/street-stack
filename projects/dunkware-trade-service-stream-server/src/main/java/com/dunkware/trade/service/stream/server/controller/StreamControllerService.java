@@ -133,7 +133,8 @@ public class StreamControllerService {
 		newVersionDO.setVersion(newVersion);
 		newVersionDO.setBundle(DJson.serialize(spec.getBundle()));
 		newVersionDO.setTimestamp(LocalDateTime.now());
-		List<StreamVersionEntity> versions = versionRepo.findByStreamOrderByVersion(stream.getEntity());
+		
+		Iterable<StreamVersionEntity> versions = versionRepo.findAll();
 		boolean specVerisionGreater = true;
 		for (StreamVersionEntity version : versions) {
 			if (spec.getVersion() < version.getVersion() || spec.getVersion() == version.getVersion()) {

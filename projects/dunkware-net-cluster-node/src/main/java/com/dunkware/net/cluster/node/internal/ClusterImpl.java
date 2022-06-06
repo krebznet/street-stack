@@ -48,15 +48,13 @@ import com.dunkware.net.cluster.node.ClusterNode;
 import com.dunkware.net.cluster.node.ClusterNodeException;
 import com.dunkware.net.core.anot.NetAnnotationRegistry;
 import com.dunkware.net.core.anot.NetCallServiceDescriptor;
-import com.dunkware.net.core.anot.NetStreamServiceDescriptor;
+import com.dunkware.net.core.anot.NetChannelServiceDescriptor;
 import com.dunkware.net.core.data.NetDataFactory;
 import com.dunkware.net.core.service.NetCallResponseCallback;
 import com.dunkware.net.core.service.NetCallService;
 import com.dunkware.net.core.service.NetChannelResponseCallback;
 import com.dunkware.net.core.service.NetChannelService;
 import com.dunkware.net.core.service.NetMessageHandler;
-import com.dunkware.net.core.util.GNetFactory;
-import com.dunkware.net.core.util.GNetHelper;
 import com.dunkware.net.proto.cluster.GClusterEvent;
 import com.dunkware.net.proto.cluster.GNodeUpdate;
 import com.dunkware.net.proto.cluster.GNodeUpdateRequest;
@@ -68,7 +66,6 @@ import com.dunkware.net.proto.cluster.GReserveWorkerNodesResponse;
 import com.dunkware.net.proto.cluster.GReserveWorkerNodesResponse.GrantedNode;
 import com.dunkware.net.proto.cluster.service.GClustererviceGrpc;
 import com.dunkware.net.proto.cluster.service.GClustererviceGrpc.GClustererviceStub;
-import com.dunkware.net.proto.net.GNetCallRequest;
 import com.dunkware.net.proto.net.GNetChannelRequest;
 import com.dunkware.net.proto.net.GNetMessage;
 
@@ -108,11 +105,8 @@ public class ClusterImpl implements Cluster {
 
 	private Semaphore jobLock = new Semaphore(1);
 
-	private ClusterStatsPublisher statsPublisher;
 
 	private ManagedChannel serverChannel;
-
-	private List<ClusterNodeServiceDescriptor> nodeServiceDescriptors = new ArrayList<ClusterNodeServiceDescriptor>();
 
 	private List<ClusterNodeServiceDescriptor> netServiceDescriptors = new ArrayList<ClusterNodeServiceDescriptor>();
 
@@ -160,47 +154,60 @@ public class ClusterImpl implements Cluster {
 				logger.error("Exception creating cluster event kafka consumer " + e.toString());
 			}
 
-			try {
-				for (NetStreamServiceDescriptor servDesc : NetAnnotationRegistry.get()
-						.getNetStreamServiceDescriptors()) {
-					ClusterNodeServiceDescriptor desc = new ClusterNodeServiceDescriptor();
-					desc.setType(ClusterNodeServiceType.STREAM);
-					desc.setClassName(servDesc.getClazz().getName());
-					desc.setEndpoint(servDesc.getEndpoint());
-			
-					
-					netServiceDescriptors.add(desc);
-					ClusterNodeServiceDescriptor descp = new ClusterNodeServiceDescriptor();
-					descp.setClassName(desc.getClassName());
-					descp.setEndpoint(desc.getEndpoint());
-					desc.setType(ClusterNodeServiceType.STREAM);
-					nodeServiceDescriptors.add(descp);
-				}
-
-				for (NetCallServiceDescriptor servDesc : NetAnnotationRegistry.get().getNetCallServiceDescriptors()) {
-					ClusterNodeServiceDescriptor desc = new ClusterNodeServiceDescriptor();
-					desc.setType(ClusterNodeServiceType.CALL);
-					desc.setEndpoint(desc.getEndpoint());
-					desc.setClassName(servDesc.getClazz().getName());
+			Thread runner = new Thread() { 
+				
+				public void run() { 
 					try {
-						NetCallService callService = (NetCallService)servDesc.getClazz().newInstance();
-						ac.getAutowireCapableBeanFactory().autowireBean(callService);
-						callServices.put(servDesc.getEndpoint(), callService);
+						Thread.sleep(5000);
+						for (NetChannelServiceDescriptor servDesc : NetAnnotationRegistry.get()
+								.getChannelServiceDescriptors()) {
+							ClusterNodeServiceDescriptor desc = new ClusterNodeServiceDescriptor();
+							desc.setType(ClusterNodeServiceType.CHANNEL);
+							desc.setClassName(servDesc.getClazz().getName());
+							desc.setEndpoint(servDesc.getEndpoint());
+							if(desc.getEndpoint() == null) { 
+								logger.error("right fucki here");
+							}
+							try {
+								
+								NetChannelService service = (NetChannelService)servDesc.getClazz().newInstance();
+								ac.getAutowireCapableBeanFactory().autowireBean(service);
+								channelServices.put(servDesc.getEndpoint(), service);
+								netServiceDescriptors.add(desc);
+							} catch (Exception e) {
+								logger.error("Exception instntianting net channel service " + servDesc.getClazz().getName() + " " + e.toString());
+							}
+
+							
+						}
+
+						for (NetCallServiceDescriptor servDesc : NetAnnotationRegistry.get().getCallServiceDescriptors()) {
+							ClusterNodeServiceDescriptor desc = new ClusterNodeServiceDescriptor();
+							desc.setType(ClusterNodeServiceType.CALL);
+							desc.setEndpoint(servDesc.getEndpoint());
+							desc.setClassName(servDesc.getClazz().getName());
+							try {
+								NetCallService callService = (NetCallService)servDesc.getClazz().newInstance();
+								ac.getAutowireCapableBeanFactory().autowireBean(callService);
+								callServices.put(servDesc.getEndpoint(), callService);
+								netServiceDescriptors.add(desc);
+							} catch (Exception e) {
+								logger.error("Exception creating registered net call service " + e.toString());
+							}
+
+							
+						}
 					} catch (Exception e) {
-						logger.error("Exception creating registered net call service " + e.toString());
-					}
-					netServiceDescriptors.add(desc);
-					ClusterNodeServiceDescriptor descp = new ClusterNodeServiceDescriptor();
-					descp.setClassName(desc.getClassName());
-					descp.setEndpoint(desc.getEndpoint());
-					desc.setType(ClusterNodeServiceType.CALL);
-					nodeServiceDescriptors.add(descp);
+						logger.error(MarkerFactory.getMarker(getNodeId()),
+								"Exception parsing or building service descriptors in cluster load " + e.toString());
+						System.exit(-1);
+					}			
+					
 				}
-			} catch (Exception e) {
-				logger.error(MarkerFactory.getMarker(getNodeId()),
-						"Exception parsing or building service descriptors in cluster load " + e.toString());
-				System.exit(-1);
-			}
+			};
+			
+			
+			runner.start();
 
 			
 			serverChannel = ManagedChannelBuilder.forTarget(clusterConfig.getClusterGrpc()).usePlaintext().build();
@@ -236,6 +243,8 @@ public class ClusterImpl implements Cluster {
 			;
 			System.exit(-1);
 		}
+		
+		startNodeStatConsumer(this);
 		startTime = DDateTime.now(DTimeZone.NewYork);
 		registry = new ClusterRegistry();
 		registry.start(this);
@@ -260,14 +269,7 @@ public class ClusterImpl implements Cluster {
 			System.exit(-1);
 		}
 
-		try {
-			statsPublisher = new ClusterStatsPublisher();
-			ac.getAutowireCapableBeanFactory().autowireBean(statsPublisher);
-			statsPublisher.start();
-		} catch (Exception e) {
-			logger.error(Markers.systemCrash(), "Exception starting cluster node stats publisher " + e.toString());
-			System.exit(-1);
-		}
+		
 
 	}
 	
@@ -437,13 +439,19 @@ public class ClusterImpl implements Cluster {
 		}
 		stats.setRunningJobCount(activeJobs);
 		stats.setType(clusterConfig.getNodeType());
-		stats.setServices(nodeServiceDescriptors);
+		for (ClusterNodeServiceDescriptor desc : netServiceDescriptors) {
+			if(desc.getEndpoint() == null || desc.getType() == null || desc.getClassName() == null) { 
+				logger.error("Stop Right Fucking Here null shit on your service descriptors");
+			}
+		}
+		stats.setServices(netServiceDescriptors);
+		
 
 		// now we need the other stuff -
 		return stats;
 	}
 
-	public void start(ClusterImpl cluster) {
+	public void startNodeStatConsumer(ClusterImpl cluster) {
 		this.cluster = cluster;
 		Thread runner = new Thread() {
 
@@ -650,6 +658,7 @@ public class ClusterImpl implements Cluster {
 					ClusterNodeImpl node = (ClusterNodeImpl) nodes.get(update.getNode());
 					if (node == null) {
 						node = new ClusterNodeImpl();
+						ac.getAutowireCapableBeanFactory().autowireBean(node);
 						node.start(update);
 						nodes.put(node.getId(), node);
 					} else {

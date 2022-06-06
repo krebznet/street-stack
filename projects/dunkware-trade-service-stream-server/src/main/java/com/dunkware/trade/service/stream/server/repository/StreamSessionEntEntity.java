@@ -29,7 +29,6 @@ public class StreamSessionEntEntity {
 	private String streamName; 
 	@Column(name = "session_ident")
 	private String sessionIdentifier; 
-	
 
 	
 	@ManyToOne
