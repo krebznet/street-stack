@@ -30,5 +30,7 @@ pom.xml.releaseBackup
 bin
 .DS_Store
 *.iml
-
+.vscode
+.idea
+.DS_Store
 .idea

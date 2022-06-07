@@ -57,21 +57,27 @@
      	<module>projects/dunkware-xstream-net-client</module>
 			<module>projects/dunkware-xstream-net-server</module>
   </modules>
-
 	<build>
-    <plugins>
+    <!-- To define the plugin version in your parent POM -->
+    <pluginManagement>
+      <plugins>
         <plugin>
-            <groupId>com.github.danielflower.mavenplugins</groupId>
-            <artifactId>multi-module-maven-release-plugin</artifactId>
-            <version>3.6.1</version>
-            <configuration>
-                <releaseGoals>
-                    <releaseGoal>deploy</releaseGoal>
-                </releaseGoals>
-            </configuration>
+          <groupId>com.github.danielflower.mavenplugins</groupId>
+          <artifactId>multi-module-maven-release-plugin</artifactId>
+          <version>3.6.1</version>
         </plugin>
-    </plugins>
-</build>
+      
+      </plugins>
+    </pluginManagement>
+    <!-- To use the plugin goals in your POM or parent POM -->
+    <plugins>
+      <plugin>
+        <groupId>com.github.danielflower.mavenplugins</groupId>
+        <artifactId>multi-module-maven-release-plugin</artifactId>
+        <version>3.6.1</version>
+      </plugin>
 
+    </plugins>
+  </build>
 
 </project>
