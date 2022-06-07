@@ -102,6 +102,7 @@ public class DKafkaByteConsumer2 {
 		props.put("auto.commit.interval.ms", "2500");
 		props.put("session.timeout.ms", "50000");
 		props.put("buffer.memory", 835544323);
+		props.put("fetch.max.wait.ms", 30);
 		props.put("key.deserializer", "org.apache.kafka.common.serialization.StringDeserializer");
 		props.put("value.deserializer", "org.apache.kafka.common.serialization.ByteArrayDeserializer");
 		status = DKafkaByteConsumerStatus.Connecting;

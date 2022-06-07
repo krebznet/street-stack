@@ -1,5 +1,7 @@
 package com.dunkware.trade.service.web.server.testing;
 
+import java.util.concurrent.BlockingQueue;
+import java.util.concurrent.LinkedBlockingQueue;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,6 +26,7 @@ public class NetTestWebService {
 	public @ResponseBody String feedProviderStats() {
 		AtomicBoolean completd = new AtomicBoolean(false);
 		StringBuilder builder = new StringBuilder();
+		BlockingQueue<String> call = new LinkedBlockingQueue<String>();
 		
 		GNetMessage req = GNetFactory.callRequest("/feed/provider/stats",5,cluster.getNodeId());
 		
@@ -36,9 +39,10 @@ public class NetTestWebService {
 						String name = GBeanReader.newInstance(response.getData()).getString("name");
 						builder.append(name);
 						completd.set(true);	
+						call.add(builder.toString());
 					} catch (Exception e) {
 						completd.set(true);
-						builder.append(e.toString());
+						call.add(builder.toString());
 
 					}
 					
@@ -47,6 +51,7 @@ public class NetTestWebService {
 				@Override
 				public void onError(GNetCallResponse response) {
 					builder.append(response.getException());
+					call.add(builder.toString());
 					completd.set(true);
 				}
 				
@@ -56,18 +61,13 @@ public class NetTestWebService {
 			e.printStackTrace();
 			return e.toString();
 		}
-		
-		while(completd.get() == false) { 
-			try {
-			
-			} catch (Exception e) {
-				// TODO: handle exception
-			}
-			
+		try {
+			return call.take();	
+		} catch (Exception e) {
+			e.printStackTrace();
+			return e.toString();
 		}
 		
-		
-		return builder.toString();
 		
 	}
 }

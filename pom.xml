@@ -58,5 +58,20 @@
 			<module>projects/dunkware-xstream-net-server</module>
   </modules>
 
+	<build>
+    <plugins>
+        <plugin>
+            <groupId>com.github.danielflower.mavenplugins</groupId>
+            <artifactId>multi-module-maven-release-plugin</artifactId>
+            <version>3.6.1</version>
+            <configuration>
+                <releaseGoals>
+                    <releaseGoal>deploy</releaseGoal>
+                </releaseGoals>
+            </configuration>
+        </plugin>
+    </plugins>
+</build>
+
 
 </project>
