@@ -12,8 +12,9 @@
 
 	<scm>
 			<connection>scm:git:ssh://git@github.com/krebznet/dunkware-street-cloud.git</connection>
+			
 			<developerConnection>scm:git:ssh://git@github.com/krebznet/dunkware-street-cloud.git</developerConnection>
-			<url>https://github.com/krebznet/dunkware-street-cloud.git</url>
+			<url>git@github.com:krebznet/dunkware-street-cloud.git</url>
 		</scm>
 
 
@@ -139,7 +140,7 @@
     <!-- To use the plugin goals in your POM or parent POM -->
     <plugins>
       <plugin>
-			
+
         <groupId>com.github.danielflower.mavenplugins</groupId>
         <artifactId>multi-module-maven-release-plugin</artifactId>
         <version>3.6.1</version>
