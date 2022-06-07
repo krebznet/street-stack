@@ -61,12 +61,16 @@
     <!-- To define the plugin version in your parent POM -->
     <pluginManagement>
       <plugins>
+
         <plugin>
+					<configuration>
+						<privateKey>/Users/duncankrebs/.ssh/id.rsa</privateKey>
+					</configuration>
           <groupId>com.github.danielflower.mavenplugins</groupId>
           <artifactId>multi-module-maven-release-plugin</artifactId>
           <version>3.6.1</version>
         </plugin>
-      
+
       </plugins>
     </pluginManagement>
     <!-- To use the plugin goals in your POM or parent POM -->
