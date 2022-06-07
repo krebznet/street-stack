@@ -16,7 +16,45 @@
 			<url>https://github.com/krebznet/dunkware-street-cloud.git</url>
 		</scm>
 
+			<repositories>
+				<repository>
+					<id>dunkware-internal-release</id>
+					<name>Dunkware Internal Release</name>
+					<url>https://nexus.dunkware.com/repository/dunkware-internal-release/</url>
+				</repository>
+				<repository>
+					<id>central</id>
+					<name>Maven Central</name>
+					<url>https://repo1.maven.org/maven2/</url>
+				</repository>
+				<repository>
+					<id>dunkware-internal-snapshot</id>
+					<name>Dunkware Internal Snapshot</name>
+					<url>https://nexus.dunkware.com/repository/dunkware-internal-snapshot/</url>
+				</repository>
+			</repositories>
+
+
+			<distributionManagement>
+				<snapshotRepository>
+					<uniqueVersion>false</uniqueVersion>
+					<id>dunkware-internal-snapshot</id>
+					<layout>default</layout>
+					<name>dunkware-internal-snapshot</name>
+					<url>https://nexus.dunkware.com/repository/dunkware-internal-snapshot/</url>
+				</snapshotRepository>
+				<repository>
+					<uniqueVersion>false</uniqueVersion>
+					<id>dunkware-internal-release</id>
+					<layout>default</layout>
+					<name>dunkware-internal-release</name>
+					<url>https://nexus.dunkware.com/repository/dunkware-internal-release/</url>
+				</repository>
+			</distributionManagement>
+
   <modules>
+		  <module> projects/dunkware-common-util</module>
+			<!--
   <module> projects/dunkware-maven-parent</module>
       <module> projects/dunkware-common-util</module>
       <module>projects/dunkware-net-core-proto</module>
@@ -61,7 +99,7 @@
 			<module>projects/dunkware-xstream-net-json</module>
      	<module>projects/dunkware-xstream-net-core</module>
      	<module>projects/dunkware-xstream-net-client</module>
-			<module>projects/dunkware-xstream-net-server</module>
+			<module>projects/dunkware-xstream-net-server</module>-->
   </modules>
 	<build>
     <!-- To define the plugin version in your parent POM -->

@@ -5,10 +5,10 @@
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 	<parent>
-		<groupId>com.dunkware.maven</groupId>
-		<artifactId>dunkware-maven-parent</artifactId>
-		<version>6-SNAPSHOT</version>
-		<relativePath>../dunkware-maven-parent/pom.xml</relativePath>
+		<groupId>com.dunkware.street</groupId>
+		<artifactId>dunkware-street-cloud</artifactId>
+		<version>1.0.0-SNAPSHOT</version>
+		<relativePath>../..pom.xml</relativePath>
 	</parent>
 	<groupId>com.dunkware.common</groupId>
 	<artifactId>dunkware-common-util</artifactId>
@@ -17,13 +17,6 @@
 	<name>Dunkware Common Util</name>
 	<description>Dunkware Common Util</description>
 
-
-	<scm>
-		<connection>scm:git:ssh://git@github.com/krebznet/dunkware-common-util.git</connection>
-		<developerConnection>scm:git:ssh://git@github.com/krebznet/dunkware-common-util.git</developerConnection>
-		<url>https://github.com/krebznet/dunkware-common-util.git</url>
-		<tag>v1.2.0</tag>
-	</scm>
 
 	<properties>
 		<!-- Considering src/app will have all your sourcr java code -->
@@ -87,7 +80,7 @@
 			<artifactId>protobuf-java</artifactId>
 			<version>3.13.0</version>
 		</dependency>
-		
+
 
 
 
