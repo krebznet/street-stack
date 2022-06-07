@@ -90,13 +90,7 @@
 			<version>1.4</version>
 		</dependency>
 
-		<!-- Mongo DB -->
-		<dependency>
-			<groupId>org.mongodb</groupId>
-			<artifactId>mongodb-driver-core</artifactId>
-			<version>4.6.0</version>
-		</dependency>
-
+	
 
 		<!-- https://mvnrepository.com/artifact/org.mongodb/mongodb-driver-core -->
 		<dependency>
