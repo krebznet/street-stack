@@ -121,7 +121,7 @@
 			<module>projects/dunkware-xstream-net-json</module>
      	<module>projects/dunkware-xstream-net-core</module>
      	<module>projects/dunkware-xstream-net-client</module>
-			<module>projects/dunkware-xstream-net-server</module>I trie
+			<module>projects/dunkware-xstream-net-server</module>
   </modules>
 	<build>
     <!-- To define the plugin version in your parent POM -->
