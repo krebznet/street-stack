@@ -75,7 +75,7 @@
 			</distributionManagement>
 
   <modules>
-		  <module>projects/dunkware-common-util</module>
+
 
   <module> projects/dunkware-maven-parent</module>
       <module> projects/dunkware-common-util</module>
