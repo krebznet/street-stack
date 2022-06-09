@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 import org.slf4j.Logger;
+import org.slf4j.Marker;
 import org.slf4j.MarkerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -104,6 +105,8 @@ public class StreamController {
 	private StreamVersionEntity streamVersion;
 
 	private List<TradeTickerSpec> tickers;
+	
+	private Marker marker = MarkerFactory.getMarker("StreamController");
 
 	public StreamController() throws Exception {
 
@@ -146,7 +149,7 @@ public class StreamController {
 
 		if (config.isScheduleStreams()) {
 			schedule = new StreamSchedule();
-			logger.info("Starting straem  {} controller scheudle",ent.getName());
+			logger.info("Starting Stream  {} controller scheudle",ent.getName());
 			Runnable runner = new Runnable() {
 
 				@Override
@@ -395,6 +398,7 @@ public class StreamController {
 			lastDateTime = clockUpdater.getClock().getDateTime();
 			newDay();
 			if (isSessionDay) {
+				// do we start a half baked session ? 
 				if (clock.isAfterLocalTime(startTime) && clock.isBeforeLocalTime(stopTime)) {
 					try {
 						if (logger.isInfoEnabled()) {
@@ -404,13 +408,13 @@ public class StreamController {
 						startSession();
 						inSession = true;
 					} catch (Exception e) {
-						logger.error("{}Stream Session Schedule Starting Stream Exception " + e.toString(),
+						logger.error(marker,"{}Stream Session Schedule Starting Stream Exception " + e.toString(),
 								ent.getName(), e);
 					}
 
 				} else {
 					if (logger.isDebugEnabled()) {
-						logger.debug("{} Schedule Starting, after start/stop time for day", ent.getName());
+						logger.debug(marker,"{} Schedule Starting, after start/stop time for day", ent.getName());
 					}
 				}
 			} else {
@@ -426,12 +430,12 @@ public class StreamController {
 			DayOfWeek today = clockUpdater.getClock().getDayOfWeek();
 			if (days.contains(today)) {
 				if (logger.isDebugEnabled()) {
-					logger.debug("{} Scheduler New Day Set Session Day True", ent.getName());
+					logger.debug(marker,"{} Scheduler New Day Set Session Day True", ent.getName());
 				}
 				isSessionDay = true;
 			} else {
 				if (logger.isDebugEnabled()) {
-					logger.debug("{} Scheudler New Day Set Session Day False", ent.getName());
+					logger.debug(marker,"{} Scheudler New Day Set Session Day False", ent.getName());
 
 				}
 			}
@@ -451,14 +455,12 @@ public class StreamController {
 				if (clock.getDateTime().toLocalTime().get().isAfter(stopTime.get())) {
 					// STOP SESSIOn:
 					try {
-						if (logger.isInfoEnabled()) {
-							logger.info("Stream Schedule Stopping Stream {}", ent.getName());
-						}
+						
 						inSession = false;
-						logger.info("Schedule Stopping Stream {} Session", getName());
+						logger.info(marker,"Schedule Stopping Stream {} Session", getName());
 						stopSession();
 					} catch (Exception e) {
-						logger.error("Stream Schedule Stopping {} Exception {}", ent.getName(), e.toString(), e);
+						logger.error(marker,"Stream Schedule Stopping {} Exception {}", ent.getName(), e.toString(), e);
 					}
 				}
 			} else {
@@ -468,10 +470,10 @@ public class StreamController {
 					try {
 						if (getStats().getState() != StreamState.Starting || getStats().getState()!= StreamState.Running) {
 							logger.info(
-									"Starting session on clock update where current time is between start/stop time and status is not running or starting");
+									marker,"Starting session on clock update where current time is between start/stop time and status is not running or starting");
 							startSession();
 							inSession = true;
-							logger.error("Fart Bug, clock update is calling start session while session is in "
+							logger.error(marker,"Fart Bug, clock update is calling start session while session is in "
 									+ getStats().getName());
 							return;
 						}
