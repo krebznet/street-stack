@@ -12,7 +12,7 @@
 
 	<scm>
 			<connection>scm:git:ssh://git@github.com/krebznet/dunkware-street-cloud.git</connection>
-			
+
 			<developerConnection>scm:git:ssh://git@github.com/krebznet/dunkware-street-cloud.git</developerConnection>
 			<url>git@github.com:krebznet/dunkware-street-cloud.git</url>
 		</scm>
@@ -76,7 +76,7 @@
 
   <modules>
 		  <module>projects/dunkware-common-util</module>
-			<!--
+
   <module> projects/dunkware-maven-parent</module>
       <module> projects/dunkware-common-util</module>
       <module>projects/dunkware-net-core-proto</module>
@@ -121,7 +121,7 @@
 			<module>projects/dunkware-xstream-net-json</module>
      	<module>projects/dunkware-xstream-net-core</module>
      	<module>projects/dunkware-xstream-net-client</module>
-			<module>projects/dunkware-xstream-net-server</module>-->
+			<module>projects/dunkware-xstream-net-server</module>I trie
   </modules>
 	<build>
     <!-- To define the plugin version in your parent POM -->
