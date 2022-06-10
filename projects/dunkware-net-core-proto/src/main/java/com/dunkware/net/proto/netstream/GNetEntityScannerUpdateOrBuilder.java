@@ -8,68 +8,74 @@ public interface GNetEntityScannerUpdateOrBuilder extends
     com.google.protobuf.MessageOrBuilder {
 
   /**
-   * <code>int32 scannerId = 1;</code>
+   * <code>repeated .dunkware.netstream.GNetEntityScannerRowInsert inserts = 1;</code>
    */
-  int getScannerId();
-
-  /**
-   * <code>repeated .dunkware.netstream.GNetEntityScannerItem updates = 2;</code>
-   */
-  java.util.List<com.dunkware.net.proto.netstream.GNetEntityScannerItem> 
-      getUpdatesList();
-  /**
-   * <code>repeated .dunkware.netstream.GNetEntityScannerItem updates = 2;</code>
-   */
-  com.dunkware.net.proto.netstream.GNetEntityScannerItem getUpdates(int index);
-  /**
-   * <code>repeated .dunkware.netstream.GNetEntityScannerItem updates = 2;</code>
-   */
-  int getUpdatesCount();
-  /**
-   * <code>repeated .dunkware.netstream.GNetEntityScannerItem updates = 2;</code>
-   */
-  java.util.List<? extends com.dunkware.net.proto.netstream.GNetEntityScannerItemOrBuilder> 
-      getUpdatesOrBuilderList();
-  /**
-   * <code>repeated .dunkware.netstream.GNetEntityScannerItem updates = 2;</code>
-   */
-  com.dunkware.net.proto.netstream.GNetEntityScannerItemOrBuilder getUpdatesOrBuilder(
-      int index);
-
-  /**
-   * <code>repeated .dunkware.netstream.GNetEntityScannerUpdate inserts = 3;</code>
-   */
-  java.util.List<com.dunkware.net.proto.netstream.GNetEntityScannerUpdate> 
+  java.util.List<com.dunkware.net.proto.netstream.GNetEntityScannerRowInsert> 
       getInsertsList();
   /**
-   * <code>repeated .dunkware.netstream.GNetEntityScannerUpdate inserts = 3;</code>
+   * <code>repeated .dunkware.netstream.GNetEntityScannerRowInsert inserts = 1;</code>
    */
-  com.dunkware.net.proto.netstream.GNetEntityScannerUpdate getInserts(int index);
+  com.dunkware.net.proto.netstream.GNetEntityScannerRowInsert getInserts(int index);
   /**
-   * <code>repeated .dunkware.netstream.GNetEntityScannerUpdate inserts = 3;</code>
+   * <code>repeated .dunkware.netstream.GNetEntityScannerRowInsert inserts = 1;</code>
    */
   int getInsertsCount();
   /**
-   * <code>repeated .dunkware.netstream.GNetEntityScannerUpdate inserts = 3;</code>
+   * <code>repeated .dunkware.netstream.GNetEntityScannerRowInsert inserts = 1;</code>
    */
-  java.util.List<? extends com.dunkware.net.proto.netstream.GNetEntityScannerUpdateOrBuilder> 
+  java.util.List<? extends com.dunkware.net.proto.netstream.GNetEntityScannerRowInsertOrBuilder> 
       getInsertsOrBuilderList();
   /**
-   * <code>repeated .dunkware.netstream.GNetEntityScannerUpdate inserts = 3;</code>
+   * <code>repeated .dunkware.netstream.GNetEntityScannerRowInsert inserts = 1;</code>
    */
-  com.dunkware.net.proto.netstream.GNetEntityScannerUpdateOrBuilder getInsertsOrBuilder(
+  com.dunkware.net.proto.netstream.GNetEntityScannerRowInsertOrBuilder getInsertsOrBuilder(
       int index);
 
   /**
-   * <code>repeated int32 deletes = 4;</code>
+   * <code>repeated .dunkware.netstream.GNetEntityScannerRowUpdate updates = 2;</code>
    */
-  java.util.List<java.lang.Integer> getDeletesList();
+  java.util.List<com.dunkware.net.proto.netstream.GNetEntityScannerRowUpdate> 
+      getUpdatesList();
   /**
-   * <code>repeated int32 deletes = 4;</code>
+   * <code>repeated .dunkware.netstream.GNetEntityScannerRowUpdate updates = 2;</code>
+   */
+  com.dunkware.net.proto.netstream.GNetEntityScannerRowUpdate getUpdates(int index);
+  /**
+   * <code>repeated .dunkware.netstream.GNetEntityScannerRowUpdate updates = 2;</code>
+   */
+  int getUpdatesCount();
+  /**
+   * <code>repeated .dunkware.netstream.GNetEntityScannerRowUpdate updates = 2;</code>
+   */
+  java.util.List<? extends com.dunkware.net.proto.netstream.GNetEntityScannerRowUpdateOrBuilder> 
+      getUpdatesOrBuilderList();
+  /**
+   * <code>repeated .dunkware.netstream.GNetEntityScannerRowUpdate updates = 2;</code>
+   */
+  com.dunkware.net.proto.netstream.GNetEntityScannerRowUpdateOrBuilder getUpdatesOrBuilder(
+      int index);
+
+  /**
+   * <code>repeated .dunkware.netstream.GNetEntityScannerRowDelete deletes = 3;</code>
+   */
+  java.util.List<com.dunkware.net.proto.netstream.GNetEntityScannerRowDelete> 
+      getDeletesList();
+  /**
+   * <code>repeated .dunkware.netstream.GNetEntityScannerRowDelete deletes = 3;</code>
+   */
+  com.dunkware.net.proto.netstream.GNetEntityScannerRowDelete getDeletes(int index);
+  /**
+   * <code>repeated .dunkware.netstream.GNetEntityScannerRowDelete deletes = 3;</code>
    */
   int getDeletesCount();
   /**
-   * <code>repeated int32 deletes = 4;</code>
+   * <code>repeated .dunkware.netstream.GNetEntityScannerRowDelete deletes = 3;</code>
    */
-  int getDeletes(int index);
+  java.util.List<? extends com.dunkware.net.proto.netstream.GNetEntityScannerRowDeleteOrBuilder> 
+      getDeletesOrBuilderList();
+  /**
+   * <code>repeated .dunkware.netstream.GNetEntityScannerRowDelete deletes = 3;</code>
+   */
+  com.dunkware.net.proto.netstream.GNetEntityScannerRowDeleteOrBuilder getDeletesOrBuilder(
+      int index);
 }

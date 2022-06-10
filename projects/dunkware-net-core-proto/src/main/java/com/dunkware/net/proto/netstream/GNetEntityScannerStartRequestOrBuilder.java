@@ -3,8 +3,8 @@
 
 package com.dunkware.net.proto.netstream;
 
-public interface GNetEntityScannerRequestOrBuilder extends
-    // @@protoc_insertion_point(interface_extends:dunkware.netstream.GNetEntityScannerRequest)
+public interface GNetEntityScannerStartRequestOrBuilder extends
+    // @@protoc_insertion_point(interface_extends:dunkware.netstream.GNetEntityScannerStartRequest)
     com.google.protobuf.MessageOrBuilder {
 
   /**
@@ -13,17 +13,14 @@ public interface GNetEntityScannerRequestOrBuilder extends
   int getScannerId();
 
   /**
-   * <code>.dunkware.stream.GEntityMatcher matcher = 3;</code>
+   * <code>string search = 2;</code>
    */
-  boolean hasMatcher();
+  java.lang.String getSearch();
   /**
-   * <code>.dunkware.stream.GEntityMatcher matcher = 3;</code>
+   * <code>string search = 2;</code>
    */
-  com.dunkware.net.proto.stream.GEntityMatcher getMatcher();
-  /**
-   * <code>.dunkware.stream.GEntityMatcher matcher = 3;</code>
-   */
-  com.dunkware.net.proto.stream.GEntityMatcherOrBuilder getMatcherOrBuilder();
+  com.google.protobuf.ByteString
+      getSearchBytes();
 
   /**
    * <code>string retVars = 4;</code>

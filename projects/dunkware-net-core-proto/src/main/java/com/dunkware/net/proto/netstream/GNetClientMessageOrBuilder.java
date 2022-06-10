@@ -21,17 +21,17 @@ public interface GNetClientMessageOrBuilder extends
   com.dunkware.net.proto.netstream.GNetClientConnectRequestOrBuilder getConnectRequestOrBuilder();
 
   /**
-   * <code>.dunkware.netstream.GNetEntityScannerRequest entityScannerRequest = 2;</code>
+   * <code>.dunkware.netstream.GNetEntityScannerStartRequest entityScannerStartRequest = 2;</code>
    */
-  boolean hasEntityScannerRequest();
+  boolean hasEntityScannerStartRequest();
   /**
-   * <code>.dunkware.netstream.GNetEntityScannerRequest entityScannerRequest = 2;</code>
+   * <code>.dunkware.netstream.GNetEntityScannerStartRequest entityScannerStartRequest = 2;</code>
    */
-  com.dunkware.net.proto.netstream.GNetEntityScannerRequest getEntityScannerRequest();
+  com.dunkware.net.proto.netstream.GNetEntityScannerStartRequest getEntityScannerStartRequest();
   /**
-   * <code>.dunkware.netstream.GNetEntityScannerRequest entityScannerRequest = 2;</code>
+   * <code>.dunkware.netstream.GNetEntityScannerStartRequest entityScannerStartRequest = 2;</code>
    */
-  com.dunkware.net.proto.netstream.GNetEntityScannerRequestOrBuilder getEntityScannerRequestOrBuilder();
+  com.dunkware.net.proto.netstream.GNetEntityScannerStartRequestOrBuilder getEntityScannerStartRequestOrBuilder();
 
   /**
    * <code>.dunkware.netstream.GNetEntitySearchRequest entitySearchRequest = 3;</code>
@@ -71,6 +71,19 @@ public interface GNetClientMessageOrBuilder extends
    * <code>.dunkware.netstream.GNetEntityScannerStopRequest entityScannerStopRequest = 5;</code>
    */
   com.dunkware.net.proto.netstream.GNetEntityScannerStopRequestOrBuilder getEntityScannerStopRequestOrBuilder();
+
+  /**
+   * <code>.dunkware.netstream.GNetEntityScannerUpdateRequest entityScannerUpdateRequest = 6;</code>
+   */
+  boolean hasEntityScannerUpdateRequest();
+  /**
+   * <code>.dunkware.netstream.GNetEntityScannerUpdateRequest entityScannerUpdateRequest = 6;</code>
+   */
+  com.dunkware.net.proto.netstream.GNetEntityScannerUpdateRequest getEntityScannerUpdateRequest();
+  /**
+   * <code>.dunkware.netstream.GNetEntityScannerUpdateRequest entityScannerUpdateRequest = 6;</code>
+   */
+  com.dunkware.net.proto.netstream.GNetEntityScannerUpdateRequestOrBuilder getEntityScannerUpdateRequestOrBuilder();
 
   public com.dunkware.net.proto.netstream.GNetClientMessage.TypeCase getTypeCase();
 }

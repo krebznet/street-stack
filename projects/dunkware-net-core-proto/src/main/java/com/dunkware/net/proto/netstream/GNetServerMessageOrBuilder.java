@@ -8,17 +8,17 @@ public interface GNetServerMessageOrBuilder extends
     com.google.protobuf.MessageOrBuilder {
 
   /**
-   * <code>.dunkware.netstream.GNetEntityScannerResponse entityScannerResponse = 1;</code>
+   * <code>.dunkware.netstream.GNetEntityScannerStartResponse entityScannerStartResponse = 1;</code>
    */
-  boolean hasEntityScannerResponse();
+  boolean hasEntityScannerStartResponse();
   /**
-   * <code>.dunkware.netstream.GNetEntityScannerResponse entityScannerResponse = 1;</code>
+   * <code>.dunkware.netstream.GNetEntityScannerStartResponse entityScannerStartResponse = 1;</code>
    */
-  com.dunkware.net.proto.netstream.GNetEntityScannerResponse getEntityScannerResponse();
+  com.dunkware.net.proto.netstream.GNetEntityScannerStartResponse getEntityScannerStartResponse();
   /**
-   * <code>.dunkware.netstream.GNetEntityScannerResponse entityScannerResponse = 1;</code>
+   * <code>.dunkware.netstream.GNetEntityScannerStartResponse entityScannerStartResponse = 1;</code>
    */
-  com.dunkware.net.proto.netstream.GNetEntityScannerResponseOrBuilder getEntityScannerResponseOrBuilder();
+  com.dunkware.net.proto.netstream.GNetEntityScannerStartResponseOrBuilder getEntityScannerStartResponseOrBuilder();
 
   /**
    * <code>.dunkware.netstream.GNetTimeUpdate timeUpdate = 2;</code>
@@ -99,32 +99,43 @@ public interface GNetServerMessageOrBuilder extends
   com.dunkware.net.proto.netstream.GNetEntitySearchCompleteOrBuilder getEntitySearchCompleteOrBuilder();
 
   /**
-   * <pre>
-   * just get an exception or not;
-   * ACK -&gt; 300/ LIMIT
-   * </pre>
-   *
    * <code>.dunkware.netstream.GNetEntitySearchResults entitySearchResults = 8;</code>
    */
   boolean hasEntitySearchResults();
   /**
-   * <pre>
-   * just get an exception or not;
-   * ACK -&gt; 300/ LIMIT
-   * </pre>
-   *
    * <code>.dunkware.netstream.GNetEntitySearchResults entitySearchResults = 8;</code>
    */
   com.dunkware.net.proto.netstream.GNetEntitySearchResults getEntitySearchResults();
   /**
-   * <pre>
-   * just get an exception or not;
-   * ACK -&gt; 300/ LIMIT
-   * </pre>
-   *
    * <code>.dunkware.netstream.GNetEntitySearchResults entitySearchResults = 8;</code>
    */
   com.dunkware.net.proto.netstream.GNetEntitySearchResultsOrBuilder getEntitySearchResultsOrBuilder();
+
+  /**
+   * <code>.dunkware.netstream.GNetEntityScannerUpdateResponse entityScannerUpdateResponse = 9;</code>
+   */
+  boolean hasEntityScannerUpdateResponse();
+  /**
+   * <code>.dunkware.netstream.GNetEntityScannerUpdateResponse entityScannerUpdateResponse = 9;</code>
+   */
+  com.dunkware.net.proto.netstream.GNetEntityScannerUpdateResponse getEntityScannerUpdateResponse();
+  /**
+   * <code>.dunkware.netstream.GNetEntityScannerUpdateResponse entityScannerUpdateResponse = 9;</code>
+   */
+  com.dunkware.net.proto.netstream.GNetEntityScannerUpdateResponseOrBuilder getEntityScannerUpdateResponseOrBuilder();
+
+  /**
+   * <code>.dunkware.netstream.GNetEntityScannerStopResponse entityScannerStopResponse = 10;</code>
+   */
+  boolean hasEntityScannerStopResponse();
+  /**
+   * <code>.dunkware.netstream.GNetEntityScannerStopResponse entityScannerStopResponse = 10;</code>
+   */
+  com.dunkware.net.proto.netstream.GNetEntityScannerStopResponse getEntityScannerStopResponse();
+  /**
+   * <code>.dunkware.netstream.GNetEntityScannerStopResponse entityScannerStopResponse = 10;</code>
+   */
+  com.dunkware.net.proto.netstream.GNetEntityScannerStopResponseOrBuilder getEntityScannerStopResponseOrBuilder();
 
   public com.dunkware.net.proto.netstream.GNetServerMessage.TypeCase getTypeCase();
 }

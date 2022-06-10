@@ -14,7 +14,9 @@ message GContainerWorkerMessage {
    stream.GEntitySnapshot entitySnapshot = 1;
    stream.GEntitySignal entitySignal = 2;
    stream.GStreamTimeUpdate timeUpdate = 3;
-   netstream.GNetEntityScannerRequest entityScannerRequest = 4;
+   netstream.GNetEntityScannerStartRequest entityScannerStartRequest = 4;
+   netstream.GNetEntityScannerStopRequest entityScannerStopRequest = 6;
+   netstream.GNetEntityScannerUpdateRequest entityScannerUpdateRequest = 8;
    netstream.GNetEntitySearchRequest entitySearchRequest = 5;
  }
 }
@@ -22,12 +24,14 @@ message GContainerWorkerMessage {
 message GContainerServerMessage {
  oneof type {
    netstream.GNetEntitySearchResponse entitySearchResponse = 1;
-   netstream.GNetEntityScannerRequest entityScannerRequest = 2;
+   netstream.GNetEntityScannerStartResponse entityScannerStartResponse = 2;
    netstream.GNetEntityScannerUpdate entityScannerUpdate = 3;
    netstream.GNetEntitySearchComplete entitySearchComplete = 5;
    netstream.GNetEntitySearchResults entitySearchResults = 6;
    netstream.GNetEntitySearchException entitySearchException = 7;
    netstream.GNetEntityScannerException entityScannerException = 8;
+   netstream.GNetEntityScannerStopResponse entityScannerStopResponse = 9;
+   netstream.GNetEntityScannerUpdateResponse entityScannerUpdateResponse = 10;
  }
 }
 

@@ -47,17 +47,43 @@ public interface GContainerWorkerMessageOrBuilder extends
   com.dunkware.net.proto.stream.GStreamTimeUpdateOrBuilder getTimeUpdateOrBuilder();
 
   /**
-   * <code>.dunkware.netstream.GNetEntityScannerRequest entityScannerRequest = 4;</code>
+   * <code>.dunkware.netstream.GNetEntityScannerStartRequest entityScannerStartRequest = 4;</code>
    */
-  boolean hasEntityScannerRequest();
+  boolean hasEntityScannerStartRequest();
   /**
-   * <code>.dunkware.netstream.GNetEntityScannerRequest entityScannerRequest = 4;</code>
+   * <code>.dunkware.netstream.GNetEntityScannerStartRequest entityScannerStartRequest = 4;</code>
    */
-  com.dunkware.net.proto.netstream.GNetEntityScannerRequest getEntityScannerRequest();
+  com.dunkware.net.proto.netstream.GNetEntityScannerStartRequest getEntityScannerStartRequest();
   /**
-   * <code>.dunkware.netstream.GNetEntityScannerRequest entityScannerRequest = 4;</code>
+   * <code>.dunkware.netstream.GNetEntityScannerStartRequest entityScannerStartRequest = 4;</code>
    */
-  com.dunkware.net.proto.netstream.GNetEntityScannerRequestOrBuilder getEntityScannerRequestOrBuilder();
+  com.dunkware.net.proto.netstream.GNetEntityScannerStartRequestOrBuilder getEntityScannerStartRequestOrBuilder();
+
+  /**
+   * <code>.dunkware.netstream.GNetEntityScannerStopRequest entityScannerStopRequest = 6;</code>
+   */
+  boolean hasEntityScannerStopRequest();
+  /**
+   * <code>.dunkware.netstream.GNetEntityScannerStopRequest entityScannerStopRequest = 6;</code>
+   */
+  com.dunkware.net.proto.netstream.GNetEntityScannerStopRequest getEntityScannerStopRequest();
+  /**
+   * <code>.dunkware.netstream.GNetEntityScannerStopRequest entityScannerStopRequest = 6;</code>
+   */
+  com.dunkware.net.proto.netstream.GNetEntityScannerStopRequestOrBuilder getEntityScannerStopRequestOrBuilder();
+
+  /**
+   * <code>.dunkware.netstream.GNetEntityScannerUpdateRequest entityScannerUpdateRequest = 8;</code>
+   */
+  boolean hasEntityScannerUpdateRequest();
+  /**
+   * <code>.dunkware.netstream.GNetEntityScannerUpdateRequest entityScannerUpdateRequest = 8;</code>
+   */
+  com.dunkware.net.proto.netstream.GNetEntityScannerUpdateRequest getEntityScannerUpdateRequest();
+  /**
+   * <code>.dunkware.netstream.GNetEntityScannerUpdateRequest entityScannerUpdateRequest = 8;</code>
+   */
+  com.dunkware.net.proto.netstream.GNetEntityScannerUpdateRequestOrBuilder getEntityScannerUpdateRequestOrBuilder();
 
   /**
    * <code>.dunkware.netstream.GNetEntitySearchRequest entitySearchRequest = 5;</code>

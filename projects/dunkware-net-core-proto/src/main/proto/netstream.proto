@@ -41,16 +41,18 @@ message GNetEntitySearchResponse {
    string source = 2;
 }
 
-message GNetEntityScannerRequest {
+message GNetEntityScannerStartRequest {
   int32 scannerId = 1;
-  stream.GEntityMatcher matcher = 3;
+  string search = 2;
   string retVars = 4;
   string source = 5;
   int32 scanInterval = 6;
 }
-message GNetEntityScannerResponse {
+message GNetEntityScannerStartResponse {
   int32 scannerId = 1;
   string source = 2;
+  string code = 3;
+  string error = 4;
 }
 
 message GNetEntityScannerException {
@@ -61,6 +63,47 @@ message GNetEntityScannerException {
 
 message GNetEntityScannerStopRequest {
  int32 scannerId = 1;
+}
+
+message GNetEntityScannerUpdateRequest {
+  int32 scannerId = 1;
+  string search = 2;
+  string retValues = 3;
+}
+
+message GNetEntityScannerUpdateResponse {
+  int32  scannerId = 1;
+  string status = 2;
+  string error = 3;
+}
+
+message GNetEntityScannerRow {
+  int32 scannerId = 1;
+  int32 entIdent = 2;
+  string entId = 3;
+  string data = 4;
+}
+
+message GNetEntityScannerUpdate {
+  repeated GNetEntityScannerRowInsert inserts = 1;
+  repeated GNetEntityScannerRowUpdate updates = 2;
+  repeated GNetEntityScannerRowDelete deletes = 3;
+}
+
+message GNetEntityScannerRowInsert {
+  int32 scannerId = 1;
+  GNetEntityScannerRowUpdate row = 2;
+}
+
+message GNetEntityScannerRowUpdate {
+  int32 scannerId = 1;
+  GNetEntityScannerRow row = 2;
+}
+
+message GNetEntityScannerRowDelete {
+  int32 scannerId = 1;
+  int32 entId = 2;
+  string entIdent = 3;
 }
 
 message GNetEntity {
@@ -78,17 +121,6 @@ message GNetSignal {
 
 }
 
-message GNetEntityScannerUpdate {
-  int32 scannerId = 1;
-  repeated GNetEntityScannerItem updates = 2;
-  repeated  GNetEntityScannerUpdate inserts = 3;
-  repeated int32 deletes = 4;
-}
-
-message GNetEntityScannerItem {
-  int64 duration = 1; // how long in scanner
-  GNetEntity entity = 2;
-}
 
 message GNetTimeUpdate {
   google.protobuf.Timestamp time = 1;
@@ -110,7 +142,7 @@ message GNetClientConnectRequest {
 
 message GNetServerMessage {
   oneof type {
-    GNetEntityScannerResponse entityScannerResponse = 1;
+    GNetEntityScannerStartResponse entityScannerStartResponse = 1;
     GNetTimeUpdate timeUpdate = 2;
     GNetEntityScannerUpdate entityScannerUpdate = 3;
     GNetClientConnectResponse connectResponse = 4;
@@ -118,20 +150,29 @@ message GNetServerMessage {
     GNetEntitySearchException entitySearchException = 6;
     GNetEntitySearchComplete entitySearchComplete = 7;
     GNetEntitySearchResults entitySearchResults = 8;
+    GNetEntityScannerUpdateResponse entityScannerUpdateResponse = 9;
+    GNetEntityScannerStopResponse entityScannerStopResponse = 10;
+
     // just get an exception or not;
     // ACK -> 300/ LIMIT
   }
 }
 
+message GNetEntityScannerStopResponse {
+   int32 scannerId = 1;
+   string code = 2;
+   string error = 3;
+}
+
 message GNetClientMessage {
   oneof type {
     GNetClientConnectRequest connectRequest = 1;
-    GNetEntityScannerRequest entityScannerRequest = 2;
+    GNetEntityScannerStartRequest entityScannerStartRequest = 2;
     GNetEntitySearchRequest entitySearchRequest = 3;
     GNetTimeUpdateAck timeUpdateAck = 4;
     GNetEntityScannerStopRequest entityScannerStopRequest = 5;
+    GNetEntityScannerUpdateRequest entityScannerUpdateRequest = 6;
   }
-
 
 }
 

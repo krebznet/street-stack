@@ -40,15 +40,15 @@ public final class GNetStreamProto {
     com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
       internal_static_dunkware_netstream_GNetEntitySearchResponse_fieldAccessorTable;
   static final com.google.protobuf.Descriptors.Descriptor
-    internal_static_dunkware_netstream_GNetEntityScannerRequest_descriptor;
+    internal_static_dunkware_netstream_GNetEntityScannerStartRequest_descriptor;
   static final 
     com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
-      internal_static_dunkware_netstream_GNetEntityScannerRequest_fieldAccessorTable;
+      internal_static_dunkware_netstream_GNetEntityScannerStartRequest_fieldAccessorTable;
   static final com.google.protobuf.Descriptors.Descriptor
-    internal_static_dunkware_netstream_GNetEntityScannerResponse_descriptor;
+    internal_static_dunkware_netstream_GNetEntityScannerStartResponse_descriptor;
   static final 
     com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
-      internal_static_dunkware_netstream_GNetEntityScannerResponse_fieldAccessorTable;
+      internal_static_dunkware_netstream_GNetEntityScannerStartResponse_fieldAccessorTable;
   static final com.google.protobuf.Descriptors.Descriptor
     internal_static_dunkware_netstream_GNetEntityScannerException_descriptor;
   static final 
@@ -60,6 +60,41 @@ public final class GNetStreamProto {
     com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
       internal_static_dunkware_netstream_GNetEntityScannerStopRequest_fieldAccessorTable;
   static final com.google.protobuf.Descriptors.Descriptor
+    internal_static_dunkware_netstream_GNetEntityScannerUpdateRequest_descriptor;
+  static final 
+    com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
+      internal_static_dunkware_netstream_GNetEntityScannerUpdateRequest_fieldAccessorTable;
+  static final com.google.protobuf.Descriptors.Descriptor
+    internal_static_dunkware_netstream_GNetEntityScannerUpdateResponse_descriptor;
+  static final 
+    com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
+      internal_static_dunkware_netstream_GNetEntityScannerUpdateResponse_fieldAccessorTable;
+  static final com.google.protobuf.Descriptors.Descriptor
+    internal_static_dunkware_netstream_GNetEntityScannerRow_descriptor;
+  static final 
+    com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
+      internal_static_dunkware_netstream_GNetEntityScannerRow_fieldAccessorTable;
+  static final com.google.protobuf.Descriptors.Descriptor
+    internal_static_dunkware_netstream_GNetEntityScannerUpdate_descriptor;
+  static final 
+    com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
+      internal_static_dunkware_netstream_GNetEntityScannerUpdate_fieldAccessorTable;
+  static final com.google.protobuf.Descriptors.Descriptor
+    internal_static_dunkware_netstream_GNetEntityScannerRowInsert_descriptor;
+  static final 
+    com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
+      internal_static_dunkware_netstream_GNetEntityScannerRowInsert_fieldAccessorTable;
+  static final com.google.protobuf.Descriptors.Descriptor
+    internal_static_dunkware_netstream_GNetEntityScannerRowUpdate_descriptor;
+  static final 
+    com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
+      internal_static_dunkware_netstream_GNetEntityScannerRowUpdate_fieldAccessorTable;
+  static final com.google.protobuf.Descriptors.Descriptor
+    internal_static_dunkware_netstream_GNetEntityScannerRowDelete_descriptor;
+  static final 
+    com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
+      internal_static_dunkware_netstream_GNetEntityScannerRowDelete_fieldAccessorTable;
+  static final com.google.protobuf.Descriptors.Descriptor
     internal_static_dunkware_netstream_GNetEntity_descriptor;
   static final 
     com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
@@ -69,16 +104,6 @@ public final class GNetStreamProto {
   static final 
     com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
       internal_static_dunkware_netstream_GNetSignal_fieldAccessorTable;
-  static final com.google.protobuf.Descriptors.Descriptor
-    internal_static_dunkware_netstream_GNetEntityScannerUpdate_descriptor;
-  static final 
-    com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
-      internal_static_dunkware_netstream_GNetEntityScannerUpdate_fieldAccessorTable;
-  static final com.google.protobuf.Descriptors.Descriptor
-    internal_static_dunkware_netstream_GNetEntityScannerItem_descriptor;
-  static final 
-    com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
-      internal_static_dunkware_netstream_GNetEntityScannerItem_fieldAccessorTable;
   static final com.google.protobuf.Descriptors.Descriptor
     internal_static_dunkware_netstream_GNetTimeUpdate_descriptor;
   static final 
@@ -104,6 +129,11 @@ public final class GNetStreamProto {
   static final 
     com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
       internal_static_dunkware_netstream_GNetServerMessage_fieldAccessorTable;
+  static final com.google.protobuf.Descriptors.Descriptor
+    internal_static_dunkware_netstream_GNetEntityScannerStopResponse_descriptor;
+  static final 
+    com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
+      internal_static_dunkware_netstream_GNetEntityScannerStopResponse_fieldAccessorTable;
   static final com.google.protobuf.Descriptors.Descriptor
     internal_static_dunkware_netstream_GNetClientMessage_descriptor;
   static final 
@@ -131,60 +161,82 @@ public final class GNetStreamProto {
       "\"P\n\031GNetEntitySearchException\022\020\n\010searchI" +
       "d\030\001 \001(\005\022\021\n\texception\030\002 \001(\t\022\016\n\006source\030\003 \001" +
       "(\t\"<\n\030GNetEntitySearchResponse\022\020\n\010search" +
-      "Id\030\001 \001(\005\022\016\n\006source\030\002 \001(\t\"\226\001\n\030GNetEntityS" +
-      "cannerRequest\022\021\n\tscannerId\030\001 \001(\005\0220\n\007matc" +
-      "her\030\003 \001(\0132\037.dunkware.stream.GEntityMatch" +
-      "er\022\017\n\007retVars\030\004 \001(\t\022\016\n\006source\030\005 \001(\t\022\024\n\014s" +
-      "canInterval\030\006 \001(\005\">\n\031GNetEntityScannerRe" +
-      "sponse\022\021\n\tscannerId\030\001 \001(\005\022\016\n\006source\030\002 \001(" +
-      "\t\"R\n\032GNetEntityScannerException\022\021\n\tscann" +
-      "erId\030\001 \001(\005\022\021\n\texception\030\002 \001(\t\022\016\n\006source\030" +
-      "\003 \001(\t\"1\n\034GNetEntityScannerStopRequest\022\021\n" +
-      "\tscannerId\030\001 \001(\005\";\n\nGNetEntity\022\r\n\005entId\030" +
-      "\001 \001(\005\022\020\n\010entIdent\030\002 \001(\t\022\014\n\004vars\030\003 \001(\t\"\206\001" +
-      "\n\nGNetSignal\022\r\n\005sigId\030\001 \001(\005\022\020\n\010sigIdent\030" +
-      "\002 \001(\t\022\r\n\005entId\030\003 \001(\005\022\020\n\010entIdent\030\004 \001(\t\022\014" +
-      "\n\004vars\030\005 \001(\t\022(\n\004time\030\006 \001(\0132\032.google.prot" +
-      "obuf.Timestamp\"\267\001\n\027GNetEntityScannerUpda" +
-      "te\022\021\n\tscannerId\030\001 \001(\005\022:\n\007updates\030\002 \003(\0132)" +
-      ".dunkware.netstream.GNetEntityScannerIte" +
-      "m\022<\n\007inserts\030\003 \003(\0132+.dunkware.netstream." +
-      "GNetEntityScannerUpdate\022\017\n\007deletes\030\004 \003(\005" +
-      "\"Y\n\025GNetEntityScannerItem\022\020\n\010duration\030\001 " +
-      "\001(\003\022.\n\006entity\030\002 \001(\0132\036.dunkware.netstream" +
-      ".GNetEntity\":\n\016GNetTimeUpdate\022(\n\004time\030\001 " +
-      "\001(\0132\032.google.protobuf.Timestamp\"=\n\021GNetT" +
-      "imeUpdateAck\022(\n\004time\030\001 \001(\0132\032.google.prot" +
-      "obuf.Timestamp\"=\n\031GNetClientConnectRespo" +
-      "nse\022\021\n\tconnected\030\001 \001(\010\022\r\n\005error\030\002 \001(\t\"?\n" +
-      "\030GNetClientConnectRequest\022\023\n\013clientIdent" +
-      "\030\001 \001(\t\022\016\n\006stream\030\002 \001(\t\"\363\004\n\021GNetServerMes" +
-      "sage\022N\n\025entityScannerResponse\030\001 \001(\0132-.du" +
-      "nkware.netstream.GNetEntityScannerRespon" +
-      "seH\000\0228\n\ntimeUpdate\030\002 \001(\0132\".dunkware.nets" +
-      "tream.GNetTimeUpdateH\000\022J\n\023entityScannerU" +
-      "pdate\030\003 \001(\0132+.dunkware.netstream.GNetEnt" +
-      "ityScannerUpdateH\000\022H\n\017connectResponse\030\004 " +
-      "\001(\0132-.dunkware.netstream.GNetClientConne" +
-      "ctResponseH\000\022L\n\024entitySearchResponse\030\005 \001" +
-      "(\0132,.dunkware.netstream.GNetEntitySearch" +
-      "ResponseH\000\022N\n\025entitySearchException\030\006 \001(" +
-      "\0132-.dunkware.netstream.GNetEntitySearchE" +
-      "xceptionH\000\022L\n\024entitySearchComplete\030\007 \001(\013" +
-      "2,.dunkware.netstream.GNetEntitySearchCo" +
-      "mpleteH\000\022J\n\023entitySearchResults\030\010 \001(\0132+." +
-      "dunkware.netstream.GNetEntitySearchResul" +
-      "tsH\000B\006\n\004type\"\223\003\n\021GNetClientMessage\022F\n\016co" +
-      "nnectRequest\030\001 \001(\0132,.dunkware.netstream." +
-      "GNetClientConnectRequestH\000\022L\n\024entityScan" +
-      "nerRequest\030\002 \001(\0132,.dunkware.netstream.GN" +
-      "etEntityScannerRequestH\000\022J\n\023entitySearch" +
-      "Request\030\003 \001(\0132+.dunkware.netstream.GNetE" +
-      "ntitySearchRequestH\000\022>\n\rtimeUpdateAck\030\004 " +
-      "\001(\0132%.dunkware.netstream.GNetTimeUpdateA" +
-      "ckH\000\022T\n\030entityScannerStopRequest\030\005 \001(\01320" +
-      ".dunkware.netstream.GNetEntityScannerSto" +
-      "pRequestH\000B\006\n\004typeB5\n com.dunkware.net.p" +
+      "Id\030\001 \001(\005\022\016\n\006source\030\002 \001(\t\"y\n\035GNetEntitySc" +
+      "annerStartRequest\022\021\n\tscannerId\030\001 \001(\005\022\016\n\006" +
+      "search\030\002 \001(\t\022\017\n\007retVars\030\004 \001(\t\022\016\n\006source\030" +
+      "\005 \001(\t\022\024\n\014scanInterval\030\006 \001(\005\"`\n\036GNetEntit" +
+      "yScannerStartResponse\022\021\n\tscannerId\030\001 \001(\005" +
+      "\022\016\n\006source\030\002 \001(\t\022\014\n\004code\030\003 \001(\t\022\r\n\005error\030" +
+      "\004 \001(\t\"R\n\032GNetEntityScannerException\022\021\n\ts" +
+      "cannerId\030\001 \001(\005\022\021\n\texception\030\002 \001(\t\022\016\n\006sou" +
+      "rce\030\003 \001(\t\"1\n\034GNetEntityScannerStopReques" +
+      "t\022\021\n\tscannerId\030\001 \001(\005\"V\n\036GNetEntityScanne" +
+      "rUpdateRequest\022\021\n\tscannerId\030\001 \001(\005\022\016\n\006sea" +
+      "rch\030\002 \001(\t\022\021\n\tretValues\030\003 \001(\t\"S\n\037GNetEnti" +
+      "tyScannerUpdateResponse\022\021\n\tscannerId\030\001 \001" +
+      "(\005\022\016\n\006status\030\002 \001(\t\022\r\n\005error\030\003 \001(\t\"X\n\024GNe" +
+      "tEntityScannerRow\022\021\n\tscannerId\030\001 \001(\005\022\020\n\010" +
+      "entIdent\030\002 \001(\005\022\r\n\005entId\030\003 \001(\t\022\014\n\004data\030\004 " +
+      "\001(\t\"\334\001\n\027GNetEntityScannerUpdate\022?\n\007inser" +
+      "ts\030\001 \003(\0132..dunkware.netstream.GNetEntity" +
+      "ScannerRowInsert\022?\n\007updates\030\002 \003(\0132..dunk" +
+      "ware.netstream.GNetEntityScannerRowUpdat" +
+      "e\022?\n\007deletes\030\003 \003(\0132..dunkware.netstream." +
+      "GNetEntityScannerRowDelete\"l\n\032GNetEntity" +
+      "ScannerRowInsert\022\021\n\tscannerId\030\001 \001(\005\022;\n\003r" +
+      "ow\030\002 \001(\0132..dunkware.netstream.GNetEntity" +
+      "ScannerRowUpdate\"f\n\032GNetEntityScannerRow" +
+      "Update\022\021\n\tscannerId\030\001 \001(\005\0225\n\003row\030\002 \001(\0132(" +
+      ".dunkware.netstream.GNetEntityScannerRow" +
+      "\"P\n\032GNetEntityScannerRowDelete\022\021\n\tscanne" +
+      "rId\030\001 \001(\005\022\r\n\005entId\030\002 \001(\005\022\020\n\010entIdent\030\003 \001" +
+      "(\t\";\n\nGNetEntity\022\r\n\005entId\030\001 \001(\005\022\020\n\010entId" +
+      "ent\030\002 \001(\t\022\014\n\004vars\030\003 \001(\t\"\206\001\n\nGNetSignal\022\r" +
+      "\n\005sigId\030\001 \001(\005\022\020\n\010sigIdent\030\002 \001(\t\022\r\n\005entId" +
+      "\030\003 \001(\005\022\020\n\010entIdent\030\004 \001(\t\022\014\n\004vars\030\005 \001(\t\022(" +
+      "\n\004time\030\006 \001(\0132\032.google.protobuf.Timestamp" +
+      "\":\n\016GNetTimeUpdate\022(\n\004time\030\001 \001(\0132\032.googl" +
+      "e.protobuf.Timestamp\"=\n\021GNetTimeUpdateAc" +
+      "k\022(\n\004time\030\001 \001(\0132\032.google.protobuf.Timest" +
+      "amp\"=\n\031GNetClientConnectResponse\022\021\n\tconn" +
+      "ected\030\001 \001(\010\022\r\n\005error\030\002 \001(\t\"?\n\030GNetClient" +
+      "ConnectRequest\022\023\n\013clientIdent\030\001 \001(\t\022\016\n\006s" +
+      "tream\030\002 \001(\t\"\261\006\n\021GNetServerMessage\022X\n\032ent" +
+      "ityScannerStartResponse\030\001 \001(\01322.dunkware" +
+      ".netstream.GNetEntityScannerStartRespons" +
+      "eH\000\0228\n\ntimeUpdate\030\002 \001(\0132\".dunkware.netst" +
+      "ream.GNetTimeUpdateH\000\022J\n\023entityScannerUp" +
+      "date\030\003 \001(\0132+.dunkware.netstream.GNetEnti" +
+      "tyScannerUpdateH\000\022H\n\017connectResponse\030\004 \001" +
+      "(\0132-.dunkware.netstream.GNetClientConnec" +
+      "tResponseH\000\022L\n\024entitySearchResponse\030\005 \001(" +
+      "\0132,.dunkware.netstream.GNetEntitySearchR" +
+      "esponseH\000\022N\n\025entitySearchException\030\006 \001(\013" +
+      "2-.dunkware.netstream.GNetEntitySearchEx" +
+      "ceptionH\000\022L\n\024entitySearchComplete\030\007 \001(\0132" +
+      ",.dunkware.netstream.GNetEntitySearchCom" +
+      "pleteH\000\022J\n\023entitySearchResults\030\010 \001(\0132+.d" +
+      "unkware.netstream.GNetEntitySearchResult" +
+      "sH\000\022Z\n\033entityScannerUpdateResponse\030\t \001(\013" +
+      "23.dunkware.netstream.GNetEntityScannerU" +
+      "pdateResponseH\000\022V\n\031entityScannerStopResp" +
+      "onse\030\n \001(\01321.dunkware.netstream.GNetEnti" +
+      "tyScannerStopResponseH\000B\006\n\004type\"O\n\035GNetE" +
+      "ntityScannerStopResponse\022\021\n\tscannerId\030\001 " +
+      "\001(\005\022\014\n\004code\030\002 \001(\t\022\r\n\005error\030\003 \001(\t\"\367\003\n\021GNe" +
+      "tClientMessage\022F\n\016connectRequest\030\001 \001(\0132," +
+      ".dunkware.netstream.GNetClientConnectReq" +
+      "uestH\000\022V\n\031entityScannerStartRequest\030\002 \001(" +
+      "\01321.dunkware.netstream.GNetEntityScanner" +
+      "StartRequestH\000\022J\n\023entitySearchRequest\030\003 " +
+      "\001(\0132+.dunkware.netstream.GNetEntitySearc" +
+      "hRequestH\000\022>\n\rtimeUpdateAck\030\004 \001(\0132%.dunk" +
+      "ware.netstream.GNetTimeUpdateAckH\000\022T\n\030en" +
+      "tityScannerStopRequest\030\005 \001(\01320.dunkware." +
+      "netstream.GNetEntityScannerStopRequestH\000" +
+      "\022X\n\032entityScannerUpdateRequest\030\006 \001(\01322.d" +
+      "unkware.netstream.GNetEntityScannerUpdat" +
+      "eRequestH\000B\006\n\004typeB5\n com.dunkware.net.p" +
       "roto.netstreamB\017GNetStreamProtoP\001b\006proto" +
       "3"
     };
@@ -233,18 +285,18 @@ public final class GNetStreamProto {
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_dunkware_netstream_GNetEntitySearchResponse_descriptor,
         new java.lang.String[] { "SearchId", "Source", });
-    internal_static_dunkware_netstream_GNetEntityScannerRequest_descriptor =
+    internal_static_dunkware_netstream_GNetEntityScannerStartRequest_descriptor =
       getDescriptor().getMessageTypes().get(5);
-    internal_static_dunkware_netstream_GNetEntityScannerRequest_fieldAccessorTable = new
+    internal_static_dunkware_netstream_GNetEntityScannerStartRequest_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
-        internal_static_dunkware_netstream_GNetEntityScannerRequest_descriptor,
-        new java.lang.String[] { "ScannerId", "Matcher", "RetVars", "Source", "ScanInterval", });
-    internal_static_dunkware_netstream_GNetEntityScannerResponse_descriptor =
+        internal_static_dunkware_netstream_GNetEntityScannerStartRequest_descriptor,
+        new java.lang.String[] { "ScannerId", "Search", "RetVars", "Source", "ScanInterval", });
+    internal_static_dunkware_netstream_GNetEntityScannerStartResponse_descriptor =
       getDescriptor().getMessageTypes().get(6);
-    internal_static_dunkware_netstream_GNetEntityScannerResponse_fieldAccessorTable = new
+    internal_static_dunkware_netstream_GNetEntityScannerStartResponse_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
-        internal_static_dunkware_netstream_GNetEntityScannerResponse_descriptor,
-        new java.lang.String[] { "ScannerId", "Source", });
+        internal_static_dunkware_netstream_GNetEntityScannerStartResponse_descriptor,
+        new java.lang.String[] { "ScannerId", "Source", "Code", "Error", });
     internal_static_dunkware_netstream_GNetEntityScannerException_descriptor =
       getDescriptor().getMessageTypes().get(7);
     internal_static_dunkware_netstream_GNetEntityScannerException_fieldAccessorTable = new
@@ -257,66 +309,102 @@ public final class GNetStreamProto {
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_dunkware_netstream_GNetEntityScannerStopRequest_descriptor,
         new java.lang.String[] { "ScannerId", });
-    internal_static_dunkware_netstream_GNetEntity_descriptor =
+    internal_static_dunkware_netstream_GNetEntityScannerUpdateRequest_descriptor =
       getDescriptor().getMessageTypes().get(9);
+    internal_static_dunkware_netstream_GNetEntityScannerUpdateRequest_fieldAccessorTable = new
+      com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
+        internal_static_dunkware_netstream_GNetEntityScannerUpdateRequest_descriptor,
+        new java.lang.String[] { "ScannerId", "Search", "RetValues", });
+    internal_static_dunkware_netstream_GNetEntityScannerUpdateResponse_descriptor =
+      getDescriptor().getMessageTypes().get(10);
+    internal_static_dunkware_netstream_GNetEntityScannerUpdateResponse_fieldAccessorTable = new
+      com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
+        internal_static_dunkware_netstream_GNetEntityScannerUpdateResponse_descriptor,
+        new java.lang.String[] { "ScannerId", "Status", "Error", });
+    internal_static_dunkware_netstream_GNetEntityScannerRow_descriptor =
+      getDescriptor().getMessageTypes().get(11);
+    internal_static_dunkware_netstream_GNetEntityScannerRow_fieldAccessorTable = new
+      com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
+        internal_static_dunkware_netstream_GNetEntityScannerRow_descriptor,
+        new java.lang.String[] { "ScannerId", "EntIdent", "EntId", "Data", });
+    internal_static_dunkware_netstream_GNetEntityScannerUpdate_descriptor =
+      getDescriptor().getMessageTypes().get(12);
+    internal_static_dunkware_netstream_GNetEntityScannerUpdate_fieldAccessorTable = new
+      com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
+        internal_static_dunkware_netstream_GNetEntityScannerUpdate_descriptor,
+        new java.lang.String[] { "Inserts", "Updates", "Deletes", });
+    internal_static_dunkware_netstream_GNetEntityScannerRowInsert_descriptor =
+      getDescriptor().getMessageTypes().get(13);
+    internal_static_dunkware_netstream_GNetEntityScannerRowInsert_fieldAccessorTable = new
+      com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
+        internal_static_dunkware_netstream_GNetEntityScannerRowInsert_descriptor,
+        new java.lang.String[] { "ScannerId", "Row", });
+    internal_static_dunkware_netstream_GNetEntityScannerRowUpdate_descriptor =
+      getDescriptor().getMessageTypes().get(14);
+    internal_static_dunkware_netstream_GNetEntityScannerRowUpdate_fieldAccessorTable = new
+      com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
+        internal_static_dunkware_netstream_GNetEntityScannerRowUpdate_descriptor,
+        new java.lang.String[] { "ScannerId", "Row", });
+    internal_static_dunkware_netstream_GNetEntityScannerRowDelete_descriptor =
+      getDescriptor().getMessageTypes().get(15);
+    internal_static_dunkware_netstream_GNetEntityScannerRowDelete_fieldAccessorTable = new
+      com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
+        internal_static_dunkware_netstream_GNetEntityScannerRowDelete_descriptor,
+        new java.lang.String[] { "ScannerId", "EntId", "EntIdent", });
+    internal_static_dunkware_netstream_GNetEntity_descriptor =
+      getDescriptor().getMessageTypes().get(16);
     internal_static_dunkware_netstream_GNetEntity_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_dunkware_netstream_GNetEntity_descriptor,
         new java.lang.String[] { "EntId", "EntIdent", "Vars", });
     internal_static_dunkware_netstream_GNetSignal_descriptor =
-      getDescriptor().getMessageTypes().get(10);
+      getDescriptor().getMessageTypes().get(17);
     internal_static_dunkware_netstream_GNetSignal_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_dunkware_netstream_GNetSignal_descriptor,
         new java.lang.String[] { "SigId", "SigIdent", "EntId", "EntIdent", "Vars", "Time", });
-    internal_static_dunkware_netstream_GNetEntityScannerUpdate_descriptor =
-      getDescriptor().getMessageTypes().get(11);
-    internal_static_dunkware_netstream_GNetEntityScannerUpdate_fieldAccessorTable = new
-      com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
-        internal_static_dunkware_netstream_GNetEntityScannerUpdate_descriptor,
-        new java.lang.String[] { "ScannerId", "Updates", "Inserts", "Deletes", });
-    internal_static_dunkware_netstream_GNetEntityScannerItem_descriptor =
-      getDescriptor().getMessageTypes().get(12);
-    internal_static_dunkware_netstream_GNetEntityScannerItem_fieldAccessorTable = new
-      com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
-        internal_static_dunkware_netstream_GNetEntityScannerItem_descriptor,
-        new java.lang.String[] { "Duration", "Entity", });
     internal_static_dunkware_netstream_GNetTimeUpdate_descriptor =
-      getDescriptor().getMessageTypes().get(13);
+      getDescriptor().getMessageTypes().get(18);
     internal_static_dunkware_netstream_GNetTimeUpdate_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_dunkware_netstream_GNetTimeUpdate_descriptor,
         new java.lang.String[] { "Time", });
     internal_static_dunkware_netstream_GNetTimeUpdateAck_descriptor =
-      getDescriptor().getMessageTypes().get(14);
+      getDescriptor().getMessageTypes().get(19);
     internal_static_dunkware_netstream_GNetTimeUpdateAck_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_dunkware_netstream_GNetTimeUpdateAck_descriptor,
         new java.lang.String[] { "Time", });
     internal_static_dunkware_netstream_GNetClientConnectResponse_descriptor =
-      getDescriptor().getMessageTypes().get(15);
+      getDescriptor().getMessageTypes().get(20);
     internal_static_dunkware_netstream_GNetClientConnectResponse_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_dunkware_netstream_GNetClientConnectResponse_descriptor,
         new java.lang.String[] { "Connected", "Error", });
     internal_static_dunkware_netstream_GNetClientConnectRequest_descriptor =
-      getDescriptor().getMessageTypes().get(16);
+      getDescriptor().getMessageTypes().get(21);
     internal_static_dunkware_netstream_GNetClientConnectRequest_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_dunkware_netstream_GNetClientConnectRequest_descriptor,
         new java.lang.String[] { "ClientIdent", "Stream", });
     internal_static_dunkware_netstream_GNetServerMessage_descriptor =
-      getDescriptor().getMessageTypes().get(17);
+      getDescriptor().getMessageTypes().get(22);
     internal_static_dunkware_netstream_GNetServerMessage_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_dunkware_netstream_GNetServerMessage_descriptor,
-        new java.lang.String[] { "EntityScannerResponse", "TimeUpdate", "EntityScannerUpdate", "ConnectResponse", "EntitySearchResponse", "EntitySearchException", "EntitySearchComplete", "EntitySearchResults", "Type", });
+        new java.lang.String[] { "EntityScannerStartResponse", "TimeUpdate", "EntityScannerUpdate", "ConnectResponse", "EntitySearchResponse", "EntitySearchException", "EntitySearchComplete", "EntitySearchResults", "EntityScannerUpdateResponse", "EntityScannerStopResponse", "Type", });
+    internal_static_dunkware_netstream_GNetEntityScannerStopResponse_descriptor =
+      getDescriptor().getMessageTypes().get(23);
+    internal_static_dunkware_netstream_GNetEntityScannerStopResponse_fieldAccessorTable = new
+      com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
+        internal_static_dunkware_netstream_GNetEntityScannerStopResponse_descriptor,
+        new java.lang.String[] { "ScannerId", "Code", "Error", });
     internal_static_dunkware_netstream_GNetClientMessage_descriptor =
-      getDescriptor().getMessageTypes().get(18);
+      getDescriptor().getMessageTypes().get(24);
     internal_static_dunkware_netstream_GNetClientMessage_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_dunkware_netstream_GNetClientMessage_descriptor,
-        new java.lang.String[] { "ConnectRequest", "EntityScannerRequest", "EntitySearchRequest", "TimeUpdateAck", "EntityScannerStopRequest", "Type", });
+        new java.lang.String[] { "ConnectRequest", "EntityScannerStartRequest", "EntitySearchRequest", "TimeUpdateAck", "EntityScannerStopRequest", "EntityScannerUpdateRequest", "Type", });
     com.dunkware.net.proto.data.GDataProto.getDescriptor();
     com.dunkware.net.proto.stream.GStreamProto.getDescriptor();
     com.google.protobuf.TimestampProto.getDescriptor();

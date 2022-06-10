@@ -34,33 +34,42 @@ public final class GDataClusterProto {
   static {
     java.lang.String[] descriptorData = {
       "\n\022data-cluster.proto\022\025dunkware.data.clus" +
-      "ter\032\017netstream.proto\032\014stream.proto\"\351\002\n\027G" +
+      "ter\032\017netstream.proto\032\014stream.proto\"\243\004\n\027G" +
       "ContainerWorkerMessage\022:\n\016entitySnapshot" +
       "\030\001 \001(\0132 .dunkware.stream.GEntitySnapshot" +
       "H\000\0226\n\014entitySignal\030\002 \001(\0132\036.dunkware.stre" +
       "am.GEntitySignalH\000\0228\n\ntimeUpdate\030\003 \001(\0132\"" +
-      ".dunkware.stream.GStreamTimeUpdateH\000\022L\n\024" +
-      "entityScannerRequest\030\004 \001(\0132,.dunkware.ne" +
-      "tstream.GNetEntityScannerRequestH\000\022J\n\023en" +
-      "titySearchRequest\030\005 \001(\0132+.dunkware.netst" +
-      "ream.GNetEntitySearchRequestH\000B\006\n\004type\"\305" +
-      "\004\n\027GContainerServerMessage\022L\n\024entitySear" +
-      "chResponse\030\001 \001(\0132,.dunkware.netstream.GN" +
-      "etEntitySearchResponseH\000\022L\n\024entityScanne" +
-      "rRequest\030\002 \001(\0132,.dunkware.netstream.GNet" +
-      "EntityScannerRequestH\000\022J\n\023entityScannerU" +
-      "pdate\030\003 \001(\0132+.dunkware.netstream.GNetEnt" +
-      "ityScannerUpdateH\000\022L\n\024entitySearchComple" +
-      "te\030\005 \001(\0132,.dunkware.netstream.GNetEntity" +
-      "SearchCompleteH\000\022J\n\023entitySearchResults\030" +
-      "\006 \001(\0132+.dunkware.netstream.GNetEntitySea" +
-      "rchResultsH\000\022N\n\025entitySearchException\030\007 " +
-      "\001(\0132-.dunkware.netstream.GNetEntitySearc" +
-      "hExceptionH\000\022P\n\026entityScannerException\030\010" +
-      " \001(\0132..dunkware.netstream.GNetEntityScan" +
-      "nerExceptionH\000B\006\n\004typeB5\n\036com.dunkware.n" +
-      "et.proto.clusterB\021GDataClusterProtoP\001b\006p" +
-      "roto3"
+      ".dunkware.stream.GStreamTimeUpdateH\000\022V\n\031" +
+      "entityScannerStartRequest\030\004 \001(\01321.dunkwa" +
+      "re.netstream.GNetEntityScannerStartReque" +
+      "stH\000\022T\n\030entityScannerStopRequest\030\006 \001(\01320" +
+      ".dunkware.netstream.GNetEntityScannerSto" +
+      "pRequestH\000\022X\n\032entityScannerUpdateRequest" +
+      "\030\010 \001(\01322.dunkware.netstream.GNetEntitySc" +
+      "annerUpdateRequestH\000\022J\n\023entitySearchRequ" +
+      "est\030\005 \001(\0132+.dunkware.netstream.GNetEntit" +
+      "ySearchRequestH\000B\006\n\004type\"\205\006\n\027GContainerS" +
+      "erverMessage\022L\n\024entitySearchResponse\030\001 \001" +
+      "(\0132,.dunkware.netstream.GNetEntitySearch" +
+      "ResponseH\000\022X\n\032entityScannerStartResponse" +
+      "\030\002 \001(\01322.dunkware.netstream.GNetEntitySc" +
+      "annerStartResponseH\000\022J\n\023entityScannerUpd" +
+      "ate\030\003 \001(\0132+.dunkware.netstream.GNetEntit" +
+      "yScannerUpdateH\000\022L\n\024entitySearchComplete" +
+      "\030\005 \001(\0132,.dunkware.netstream.GNetEntitySe" +
+      "archCompleteH\000\022J\n\023entitySearchResults\030\006 " +
+      "\001(\0132+.dunkware.netstream.GNetEntitySearc" +
+      "hResultsH\000\022N\n\025entitySearchException\030\007 \001(" +
+      "\0132-.dunkware.netstream.GNetEntitySearchE" +
+      "xceptionH\000\022P\n\026entityScannerException\030\010 \001" +
+      "(\0132..dunkware.netstream.GNetEntityScanne" +
+      "rExceptionH\000\022V\n\031entityScannerStopRespons" +
+      "e\030\t \001(\01321.dunkware.netstream.GNetEntityS" +
+      "cannerStopResponseH\000\022Z\n\033entityScannerUpd" +
+      "ateResponse\030\n \001(\01323.dunkware.netstream.G" +
+      "NetEntityScannerUpdateResponseH\000B\006\n\004type" +
+      "B5\n\036com.dunkware.net.proto.clusterB\021GDat" +
+      "aClusterProtoP\001b\006proto3"
     };
     com.google.protobuf.Descriptors.FileDescriptor.InternalDescriptorAssigner assigner =
         new com.google.protobuf.Descriptors.FileDescriptor.    InternalDescriptorAssigner() {
@@ -81,13 +90,13 @@ public final class GDataClusterProto {
     internal_static_dunkware_data_cluster_GContainerWorkerMessage_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_dunkware_data_cluster_GContainerWorkerMessage_descriptor,
-        new java.lang.String[] { "EntitySnapshot", "EntitySignal", "TimeUpdate", "EntityScannerRequest", "EntitySearchRequest", "Type", });
+        new java.lang.String[] { "EntitySnapshot", "EntitySignal", "TimeUpdate", "EntityScannerStartRequest", "EntityScannerStopRequest", "EntityScannerUpdateRequest", "EntitySearchRequest", "Type", });
     internal_static_dunkware_data_cluster_GContainerServerMessage_descriptor =
       getDescriptor().getMessageTypes().get(1);
     internal_static_dunkware_data_cluster_GContainerServerMessage_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_dunkware_data_cluster_GContainerServerMessage_descriptor,
-        new java.lang.String[] { "EntitySearchResponse", "EntityScannerRequest", "EntityScannerUpdate", "EntitySearchComplete", "EntitySearchResults", "EntitySearchException", "EntityScannerException", "Type", });
+        new java.lang.String[] { "EntitySearchResponse", "EntityScannerStartResponse", "EntityScannerUpdate", "EntitySearchComplete", "EntitySearchResults", "EntitySearchException", "EntityScannerException", "EntityScannerStopResponse", "EntityScannerUpdateResponse", "Type", });
     com.dunkware.net.proto.netstream.GNetStreamProto.getDescriptor();
     com.dunkware.net.proto.stream.GStreamProto.getDescriptor();
   }

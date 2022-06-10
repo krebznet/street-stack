@@ -21,17 +21,17 @@ public interface GContainerServerMessageOrBuilder extends
   com.dunkware.net.proto.netstream.GNetEntitySearchResponseOrBuilder getEntitySearchResponseOrBuilder();
 
   /**
-   * <code>.dunkware.netstream.GNetEntityScannerRequest entityScannerRequest = 2;</code>
+   * <code>.dunkware.netstream.GNetEntityScannerStartResponse entityScannerStartResponse = 2;</code>
    */
-  boolean hasEntityScannerRequest();
+  boolean hasEntityScannerStartResponse();
   /**
-   * <code>.dunkware.netstream.GNetEntityScannerRequest entityScannerRequest = 2;</code>
+   * <code>.dunkware.netstream.GNetEntityScannerStartResponse entityScannerStartResponse = 2;</code>
    */
-  com.dunkware.net.proto.netstream.GNetEntityScannerRequest getEntityScannerRequest();
+  com.dunkware.net.proto.netstream.GNetEntityScannerStartResponse getEntityScannerStartResponse();
   /**
-   * <code>.dunkware.netstream.GNetEntityScannerRequest entityScannerRequest = 2;</code>
+   * <code>.dunkware.netstream.GNetEntityScannerStartResponse entityScannerStartResponse = 2;</code>
    */
-  com.dunkware.net.proto.netstream.GNetEntityScannerRequestOrBuilder getEntityScannerRequestOrBuilder();
+  com.dunkware.net.proto.netstream.GNetEntityScannerStartResponseOrBuilder getEntityScannerStartResponseOrBuilder();
 
   /**
    * <code>.dunkware.netstream.GNetEntityScannerUpdate entityScannerUpdate = 3;</code>
@@ -97,6 +97,32 @@ public interface GContainerServerMessageOrBuilder extends
    * <code>.dunkware.netstream.GNetEntityScannerException entityScannerException = 8;</code>
    */
   com.dunkware.net.proto.netstream.GNetEntityScannerExceptionOrBuilder getEntityScannerExceptionOrBuilder();
+
+  /**
+   * <code>.dunkware.netstream.GNetEntityScannerStopResponse entityScannerStopResponse = 9;</code>
+   */
+  boolean hasEntityScannerStopResponse();
+  /**
+   * <code>.dunkware.netstream.GNetEntityScannerStopResponse entityScannerStopResponse = 9;</code>
+   */
+  com.dunkware.net.proto.netstream.GNetEntityScannerStopResponse getEntityScannerStopResponse();
+  /**
+   * <code>.dunkware.netstream.GNetEntityScannerStopResponse entityScannerStopResponse = 9;</code>
+   */
+  com.dunkware.net.proto.netstream.GNetEntityScannerStopResponseOrBuilder getEntityScannerStopResponseOrBuilder();
+
+  /**
+   * <code>.dunkware.netstream.GNetEntityScannerUpdateResponse entityScannerUpdateResponse = 10;</code>
+   */
+  boolean hasEntityScannerUpdateResponse();
+  /**
+   * <code>.dunkware.netstream.GNetEntityScannerUpdateResponse entityScannerUpdateResponse = 10;</code>
+   */
+  com.dunkware.net.proto.netstream.GNetEntityScannerUpdateResponse getEntityScannerUpdateResponse();
+  /**
+   * <code>.dunkware.netstream.GNetEntityScannerUpdateResponse entityScannerUpdateResponse = 10;</code>
+   */
+  com.dunkware.net.proto.netstream.GNetEntityScannerUpdateResponseOrBuilder getEntityScannerUpdateResponseOrBuilder();
 
   public com.dunkware.net.proto.cluster.GContainerServerMessage.TypeCase getTypeCase();
 }
