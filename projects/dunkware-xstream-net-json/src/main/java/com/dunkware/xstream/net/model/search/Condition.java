@@ -3,7 +3,7 @@ package com.dunkware.xstream.net.model.search;
 public class Condition {
 	
 	private ConditionType type; 
-	private ConditioNumeric numeric;
+	private ConditionNumeric numeric;
 
 	public ConditionType getType() {
 		return type;
@@ -11,12 +11,14 @@ public class Condition {
 	public void setType(ConditionType type) {
 		this.type = type;
 	}
-	public ConditioNumeric getNumeric() {
+	public ConditionNumeric getNumeric() {
 		return numeric;
 	}
-	public void setNumeric(ConditioNumeric numeric) {
+	public void setNumeric(ConditionNumeric numeric) {
 		this.numeric = numeric;
-	} 
+	}
+	
+	
 	
 	
 

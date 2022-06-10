@@ -362,7 +362,10 @@ public class ActiveTickProvider implements TickProvider {
 		lstFieldTypes.add(atServerAPIDefines.new ATQuoteFieldType(ATQuoteFieldType.PreMarketVolume));
 		lstFieldTypes.add(atServerAPIDefines.new ATQuoteFieldType(ATQuoteFieldType.PreMarketTradeCount));
 		lstFieldTypes.add(atServerAPIDefines.new ATQuoteFieldType(ATQuoteFieldType.TradeCount));
-
+		// So the issue here is we need to on FeedSubscription: we either add AfterMarketTradeCount as variabl
+		// add AfterMarketHoursLastPrice, PreMarketVolume,PreMarketTradeCount
+		// or you add the sum to the volume but then its off 
+		
 		long request = session.GetRequestor().SendATQuoteDbRequest(symbolList, lstFieldTypes,
 				ActiveTickServerAPI.DEFAULT_REQUEST_TIMEOUT); // this must only return 500
 		snapshotRequests.put(request, snapshotRequestCount.incrementAndGet());
