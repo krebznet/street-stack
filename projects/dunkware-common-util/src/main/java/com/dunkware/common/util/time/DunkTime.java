@@ -74,6 +74,15 @@ public class DunkTime {
 	}
 	
 	
+	public static boolean inTimeDateRange(LocalDateTime fromDateTime, LocalDateTime toDateTime, LocalDateTime testDateTime) { 
+		if(testDateTime.isAfter(fromDateTime) && toDateTime.isAfter(testDateTime)) { 
+			return true; 
+		}
+		return false; 
+		
+	}
+	
+	
 
 
 }
