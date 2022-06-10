@@ -1,5 +1,7 @@
 package com.dunkware.xstream.net.model.search;
 
+import com.dunkware.xstream.net.model.spec.EntityField;
+
 public class SessionEntityValue {
 
 	private SessionEntityValueType type;
@@ -7,6 +9,8 @@ public class SessionEntityValue {
 	private EntityFieldAggHistorical aggHistorical;
 	private EntitySignalCountSession signalCountSession; 
 	private EntitySignalCountHistorical signalCountHistorical;
+	private EntityField field; 
+	
 	public SessionEntityValueType getType() {
 		return type;
 	}
@@ -36,7 +40,15 @@ public class SessionEntityValue {
 	}
 	public void setSignalCountHistorical(EntitySignalCountHistorical signalCountHistorical) {
 		this.signalCountHistorical = signalCountHistorical;
+	}
+	public EntityField getField() {
+		return field;
+	}
+	public void setField(EntityField field) {
+		this.field = field;
 	} 
+	
+	
 	
 	
 }

@@ -1,8 +1,7 @@
 package com.dunkware.xstream.net.core.container.core;
 
 import java.time.LocalDateTime;
-import java.util.Map;
-import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicInteger;
 
 import org.slf4j.Logger;
@@ -14,12 +13,16 @@ import com.dunkware.xstream.net.core.container.ContainerEntity;
 import com.dunkware.xstream.net.core.container.ContainerEntityVar;
 import com.dunkware.xstream.net.core.container.ContainerSearchException;
 import com.dunkware.xstream.net.core.container.util.ContainerHelper;
+import com.github.benmanes.caffeine.cache.Cache;
+import com.github.benmanes.caffeine.cache.Caffeine;
 
 public class ContainerEntityVarImpl implements ContainerEntityVar {
 	
 	private Logger logger = LoggerFactory.getLogger(getClass());
+	
+	private Cache<LocalDateTime,Object> values;
 
-	private Map<LocalDateTime,Object> values = new ConcurrentHashMap<LocalDateTime,Object>();
+	
 	private ContainerEntityImpl entity; 
 	private String ident; 
 	private int id; 
@@ -33,10 +36,12 @@ public class ContainerEntityVarImpl implements ContainerEntityVar {
 	
 	
 	public ContainerEntityVarImpl(ContainerEntityImpl entity, String ident, int id, Object value, LocalDateTime time) { 
+		values = Caffeine.newBuilder().expireAfterWrite(23, TimeUnit.HOURS).build();
 		this.id = id;
 		this.ident = ident; 
 		this.entity = entity;
 		try {
+			// it should do the casting once up front
 			dataType = ContainerHelper.getDataType(value);
 		} catch (Exception e) {
 			logger.error("Unknown data type for variable value name " + ident  + " value type " + value.getClass().getName());;
@@ -85,7 +90,7 @@ public class ContainerEntityVarImpl implements ContainerEntityVar {
 	}
 	@Override
 	public Object getValue(LocalDateTime time) throws ContainerSearchException {
-		Object value = values.get(time);
+		Object value = values.getIfPresent(time);
 		if(value == null) { 
 			throw new ContainerSearchException("Value on variable " + ident + " for time " + DunkTime.toStringTimeStamp(time) + " not found");
 		}

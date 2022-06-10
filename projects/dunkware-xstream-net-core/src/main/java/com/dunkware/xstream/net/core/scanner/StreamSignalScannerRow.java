@@ -1,6 +1,6 @@
 package com.dunkware.xstream.net.core.scanner;
 
-public interface StreamSignalScannerItem {
+public interface StreamSignalScannerRow {
 	
 	String getIdent();
 	

@@ -1,9 +1,11 @@
 package com.dunkware.xstream.net.core.container.core;
 
-import com.dunkware.xstream.net.core.container.ContainerEntity;
-import com.dunkware.xstream.net.core.scanner.StreamEntityScannerItem;
+import java.util.Map;
 
-public class ContainerEntityScannerItemImpl implements StreamEntityScannerItem {
+import com.dunkware.xstream.net.core.container.ContainerEntity;
+import com.dunkware.xstream.net.core.scanner.StreamEntityScannerRow;
+
+public class ContainerEntityScannerRowImpl implements StreamEntityScannerRow {
 
 	private String data; 
 	private int timeInScanner;
@@ -28,11 +30,7 @@ public class ContainerEntityScannerItemImpl implements StreamEntityScannerItem {
 		return null;
 	}
 
-	@Override
-	public String getData() {
-		// TODO Auto-generated method stub
-		return null;
-	}
+	
 
 	public ContainerEntity getEntity() {
 		return entity;
@@ -52,6 +50,12 @@ public class ContainerEntityScannerItemImpl implements StreamEntityScannerItem {
 
 	public void setEntityIdent(String entityIdent) {
 		this.entityIdent = entityIdent;
+	}
+
+	@Override
+	public Map<String, Object> getData() {
+		// TODO Auto-generated method stub
+		return null;
 	}
 	
 	

@@ -1,0 +1,5 @@
+package com.dunkware.xstream.net.core.container.search2.filter;
+
+public interface EntityFilter {
+
+}

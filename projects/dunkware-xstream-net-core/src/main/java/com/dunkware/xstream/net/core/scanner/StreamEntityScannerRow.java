@@ -1,6 +1,8 @@
 package com.dunkware.xstream.net.core.scanner;
 
-public interface StreamEntityScannerItem {
+import java.util.Map;
+
+public interface StreamEntityScannerRow {
 	
 	public int getTimeInScanner();
 	
@@ -8,6 +10,7 @@ public interface StreamEntityScannerItem {
 	
 	public String getEntityIdent();
 	
-	public String getData();
+	public Map<String,Object> getData();
+	
 
 }

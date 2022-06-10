@@ -8,7 +8,7 @@ public interface StreamSignalScanner {
 
 	public void removeListener(StreamSignalScannerListener listener);
 
-	public Collection<StreamSignalScannerItem> getItems();
+	public Collection<StreamSignalScannerRow> getItems();
 
 	public void dispose();
 

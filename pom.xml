@@ -78,7 +78,7 @@
 
 
   <module> projects/dunkware-maven-parent</module>
-      <module> projects/dunkware-common-util</module>
+      <module>projects/dunkware-common-util</module>
       <module>projects/dunkware-net-core-proto</module>
       <module>projects/dunkware-net-core-runtime</module>
       <module>projects/dunkware-trade-tick-model</module>
@@ -100,6 +100,7 @@
 			<module>projects/dunkware-trade-sdk-tws-runtime</module>
       <module>projects/dunkware-trade-service-web-server</module>
 			<module>projects/dunkware-trade-service-web-mock</module>
+			<module>projects/dunkware-trade-service-web-json</module>
 
 			<module>projects/dunkware-trade-service-worker-server</module>
 
@@ -140,10 +141,8 @@
     <!-- To use the plugin goals in your POM or parent POM -->
     <plugins>
       <plugin>
-
         <groupId>com.github.danielflower.mavenplugins</groupId>
         <artifactId>multi-module-maven-release-plugin</artifactId>
-        <version>3.6.1</version>
       </plugin>
 
     </plugins>

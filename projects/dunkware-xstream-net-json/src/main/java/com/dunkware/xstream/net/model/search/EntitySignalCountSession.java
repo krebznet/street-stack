@@ -6,4 +6,20 @@ public class EntitySignalCountSession {
 
 	private TimeRangeSession timeRange; 
 	private EntitySignal signal;
+
+	public TimeRangeSession getTimeRange() {
+		return timeRange;
+	}
+	public void setTimeRange(TimeRangeSession timeRange) {
+		this.timeRange = timeRange;
+	}
+	public EntitySignal getSignal() {
+		return signal;
+	}
+	public void setSignal(EntitySignal signal) {
+		this.signal = signal;
+	}
+	
+	
+	
 }

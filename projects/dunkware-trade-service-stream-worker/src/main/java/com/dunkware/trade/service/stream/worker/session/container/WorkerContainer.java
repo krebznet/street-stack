@@ -92,7 +92,7 @@ public class WorkerContainer {
 	}
 
 	public void resetContainer() {
-		container.deleteContainer();
+		container.newSession();
 	}
 	
 	public Container getContainer() { 

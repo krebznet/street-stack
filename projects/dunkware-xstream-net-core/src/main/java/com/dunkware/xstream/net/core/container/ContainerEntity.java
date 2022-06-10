@@ -36,12 +36,13 @@ public interface ContainerEntity {
 	public void addListener(ContainerEntityListener listener);
 
 	public void removeListener(ContainerEntityListener listener);
+	
 
 	List<ContainerEntitySignal> getSignals(LocalDateTime start, LocalDateTime stop);
 
 	List<ContainerEntitySignal> getSignals(LocalDateTime start, LocalDateTime stop, String... signalTypes);
 
-	int getSignalCount(LocalDateTime from, LocalDateTime to, String... types);
+	public int getSignalCount(LocalDateTime from, LocalDateTime to, String... types);
 
 	public Container getContainer();
 

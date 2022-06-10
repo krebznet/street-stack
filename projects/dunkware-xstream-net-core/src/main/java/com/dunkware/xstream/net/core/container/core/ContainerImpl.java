@@ -32,10 +32,12 @@ import com.dunkware.xstream.net.core.container.ContainerExtensionType;
 import com.dunkware.xstream.net.core.container.ContainerInput;
 import com.dunkware.xstream.net.core.container.ContainerObserver;
 import com.dunkware.xstream.net.core.container.ContainerRegistry;
+import com.dunkware.xstream.net.core.container.ContainerSearchException;
 import com.dunkware.xstream.net.core.container.ContainerSearchResults;
 import com.dunkware.xstream.net.core.container.ContainerTimeListener;
 import com.dunkware.xstream.net.core.container.search.ContainerEntityMatcherPredicateBuilder;
 import com.dunkware.xstream.net.core.container.util.ContainerHelper;
+import com.dunkware.xstream.net.model.search.SessionEntitySearch;
 
 public class ContainerImpl implements Container {
 
@@ -50,7 +52,7 @@ public class ContainerImpl implements Container {
 	
 	private List<ContainerTimeListener> timeListeners = new ArrayList<ContainerTimeListener>();
 	private Semaphore timeListenerLock = new Semaphore(1);
-	private List<ContainerExtension> extensions = new ArrayList<ContainerExtension>();
+	private Map<ContainerExtensionType,ContainerExtension> extensions = new ConcurrentHashMap<ContainerExtensionType,ContainerExtension>();
 	
 	
 	private ContainerInput input;
@@ -58,6 +60,8 @@ public class ContainerImpl implements Container {
 	private volatile LocalDateTime time; 
 	
 	ContainerRegistry registry;
+	
+	private LocalDateTime startTime; 
 
 	private AtomicLong entitySnapshotCount = new AtomicLong(0);
 	private AtomicLong entitySignalCount = new AtomicLong(0);
@@ -68,20 +72,20 @@ public class ContainerImpl implements Container {
 	public void start(ContainerInput input) throws ContainerException {
 		entities = Collections.synchronizedList(entities);
 		signals = Collections.synchronizedList(signals);
-
+		startTime = LocalDateTime.now(DTimeZone.toZoneId(DTimeZone.NewYork));
 		this.input = input;
 		registry = ContainerRegistry.get();
 		for (ContainerExtensionType type : input.getExtensions()) {
 			ContainerExtension ext = registry.crateExtension(type);
 			ext.init(this, type);
-			extensions.add(ext);
+			extensions.put(type,ext);
 		}
 
-		for (ContainerExtension stashExtension : extensions) {
+		for (ContainerExtension stashExtension : extensions.values()) {
 			stashExtension.containerStarting(this);
 		}
 
-		for (ContainerExtension stashExtension : extensions) {
+		for (ContainerExtension stashExtension : extensions.values()) {
 			stashExtension.containerStarted(this);
 		}
 
@@ -97,14 +101,20 @@ public class ContainerImpl implements Container {
 
 	@Override
 	public void dispsoe() {
-		for (ContainerExtension stashExtension : extensions) {
+		for (ContainerExtension stashExtension : extensions.values()) {
 			stashExtension.containerDisposed(this);
 		}
 		debugThread.interrupt();
 
 	}
-
 	
+	
+
+
+	@Override
+	public LocalDateTime getStartTime() {
+		return startTime;
+	}
 
 	@Override
 	public boolean hasEntity(String identifier) {
@@ -113,8 +123,7 @@ public class ContainerImpl implements Container {
 
 	@Override
 	public void dispose() {
-		// TODO Auto-generated method stub
-
+		newSession();
 	}
 	
 	
@@ -181,10 +190,11 @@ public class ContainerImpl implements Container {
 
 
 	@Override
-	public void deleteContainer() {
+	public void newSession() {
 		entities.clear();
 		entityIndex.clear();
 		signals.clear();
+		startTime = LocalDateTime.now(DTimeZone.toZoneId(DTimeZone.NewYork));
 		
 	}
 
@@ -239,39 +249,25 @@ public class ContainerImpl implements Container {
 		}
 		
 	}
-	
-	
-	/*
-	 * @Override public ContainerSearchResults<ContainerEntitySignal>
-	 * signalSearch(List<Predicate<ContainerEntitySignal>> predicates) { for
-	 * (Predicate<ContainerEntitySignal> signalPredicate : predicates) { if
-	 * (signalPredicate instanceof ContainerObserver) { ContainerObserver obs =
-	 * (ContainerObserver)signalPredicate; obs.update(this);
-	 * 
-	 * } } ContainerSearchResults<ContainerEntitySignal> results = new
-	 * ContainerSearchResults<ContainerEntitySignal>(); DStopWatch watch =
-	 * DStopWatch.create();
-	 * 
-	 * try { if(logger.isDebugEnabled()) {
-	 * logger.debug("Starting Signal Search With Signal Count of " + signals.size()
-	 * + " predicate count " + predicates.size());; } signalLock.acquire();
-	 * watch.start(); Predicate<ContainerEntitySignal> composite =
-	 * predicates.stream() .reduce(x -> true, Predicate::and);
-	 * List<ContainerEntitySignal> goods =
-	 * signals.parallelStream().filter(composite).collect(Collectors.toList());
-	 * watch.stop(); if(logger.isDebugEnabled()) {
-	 * logger.debug("Finished signal search in " + watch.getCompletedSeconds() +
-	 * " with result size of " + goods.size()); } results.setData(goods,
-	 * watch.getCompletedSeconds()); return results; } catch (Exception e) {
-	 * results.setError("thrown exception " + e.toString()); return results; }
-	 * finally { signalLock.release(); }
-	 * 
-	 * }
-	 */
-	
-	
+	@Override
+	public boolean hasExtension(Class extClass) {
+		// for each key 
+		return false;
+	}
 
-	
+	@Override
+	public ContainerExtension getExtension(Class extClass) throws ContainerException {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public ContainerSearchResults<ContainerEntity> entitySearch(SessionEntitySearch search)
+			throws ContainerSearchException {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
 	@Override
 	public int getSnapshotCount() {
 		return (int)entitySnapshotCount.get();
@@ -300,6 +296,8 @@ public class ContainerImpl implements Container {
 			logger.error("Exception creating Container Entity Snapshot " + e.toString());
 		}
 	}
+	
+	
 
 	@Override
 	public void consumeStreamSignal(GEntitySignal signal) {

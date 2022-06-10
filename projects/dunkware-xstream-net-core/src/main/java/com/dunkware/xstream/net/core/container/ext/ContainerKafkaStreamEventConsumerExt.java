@@ -93,6 +93,14 @@ public class ContainerKafkaStreamEventConsumerExt implements ContainerExtension,
 		
 	}
 	
+	
+	
+	@Override
+	public void newSession(Container container) {
+		// TODO Auto-generated method stub
+		
+	}
+
 	@Override
 	public void record(ConsumerRecord<String, byte[]> record) {
 		try {
@@ -129,6 +137,7 @@ public class ContainerKafkaStreamEventConsumerExt implements ContainerExtension,
 				}
 			}
 		}
+	  
 
 	
 

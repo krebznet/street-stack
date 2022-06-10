@@ -11,6 +11,7 @@ import com.dunkware.net.proto.stream.GEntityMatcher;
 import com.dunkware.net.proto.stream.GEntitySignal;
 import com.dunkware.net.proto.stream.GEntitySnapshot;
 import com.dunkware.net.proto.stream.GStreamTimeUpdate;
+import com.dunkware.xstream.net.model.search.SessionEntitySearch;
 
 public interface Container {
 	
@@ -30,17 +31,25 @@ public interface Container {
 	
 	public LocalDateTime getTime();
 	
+	/** 
+	 * this is reset every time a reset is called 
+	 * @return
+	 */
+	public LocalDateTime getStartTime();
+	
 	public void addTimeListener(ContainerTimeListener listener);
 	
 	public void removeTimeListener(ContainerTimeListener listener);
 	
 	public List<ContainerEntitySignal> entitySignals(ContainerEntity entity, GTimeUnit timeUnit, int timeValue, String signalType);
 	
-	public void deleteContainer();
+	public void newSession();
 	
 	public ContainerSearchResults<ContainerEntity> entitySearch(GEntityMatcher matcher) throws ContainerException;
 	
 	public ContainerSearchResults<ContainerEntity> entitySearch(List<Predicate<ContainerEntity>> predicates);
+	
+	public ContainerSearchResults<ContainerEntity> entitySearch(SessionEntitySearch search) throws ContainerSearchException;
 	
 	public void consumeStreamSnapshot(GEntitySnapshot snapshot);
 	
@@ -58,6 +67,11 @@ public interface Container {
 	
 	public boolean storeSnapshots();
 	
+	public boolean hasExtension(Class extClass); 
+	
+	public ContainerExtension getExtension(Class extClass) throws ContainerException;
+	
+	//public StreamEntityScanner entityScanner();
 	
 	
 	

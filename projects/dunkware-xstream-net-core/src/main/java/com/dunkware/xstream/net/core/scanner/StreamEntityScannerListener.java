@@ -4,7 +4,7 @@ import java.util.List;
 
 public interface StreamEntityScannerListener {
 	
-	public void scannerUpdate(List<StreamEntityScannerItem> inserts, List<StreamEntityScannerItem> updates,List<StreamEntityScannerItem> deletes); 
+	public void scannerUpdate(List<StreamEntityScannerRow> inserts, List<StreamEntityScannerRow> updates,List<StreamEntityScannerRow> deletes); 
 	
 
 }

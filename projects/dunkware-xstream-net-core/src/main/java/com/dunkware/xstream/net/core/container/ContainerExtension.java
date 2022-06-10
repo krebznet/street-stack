@@ -11,5 +11,7 @@ public interface ContainerExtension {
 	void containerDisposing(Container stash);
 	
 	void containerDisposed(Container stash);
+	
+	void newSession(Container container);
 
 }
