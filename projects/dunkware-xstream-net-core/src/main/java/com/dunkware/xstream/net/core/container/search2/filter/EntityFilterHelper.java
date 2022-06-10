@@ -1,6 +1,5 @@
 package com.dunkware.xstream.net.core.container.search2.filter;
 
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 
@@ -8,8 +7,8 @@ import com.dunkware.common.util.calc.DCalc;
 import com.dunkware.xstream.net.core.container.Container;
 import com.dunkware.xstream.net.core.container.ContainerEntity;
 import com.dunkware.xstream.net.core.container.ContainerSearchException;
-import com.dunkware.xstream.net.model.search.ConditioNumeric;
 import com.dunkware.xstream.net.model.search.Condition;
+import com.dunkware.xstream.net.model.search.ConditionNumeric;
 import com.dunkware.xstream.net.model.search.ConditionNumericOperator;
 import com.dunkware.xstream.net.model.search.ConditionType;
 import com.dunkware.xstream.net.model.search.SessionEntityFIlterValueCompareFunction;
@@ -51,7 +50,7 @@ public class EntityFilterHelper {
 		if(condition.getType() != ConditionType.Numerical) { 
 			throw new ContainerSearchException("test value compare condition is not numerical can't evaluate");
 		}
-		ConditioNumeric numericCondition = condition.getNumeric();
+		ConditionNumeric numericCondition = condition.getNumeric();
 		double conditionDouble = numericCondition.getValue().doubleValue();
 		
 		if (numericCondition.getOperator() == ConditionNumericOperator.EqualTo) {
@@ -98,7 +97,7 @@ public class EntityFilterHelper {
 		double valueDouble = valueNumber.doubleValue();
 		double conditionDouble = condition.getNumeric().getValue().doubleValue();
 
-		ConditioNumeric numericCondition = condition.getNumeric();
+		ConditionNumeric numericCondition = condition.getNumeric();
 		if (numericCondition.getOperator() == ConditionNumericOperator.EqualTo) {
 			if(valueDouble == conditionDouble) { 
 				return true; 
