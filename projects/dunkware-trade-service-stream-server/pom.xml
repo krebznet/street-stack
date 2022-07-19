@@ -218,12 +218,7 @@
 			<artifactId>reactor-test</artifactId>
 			<scope>test</scope>
 		</dependency>
-		<dependency>
-			<groupId>com.dunkware.net</groupId>
-			<artifactId>dunkware-net-proto</artifactId>
-			<version>1.0.0-SNAPSHOT</version>
-
-		</dependency>
+		
 		
 		<!-- GRPC DEPS -->
 
