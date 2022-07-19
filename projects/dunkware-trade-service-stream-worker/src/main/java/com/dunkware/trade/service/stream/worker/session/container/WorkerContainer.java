@@ -1,7 +1,10 @@
 package com.dunkware.trade.service.stream.worker.session.container;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.LinkedBlockingQueue;
+import java.util.concurrent.Semaphore;
 
 import org.apache.kafka.clients.consumer.ConsumerRecord;
 import org.slf4j.Logger;
@@ -21,16 +24,18 @@ import com.dunkware.net.cluster.node.Cluster;
 import com.dunkware.net.proto.cluster.GContainerServerMessage;
 import com.dunkware.net.proto.cluster.GContainerWorkerMessage;
 import com.dunkware.net.proto.cluster.GContainerWorkerMessage.TypeCase;
-import com.dunkware.net.proto.netstream.GNetEntitySearchRequest;
+import com.dunkware.net.proto.netstream.GNetEntitySearchRequest2;
 import com.dunkware.net.proto.stream.GEntitySnapshot;
 import com.dunkware.trade.service.data.json.worker.container.DataStreamWorkerContainerStartReq;
-import com.dunkware.trade.service.stream.worker.session.container.agents.WorkerEntitySearch;
+import com.dunkware.trade.service.stream.worker.session.container.agents.WorkerEntitySearch2;
 import com.dunkware.xstream.net.core.container.Container;
 import com.dunkware.xstream.net.core.container.ContainerBuilder;
+
 
 public class WorkerContainer {
 
 	private Logger logger = LoggerFactory.getLogger(getClass());
+	
 
 	private Container container;
 
@@ -49,6 +54,9 @@ public class WorkerContainer {
 	private WorkerMessageConsumer workerMessageConsumer;
 
 	private WorkerMessageHandler workerMessageHandler;
+	
+	private Semaphore messageHandlersLock = new Semaphore(1);
+	private List<WorkerContainerHandler> messageHandlers = new ArrayList<WorkerContainerHandler>();
 	
 	
 
@@ -114,7 +122,46 @@ public class WorkerContainer {
 	public Container getStreamContainer() {
 		return container;
 	}
+	
+	public void addMessageHandler(WorkerContainerHandler handler) { 
+	Runnable runner = new Runnable() {
+			
+			@Override
+			public void run() {
+				try {
+					messageHandlersLock.acquire();
+					messageHandlers.add(handler);
+				} catch (Exception e) {
+					// TODO: handle exception
+				} finally { 
+					messageHandlersLock.release();
+				}
+			}
+		};
+		cluster.getExecutor().execute(runner);
+	}
+	
+	public void removeMessageHandler(WorkerContainerHandler handler) { 
+		Runnable runner = new Runnable() {
+			
+			@Override
+			public void run() {
+				try {
+					messageHandlersLock.acquire();
+					messageHandlers.remove(handler);
+				} catch (Exception e) {
+					// TODO: handle exception
+				} finally { 
+					messageHandlersLock.release();
+				}
+			}
+		};
+		cluster.getExecutor().execute(runner);
+	}
 
+	
+	
+	
 	public void sendMessage(GContainerServerMessage message) {
 		try {
 			serverProducer.sendBytes(message.toByteArray());
@@ -146,6 +193,30 @@ public class WorkerContainer {
 	public DataStreamWorkerContainerStartReq getReq() {
 		return req;
 	}
+	
+	private void notifyHandlerMessage(GContainerWorkerMessage message) { 
+		Runnable runner = new Runnable() {
+			
+			@Override
+			public void run() {
+				try {
+					messageHandlersLock.acquire();
+					for (WorkerContainerHandler handler : messageHandlers) {
+						try {
+							handler.consumeMessage(message);
+						} catch (Exception e) {
+							logger.error("Exception calling message handler " + handler.getClass().getName() + " " + e.toString());
+						}
+					}
+				} catch (Exception e) {
+					// TODO: handle exception
+				} finally { 
+					messageHandlersLock.release();
+					
+				}
+			}
+		};
+	}
 
 	private class WorkerMessageHandler extends Thread {
 
@@ -154,11 +225,13 @@ public class WorkerContainer {
 				GContainerWorkerMessage message = null;
 				try {
 					message = workerMessageQueue.take();
-					if(message.getTypeCase() == TypeCase.ENTITYSEARCHREQUEST) {
-						GNetEntitySearchRequest req = message.getEntitySearchRequest();
-						WorkerEntitySearch search = new WorkerEntitySearch(req,WorkerContainer.this);
+					
+					if(message.getTypeCase() == TypeCase.ENTITYSEARCHREQUEST2) {
+						GNetEntitySearchRequest2 req = message.getEntitySearchRequest2();
+						WorkerEntitySearch2 search = new WorkerEntitySearch2(req,WorkerContainer.this);
 						cluster.getExecutor().execute(search);
 					}
+					
 					if(message.getTypeCase() == TypeCase.ENTITYSNAPSHOT) {
 						GEntitySnapshot snapshot = message.getEntitySnapshot();
 						container.consumeStreamSnapshot(snapshot);
@@ -170,6 +243,7 @@ public class WorkerContainer {
 						container.consumeStreamSignal(message.getEntitySignal());
 					}
 					
+					notifyHandlerMessage(message);
 				} catch (Exception e) {
 					if (e instanceof InterruptedException) {
 						return;

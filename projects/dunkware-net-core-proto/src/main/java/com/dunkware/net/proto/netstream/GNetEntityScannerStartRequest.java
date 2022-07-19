@@ -16,11 +16,8 @@ private static final long serialVersionUID = 0L;
     super(builder);
   }
   private GNetEntityScannerStartRequest() {
-    scannerId_ = 0;
-    search_ = "";
-    retVars_ = "";
-    source_ = "";
-    scanInterval_ = 0;
+    scannerIdent_ = "";
+    model_ = "";
   }
 
   @java.lang.Override
@@ -47,32 +44,16 @@ private static final long serialVersionUID = 0L;
           case 0:
             done = true;
             break;
-          case 8: {
+          case 10: {
+            java.lang.String s = input.readStringRequireUtf8();
 
-            scannerId_ = input.readInt32();
+            scannerIdent_ = s;
             break;
           }
           case 18: {
             java.lang.String s = input.readStringRequireUtf8();
 
-            search_ = s;
-            break;
-          }
-          case 34: {
-            java.lang.String s = input.readStringRequireUtf8();
-
-            retVars_ = s;
-            break;
-          }
-          case 42: {
-            java.lang.String s = input.readStringRequireUtf8();
-
-            source_ = s;
-            break;
-          }
-          case 48: {
-
-            scanInterval_ = input.readInt32();
+            model_ = s;
             break;
           }
           default: {
@@ -107,124 +88,72 @@ private static final long serialVersionUID = 0L;
             com.dunkware.net.proto.netstream.GNetEntityScannerStartRequest.class, com.dunkware.net.proto.netstream.GNetEntityScannerStartRequest.Builder.class);
   }
 
-  public static final int SCANNERID_FIELD_NUMBER = 1;
-  private int scannerId_;
+  public static final int SCANNERIDENT_FIELD_NUMBER = 1;
+  private volatile java.lang.Object scannerIdent_;
   /**
-   * <code>int32 scannerId = 1;</code>
+   * <code>string scannerIdent = 1;</code>
    */
-  public int getScannerId() {
-    return scannerId_;
-  }
-
-  public static final int SEARCH_FIELD_NUMBER = 2;
-  private volatile java.lang.Object search_;
-  /**
-   * <code>string search = 2;</code>
-   */
-  public java.lang.String getSearch() {
-    java.lang.Object ref = search_;
+  public java.lang.String getScannerIdent() {
+    java.lang.Object ref = scannerIdent_;
     if (ref instanceof java.lang.String) {
       return (java.lang.String) ref;
     } else {
       com.google.protobuf.ByteString bs = 
           (com.google.protobuf.ByteString) ref;
       java.lang.String s = bs.toStringUtf8();
-      search_ = s;
+      scannerIdent_ = s;
       return s;
     }
   }
   /**
-   * <code>string search = 2;</code>
+   * <code>string scannerIdent = 1;</code>
    */
   public com.google.protobuf.ByteString
-      getSearchBytes() {
-    java.lang.Object ref = search_;
+      getScannerIdentBytes() {
+    java.lang.Object ref = scannerIdent_;
     if (ref instanceof java.lang.String) {
       com.google.protobuf.ByteString b = 
           com.google.protobuf.ByteString.copyFromUtf8(
               (java.lang.String) ref);
-      search_ = b;
+      scannerIdent_ = b;
       return b;
     } else {
       return (com.google.protobuf.ByteString) ref;
     }
   }
 
-  public static final int RETVARS_FIELD_NUMBER = 4;
-  private volatile java.lang.Object retVars_;
+  public static final int MODEL_FIELD_NUMBER = 2;
+  private volatile java.lang.Object model_;
   /**
-   * <code>string retVars = 4;</code>
+   * <code>string model = 2;</code>
    */
-  public java.lang.String getRetVars() {
-    java.lang.Object ref = retVars_;
+  public java.lang.String getModel() {
+    java.lang.Object ref = model_;
     if (ref instanceof java.lang.String) {
       return (java.lang.String) ref;
     } else {
       com.google.protobuf.ByteString bs = 
           (com.google.protobuf.ByteString) ref;
       java.lang.String s = bs.toStringUtf8();
-      retVars_ = s;
+      model_ = s;
       return s;
     }
   }
   /**
-   * <code>string retVars = 4;</code>
+   * <code>string model = 2;</code>
    */
   public com.google.protobuf.ByteString
-      getRetVarsBytes() {
-    java.lang.Object ref = retVars_;
+      getModelBytes() {
+    java.lang.Object ref = model_;
     if (ref instanceof java.lang.String) {
       com.google.protobuf.ByteString b = 
           com.google.protobuf.ByteString.copyFromUtf8(
               (java.lang.String) ref);
-      retVars_ = b;
+      model_ = b;
       return b;
     } else {
       return (com.google.protobuf.ByteString) ref;
     }
-  }
-
-  public static final int SOURCE_FIELD_NUMBER = 5;
-  private volatile java.lang.Object source_;
-  /**
-   * <code>string source = 5;</code>
-   */
-  public java.lang.String getSource() {
-    java.lang.Object ref = source_;
-    if (ref instanceof java.lang.String) {
-      return (java.lang.String) ref;
-    } else {
-      com.google.protobuf.ByteString bs = 
-          (com.google.protobuf.ByteString) ref;
-      java.lang.String s = bs.toStringUtf8();
-      source_ = s;
-      return s;
-    }
-  }
-  /**
-   * <code>string source = 5;</code>
-   */
-  public com.google.protobuf.ByteString
-      getSourceBytes() {
-    java.lang.Object ref = source_;
-    if (ref instanceof java.lang.String) {
-      com.google.protobuf.ByteString b = 
-          com.google.protobuf.ByteString.copyFromUtf8(
-              (java.lang.String) ref);
-      source_ = b;
-      return b;
-    } else {
-      return (com.google.protobuf.ByteString) ref;
-    }
-  }
-
-  public static final int SCANINTERVAL_FIELD_NUMBER = 6;
-  private int scanInterval_;
-  /**
-   * <code>int32 scanInterval = 6;</code>
-   */
-  public int getScanInterval() {
-    return scanInterval_;
   }
 
   private byte memoizedIsInitialized = -1;
@@ -241,20 +170,11 @@ private static final long serialVersionUID = 0L;
   @java.lang.Override
   public void writeTo(com.google.protobuf.CodedOutputStream output)
                       throws java.io.IOException {
-    if (scannerId_ != 0) {
-      output.writeInt32(1, scannerId_);
+    if (!getScannerIdentBytes().isEmpty()) {
+      com.google.protobuf.GeneratedMessageV3.writeString(output, 1, scannerIdent_);
     }
-    if (!getSearchBytes().isEmpty()) {
-      com.google.protobuf.GeneratedMessageV3.writeString(output, 2, search_);
-    }
-    if (!getRetVarsBytes().isEmpty()) {
-      com.google.protobuf.GeneratedMessageV3.writeString(output, 4, retVars_);
-    }
-    if (!getSourceBytes().isEmpty()) {
-      com.google.protobuf.GeneratedMessageV3.writeString(output, 5, source_);
-    }
-    if (scanInterval_ != 0) {
-      output.writeInt32(6, scanInterval_);
+    if (!getModelBytes().isEmpty()) {
+      com.google.protobuf.GeneratedMessageV3.writeString(output, 2, model_);
     }
     unknownFields.writeTo(output);
   }
@@ -265,22 +185,11 @@ private static final long serialVersionUID = 0L;
     if (size != -1) return size;
 
     size = 0;
-    if (scannerId_ != 0) {
-      size += com.google.protobuf.CodedOutputStream
-        .computeInt32Size(1, scannerId_);
+    if (!getScannerIdentBytes().isEmpty()) {
+      size += com.google.protobuf.GeneratedMessageV3.computeStringSize(1, scannerIdent_);
     }
-    if (!getSearchBytes().isEmpty()) {
-      size += com.google.protobuf.GeneratedMessageV3.computeStringSize(2, search_);
-    }
-    if (!getRetVarsBytes().isEmpty()) {
-      size += com.google.protobuf.GeneratedMessageV3.computeStringSize(4, retVars_);
-    }
-    if (!getSourceBytes().isEmpty()) {
-      size += com.google.protobuf.GeneratedMessageV3.computeStringSize(5, source_);
-    }
-    if (scanInterval_ != 0) {
-      size += com.google.protobuf.CodedOutputStream
-        .computeInt32Size(6, scanInterval_);
+    if (!getModelBytes().isEmpty()) {
+      size += com.google.protobuf.GeneratedMessageV3.computeStringSize(2, model_);
     }
     size += unknownFields.getSerializedSize();
     memoizedSize = size;
@@ -298,16 +207,10 @@ private static final long serialVersionUID = 0L;
     com.dunkware.net.proto.netstream.GNetEntityScannerStartRequest other = (com.dunkware.net.proto.netstream.GNetEntityScannerStartRequest) obj;
 
     boolean result = true;
-    result = result && (getScannerId()
-        == other.getScannerId());
-    result = result && getSearch()
-        .equals(other.getSearch());
-    result = result && getRetVars()
-        .equals(other.getRetVars());
-    result = result && getSource()
-        .equals(other.getSource());
-    result = result && (getScanInterval()
-        == other.getScanInterval());
+    result = result && getScannerIdent()
+        .equals(other.getScannerIdent());
+    result = result && getModel()
+        .equals(other.getModel());
     result = result && unknownFields.equals(other.unknownFields);
     return result;
   }
@@ -319,16 +222,10 @@ private static final long serialVersionUID = 0L;
     }
     int hash = 41;
     hash = (19 * hash) + getDescriptor().hashCode();
-    hash = (37 * hash) + SCANNERID_FIELD_NUMBER;
-    hash = (53 * hash) + getScannerId();
-    hash = (37 * hash) + SEARCH_FIELD_NUMBER;
-    hash = (53 * hash) + getSearch().hashCode();
-    hash = (37 * hash) + RETVARS_FIELD_NUMBER;
-    hash = (53 * hash) + getRetVars().hashCode();
-    hash = (37 * hash) + SOURCE_FIELD_NUMBER;
-    hash = (53 * hash) + getSource().hashCode();
-    hash = (37 * hash) + SCANINTERVAL_FIELD_NUMBER;
-    hash = (53 * hash) + getScanInterval();
+    hash = (37 * hash) + SCANNERIDENT_FIELD_NUMBER;
+    hash = (53 * hash) + getScannerIdent().hashCode();
+    hash = (37 * hash) + MODEL_FIELD_NUMBER;
+    hash = (53 * hash) + getModel().hashCode();
     hash = (29 * hash) + unknownFields.hashCode();
     memoizedHashCode = hash;
     return hash;
@@ -462,15 +359,9 @@ private static final long serialVersionUID = 0L;
     @java.lang.Override
     public Builder clear() {
       super.clear();
-      scannerId_ = 0;
+      scannerIdent_ = "";
 
-      search_ = "";
-
-      retVars_ = "";
-
-      source_ = "";
-
-      scanInterval_ = 0;
+      model_ = "";
 
       return this;
     }
@@ -498,11 +389,8 @@ private static final long serialVersionUID = 0L;
     @java.lang.Override
     public com.dunkware.net.proto.netstream.GNetEntityScannerStartRequest buildPartial() {
       com.dunkware.net.proto.netstream.GNetEntityScannerStartRequest result = new com.dunkware.net.proto.netstream.GNetEntityScannerStartRequest(this);
-      result.scannerId_ = scannerId_;
-      result.search_ = search_;
-      result.retVars_ = retVars_;
-      result.source_ = source_;
-      result.scanInterval_ = scanInterval_;
+      result.scannerIdent_ = scannerIdent_;
+      result.model_ = model_;
       onBuilt();
       return result;
     }
@@ -551,23 +439,13 @@ private static final long serialVersionUID = 0L;
 
     public Builder mergeFrom(com.dunkware.net.proto.netstream.GNetEntityScannerStartRequest other) {
       if (other == com.dunkware.net.proto.netstream.GNetEntityScannerStartRequest.getDefaultInstance()) return this;
-      if (other.getScannerId() != 0) {
-        setScannerId(other.getScannerId());
-      }
-      if (!other.getSearch().isEmpty()) {
-        search_ = other.search_;
+      if (!other.getScannerIdent().isEmpty()) {
+        scannerIdent_ = other.scannerIdent_;
         onChanged();
       }
-      if (!other.getRetVars().isEmpty()) {
-        retVars_ = other.retVars_;
+      if (!other.getModel().isEmpty()) {
+        model_ = other.model_;
         onChanged();
-      }
-      if (!other.getSource().isEmpty()) {
-        source_ = other.source_;
-        onChanged();
-      }
-      if (other.getScanInterval() != 0) {
-        setScanInterval(other.getScanInterval());
       }
       this.mergeUnknownFields(other.unknownFields);
       onChanged();
@@ -598,261 +476,140 @@ private static final long serialVersionUID = 0L;
       return this;
     }
 
-    private int scannerId_ ;
+    private java.lang.Object scannerIdent_ = "";
     /**
-     * <code>int32 scannerId = 1;</code>
+     * <code>string scannerIdent = 1;</code>
      */
-    public int getScannerId() {
-      return scannerId_;
-    }
-    /**
-     * <code>int32 scannerId = 1;</code>
-     */
-    public Builder setScannerId(int value) {
-      
-      scannerId_ = value;
-      onChanged();
-      return this;
-    }
-    /**
-     * <code>int32 scannerId = 1;</code>
-     */
-    public Builder clearScannerId() {
-      
-      scannerId_ = 0;
-      onChanged();
-      return this;
-    }
-
-    private java.lang.Object search_ = "";
-    /**
-     * <code>string search = 2;</code>
-     */
-    public java.lang.String getSearch() {
-      java.lang.Object ref = search_;
+    public java.lang.String getScannerIdent() {
+      java.lang.Object ref = scannerIdent_;
       if (!(ref instanceof java.lang.String)) {
         com.google.protobuf.ByteString bs =
             (com.google.protobuf.ByteString) ref;
         java.lang.String s = bs.toStringUtf8();
-        search_ = s;
+        scannerIdent_ = s;
         return s;
       } else {
         return (java.lang.String) ref;
       }
     }
     /**
-     * <code>string search = 2;</code>
+     * <code>string scannerIdent = 1;</code>
      */
     public com.google.protobuf.ByteString
-        getSearchBytes() {
-      java.lang.Object ref = search_;
+        getScannerIdentBytes() {
+      java.lang.Object ref = scannerIdent_;
       if (ref instanceof String) {
         com.google.protobuf.ByteString b = 
             com.google.protobuf.ByteString.copyFromUtf8(
                 (java.lang.String) ref);
-        search_ = b;
+        scannerIdent_ = b;
         return b;
       } else {
         return (com.google.protobuf.ByteString) ref;
       }
     }
     /**
-     * <code>string search = 2;</code>
+     * <code>string scannerIdent = 1;</code>
      */
-    public Builder setSearch(
+    public Builder setScannerIdent(
         java.lang.String value) {
       if (value == null) {
     throw new NullPointerException();
   }
   
-      search_ = value;
+      scannerIdent_ = value;
       onChanged();
       return this;
     }
     /**
-     * <code>string search = 2;</code>
+     * <code>string scannerIdent = 1;</code>
      */
-    public Builder clearSearch() {
+    public Builder clearScannerIdent() {
       
-      search_ = getDefaultInstance().getSearch();
+      scannerIdent_ = getDefaultInstance().getScannerIdent();
       onChanged();
       return this;
     }
     /**
-     * <code>string search = 2;</code>
+     * <code>string scannerIdent = 1;</code>
      */
-    public Builder setSearchBytes(
+    public Builder setScannerIdentBytes(
         com.google.protobuf.ByteString value) {
       if (value == null) {
     throw new NullPointerException();
   }
   checkByteStringIsUtf8(value);
       
-      search_ = value;
+      scannerIdent_ = value;
       onChanged();
       return this;
     }
 
-    private java.lang.Object retVars_ = "";
+    private java.lang.Object model_ = "";
     /**
-     * <code>string retVars = 4;</code>
+     * <code>string model = 2;</code>
      */
-    public java.lang.String getRetVars() {
-      java.lang.Object ref = retVars_;
+    public java.lang.String getModel() {
+      java.lang.Object ref = model_;
       if (!(ref instanceof java.lang.String)) {
         com.google.protobuf.ByteString bs =
             (com.google.protobuf.ByteString) ref;
         java.lang.String s = bs.toStringUtf8();
-        retVars_ = s;
+        model_ = s;
         return s;
       } else {
         return (java.lang.String) ref;
       }
     }
     /**
-     * <code>string retVars = 4;</code>
+     * <code>string model = 2;</code>
      */
     public com.google.protobuf.ByteString
-        getRetVarsBytes() {
-      java.lang.Object ref = retVars_;
+        getModelBytes() {
+      java.lang.Object ref = model_;
       if (ref instanceof String) {
         com.google.protobuf.ByteString b = 
             com.google.protobuf.ByteString.copyFromUtf8(
                 (java.lang.String) ref);
-        retVars_ = b;
+        model_ = b;
         return b;
       } else {
         return (com.google.protobuf.ByteString) ref;
       }
     }
     /**
-     * <code>string retVars = 4;</code>
+     * <code>string model = 2;</code>
      */
-    public Builder setRetVars(
+    public Builder setModel(
         java.lang.String value) {
       if (value == null) {
     throw new NullPointerException();
   }
   
-      retVars_ = value;
+      model_ = value;
       onChanged();
       return this;
     }
     /**
-     * <code>string retVars = 4;</code>
+     * <code>string model = 2;</code>
      */
-    public Builder clearRetVars() {
+    public Builder clearModel() {
       
-      retVars_ = getDefaultInstance().getRetVars();
+      model_ = getDefaultInstance().getModel();
       onChanged();
       return this;
     }
     /**
-     * <code>string retVars = 4;</code>
+     * <code>string model = 2;</code>
      */
-    public Builder setRetVarsBytes(
+    public Builder setModelBytes(
         com.google.protobuf.ByteString value) {
       if (value == null) {
     throw new NullPointerException();
   }
   checkByteStringIsUtf8(value);
       
-      retVars_ = value;
-      onChanged();
-      return this;
-    }
-
-    private java.lang.Object source_ = "";
-    /**
-     * <code>string source = 5;</code>
-     */
-    public java.lang.String getSource() {
-      java.lang.Object ref = source_;
-      if (!(ref instanceof java.lang.String)) {
-        com.google.protobuf.ByteString bs =
-            (com.google.protobuf.ByteString) ref;
-        java.lang.String s = bs.toStringUtf8();
-        source_ = s;
-        return s;
-      } else {
-        return (java.lang.String) ref;
-      }
-    }
-    /**
-     * <code>string source = 5;</code>
-     */
-    public com.google.protobuf.ByteString
-        getSourceBytes() {
-      java.lang.Object ref = source_;
-      if (ref instanceof String) {
-        com.google.protobuf.ByteString b = 
-            com.google.protobuf.ByteString.copyFromUtf8(
-                (java.lang.String) ref);
-        source_ = b;
-        return b;
-      } else {
-        return (com.google.protobuf.ByteString) ref;
-      }
-    }
-    /**
-     * <code>string source = 5;</code>
-     */
-    public Builder setSource(
-        java.lang.String value) {
-      if (value == null) {
-    throw new NullPointerException();
-  }
-  
-      source_ = value;
-      onChanged();
-      return this;
-    }
-    /**
-     * <code>string source = 5;</code>
-     */
-    public Builder clearSource() {
-      
-      source_ = getDefaultInstance().getSource();
-      onChanged();
-      return this;
-    }
-    /**
-     * <code>string source = 5;</code>
-     */
-    public Builder setSourceBytes(
-        com.google.protobuf.ByteString value) {
-      if (value == null) {
-    throw new NullPointerException();
-  }
-  checkByteStringIsUtf8(value);
-      
-      source_ = value;
-      onChanged();
-      return this;
-    }
-
-    private int scanInterval_ ;
-    /**
-     * <code>int32 scanInterval = 6;</code>
-     */
-    public int getScanInterval() {
-      return scanInterval_;
-    }
-    /**
-     * <code>int32 scanInterval = 6;</code>
-     */
-    public Builder setScanInterval(int value) {
-      
-      scanInterval_ = value;
-      onChanged();
-      return this;
-    }
-    /**
-     * <code>int32 scanInterval = 6;</code>
-     */
-    public Builder clearScanInterval() {
-      
-      scanInterval_ = 0;
+      model_ = value;
       onChanged();
       return this;
     }

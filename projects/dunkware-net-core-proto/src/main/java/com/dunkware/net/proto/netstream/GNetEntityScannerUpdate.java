@@ -16,9 +16,9 @@ private static final long serialVersionUID = 0L;
     super(builder);
   }
   private GNetEntityScannerUpdate() {
-    inserts_ = java.util.Collections.emptyList();
-    updates_ = java.util.Collections.emptyList();
-    deletes_ = java.util.Collections.emptyList();
+    scannerIdent_ = "";
+    model_ = "";
+    source_ = "";
   }
 
   @java.lang.Override
@@ -46,30 +46,21 @@ private static final long serialVersionUID = 0L;
             done = true;
             break;
           case 10: {
-            if (!((mutable_bitField0_ & 0x00000001) == 0x00000001)) {
-              inserts_ = new java.util.ArrayList<com.dunkware.net.proto.netstream.GNetEntityScannerRowInsert>();
-              mutable_bitField0_ |= 0x00000001;
-            }
-            inserts_.add(
-                input.readMessage(com.dunkware.net.proto.netstream.GNetEntityScannerRowInsert.parser(), extensionRegistry));
+            java.lang.String s = input.readStringRequireUtf8();
+
+            scannerIdent_ = s;
             break;
           }
           case 18: {
-            if (!((mutable_bitField0_ & 0x00000002) == 0x00000002)) {
-              updates_ = new java.util.ArrayList<com.dunkware.net.proto.netstream.GNetEntityScannerRowUpdate>();
-              mutable_bitField0_ |= 0x00000002;
-            }
-            updates_.add(
-                input.readMessage(com.dunkware.net.proto.netstream.GNetEntityScannerRowUpdate.parser(), extensionRegistry));
+            java.lang.String s = input.readStringRequireUtf8();
+
+            model_ = s;
             break;
           }
           case 26: {
-            if (!((mutable_bitField0_ & 0x00000004) == 0x00000004)) {
-              deletes_ = new java.util.ArrayList<com.dunkware.net.proto.netstream.GNetEntityScannerRowDelete>();
-              mutable_bitField0_ |= 0x00000004;
-            }
-            deletes_.add(
-                input.readMessage(com.dunkware.net.proto.netstream.GNetEntityScannerRowDelete.parser(), extensionRegistry));
+            java.lang.String s = input.readStringRequireUtf8();
+
+            source_ = s;
             break;
           }
           default: {
@@ -87,15 +78,6 @@ private static final long serialVersionUID = 0L;
       throw new com.google.protobuf.InvalidProtocolBufferException(
           e).setUnfinishedMessage(this);
     } finally {
-      if (((mutable_bitField0_ & 0x00000001) == 0x00000001)) {
-        inserts_ = java.util.Collections.unmodifiableList(inserts_);
-      }
-      if (((mutable_bitField0_ & 0x00000002) == 0x00000002)) {
-        updates_ = java.util.Collections.unmodifiableList(updates_);
-      }
-      if (((mutable_bitField0_ & 0x00000004) == 0x00000004)) {
-        deletes_ = java.util.Collections.unmodifiableList(deletes_);
-      }
       this.unknownFields = unknownFields.build();
       makeExtensionsImmutable();
     }
@@ -113,109 +95,106 @@ private static final long serialVersionUID = 0L;
             com.dunkware.net.proto.netstream.GNetEntityScannerUpdate.class, com.dunkware.net.proto.netstream.GNetEntityScannerUpdate.Builder.class);
   }
 
-  public static final int INSERTS_FIELD_NUMBER = 1;
-  private java.util.List<com.dunkware.net.proto.netstream.GNetEntityScannerRowInsert> inserts_;
+  public static final int SCANNERIDENT_FIELD_NUMBER = 1;
+  private volatile java.lang.Object scannerIdent_;
   /**
-   * <code>repeated .dunkware.netstream.GNetEntityScannerRowInsert inserts = 1;</code>
+   * <code>string scannerIdent = 1;</code>
    */
-  public java.util.List<com.dunkware.net.proto.netstream.GNetEntityScannerRowInsert> getInsertsList() {
-    return inserts_;
+  public java.lang.String getScannerIdent() {
+    java.lang.Object ref = scannerIdent_;
+    if (ref instanceof java.lang.String) {
+      return (java.lang.String) ref;
+    } else {
+      com.google.protobuf.ByteString bs = 
+          (com.google.protobuf.ByteString) ref;
+      java.lang.String s = bs.toStringUtf8();
+      scannerIdent_ = s;
+      return s;
+    }
   }
   /**
-   * <code>repeated .dunkware.netstream.GNetEntityScannerRowInsert inserts = 1;</code>
+   * <code>string scannerIdent = 1;</code>
    */
-  public java.util.List<? extends com.dunkware.net.proto.netstream.GNetEntityScannerRowInsertOrBuilder> 
-      getInsertsOrBuilderList() {
-    return inserts_;
-  }
-  /**
-   * <code>repeated .dunkware.netstream.GNetEntityScannerRowInsert inserts = 1;</code>
-   */
-  public int getInsertsCount() {
-    return inserts_.size();
-  }
-  /**
-   * <code>repeated .dunkware.netstream.GNetEntityScannerRowInsert inserts = 1;</code>
-   */
-  public com.dunkware.net.proto.netstream.GNetEntityScannerRowInsert getInserts(int index) {
-    return inserts_.get(index);
-  }
-  /**
-   * <code>repeated .dunkware.netstream.GNetEntityScannerRowInsert inserts = 1;</code>
-   */
-  public com.dunkware.net.proto.netstream.GNetEntityScannerRowInsertOrBuilder getInsertsOrBuilder(
-      int index) {
-    return inserts_.get(index);
-  }
-
-  public static final int UPDATES_FIELD_NUMBER = 2;
-  private java.util.List<com.dunkware.net.proto.netstream.GNetEntityScannerRowUpdate> updates_;
-  /**
-   * <code>repeated .dunkware.netstream.GNetEntityScannerRowUpdate updates = 2;</code>
-   */
-  public java.util.List<com.dunkware.net.proto.netstream.GNetEntityScannerRowUpdate> getUpdatesList() {
-    return updates_;
-  }
-  /**
-   * <code>repeated .dunkware.netstream.GNetEntityScannerRowUpdate updates = 2;</code>
-   */
-  public java.util.List<? extends com.dunkware.net.proto.netstream.GNetEntityScannerRowUpdateOrBuilder> 
-      getUpdatesOrBuilderList() {
-    return updates_;
-  }
-  /**
-   * <code>repeated .dunkware.netstream.GNetEntityScannerRowUpdate updates = 2;</code>
-   */
-  public int getUpdatesCount() {
-    return updates_.size();
-  }
-  /**
-   * <code>repeated .dunkware.netstream.GNetEntityScannerRowUpdate updates = 2;</code>
-   */
-  public com.dunkware.net.proto.netstream.GNetEntityScannerRowUpdate getUpdates(int index) {
-    return updates_.get(index);
-  }
-  /**
-   * <code>repeated .dunkware.netstream.GNetEntityScannerRowUpdate updates = 2;</code>
-   */
-  public com.dunkware.net.proto.netstream.GNetEntityScannerRowUpdateOrBuilder getUpdatesOrBuilder(
-      int index) {
-    return updates_.get(index);
+  public com.google.protobuf.ByteString
+      getScannerIdentBytes() {
+    java.lang.Object ref = scannerIdent_;
+    if (ref instanceof java.lang.String) {
+      com.google.protobuf.ByteString b = 
+          com.google.protobuf.ByteString.copyFromUtf8(
+              (java.lang.String) ref);
+      scannerIdent_ = b;
+      return b;
+    } else {
+      return (com.google.protobuf.ByteString) ref;
+    }
   }
 
-  public static final int DELETES_FIELD_NUMBER = 3;
-  private java.util.List<com.dunkware.net.proto.netstream.GNetEntityScannerRowDelete> deletes_;
+  public static final int MODEL_FIELD_NUMBER = 2;
+  private volatile java.lang.Object model_;
   /**
-   * <code>repeated .dunkware.netstream.GNetEntityScannerRowDelete deletes = 3;</code>
+   * <code>string model = 2;</code>
    */
-  public java.util.List<com.dunkware.net.proto.netstream.GNetEntityScannerRowDelete> getDeletesList() {
-    return deletes_;
+  public java.lang.String getModel() {
+    java.lang.Object ref = model_;
+    if (ref instanceof java.lang.String) {
+      return (java.lang.String) ref;
+    } else {
+      com.google.protobuf.ByteString bs = 
+          (com.google.protobuf.ByteString) ref;
+      java.lang.String s = bs.toStringUtf8();
+      model_ = s;
+      return s;
+    }
   }
   /**
-   * <code>repeated .dunkware.netstream.GNetEntityScannerRowDelete deletes = 3;</code>
+   * <code>string model = 2;</code>
    */
-  public java.util.List<? extends com.dunkware.net.proto.netstream.GNetEntityScannerRowDeleteOrBuilder> 
-      getDeletesOrBuilderList() {
-    return deletes_;
+  public com.google.protobuf.ByteString
+      getModelBytes() {
+    java.lang.Object ref = model_;
+    if (ref instanceof java.lang.String) {
+      com.google.protobuf.ByteString b = 
+          com.google.protobuf.ByteString.copyFromUtf8(
+              (java.lang.String) ref);
+      model_ = b;
+      return b;
+    } else {
+      return (com.google.protobuf.ByteString) ref;
+    }
+  }
+
+  public static final int SOURCE_FIELD_NUMBER = 3;
+  private volatile java.lang.Object source_;
+  /**
+   * <code>string source = 3;</code>
+   */
+  public java.lang.String getSource() {
+    java.lang.Object ref = source_;
+    if (ref instanceof java.lang.String) {
+      return (java.lang.String) ref;
+    } else {
+      com.google.protobuf.ByteString bs = 
+          (com.google.protobuf.ByteString) ref;
+      java.lang.String s = bs.toStringUtf8();
+      source_ = s;
+      return s;
+    }
   }
   /**
-   * <code>repeated .dunkware.netstream.GNetEntityScannerRowDelete deletes = 3;</code>
+   * <code>string source = 3;</code>
    */
-  public int getDeletesCount() {
-    return deletes_.size();
-  }
-  /**
-   * <code>repeated .dunkware.netstream.GNetEntityScannerRowDelete deletes = 3;</code>
-   */
-  public com.dunkware.net.proto.netstream.GNetEntityScannerRowDelete getDeletes(int index) {
-    return deletes_.get(index);
-  }
-  /**
-   * <code>repeated .dunkware.netstream.GNetEntityScannerRowDelete deletes = 3;</code>
-   */
-  public com.dunkware.net.proto.netstream.GNetEntityScannerRowDeleteOrBuilder getDeletesOrBuilder(
-      int index) {
-    return deletes_.get(index);
+  public com.google.protobuf.ByteString
+      getSourceBytes() {
+    java.lang.Object ref = source_;
+    if (ref instanceof java.lang.String) {
+      com.google.protobuf.ByteString b = 
+          com.google.protobuf.ByteString.copyFromUtf8(
+              (java.lang.String) ref);
+      source_ = b;
+      return b;
+    } else {
+      return (com.google.protobuf.ByteString) ref;
+    }
   }
 
   private byte memoizedIsInitialized = -1;
@@ -232,14 +211,14 @@ private static final long serialVersionUID = 0L;
   @java.lang.Override
   public void writeTo(com.google.protobuf.CodedOutputStream output)
                       throws java.io.IOException {
-    for (int i = 0; i < inserts_.size(); i++) {
-      output.writeMessage(1, inserts_.get(i));
+    if (!getScannerIdentBytes().isEmpty()) {
+      com.google.protobuf.GeneratedMessageV3.writeString(output, 1, scannerIdent_);
     }
-    for (int i = 0; i < updates_.size(); i++) {
-      output.writeMessage(2, updates_.get(i));
+    if (!getModelBytes().isEmpty()) {
+      com.google.protobuf.GeneratedMessageV3.writeString(output, 2, model_);
     }
-    for (int i = 0; i < deletes_.size(); i++) {
-      output.writeMessage(3, deletes_.get(i));
+    if (!getSourceBytes().isEmpty()) {
+      com.google.protobuf.GeneratedMessageV3.writeString(output, 3, source_);
     }
     unknownFields.writeTo(output);
   }
@@ -250,17 +229,14 @@ private static final long serialVersionUID = 0L;
     if (size != -1) return size;
 
     size = 0;
-    for (int i = 0; i < inserts_.size(); i++) {
-      size += com.google.protobuf.CodedOutputStream
-        .computeMessageSize(1, inserts_.get(i));
+    if (!getScannerIdentBytes().isEmpty()) {
+      size += com.google.protobuf.GeneratedMessageV3.computeStringSize(1, scannerIdent_);
     }
-    for (int i = 0; i < updates_.size(); i++) {
-      size += com.google.protobuf.CodedOutputStream
-        .computeMessageSize(2, updates_.get(i));
+    if (!getModelBytes().isEmpty()) {
+      size += com.google.protobuf.GeneratedMessageV3.computeStringSize(2, model_);
     }
-    for (int i = 0; i < deletes_.size(); i++) {
-      size += com.google.protobuf.CodedOutputStream
-        .computeMessageSize(3, deletes_.get(i));
+    if (!getSourceBytes().isEmpty()) {
+      size += com.google.protobuf.GeneratedMessageV3.computeStringSize(3, source_);
     }
     size += unknownFields.getSerializedSize();
     memoizedSize = size;
@@ -278,12 +254,12 @@ private static final long serialVersionUID = 0L;
     com.dunkware.net.proto.netstream.GNetEntityScannerUpdate other = (com.dunkware.net.proto.netstream.GNetEntityScannerUpdate) obj;
 
     boolean result = true;
-    result = result && getInsertsList()
-        .equals(other.getInsertsList());
-    result = result && getUpdatesList()
-        .equals(other.getUpdatesList());
-    result = result && getDeletesList()
-        .equals(other.getDeletesList());
+    result = result && getScannerIdent()
+        .equals(other.getScannerIdent());
+    result = result && getModel()
+        .equals(other.getModel());
+    result = result && getSource()
+        .equals(other.getSource());
     result = result && unknownFields.equals(other.unknownFields);
     return result;
   }
@@ -295,18 +271,12 @@ private static final long serialVersionUID = 0L;
     }
     int hash = 41;
     hash = (19 * hash) + getDescriptor().hashCode();
-    if (getInsertsCount() > 0) {
-      hash = (37 * hash) + INSERTS_FIELD_NUMBER;
-      hash = (53 * hash) + getInsertsList().hashCode();
-    }
-    if (getUpdatesCount() > 0) {
-      hash = (37 * hash) + UPDATES_FIELD_NUMBER;
-      hash = (53 * hash) + getUpdatesList().hashCode();
-    }
-    if (getDeletesCount() > 0) {
-      hash = (37 * hash) + DELETES_FIELD_NUMBER;
-      hash = (53 * hash) + getDeletesList().hashCode();
-    }
+    hash = (37 * hash) + SCANNERIDENT_FIELD_NUMBER;
+    hash = (53 * hash) + getScannerIdent().hashCode();
+    hash = (37 * hash) + MODEL_FIELD_NUMBER;
+    hash = (53 * hash) + getModel().hashCode();
+    hash = (37 * hash) + SOURCE_FIELD_NUMBER;
+    hash = (53 * hash) + getSource().hashCode();
     hash = (29 * hash) + unknownFields.hashCode();
     memoizedHashCode = hash;
     return hash;
@@ -435,32 +405,17 @@ private static final long serialVersionUID = 0L;
     private void maybeForceBuilderInitialization() {
       if (com.google.protobuf.GeneratedMessageV3
               .alwaysUseFieldBuilders) {
-        getInsertsFieldBuilder();
-        getUpdatesFieldBuilder();
-        getDeletesFieldBuilder();
       }
     }
     @java.lang.Override
     public Builder clear() {
       super.clear();
-      if (insertsBuilder_ == null) {
-        inserts_ = java.util.Collections.emptyList();
-        bitField0_ = (bitField0_ & ~0x00000001);
-      } else {
-        insertsBuilder_.clear();
-      }
-      if (updatesBuilder_ == null) {
-        updates_ = java.util.Collections.emptyList();
-        bitField0_ = (bitField0_ & ~0x00000002);
-      } else {
-        updatesBuilder_.clear();
-      }
-      if (deletesBuilder_ == null) {
-        deletes_ = java.util.Collections.emptyList();
-        bitField0_ = (bitField0_ & ~0x00000004);
-      } else {
-        deletesBuilder_.clear();
-      }
+      scannerIdent_ = "";
+
+      model_ = "";
+
+      source_ = "";
+
       return this;
     }
 
@@ -487,34 +442,9 @@ private static final long serialVersionUID = 0L;
     @java.lang.Override
     public com.dunkware.net.proto.netstream.GNetEntityScannerUpdate buildPartial() {
       com.dunkware.net.proto.netstream.GNetEntityScannerUpdate result = new com.dunkware.net.proto.netstream.GNetEntityScannerUpdate(this);
-      int from_bitField0_ = bitField0_;
-      if (insertsBuilder_ == null) {
-        if (((bitField0_ & 0x00000001) == 0x00000001)) {
-          inserts_ = java.util.Collections.unmodifiableList(inserts_);
-          bitField0_ = (bitField0_ & ~0x00000001);
-        }
-        result.inserts_ = inserts_;
-      } else {
-        result.inserts_ = insertsBuilder_.build();
-      }
-      if (updatesBuilder_ == null) {
-        if (((bitField0_ & 0x00000002) == 0x00000002)) {
-          updates_ = java.util.Collections.unmodifiableList(updates_);
-          bitField0_ = (bitField0_ & ~0x00000002);
-        }
-        result.updates_ = updates_;
-      } else {
-        result.updates_ = updatesBuilder_.build();
-      }
-      if (deletesBuilder_ == null) {
-        if (((bitField0_ & 0x00000004) == 0x00000004)) {
-          deletes_ = java.util.Collections.unmodifiableList(deletes_);
-          bitField0_ = (bitField0_ & ~0x00000004);
-        }
-        result.deletes_ = deletes_;
-      } else {
-        result.deletes_ = deletesBuilder_.build();
-      }
+      result.scannerIdent_ = scannerIdent_;
+      result.model_ = model_;
+      result.source_ = source_;
       onBuilt();
       return result;
     }
@@ -563,83 +493,17 @@ private static final long serialVersionUID = 0L;
 
     public Builder mergeFrom(com.dunkware.net.proto.netstream.GNetEntityScannerUpdate other) {
       if (other == com.dunkware.net.proto.netstream.GNetEntityScannerUpdate.getDefaultInstance()) return this;
-      if (insertsBuilder_ == null) {
-        if (!other.inserts_.isEmpty()) {
-          if (inserts_.isEmpty()) {
-            inserts_ = other.inserts_;
-            bitField0_ = (bitField0_ & ~0x00000001);
-          } else {
-            ensureInsertsIsMutable();
-            inserts_.addAll(other.inserts_);
-          }
-          onChanged();
-        }
-      } else {
-        if (!other.inserts_.isEmpty()) {
-          if (insertsBuilder_.isEmpty()) {
-            insertsBuilder_.dispose();
-            insertsBuilder_ = null;
-            inserts_ = other.inserts_;
-            bitField0_ = (bitField0_ & ~0x00000001);
-            insertsBuilder_ = 
-              com.google.protobuf.GeneratedMessageV3.alwaysUseFieldBuilders ?
-                 getInsertsFieldBuilder() : null;
-          } else {
-            insertsBuilder_.addAllMessages(other.inserts_);
-          }
-        }
+      if (!other.getScannerIdent().isEmpty()) {
+        scannerIdent_ = other.scannerIdent_;
+        onChanged();
       }
-      if (updatesBuilder_ == null) {
-        if (!other.updates_.isEmpty()) {
-          if (updates_.isEmpty()) {
-            updates_ = other.updates_;
-            bitField0_ = (bitField0_ & ~0x00000002);
-          } else {
-            ensureUpdatesIsMutable();
-            updates_.addAll(other.updates_);
-          }
-          onChanged();
-        }
-      } else {
-        if (!other.updates_.isEmpty()) {
-          if (updatesBuilder_.isEmpty()) {
-            updatesBuilder_.dispose();
-            updatesBuilder_ = null;
-            updates_ = other.updates_;
-            bitField0_ = (bitField0_ & ~0x00000002);
-            updatesBuilder_ = 
-              com.google.protobuf.GeneratedMessageV3.alwaysUseFieldBuilders ?
-                 getUpdatesFieldBuilder() : null;
-          } else {
-            updatesBuilder_.addAllMessages(other.updates_);
-          }
-        }
+      if (!other.getModel().isEmpty()) {
+        model_ = other.model_;
+        onChanged();
       }
-      if (deletesBuilder_ == null) {
-        if (!other.deletes_.isEmpty()) {
-          if (deletes_.isEmpty()) {
-            deletes_ = other.deletes_;
-            bitField0_ = (bitField0_ & ~0x00000004);
-          } else {
-            ensureDeletesIsMutable();
-            deletes_.addAll(other.deletes_);
-          }
-          onChanged();
-        }
-      } else {
-        if (!other.deletes_.isEmpty()) {
-          if (deletesBuilder_.isEmpty()) {
-            deletesBuilder_.dispose();
-            deletesBuilder_ = null;
-            deletes_ = other.deletes_;
-            bitField0_ = (bitField0_ & ~0x00000004);
-            deletesBuilder_ = 
-              com.google.protobuf.GeneratedMessageV3.alwaysUseFieldBuilders ?
-                 getDeletesFieldBuilder() : null;
-          } else {
-            deletesBuilder_.addAllMessages(other.deletes_);
-          }
-        }
+      if (!other.getSource().isEmpty()) {
+        source_ = other.source_;
+        onChanged();
       }
       this.mergeUnknownFields(other.unknownFields);
       onChanged();
@@ -669,726 +533,212 @@ private static final long serialVersionUID = 0L;
       }
       return this;
     }
-    private int bitField0_;
 
-    private java.util.List<com.dunkware.net.proto.netstream.GNetEntityScannerRowInsert> inserts_ =
-      java.util.Collections.emptyList();
-    private void ensureInsertsIsMutable() {
-      if (!((bitField0_ & 0x00000001) == 0x00000001)) {
-        inserts_ = new java.util.ArrayList<com.dunkware.net.proto.netstream.GNetEntityScannerRowInsert>(inserts_);
-        bitField0_ |= 0x00000001;
-       }
-    }
-
-    private com.google.protobuf.RepeatedFieldBuilderV3<
-        com.dunkware.net.proto.netstream.GNetEntityScannerRowInsert, com.dunkware.net.proto.netstream.GNetEntityScannerRowInsert.Builder, com.dunkware.net.proto.netstream.GNetEntityScannerRowInsertOrBuilder> insertsBuilder_;
-
+    private java.lang.Object scannerIdent_ = "";
     /**
-     * <code>repeated .dunkware.netstream.GNetEntityScannerRowInsert inserts = 1;</code>
+     * <code>string scannerIdent = 1;</code>
      */
-    public java.util.List<com.dunkware.net.proto.netstream.GNetEntityScannerRowInsert> getInsertsList() {
-      if (insertsBuilder_ == null) {
-        return java.util.Collections.unmodifiableList(inserts_);
+    public java.lang.String getScannerIdent() {
+      java.lang.Object ref = scannerIdent_;
+      if (!(ref instanceof java.lang.String)) {
+        com.google.protobuf.ByteString bs =
+            (com.google.protobuf.ByteString) ref;
+        java.lang.String s = bs.toStringUtf8();
+        scannerIdent_ = s;
+        return s;
       } else {
-        return insertsBuilder_.getMessageList();
+        return (java.lang.String) ref;
       }
     }
     /**
-     * <code>repeated .dunkware.netstream.GNetEntityScannerRowInsert inserts = 1;</code>
+     * <code>string scannerIdent = 1;</code>
      */
-    public int getInsertsCount() {
-      if (insertsBuilder_ == null) {
-        return inserts_.size();
+    public com.google.protobuf.ByteString
+        getScannerIdentBytes() {
+      java.lang.Object ref = scannerIdent_;
+      if (ref instanceof String) {
+        com.google.protobuf.ByteString b = 
+            com.google.protobuf.ByteString.copyFromUtf8(
+                (java.lang.String) ref);
+        scannerIdent_ = b;
+        return b;
       } else {
-        return insertsBuilder_.getCount();
+        return (com.google.protobuf.ByteString) ref;
       }
     }
     /**
-     * <code>repeated .dunkware.netstream.GNetEntityScannerRowInsert inserts = 1;</code>
+     * <code>string scannerIdent = 1;</code>
      */
-    public com.dunkware.net.proto.netstream.GNetEntityScannerRowInsert getInserts(int index) {
-      if (insertsBuilder_ == null) {
-        return inserts_.get(index);
-      } else {
-        return insertsBuilder_.getMessage(index);
-      }
-    }
-    /**
-     * <code>repeated .dunkware.netstream.GNetEntityScannerRowInsert inserts = 1;</code>
-     */
-    public Builder setInserts(
-        int index, com.dunkware.net.proto.netstream.GNetEntityScannerRowInsert value) {
-      if (insertsBuilder_ == null) {
-        if (value == null) {
-          throw new NullPointerException();
-        }
-        ensureInsertsIsMutable();
-        inserts_.set(index, value);
-        onChanged();
-      } else {
-        insertsBuilder_.setMessage(index, value);
-      }
+    public Builder setScannerIdent(
+        java.lang.String value) {
+      if (value == null) {
+    throw new NullPointerException();
+  }
+  
+      scannerIdent_ = value;
+      onChanged();
       return this;
     }
     /**
-     * <code>repeated .dunkware.netstream.GNetEntityScannerRowInsert inserts = 1;</code>
+     * <code>string scannerIdent = 1;</code>
      */
-    public Builder setInserts(
-        int index, com.dunkware.net.proto.netstream.GNetEntityScannerRowInsert.Builder builderForValue) {
-      if (insertsBuilder_ == null) {
-        ensureInsertsIsMutable();
-        inserts_.set(index, builderForValue.build());
-        onChanged();
-      } else {
-        insertsBuilder_.setMessage(index, builderForValue.build());
-      }
+    public Builder clearScannerIdent() {
+      
+      scannerIdent_ = getDefaultInstance().getScannerIdent();
+      onChanged();
       return this;
     }
     /**
-     * <code>repeated .dunkware.netstream.GNetEntityScannerRowInsert inserts = 1;</code>
+     * <code>string scannerIdent = 1;</code>
      */
-    public Builder addInserts(com.dunkware.net.proto.netstream.GNetEntityScannerRowInsert value) {
-      if (insertsBuilder_ == null) {
-        if (value == null) {
-          throw new NullPointerException();
-        }
-        ensureInsertsIsMutable();
-        inserts_.add(value);
-        onChanged();
-      } else {
-        insertsBuilder_.addMessage(value);
-      }
+    public Builder setScannerIdentBytes(
+        com.google.protobuf.ByteString value) {
+      if (value == null) {
+    throw new NullPointerException();
+  }
+  checkByteStringIsUtf8(value);
+      
+      scannerIdent_ = value;
+      onChanged();
       return this;
-    }
-    /**
-     * <code>repeated .dunkware.netstream.GNetEntityScannerRowInsert inserts = 1;</code>
-     */
-    public Builder addInserts(
-        int index, com.dunkware.net.proto.netstream.GNetEntityScannerRowInsert value) {
-      if (insertsBuilder_ == null) {
-        if (value == null) {
-          throw new NullPointerException();
-        }
-        ensureInsertsIsMutable();
-        inserts_.add(index, value);
-        onChanged();
-      } else {
-        insertsBuilder_.addMessage(index, value);
-      }
-      return this;
-    }
-    /**
-     * <code>repeated .dunkware.netstream.GNetEntityScannerRowInsert inserts = 1;</code>
-     */
-    public Builder addInserts(
-        com.dunkware.net.proto.netstream.GNetEntityScannerRowInsert.Builder builderForValue) {
-      if (insertsBuilder_ == null) {
-        ensureInsertsIsMutable();
-        inserts_.add(builderForValue.build());
-        onChanged();
-      } else {
-        insertsBuilder_.addMessage(builderForValue.build());
-      }
-      return this;
-    }
-    /**
-     * <code>repeated .dunkware.netstream.GNetEntityScannerRowInsert inserts = 1;</code>
-     */
-    public Builder addInserts(
-        int index, com.dunkware.net.proto.netstream.GNetEntityScannerRowInsert.Builder builderForValue) {
-      if (insertsBuilder_ == null) {
-        ensureInsertsIsMutable();
-        inserts_.add(index, builderForValue.build());
-        onChanged();
-      } else {
-        insertsBuilder_.addMessage(index, builderForValue.build());
-      }
-      return this;
-    }
-    /**
-     * <code>repeated .dunkware.netstream.GNetEntityScannerRowInsert inserts = 1;</code>
-     */
-    public Builder addAllInserts(
-        java.lang.Iterable<? extends com.dunkware.net.proto.netstream.GNetEntityScannerRowInsert> values) {
-      if (insertsBuilder_ == null) {
-        ensureInsertsIsMutable();
-        com.google.protobuf.AbstractMessageLite.Builder.addAll(
-            values, inserts_);
-        onChanged();
-      } else {
-        insertsBuilder_.addAllMessages(values);
-      }
-      return this;
-    }
-    /**
-     * <code>repeated .dunkware.netstream.GNetEntityScannerRowInsert inserts = 1;</code>
-     */
-    public Builder clearInserts() {
-      if (insertsBuilder_ == null) {
-        inserts_ = java.util.Collections.emptyList();
-        bitField0_ = (bitField0_ & ~0x00000001);
-        onChanged();
-      } else {
-        insertsBuilder_.clear();
-      }
-      return this;
-    }
-    /**
-     * <code>repeated .dunkware.netstream.GNetEntityScannerRowInsert inserts = 1;</code>
-     */
-    public Builder removeInserts(int index) {
-      if (insertsBuilder_ == null) {
-        ensureInsertsIsMutable();
-        inserts_.remove(index);
-        onChanged();
-      } else {
-        insertsBuilder_.remove(index);
-      }
-      return this;
-    }
-    /**
-     * <code>repeated .dunkware.netstream.GNetEntityScannerRowInsert inserts = 1;</code>
-     */
-    public com.dunkware.net.proto.netstream.GNetEntityScannerRowInsert.Builder getInsertsBuilder(
-        int index) {
-      return getInsertsFieldBuilder().getBuilder(index);
-    }
-    /**
-     * <code>repeated .dunkware.netstream.GNetEntityScannerRowInsert inserts = 1;</code>
-     */
-    public com.dunkware.net.proto.netstream.GNetEntityScannerRowInsertOrBuilder getInsertsOrBuilder(
-        int index) {
-      if (insertsBuilder_ == null) {
-        return inserts_.get(index);  } else {
-        return insertsBuilder_.getMessageOrBuilder(index);
-      }
-    }
-    /**
-     * <code>repeated .dunkware.netstream.GNetEntityScannerRowInsert inserts = 1;</code>
-     */
-    public java.util.List<? extends com.dunkware.net.proto.netstream.GNetEntityScannerRowInsertOrBuilder> 
-         getInsertsOrBuilderList() {
-      if (insertsBuilder_ != null) {
-        return insertsBuilder_.getMessageOrBuilderList();
-      } else {
-        return java.util.Collections.unmodifiableList(inserts_);
-      }
-    }
-    /**
-     * <code>repeated .dunkware.netstream.GNetEntityScannerRowInsert inserts = 1;</code>
-     */
-    public com.dunkware.net.proto.netstream.GNetEntityScannerRowInsert.Builder addInsertsBuilder() {
-      return getInsertsFieldBuilder().addBuilder(
-          com.dunkware.net.proto.netstream.GNetEntityScannerRowInsert.getDefaultInstance());
-    }
-    /**
-     * <code>repeated .dunkware.netstream.GNetEntityScannerRowInsert inserts = 1;</code>
-     */
-    public com.dunkware.net.proto.netstream.GNetEntityScannerRowInsert.Builder addInsertsBuilder(
-        int index) {
-      return getInsertsFieldBuilder().addBuilder(
-          index, com.dunkware.net.proto.netstream.GNetEntityScannerRowInsert.getDefaultInstance());
-    }
-    /**
-     * <code>repeated .dunkware.netstream.GNetEntityScannerRowInsert inserts = 1;</code>
-     */
-    public java.util.List<com.dunkware.net.proto.netstream.GNetEntityScannerRowInsert.Builder> 
-         getInsertsBuilderList() {
-      return getInsertsFieldBuilder().getBuilderList();
-    }
-    private com.google.protobuf.RepeatedFieldBuilderV3<
-        com.dunkware.net.proto.netstream.GNetEntityScannerRowInsert, com.dunkware.net.proto.netstream.GNetEntityScannerRowInsert.Builder, com.dunkware.net.proto.netstream.GNetEntityScannerRowInsertOrBuilder> 
-        getInsertsFieldBuilder() {
-      if (insertsBuilder_ == null) {
-        insertsBuilder_ = new com.google.protobuf.RepeatedFieldBuilderV3<
-            com.dunkware.net.proto.netstream.GNetEntityScannerRowInsert, com.dunkware.net.proto.netstream.GNetEntityScannerRowInsert.Builder, com.dunkware.net.proto.netstream.GNetEntityScannerRowInsertOrBuilder>(
-                inserts_,
-                ((bitField0_ & 0x00000001) == 0x00000001),
-                getParentForChildren(),
-                isClean());
-        inserts_ = null;
-      }
-      return insertsBuilder_;
     }
 
-    private java.util.List<com.dunkware.net.proto.netstream.GNetEntityScannerRowUpdate> updates_ =
-      java.util.Collections.emptyList();
-    private void ensureUpdatesIsMutable() {
-      if (!((bitField0_ & 0x00000002) == 0x00000002)) {
-        updates_ = new java.util.ArrayList<com.dunkware.net.proto.netstream.GNetEntityScannerRowUpdate>(updates_);
-        bitField0_ |= 0x00000002;
-       }
+    private java.lang.Object model_ = "";
+    /**
+     * <code>string model = 2;</code>
+     */
+    public java.lang.String getModel() {
+      java.lang.Object ref = model_;
+      if (!(ref instanceof java.lang.String)) {
+        com.google.protobuf.ByteString bs =
+            (com.google.protobuf.ByteString) ref;
+        java.lang.String s = bs.toStringUtf8();
+        model_ = s;
+        return s;
+      } else {
+        return (java.lang.String) ref;
+      }
+    }
+    /**
+     * <code>string model = 2;</code>
+     */
+    public com.google.protobuf.ByteString
+        getModelBytes() {
+      java.lang.Object ref = model_;
+      if (ref instanceof String) {
+        com.google.protobuf.ByteString b = 
+            com.google.protobuf.ByteString.copyFromUtf8(
+                (java.lang.String) ref);
+        model_ = b;
+        return b;
+      } else {
+        return (com.google.protobuf.ByteString) ref;
+      }
+    }
+    /**
+     * <code>string model = 2;</code>
+     */
+    public Builder setModel(
+        java.lang.String value) {
+      if (value == null) {
+    throw new NullPointerException();
+  }
+  
+      model_ = value;
+      onChanged();
+      return this;
+    }
+    /**
+     * <code>string model = 2;</code>
+     */
+    public Builder clearModel() {
+      
+      model_ = getDefaultInstance().getModel();
+      onChanged();
+      return this;
+    }
+    /**
+     * <code>string model = 2;</code>
+     */
+    public Builder setModelBytes(
+        com.google.protobuf.ByteString value) {
+      if (value == null) {
+    throw new NullPointerException();
+  }
+  checkByteStringIsUtf8(value);
+      
+      model_ = value;
+      onChanged();
+      return this;
     }
 
-    private com.google.protobuf.RepeatedFieldBuilderV3<
-        com.dunkware.net.proto.netstream.GNetEntityScannerRowUpdate, com.dunkware.net.proto.netstream.GNetEntityScannerRowUpdate.Builder, com.dunkware.net.proto.netstream.GNetEntityScannerRowUpdateOrBuilder> updatesBuilder_;
-
+    private java.lang.Object source_ = "";
     /**
-     * <code>repeated .dunkware.netstream.GNetEntityScannerRowUpdate updates = 2;</code>
+     * <code>string source = 3;</code>
      */
-    public java.util.List<com.dunkware.net.proto.netstream.GNetEntityScannerRowUpdate> getUpdatesList() {
-      if (updatesBuilder_ == null) {
-        return java.util.Collections.unmodifiableList(updates_);
+    public java.lang.String getSource() {
+      java.lang.Object ref = source_;
+      if (!(ref instanceof java.lang.String)) {
+        com.google.protobuf.ByteString bs =
+            (com.google.protobuf.ByteString) ref;
+        java.lang.String s = bs.toStringUtf8();
+        source_ = s;
+        return s;
       } else {
-        return updatesBuilder_.getMessageList();
+        return (java.lang.String) ref;
       }
     }
     /**
-     * <code>repeated .dunkware.netstream.GNetEntityScannerRowUpdate updates = 2;</code>
+     * <code>string source = 3;</code>
      */
-    public int getUpdatesCount() {
-      if (updatesBuilder_ == null) {
-        return updates_.size();
+    public com.google.protobuf.ByteString
+        getSourceBytes() {
+      java.lang.Object ref = source_;
+      if (ref instanceof String) {
+        com.google.protobuf.ByteString b = 
+            com.google.protobuf.ByteString.copyFromUtf8(
+                (java.lang.String) ref);
+        source_ = b;
+        return b;
       } else {
-        return updatesBuilder_.getCount();
+        return (com.google.protobuf.ByteString) ref;
       }
     }
     /**
-     * <code>repeated .dunkware.netstream.GNetEntityScannerRowUpdate updates = 2;</code>
+     * <code>string source = 3;</code>
      */
-    public com.dunkware.net.proto.netstream.GNetEntityScannerRowUpdate getUpdates(int index) {
-      if (updatesBuilder_ == null) {
-        return updates_.get(index);
-      } else {
-        return updatesBuilder_.getMessage(index);
-      }
-    }
-    /**
-     * <code>repeated .dunkware.netstream.GNetEntityScannerRowUpdate updates = 2;</code>
-     */
-    public Builder setUpdates(
-        int index, com.dunkware.net.proto.netstream.GNetEntityScannerRowUpdate value) {
-      if (updatesBuilder_ == null) {
-        if (value == null) {
-          throw new NullPointerException();
-        }
-        ensureUpdatesIsMutable();
-        updates_.set(index, value);
-        onChanged();
-      } else {
-        updatesBuilder_.setMessage(index, value);
-      }
+    public Builder setSource(
+        java.lang.String value) {
+      if (value == null) {
+    throw new NullPointerException();
+  }
+  
+      source_ = value;
+      onChanged();
       return this;
     }
     /**
-     * <code>repeated .dunkware.netstream.GNetEntityScannerRowUpdate updates = 2;</code>
+     * <code>string source = 3;</code>
      */
-    public Builder setUpdates(
-        int index, com.dunkware.net.proto.netstream.GNetEntityScannerRowUpdate.Builder builderForValue) {
-      if (updatesBuilder_ == null) {
-        ensureUpdatesIsMutable();
-        updates_.set(index, builderForValue.build());
-        onChanged();
-      } else {
-        updatesBuilder_.setMessage(index, builderForValue.build());
-      }
+    public Builder clearSource() {
+      
+      source_ = getDefaultInstance().getSource();
+      onChanged();
       return this;
     }
     /**
-     * <code>repeated .dunkware.netstream.GNetEntityScannerRowUpdate updates = 2;</code>
+     * <code>string source = 3;</code>
      */
-    public Builder addUpdates(com.dunkware.net.proto.netstream.GNetEntityScannerRowUpdate value) {
-      if (updatesBuilder_ == null) {
-        if (value == null) {
-          throw new NullPointerException();
-        }
-        ensureUpdatesIsMutable();
-        updates_.add(value);
-        onChanged();
-      } else {
-        updatesBuilder_.addMessage(value);
-      }
+    public Builder setSourceBytes(
+        com.google.protobuf.ByteString value) {
+      if (value == null) {
+    throw new NullPointerException();
+  }
+  checkByteStringIsUtf8(value);
+      
+      source_ = value;
+      onChanged();
       return this;
-    }
-    /**
-     * <code>repeated .dunkware.netstream.GNetEntityScannerRowUpdate updates = 2;</code>
-     */
-    public Builder addUpdates(
-        int index, com.dunkware.net.proto.netstream.GNetEntityScannerRowUpdate value) {
-      if (updatesBuilder_ == null) {
-        if (value == null) {
-          throw new NullPointerException();
-        }
-        ensureUpdatesIsMutable();
-        updates_.add(index, value);
-        onChanged();
-      } else {
-        updatesBuilder_.addMessage(index, value);
-      }
-      return this;
-    }
-    /**
-     * <code>repeated .dunkware.netstream.GNetEntityScannerRowUpdate updates = 2;</code>
-     */
-    public Builder addUpdates(
-        com.dunkware.net.proto.netstream.GNetEntityScannerRowUpdate.Builder builderForValue) {
-      if (updatesBuilder_ == null) {
-        ensureUpdatesIsMutable();
-        updates_.add(builderForValue.build());
-        onChanged();
-      } else {
-        updatesBuilder_.addMessage(builderForValue.build());
-      }
-      return this;
-    }
-    /**
-     * <code>repeated .dunkware.netstream.GNetEntityScannerRowUpdate updates = 2;</code>
-     */
-    public Builder addUpdates(
-        int index, com.dunkware.net.proto.netstream.GNetEntityScannerRowUpdate.Builder builderForValue) {
-      if (updatesBuilder_ == null) {
-        ensureUpdatesIsMutable();
-        updates_.add(index, builderForValue.build());
-        onChanged();
-      } else {
-        updatesBuilder_.addMessage(index, builderForValue.build());
-      }
-      return this;
-    }
-    /**
-     * <code>repeated .dunkware.netstream.GNetEntityScannerRowUpdate updates = 2;</code>
-     */
-    public Builder addAllUpdates(
-        java.lang.Iterable<? extends com.dunkware.net.proto.netstream.GNetEntityScannerRowUpdate> values) {
-      if (updatesBuilder_ == null) {
-        ensureUpdatesIsMutable();
-        com.google.protobuf.AbstractMessageLite.Builder.addAll(
-            values, updates_);
-        onChanged();
-      } else {
-        updatesBuilder_.addAllMessages(values);
-      }
-      return this;
-    }
-    /**
-     * <code>repeated .dunkware.netstream.GNetEntityScannerRowUpdate updates = 2;</code>
-     */
-    public Builder clearUpdates() {
-      if (updatesBuilder_ == null) {
-        updates_ = java.util.Collections.emptyList();
-        bitField0_ = (bitField0_ & ~0x00000002);
-        onChanged();
-      } else {
-        updatesBuilder_.clear();
-      }
-      return this;
-    }
-    /**
-     * <code>repeated .dunkware.netstream.GNetEntityScannerRowUpdate updates = 2;</code>
-     */
-    public Builder removeUpdates(int index) {
-      if (updatesBuilder_ == null) {
-        ensureUpdatesIsMutable();
-        updates_.remove(index);
-        onChanged();
-      } else {
-        updatesBuilder_.remove(index);
-      }
-      return this;
-    }
-    /**
-     * <code>repeated .dunkware.netstream.GNetEntityScannerRowUpdate updates = 2;</code>
-     */
-    public com.dunkware.net.proto.netstream.GNetEntityScannerRowUpdate.Builder getUpdatesBuilder(
-        int index) {
-      return getUpdatesFieldBuilder().getBuilder(index);
-    }
-    /**
-     * <code>repeated .dunkware.netstream.GNetEntityScannerRowUpdate updates = 2;</code>
-     */
-    public com.dunkware.net.proto.netstream.GNetEntityScannerRowUpdateOrBuilder getUpdatesOrBuilder(
-        int index) {
-      if (updatesBuilder_ == null) {
-        return updates_.get(index);  } else {
-        return updatesBuilder_.getMessageOrBuilder(index);
-      }
-    }
-    /**
-     * <code>repeated .dunkware.netstream.GNetEntityScannerRowUpdate updates = 2;</code>
-     */
-    public java.util.List<? extends com.dunkware.net.proto.netstream.GNetEntityScannerRowUpdateOrBuilder> 
-         getUpdatesOrBuilderList() {
-      if (updatesBuilder_ != null) {
-        return updatesBuilder_.getMessageOrBuilderList();
-      } else {
-        return java.util.Collections.unmodifiableList(updates_);
-      }
-    }
-    /**
-     * <code>repeated .dunkware.netstream.GNetEntityScannerRowUpdate updates = 2;</code>
-     */
-    public com.dunkware.net.proto.netstream.GNetEntityScannerRowUpdate.Builder addUpdatesBuilder() {
-      return getUpdatesFieldBuilder().addBuilder(
-          com.dunkware.net.proto.netstream.GNetEntityScannerRowUpdate.getDefaultInstance());
-    }
-    /**
-     * <code>repeated .dunkware.netstream.GNetEntityScannerRowUpdate updates = 2;</code>
-     */
-    public com.dunkware.net.proto.netstream.GNetEntityScannerRowUpdate.Builder addUpdatesBuilder(
-        int index) {
-      return getUpdatesFieldBuilder().addBuilder(
-          index, com.dunkware.net.proto.netstream.GNetEntityScannerRowUpdate.getDefaultInstance());
-    }
-    /**
-     * <code>repeated .dunkware.netstream.GNetEntityScannerRowUpdate updates = 2;</code>
-     */
-    public java.util.List<com.dunkware.net.proto.netstream.GNetEntityScannerRowUpdate.Builder> 
-         getUpdatesBuilderList() {
-      return getUpdatesFieldBuilder().getBuilderList();
-    }
-    private com.google.protobuf.RepeatedFieldBuilderV3<
-        com.dunkware.net.proto.netstream.GNetEntityScannerRowUpdate, com.dunkware.net.proto.netstream.GNetEntityScannerRowUpdate.Builder, com.dunkware.net.proto.netstream.GNetEntityScannerRowUpdateOrBuilder> 
-        getUpdatesFieldBuilder() {
-      if (updatesBuilder_ == null) {
-        updatesBuilder_ = new com.google.protobuf.RepeatedFieldBuilderV3<
-            com.dunkware.net.proto.netstream.GNetEntityScannerRowUpdate, com.dunkware.net.proto.netstream.GNetEntityScannerRowUpdate.Builder, com.dunkware.net.proto.netstream.GNetEntityScannerRowUpdateOrBuilder>(
-                updates_,
-                ((bitField0_ & 0x00000002) == 0x00000002),
-                getParentForChildren(),
-                isClean());
-        updates_ = null;
-      }
-      return updatesBuilder_;
-    }
-
-    private java.util.List<com.dunkware.net.proto.netstream.GNetEntityScannerRowDelete> deletes_ =
-      java.util.Collections.emptyList();
-    private void ensureDeletesIsMutable() {
-      if (!((bitField0_ & 0x00000004) == 0x00000004)) {
-        deletes_ = new java.util.ArrayList<com.dunkware.net.proto.netstream.GNetEntityScannerRowDelete>(deletes_);
-        bitField0_ |= 0x00000004;
-       }
-    }
-
-    private com.google.protobuf.RepeatedFieldBuilderV3<
-        com.dunkware.net.proto.netstream.GNetEntityScannerRowDelete, com.dunkware.net.proto.netstream.GNetEntityScannerRowDelete.Builder, com.dunkware.net.proto.netstream.GNetEntityScannerRowDeleteOrBuilder> deletesBuilder_;
-
-    /**
-     * <code>repeated .dunkware.netstream.GNetEntityScannerRowDelete deletes = 3;</code>
-     */
-    public java.util.List<com.dunkware.net.proto.netstream.GNetEntityScannerRowDelete> getDeletesList() {
-      if (deletesBuilder_ == null) {
-        return java.util.Collections.unmodifiableList(deletes_);
-      } else {
-        return deletesBuilder_.getMessageList();
-      }
-    }
-    /**
-     * <code>repeated .dunkware.netstream.GNetEntityScannerRowDelete deletes = 3;</code>
-     */
-    public int getDeletesCount() {
-      if (deletesBuilder_ == null) {
-        return deletes_.size();
-      } else {
-        return deletesBuilder_.getCount();
-      }
-    }
-    /**
-     * <code>repeated .dunkware.netstream.GNetEntityScannerRowDelete deletes = 3;</code>
-     */
-    public com.dunkware.net.proto.netstream.GNetEntityScannerRowDelete getDeletes(int index) {
-      if (deletesBuilder_ == null) {
-        return deletes_.get(index);
-      } else {
-        return deletesBuilder_.getMessage(index);
-      }
-    }
-    /**
-     * <code>repeated .dunkware.netstream.GNetEntityScannerRowDelete deletes = 3;</code>
-     */
-    public Builder setDeletes(
-        int index, com.dunkware.net.proto.netstream.GNetEntityScannerRowDelete value) {
-      if (deletesBuilder_ == null) {
-        if (value == null) {
-          throw new NullPointerException();
-        }
-        ensureDeletesIsMutable();
-        deletes_.set(index, value);
-        onChanged();
-      } else {
-        deletesBuilder_.setMessage(index, value);
-      }
-      return this;
-    }
-    /**
-     * <code>repeated .dunkware.netstream.GNetEntityScannerRowDelete deletes = 3;</code>
-     */
-    public Builder setDeletes(
-        int index, com.dunkware.net.proto.netstream.GNetEntityScannerRowDelete.Builder builderForValue) {
-      if (deletesBuilder_ == null) {
-        ensureDeletesIsMutable();
-        deletes_.set(index, builderForValue.build());
-        onChanged();
-      } else {
-        deletesBuilder_.setMessage(index, builderForValue.build());
-      }
-      return this;
-    }
-    /**
-     * <code>repeated .dunkware.netstream.GNetEntityScannerRowDelete deletes = 3;</code>
-     */
-    public Builder addDeletes(com.dunkware.net.proto.netstream.GNetEntityScannerRowDelete value) {
-      if (deletesBuilder_ == null) {
-        if (value == null) {
-          throw new NullPointerException();
-        }
-        ensureDeletesIsMutable();
-        deletes_.add(value);
-        onChanged();
-      } else {
-        deletesBuilder_.addMessage(value);
-      }
-      return this;
-    }
-    /**
-     * <code>repeated .dunkware.netstream.GNetEntityScannerRowDelete deletes = 3;</code>
-     */
-    public Builder addDeletes(
-        int index, com.dunkware.net.proto.netstream.GNetEntityScannerRowDelete value) {
-      if (deletesBuilder_ == null) {
-        if (value == null) {
-          throw new NullPointerException();
-        }
-        ensureDeletesIsMutable();
-        deletes_.add(index, value);
-        onChanged();
-      } else {
-        deletesBuilder_.addMessage(index, value);
-      }
-      return this;
-    }
-    /**
-     * <code>repeated .dunkware.netstream.GNetEntityScannerRowDelete deletes = 3;</code>
-     */
-    public Builder addDeletes(
-        com.dunkware.net.proto.netstream.GNetEntityScannerRowDelete.Builder builderForValue) {
-      if (deletesBuilder_ == null) {
-        ensureDeletesIsMutable();
-        deletes_.add(builderForValue.build());
-        onChanged();
-      } else {
-        deletesBuilder_.addMessage(builderForValue.build());
-      }
-      return this;
-    }
-    /**
-     * <code>repeated .dunkware.netstream.GNetEntityScannerRowDelete deletes = 3;</code>
-     */
-    public Builder addDeletes(
-        int index, com.dunkware.net.proto.netstream.GNetEntityScannerRowDelete.Builder builderForValue) {
-      if (deletesBuilder_ == null) {
-        ensureDeletesIsMutable();
-        deletes_.add(index, builderForValue.build());
-        onChanged();
-      } else {
-        deletesBuilder_.addMessage(index, builderForValue.build());
-      }
-      return this;
-    }
-    /**
-     * <code>repeated .dunkware.netstream.GNetEntityScannerRowDelete deletes = 3;</code>
-     */
-    public Builder addAllDeletes(
-        java.lang.Iterable<? extends com.dunkware.net.proto.netstream.GNetEntityScannerRowDelete> values) {
-      if (deletesBuilder_ == null) {
-        ensureDeletesIsMutable();
-        com.google.protobuf.AbstractMessageLite.Builder.addAll(
-            values, deletes_);
-        onChanged();
-      } else {
-        deletesBuilder_.addAllMessages(values);
-      }
-      return this;
-    }
-    /**
-     * <code>repeated .dunkware.netstream.GNetEntityScannerRowDelete deletes = 3;</code>
-     */
-    public Builder clearDeletes() {
-      if (deletesBuilder_ == null) {
-        deletes_ = java.util.Collections.emptyList();
-        bitField0_ = (bitField0_ & ~0x00000004);
-        onChanged();
-      } else {
-        deletesBuilder_.clear();
-      }
-      return this;
-    }
-    /**
-     * <code>repeated .dunkware.netstream.GNetEntityScannerRowDelete deletes = 3;</code>
-     */
-    public Builder removeDeletes(int index) {
-      if (deletesBuilder_ == null) {
-        ensureDeletesIsMutable();
-        deletes_.remove(index);
-        onChanged();
-      } else {
-        deletesBuilder_.remove(index);
-      }
-      return this;
-    }
-    /**
-     * <code>repeated .dunkware.netstream.GNetEntityScannerRowDelete deletes = 3;</code>
-     */
-    public com.dunkware.net.proto.netstream.GNetEntityScannerRowDelete.Builder getDeletesBuilder(
-        int index) {
-      return getDeletesFieldBuilder().getBuilder(index);
-    }
-    /**
-     * <code>repeated .dunkware.netstream.GNetEntityScannerRowDelete deletes = 3;</code>
-     */
-    public com.dunkware.net.proto.netstream.GNetEntityScannerRowDeleteOrBuilder getDeletesOrBuilder(
-        int index) {
-      if (deletesBuilder_ == null) {
-        return deletes_.get(index);  } else {
-        return deletesBuilder_.getMessageOrBuilder(index);
-      }
-    }
-    /**
-     * <code>repeated .dunkware.netstream.GNetEntityScannerRowDelete deletes = 3;</code>
-     */
-    public java.util.List<? extends com.dunkware.net.proto.netstream.GNetEntityScannerRowDeleteOrBuilder> 
-         getDeletesOrBuilderList() {
-      if (deletesBuilder_ != null) {
-        return deletesBuilder_.getMessageOrBuilderList();
-      } else {
-        return java.util.Collections.unmodifiableList(deletes_);
-      }
-    }
-    /**
-     * <code>repeated .dunkware.netstream.GNetEntityScannerRowDelete deletes = 3;</code>
-     */
-    public com.dunkware.net.proto.netstream.GNetEntityScannerRowDelete.Builder addDeletesBuilder() {
-      return getDeletesFieldBuilder().addBuilder(
-          com.dunkware.net.proto.netstream.GNetEntityScannerRowDelete.getDefaultInstance());
-    }
-    /**
-     * <code>repeated .dunkware.netstream.GNetEntityScannerRowDelete deletes = 3;</code>
-     */
-    public com.dunkware.net.proto.netstream.GNetEntityScannerRowDelete.Builder addDeletesBuilder(
-        int index) {
-      return getDeletesFieldBuilder().addBuilder(
-          index, com.dunkware.net.proto.netstream.GNetEntityScannerRowDelete.getDefaultInstance());
-    }
-    /**
-     * <code>repeated .dunkware.netstream.GNetEntityScannerRowDelete deletes = 3;</code>
-     */
-    public java.util.List<com.dunkware.net.proto.netstream.GNetEntityScannerRowDelete.Builder> 
-         getDeletesBuilderList() {
-      return getDeletesFieldBuilder().getBuilderList();
-    }
-    private com.google.protobuf.RepeatedFieldBuilderV3<
-        com.dunkware.net.proto.netstream.GNetEntityScannerRowDelete, com.dunkware.net.proto.netstream.GNetEntityScannerRowDelete.Builder, com.dunkware.net.proto.netstream.GNetEntityScannerRowDeleteOrBuilder> 
-        getDeletesFieldBuilder() {
-      if (deletesBuilder_ == null) {
-        deletesBuilder_ = new com.google.protobuf.RepeatedFieldBuilderV3<
-            com.dunkware.net.proto.netstream.GNetEntityScannerRowDelete, com.dunkware.net.proto.netstream.GNetEntityScannerRowDelete.Builder, com.dunkware.net.proto.netstream.GNetEntityScannerRowDeleteOrBuilder>(
-                deletes_,
-                ((bitField0_ & 0x00000004) == 0x00000004),
-                getParentForChildren(),
-                isClean());
-        deletes_ = null;
-      }
-      return deletesBuilder_;
     }
     @java.lang.Override
     public final Builder setUnknownFields(

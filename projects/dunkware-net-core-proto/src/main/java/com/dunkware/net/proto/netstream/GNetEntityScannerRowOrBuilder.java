@@ -13,9 +13,9 @@ public interface GNetEntityScannerRowOrBuilder extends
   int getScannerId();
 
   /**
-   * <code>int32 entIdent = 2;</code>
+   * <code>int32 scannerIdent = 2;</code>
    */
-  int getEntIdent();
+  int getScannerIdent();
 
   /**
    * <code>string entId = 3;</code>

@@ -8,7 +8,6 @@ import javax.annotation.PostConstruct;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Profile;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -27,8 +26,11 @@ import com.dunkware.trade.service.stream.json.controller.StopStreamResp;
 import com.dunkware.trade.service.stream.json.controller.StreamStatsResp;
 import com.dunkware.trade.service.stream.json.controller.UpdateStreamReq;
 import com.dunkware.trade.service.stream.json.controller.UpdateStreamResp;
-import com.dunkware.trade.service.stream.json.controller.spec.StreamSpec;
-import com.dunkware.trade.service.stream.json.controller.spec.StreamState;
+import com.dunkware.trade.service.stream.json.controller.spec.StreamControllerSpec;
+import com.dunkware.trade.service.stream.json.controller.spec.StreamControllerState;
+import com.dunkware.trade.service.stream.server.controller.session.StreamSessionService;
+import com.dunkware.trade.service.stream.server.controller.util.StreamSpecBuilder;
+import com.dunkware.xstream.model.spec.StreamSpec;
 
 // /stream/admin/add
 // /stream/admin/update 
@@ -121,7 +123,7 @@ public class StreamControllerWebService {
 			return resp;
 		}
 		try {
-			if(controller.getStats().getState() == StreamState.Running) { 
+			if(controller.getStats().getState() == StreamControllerState.Running) { 
 				controller.stopSession();
 				resp.setCode("SUCCSS");
 				return resp;
@@ -158,7 +160,7 @@ public class StreamControllerWebService {
 		GetStreamSpecResp resp = new GetStreamSpecResp();
 		try {
 			StreamController controller = service.getStreamByName(stream);
-			StreamSpec spec = controller.getSpec();
+			StreamControllerSpec spec = controller.getSpec();
 			resp.setSpec(spec);
 			resp.setCode("SUCCESS");
 			return resp;			
@@ -169,12 +171,12 @@ public class StreamControllerWebService {
 		
 	}
 
-	@GetMapping(path = "/stream/core/specs")
+	@GetMapping(path = "/stream/controller/specs")
 	public @ResponseBody GetStreamSpecsResp getStreamSpecs() { 
 		GetStreamSpecsResp resp = new GetStreamSpecsResp();
 		
 		try {
-			List<StreamSpec> specs = new ArrayList<StreamSpec>();
+			List<StreamControllerSpec> specs = new ArrayList<StreamControllerSpec>();
 			for (StreamController controller : service.getStreams()) {
 				specs.add(controller.getSpec());
 			}
@@ -187,6 +189,25 @@ public class StreamControllerWebService {
 			return resp;
 		}
 	}
+	
+	
+	
+	@GetMapping(path = "/stream/core/specs")
+	public @ResponseBody List<StreamSpec> getSpecs() throws Exception { 
+		List<StreamSpec> specs = new ArrayList<StreamSpec>();
+		try {
+			for (StreamController stream : service.getStreams()) {
+				specs.add(StreamSpecBuilder.build(stream));
+			}	
+		} catch (Exception e) {
+			logger.error("Exception building stream specs " + e.toString());;
+			throw e;
+		}
+		
+		return specs;
+		
+	}
+	
 	
 	
 	

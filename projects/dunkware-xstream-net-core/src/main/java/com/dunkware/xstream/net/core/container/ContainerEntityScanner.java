@@ -3,7 +3,7 @@ package com.dunkware.xstream.net.core.container;
 import java.util.List;
 
 import com.dunkware.common.util.data.NetScanner;
-import com.dunkware.xstream.model.search.SessionEntityScanner;
+import com.dunkware.xstream.model.scanner.SessionEntityScanner;
 import com.dunkware.xstream.model.search.SessionEntitySearch;
 
 /**

@@ -42,7 +42,7 @@ public class EntitySearchValeuComparePredicate extends ContainerSearchPredicate<
 			if(targetValue.canResolveSession(t) && compareValue.canResolveSession(t)) { 
 				Object resolvedTarget = targetValue.resolve(t);
 				Object resolvedCompare = compareValue.resolve(t);
-				return EntitySearchHelper.testValueCompare(resolvedTarget, resolvedCompare, filterType.getFunction(), filterType.getCondition());
+				return EntitySearchHelper.testValueCompare(resolvedTarget, resolvedCompare, filterType.getFunction().getFunction(), filterType.getCondition());
 			} else { 
 				return false;
 			}

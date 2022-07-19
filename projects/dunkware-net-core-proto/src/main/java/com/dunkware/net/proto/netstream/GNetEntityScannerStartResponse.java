@@ -16,10 +16,11 @@ private static final long serialVersionUID = 0L;
     super(builder);
   }
   private GNetEntityScannerStartResponse() {
-    scannerId_ = 0;
+    scannerIdent_ = "";
     source_ = "";
     code_ = "";
     error_ = "";
+    model_ = "";
   }
 
   @java.lang.Override
@@ -46,9 +47,10 @@ private static final long serialVersionUID = 0L;
           case 0:
             done = true;
             break;
-          case 8: {
+          case 10: {
+            java.lang.String s = input.readStringRequireUtf8();
 
-            scannerId_ = input.readInt32();
+            scannerIdent_ = s;
             break;
           }
           case 18: {
@@ -67,6 +69,12 @@ private static final long serialVersionUID = 0L;
             java.lang.String s = input.readStringRequireUtf8();
 
             error_ = s;
+            break;
+          }
+          case 42: {
+            java.lang.String s = input.readStringRequireUtf8();
+
+            model_ = s;
             break;
           }
           default: {
@@ -101,13 +109,38 @@ private static final long serialVersionUID = 0L;
             com.dunkware.net.proto.netstream.GNetEntityScannerStartResponse.class, com.dunkware.net.proto.netstream.GNetEntityScannerStartResponse.Builder.class);
   }
 
-  public static final int SCANNERID_FIELD_NUMBER = 1;
-  private int scannerId_;
+  public static final int SCANNERIDENT_FIELD_NUMBER = 1;
+  private volatile java.lang.Object scannerIdent_;
   /**
-   * <code>int32 scannerId = 1;</code>
+   * <code>string scannerIdent = 1;</code>
    */
-  public int getScannerId() {
-    return scannerId_;
+  public java.lang.String getScannerIdent() {
+    java.lang.Object ref = scannerIdent_;
+    if (ref instanceof java.lang.String) {
+      return (java.lang.String) ref;
+    } else {
+      com.google.protobuf.ByteString bs = 
+          (com.google.protobuf.ByteString) ref;
+      java.lang.String s = bs.toStringUtf8();
+      scannerIdent_ = s;
+      return s;
+    }
+  }
+  /**
+   * <code>string scannerIdent = 1;</code>
+   */
+  public com.google.protobuf.ByteString
+      getScannerIdentBytes() {
+    java.lang.Object ref = scannerIdent_;
+    if (ref instanceof java.lang.String) {
+      com.google.protobuf.ByteString b = 
+          com.google.protobuf.ByteString.copyFromUtf8(
+              (java.lang.String) ref);
+      scannerIdent_ = b;
+      return b;
+    } else {
+      return (com.google.protobuf.ByteString) ref;
+    }
   }
 
   public static final int SOURCE_FIELD_NUMBER = 2;
@@ -212,6 +245,40 @@ private static final long serialVersionUID = 0L;
     }
   }
 
+  public static final int MODEL_FIELD_NUMBER = 5;
+  private volatile java.lang.Object model_;
+  /**
+   * <code>string model = 5;</code>
+   */
+  public java.lang.String getModel() {
+    java.lang.Object ref = model_;
+    if (ref instanceof java.lang.String) {
+      return (java.lang.String) ref;
+    } else {
+      com.google.protobuf.ByteString bs = 
+          (com.google.protobuf.ByteString) ref;
+      java.lang.String s = bs.toStringUtf8();
+      model_ = s;
+      return s;
+    }
+  }
+  /**
+   * <code>string model = 5;</code>
+   */
+  public com.google.protobuf.ByteString
+      getModelBytes() {
+    java.lang.Object ref = model_;
+    if (ref instanceof java.lang.String) {
+      com.google.protobuf.ByteString b = 
+          com.google.protobuf.ByteString.copyFromUtf8(
+              (java.lang.String) ref);
+      model_ = b;
+      return b;
+    } else {
+      return (com.google.protobuf.ByteString) ref;
+    }
+  }
+
   private byte memoizedIsInitialized = -1;
   @java.lang.Override
   public final boolean isInitialized() {
@@ -226,8 +293,8 @@ private static final long serialVersionUID = 0L;
   @java.lang.Override
   public void writeTo(com.google.protobuf.CodedOutputStream output)
                       throws java.io.IOException {
-    if (scannerId_ != 0) {
-      output.writeInt32(1, scannerId_);
+    if (!getScannerIdentBytes().isEmpty()) {
+      com.google.protobuf.GeneratedMessageV3.writeString(output, 1, scannerIdent_);
     }
     if (!getSourceBytes().isEmpty()) {
       com.google.protobuf.GeneratedMessageV3.writeString(output, 2, source_);
@@ -238,6 +305,9 @@ private static final long serialVersionUID = 0L;
     if (!getErrorBytes().isEmpty()) {
       com.google.protobuf.GeneratedMessageV3.writeString(output, 4, error_);
     }
+    if (!getModelBytes().isEmpty()) {
+      com.google.protobuf.GeneratedMessageV3.writeString(output, 5, model_);
+    }
     unknownFields.writeTo(output);
   }
 
@@ -247,9 +317,8 @@ private static final long serialVersionUID = 0L;
     if (size != -1) return size;
 
     size = 0;
-    if (scannerId_ != 0) {
-      size += com.google.protobuf.CodedOutputStream
-        .computeInt32Size(1, scannerId_);
+    if (!getScannerIdentBytes().isEmpty()) {
+      size += com.google.protobuf.GeneratedMessageV3.computeStringSize(1, scannerIdent_);
     }
     if (!getSourceBytes().isEmpty()) {
       size += com.google.protobuf.GeneratedMessageV3.computeStringSize(2, source_);
@@ -259,6 +328,9 @@ private static final long serialVersionUID = 0L;
     }
     if (!getErrorBytes().isEmpty()) {
       size += com.google.protobuf.GeneratedMessageV3.computeStringSize(4, error_);
+    }
+    if (!getModelBytes().isEmpty()) {
+      size += com.google.protobuf.GeneratedMessageV3.computeStringSize(5, model_);
     }
     size += unknownFields.getSerializedSize();
     memoizedSize = size;
@@ -276,14 +348,16 @@ private static final long serialVersionUID = 0L;
     com.dunkware.net.proto.netstream.GNetEntityScannerStartResponse other = (com.dunkware.net.proto.netstream.GNetEntityScannerStartResponse) obj;
 
     boolean result = true;
-    result = result && (getScannerId()
-        == other.getScannerId());
+    result = result && getScannerIdent()
+        .equals(other.getScannerIdent());
     result = result && getSource()
         .equals(other.getSource());
     result = result && getCode()
         .equals(other.getCode());
     result = result && getError()
         .equals(other.getError());
+    result = result && getModel()
+        .equals(other.getModel());
     result = result && unknownFields.equals(other.unknownFields);
     return result;
   }
@@ -295,14 +369,16 @@ private static final long serialVersionUID = 0L;
     }
     int hash = 41;
     hash = (19 * hash) + getDescriptor().hashCode();
-    hash = (37 * hash) + SCANNERID_FIELD_NUMBER;
-    hash = (53 * hash) + getScannerId();
+    hash = (37 * hash) + SCANNERIDENT_FIELD_NUMBER;
+    hash = (53 * hash) + getScannerIdent().hashCode();
     hash = (37 * hash) + SOURCE_FIELD_NUMBER;
     hash = (53 * hash) + getSource().hashCode();
     hash = (37 * hash) + CODE_FIELD_NUMBER;
     hash = (53 * hash) + getCode().hashCode();
     hash = (37 * hash) + ERROR_FIELD_NUMBER;
     hash = (53 * hash) + getError().hashCode();
+    hash = (37 * hash) + MODEL_FIELD_NUMBER;
+    hash = (53 * hash) + getModel().hashCode();
     hash = (29 * hash) + unknownFields.hashCode();
     memoizedHashCode = hash;
     return hash;
@@ -436,13 +512,15 @@ private static final long serialVersionUID = 0L;
     @java.lang.Override
     public Builder clear() {
       super.clear();
-      scannerId_ = 0;
+      scannerIdent_ = "";
 
       source_ = "";
 
       code_ = "";
 
       error_ = "";
+
+      model_ = "";
 
       return this;
     }
@@ -470,10 +548,11 @@ private static final long serialVersionUID = 0L;
     @java.lang.Override
     public com.dunkware.net.proto.netstream.GNetEntityScannerStartResponse buildPartial() {
       com.dunkware.net.proto.netstream.GNetEntityScannerStartResponse result = new com.dunkware.net.proto.netstream.GNetEntityScannerStartResponse(this);
-      result.scannerId_ = scannerId_;
+      result.scannerIdent_ = scannerIdent_;
       result.source_ = source_;
       result.code_ = code_;
       result.error_ = error_;
+      result.model_ = model_;
       onBuilt();
       return result;
     }
@@ -522,8 +601,9 @@ private static final long serialVersionUID = 0L;
 
     public Builder mergeFrom(com.dunkware.net.proto.netstream.GNetEntityScannerStartResponse other) {
       if (other == com.dunkware.net.proto.netstream.GNetEntityScannerStartResponse.getDefaultInstance()) return this;
-      if (other.getScannerId() != 0) {
-        setScannerId(other.getScannerId());
+      if (!other.getScannerIdent().isEmpty()) {
+        scannerIdent_ = other.scannerIdent_;
+        onChanged();
       }
       if (!other.getSource().isEmpty()) {
         source_ = other.source_;
@@ -535,6 +615,10 @@ private static final long serialVersionUID = 0L;
       }
       if (!other.getError().isEmpty()) {
         error_ = other.error_;
+        onChanged();
+      }
+      if (!other.getModel().isEmpty()) {
+        model_ = other.model_;
         onChanged();
       }
       this.mergeUnknownFields(other.unknownFields);
@@ -566,28 +650,71 @@ private static final long serialVersionUID = 0L;
       return this;
     }
 
-    private int scannerId_ ;
+    private java.lang.Object scannerIdent_ = "";
     /**
-     * <code>int32 scannerId = 1;</code>
+     * <code>string scannerIdent = 1;</code>
      */
-    public int getScannerId() {
-      return scannerId_;
+    public java.lang.String getScannerIdent() {
+      java.lang.Object ref = scannerIdent_;
+      if (!(ref instanceof java.lang.String)) {
+        com.google.protobuf.ByteString bs =
+            (com.google.protobuf.ByteString) ref;
+        java.lang.String s = bs.toStringUtf8();
+        scannerIdent_ = s;
+        return s;
+      } else {
+        return (java.lang.String) ref;
+      }
     }
     /**
-     * <code>int32 scannerId = 1;</code>
+     * <code>string scannerIdent = 1;</code>
      */
-    public Builder setScannerId(int value) {
-      
-      scannerId_ = value;
+    public com.google.protobuf.ByteString
+        getScannerIdentBytes() {
+      java.lang.Object ref = scannerIdent_;
+      if (ref instanceof String) {
+        com.google.protobuf.ByteString b = 
+            com.google.protobuf.ByteString.copyFromUtf8(
+                (java.lang.String) ref);
+        scannerIdent_ = b;
+        return b;
+      } else {
+        return (com.google.protobuf.ByteString) ref;
+      }
+    }
+    /**
+     * <code>string scannerIdent = 1;</code>
+     */
+    public Builder setScannerIdent(
+        java.lang.String value) {
+      if (value == null) {
+    throw new NullPointerException();
+  }
+  
+      scannerIdent_ = value;
       onChanged();
       return this;
     }
     /**
-     * <code>int32 scannerId = 1;</code>
+     * <code>string scannerIdent = 1;</code>
      */
-    public Builder clearScannerId() {
+    public Builder clearScannerIdent() {
       
-      scannerId_ = 0;
+      scannerIdent_ = getDefaultInstance().getScannerIdent();
+      onChanged();
+      return this;
+    }
+    /**
+     * <code>string scannerIdent = 1;</code>
+     */
+    public Builder setScannerIdentBytes(
+        com.google.protobuf.ByteString value) {
+      if (value == null) {
+    throw new NullPointerException();
+  }
+  checkByteStringIsUtf8(value);
+      
+      scannerIdent_ = value;
       onChanged();
       return this;
     }
@@ -795,6 +922,75 @@ private static final long serialVersionUID = 0L;
   checkByteStringIsUtf8(value);
       
       error_ = value;
+      onChanged();
+      return this;
+    }
+
+    private java.lang.Object model_ = "";
+    /**
+     * <code>string model = 5;</code>
+     */
+    public java.lang.String getModel() {
+      java.lang.Object ref = model_;
+      if (!(ref instanceof java.lang.String)) {
+        com.google.protobuf.ByteString bs =
+            (com.google.protobuf.ByteString) ref;
+        java.lang.String s = bs.toStringUtf8();
+        model_ = s;
+        return s;
+      } else {
+        return (java.lang.String) ref;
+      }
+    }
+    /**
+     * <code>string model = 5;</code>
+     */
+    public com.google.protobuf.ByteString
+        getModelBytes() {
+      java.lang.Object ref = model_;
+      if (ref instanceof String) {
+        com.google.protobuf.ByteString b = 
+            com.google.protobuf.ByteString.copyFromUtf8(
+                (java.lang.String) ref);
+        model_ = b;
+        return b;
+      } else {
+        return (com.google.protobuf.ByteString) ref;
+      }
+    }
+    /**
+     * <code>string model = 5;</code>
+     */
+    public Builder setModel(
+        java.lang.String value) {
+      if (value == null) {
+    throw new NullPointerException();
+  }
+  
+      model_ = value;
+      onChanged();
+      return this;
+    }
+    /**
+     * <code>string model = 5;</code>
+     */
+    public Builder clearModel() {
+      
+      model_ = getDefaultInstance().getModel();
+      onChanged();
+      return this;
+    }
+    /**
+     * <code>string model = 5;</code>
+     */
+    public Builder setModelBytes(
+        com.google.protobuf.ByteString value) {
+      if (value == null) {
+    throw new NullPointerException();
+  }
+  checkByteStringIsUtf8(value);
+      
+      model_ = value;
       onChanged();
       return this;
     }

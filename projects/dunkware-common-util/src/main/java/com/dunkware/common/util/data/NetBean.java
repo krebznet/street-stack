@@ -18,6 +18,14 @@ public class NetBean {
 	public void setValues(Map<String, Object> values) {
 		this.values = values;
 	}
+	
+	public Object getValue(String key) throws IllegalArgumentException { 
+		if(values.containsKey(key)) { 
+			return values.get(key);
+		}
+		
+		throw new IllegalArgumentException("Net Bean key " + key + " not found");
+	}
 
 	@Override
 	public boolean equals(Object obj) {

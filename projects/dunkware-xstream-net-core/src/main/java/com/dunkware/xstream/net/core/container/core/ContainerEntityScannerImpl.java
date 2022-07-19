@@ -10,7 +10,7 @@ import org.slf4j.LoggerFactory;
 
 import com.dunkware.common.util.data.NetList;
 import com.dunkware.common.util.data.NetScanner;
-import com.dunkware.xstream.model.search.SessionEntityScanner;
+import com.dunkware.xstream.model.scanner.SessionEntityScanner;
 import com.dunkware.xstream.model.search.SessionEntitySearch;
 import com.dunkware.xstream.net.core.container.Container;
 import com.dunkware.xstream.net.core.container.ContainerEntity;
@@ -46,11 +46,11 @@ public class ContainerEntityScannerImpl implements ContainerEntityScanner, Conta
 	public void init(Container container, SessionEntityScanner scanner) throws ContainerSearchException {
 		this.entityScanner = scanner;
 		this.container = container;
-		this.scanInterval = scanner.getScanInterval();
+		//this.scanInterval = scanner.getScanInterval();
 		this.vars = scanner.getSearch().getRetVars();
 		scannerUpdater = new ScannerUpdater();
 		netList = new NetList();
-		netScanner = NetScanner.newInstance(netList, "id");
+		netScanner = NetScanner.newInstance(netList, "id", container.getExecutor());
 		try {
 			entityQuery = container.entityQuery(scanner.getSearch());
 		} catch (Exception e) {

@@ -20,7 +20,7 @@ import com.dunkware.common.util.time.DunkTime;
 import com.dunkware.net.proto.stream.GEntitySignal;
 import com.dunkware.net.proto.stream.GEntitySnapshot;
 import com.dunkware.net.proto.stream.GStreamTimeUpdate;
-import com.dunkware.xstream.model.search.SessionEntityScanner;
+import com.dunkware.xstream.model.scanner.SessionEntityScanner;
 import com.dunkware.xstream.model.search.SessionEntitySearch;
 import com.dunkware.xstream.net.core.container.Container;
 import com.dunkware.xstream.net.core.container.ContainerEntity;

@@ -16,7 +16,7 @@ private static final long serialVersionUID = 0L;
     super(builder);
   }
   private GNetEntityScannerUpdateRequest() {
-    scannerId_ = 0;
+    scannerIdent_ = "";
     search_ = "";
     retValues_ = "";
   }
@@ -45,9 +45,10 @@ private static final long serialVersionUID = 0L;
           case 0:
             done = true;
             break;
-          case 8: {
+          case 10: {
+            java.lang.String s = input.readStringRequireUtf8();
 
-            scannerId_ = input.readInt32();
+            scannerIdent_ = s;
             break;
           }
           case 18: {
@@ -94,13 +95,38 @@ private static final long serialVersionUID = 0L;
             com.dunkware.net.proto.netstream.GNetEntityScannerUpdateRequest.class, com.dunkware.net.proto.netstream.GNetEntityScannerUpdateRequest.Builder.class);
   }
 
-  public static final int SCANNERID_FIELD_NUMBER = 1;
-  private int scannerId_;
+  public static final int SCANNERIDENT_FIELD_NUMBER = 1;
+  private volatile java.lang.Object scannerIdent_;
   /**
-   * <code>int32 scannerId = 1;</code>
+   * <code>string scannerIdent = 1;</code>
    */
-  public int getScannerId() {
-    return scannerId_;
+  public java.lang.String getScannerIdent() {
+    java.lang.Object ref = scannerIdent_;
+    if (ref instanceof java.lang.String) {
+      return (java.lang.String) ref;
+    } else {
+      com.google.protobuf.ByteString bs = 
+          (com.google.protobuf.ByteString) ref;
+      java.lang.String s = bs.toStringUtf8();
+      scannerIdent_ = s;
+      return s;
+    }
+  }
+  /**
+   * <code>string scannerIdent = 1;</code>
+   */
+  public com.google.protobuf.ByteString
+      getScannerIdentBytes() {
+    java.lang.Object ref = scannerIdent_;
+    if (ref instanceof java.lang.String) {
+      com.google.protobuf.ByteString b = 
+          com.google.protobuf.ByteString.copyFromUtf8(
+              (java.lang.String) ref);
+      scannerIdent_ = b;
+      return b;
+    } else {
+      return (com.google.protobuf.ByteString) ref;
+    }
   }
 
   public static final int SEARCH_FIELD_NUMBER = 2;
@@ -185,8 +211,8 @@ private static final long serialVersionUID = 0L;
   @java.lang.Override
   public void writeTo(com.google.protobuf.CodedOutputStream output)
                       throws java.io.IOException {
-    if (scannerId_ != 0) {
-      output.writeInt32(1, scannerId_);
+    if (!getScannerIdentBytes().isEmpty()) {
+      com.google.protobuf.GeneratedMessageV3.writeString(output, 1, scannerIdent_);
     }
     if (!getSearchBytes().isEmpty()) {
       com.google.protobuf.GeneratedMessageV3.writeString(output, 2, search_);
@@ -203,9 +229,8 @@ private static final long serialVersionUID = 0L;
     if (size != -1) return size;
 
     size = 0;
-    if (scannerId_ != 0) {
-      size += com.google.protobuf.CodedOutputStream
-        .computeInt32Size(1, scannerId_);
+    if (!getScannerIdentBytes().isEmpty()) {
+      size += com.google.protobuf.GeneratedMessageV3.computeStringSize(1, scannerIdent_);
     }
     if (!getSearchBytes().isEmpty()) {
       size += com.google.protobuf.GeneratedMessageV3.computeStringSize(2, search_);
@@ -229,8 +254,8 @@ private static final long serialVersionUID = 0L;
     com.dunkware.net.proto.netstream.GNetEntityScannerUpdateRequest other = (com.dunkware.net.proto.netstream.GNetEntityScannerUpdateRequest) obj;
 
     boolean result = true;
-    result = result && (getScannerId()
-        == other.getScannerId());
+    result = result && getScannerIdent()
+        .equals(other.getScannerIdent());
     result = result && getSearch()
         .equals(other.getSearch());
     result = result && getRetValues()
@@ -246,8 +271,8 @@ private static final long serialVersionUID = 0L;
     }
     int hash = 41;
     hash = (19 * hash) + getDescriptor().hashCode();
-    hash = (37 * hash) + SCANNERID_FIELD_NUMBER;
-    hash = (53 * hash) + getScannerId();
+    hash = (37 * hash) + SCANNERIDENT_FIELD_NUMBER;
+    hash = (53 * hash) + getScannerIdent().hashCode();
     hash = (37 * hash) + SEARCH_FIELD_NUMBER;
     hash = (53 * hash) + getSearch().hashCode();
     hash = (37 * hash) + RETVALUES_FIELD_NUMBER;
@@ -385,7 +410,7 @@ private static final long serialVersionUID = 0L;
     @java.lang.Override
     public Builder clear() {
       super.clear();
-      scannerId_ = 0;
+      scannerIdent_ = "";
 
       search_ = "";
 
@@ -417,7 +442,7 @@ private static final long serialVersionUID = 0L;
     @java.lang.Override
     public com.dunkware.net.proto.netstream.GNetEntityScannerUpdateRequest buildPartial() {
       com.dunkware.net.proto.netstream.GNetEntityScannerUpdateRequest result = new com.dunkware.net.proto.netstream.GNetEntityScannerUpdateRequest(this);
-      result.scannerId_ = scannerId_;
+      result.scannerIdent_ = scannerIdent_;
       result.search_ = search_;
       result.retValues_ = retValues_;
       onBuilt();
@@ -468,8 +493,9 @@ private static final long serialVersionUID = 0L;
 
     public Builder mergeFrom(com.dunkware.net.proto.netstream.GNetEntityScannerUpdateRequest other) {
       if (other == com.dunkware.net.proto.netstream.GNetEntityScannerUpdateRequest.getDefaultInstance()) return this;
-      if (other.getScannerId() != 0) {
-        setScannerId(other.getScannerId());
+      if (!other.getScannerIdent().isEmpty()) {
+        scannerIdent_ = other.scannerIdent_;
+        onChanged();
       }
       if (!other.getSearch().isEmpty()) {
         search_ = other.search_;
@@ -508,28 +534,71 @@ private static final long serialVersionUID = 0L;
       return this;
     }
 
-    private int scannerId_ ;
+    private java.lang.Object scannerIdent_ = "";
     /**
-     * <code>int32 scannerId = 1;</code>
+     * <code>string scannerIdent = 1;</code>
      */
-    public int getScannerId() {
-      return scannerId_;
+    public java.lang.String getScannerIdent() {
+      java.lang.Object ref = scannerIdent_;
+      if (!(ref instanceof java.lang.String)) {
+        com.google.protobuf.ByteString bs =
+            (com.google.protobuf.ByteString) ref;
+        java.lang.String s = bs.toStringUtf8();
+        scannerIdent_ = s;
+        return s;
+      } else {
+        return (java.lang.String) ref;
+      }
     }
     /**
-     * <code>int32 scannerId = 1;</code>
+     * <code>string scannerIdent = 1;</code>
      */
-    public Builder setScannerId(int value) {
-      
-      scannerId_ = value;
+    public com.google.protobuf.ByteString
+        getScannerIdentBytes() {
+      java.lang.Object ref = scannerIdent_;
+      if (ref instanceof String) {
+        com.google.protobuf.ByteString b = 
+            com.google.protobuf.ByteString.copyFromUtf8(
+                (java.lang.String) ref);
+        scannerIdent_ = b;
+        return b;
+      } else {
+        return (com.google.protobuf.ByteString) ref;
+      }
+    }
+    /**
+     * <code>string scannerIdent = 1;</code>
+     */
+    public Builder setScannerIdent(
+        java.lang.String value) {
+      if (value == null) {
+    throw new NullPointerException();
+  }
+  
+      scannerIdent_ = value;
       onChanged();
       return this;
     }
     /**
-     * <code>int32 scannerId = 1;</code>
+     * <code>string scannerIdent = 1;</code>
      */
-    public Builder clearScannerId() {
+    public Builder clearScannerIdent() {
       
-      scannerId_ = 0;
+      scannerIdent_ = getDefaultInstance().getScannerIdent();
+      onChanged();
+      return this;
+    }
+    /**
+     * <code>string scannerIdent = 1;</code>
+     */
+    public Builder setScannerIdentBytes(
+        com.google.protobuf.ByteString value) {
+      if (value == null) {
+    throw new NullPointerException();
+  }
+  checkByteStringIsUtf8(value);
+      
+      scannerIdent_ = value;
       onChanged();
       return this;
     }

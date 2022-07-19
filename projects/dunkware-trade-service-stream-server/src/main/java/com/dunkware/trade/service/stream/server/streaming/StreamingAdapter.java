@@ -1,0 +1,158 @@
+package com.dunkware.trade.service.stream.server.streaming;
+
+import java.io.IOException;
+import java.io.OutputStream;
+import java.io.PrintWriter;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.concurrent.BlockingQueue;
+import java.util.concurrent.LinkedBlockingQueue;
+import java.util.concurrent.Semaphore;
+import java.util.concurrent.TimeUnit;
+
+import org.springframework.web.servlet.mvc.method.annotation.StreamingResponseBody;
+
+import com.dunkware.common.util.json.DJson;
+
+public class StreamingAdapter implements StreamingResponseBody {
+
+	private BlockingQueue<Object> streamQueue = new LinkedBlockingQueue<Object>();
+	
+	private Status status; 
+	
+	private List<StreamingListener> listeners = new ArrayList<StreamingListener>();
+	private Semaphore listenerLock = new Semaphore(1);
+	
+	private boolean serverDisconnect = false; 
+	
+	public static enum Status { 
+		Connected,ClientDisconnect,ServerDisconnect
+	}
+	
+	public StreamingAdapter() { 
+		status = Status.Connected;
+	}
+	
+	public boolean isConnected() { 
+		if(status == Status.Connected) { 
+			return true; 
+		}
+		return false; 
+	}
+	
+	
+	public void disconnect() { 
+		serverDisconnect = true;
+		notifyServerDisconnect();
+	}
+	
+	public void removeListener(StreamingListener listener) { 
+		try {
+			listenerLock.acquire();
+			listeners.remove(listener);
+		} catch (Exception e) {
+			// TODO: handle exception
+		} finally { 
+			listenerLock.release();
+		}
+	}
+	
+	public void addListener(StreamingListener listener) { 
+		try {
+			listenerLock.acquire();
+			listeners.add(listener);
+		} catch (Exception e) {
+			// TODO: handle exception
+		} finally { 
+			listenerLock.release();
+		}
+	}
+	/**
+	 * Okay so this is the method that has to stay in a look and not return 
+	 * otherwise the streaming response will close. we need to gracefully
+	 * handle a client close. 
+	 */
+	@Override
+	public void writeTo(OutputStream outputStream) throws IOException {
+		PrintWriter writer = new PrintWriter(outputStream);
+
+		while (true) {
+			try {
+				String serialized = null;
+				try {
+					while(!isConnected()) { 
+						try {
+							Thread.sleep(250);
+							if(serverDisconnect) { 
+								return;
+							}
+						} catch (Exception e) {
+							// not the beset but all good
+						}
+					}
+					Object object = streamQueue.poll(5, TimeUnit.SECONDS);
+					if(isConnected() == false) { 
+						continue;
+					}
+					// else if object not null send it 
+					if(object == null) { 
+						continue;
+					}
+					
+	
+					serialized = DJson.serialize(object);
+					writer.println(serialized);
+					writer.flush();
+					outputStream.flush();
+				} catch (Exception e) {
+					// okay likely client connect problem 
+					status = Status.ClientDisconnect;
+					outputStream.close();
+					writer.close();
+					notifyClientDisconnect();
+					return;
+				}
+				
+				
+			
+
+				System.out.println("send messsage");
+			} catch (Exception e) {
+				e.printStackTrace();
+				// TODO: handle exception
+			}
+		}
+
+	}
+
+	void streamObject(Object jsonObject) {
+		streamQueue.add(jsonObject);
+	}
+	
+	
+	private void notifyServerDisconnect() { 
+		try {
+			listenerLock.acquire();
+			for (StreamingListener streamingListener : listeners) {
+				streamingListener.serverDisconnect(this);
+			}
+		} catch (Exception e) {
+			// TODO: handle exception
+		} finally { 
+			listenerLock.release();
+		}
+	}
+	
+	private void notifyClientDisconnect() { 
+		try {
+			listenerLock.acquire();
+			for (StreamingListener streamingListener : listeners) {
+				streamingListener.clientDisconnect(this);
+			}
+		} catch (Exception e) {
+			// TODO: handle exception
+		} finally { 
+			listenerLock.release();
+		}
+	}
+}

@@ -38,4 +38,6 @@ public class WorkerContainerWebService {
 	public @ResponseBody String ping(@RequestParam String ping) { 
 		return ping;
 	}
+	
+	
 }

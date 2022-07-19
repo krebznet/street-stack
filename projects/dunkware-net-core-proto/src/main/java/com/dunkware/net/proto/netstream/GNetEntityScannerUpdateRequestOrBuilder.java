@@ -8,9 +8,14 @@ public interface GNetEntityScannerUpdateRequestOrBuilder extends
     com.google.protobuf.MessageOrBuilder {
 
   /**
-   * <code>int32 scannerId = 1;</code>
+   * <code>string scannerIdent = 1;</code>
    */
-  int getScannerId();
+  java.lang.String getScannerIdent();
+  /**
+   * <code>string scannerIdent = 1;</code>
+   */
+  com.google.protobuf.ByteString
+      getScannerIdentBytes();
 
   /**
    * <code>string search = 2;</code>

@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.dunkware.trade.service.web.service.SessionEntityStreamRequest;
 import com.dunkware.trade.service.web.service.SessionEntityStreamResponse;
-import com.dunkware.xstream.net.model.spec.StreamSpec;
+import com.dunkware.xstream.model.spec.StreamSpec;
 
 public class StreamWebService {
 	

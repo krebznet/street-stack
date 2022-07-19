@@ -8,42 +8,22 @@ public interface GNetEntityScannerStartRequestOrBuilder extends
     com.google.protobuf.MessageOrBuilder {
 
   /**
-   * <code>int32 scannerId = 1;</code>
+   * <code>string scannerIdent = 1;</code>
    */
-  int getScannerId();
-
+  java.lang.String getScannerIdent();
   /**
-   * <code>string search = 2;</code>
-   */
-  java.lang.String getSearch();
-  /**
-   * <code>string search = 2;</code>
+   * <code>string scannerIdent = 1;</code>
    */
   com.google.protobuf.ByteString
-      getSearchBytes();
+      getScannerIdentBytes();
 
   /**
-   * <code>string retVars = 4;</code>
+   * <code>string model = 2;</code>
    */
-  java.lang.String getRetVars();
+  java.lang.String getModel();
   /**
-   * <code>string retVars = 4;</code>
+   * <code>string model = 2;</code>
    */
   com.google.protobuf.ByteString
-      getRetVarsBytes();
-
-  /**
-   * <code>string source = 5;</code>
-   */
-  java.lang.String getSource();
-  /**
-   * <code>string source = 5;</code>
-   */
-  com.google.protobuf.ByteString
-      getSourceBytes();
-
-  /**
-   * <code>int32 scanInterval = 6;</code>
-   */
-  int getScanInterval();
+      getModelBytes();
 }

@@ -35,6 +35,10 @@ public class NetList {
 		}
 	}
 	
+	public List<NetBean> getBeans() { 
+		return beans;
+	}
+	
 	/**
 	 * This is mostly for notification of watchers 
 	 * @param bean

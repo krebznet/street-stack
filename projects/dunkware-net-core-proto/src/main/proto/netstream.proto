@@ -58,17 +58,15 @@ message GNetEntitySearchResponse {
 }
 
 message GNetEntityScannerStartRequest {
-  int32 scannerId = 1;
-  string search = 2;
-  string retVars = 4;
-  string source = 5;
-  int32 scanInterval = 6;
+  string scannerIdent = 1;
+  string model = 2;
 }
 message GNetEntityScannerStartResponse {
-  int32 scannerId = 1;
+  string scannerIdent = 1;
   string source = 2;
   string code = 3;
   string error = 4;
+  string model = 5;
 }
 
 message GNetEntityScannerException {
@@ -82,7 +80,7 @@ message GNetEntityScannerStopRequest {
 }
 
 message GNetEntityScannerUpdateRequest {
-  int32 scannerId = 1;
+  string scannerIdent = 1;
   string search = 2;
   string retValues = 3;
 }
@@ -95,15 +93,15 @@ message GNetEntityScannerUpdateResponse {
 
 message GNetEntityScannerRow {
   int32 scannerId = 1;
-  int32 entIdent = 2;
+  int32 scannerIdent = 2;
   string entId = 3;
   string data = 4;
 }
 
 message GNetEntityScannerUpdate {
-  repeated GNetEntityScannerRowInsert inserts = 1;
-  repeated GNetEntityScannerRowUpdate updates = 2;
-  repeated GNetEntityScannerRowDelete deletes = 3;
+  string scannerIdent = 1;
+  string model = 2;
+  string source = 3;
 }
 
 message GNetEntityScannerRowInsert {
@@ -168,6 +166,7 @@ message GNetServerMessage {
     GNetEntitySearchResults entitySearchResults = 8;
     GNetEntityScannerUpdateResponse entityScannerUpdateResponse = 9;
     GNetEntityScannerStopResponse entityScannerStopResponse = 10;
+
 
     // just get an exception or not;
     // ACK -> 300/ LIMIT

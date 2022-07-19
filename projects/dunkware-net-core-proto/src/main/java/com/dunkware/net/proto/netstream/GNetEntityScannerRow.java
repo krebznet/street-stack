@@ -17,7 +17,7 @@ private static final long serialVersionUID = 0L;
   }
   private GNetEntityScannerRow() {
     scannerId_ = 0;
-    entIdent_ = 0;
+    scannerIdent_ = 0;
     entId_ = "";
     data_ = "";
   }
@@ -53,7 +53,7 @@ private static final long serialVersionUID = 0L;
           }
           case 16: {
 
-            entIdent_ = input.readInt32();
+            scannerIdent_ = input.readInt32();
             break;
           }
           case 26: {
@@ -109,13 +109,13 @@ private static final long serialVersionUID = 0L;
     return scannerId_;
   }
 
-  public static final int ENTIDENT_FIELD_NUMBER = 2;
-  private int entIdent_;
+  public static final int SCANNERIDENT_FIELD_NUMBER = 2;
+  private int scannerIdent_;
   /**
-   * <code>int32 entIdent = 2;</code>
+   * <code>int32 scannerIdent = 2;</code>
    */
-  public int getEntIdent() {
-    return entIdent_;
+  public int getScannerIdent() {
+    return scannerIdent_;
   }
 
   public static final int ENTID_FIELD_NUMBER = 3;
@@ -203,8 +203,8 @@ private static final long serialVersionUID = 0L;
     if (scannerId_ != 0) {
       output.writeInt32(1, scannerId_);
     }
-    if (entIdent_ != 0) {
-      output.writeInt32(2, entIdent_);
+    if (scannerIdent_ != 0) {
+      output.writeInt32(2, scannerIdent_);
     }
     if (!getEntIdBytes().isEmpty()) {
       com.google.protobuf.GeneratedMessageV3.writeString(output, 3, entId_);
@@ -225,9 +225,9 @@ private static final long serialVersionUID = 0L;
       size += com.google.protobuf.CodedOutputStream
         .computeInt32Size(1, scannerId_);
     }
-    if (entIdent_ != 0) {
+    if (scannerIdent_ != 0) {
       size += com.google.protobuf.CodedOutputStream
-        .computeInt32Size(2, entIdent_);
+        .computeInt32Size(2, scannerIdent_);
     }
     if (!getEntIdBytes().isEmpty()) {
       size += com.google.protobuf.GeneratedMessageV3.computeStringSize(3, entId_);
@@ -253,8 +253,8 @@ private static final long serialVersionUID = 0L;
     boolean result = true;
     result = result && (getScannerId()
         == other.getScannerId());
-    result = result && (getEntIdent()
-        == other.getEntIdent());
+    result = result && (getScannerIdent()
+        == other.getScannerIdent());
     result = result && getEntId()
         .equals(other.getEntId());
     result = result && getData()
@@ -272,8 +272,8 @@ private static final long serialVersionUID = 0L;
     hash = (19 * hash) + getDescriptor().hashCode();
     hash = (37 * hash) + SCANNERID_FIELD_NUMBER;
     hash = (53 * hash) + getScannerId();
-    hash = (37 * hash) + ENTIDENT_FIELD_NUMBER;
-    hash = (53 * hash) + getEntIdent();
+    hash = (37 * hash) + SCANNERIDENT_FIELD_NUMBER;
+    hash = (53 * hash) + getScannerIdent();
     hash = (37 * hash) + ENTID_FIELD_NUMBER;
     hash = (53 * hash) + getEntId().hashCode();
     hash = (37 * hash) + DATA_FIELD_NUMBER;
@@ -413,7 +413,7 @@ private static final long serialVersionUID = 0L;
       super.clear();
       scannerId_ = 0;
 
-      entIdent_ = 0;
+      scannerIdent_ = 0;
 
       entId_ = "";
 
@@ -446,7 +446,7 @@ private static final long serialVersionUID = 0L;
     public com.dunkware.net.proto.netstream.GNetEntityScannerRow buildPartial() {
       com.dunkware.net.proto.netstream.GNetEntityScannerRow result = new com.dunkware.net.proto.netstream.GNetEntityScannerRow(this);
       result.scannerId_ = scannerId_;
-      result.entIdent_ = entIdent_;
+      result.scannerIdent_ = scannerIdent_;
       result.entId_ = entId_;
       result.data_ = data_;
       onBuilt();
@@ -500,8 +500,8 @@ private static final long serialVersionUID = 0L;
       if (other.getScannerId() != 0) {
         setScannerId(other.getScannerId());
       }
-      if (other.getEntIdent() != 0) {
-        setEntIdent(other.getEntIdent());
+      if (other.getScannerIdent() != 0) {
+        setScannerIdent(other.getScannerIdent());
       }
       if (!other.getEntId().isEmpty()) {
         entId_ = other.entId_;
@@ -566,28 +566,28 @@ private static final long serialVersionUID = 0L;
       return this;
     }
 
-    private int entIdent_ ;
+    private int scannerIdent_ ;
     /**
-     * <code>int32 entIdent = 2;</code>
+     * <code>int32 scannerIdent = 2;</code>
      */
-    public int getEntIdent() {
-      return entIdent_;
+    public int getScannerIdent() {
+      return scannerIdent_;
     }
     /**
-     * <code>int32 entIdent = 2;</code>
+     * <code>int32 scannerIdent = 2;</code>
      */
-    public Builder setEntIdent(int value) {
+    public Builder setScannerIdent(int value) {
       
-      entIdent_ = value;
+      scannerIdent_ = value;
       onChanged();
       return this;
     }
     /**
-     * <code>int32 entIdent = 2;</code>
+     * <code>int32 scannerIdent = 2;</code>
      */
-    public Builder clearEntIdent() {
+    public Builder clearScannerIdent() {
       
-      entIdent_ = 0;
+      scannerIdent_ = 0;
       onChanged();
       return this;
     }

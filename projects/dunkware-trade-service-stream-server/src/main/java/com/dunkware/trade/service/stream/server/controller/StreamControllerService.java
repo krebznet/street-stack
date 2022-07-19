@@ -14,7 +14,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.dunkware.common.util.json.DJson;
-import com.dunkware.trade.service.stream.json.controller.spec.StreamSpec;
+import com.dunkware.trade.service.stream.json.controller.spec.StreamControllerSpec;
 import com.dunkware.trade.service.stream.server.repository.StreamEntity;
 import com.dunkware.trade.service.stream.server.repository.StreamRepo;
 import com.dunkware.trade.service.stream.server.repository.StreamVersionEntity;
@@ -74,7 +74,7 @@ public class StreamControllerService {
 
 	
 	@Transactional
-	public StreamController addStream(StreamSpec spec) throws Exception {
+	public StreamController addStream(StreamControllerSpec spec) throws Exception {
 		StreamEntity ent = new StreamEntity();
 		String[] tickerLists = spec.getTickers().split(",");
 		// we should validate these lists
@@ -125,7 +125,7 @@ public class StreamControllerService {
 	}
 
 
-	public void updateStream(StreamSpec spec) throws Exception {
+	public void updateStream(StreamControllerSpec spec) throws Exception {
 		StreamController stream = getStreamByName(spec.getName());
 		Double newVersion = spec.getVersion();
 		StreamVersionEntity newVersionDO = new StreamVersionEntity();
@@ -149,7 +149,7 @@ public class StreamControllerService {
 			stream.getEntity().getVersions().add(newVersionDO);
 		} else {
 			// else
-			StreamSpec entitySpec = DJson.getObjectMapper().readValue(stream.getEntity().getSpec(), StreamSpec.class);
+			StreamControllerSpec entitySpec = DJson.getObjectMapper().readValue(stream.getEntity().getSpec(), StreamControllerSpec.class);
 			spec.setBundle(entitySpec.getBundle());
 			stream.getEntity().setSpec(DJson.serialize(spec));
 		}

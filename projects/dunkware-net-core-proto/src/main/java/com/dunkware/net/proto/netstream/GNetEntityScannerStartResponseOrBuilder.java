@@ -8,9 +8,14 @@ public interface GNetEntityScannerStartResponseOrBuilder extends
     com.google.protobuf.MessageOrBuilder {
 
   /**
-   * <code>int32 scannerId = 1;</code>
+   * <code>string scannerIdent = 1;</code>
    */
-  int getScannerId();
+  java.lang.String getScannerIdent();
+  /**
+   * <code>string scannerIdent = 1;</code>
+   */
+  com.google.protobuf.ByteString
+      getScannerIdentBytes();
 
   /**
    * <code>string source = 2;</code>
@@ -41,4 +46,14 @@ public interface GNetEntityScannerStartResponseOrBuilder extends
    */
   com.google.protobuf.ByteString
       getErrorBytes();
+
+  /**
+   * <code>string model = 5;</code>
+   */
+  java.lang.String getModel();
+  /**
+   * <code>string model = 5;</code>
+   */
+  com.google.protobuf.ByteString
+      getModelBytes();
 }

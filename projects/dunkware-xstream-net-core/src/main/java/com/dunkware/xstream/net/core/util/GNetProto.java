@@ -32,14 +32,9 @@ public class GNetProto {
 	public static GNetEntitySearchComplete entitySearchComplete(int searchId, String source) { 
 		return GNetEntitySearchComplete.newBuilder().setSearchId(searchId).setSource(source).build();
 	}
-	public static boolean isStartEntityScannerResponse(int scannerId, GNetServerMessage message) { 
-		if(message.getTypeCase() == TypeCase.ENTITYSCANNERSTARTRESPONSE) { 
-			if(message.getEntityScannerStartResponse().getScannerId() == scannerId) { 
-				return true;
-			}
-		}
-		return false; 
-	}
+	
+	
+	
 	
 	public static boolean isEntityScannerUpdate(String identifier, GNetServerMessage message) { 
 		if(message.getTypeCase() == TypeCase.ENTITYSCANNERUPDATE) {

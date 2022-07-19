@@ -11,7 +11,7 @@ import com.dunkware.common.util.dtime.DTime;
 import com.dunkware.common.util.dtime.DTimeZone;
 import com.dunkware.common.util.json.DJson;
 import com.dunkware.trade.service.stream.json.controller.AddStreamReq;
-import com.dunkware.trade.service.stream.json.controller.spec.StreamSpec;
+import com.dunkware.trade.service.stream.json.controller.spec.StreamControllerSpec;
 import com.dunkware.trade.service.stream.json.worker.stream.StreamSessionWorkerStartReq;
 import com.dunkware.xstream.core.extensions.TimeUpdaterExtType;
 import com.dunkware.xstream.xproject.XScriptProject;
@@ -37,7 +37,7 @@ public class StreamTest3 {
 	private void load() { 
 		
 		try {
-			StreamSpec spec = new StreamSpec();
+			StreamControllerSpec spec = new StreamControllerSpec();
 			spec.setName("us_equity");
 			XScriptBundle bundle = XscriptBundleHelper.createBundleFromFilePaths("/Users/duncankrebs/dunkware/street/script/main/dunkware-street-script");
 		

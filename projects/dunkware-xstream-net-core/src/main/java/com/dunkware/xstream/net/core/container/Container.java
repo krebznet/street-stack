@@ -10,7 +10,7 @@ import com.dunkware.common.util.executor.DExecutor;
 import com.dunkware.net.proto.stream.GEntitySignal;
 import com.dunkware.net.proto.stream.GEntitySnapshot;
 import com.dunkware.net.proto.stream.GStreamTimeUpdate;
-import com.dunkware.xstream.model.search.SessionEntityScanner;
+import com.dunkware.xstream.model.scanner.SessionEntityScanner;
 import com.dunkware.xstream.model.search.SessionEntitySearch;
 
 public interface Container {

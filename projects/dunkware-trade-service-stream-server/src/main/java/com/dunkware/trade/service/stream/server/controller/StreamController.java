@@ -25,9 +25,9 @@ import com.dunkware.common.util.json.DJson;
 import com.dunkware.net.cluster.node.Cluster;
 import com.dunkware.net.cluster.node.ClusterNode;
 import com.dunkware.net.proto.stream.GStreamSpec;
-import com.dunkware.trade.service.stream.json.controller.spec.StreamSpec;
-import com.dunkware.trade.service.stream.json.controller.spec.StreamState;
-import com.dunkware.trade.service.stream.json.controller.spec.StreamStats;
+import com.dunkware.trade.service.stream.json.controller.spec.StreamControllerSpec;
+import com.dunkware.trade.service.stream.json.controller.spec.StreamControllerState;
+import com.dunkware.trade.service.stream.json.controller.spec.StreamControllerStreamStats;
 import com.dunkware.trade.service.stream.server.controller.session.StreamSession;
 import com.dunkware.trade.service.stream.server.controller.session.StreamSessionException;
 import com.dunkware.trade.service.stream.server.controller.session.StreamSessionFactory;
@@ -64,7 +64,7 @@ public class StreamController {
 	
 	private StreamSchedule schedule;
 
-	private StreamStats stats = new StreamStats();
+	private StreamControllerStreamStats stats = new StreamControllerStreamStats();
 
 	private String exception = null;
 
@@ -96,7 +96,7 @@ public class StreamController {
 	@Autowired
 	private ApplicationContext ac;
 
-	private StreamSpec spec;
+	private StreamControllerSpec spec;
 
 	private GStreamSpec gStreamSpec = null;
 
@@ -116,12 +116,12 @@ public class StreamController {
 		logger.info(":Starting Stream Controller " + ent.getName());
 		// set member variabbes
 		this.ent = ent;
-		stats = new StreamStats();
+		stats = new StreamControllerStreamStats();
 		stats.setName(ent.getName());
-		stats.setState(StreamState.Stopped);
+		stats.setState(StreamControllerState.Stopped);
 		streamVersion = getCurrentVersion();
 
-		spec = DJson.getObjectMapper().readValue(ent.getSpec(), StreamSpec.class);
+		spec = DJson.getObjectMapper().readValue(ent.getSpec(), StreamControllerSpec.class);
 		this.specUpdate(spec);
 		
 		try {
@@ -131,7 +131,7 @@ public class StreamController {
 			logger.error("Tick Service Exception Call Getting Stream Tickers for Stream {} Exception {}", getName(),
 					e.toString(), e);
 			stats.setError("Ticker List Get Exception " + e.toString());
-			stats.setState(StreamState.Exception);
+			stats.setState(StreamControllerState.Exception);
 		}
 
 		String bundle = streamVersion.getBundle();
@@ -142,7 +142,7 @@ public class StreamController {
 			
 
 		} catch (Exception e) {
-			stats.setState(StreamState.Exception);
+			stats.setState(StreamControllerState.Exception);
 			stats.setError("Exception Building XScript Bundle " + e.toString());
 			throw new Exception("Exception parsing stream version script bundle from entity " + e.toString());
 		}
@@ -192,7 +192,7 @@ public class StreamController {
 		return this.ent.getCountry();
 	}
 
-	public StreamSpec getSpec() {
+	public StreamControllerSpec getSpec() {
 		return spec;
 	}
 
@@ -227,10 +227,10 @@ public class StreamController {
 
 	public synchronized void startSession() throws StreamSessionException {
 		// validate we are in a status that can start session
-		if (getStats().getState() == StreamState.Starting || getStats().getState() == StreamState.Running) {
+		if (getStats().getState() == StreamControllerState.Starting || getStats().getState() == StreamControllerState.Running) {
 			throw new StreamSessionException("Stream State is " + stats.getState().name() + " cannot start session");
 		}
-		stats.setState(StreamState.PendingStarting);
+		stats.setState(StreamControllerState.PendingStarting);
 		// create session / set session stats
 		session = StreamSessionFactory.createSession();
 		ac.getAutowireCapableBeanFactory().autowireBean(session);
@@ -261,7 +261,7 @@ public class StreamController {
 
 			if (nodes.size() == 0) {
 				logger.error("Exception Starting Stream {} Session, available worker nodes is 0", getName());
-				stats.setState(StreamState.Exception);
+				stats.setState(StreamControllerState.Exception);
 				stats.setError("Np Available Worker Nodes");;
 				session = null;
 				throw new StreamSessionException("No Available worker nodes to start stream session");
@@ -273,7 +273,7 @@ public class StreamController {
 			// need to call this after start session annoying
 			session.getEventNode().addEventHandler(this);
 		} catch (StreamSessionException e) {
-			stats.setState(StreamState.Exception);
+			stats.setState(StreamControllerState.Exception);
 			stats.setError("Exception starting Stram " + getName()+  " session " + e.toString());
 			this.exception = e.toString();
 			throw e;
@@ -283,7 +283,7 @@ public class StreamController {
 		return session;
 	}
 
-	public StreamStats getStats() {
+	public StreamControllerStreamStats getStats() {
 		if(session != null) { 
 			stats.setSession(session.getStatus());
 			stats.setName(getSession().getSessionId());
@@ -304,11 +304,11 @@ public class StreamController {
 		return lateset;
 	}
 
-	public StreamState getState() {
+	public StreamControllerState getState() {
 		return stats.getState();
 	}
 
-	public void specUpdate(StreamSpec spec) {
+	public void specUpdate(StreamControllerSpec spec) {
 		this.spec = spec;
 		try {
 			tickerList = tickService.getClient().getTickerList(getEntity().getTickerLists());
@@ -468,7 +468,7 @@ public class StreamController {
 				if (clock.isAfterLocalTime(startTime) && clock.isBeforeLocalTime(stopTime)) {
 
 					try {
-						if (getStats().getState() != StreamState.Starting || getStats().getState()!= StreamState.Running) {
+						if (getStats().getState() != StreamControllerState.Starting || getStats().getState()!= StreamControllerState.Running) {
 							logger.info(
 									marker,"Starting session on clock update where current time is between start/stop time and status is not running or starting");
 							startSession();
@@ -510,8 +510,8 @@ public class StreamController {
 		if (logger.isDebugEnabled()) {
 			logger.debug("Recieved Session Started Event, Status Update Running");
 		}
-		stats.setState(StreamState.Running);
-		ent.setState(StreamState.Running);
+		stats.setState(StreamControllerState.Running);
+		ent.setState(StreamControllerState.Running);
 		streamRepo.save(ent);
 		
 		
@@ -531,7 +531,7 @@ public class StreamController {
 		if (logger.isDebugEnabled()) {
 			logger.debug("Recieved Session Exception Event " + sessionException.getSession().getStatus().getException());
 		}
-		stats.setState(StreamState.Exception);
+		stats.setState(StreamControllerState.Exception);
 		// sessionException state
 	}
 
@@ -545,8 +545,8 @@ public class StreamController {
 		if (logger.isDebugEnabled()) {
 			logger.debug("Recieved Session Stopped Event, Status Update Stopped");
 		}
-		stats.setState(StreamState.Stopped);
-		ent.setState(StreamState.Stopped);
+		stats.setState(StreamControllerState.Stopped);
+		ent.setState(StreamControllerState.Stopped);
 		ent.getSessions().add(session.getEntity());
 		streamRepo.save(ent);
 	}
@@ -556,7 +556,7 @@ public class StreamController {
 		if (logger.isDebugEnabled()) {
 			logger.debug("Recieved Session Stopped Event, Status Update Stopped");
 		}
-		stats.setState(StreamState.Stopping);
+		stats.setState(StreamControllerState.Stopping);
 		
 	}
 	

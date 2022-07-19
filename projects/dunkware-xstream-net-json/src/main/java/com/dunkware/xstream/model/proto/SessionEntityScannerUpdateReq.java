@@ -1,6 +1,6 @@
 package com.dunkware.xstream.model.proto;
 
-import com.dunkware.xstream.model.search.SessionEntityScanner;
+import com.dunkware.xstream.model.scanner.SessionEntityScanner;
 
 public class SessionEntityScannerUpdateReq {
 	
