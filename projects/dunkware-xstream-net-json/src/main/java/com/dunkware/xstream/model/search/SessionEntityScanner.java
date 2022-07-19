@@ -4,8 +4,7 @@ public class SessionEntityScanner {
 	
 	private SessionEntitySearch search; 
 	private int scanInterval; 
-	private int scannerId;
-	
+	private String scannerIdentifier; 
 	
 	public SessionEntitySearch getSearch() {
 		return search;
@@ -19,12 +18,12 @@ public class SessionEntityScanner {
 	public void setScanInterval(int scanInterval) {
 		this.scanInterval = scanInterval;
 	}
-	public int getScannerId() {
-		return scannerId;
+	public String getScannerIdentifier() {
+		return scannerIdentifier;
 	}
-	public void setScannerId(int scannerId) {
-		this.scannerId = scannerId;
-	} 
+	public void setScannerIdentifier(String scannerIdentifier) {
+		this.scannerIdentifier = scannerIdentifier;
+	}
 	
 	
 	

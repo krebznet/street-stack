@@ -6,7 +6,7 @@ public class SessionEntityFilterValueCompare {
 	private SessionEntityValue value2; 
 	private Condition condition;
 	
-	private SessionEntityFIlterValueCompareFunction function;
+	private SessionEntityFilterValueCompareFunctionHolder function;
 	public SessionEntityValue getValue1() {
 		return value1;
 	}
@@ -25,12 +25,13 @@ public class SessionEntityFilterValueCompare {
 	public void setCondition(Condition condition) {
 		this.condition = condition;
 	}
-	public SessionEntityFIlterValueCompareFunction getFunction() {
+	public SessionEntityFilterValueCompareFunctionHolder getFunction() {
 		return function;
 	}
-	public void setFunction(SessionEntityFIlterValueCompareFunction function) {
+	public void setFunction(SessionEntityFilterValueCompareFunctionHolder function) {
 		this.function = function;
-	} 
+	}
+	
 	
 	
 }
