@@ -21,6 +21,22 @@ message GNetEntitySearchRequest {
   string source = 5;
 }
 
+message GNetEntitySearchRequest2 {
+  int32 searchId = 1;
+  string model = 2;
+  string retVars = 3;
+
+}
+
+message GNetEntitySearchResults2 {
+  int32 searchId = 1;
+  string results = 2;
+  bool error = 3;
+  string errorMessage = 4;
+  double searchTime = 5;
+  string source = 6;
+}
+
 message GNetEntitySearchResults {
   int32 searchId = 1;
   repeated  GNetEntity entities = 2;

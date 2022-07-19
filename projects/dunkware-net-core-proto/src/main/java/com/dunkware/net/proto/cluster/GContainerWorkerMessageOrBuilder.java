@@ -98,5 +98,18 @@ public interface GContainerWorkerMessageOrBuilder extends
    */
   com.dunkware.net.proto.netstream.GNetEntitySearchRequestOrBuilder getEntitySearchRequestOrBuilder();
 
+  /**
+   * <code>.dunkware.netstream.GNetEntitySearchRequest2 entitySearchRequest2 = 10;</code>
+   */
+  boolean hasEntitySearchRequest2();
+  /**
+   * <code>.dunkware.netstream.GNetEntitySearchRequest2 entitySearchRequest2 = 10;</code>
+   */
+  com.dunkware.net.proto.netstream.GNetEntitySearchRequest2 getEntitySearchRequest2();
+  /**
+   * <code>.dunkware.netstream.GNetEntitySearchRequest2 entitySearchRequest2 = 10;</code>
+   */
+  com.dunkware.net.proto.netstream.GNetEntitySearchRequest2OrBuilder getEntitySearchRequest2OrBuilder();
+
   public com.dunkware.net.proto.cluster.GContainerWorkerMessage.TypeCase getTypeCase();
 }

@@ -73,6 +73,19 @@ public interface GContainerServerMessageOrBuilder extends
   com.dunkware.net.proto.netstream.GNetEntitySearchResultsOrBuilder getEntitySearchResultsOrBuilder();
 
   /**
+   * <code>.dunkware.netstream.GNetEntitySearchResults2 entitySearchResults2 = 11;</code>
+   */
+  boolean hasEntitySearchResults2();
+  /**
+   * <code>.dunkware.netstream.GNetEntitySearchResults2 entitySearchResults2 = 11;</code>
+   */
+  com.dunkware.net.proto.netstream.GNetEntitySearchResults2 getEntitySearchResults2();
+  /**
+   * <code>.dunkware.netstream.GNetEntitySearchResults2 entitySearchResults2 = 11;</code>
+   */
+  com.dunkware.net.proto.netstream.GNetEntitySearchResults2OrBuilder getEntitySearchResults2OrBuilder();
+
+  /**
    * <code>.dunkware.netstream.GNetEntitySearchException entitySearchException = 7;</code>
    */
   boolean hasEntitySearchException();

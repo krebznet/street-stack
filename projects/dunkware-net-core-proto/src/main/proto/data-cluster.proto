@@ -18,6 +18,7 @@ message GContainerWorkerMessage {
    netstream.GNetEntityScannerStopRequest entityScannerStopRequest = 6;
    netstream.GNetEntityScannerUpdateRequest entityScannerUpdateRequest = 8;
    netstream.GNetEntitySearchRequest entitySearchRequest = 5;
+   netstream.GNetEntitySearchRequest2 entitySearchRequest2 = 10;
  }
 }
 
@@ -28,6 +29,7 @@ message GContainerServerMessage {
    netstream.GNetEntityScannerUpdate entityScannerUpdate = 3;
    netstream.GNetEntitySearchComplete entitySearchComplete = 5;
    netstream.GNetEntitySearchResults entitySearchResults = 6;
+   netstream.GNetEntitySearchResults2 entitySearchResults2 = 11;
    netstream.GNetEntitySearchException entitySearchException = 7;
    netstream.GNetEntityScannerException entityScannerException = 8;
    netstream.GNetEntityScannerStopResponse entityScannerStopResponse = 9;
