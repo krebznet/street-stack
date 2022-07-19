@@ -4,8 +4,12 @@ import java.time.Instant;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
+import java.time.ZoneId;
+import java.time.ZoneOffset;
 import java.time.format.DateTimeFormatter;
 import java.util.Date;
+import java.util.TimeZone;
+import java.util.concurrent.TimeUnit;
 
 import com.dunkware.common.util.dtime.DTimeZone;
 import com.google.protobuf.Timestamp;
@@ -82,7 +86,11 @@ public class DunkTime {
 		
 	}
 	
-	
-
+	public static ZoneOffset zoneOffset(ZoneId id) {
+	    return ZoneOffset.ofTotalSeconds((int) 
+	        TimeUnit.MILLISECONDS.toSeconds(
+	            TimeZone.getTimeZone(id).getRawOffset()        // Returns offset in milliseconds 
+			));
+	}
 
 }
