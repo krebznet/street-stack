@@ -1,11 +1,11 @@
 package com.dunkware.trade.service.stream.json.controller;
 
-import com.dunkware.trade.service.stream.json.controller.spec.StreamSpec;
+import com.dunkware.trade.service.stream.json.controller.spec.StreamControllerSpec;
 
 public class GetStreamSpecResp {
 	
 	private String code; 
-	private StreamSpec spec;
+	private StreamControllerSpec spec;
 	private String error; 
 	
 	
@@ -15,10 +15,10 @@ public class GetStreamSpecResp {
 	public void setCode(String code) {
 		this.code = code;
 	}
-	public StreamSpec getSpec() {
+	public StreamControllerSpec getSpec() {
 		return spec;
 	}
-	public void setSpec(StreamSpec spec) {
+	public void setSpec(StreamControllerSpec spec) {
 		this.spec = spec;
 	}
 	public String getError() {

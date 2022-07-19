@@ -1,6 +1,6 @@
 package com.dunkware.trade.service.proto;
 
-import com.dunkware.xstream.net.model.search.SessionEntitySearch;
+import com.dunkware.xstream.model.search.SessionEntitySearch;
 
 public class SessionEntityScannerStartRequest {
 	

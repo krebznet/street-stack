@@ -1,6 +1,6 @@
 package com.dunkware.trade.service.stream.json.controller;
 
-import com.dunkware.trade.service.stream.json.controller.spec.StreamStats;
+import com.dunkware.trade.service.stream.json.controller.spec.StreamControllerStreamStats;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonInclude.Include;
 
@@ -10,7 +10,7 @@ public class StreamStatsResp {
 	@JsonInclude(Include.NON_NULL)
 	private String error; 
 	@JsonInclude(Include.NON_NULL)
-	private StreamStats stats;
+	private StreamControllerStreamStats stats;
 
 	public StreamStatsResp() { 
 		
@@ -32,11 +32,11 @@ public class StreamStatsResp {
 		this.error = error;
 	}
 
-	public StreamStats getStats() {
+	public StreamControllerStreamStats getStats() {
 		return stats;
 	}
 
-	public void setStats(StreamStats stats) {
+	public void setStats(StreamControllerStreamStats stats) {
 		this.stats = stats;
 	}
 

@@ -5,7 +5,7 @@ import com.dunkware.common.util.dtime.DTime;
 import com.dunkware.common.util.dtime.DTimeZone;
 import com.dunkware.xstream.xproject.model.XScriptBundle;
 
-public class StreamSpec {
+public class StreamControllerSpec {
 
 	private String name; 
 	private XScriptBundle bundle; 

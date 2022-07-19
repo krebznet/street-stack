@@ -2,19 +2,19 @@ package com.dunkware.trade.service.stream.json.controller;
 
 import java.util.List;
 
-import com.dunkware.trade.service.stream.json.controller.spec.StreamSpec;
+import com.dunkware.trade.service.stream.json.controller.spec.StreamControllerSpec;
 
 public class GetStreamSpecsResp {
 	
 	private String code; 
 	private String error; 
-	private List<StreamSpec> specs;
+	private List<StreamControllerSpec> specs;
 
-	public List<StreamSpec> getSpecs() {
+	public List<StreamControllerSpec> getSpecs() {
 		return specs;
 	}
 
-	public void setSpecs(List<StreamSpec> specs) {
+	public void setSpecs(List<StreamControllerSpec> specs) {
 		this.specs = specs;
 	}
 
