@@ -12,6 +12,7 @@ import java.util.concurrent.Semaphore;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.dunkware.common.util.data.NetBean;
 import com.dunkware.common.util.time.DunkTime;
 import com.dunkware.net.proto.stream.GEntityCriteriaVar;
 import com.dunkware.net.proto.stream.GEntityCriteriaVarType;
@@ -260,7 +261,35 @@ public class ContainerEntityImpl implements ContainerEntity {
 		 * + var.getIdent()); //} }
 		 * 
 		 * } // TODO Auto-generated method stub return null;
+		
+		 *
 		 */
 	}
+
+	@Override
+	public NetBean toBean() {
+		NetBean bean = new NetBean();
+		bean.setValue("id", getId());
+		bean.setValue("ident", getIdent());
+		for (ContainerEntityVar var : getVars()) {
+			bean.setValue(var.getIdent(), var.getLastValue());
+		}
+		return bean;
+	}
+
+	@Override
+	public NetBean toBean(List<String> vars) {
+		NetBean bean = new NetBean();
+		bean.setValue("id", getId());
+		bean.setValue("ident", getIdent());
+		for (ContainerEntityVar var : getVars()) {
+			if(vars.contains(var.getIdent()))
+				bean.setValue(var.getIdent(), var.getLastValue());
+		}
+		return bean;
+	}
+	
+	
+	
 
 }

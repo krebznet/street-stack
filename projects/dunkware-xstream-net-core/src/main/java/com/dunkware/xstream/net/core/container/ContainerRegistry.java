@@ -37,7 +37,7 @@ public class ContainerRegistry {
 	}
 	
 	
-	public ContainerExtension crateExtension(ContainerExtensionType type) throws ContainerException { 
+	public ContainerExtension create(ContainerExtensionType type) throws ContainerException { 
 		for (RegistryExtension registryExtension : extensions) {
 			if(registryExtension.isType(type)) { 
 				return registryExtension.createExtension();

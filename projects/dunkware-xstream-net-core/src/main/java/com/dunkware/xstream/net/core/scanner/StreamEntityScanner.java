@@ -2,8 +2,8 @@ package com.dunkware.xstream.net.core.scanner;
 
 import java.util.Collection;
 
+import com.dunkware.xstream.model.search.SessionEntitySearch;
 import com.dunkware.xstream.net.core.container.ContainerSearchException;
-import com.dunkware.xstream.net.model.search.SessionEntitySearch;
 
 public interface StreamEntityScanner {
 

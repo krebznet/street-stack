@@ -11,6 +11,7 @@ import com.dunkware.common.util.time.DunkTime;
 import com.dunkware.xstream.net.core.container.ContainerDataType;
 import com.dunkware.xstream.net.core.container.ContainerEntity;
 import com.dunkware.xstream.net.core.container.ContainerEntityVar;
+import com.dunkware.xstream.net.core.container.ContainerEntityVarStats;
 import com.dunkware.xstream.net.core.container.ContainerSearchException;
 import com.dunkware.xstream.net.core.container.util.ContainerHelper;
 import com.github.benmanes.caffeine.cache.Cache;
@@ -104,6 +105,13 @@ public class ContainerEntityVarImpl implements ContainerEntityVar {
 	public ContainerEntity getEntity() {
 		return entity;
 	}
+	@Override
+	public ContainerEntityVarStats getStats() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+	
+	
 	
 	
 	

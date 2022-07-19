@@ -1,17 +1,16 @@
-package com.dunkware.xstream.net.core.container.search2.filter;
-
-import java.util.function.Predicate;
+package com.dunkware.xstream.net.core.container.search.entity;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.dunkware.xstream.model.search.SessionEntityFilterValue;
 import com.dunkware.xstream.net.core.container.Container;
 import com.dunkware.xstream.net.core.container.ContainerEntity;
 import com.dunkware.xstream.net.core.container.ContainerSearchException;
-import com.dunkware.xstream.net.core.container.search2.value.EntityValue;
-import com.dunkware.xstream.net.model.search.SessionEntityFilterValue;
+import com.dunkware.xstream.net.core.container.ContainerSearchPredicate;
+import com.dunkware.xstream.net.core.container.search.value.EntityValue;
 
-public class EntityValueFilter implements Predicate<ContainerEntity> {
+public class EntitySearchValuePredicate extends ContainerSearchPredicate<ContainerEntity> {
 
 	
 	private Container container; 
@@ -22,9 +21,10 @@ public class EntityValueFilter implements Predicate<ContainerEntity> {
 	
 	
 	public void init(SessionEntityFilterValue filterType, Container container) throws ContainerSearchException { 
+		super.init(container);
 		this.filterType = filterType; 
 		this.container = container;
-		this.entityValue =  EntityFilterPredicateBuilder.createEntityValue(filterType.getValue(), container);
+		this.entityValue =  EntitySearchHelper.createEntityValue(filterType.getValue(), container);
 		this.entityValue.init(filterType.getValue(),container);
 		
 	}
@@ -45,11 +45,19 @@ public class EntityValueFilter implements Predicate<ContainerEntity> {
 			return false; 
 		}
 		try {
-			return EntityFilterHelper.testCondition(resolvedValue, filterType.getCondition());
+			return EntitySearchHelper.testCondition(resolvedValue, filterType.getCondition());
 		} catch (Exception e) {
 			logger.error("Got exception on EntityValueFIlter testCondition call " + e.toString());
 			return false; 
 		}
 	}
+
+	@Override
+	public void timeUpdate(Container contaienr) {
+		// TODO Auto-generated method stub
+		
+	}
+	
+	
 
 }

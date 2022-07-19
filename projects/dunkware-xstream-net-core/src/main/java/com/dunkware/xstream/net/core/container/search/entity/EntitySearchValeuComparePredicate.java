@@ -1,17 +1,16 @@
-package com.dunkware.xstream.net.core.container.search2.filter;
-
-import java.util.function.Predicate;
+package com.dunkware.xstream.net.core.container.search.entity;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.dunkware.xstream.model.search.SessionEntityFilterValueCompare;
 import com.dunkware.xstream.net.core.container.Container;
 import com.dunkware.xstream.net.core.container.ContainerEntity;
 import com.dunkware.xstream.net.core.container.ContainerSearchException;
-import com.dunkware.xstream.net.core.container.search2.value.EntityValue;
-import com.dunkware.xstream.net.model.search.SessionEntityFilterValueCompare;
+import com.dunkware.xstream.net.core.container.ContainerSearchPredicate;
+import com.dunkware.xstream.net.core.container.search.value.EntityValue;
 
-public class EntityValueCompareFilter implements Predicate<ContainerEntity> {
+public class EntitySearchValeuComparePredicate extends ContainerSearchPredicate<ContainerEntity>  {
 
 	private Container container; 
 	private SessionEntityFilterValueCompare filterType; 
@@ -21,13 +20,14 @@ public class EntityValueCompareFilter implements Predicate<ContainerEntity> {
 	private Logger logger = LoggerFactory.getLogger(getClass());
 	
 	
-	public void init(SessionEntityFilterValueCompare filterType, Container container) throws ContainerSearchException { 
+	public void init(SessionEntityFilterValueCompare filterType, Container container) throws ContainerSearchException {
+		super.init(container);
 		this.container = container; 
 		this.filterType = filterType;
 		try {
-			targetValue = EntityFilterPredicateBuilder.createEntityValue(filterType.getValue1(), container);
+			targetValue = EntitySearchHelper.createEntityValue(filterType.getValue1(), container);
 			targetValue.init(filterType.getValue1(), container);
-			compareValue = EntityFilterPredicateBuilder.createEntityValue(filterType.getValue2(), container);
+			compareValue = EntitySearchHelper.createEntityValue(filterType.getValue2(), container);
 			compareValue.init(filterType.getValue2(), container);
 		} catch (Exception e) {
 			throw new ContainerSearchException("Exception init Entity Value compare filter " + e.toString());
@@ -38,18 +38,27 @@ public class EntityValueCompareFilter implements Predicate<ContainerEntity> {
 	@Override
 	public boolean test(ContainerEntity t) {
 		try {
+			searchStart();
 			if(targetValue.canResolveSession(t) && compareValue.canResolveSession(t)) { 
 				Object resolvedTarget = targetValue.resolve(t);
 				Object resolvedCompare = compareValue.resolve(t);
-				return EntityFilterHelper.testValueCompare(resolvedTarget, resolvedCompare, filterType.getFunction(), filterType.getCondition());
+				return EntitySearchHelper.testValueCompare(resolvedTarget, resolvedCompare, filterType.getFunction(), filterType.getCondition());
 			} else { 
 				return false;
 			}
 		} catch (Exception e) {
 			logger.error("Exception testing entity value compare filter " + e.toString());
 			return false; 
+		} finally { 
+			searchStop();
 		}
 		
+		
+	}
+
+	@Override
+	public void timeUpdate(Container contaienr) {
+		// TODO Auto-generated method stub
 		
 	}
 

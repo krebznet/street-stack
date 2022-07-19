@@ -1,13 +1,12 @@
-package com.dunkware.xstream.net.core.container.search2.value;
+package com.dunkware.xstream.net.core.container.search.value;
 
+import com.dunkware.xstream.model.search.EntitySignalCountSession;
+import com.dunkware.xstream.model.search.SessionEntityValue;
+import com.dunkware.xstream.model.search.TimeRangeSession;
 import com.dunkware.xstream.net.core.container.Container;
 import com.dunkware.xstream.net.core.container.ContainerEntity;
 import com.dunkware.xstream.net.core.container.ContainerSearchException;
-import com.dunkware.xstream.net.core.container.search2.filter.EntityFilterHelper;
-import com.dunkware.xstream.net.core.container.search2.util.StreamSearchUtil;
-import com.dunkware.xstream.net.model.search.EntitySignalCountSession;
-import com.dunkware.xstream.net.model.search.SessionEntityValue;
-import com.dunkware.xstream.net.model.search.TimeRangeSession;
+import com.dunkware.xstream.net.core.container.search.entity.EntitySearchHelper;
 
 public class EntityValueSignalCountSession implements EntityValue  {
 
@@ -25,8 +24,9 @@ public class EntityValueSignalCountSession implements EntityValue  {
 	}
 
 	@Override
-	public boolean canResolve(ContainerEntity entity) {
-		return true; 
+	public boolean canResolve(ContainerEntity entity) throws ContainerSearchException{
+		return EntitySearchHelper.canFillTimeRangeSession(entity, timeRange);
+		
 	}
 
 	@Override
@@ -36,7 +36,13 @@ public class EntityValueSignalCountSession implements EntityValue  {
 
 	@Override
 	public Object resolve(ContainerEntity entity) throws ContainerSearchException {
-		return EntityFilterHelper.getSignalCount(timeRange, entity, signalCount.getSignal().getIdentifier());
+		return EntitySearchHelper.getSignalCount(timeRange, entity, signalCount.getSignal().getIdentifier());
+	}
+
+	@Override
+	public void timeUpdate(Container container) {
+		// TODO Auto-generated method stub
+		
 	}
 	
 	

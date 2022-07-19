@@ -1,6 +1,8 @@
 package com.dunkware.xstream.net.core.container.core;
 
 import java.time.LocalDateTime;
+import java.time.ZoneId;
+import java.time.ZoneOffset;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -8,61 +10,59 @@ import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.Semaphore;
 import java.util.concurrent.atomic.AtomicLong;
-import java.util.function.Predicate;
-import java.util.stream.Collectors;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.dunkware.common.util.dtime.DTimeZone;
 import com.dunkware.common.util.executor.DExecutor;
-import com.dunkware.common.util.stopwatch.DStopWatch;
-import com.dunkware.net.proto.data.GTimeUnit;
-import com.dunkware.net.proto.stream.GEntityMatcher;
+import com.dunkware.common.util.time.DunkTime;
 import com.dunkware.net.proto.stream.GEntitySignal;
 import com.dunkware.net.proto.stream.GEntitySnapshot;
 import com.dunkware.net.proto.stream.GStreamTimeUpdate;
+import com.dunkware.xstream.model.search.SessionEntityScanner;
+import com.dunkware.xstream.model.search.SessionEntitySearch;
 import com.dunkware.xstream.net.core.container.Container;
 import com.dunkware.xstream.net.core.container.ContainerEntity;
+import com.dunkware.xstream.net.core.container.ContainerEntityQuery;
+import com.dunkware.xstream.net.core.container.ContainerEntityScanner;
 import com.dunkware.xstream.net.core.container.ContainerEntitySignal;
 import com.dunkware.xstream.net.core.container.ContainerEntityVar;
 import com.dunkware.xstream.net.core.container.ContainerException;
 import com.dunkware.xstream.net.core.container.ContainerExtension;
 import com.dunkware.xstream.net.core.container.ContainerExtensionType;
 import com.dunkware.xstream.net.core.container.ContainerInput;
-import com.dunkware.xstream.net.core.container.ContainerObserver;
+import com.dunkware.xstream.net.core.container.ContainerListener;
 import com.dunkware.xstream.net.core.container.ContainerRegistry;
 import com.dunkware.xstream.net.core.container.ContainerSearchException;
-import com.dunkware.xstream.net.core.container.ContainerSearchResults;
-import com.dunkware.xstream.net.core.container.ContainerTimeListener;
-import com.dunkware.xstream.net.core.container.search.ContainerEntityMatcherPredicateBuilder;
 import com.dunkware.xstream.net.core.container.util.ContainerHelper;
-import com.dunkware.xstream.net.model.search.SessionEntitySearch;
 
 public class ContainerImpl implements Container {
 
 	private Logger logger = LoggerFactory.getLogger(getClass());
 
-	private Map<String,ContainerEntityVar> vars = new ConcurrentHashMap<String,ContainerEntityVar>();
-	
+	private Map<String, ContainerEntityVar> vars = new ConcurrentHashMap<String, ContainerEntityVar>();
+
 	private List<ContainerEntity> entities = new ArrayList<ContainerEntity>();
-	private Map<String,Integer> entityIndex = new ConcurrentHashMap<String,Integer>();
+	private Map<String, Integer> entityIndex = new ConcurrentHashMap<String, Integer>();
 	private List<ContainerEntitySignal> signals = new ArrayList<ContainerEntitySignal>();
 	private Semaphore signalLock = new Semaphore(1);
-	
-	private List<ContainerTimeListener> timeListeners = new ArrayList<ContainerTimeListener>();
-	private Semaphore timeListenerLock = new Semaphore(1);
-	private Map<ContainerExtensionType,ContainerExtension> extensions = new ConcurrentHashMap<ContainerExtensionType,ContainerExtension>();
-	
-	
+
+	private List<ContainerListener> listeners = new ArrayList<ContainerListener>();
+	private Semaphore listenerLock = new Semaphore(1);
+	private Map<ContainerExtensionType, ContainerExtension> extensions = new ConcurrentHashMap<ContainerExtensionType, ContainerExtension>();
+
 	private ContainerInput input;
 
-	private volatile LocalDateTime time; 
-	
-	ContainerRegistry registry;
-	
-	private LocalDateTime startTime; 
+	private volatile LocalDateTime time;
 
+	ContainerRegistry registry;
+
+	private LocalDateTime startTime;
+
+	private ZoneId zoneId; 
+	private ZoneOffset zoneOffset; 
+	
 	private AtomicLong entitySnapshotCount = new AtomicLong(0);
 	private AtomicLong entitySignalCount = new AtomicLong(0);
 
@@ -70,15 +70,26 @@ public class ContainerImpl implements Container {
 
 	@Override
 	public void start(ContainerInput input) throws ContainerException {
+		if (logger.isInfoEnabled()) {
+			logger.info("Starting Stream Container " + input.getIdentifier());
+		}
 		entities = Collections.synchronizedList(entities);
 		signals = Collections.synchronizedList(signals);
 		startTime = LocalDateTime.now(DTimeZone.toZoneId(DTimeZone.NewYork));
 		this.input = input;
+		this.zoneId = DTimeZone.toZoneId(input.getTimeZone());
+		zoneOffset = DunkTime.zoneOffset(zoneId);
+		
 		registry = ContainerRegistry.get();
 		for (ContainerExtensionType type : input.getExtensions()) {
-			ContainerExtension ext = registry.crateExtension(type);
+
+			ContainerExtension ext = registry.create(type);
+			if (logger.isDebugEnabled()) {
+				logger.debug("Starting Container Extension " + ext.getClass().getName() + " on container "
+						+ input.getIdentifier());
+			}
 			ext.init(this, type);
-			extensions.put(type,ext);
+			extensions.put(type, ext);
 		}
 
 		for (ContainerExtension stashExtension : extensions.values()) {
@@ -107,9 +118,6 @@ public class ContainerImpl implements Container {
 		debugThread.interrupt();
 
 	}
-	
-	
-
 
 	@Override
 	public LocalDateTime getStartTime() {
@@ -125,69 +133,64 @@ public class ContainerImpl implements Container {
 	public void dispose() {
 		newSession();
 	}
-	
-	
-	
+
 	@Override
-	public void addTimeListener(ContainerTimeListener listener) {
-		try {
-			timeListenerLock.acquire();
-			timeListeners.add(listener);
-		} catch (Exception e) {
-			logger.error("Exception adding time listener " + e.toString());
-		} finally { 
-			timeListenerLock.release();
-		}
+	public void addListener(ContainerListener listener) {
+		Runnable runnable = new Runnable() {
+
+			@Override
+			public void run() {
+				try {
+					listenerLock.acquire();
+					listeners.add(listener);
+				} catch (Exception e) {
+				} finally {
+					listenerLock.release();
+
+				}
+			}
+		};
+
+		getExecutor().execute(runnable);
 	}
 
 	@Override
-	public void removeTimeListener(ContainerTimeListener listener) {
-		try {
-			timeListenerLock.acquire();
-			timeListeners.add(listener);
-		} catch (Exception e) {
-			logger.error("Exception adding time listener " + e.toString());
-		} finally { 
-			timeListenerLock.release();
-		}
-	}
+	public void removeListener(ContainerListener listener) {
+		Runnable runnable = new Runnable() {
 
-	@Override
-	public List<ContainerEntitySignal> entitySignals(ContainerEntity entity, GTimeUnit timeUnit, int timeValue, String signalType) {
-		/*
-		 * List<Predicate<ContainerEntitySignal>> predicates =
-		 * ContainerSignalSearchBuilder.newBuilder().
-		 * relativeTimeRange(timeUnit,timeValue).includeEntity(entity.getIdent()).
-		 * includeSignalType(signalType).build(); for (Predicate<ContainerEntitySignal>
-		 * predicate : predicates) { if (predicate instanceof ContainerObserver) {
-		 * ContainerObserver obs = (ContainerObserver)predicate; obs.update(this); } }
-		 * ContainerSearchResults<ContainerEntitySignal> results =
-		 * signalSearch(predicates); return results.getResults();
-		 */
-		return new ArrayList<ContainerEntitySignal>();
+			@Override
+			public void run() {
+				try {
+					listenerLock.acquire();
+					listeners.remove(listener);
+				} catch (Exception e) {
+				} finally {
+					listenerLock.release();
+
+				}
+			}
+		};
+
+		getExecutor().execute(runnable);
 	}
 
 	@Override
 	public ContainerEntity getEntity(String identifier) throws ContainerException {
 		Integer index = entityIndex.get(identifier);
-		if(index == null) { 
+		if (index == null) {
 			throw new ContainerException("Getting an entity does not exist in index " + identifier);
 		}
-		return entities.get(index -1);
-		
+		return entities.get(index - 1);
+
 	}
 
-	
-
 	@Override
-	public LocalDateTime getTime() {
-		if(time == null) { 
+	public LocalDateTime getDateTime() {
+		if (time == null) {
 			time = LocalDateTime.now(DTimeZone.toZoneId(input.getTimeZone()));
 		}
 		return time;
 	}
-	
-
 
 	@Override
 	public void newSession() {
@@ -195,63 +198,25 @@ public class ContainerImpl implements Container {
 		entityIndex.clear();
 		signals.clear();
 		startTime = LocalDateTime.now(DTimeZone.toZoneId(DTimeZone.NewYork));
-		
-	}
-
-	
-	@Override
-	public ContainerSearchResults<ContainerEntity> entitySearch(GEntityMatcher matcher)
-			throws ContainerException {
-		List<Predicate<ContainerEntity>> predicates = null;
-		try {
-			predicates = ContainerEntityMatcherPredicateBuilder.build(matcher, this);	
-		} catch (Exception e) {
-			throw new ContainerException("Exception building GEntityMatrcher predicates " + e.toString());
-		}
-		return entitySearch(predicates);
 
 	}
-
-
 
 	@Override
-	public ContainerSearchResults<ContainerEntity> entitySearch(List<Predicate<ContainerEntity>> predicates ) {
-		for (Predicate<ContainerEntity> signalPredicate : predicates) {
-			if (signalPredicate instanceof ContainerObserver) { 
-				ContainerObserver obs = (ContainerObserver)signalPredicate;
-				obs.update(this);
-				
-			}
-		}
-		ContainerSearchResults<ContainerEntity> results = new ContainerSearchResults<ContainerEntity>();
-		DStopWatch watch = DStopWatch.create();
-		
-		try {
-			if(logger.isDebugEnabled()) { 
-				logger.debug("Starting container entity Search With Signal Count of " + signals.size() + " predicate count " + predicates.size());;
-			}
-			
-			watch.start();
-			Predicate<ContainerEntity> composite = predicates.stream()
-			        .reduce(x -> true, Predicate::and);
-			List<ContainerEntity> goods = entities.parallelStream().filter(composite).collect(Collectors.toList());
-			watch.stop();
-			if(logger.isDebugEnabled()) { 
-				logger.debug("Finished signal search in " + watch.getCompletedSeconds() + " with result size of " + goods.size());
-			}
-			results.setData(goods, watch.getCompletedSeconds());
-			return results;
-		} catch (Exception e) {
-			results.setError("thrown exception " + e.toString());
-			return results;
-		} finally {
-			signalLock.release();
-		}
-		
+	public ContainerEntityQuery entityQuery(SessionEntitySearch search) throws ContainerSearchException {
+		ContainerEntityQuery query = new ContainerEntityQueryImpl();
+		query.init(this, search);
+		return query;
 	}
+
+	@Override
+	public ContainerEntityScanner entityScanner(SessionEntityScanner scanner) throws ContainerSearchException {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
 	@Override
 	public boolean hasExtension(Class extClass) {
-		// for each key 
+		// for each key
 		return false;
 	}
 
@@ -262,23 +227,26 @@ public class ContainerImpl implements Container {
 	}
 
 	@Override
-	public ContainerSearchResults<ContainerEntity> entitySearch(SessionEntitySearch search)
-			throws ContainerSearchException {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
 	public int getSnapshotCount() {
-		return (int)entitySnapshotCount.get();
+		return (int) entitySnapshotCount.get();
 	}
-	
-	
 
-	
 	@Override
 	public DTimeZone getTimeZone() {
 		return input.getTimeZone();
+	}
+	
+	
+	
+
+	@Override
+	public ZoneOffset getZoneOffset() {
+		return zoneOffset;
+	}
+
+	@Override
+	public ZoneId getZoneId() {
+		return zoneId;
 	}
 
 	@Override
@@ -286,7 +254,6 @@ public class ContainerImpl implements Container {
 		return this.signals;
 	}
 
-	
 	@Override
 	public void consumeStreamSnapshot(GEntitySnapshot snapshot) {
 		ContainerEntity entity = getOrCreateEntity(snapshot.getId(), snapshot.getIdentifier());
@@ -296,8 +263,6 @@ public class ContainerImpl implements Container {
 			logger.error("Exception creating Container Entity Snapshot " + e.toString());
 		}
 	}
-	
-	
 
 	@Override
 	public void consumeStreamSignal(GEntitySignal signal) {
@@ -307,18 +272,18 @@ public class ContainerImpl implements Container {
 				this.signalLock.acquire();
 				signals.add(sig);
 				ContainerEntity ent = getEntity(sig.getEntityIdent());
-				if(ent != null) { 
+				if (ent != null) {
 					ent.consumeSignal(signal);
 				}
 			} catch (Exception e) {
 				logger.error("signal lock aquire exception" + e.toString());
-			} finally { 
+			} finally {
 				this.signalLock.release();
 			}
 		} catch (Exception e) {
 			logger.error("Eception creating container entity signal " + e.toString());
 		}
-		
+
 	}
 
 	@Override
@@ -326,29 +291,32 @@ public class ContainerImpl implements Container {
 		try {
 			LocalDateTime dt = ContainerHelper.convertTimestamp(update.getTime(), getTimeZone());
 			this.time = dt;
-			try {
-				timeListenerLock.acquire();
-				for (ContainerTimeListener listener : timeListeners) {
-					listener.timeUpdate(this);
+		} catch(Exception e) { 
+			logger.error("Container " + input.getIdentifier() + " consume time stamp exception " + e.toString());
+		}
+
+		// notify time listeners
+		try {
+			listenerLock.acquire();
+			for (ContainerListener list : listeners) {
+				try {
+					list.timeUpdate(this);					
+				} catch (Exception e) {
+					logger.error("Time Listener class " + list.getClass().getName() + " Exception " + e.toString());
 				}
-			} catch (Exception e) {
-				logger.error("Exception invoking time listeners " + e.toString());
-			} finally { 
-				timeListenerLock.release();
+
 			}
 		} catch (Exception e) {
-			logger.error("Exception converting timestamp on update " + e.toString());
+		
+		} finally { 
+			listenerLock.release();
 		}
 	}
-	
-	
 
 	@Override
 	public DExecutor getExecutor() {
 		return input.getExecutor();
 	}
-
-	
 
 	@Override
 	public List<ContainerEntity> getEntities() {
@@ -361,17 +329,16 @@ public class ContainerImpl implements Container {
 	}
 
 	private synchronized ContainerEntity getOrCreateEntity(int id, String ident) {
-		if(entityIndex.get(ident) == null) { 
+		if (entityIndex.get(ident) == null) {
 			ContainerEntityImpl entity = new ContainerEntityImpl();
 			entity.init(this, id, ident);
 			int size = entities.size();
 			entities.add(entity);
-			entityIndex.put(ident,Integer.valueOf(size + 1));
+			entityIndex.put(ident, Integer.valueOf(size + 1));
 			return entity;
-		} else { 
+		} else {
 			return entities.get(entityIndex.get(ident) - 1);
 		}
-		
 
 	}
 

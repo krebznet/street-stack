@@ -23,4 +23,6 @@ public interface ContainerEntityVar {
 	public ContainerDataType getDataType();
 	
 	public ContainerEntity getEntity();
+	
+	public ContainerEntityVarStats getStats();
 }

@@ -5,6 +5,7 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 
+import com.dunkware.common.util.data.NetBean;
 import com.dunkware.net.proto.stream.GEntityCriteriaVar;
 import com.dunkware.net.proto.stream.GEntitySignal;
 import com.dunkware.net.proto.stream.GEntitySnapshot;
@@ -36,7 +37,6 @@ public interface ContainerEntity {
 	public void addListener(ContainerEntityListener listener);
 
 	public void removeListener(ContainerEntityListener listener);
-	
 
 	List<ContainerEntitySignal> getSignals(LocalDateTime start, LocalDateTime stop);
 
@@ -48,4 +48,7 @@ public interface ContainerEntity {
 
 	public Object resolveCriteriaVar(GEntityCriteriaVar var) throws ContainerException, ContainerSearchException;
 
+	public NetBean toBean();
+	
+	public NetBean toBean(List<String> vars);
 }

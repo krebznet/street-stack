@@ -1,8 +1,8 @@
-package com.dunkware.xstream.net.core.container.search2.filter;
+package com.dunkware.xstream.net.core.container.support;
 
 import java.time.LocalDateTime;
 
-public class EntityFilterTimeRange {
+public class DateTimeRange {
 	
 	private LocalDateTime start; 
 	private LocalDateTime stop;

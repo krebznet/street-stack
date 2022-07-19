@@ -1,12 +1,13 @@
-package com.dunkware.xstream.net.core.container.search2.value;
+package com.dunkware.xstream.net.core.container.search.value;
 
+import com.dunkware.xstream.model.search.EntityFieldAggSession;
+import com.dunkware.xstream.model.search.SessionEntityValue;
+import com.dunkware.xstream.model.search.TimeRangeSession;
 import com.dunkware.xstream.net.core.container.Container;
 import com.dunkware.xstream.net.core.container.ContainerEntity;
 import com.dunkware.xstream.net.core.container.ContainerSearchException;
-import com.dunkware.xstream.net.core.container.search2.util.StreamSearchUtil;
-import com.dunkware.xstream.net.model.search.EntityFieldAggSession;
-import com.dunkware.xstream.net.model.search.SessionEntityValue;
-import com.dunkware.xstream.net.model.search.TimeRangeSession;
+import com.dunkware.xstream.net.core.container.search.entity.EntitySearchHelper;
+import com.dunkware.xstream.net.core.container.search.util.StreamSearchUtil;
 
 public class EntityValueAggSession implements EntityValue {
 
@@ -33,7 +34,7 @@ public class EntityValueAggSession implements EntityValue {
 
 	@Override
 	public boolean canResolveSession(ContainerEntity entity) throws ContainerSearchException {
-		if(StreamSearchUtil.canFillTimeRangeSession(entity, timeRange)) { 
+		if(EntitySearchHelper.canFillTimeRangeSession(entity, timeRange)) { 
 			return true; 
 		}
 		return false;
@@ -47,6 +48,13 @@ public class EntityValueAggSession implements EntityValue {
 		// then do the function
 		return null;
 	}
+
+	@Override
+	public void timeUpdate(Container container) {
+		// TODO Auto-generated method stub
+		
+	}
+	
 	
 	
 

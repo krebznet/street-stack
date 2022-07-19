@@ -1,9 +1,9 @@
-package com.dunkware.xstream.net.core.container.search2.value;
+package com.dunkware.xstream.net.core.container.search.value;
 
+import com.dunkware.xstream.model.search.SessionEntityValue;
 import com.dunkware.xstream.net.core.container.Container;
 import com.dunkware.xstream.net.core.container.ContainerEntity;
 import com.dunkware.xstream.net.core.container.ContainerSearchException;
-import com.dunkware.xstream.net.model.search.SessionEntityValue;
 
 public class EntityValueCurrentVar implements EntityValue {
 
@@ -42,6 +42,14 @@ public class EntityValueCurrentVar implements EntityValue {
 	public Object resolve(ContainerEntity entity) throws ContainerSearchException {
 		return entity.getVar(varIdent).getLastValue();
 	}
+
+	@Override
+	public void timeUpdate(Container container) {
+		// TODO Auto-generated method stub
+		
+	}
+	
+	
 
 	
 
