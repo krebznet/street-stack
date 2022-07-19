@@ -1,6 +1,6 @@
 package com.dunkware.xstream.net.protocol.message;
 
-import com.dunkware.xstream.net.model.search.SessionEntitySearch;
+import com.dunkware.xstream.model.search.SessionEntitySearch;
 
 public class SessionEntitySearchRequest {
 	
