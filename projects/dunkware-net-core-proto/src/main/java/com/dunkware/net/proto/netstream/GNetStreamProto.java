@@ -184,11 +184,11 @@ public final class GNetStreamProto {
       "rror\030\004 \001(\t\022\r\n\005model\030\005 \001(\t\"R\n\032GNetEntityS" +
       "cannerException\022\021\n\tscannerId\030\001 \001(\005\022\021\n\tex" +
       "ception\030\002 \001(\t\022\016\n\006source\030\003 \001(\t\"1\n\034GNetEnt" +
-      "ityScannerStopRequest\022\021\n\tscannerId\030\001 \001(\005" +
+      "ityScannerStopRequest\022\021\n\tscannerId\030\001 \001(\t" +
       "\"Y\n\036GNetEntityScannerUpdateRequest\022\024\n\014sc" +
       "annerIdent\030\001 \001(\t\022\016\n\006search\030\002 \001(\t\022\021\n\tretV" +
       "alues\030\003 \001(\t\"S\n\037GNetEntityScannerUpdateRe" +
-      "sponse\022\021\n\tscannerId\030\001 \001(\005\022\016\n\006status\030\002 \001(" +
+      "sponse\022\021\n\tscannerId\030\001 \001(\t\022\016\n\006status\030\002 \001(" +
       "\t\022\r\n\005error\030\003 \001(\t\"\\\n\024GNetEntityScannerRow" +
       "\022\021\n\tscannerId\030\001 \001(\005\022\024\n\014scannerIdent\030\002 \001(" +
       "\005\022\r\n\005entId\030\003 \001(\t\022\014\n\004data\030\004 \001(\t\"N\n\027GNetEn" +
@@ -234,7 +234,7 @@ public final class GNetStreamProto {
       "Response\030\n \001(\01321.dunkware.netstream.GNet" +
       "EntityScannerStopResponseH\000B\006\n\004type\"O\n\035G" +
       "NetEntityScannerStopResponse\022\021\n\tscannerI" +
-      "d\030\001 \001(\005\022\014\n\004code\030\002 \001(\t\022\r\n\005error\030\003 \001(\t\"\367\003\n" +
+      "d\030\001 \001(\t\022\014\n\004code\030\002 \001(\t\022\r\n\005error\030\003 \001(\t\"\367\003\n" +
       "\021GNetClientMessage\022F\n\016connectRequest\030\001 \001" +
       "(\0132,.dunkware.netstream.GNetClientConnec" +
       "tRequestH\000\022V\n\031entityScannerStartRequest\030" +

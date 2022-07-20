@@ -10,7 +10,7 @@ public class SessionEntitySearch {
 
 	private SessionEntitySearchType type; 
 	private SessionEntitySearchFilter filterSearch;
-	private List<String> retVars = new ArrayList<String>();
+	
 	
 	private String name;
 	
@@ -37,13 +37,6 @@ public class SessionEntitySearch {
 		this.filterSearch = filterSearch;
 	}
 	
-	public List<String> getRetVars() {
-		return retVars;
-	}
-	
-	public void setRetVars(List<String> retVars) {
-		this.retVars = retVars;
-	}
 	
 	
 	

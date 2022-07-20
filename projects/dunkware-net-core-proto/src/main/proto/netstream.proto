@@ -76,7 +76,7 @@ message GNetEntityScannerException {
 }
 
 message GNetEntityScannerStopRequest {
- int32 scannerId = 1;
+ string scannerId = 1;
 }
 
 message GNetEntityScannerUpdateRequest {
@@ -86,7 +86,7 @@ message GNetEntityScannerUpdateRequest {
 }
 
 message GNetEntityScannerUpdateResponse {
-  int32  scannerId = 1;
+  string  scannerId = 1;
   string status = 2;
   string error = 3;
 }
@@ -174,7 +174,7 @@ message GNetServerMessage {
 }
 
 message GNetEntityScannerStopResponse {
-   int32 scannerId = 1;
+   string scannerId = 1;
    string code = 2;
    string error = 3;
 }

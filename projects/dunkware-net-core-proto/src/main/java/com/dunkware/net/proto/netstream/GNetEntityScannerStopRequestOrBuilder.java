@@ -8,7 +8,12 @@ public interface GNetEntityScannerStopRequestOrBuilder extends
     com.google.protobuf.MessageOrBuilder {
 
   /**
-   * <code>int32 scannerId = 1;</code>
+   * <code>string scannerId = 1;</code>
    */
-  int getScannerId();
+  java.lang.String getScannerId();
+  /**
+   * <code>string scannerId = 1;</code>
+   */
+  com.google.protobuf.ByteString
+      getScannerIdBytes();
 }

@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.dunkware.common.util.json.DJson;
+import com.dunkware.xstream.model.scanner.SessionEntityScanner;
 import com.dunkware.xstream.model.search.Condition;
 import com.dunkware.xstream.model.search.ConditionNumeric;
 import com.dunkware.xstream.model.search.ConditionNumericOperator;
@@ -55,12 +56,20 @@ public class EntitySearchExample1 {
 		search.setType(SessionEntitySearchType.Filter);
 		search.setFilterSearch(searchFilter);
 		search.setName("Test Search");
+		
+		SessionEntityScanner scanner = new SessionEntityScanner();
+		scanner.setSearch(search);
+		scanner.setStreamIdentifier("us_equity");
+		ArrayList<String> vars = new  ArrayList<String>();
+		vars.add("Last");
+		scanner.setVars(vars);
+		
 		try {
-			String wow = DJson.serializePretty(search);
+			String wow = DJson.serializePretty(scanner);
 			System.out.println(wow);
 			
-			SessionEntitySearch deserialized = (SessionEntitySearch)DJson.getObjectMapper().readValue(wow, SessionEntitySearch.class);
-			System.out.println(deserialized.getName());
+			//SessionEntitySearch deserialized = (SessionEntitySearch)DJson.getObjectMapper().readValue(wow, SessionEntitySearch.class);
+			//System.out.println(deserialized.getName());
 		} catch (Exception e) {
 			e.printStackTrace();
 		}

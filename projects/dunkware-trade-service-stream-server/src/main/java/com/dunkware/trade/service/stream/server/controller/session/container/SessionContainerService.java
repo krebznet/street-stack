@@ -4,13 +4,13 @@ import java.util.Collection;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
-import javax.annotation.PostConstruct;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.slf4j.Marker;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
+import org.springframework.context.event.ContextRefreshedEvent;
+import org.springframework.context.event.EventListener;
 import org.springframework.stereotype.Service;
 
 import com.dunkware.trade.service.stream.server.controller.StreamController;
@@ -34,7 +34,7 @@ public class SessionContainerService {
 	
 	private Map<String,SessionContainer> containers = new ConcurrentHashMap<String,SessionContainer>();
 	
-	@PostConstruct
+	@EventListener(ContextRefreshedEvent.class)
 	private void load() { 
 		
 		Collection<StreamController> dataStreams = streamService.getStreams();

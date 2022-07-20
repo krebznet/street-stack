@@ -47,7 +47,7 @@ public class ContainerEntityScannerImpl implements ContainerEntityScanner, Conta
 		this.entityScanner = scanner;
 		this.container = container;
 		//this.scanInterval = scanner.getScanInterval();
-		this.vars = scanner.getSearch().getRetVars();
+		this.vars = scanner.getVars();
 		scannerUpdater = new ScannerUpdater();
 		netList = new NetList();
 		netScanner = NetScanner.newInstance(netList, "id", container.getExecutor());

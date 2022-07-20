@@ -22,6 +22,7 @@ import com.dunkware.net.cluster.node.Cluster;
 import com.dunkware.trade.service.stream.server.controller.session.container.connection.SessionContainerConnection;
 import com.dunkware.trade.service.stream.server.controller.session.container.connector.KafkaStreamConnector;
 import com.dunkware.trade.service.stream.server.streaming.StreamingAdapter;
+import com.dunkware.trade.service.stream.server.streaming.StreamingListener;
 import com.dunkware.xstream.model.proto.SessionEntityScannerStartReq;
 import com.dunkware.xstream.model.proto.SessionEntityScannerStartResp;
 import com.dunkware.xstream.model.proto.SessionEntityScannerStopRequest;
@@ -31,7 +32,7 @@ import com.dunkware.xstream.net.service.KafkaStreamClientRequest;
 import com.dunkware.xstream.net.service.KafkaStreamClientResponse;
 
 @RestController
-public class SessionContainerWebService {
+public class SessionContainerWebService implements StreamingListener {
 
 	@Autowired
 	private SessionContainerService containerService; 
@@ -43,6 +44,8 @@ public class SessionContainerWebService {
 	private String kafkaBrokers;
 	
 	private Logger logger = LoggerFactory.getLogger(getClass());
+	
+	
 	
 	
 	private Map<String,SessionContainerEntityScanner> sessionScanners = new ConcurrentHashMap<String,SessionContainerEntityScanner>();
@@ -102,10 +105,9 @@ public class SessionContainerWebService {
 			return resp;
 		}
 		SessionContainerEntityScanner scanner = new SessionContainerEntityScanner();
-		String scannerIdentifier = null;
+		String scannerIdentifier = "TrailBlaze";
+		StreamingAdapter streamingAdapter = new StreamingAdapter(scannerIdentifier);
 		try {
-			StreamingAdapter streamingAdapter = new StreamingAdapter();
-			scannerIdentifier = "EntityScanner:" + DUUID.randomUUID(5);
 			scanner.start(streamingAdapter,req.getScanner(),container,scannerIdentifier);
 		} catch (Exception e) {
 			SessionEntityScannerStartResp resp = new SessionEntityScannerStartResp();
@@ -114,13 +116,11 @@ public class SessionContainerWebService {
 			return resp;	
 		}
 		sessionScanners.put(scannerIdentifier,scanner);
+		streamingAdapter.addListener(this);
 		SessionEntityScannerStartResp resp = new SessionEntityScannerStartResp();
 		resp.setSuccess(true);
 		resp.setScannerId(scannerIdentifier);
 		return resp;
-		
-		
-		
 		
 	}
 	
@@ -140,9 +140,36 @@ public class SessionContainerWebService {
 		        .body(adapter);
 	}
 	
-	@PostMapping(path = "/stream/container/scanner/entity/stop")
-	public void entityScannerStop(@RequestBody() SessionEntityScannerStopRequest req) { 
+	@GetMapping(path = "/stream/container/scanner/entity/stop")
+	public void entityScannerStop(@RequestParam() String scannerId) {
 		return;
 		
 	}
+
+	@Override
+	public void clientDisconnect(StreamingAdapter adapter) {
+		SessionContainerEntityScanner scanner = sessionScanners.get(adapter.getIdentifier());
+		if(scanner != null) { 
+			scanner.dispose();
+			sessionScanners.remove(adapter.getIdentifier());
+		}
+
+		
+	}
+
+	@Override
+	public void serverDisconnect(StreamingAdapter adapter) {
+		SessionContainerEntityScanner scanner = sessionScanners.get(adapter.getIdentifier());
+		if(scanner != null) { 
+			scanner.dispose();
+			sessionScanners.remove(adapter.getIdentifier());
+		}
+
+		
+	}
+	
+	
+	
+	
+	
 }

@@ -20,7 +20,7 @@ public class ContainerEntityQueryImpl implements ContainerEntityQuery, Container
 	
 	private Container container; 
 	private SessionEntitySearch search; 
-	private List<String> retVars;
+	//private List<String> retVars;
 	
 	private List<Predicate<ContainerEntity>> predicates;
 	private boolean disposed = false; 
@@ -31,7 +31,7 @@ public class ContainerEntityQueryImpl implements ContainerEntityQuery, Container
 	public void init(Container container, SessionEntitySearch search) throws ContainerSearchException {
 		this.container = container; 
 		this.search = search; 
-		this.retVars = search.getRetVars();
+	//	this.retVars = search.getRetVars();
 		
 		try {
 			predicates = EntitySearchHelper.createEntitySearchPredicates(search, container);

@@ -20,6 +20,8 @@ public class StreamingAdapter implements StreamingResponseBody {
 	
 	private Status status; 
 	
+	private String identifier; 
+	
 	private List<StreamingListener> listeners = new ArrayList<StreamingListener>();
 	private Semaphore listenerLock = new Semaphore(1);
 	
@@ -29,8 +31,9 @@ public class StreamingAdapter implements StreamingResponseBody {
 		Connected,ClientDisconnect,ServerDisconnect
 	}
 	
-	public StreamingAdapter() { 
+	public StreamingAdapter(String identifer) { 
 		status = Status.Connected;
+		this.identifier = identifer;
 	}
 	
 	public boolean isConnected() { 
@@ -124,8 +127,12 @@ public class StreamingAdapter implements StreamingResponseBody {
 		}
 
 	}
+	
+	public String getIdentifier() { 
+		return identifier; 
+	}
 
-	void streamObject(Object jsonObject) {
+	public void send(Object jsonObject) {
 		streamQueue.add(jsonObject);
 	}
 	
