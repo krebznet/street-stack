@@ -10,9 +10,12 @@ import org.springframework.context.ApplicationContext;
 
 import com.dunkware.net.cluster.node.Cluster;
 import com.dunkware.net.cluster.node.ClusterNode;
+import com.dunkware.trade.service.stream.container.worker.WorkerContainerInput;
 import com.dunkware.trade.service.stream.server.controller.StreamController;
 import com.dunkware.trade.service.stream.server.controller.session.container.SessionContainer;
+import com.dunkware.trade.service.stream.server.controller.session.container.SessionContainerExtension;
 import com.dunkware.trade.service.stream.server.controller.session.container.SessionContainerNode;
+import com.dunkware.trade.service.stream.server.controller.session.container.SessionContainerService;
 import com.google.api.client.util.Value;
 
 public class SessionContainerImpl implements SessionContainer {
@@ -22,6 +25,10 @@ public class SessionContainerImpl implements SessionContainer {
 	@Autowired
 	private Cluster cluster;
 	
+	
+	@Autowired
+	private SessionContainerService containerService; 
+	
 	private Logger logger = LoggerFactory.getLogger(getClass());
 	
 	@Autowired
@@ -30,11 +37,28 @@ public class SessionContainerImpl implements SessionContainer {
 	@Value("${stream.container.worker.nodes}")
 	private String sessionWorkerNodeIds;
 	
+	@Value("${net.cluster.server.brokers}")
+	private String brokers;
+	
+	
+	private List<SessionContainerExtension> extensions = new ArrayList<SessionContainerExtension>();
+	
 	
 	private List<SessionContainerNode> containerNodes = new ArrayList<SessionContainerNode>();
 	
 	public void start(StreamController controller) throws Exception { 
 		this.controller = controller;
+		// create extensions 
+		for (Class<?> extensionClass : containerService.getContainerExtensions()) {
+			try {
+				SessionContainerExtension ext = (SessionContainerExtension)extensionClass.newInstance();
+				ac.getAutowireCapableBeanFactory().autowireBean(ext);
+			} catch (Exception e) {
+				throw new Exception("Exception building session container extensions " + e.toString());
+			}
+		}
+		
+		
 		try {
 			String[] configuredWorkers = sessionWorkerNodeIds.split(",");
 			// sometimes this starts too soon before the node receives other node updates
@@ -45,9 +69,20 @@ public class SessionContainerImpl implements SessionContainer {
 					logger.error("Configured worker node " + nodeId + " not found");
 					
 				} else {
-					SessionContainerNodeImpl containerNode = new SessionContainerNodeImpl(); 
-					containerNode.start(node, this);
+					SessionContainerNodeImpl containerNode = new SessionContainerNodeImpl();
+					// allow extensions to add worker container extensions right? 
+					WorkerContainerInput nodeInput = new WorkerContainerInput(); 
+					for (SessionContainerExtension sessionContainerExtension : extensions) {
+						sessionContainerExtension.workerInit(nodeInput);
+					}
+					containerNode.start(node, this, nodeInput);
+					
 				}
+			}
+			
+			// call start on contianer extensions 
+			for (SessionContainerExtension sessionContainerExtension : extensions) {
+				sessionContainerExtension.containerStart(this);
 			}
 			
 		} catch (Exception e) {
@@ -73,6 +108,9 @@ public class SessionContainerImpl implements SessionContainer {
 		return containerNodes; 
 	
 	}
+	
+	
+	// okay we need to wrap GNET shit into things; 
 
 	
 	

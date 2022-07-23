@@ -3,6 +3,7 @@ package com.dunkware.net.cluster.node;
 import java.time.LocalDateTime;
 import java.util.List;
 
+import org.reflections.Reflections;
 import org.springframework.stereotype.Service;
 
 import com.dunkware.common.util.events.DEventTree;
@@ -10,16 +11,11 @@ import com.dunkware.common.util.executor.DExecutor;
 import com.dunkware.net.cluster.json.node.ClusterNodeStats;
 import com.dunkware.net.cluster.node.internal.ClusterConfig;
 import com.dunkware.net.core.data.NetDataFactory;
-import com.dunkware.net.core.service.NetCallRequest;
 import com.dunkware.net.core.service.NetCallResponseCallback;
 import com.dunkware.net.core.service.NetCallService;
-import com.dunkware.net.core.service.NetCallResponse;
-import com.dunkware.net.core.service.NetChannelRequest;
-import com.dunkware.net.core.service.NetChannelResponse;
 import com.dunkware.net.core.service.NetChannelResponseCallback;
 import com.dunkware.net.core.service.NetChannelService;
 import com.dunkware.net.core.service.NetMessageHandler;
-import com.dunkware.net.proto.net.GNetCallRequest;
 import com.dunkware.net.proto.net.GNetChannelRequest;
 
 import io.grpc.ManagedChannel;
@@ -84,7 +80,8 @@ public interface Cluster {
 	public NetCallService netCallService(String endpoint) throws ClusterNodeException;
 	
 	public NetChannelService netChannelService(String endpoint) throws ClusterNodeException;	
-	
+
+	public Reflections getDunkwareReflections();
 }
 	
 	

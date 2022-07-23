@@ -14,6 +14,7 @@ import java.util.concurrent.atomic.AtomicInteger;
 import javax.annotation.PostConstruct;
 
 import org.apache.kafka.clients.consumer.ConsumerRecord;
+import org.reflections.Reflections;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.slf4j.MarkerFactory;
@@ -34,7 +35,6 @@ import com.dunkware.common.util.dtime.DTimeZone;
 import com.dunkware.common.util.events.DEventTree;
 import com.dunkware.common.util.executor.DExecutor;
 import com.dunkware.common.util.json.DJson;
-import com.dunkware.common.util.logging.Markers;
 import com.dunkware.common.util.uuid.DUUID;
 import com.dunkware.net.cluster.json.job.ClusterJobState;
 import com.dunkware.net.cluster.json.node.ClusterNodeServiceDescriptor;
@@ -135,6 +135,8 @@ public class ClusterImpl implements Cluster {
 
 	private AtomicInteger pendingRunnables = new AtomicInteger(0);
 
+	private Reflections reflections;
+	
 	@PostConstruct
 	public void load() {
 		try {
@@ -142,6 +144,8 @@ public class ClusterImpl implements Cluster {
 			// create the kafka consume r
 		
 			try {
+				
+				reflections = new Reflections("com.dunkware");
 				
 				String topic = "cluster_node_" + clusterConfig.getNodeId() + "_net_messages";
 				DKafkaByteConsumer2Spec spec = 
@@ -284,7 +288,12 @@ public class ClusterImpl implements Cluster {
 	}
 	
 	
-	
+
+	@Override
+	public Reflections getDunkwareReflections() {
+		return reflections;
+	}
+
 
 	@Override
 	public NetDataFactory netDataFactory() {

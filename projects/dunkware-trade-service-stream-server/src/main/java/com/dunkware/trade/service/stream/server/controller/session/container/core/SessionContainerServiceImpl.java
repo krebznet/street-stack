@@ -1,6 +1,7 @@
 package com.dunkware.trade.service.stream.server.controller.session.container.core;
 
 import java.util.Map;
+import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 
 import org.slf4j.Logger;
@@ -16,6 +17,7 @@ import com.dunkware.trade.service.stream.server.controller.StreamController;
 import com.dunkware.trade.service.stream.server.controller.StreamControllerService;
 import com.dunkware.trade.service.stream.server.controller.session.container.SessionContainer;
 import com.dunkware.trade.service.stream.server.controller.session.container.SessionContainerService;
+import com.dunkware.trade.service.stream.server.controller.session.container.anot.ASessionContainerExtension;
 
 @Service()
 public class SessionContainerServiceImpl implements SessionContainerService {
@@ -34,12 +36,18 @@ public class SessionContainerServiceImpl implements SessionContainerService {
 	
 	private Logger logger = LoggerFactory.getLogger(getClass());
 	
+	// session container extensions 
+	private Set<Class<?>> extensions = null;
 
 	/**
 	 * Loads after the context has been loaded, we create a container for each stream found 
 	 */
 	@EventListener(ContextRefreshedEvent.class)
 	public void load() { 
+		// lets load extension classes 
+		extensions = cluster.getDunkwareReflections().getTypesAnnotatedWith(ASessionContainerExtension.class);
+		
+		
 		for (StreamController stream : controllerService.getStreams()) {
 			SessionContainerImpl container = new SessionContainerImpl();
 			ac.getAutowireCapableBeanFactory().autowireBean(container);
@@ -53,7 +61,12 @@ public class SessionContainerServiceImpl implements SessionContainerService {
 		
 	}
 	
-	
+	@Override
+	public Set<Class<?>> getContainerExtensions() {
+		return extensions;
+	}
+
+
 	@Override
 	public SessionContainer getContainer(String streamIdentifier) throws Exception {
 		SessionContainer container = containers.get(streamIdentifier);

@@ -63,7 +63,7 @@ public class SessionContainer implements DKafkaByteHandler2 {
 	
 	private StreamController stream;
 	
-	private BlockingQueue<GStreamEvent> eventQueue = new LinkedBlockingQueue<GStreamEvent>();
+//	private BlockingQueue<GStreamEvent> eventQueue = new LinkedBlockingQueue<GStreamEvent>();
 	
 	private List<EventPublisher> eventPublishers = new ArrayList<EventPublisher>();
 	

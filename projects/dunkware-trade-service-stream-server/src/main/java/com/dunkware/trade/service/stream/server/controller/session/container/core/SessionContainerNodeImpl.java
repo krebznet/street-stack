@@ -2,6 +2,8 @@ package com.dunkware.trade.service.stream.server.controller.session.container.co
 
 import com.dunkware.net.cluster.node.ClusterNode;
 import com.dunkware.spring.channel.Channel;
+import com.dunkware.trade.service.stream.container.worker.WorkerContainerInput;
+import com.dunkware.trade.service.stream.container.worker.WorkerContainerStartReq;
 import com.dunkware.trade.service.stream.server.controller.session.container.SessionContainer;
 import com.dunkware.trade.service.stream.server.controller.session.container.SessionContainerNode;
 
@@ -15,9 +17,14 @@ public class SessionContainerNodeImpl implements SessionContainerNode {
 	private SessionContainer sessionContainer; 
 	
 	
-	public void start(ClusterNode node, SessionContainer container) throws Exception {
+	public void start(ClusterNode node, SessionContainer container, WorkerContainerInput input) throws Exception {
 		this.node = node; 
 		this.sessionContainer = container; 
+		
+		WorkerContainerStartReq req = new WorkerContainerStartReq(); 
+		
+		// container extensions 
+		// worker extension - not needed because we have the goods in channel 
 		
 		// rest api for channel request -> channel request
 		// make that universal on all clusters 

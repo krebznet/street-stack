@@ -7,12 +7,12 @@ public interface SessionContainerExtension {
 	public void workerInit(WorkerContainerInput input); 
 	
 	
-	public void containerStart(SessionContainer container);
+	public void containerStart(SessionContainer container) throws SessionContainerException;
 	
 	
-	public void sessionClose(SessionContainer container); 
+	public void sessionStart(SessionContainer container); 
 	
 	
-	public void sessionOpen(SessionContainer container);
+	public void sessionStop(SessionContainer container);
 	
 }
