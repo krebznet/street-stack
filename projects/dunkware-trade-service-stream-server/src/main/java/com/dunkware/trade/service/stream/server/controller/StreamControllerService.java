@@ -59,8 +59,9 @@ public class StreamControllerService {
 						}
 						StreamController con = new StreamController();
 						ac.getAutowireCapableBeanFactory().autowireBean(con);
-						con.start(ent);
 						controllers.add(con);
+						con.start(ent);
+						
 					}
 				} catch (Exception e) {
 					logger.error("Exception loading streams " + e.toString());

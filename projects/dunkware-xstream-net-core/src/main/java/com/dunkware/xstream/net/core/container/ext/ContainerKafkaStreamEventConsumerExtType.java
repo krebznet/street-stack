@@ -1,9 +1,9 @@
 package com.dunkware.xstream.net.core.container.ext;
 
 import com.dunkware.common.util.dtime.DTimeZone;
-import com.dunkware.xstream.net.core.container.ContainerExtensionType;
+import com.dunkware.xstream.container.ContainerExtType;
 
-public class ContainerKafkaStreamEventConsumerExtType extends ContainerExtensionType {
+public class ContainerKafkaStreamEventConsumerExtType extends ContainerExtType {
 
 	private String kafkaBrokers;
 	private String kafkaTopic;

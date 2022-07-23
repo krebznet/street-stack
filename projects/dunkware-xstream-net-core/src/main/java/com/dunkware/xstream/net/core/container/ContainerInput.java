@@ -4,27 +4,28 @@ import java.util.List;
 
 import com.dunkware.common.util.dtime.DTimeZone;
 import com.dunkware.common.util.executor.DExecutor;
+import com.dunkware.xstream.container.ContainerExtType;
 
 public class ContainerInput {
 	
-	private List<ContainerExtensionType> extensions;
+	private List<ContainerExtType> extensions;
 	private DExecutor executor;
 	private DTimeZone timeZone;
 	private String identifier;
 	private boolean debug = false;
 	private boolean snapshotHistory = false;
 	
-	public ContainerInput(List<ContainerExtensionType> extensions, DExecutor executor, DTimeZone zone, String identifier) { 
+	public ContainerInput(List<ContainerExtType> extensions, DExecutor executor, DTimeZone zone, String identifier) { 
 		this.extensions = extensions;
 		this.executor = executor;
 		this.timeZone = zone;
 		this.identifier = identifier;
 	}
 	
-	public List<ContainerExtensionType> getExtensions() {
+	public List<ContainerExtType> getExtensions() {
 		return extensions;
 	}
-	public void setExtensions(List<ContainerExtensionType> extensions) {
+	public void setExtensions(List<ContainerExtType> extensions) {
 		this.extensions = extensions;
 	}
 	public DExecutor getExecutor() {

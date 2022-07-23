@@ -166,6 +166,13 @@
 			<artifactId>mapstruct</artifactId>
 			<version>${org.mapstruct.version}</version>
 		</dependency>
+
+		<dependency>
+
+			<groupId>com.dunkware.spring</groupId>
+			<artifactId>dunkware-spring-messaging</artifactId>
+			<version>1.0.0-SNAPSHOT</version>
+		</dependency>
 		<!-- GRPC Dependencies -->
 
 		<dependency>

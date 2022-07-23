@@ -7,7 +7,7 @@ import org.springframework.boot.autoconfigure.data.mongo.MongoDataAutoConfigurat
 import org.springframework.boot.autoconfigure.mongo.MongoAutoConfiguration;
 
 
-@SpringBootApplication(scanBasePackages = "com.dunkware.learn.server")
+@SpringBootApplication(scanBasePackages = "com.dunkware")
 
 @EnableAutoConfiguration(exclude={MongoAutoConfiguration.class, MongoDataAutoConfiguration.class})
 //@EnableBinding(StreamProcessor.class)

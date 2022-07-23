@@ -20,6 +20,7 @@ import com.dunkware.common.util.time.DunkTime;
 import com.dunkware.net.proto.stream.GEntitySignal;
 import com.dunkware.net.proto.stream.GEntitySnapshot;
 import com.dunkware.net.proto.stream.GStreamTimeUpdate;
+import com.dunkware.xstream.container.ContainerExtType;
 import com.dunkware.xstream.model.scanner.SessionEntityScanner;
 import com.dunkware.xstream.model.search.SessionEntitySearch;
 import com.dunkware.xstream.net.core.container.Container;
@@ -30,7 +31,6 @@ import com.dunkware.xstream.net.core.container.ContainerEntitySignal;
 import com.dunkware.xstream.net.core.container.ContainerEntityVar;
 import com.dunkware.xstream.net.core.container.ContainerException;
 import com.dunkware.xstream.net.core.container.ContainerExtension;
-import com.dunkware.xstream.net.core.container.ContainerExtensionType;
 import com.dunkware.xstream.net.core.container.ContainerInput;
 import com.dunkware.xstream.net.core.container.ContainerListener;
 import com.dunkware.xstream.net.core.container.ContainerRegistry;
@@ -50,7 +50,7 @@ public class ContainerImpl implements Container {
 
 	private List<ContainerListener> listeners = new ArrayList<ContainerListener>();
 	private Semaphore listenerLock = new Semaphore(1);
-	private Map<ContainerExtensionType, ContainerExtension> extensions = new ConcurrentHashMap<ContainerExtensionType, ContainerExtension>();
+	private Map<ContainerExtType, ContainerExtension> extensions = new ConcurrentHashMap<ContainerExtType, ContainerExtension>();
 
 	private ContainerInput input;
 
@@ -81,7 +81,7 @@ public class ContainerImpl implements Container {
 		zoneOffset = DunkTime.zoneOffset(zoneId);
 		
 		registry = ContainerRegistry.get();
-		for (ContainerExtensionType type : input.getExtensions()) {
+		for (ContainerExtType type : input.getExtensions()) {
 
 			ContainerExtension ext = registry.create(type);
 			if (logger.isDebugEnabled()) {

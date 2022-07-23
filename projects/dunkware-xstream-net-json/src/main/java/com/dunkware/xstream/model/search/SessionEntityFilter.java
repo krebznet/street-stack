@@ -9,6 +9,7 @@ public class SessionEntityFilter {
 	private SessionEntityFilterSignalCountHistorical signalCountHistorical;
 	private String label; 
 	private boolean enabled = true;
+	private String name; 
 	
 	
 	public SessionEntityFilterType getType() {
@@ -53,6 +54,14 @@ public class SessionEntityFilter {
 	public void setEnabled(boolean enabled) {
 		this.enabled = enabled;
 	}
+	public String getName() {
+		return name;
+	}
+	public void setName(String name) {
+		this.name = name;
+	}
+	
+	
 	
 	
 	

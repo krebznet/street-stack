@@ -6,6 +6,7 @@ import java.util.Set;
 
 import org.reflections.Reflections;
 
+import com.dunkware.xstream.container.ContainerExtType;
 import com.dunkware.xstream.net.core.container.anot.ACacheExtension;
 
 public class ContainerRegistry {
@@ -37,7 +38,7 @@ public class ContainerRegistry {
 	}
 	
 	
-	public ContainerExtension create(ContainerExtensionType type) throws ContainerException { 
+	public ContainerExtension create(ContainerExtType type) throws ContainerException { 
 		for (RegistryExtension registryExtension : extensions) {
 			if(registryExtension.isType(type)) { 
 				return registryExtension.createExtension();
@@ -57,7 +58,7 @@ public class ContainerRegistry {
 			this.type = type;
 		}
 		
-		public boolean isType(ContainerExtensionType ext) { 
+		public boolean isType(ContainerExtType ext) { 
 			if(type.isInstance(ext)) { 
 				return true;
 			}

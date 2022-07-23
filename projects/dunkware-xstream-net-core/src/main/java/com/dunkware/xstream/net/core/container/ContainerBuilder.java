@@ -5,6 +5,7 @@ import java.util.List;
 
 import com.dunkware.common.util.dtime.DTimeZone;
 import com.dunkware.common.util.executor.DExecutor;
+import com.dunkware.xstream.container.ContainerExtType;
 import com.dunkware.xstream.net.core.container.core.ContainerImpl;
 
 public class ContainerBuilder {
@@ -16,7 +17,7 @@ public class ContainerBuilder {
 	
 	private DExecutor executor; 
 	private DTimeZone timeZone; 
-	private List<ContainerExtensionType> extensions = new ArrayList<ContainerExtensionType>();
+	private List<ContainerExtType> extensions = new ArrayList<ContainerExtType>();
 	private String identifier; 
 	
 	private ContainerBuilder() { 
@@ -33,7 +34,7 @@ public class ContainerBuilder {
 		return this; 
 	}
 	
-	public ContainerBuilder extensions(List<ContainerExtensionType> extensionTypes) {
+	public ContainerBuilder extensions(List<ContainerExtType> extensionTypes) {
 		this.extensions.addAll(extensionTypes);
 		return this;
 	}

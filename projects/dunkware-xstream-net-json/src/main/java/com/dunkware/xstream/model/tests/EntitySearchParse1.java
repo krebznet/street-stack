@@ -1,55 +1,54 @@
 package com.dunkware.xstream.model.tests;
 
-import com.dunkware.xstream.model.search.SessionEntitySearch;
+import com.dunkware.xstream.model.scanner.SessionEntityScanner;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 public class EntitySearchParse1 {
 	
-	private static String filter1 = "  {\n"
-			+ "  \"type\": \"Filter\",\n"
-			+ "  \"name\": \"allFilters\",\n"
-			+ "  \"filterSearch\": {\n"
-			+ "    \"filters\": [\n"
-			+ "      {\n"
-			+ "        \"type\": \"ValueCompare\",\n"
-			+ "        \"label\": \"(VolCount30sec ValueCompare) PercentChange (VolCount30sec ValueCompare) > 100\",\n"
-			+ "        \"enabled\": null,\n"
-			+ "        \"valueCompare\": {\n"
-			+ "          \"value1\": {\n"
-			+ "            \"type\": \"CurrentValue\",\n"
-			+ "            \"field\": {\n"
-			+ "              \"id\": 230,\n"
-			+ "              \"identifier\": \"VolCount30sec\",\n"
-			+ "              \"name\": \"VolCount30sec\",\n"
-			+ "              \"category\": null,\n"
-			+ "              \"version\": 0\n"
-			+ "            }\n"
-			+ "          },\n"
-			+ "          \"value2\": {\n"
-			+ "            \"type\": \"CurrentValue\",\n"
-			+ "            \"field\": null\n"
-			+ "          },\n"
-			+ "          \"function\": {\n"
-			+ "            \"function\": \"PercentChange\"\n"
-			+ "          },\n"
-			+ "          \"condition\": {\n"
-			+ "            \"type\": \"Numerical\",\n"
-			+ "            \"numeric\": {\n"
-			+ "              \"operator\": \"GreaterThan\",\n"
-			+ "              \"value\": 100\n"
-			+ "            }\n"
-			+ "          }\n"
+	private static String filter1 = "{\n"
+			+ "    \"name\": \"PL\",\n"
+			+ "    \"search\": {\n"
+			+ "        \"type\": \"Filter\",\n"
+			+ "        \"name\": \"PL\",\n"
+			+ "        \"filterSearch\": {\n"
+			+ "            \"filters\": [\n"
+			+ "                {\n"
+			+ "                    \"type\": \"Value\",\n"
+			+ "                    \"label\": \"(VolCount30sec Value) > 5\",\n"
+			+ "                    \"name\": \"RR\",\n"
+			+ "                    \"enabled\": null,\n"
+			+ "                    \"value\": {\n"
+			+ "                        \"value\": {\n"
+			+ "                            \"type\": \"CurrentValue\",\n"
+			+ "                            \"field\": {\n"
+			+ "                                \"id\": 1,\n"
+			+ "                                \"identifier\": \"Entity\",\n"
+			+ "                                \"name\": \"Entity\",\n"
+			+ "                                \"category\": null,\n"
+			+ "                                \"version\": 0\n"
+			+ "                            }\n"
+			+ "                        },\n"
+			+ "                        \"condition\": {\n"
+			+ "                            \"type\": \"Numerical\",\n"
+			+ "                            \"numeric\": {\n"
+			+ "                                \"operator\": \"GreaterThan\",\n"
+			+ "                                \"value\": 5\n"
+			+ "                            }\n"
+			+ "                        }\n"
+			+ "                    }\n"
+			+ "                }\n"
+			+ "            ]\n"
 			+ "        }\n"
-			+ "      }\n"
-			+ "    ]\n"
-			+ "  }\n"
+			+ "    },\n"
+			+ "    \"streamIdentifier\": \"us_equity\",\n"
+			+ "    \"id\": null\n"
 			+ "}";
 	
 	public static void main(String[] args) {
 		try {
 			ObjectMapper mapper = new ObjectMapper();
-			SessionEntitySearch test = mapper.readValue(filter1, SessionEntitySearch.class); 
-			System.out.println(test.getType().toString());
+			SessionEntityScanner test = mapper.readValue(filter1, SessionEntityScanner.class); 
+			System.out.println(test.getSearch().getType().toString());
 		} catch (Exception e) {
 			e.printStackTrace();
 			// TODO: handle exception

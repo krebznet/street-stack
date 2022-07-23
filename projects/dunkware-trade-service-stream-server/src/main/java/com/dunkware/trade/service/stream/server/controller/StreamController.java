@@ -155,7 +155,7 @@ public class StreamController {
 				@Override
 				public void run() {
 					try {
-						Thread.sleep(5000);
+						Thread.sleep(1000);
 						schedule.start();
 
 					} catch (Exception e) {

@@ -8,6 +8,7 @@ import javax.annotation.PostConstruct;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.repository.query.Param;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -28,8 +29,10 @@ import com.dunkware.trade.service.stream.json.controller.UpdateStreamReq;
 import com.dunkware.trade.service.stream.json.controller.UpdateStreamResp;
 import com.dunkware.trade.service.stream.json.controller.spec.StreamControllerSpec;
 import com.dunkware.trade.service.stream.json.controller.spec.StreamControllerState;
-import com.dunkware.trade.service.stream.server.controller.session.StreamSessionService;
 import com.dunkware.trade.service.stream.server.controller.util.StreamSpecBuilder;
+import com.dunkware.trade.service.stream.web.workspace.SavedSessionEntitySearch;
+import com.dunkware.trade.service.stream.web.workspace.proto.GetSavedEntitySearchResp;
+import com.dunkware.xstream.model.scanner.SessionEntityScanner;
 import com.dunkware.xstream.model.spec.StreamSpec;
 
 // /stream/admin/add
@@ -207,6 +210,8 @@ public class StreamControllerWebService {
 		return specs;
 		
 	}
+	
+	
 	
 	
 	

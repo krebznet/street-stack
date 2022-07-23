@@ -32,7 +32,7 @@
 		<grpc.version>1.32.1</grpc.version>
 		<spring-cloud.version>Hoxton.SR6</spring-cloud.version>
 	</properties>
-	
+
 	<scm>
 		<connection>scm:git:ssh://git@github.com:krebznet/dunkware-trade-service-stream-protocol.git</connection>
 		<developerConnection>scm:git:ssh://git@github.com/krebznet/dunkware-trade-service-stream-protocol.git</developerConnection>
@@ -44,6 +44,11 @@
 
 
 	<dependencies>
+		<dependency>
+			<groupId>com.dunkware.spring</groupId>
+			<artifactId>dunkware-spring-messaging</artifactId>
+			<version>1.0.0-SNAPSHOT</version>
+		</dependency>
 		<dependency>
 			<groupId>junit</groupId>
 			<artifactId>junit</artifactId>
@@ -92,7 +97,7 @@
 			<artifactId>javax.annotation-api</artifactId>
 			<version>1.2</version>
 		</dependency>
-		
+
 		<dependency>
 			<groupId>com.google.protobuf</groupId>
 			<artifactId>protobuf-java</artifactId>
@@ -103,11 +108,11 @@
 			<artifactId>guice</artifactId>
 			<version>4.2.3</version>
 		</dependency>
-		
 
 
 
-	
+
+
 		<dependency>
 			<groupId>com.dunkware.net</groupId>
 			<artifactId>dunkware-net-core-proto</artifactId>
@@ -118,8 +123,8 @@
 	</dependencies>
 
 	<build>
-		
-		
+
+
 
 
 

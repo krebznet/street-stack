@@ -1,8 +1,8 @@
 package com.dunkware.xstream.net.core.container.ext;
 
-import com.dunkware.xstream.net.core.container.ContainerExtensionType;
+import com.dunkware.xstream.container.ContainerExtType;
 
-public class ContainerAggExtType extends ContainerExtensionType {
+public class ContainerAggExtType extends ContainerExtType {
 	
 	private String serverUrl;
 

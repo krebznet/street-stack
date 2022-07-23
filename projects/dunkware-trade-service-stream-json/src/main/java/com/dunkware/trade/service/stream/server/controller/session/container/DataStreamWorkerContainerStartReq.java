@@ -4,13 +4,13 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.dunkware.common.util.dtime.DTimeZone;
-import com.dunkware.xstream.net.core.container.ContainerExtensionType;
+import com.dunkware.xstream.container.ContainerExtType;
 
 public class DataStreamWorkerContainerStartReq {
 
 	private String workerId; 
 	private String streamIdentifier;
-	private List<ContainerExtensionType> containerExtensions = new ArrayList<ContainerExtensionType>();
+	private List<ContainerExtType> containerExtensions = new ArrayList<ContainerExtType>();
 	private String kafkaBroker; 
 	private String serverTopic; 
 	private String workerTopic; 
@@ -50,10 +50,10 @@ public class DataStreamWorkerContainerStartReq {
 	public void setWorkerTopic(String workerTopic) {
 		this.workerTopic = workerTopic;
 	}
-	public List<ContainerExtensionType> getContainerExtensions() {
+	public List<ContainerExtType> getContainerExtensions() {
 		return containerExtensions;
 	}
-	public void setContainerExtensions(List<ContainerExtensionType> containerExtensions) {
+	public void setContainerExtensions(List<ContainerExtType> containerExtensions) {
 		this.containerExtensions = containerExtensions;
 	}
 	public DTimeZone getTimeZone() {

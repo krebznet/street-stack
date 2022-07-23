@@ -5,13 +5,13 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
-import com.dunkware.xstream.net.core.container.ContainerExtensionType;
+import com.dunkware.xstream.container.ContainerExtType;
 
 
 
 @Target(ElementType.TYPE)
 @Retention(RetentionPolicy.RUNTIME)
 public @interface ACacheExtension {
-	Class<? extends ContainerExtensionType> type();
+	Class<? extends ContainerExtType> type();
 
 }

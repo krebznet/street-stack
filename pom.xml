@@ -123,6 +123,8 @@
      	<module>projects/dunkware-xstream-net-core</module>
      	<module>projects/dunkware-xstream-net-client</module>
 			<module>projects/dunkware-xstream-net-server</module>
+			<module>projects/dunkware-spring-messaging</module>
+
   </modules>
 	<build>
     <!-- To define the plugin version in your parent POM -->

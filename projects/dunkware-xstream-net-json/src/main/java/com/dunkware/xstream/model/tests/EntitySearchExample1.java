@@ -62,7 +62,8 @@ public class EntitySearchExample1 {
 		scanner.setStreamIdentifier("us_equity");
 		ArrayList<String> vars = new  ArrayList<String>();
 		vars.add("Last");
-		scanner.setVars(vars);
+		//scanner.setVars(vars);
+		
 		
 		try {
 			String wow = DJson.serializePretty(scanner);

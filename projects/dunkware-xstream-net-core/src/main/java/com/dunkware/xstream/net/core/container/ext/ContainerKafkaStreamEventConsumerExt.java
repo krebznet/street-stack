@@ -17,10 +17,10 @@ import com.dunkware.common.spec.kafka.DKafkaByteConsumer2Spec.OffsetType;
 import com.dunkware.common.spec.kafka.DKafkaByteConsumer2SpecBuilder;
 import com.dunkware.net.proto.stream.GStreamEvent;
 import com.dunkware.net.proto.stream.GStreamEventType;
+import com.dunkware.xstream.container.ContainerExtType;
 import com.dunkware.xstream.net.core.container.Container;
 import com.dunkware.xstream.net.core.container.ContainerException;
 import com.dunkware.xstream.net.core.container.ContainerExtension;
-import com.dunkware.xstream.net.core.container.ContainerExtensionType;
 import com.dunkware.xstream.net.core.container.anot.ACacheExtension;
 
 @ACacheExtension(type = ContainerKafkaStreamEventConsumerExtType.class)
@@ -42,7 +42,7 @@ public class ContainerKafkaStreamEventConsumerExt implements ContainerExtension,
 	
 	
 	@Override
-	public void init(Container stash, ContainerExtensionType type) throws ContainerException {
+	public void init(Container stash, ContainerExtType type) throws ContainerException {
 		this.cache = stash; 
 		this.type = (ContainerKafkaStreamEventConsumerExtType)type;
 		DKafkaByteConsumer2Spec spec = null;
