@@ -21,7 +21,7 @@ public class WorkerContainerWebService {
 	
 	@PostConstruct
 	public void test() { 
-		System.out.println("loading worker container web service");
+		
 	}
 	
 	@PostMapping(path = "/worker/stream/container/start")

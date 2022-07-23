@@ -28,6 +28,8 @@ import com.dunkware.trade.service.stream.server.controller.session.container.Ses
 import com.dunkware.trade.service.stream.server.controller.session.container.SessionContainerException;
 import com.dunkware.trade.service.stream.server.controller.session.container.SessionContainerExtension;
 import com.dunkware.trade.service.stream.server.controller.session.container.SessionContainerNode;
+import com.dunkware.trade.service.stream.server.controller.session.container.anot.ASessionContainerExtension;
+import com.dunkware.trade.tick.model.ticker.TradeTickerSpec;
 import com.dunkware.xstream.container.proto.GEntitySignalWrapper;
 import com.dunkware.xstream.container.proto.GEntitySnapshotWrapper;
 import com.dunkware.xstream.container.proto.GStreamTimeUpdateWrapper;
@@ -39,55 +41,76 @@ import com.dunkware.xstream.container.proto.GStreamTimeUpdateWrapper;
  * @author duncankrebs
  *
  */
-public class SessionEventExtension implements SessionContainerExtension, DKafkaByteHandler2 {
+@ASessionContainerExtension()
+public class StreamEventHandler implements SessionContainerExtension, DKafkaByteHandler2 {
 
 	@Value("${kafka.brokers}")
 	private String kafkaBrokers;
-	
+
 	private SessionContainer sessionContainer;
 
 	private DKafkaByteConsumer2 eventConsumer;
 
-	private Map<String, SessionContainerNode> entityAssignments = new ConcurrentHashMap<String, SessionContainerNode>();
+	private List<SessionContainerNode> nodes;
 
-	private int entityAssignmentIndex = 0;
-	
-	private List<SessionContainerNode> nodes; 
-	
 	private BlockingQueue<GStreamEvent> streamEventQueue = new LinkedBlockingQueue<GStreamEvent>();
-	
+
 	private Logger logger = LoggerFactory.getLogger(getClass());
 
-	private StreamEventHandler eventHandler;
+	private StreamEventRouter eventRouter;
 
 	@Override
 	public void workerInit(WorkerContainerInput input) {
 		// TODO Auto-generated method stub
 
 	}
+	
+	
+	@Override
+	public void workerStart(SessionContainerNode node) throws SessionContainerException {
+		// TODO Auto-generated method stub
+		
+	}
+
+
 
 	@Override
 	public void containerStart(SessionContainer container) throws SessionContainerException {
+		// assign the entities round robin to the worker nodes.
+		int nextIndex = 0;
+		List<SessionContainerNode> nodes = container.getNodes();
+		for (TradeTickerSpec ticker : container.getStream().getTickers()) {
+			if(nextIndex == nodes.size()) { 
+				nextIndex = 0; 
+			}
+			try {
+				nodes.get(nextIndex).addEntity(ticker.getSymbol());
+			} catch (Exception e) {
+				throw new SessionContainerException("fucked up on entity assignment index out of bounds "  + e.toString());
+			}
+			nextIndex++;
+		}
+		
+		
 		this.sessionContainer = container;
 		this.nodes = container.getNodes();
-		
+
 		String eventTopic = "stream_" + container.getStream().getName().toLowerCase() + "_event_all";
 		try {
 			DKafkaByteConsumer2Spec spec2 = DKafkaByteConsumer2SpecBuilder
-					.newBuilder(ConsumerType.Auto, OffsetType.Latest).addBroker(kafkaBrokers)
-					.addTopic(eventTopic).setClientAndGroup("DataContainerCluster_" + DUUID.randomUUID(4),
+					.newBuilder(ConsumerType.Auto, OffsetType.Latest).addBroker(kafkaBrokers).addTopic(eventTopic)
+					.setClientAndGroup("DataContainerCluster_" + DUUID.randomUUID(4),
 							"DataContainerCluster_" + DUUID.randomUUID(4))
 					.build();
 			eventConsumer = DKafkaByteConsumer2.newInstance(spec2);
 			eventConsumer.start();
 			eventConsumer.addStreamHandler(this);
-			eventHandler = new StreamEventHandler();
-			eventHandler.start();
+			eventRouter = new StreamEventRouter();
+			eventRouter.start();
 		} catch (Exception e) {
-			 throw new SessionContainerException("Exception starting session event extension " +  e.toString());
+			throw new SessionContainerException("Exception starting session event extension " + e.toString());
 		}
-		
-		
+
 	}
 
 	@Override
@@ -102,25 +125,9 @@ public class SessionEventExtension implements SessionContainerExtension, DKafkaB
 
 	}
 
-	/**
-	 * Okay this is doing the round robin of worker nodes handling 
-	 * a subset of entity events
-	 * @return
-	 */
-	private SessionContainerNode nextNode() {
-		if (entityAssignmentIndex == nodes.size() - 1) {
-			entityAssignmentIndex = 0;
-			return nodes.get(0);
-		} else {
-			SessionContainerNode worker = nodes.get(entityAssignmentIndex);
-			entityAssignmentIndex++;
-			return worker;
-		}
-	}
-
 	@Override
 	public void record(ConsumerRecord<String, byte[]> record) {
-		// okay should be a GStreamEvent 
+		// okay should be a GStreamEvent
 		try {
 			GStreamEvent event = GStreamEvent.parseFrom(record.value());
 			streamEventQueue.add(event);
@@ -128,86 +135,76 @@ public class SessionEventExtension implements SessionContainerExtension, DKafkaB
 			logger.error("Exception parsing GSTreamEvent in session container event extension " + e.toString());
 		}
 	}
-	
-	private SessionContainerNode nextEntityNode() { 
-		if(entityAssignmentIndex == nodes.size() - 1) { 
-			entityAssignmentIndex = 0;
-			return nodes.get(0);
-		} else { 
-			SessionContainerNode worker =  nodes.get(entityAssignmentIndex);
-			entityAssignmentIndex++;
-			return worker;
-		}
-	}
 
-	
-	private class StreamEventHandler extends Thread { 
-		
-		public void run() { 
-			while(!interrupted()) {
+
+	private  class StreamEventRouter extends Thread {
+
+		public void run() {
+			while (!interrupted()) {
 				GStreamEvent event = null;
 				try {
-				    event = streamEventQueue.take();
+					event = streamEventQueue.take();
 				} catch (Exception e) {
 					if (e instanceof InterruptedException) {
 						return;
 					}
 					logger.error("Event Publisher Remove From Q Exception " + e.toString());
 				}
-				
-			
-				if(event.getType() == GStreamEventType.EntitySnapshot) { 
+
+				if (event.getType() == GStreamEventType.EntitySnapshot) {
 					GEntitySnapshot snapshot = event.getEntitySnapshot();
 					GEntitySnapshotWrapper snapshotWrapper = new GEntitySnapshotWrapper();
-					snapshotWrapper.setBytes(snapshot.toByteArray());;
-					
-					SessionContainerNode worker = entityAssignments.get(snapshot.getIdentifier());
-					if(worker == null) { 
-						worker = nextEntityNode();
-						entityAssignments.put(snapshot.getIdentifier(), worker);
-					}
-					// send the snapshot to the worker 
+					snapshotWrapper.setBytes(snapshot.toByteArray());
+					;
+
+					SessionContainerNode worker = null;
 					try {
-						worker.getChannel().send(snapshotWrapper);	
+						worker = sessionContainer.getEntityNode(snapshot.getIdentifier());
+					} catch (Exception e) {
+						logger.error("Exception consuming snapshot without a node with entity assigned " + snapshot.getIdentifier());
+						continue;
+					}
+					// send the snapshot to the worker
+					try {
+						worker.getChannel().send(snapshotWrapper);
 					} catch (Exception e) {
 						logger.error("Exception sending snapshot to worker node " + e.toString());
 					}
-					
-					// so we need to wrap a snapshot message 
-					//worker.sendMessage(GContainerProto.snapshotMessage(snapshot));
-					
+
+					// so we need to wrap a snapshot message
+					// worker.sendMessage(GContainerProto.snapshotMessage(snapshot));
 				}
-				if(event.getType() == GStreamEventType.EntitySignal) { 
+				if (event.getType() == GStreamEventType.EntitySignal) {
 					GEntitySignal signal = event.getEntitySignal();
-					GEntitySignalWrapper signalWrapper = new GEntitySignalWrapper(); 
-					signalWrapper.setBytes(signal.toByteArray());;
+					GEntitySignalWrapper signalWrapper = new GEntitySignalWrapper();
+					signalWrapper.setBytes(signal.toByteArray());
+					;
 					for (SessionContainerNode sessionContainerNode : nodes) {
 						try {
-							sessionContainerNode.getChannel().send(signalWrapper);	
+							sessionContainerNode.getChannel().send(signalWrapper);
 						} catch (Exception e) {
 							logger.error("Exception sending signal event to worker " + e.toString());
 						}
 					}
-					
+
 				}
-				if(event.getType() == GStreamEventType.TimeUpdate) { 
+				if (event.getType() == GStreamEventType.TimeUpdate) {
 					GStreamTimeUpdate update = event.getTimeUpdate();
 					GStreamTimeUpdateWrapper wrapper = new GStreamTimeUpdateWrapper();
-					wrapper.setBytes(update.toByteArray());;
+					wrapper.setBytes(update.toByteArray());
+					;
 					for (SessionContainerNode sessionContainerNode : nodes) {
 						try {
-							sessionContainerNode.getChannel().send(wrapper);	
+							sessionContainerNode.getChannel().send(wrapper);
 						} catch (Exception e) {
 							logger.error("Exception sending time update event to worker " + e.toString());
 						}
 					}
-					
+
 				}
-				
-				
+
+			}
 		}
 	}
-	}
-	
 
 }

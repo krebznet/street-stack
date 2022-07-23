@@ -16,6 +16,7 @@ import com.dunkware.net.cluster.node.Cluster;
 import com.dunkware.trade.service.stream.server.controller.StreamController;
 import com.dunkware.trade.service.stream.server.controller.StreamControllerService;
 import com.dunkware.trade.service.stream.server.controller.session.container.SessionContainer;
+import com.dunkware.trade.service.stream.server.controller.session.container.SessionContainerMarkers;
 import com.dunkware.trade.service.stream.server.controller.session.container.SessionContainerService;
 import com.dunkware.trade.service.stream.server.controller.session.container.anot.ASessionContainerExtension;
 
@@ -39,11 +40,13 @@ public class SessionContainerServiceImpl implements SessionContainerService {
 	// session container extensions 
 	private Set<Class<?>> extensions = null;
 
+	private boolean loaded = false; 
 	/**
 	 * Loads after the context has been loaded, we create a container for each stream found 
 	 */
 	@EventListener(ContextRefreshedEvent.class)
 	public void load() { 
+		if(loaded)return;
 		// lets load extension classes 
 		extensions = cluster.getDunkwareReflections().getTypesAnnotatedWith(ASessionContainerExtension.class);
 		
@@ -54,10 +57,13 @@ public class SessionContainerServiceImpl implements SessionContainerService {
 			try {
 				container.start(stream);
 				containers.put(stream.getName(), container);
+				logger.info(SessionContainerMarkers.containerMarker(), "Started Stream " + stream.getName() +  " Session Container");
 			} catch (Exception e) {
 				logger.error("Exception Starting Session Container " + e.toString());
 			}
 		}
+		
+		loaded = true;
 		
 	}
 	

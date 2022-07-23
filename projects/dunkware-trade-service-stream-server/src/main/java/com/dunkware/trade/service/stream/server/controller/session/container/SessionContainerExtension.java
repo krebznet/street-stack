@@ -10,6 +10,9 @@ public interface SessionContainerExtension {
 	public void containerStart(SessionContainer container) throws SessionContainerException;
 	
 	
+	public void workerStart(SessionContainerNode node) throws SessionContainerException;
+	
+	
 	public void sessionStart(SessionContainer container); 
 	
 	

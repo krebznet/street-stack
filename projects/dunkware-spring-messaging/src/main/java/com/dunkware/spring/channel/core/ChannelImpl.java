@@ -86,25 +86,14 @@ public class ChannelImpl implements Channel, DKafkaByteHandler2 {
 		this.executor = executor;
 		beans.put("channel", this);
 
-		channelContext = new GenericApplicationContext(parentContext);
-		channelContext.addBeanFactoryPostProcessor(new BeanFactoryPostProcessor() {
-
-			@Override
-			public void postProcessBeanFactory(ConfigurableListableBeanFactory beanFactory) throws BeansException {
-				for (String key : beans.keySet()) {
-					Object bean = beans.get(key);
-					beanFactory.registerSingleton(key, bean);
-				}
-			}
-		});
-		channelContext.refresh();
+	
 
 		// create the channel handles
 		for (Class<?> handlerClass : defaultHandlers) {
 			Object handler = null;
 			try {
 				handler = handlerClass.newInstance();
-				channelContext.getAutowireCapableBeanFactory().autowireBean(handler);
+				parentContext.getAutowireCapableBeanFactory().autowireBean(handler);
 
 			} catch (Exception e) {
 				throw new ChannelException("Exception creating/auto wiring default handler class "
@@ -447,10 +436,6 @@ public class ChannelImpl implements Channel, DKafkaByteHandler2 {
 							for (MessageHandler messageHandler : handlers) {
 								try {
 									Method method = messageHandler.getMethod();
-									for (Parameter param : method.getParameters()) {
-										System.out.println(param.getName());
-										System.out.println(param.getClass());
-									}
 									messageHandler.getMethod().invoke(channelHandler.getTarget(), message.getPayload());
 								} catch (Exception e) {
 									logger.error("Exception Invoking Message Handler method "
