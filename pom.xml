@@ -111,6 +111,7 @@
 			<module>projects/dunkware-trade-sdk-lib-runtime</module>
 			<module>projects/dunkware-trade-service-beach-server</module>
 			<module>projects/dunkware-trade-service-beach-protocol</module>
+			<module>projects/dunkware-trade-service-beach-web</module>
 
 			<module>projects/dunkware-net-cluster-node</module>
 			<module>projects/dunkware-net-cluster-client</module>
