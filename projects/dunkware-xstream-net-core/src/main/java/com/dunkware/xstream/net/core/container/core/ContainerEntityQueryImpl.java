@@ -53,8 +53,7 @@ public class ContainerEntityQueryImpl implements ContainerEntityQuery, Container
 
 	@Override
 	public ContainerSearchResults<ContainerEntity> execute() throws ContainerSearchException {
-		// TODO Auto-generated method stub
-		return null;
+		return container.entitySearch(predicates);
 	}
 
 	@Override

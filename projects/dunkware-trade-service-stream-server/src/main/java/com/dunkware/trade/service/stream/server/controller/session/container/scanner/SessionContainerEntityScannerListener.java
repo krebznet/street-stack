@@ -2,7 +2,7 @@ package com.dunkware.trade.service.stream.server.controller.session.container.sc
 
 import com.dunkware.common.util.data.NetScannerDelta;
 
-public interface SessionEntityScannerListener {
+public interface SessionContainerEntityScannerListener {
 
 	void scannerDelta(NetScannerDelta delta);
 }

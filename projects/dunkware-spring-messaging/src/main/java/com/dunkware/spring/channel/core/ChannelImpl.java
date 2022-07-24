@@ -1,7 +1,6 @@
 package com.dunkware.spring.channel.core;
 
 import java.lang.reflect.Method;
-import java.lang.reflect.Parameter;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -14,10 +13,9 @@ import java.util.concurrent.TimeUnit;
 import org.apache.kafka.clients.consumer.ConsumerRecord;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.BeansException;
+import org.slf4j.Marker;
+import org.slf4j.MarkerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.config.BeanFactoryPostProcessor;
-import org.springframework.beans.factory.config.ConfigurableListableBeanFactory;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.GenericApplicationContext;
 
@@ -76,6 +74,8 @@ public class ChannelImpl implements Channel, DKafkaByteHandler2 {
 
 	private boolean disposed = false;
 
+	private Marker marker = MarkerFactory.getMarker("Channel");
+	
 	public void start(DExecutor executor, String type, String brokers, String consumer, String producer,
 			Map<String, Object> beans, List<Class<?>> defaultHandlers) throws ChannelException {
 		this.channelType = type;
@@ -102,6 +102,9 @@ public class ChannelImpl implements Channel, DKafkaByteHandler2 {
 			ChannelHandler channelHandler = null;
 			try {
 				channelHandler = ChannelHandler.newInstance(handler, this);
+				if(logger.isDebugEnabled()) { 
+					logger.debug(marker, "Channel {} Default Handler {} Added", type, channelHandler.getTarget().getClass().getName());
+				}
 				this.channelHandlers.add(channelHandler);
 			} catch (Exception e) {
 				throw new ChannelException("Exception creating channel handler from default handler "
@@ -184,6 +187,9 @@ public class ChannelImpl implements Channel, DKafkaByteHandler2 {
 			String serialized = DJson.serialize(transport);
 			byte[] bytes = serialized.getBytes();
 			kafkaProducer.sendBytes(bytes);
+			if(logger.isDebugEnabled()) { 
+				logger.debug(marker, "Channel {} message sent {} ",channelType,payload.getClass().getName());
+			}
 		} catch (Exception e) {
 			throw new ChannelException("Exception Sending Channel Message " + e.toString());
 		}
@@ -191,6 +197,7 @@ public class ChannelImpl implements Channel, DKafkaByteHandler2 {
 
 	@Override // ? object
 	public Message sendReply(Object payload) throws ChannelException {
+	
 		Message message = Message.newInstance(payload);
 		String requestId = DUUID.randomUUID(5);
 		message.setHeader(Message.HEADER_KEY_MESSAGE_ID, requestId);
@@ -207,6 +214,9 @@ public class ChannelImpl implements Channel, DKafkaByteHandler2 {
 						if (message.hasHeader(Message.HEADER_KEY_MESSAGE_RESPONSE_ERROR)) {
 							responseQueue.add(message.getHeader(Message.HEADER_KEY_MESSAGE_RESPONSE_ERROR));
 						} else {
+							if(logger.isDebugEnabled()) { 
+								logger.debug(marker, "Channel send/reply response type {} receieved for request type {}", channelType, message.getPayload().getClass().getName(), payload.getClass().getName());
+							}
 							responseQueue.add(message.getPayload());
 						}
 						removeMessageInterceptor(this);
@@ -230,6 +240,9 @@ public class ChannelImpl implements Channel, DKafkaByteHandler2 {
 			transport.setPayloadClass(payload.getClass().getName());
 			String serialized = DJson.serialize(transport);
 			byte[] bytes = serialized.getBytes();
+			if(logger.isDebugEnabled()) { 
+				logger.debug(marker, "Channel {} send/reply starting payload {}", channelType, payload.getClass().getName());
+			}
 			kafkaProducer.sendBytes(bytes);
 		} catch (Exception e) {
 			throw new ChannelException("Fucked up sending request reply " + e.toString());
@@ -253,6 +266,14 @@ public class ChannelImpl implements Channel, DKafkaByteHandler2 {
 	@Override
 	public void send(Message message) throws ChannelException {
 		try {
+			if(logger.isDebugEnabled()) { 
+				if(message.getPayload() != null) { 
+					logger.debug(marker, "Channel {} sending message with payload type {}",channelType, message.getPayload().getClass().getName());					
+				} else { 
+					logger.debug(marker, "Channel {} sending message with no payload headers  {}",channelType, message.getHeaders().toString());
+				}
+
+			}
 			MessageTransport port = MessageHelper.toTransport(message);
 			String portString = DJson.serialize(port);
 			kafkaProducer.sendBytes(portString.getBytes());
@@ -268,7 +289,21 @@ public class ChannelImpl implements Channel, DKafkaByteHandler2 {
 
 			@Override
 			public void run() {
-				// TODO:
+				try {
+					
+					ChannelHandler handler = ChannelHandler.newInstance(annotedHandler, ChannelImpl.this);
+					channelHandlerLock.acquire();
+					channelHandlers.add(handler);
+					if(logger.isDebugEnabled()) { 
+						logger.debug(marker, "Channel {} added handler {}", channelType,annotedHandler.getClass().getName());
+					}
+				} catch (Exception e) {
+					logger.error("Exception adding channel handler class " +  annotedHandler.getClass().getName() + " " + e.toString());
+				} finally  { 
+					channelHandlerLock.release();
+				}
+				
+				
 			}
 		};
 
@@ -276,8 +311,39 @@ public class ChannelImpl implements Channel, DKafkaByteHandler2 {
 	}
 
 	@Override
-	public void removeHandler(Object annotatedHandler) throws ChannelException {
-		// find it and remove it
+	public void removeHandler(final Object annotedHandler) throws ChannelException {
+		Runnable runner = new Runnable() {
+
+			@Override
+			public void run() {
+				try {
+
+					channelHandlerLock.acquire();
+					ChannelHandler removeHandler = null;
+					for (ChannelHandler channelHandler : channelHandlers) {
+						if(channelHandler.getTarget().equals(annotedHandler)) { 
+							removeHandler = channelHandler;
+							break;
+						}
+					}
+					if(removeHandler != null) { 
+						channelHandlers.remove(removeHandler);
+						if(logger.isDebugEnabled()) { 
+							logger.debug(marker, "Channel {} removed handler {}", channelType,annotedHandler.getClass().getName());
+						}
+					}
+
+				} catch (Exception e) {
+					logger.error("Exception removing channel handler class " +  annotedHandler.getClass().getName() + " " + e.toString());
+				} finally  { 
+					channelHandlerLock.release();
+				}
+				
+				
+			}
+		};
+
+		executor.execute(runner);
 	}
 
 	@Override
@@ -369,6 +435,7 @@ public class ChannelImpl implements Channel, DKafkaByteHandler2 {
 								logger.error("Received request/response message with null payload");
 								continue;
 							}
+							boolean handled = false;
 							for (ChannelHandler channelHandler : channelHandlers) {
 								if(channelHandler.hasMessageReply(payload)) { 
 									try {
@@ -378,12 +445,8 @@ public class ChannelImpl implements Channel, DKafkaByteHandler2 {
 										Message responseMessage = Message.newInstance(response);
 										responseMessage.setHeader(Message.HEADER_KEY_MESSAGE_TYPE, Message.HEADER_REQUEST_TYPE_RESPONSE);
 										responseMessage.setHeader(Message.HEADER_KEY_MESSAGE_REQUEST_ID, message.getHeader(Message.HEADER_KEY_MESSAGE_ID));
-										try {
-											send(responseMessage);
-										} catch (Exception e) {
-											logger.error("Exception sending response message " + e.toString());
-											continue;
-										}
+										send(responseMessage);
+										handled = true; 
 									} catch (Exception e) {
 										Message responseMessage = Message.newInstance();
 										responseMessage.setHeader(Message.HEADER_KEY_MESSAGE_TYPE, Message.HEADER_REQUEST_TYPE_RESPONSE);
@@ -391,14 +454,14 @@ public class ChannelImpl implements Channel, DKafkaByteHandler2 {
 										responseMessage.setHeader(Message.HEADER_KEY_MESSAGE_RESPONSE_ERROR, e.toString());
 										try {
 											send(responseMessage);
+											handled = true;
 										} catch (Exception e2) {
 											logger.error("Exception sending response error message " + e2.toString());
 										}
 									}
-									
-									continue;
 								}
-								
+							}
+							if(!handled) {
 								// not found --> 
 								Message responseMessage = Message.newInstance();
 								responseMessage.setHeader(Message.HEADER_KEY_MESSAGE_TYPE, Message.HEADER_REQUEST_TYPE_RESPONSE);
@@ -409,6 +472,7 @@ public class ChannelImpl implements Channel, DKafkaByteHandler2 {
 								} catch (Exception e2) {
 									logger.error("Exception sending response error message " + e2.toString());
 								}
+								
 							}
 							continue;
 						}

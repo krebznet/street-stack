@@ -271,6 +271,9 @@ public class StreamSessionCapture {
 		
 		for (StreamSessionEntEntity ent : ents) {
 			StreamSessionCaptureEnt instrument = entities.get(ent.getEntIdentifier());
+			if(instrument == null) { 
+				continue;
+			}
 			ent.setSignalCount(instrument.getSignalCount());
 			ent.setSnapshotCount(instrument.getSnapshotCount());
 			writes.add(ent);

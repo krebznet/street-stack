@@ -4,6 +4,7 @@ import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.time.ZoneOffset;
 import java.util.List;
+import java.util.function.Predicate;
 
 import com.dunkware.common.util.dtime.DTimeZone;
 import com.dunkware.common.util.executor.DExecutor;
@@ -43,6 +44,8 @@ public interface Container {
 	
 	public void newSession();
 	
+	public ContainerSearchResults<ContainerEntity> entitySearch( List<Predicate<ContainerEntity>> predicates) throws ContainerSearchException;
+ 	
 	public ContainerEntityQuery entityQuery(SessionEntitySearch search) throws ContainerSearchException;
 	
 	public ContainerEntityScanner entityScanner(SessionEntityScanner scanner) throws ContainerSearchException;

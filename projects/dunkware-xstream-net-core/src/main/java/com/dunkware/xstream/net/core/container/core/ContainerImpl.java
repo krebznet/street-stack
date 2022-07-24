@@ -10,9 +10,12 @@ import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.Semaphore;
 import java.util.concurrent.atomic.AtomicLong;
+import java.util.function.Predicate;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.slf4j.Marker;
+import org.slf4j.MarkerFactory;
 
 import com.dunkware.common.util.dtime.DTimeZone;
 import com.dunkware.common.util.executor.DExecutor;
@@ -35,6 +38,7 @@ import com.dunkware.xstream.net.core.container.ContainerInput;
 import com.dunkware.xstream.net.core.container.ContainerListener;
 import com.dunkware.xstream.net.core.container.ContainerRegistry;
 import com.dunkware.xstream.net.core.container.ContainerSearchException;
+import com.dunkware.xstream.net.core.container.ContainerSearchResults;
 import com.dunkware.xstream.net.core.container.util.ContainerHelper;
 
 public class ContainerImpl implements Container {
@@ -68,6 +72,8 @@ public class ContainerImpl implements Container {
 
 	private DebugThread debugThread;
 
+	private Marker predicateSearchMarker = MarkerFactory.getMarker("EntityPredicateSearch");
+	
 	@Override
 	public void start(ContainerInput input) throws ContainerException {
 		if (logger.isInfoEnabled()) {
@@ -210,8 +216,29 @@ public class ContainerImpl implements Container {
 
 	@Override
 	public ContainerEntityScanner entityScanner(SessionEntityScanner scanner) throws ContainerSearchException {
-		// TODO Auto-generated method stub
-		return null;
+		ContainerEntityScannerImpl containerScanner = new ContainerEntityScannerImpl(); 
+		containerScanner.init(this, scanner);
+		return containerScanner;
+
+	}
+	
+
+	@Override
+	public ContainerSearchResults<ContainerEntity> entitySearch(List<Predicate<ContainerEntity>> predicates)
+			throws ContainerSearchException {
+		ContainerSearchResults<ContainerEntity> results = new ContainerSearchResults<ContainerEntity>();
+		for (ContainerEntity entity : entities) {
+			for (Predicate<ContainerEntity> predicate : predicates) {
+				if(!predicate.test(entity)) { 
+					continue;
+				}
+				results.getResults().add(entity);
+			}
+		}
+		if(logger.isDebugEnabled()) { 
+			logger.debug(predicateSearchMarker, "Entity Search Returned {} Results", results.getResults().size());
+		}
+		return results;
 	}
 
 	@Override

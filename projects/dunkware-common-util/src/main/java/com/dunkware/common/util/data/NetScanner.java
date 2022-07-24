@@ -14,7 +14,6 @@ public class NetScanner implements NetListWatcher {
 	
 	private List<NetScannerWatcher> watchers = new ArrayList<NetScannerWatcher>();
 	private Semaphore watcherLock = new Semaphore(1);
-	private NetList netList; 
 	private int flushInterval = 500; 
 	
 	private NetScannerDelta activeDelta = new NetScannerDelta();
@@ -24,7 +23,10 @@ public class NetScanner implements NetListWatcher {
 	private Logger logger = LoggerFactory.getLogger(getClass());
 	
 	// need a list of updates that get flushed 
-	
+	private NetList list; 
+	private String keyId; 
+	private DExecutor executor; 
+		
 	
 	// delay update interval for deltas? 
 	public static NetScanner newInstance(NetList list, String keyId, DExecutor executor) { 
@@ -36,10 +38,7 @@ public class NetScanner implements NetListWatcher {
 		return new NetScanner(list, keyId, flushInterval, executor);
 	}
 	
-	private NetList list; 
-	private String keyId; 
-	private DExecutor executor; 
-	
+
 	private NetScanner(NetList list, String keyId, DExecutor executor) { 
 		this.list = list; 
 		this.keyId = keyId; 
@@ -64,7 +63,7 @@ public class NetScanner implements NetListWatcher {
 	
 	public void dispose() { 
 		if(!disposed) { 
-			netList.removeWatcher(this);
+			list.removeWatcher(this);
 			notifier.interrupt();
 		}
 	}
@@ -128,7 +127,7 @@ public class NetScanner implements NetListWatcher {
 
 	@Override
 	public void beanInsert(NetList list, NetBean bean) {
-		netList.insert(bean);
+		//this.list.insert(bean);
 		activeDelta.getInserts().add(bean);
 		deltaCount.incrementAndGet();
 	}
@@ -136,7 +135,7 @@ public class NetScanner implements NetListWatcher {
 
 	@Override
 	public void beanUpdate(NetList list, NetBean bean) {
-		netList.update(bean);
+		//this.list.update(bean);
 		activeDelta.getUpdates().add(bean);
 		deltaCount.incrementAndGet();
 	}
@@ -144,7 +143,7 @@ public class NetScanner implements NetListWatcher {
 
 	@Override
 	public void beanRemove(NetList list, NetBean bean) {
-		netList.remove(bean);
+		//this.list.remove(bean);
 		activeDelta.getDeletes().add(bean.getValue(keyId));
 		deltaCount.incrementAndGet();
 	}

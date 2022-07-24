@@ -1,10 +1,11 @@
 package com.dunkware.xstream.net.core.container;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class ContainerSearchResults<T> {
 	
-	private List<T> results;
+	private List<T> results = new ArrayList<T>();
 	private double searchTime; 
 	private String errorMessage; 
 	private boolean error = false; 

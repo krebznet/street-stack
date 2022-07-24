@@ -1,0 +1,59 @@
+package com.dunkware.trade.service.stream.server.controller.session.container.scanner;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import com.dunkware.common.util.data.NetScannerDelta;
+import com.dunkware.trade.service.stream.server.streaming.StreamingAdapter;
+import com.dunkware.trade.service.stream.server.streaming.StreamingListener;
+
+public class SessionContainerEntityScannerStream implements SessionContainerEntityScannerListener, StreamingListener {
+	
+	private SessionContainerEntityScanner scanner;
+	private StreamingAdapter adapter; 
+	
+	private Logger logger = LoggerFactory.getLogger(getClass());
+	
+	private boolean disposed = false; 
+	
+	public void start(SessionContainerEntityScanner scanner, StreamingAdapter adapter) { 
+		this.scanner = scanner; 
+		this.adapter = adapter; 
+		scanner.addListener(this);
+		adapter.addListener(this);
+	}
+
+
+	@Override
+	public void scannerDelta(NetScannerDelta delta) {
+		try {
+			adapter.send(delta);
+		} catch (Exception e) {
+			logger.error("Error sending scanner delta streaming adapter we shoul dhav handled closed");;
+		}
+	}
+
+
+	@Override
+	public void clientDisconnect(StreamingAdapter adapter) {
+		if(!disposed) { 
+			scanner.removeListener(this);
+			disposed = true; 
+		}
+	}
+
+
+	@Override
+	public void serverDisconnect(StreamingAdapter adapter) {
+		if(!disposed) { 
+			scanner.removeListener(this);
+			disposed = true; 
+		}
+	}
+	
+	
+	
+	
+	
+
+}

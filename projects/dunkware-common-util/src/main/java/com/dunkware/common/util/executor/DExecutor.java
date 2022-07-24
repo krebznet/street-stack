@@ -113,7 +113,7 @@ public class DExecutor {
 			return;
 		}
 
-		if ((corePoolSize - poolSize) > 1) {
+		//if ((corePoolSize - poolSize) > 0) {
 			final Task nextTask = awaitingTasks.poll();
 			if (nextTask != null) {
 				poolSize++;
@@ -145,7 +145,7 @@ public class DExecutor {
 					}
 				}, nextTask.delayTimeout, nextTask.unit);
 			}
-		}
+		//}
 	}
 
 	private static class Task {

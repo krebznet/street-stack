@@ -2,25 +2,27 @@ package com.dunkware.xstream.container.proto;
 
 import java.util.List;
 
-import com.dunkware.xstream.model.search.SessionEntitySearch;
+import com.dunkware.xstream.model.scanner.SessionEntityScanner;
 
 public class EntityScannerStartReq {
 	
-	private SessionEntitySearch search; 
-	private List<String> scannerVars;
+	private SessionEntityScanner scanner; 
+	private List<String> vars;
 	
-	public SessionEntitySearch getSearch() {
-		return search;
+	public SessionEntityScanner getScanner() {
+		return scanner;
 	}
-	public void setSearch(SessionEntitySearch search) {
-		this.search = search;
+	public void setScanner(SessionEntityScanner scanner) {
+		this.scanner = scanner;
 	}
-	public List<String> getScannerVars() {
-		return scannerVars;
+	public List<String> getVars() {
+		return vars;
 	}
-	public void setScannerVars(List<String> scannerVars) {
-		this.scannerVars = scannerVars;
+	public void setVars(List<String> vars) {
+		this.vars = vars;
 	}
+	
+	
 	
 	
 

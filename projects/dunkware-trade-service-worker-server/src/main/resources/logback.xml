@@ -33,13 +33,10 @@
 	</root>
 
 
-	<logger name="com.dunkware" level="INFO">
+	<logger name="com.dunkware" level="DEBUG">
  <appender-ref ref="FLUENT" />
 		<appender-ref ref="CONSOLE" additivity="false"/>
 	</logger>
 
-	<logger name="com.dunkware.trade.service.data.worker.stream" level="DEBUG">
- <appender-ref ref="FLUENT" />
-		<appender-ref ref="CONSOLE" additivity="false"/>
-	</logger>
+	
 </configuration>

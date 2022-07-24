@@ -110,9 +110,10 @@ public class StreamingAdapter implements StreamingResponseBody {
 				} catch (Exception e) {
 					// okay likely client connect problem 
 					status = Status.ClientDisconnect;
-					outputStream.close();
-					writer.close();
 					notifyClientDisconnect();
+					//outputStream.close();
+					//writer.close();
+					
 					return;
 				}
 				
@@ -138,28 +139,43 @@ public class StreamingAdapter implements StreamingResponseBody {
 	
 	
 	private void notifyServerDisconnect() { 
-		try {
-			listenerLock.acquire();
-			for (StreamingListener streamingListener : listeners) {
-				streamingListener.serverDisconnect(this);
+		Thread runner = new Thread() { 
+			public void run() { 
+				try {
+					listenerLock.acquire();
+					for (StreamingListener streamingListener : listeners) {
+						streamingListener.serverDisconnect(StreamingAdapter.this);
+					}
+				} catch (Exception e) {
+					e.printStackTrace();
+					// TODO: handle exception
+				} finally { 
+					listenerLock.release();
+				}
 			}
-		} catch (Exception e) {
-			// TODO: handle exception
-		} finally { 
-			listenerLock.release();
-		}
+		};
+		runner.start();
+		
 	}
 	
 	private void notifyClientDisconnect() { 
-		try {
-			listenerLock.acquire();
-			for (StreamingListener streamingListener : listeners) {
-				streamingListener.clientDisconnect(this);
+		Thread runner = new Thread() { 
+			public void run() { 
+				try {
+					listenerLock.acquire();
+					for (StreamingListener streamingListener : listeners) {
+						streamingListener.clientDisconnect(StreamingAdapter.this);
+					}
+				} catch (Exception e) {
+					e.printStackTrace();
+					// TODO: handle exception
+				} finally { 
+					listenerLock.release();
+				}
 			}
-		} catch (Exception e) {
-			// TODO: handle exception
-		} finally { 
-			listenerLock.release();
-		}
+		};
+		runner.start();
+		
+		
 	}
 }
