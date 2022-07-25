@@ -39,6 +39,7 @@ public class SessionContainerEntityScannerStream implements SessionContainerEnti
 		if(!disposed) { 
 			scanner.removeListener(this);
 			disposed = true; 
+			scanner.dispose();
 		}
 	}
 
@@ -48,6 +49,7 @@ public class SessionContainerEntityScannerStream implements SessionContainerEnti
 		if(!disposed) { 
 			scanner.removeListener(this);
 			disposed = true; 
+			scanner.dispose();
 		}
 	}
 	

@@ -39,7 +39,9 @@ public class EntitySearchValuePredicate extends ContainerSearchPredicate<Contain
 					logger.error("EntityValue Filter got a resolved null value on entity value type " + entityValue.getClass().getName());
 					return false; 
 				}
-			}	
+			}	else { 
+				return false;
+			}
 		} catch (Exception e) {
 			logger.error("Entity value filter caught exception resolving entity value type " + entityValue.getClass().getName());
 			return false; 

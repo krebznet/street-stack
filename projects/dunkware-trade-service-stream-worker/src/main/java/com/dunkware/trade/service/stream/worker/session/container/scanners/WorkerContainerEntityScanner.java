@@ -9,6 +9,7 @@ import com.dunkware.common.util.data.NetScanner;
 import com.dunkware.common.util.data.NetScannerDelta;
 import com.dunkware.common.util.data.NetScannerWatcher;
 import com.dunkware.common.util.uuid.DUUID;
+import com.dunkware.spring.channel.anot.AMessageHandler;
 import com.dunkware.spring.message.Message;
 import com.dunkware.trade.service.stream.worker.session.container.WorkerContainer;
 import com.dunkware.xstream.container.proto.EntityScannerDelta;
@@ -31,6 +32,7 @@ public class WorkerContainerEntityScanner implements NetScannerWatcher {
 			scannerId = DUUID.randomUUID(5);
 			scanner = container.getCache().entityScanner(req.getScanner());
 			scanner.netScanner().addWatcher(this);
+			container.getChannel().addHandler(this);
 		} catch (Exception e) {
 			throw new Exception("Exception creating core container scanner on worker node " + e.toString());
 		}
@@ -39,7 +41,11 @@ public class WorkerContainerEntityScanner implements NetScannerWatcher {
 		
 	}
 	
+	@AMessageHandler()
 	public void dispose() { 
+		if(logger.isDebugEnabled()) { 
+			logger.debug(marker, "Disposing Worker Container Entity Scanner {}", scannerId);
+		}
 		scanner.netScanner().removeWatcher(this);
 		scanner.dispose();
 	}

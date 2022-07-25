@@ -1,5 +1,6 @@
 package com.dunkware.trade.service.stream.server.controller.session.container.core;
 
+import java.util.ArrayList;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
@@ -20,6 +21,7 @@ import com.dunkware.trade.service.stream.server.controller.session.container.sca
 import com.dunkware.trade.service.stream.server.streaming.StreamingAdapter;
 import com.dunkware.xstream.container.proto.EntityScannerStartReq;
 import com.dunkware.xstream.container.proto.EntityScannerStartResp;
+import com.dunkware.xstream.model.scanner.SessionEntityScanner;
 
 @RestController
 public class SessionContainerWebService {
@@ -69,6 +71,38 @@ public class SessionContainerWebService {
 		}
 		
 	}
+	
+	@PostMapping(path = "/stream/session/entity/scanner/run")
+	public ResponseEntity<StreamingResponseBody> entityScannerRun(@RequestBody() SessionEntityScanner scanner) throws Exception {
+		SessionContainer container = null;
+		try {
+			container = containerService.getContainer(scanner.getStreamIdentifier());
+		} catch (Exception e) {
+			throw new Exception("Stream Session " + scanner.getStreamIdentifier() + " not found");
+		}
+		String scannerId = null;
+		SessionContainerEntityScanner entityScanner = null;
+		try {
+			entityScanner = new SessionContainerEntityScanner();
+			EntityScannerStartReq req = new EntityScannerStartReq();
+			req.setScanner(scanner);
+			req.setVars(new ArrayList<String>());
+			
+			scannerId = entityScanner.start(req,container);
+			this.scanners.put(scannerId, entityScanner);
+		} catch (Exception e) {
+			throw new Exception("Exception starting scanner " + e.toString());
+		}
+		
+		StreamingAdapter adapter = new StreamingAdapter(scannerId);
+		SessionContainerEntityScannerStream stream = new SessionContainerEntityScannerStream();
+		stream.start(entityScanner, adapter);
+		  return ResponseEntity.ok()
+			        .contentType(MediaType.APPLICATION_STREAM_JSON)
+			        .body(adapter);
+
+	}
+	
 	
 	@GetMapping(path = "/stream/session/entity/scanner/stream")
 	public ResponseEntity<StreamingResponseBody> entityScannerStream(@RequestParam() String scannerId) throws Exception {

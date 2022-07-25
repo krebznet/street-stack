@@ -283,8 +283,10 @@ public class ContainerEntityImpl implements ContainerEntity {
 		bean.setValue("id", getId());
 		bean.setValue("ident", getIdent());
 		for (ContainerEntityVar var : getVars()) {
-			if(vars.contains(var.getIdent()))
-				bean.setValue(var.getIdent(), var.getLastValue());
+			// fow now return all variables 
+			//if(vars.contains(var.getIdent()))
+				if(var.getLastValue() != null)
+					bean.setValue(var.getIdent(), var.getLastValue());
 		}
 		return bean;
 	}

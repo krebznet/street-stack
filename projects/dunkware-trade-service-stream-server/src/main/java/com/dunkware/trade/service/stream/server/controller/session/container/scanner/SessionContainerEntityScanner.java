@@ -21,6 +21,7 @@ import com.dunkware.trade.service.stream.server.controller.session.container.Ses
 import com.dunkware.xstream.container.proto.EntityScannerDelta;
 import com.dunkware.xstream.container.proto.EntityScannerStartReq;
 import com.dunkware.xstream.container.proto.EntityScannerStartResp;
+import com.dunkware.xstream.container.proto.EntityScannerStopReq;
 
 
 public class SessionContainerEntityScanner {
@@ -155,9 +156,12 @@ public class SessionContainerEntityScanner {
 		
 		
 		public void dispose() {
-			if(disposed = true)
+			if(disposed = false)
 			try {
-				
+				// send a dispose message
+				EntityScannerStopReq stopReq = new EntityScannerStopReq(); 
+				stopReq.setScannerId(scannerId);
+				node.getChannel().send(stopReq);
 				node.getChannel().removeHandler(this);	
 				disposed = true; 
 			} catch (Exception e) {

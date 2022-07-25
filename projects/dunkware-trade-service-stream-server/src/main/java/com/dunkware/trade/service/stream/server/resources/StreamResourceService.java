@@ -97,7 +97,7 @@ public class StreamResourceService {
 		try {
 			entity = new StreamScannerEntity();
 			entity.setStreamIdentifier(scanner.getStreamIdentifier());
-			entity.setModel(DJson.serialize(scanner.getSearch()));
+			entity.setModel(DJson.serialize(scanner));
 			entity.setUpdated(LocalDateTime.now());
 			entity.setStreamVersion(stream.getCurrentVersion().getVersion());
 		} catch (Exception e) {

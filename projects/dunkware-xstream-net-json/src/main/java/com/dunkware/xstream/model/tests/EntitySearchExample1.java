@@ -76,7 +76,7 @@ public class EntitySearchExample1 {
 		
 		
 		try {
-			String wow = DJson.serializePretty(req);
+			String wow = DJson.serializePretty(scanner);
 			System.out.println(wow);
 			
 			//SessionEntitySearch deserialized = (SessionEntitySearch)DJson.getObjectMapper().readValue(wow, SessionEntitySearch.class);

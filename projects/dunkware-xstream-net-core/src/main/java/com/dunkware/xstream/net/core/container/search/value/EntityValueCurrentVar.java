@@ -31,6 +31,11 @@ public class EntityValueCurrentVar implements EntityValue {
 
 	@Override
 	public boolean canResolveSession(ContainerEntity entity) throws ContainerSearchException {
+		if(entity.getVar(varIdent) == null) { 
+			return false;
+		}
+		
+		
 		if(entity.getVar(varIdent).getLastValue() != null) { 
 			return true;
 		}
