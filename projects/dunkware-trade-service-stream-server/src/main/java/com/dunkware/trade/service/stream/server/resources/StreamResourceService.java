@@ -31,6 +31,7 @@ public class StreamResourceService {
 			if(entity.getStreamIdentifier().equals(identifier))	{ 
 				try {
 					SessionEntityScanner scanner = DJson.getObjectMapper().readValue(entity.getModel(), SessionEntityScanner.class);
+					scanner.setId(entity.getId());
 					results.add(scanner);
 				} catch (Exception e) {
 					throw new Exception("Exception deserializing scanner " + e.toString());
@@ -126,6 +127,14 @@ public class StreamResourceService {
 		
 	}
 	
+
 	
+	public void deleteEntityScanner(long id) throws Exception { 
+		Optional<StreamScannerEntity> entity = scannerRepo.findById(id);
+		if(entity.get() == null) { 
+			throw new Exception("Scanner ID " + id + " Not Found");
+		}
+		scannerRepo.delete(entity.get());
+	}
 
 }

@@ -29,4 +29,11 @@ public class StreamResourceWebService {
 		return resourceService.getStreamEntityScanners(identifier);
 	
 	}
+	
+	
+	
+	@GetMapping(path = "/stream/resources/scanner/entity/delete")
+	public @ResponseBody() void scannerDelete(@RequestParam() long id) throws Exception { 
+		resourceService.deleteEntityScanner(id);
+	}
 }
