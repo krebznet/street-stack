@@ -1,8 +1,18 @@
 package com.dunkware.trade.service.beach.server.web;
 
+import org.springframework.beans.factory.annotation.Autowire;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.autoconfigure.AutoConfigureOrder;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
+
+import com.dunkware.trade.sdk.core.model.broker.BrokerType;
+import com.dunkware.trade.service.beach.server.trade.BeachTradeService;
+import com.dunkware.trade.service.beach.server.web.util.BeachWebConverter;
+
+import comm.dunkware.trade.service.beach.web.model.WebBroker;
 
 /**
  * Adapts to the angular world 
@@ -11,10 +21,24 @@ import org.springframework.web.bind.annotation.RestController;
  */
 @RestController
 public class BeachWebService {
+	
+	@Autowired
+	BeachTradeService tradeService; 
 
 	@PostMapping(path = "/trade/web/broker/add")
-	public String addBroker(Object webBroker) { 
-		return null;
+	public void addBroker(@RequestBody WebBroker broker) throws Exception { 
+		BrokerType type = null;
+		try {
+			type = BeachWebConverter.toServerBrokerType(broker);
+		} catch (Exception e) {
+			throw e;
+		}
+		
+		try {
+			tradeService.addBroker(type);
+		} catch (Exception e) {
+			throw new Exception("Exception creating broker " + e.toString());
+		}
 	}
 	
 	@PostMapping(path = "/trade/web/bot/save")

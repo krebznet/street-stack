@@ -7,6 +7,8 @@ import java.util.Map;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.slf4j.Marker;
+import org.slf4j.MarkerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import com.dunkware.net.cluster.node.Cluster;
@@ -36,6 +38,8 @@ public class SessionContainerNodeImpl implements SessionContainerNode {
 	
 	private SessionContainer sessionContainer; 
 	
+	private Marker streamInfo = MarkerFactory.getMarker("StreamInfo");
+	
 	private List<String> entities = new ArrayList<String>();
 	
 	public void start(ClusterNode node, SessionContainer container, WorkerContainerInput input) throws Exception {
@@ -62,6 +66,7 @@ public class SessionContainerNodeImpl implements SessionContainerNode {
 		
 		try {
 			channel = channelService.createChannel("SessionContainer", input.getKafkaBroker(), input.getServerTopic(), input.getWorkerTopic(), injectables);
+	
 		} catch (Exception e) {
 			throw new Exception("Exception creating session worker node channel " + e.toString());
 		}

@@ -4,6 +4,10 @@ import java.util.ArrayList;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.slf4j.Marker;
+import org.slf4j.MarkerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -14,6 +18,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.mvc.method.annotation.StreamingResponseBody;
 
+import com.dunkware.common.util.json.DJson;
 import com.dunkware.trade.service.stream.server.controller.session.container.SessionContainer;
 import com.dunkware.trade.service.stream.server.controller.session.container.SessionContainerService;
 import com.dunkware.trade.service.stream.server.controller.session.container.scanner.SessionContainerEntityScanner;
@@ -32,6 +37,8 @@ public class SessionContainerWebService {
 	
 	private Map<String,SessionContainerEntityScanner> scanners = new ConcurrentHashMap<String,SessionContainerEntityScanner>();
 	
+	private Logger logger = LoggerFactory.getLogger(getClass());
+	private Marker streamInfo = MarkerFactory.getMarker("StreamInfo");
 	
 	@PostMapping(path = "/stream/session/entity/scanner/start")
 	public EntityScannerStartResp entityScannerStart(@RequestBody() EntityScannerStartReq req) { 
@@ -40,6 +47,7 @@ public class SessionContainerWebService {
 		try {
 			container = containerService.getContainer(req.getScanner().getStreamIdentifier());
 		} catch (Exception e) {
+			logger.error(streamInfo, "Exception getting session container with identifier " + req.getScanner().getStreamIdentifier() + " " + e.toString());
 			resp.setException("Stream " + req.getScanner().getStreamIdentifier() + " not found");
 			resp.setSuccess(false);
 			return resp;
@@ -54,6 +62,7 @@ public class SessionContainerWebService {
 			resp.setScannerId(scannerId);
 			return resp;
 		} catch (Exception e) {
+			logger.warn("Exception Starting Session Container Entity Scanner " + e.toString());
 			resp.setSuccess(false);
 			resp.setException("Exception Starting Scanner " + e.toString());
 			return resp;
@@ -63,10 +72,12 @@ public class SessionContainerWebService {
 	
 	
 	@GetMapping(path = "/stream/session/entity/scanner/stop")
-	public void entityScannerStop(@RequestParam() String scannerId) throws Exception { 
+	public void entityScannerStop(@RequestParam() String scannerId) throws Exception {
+		logger.info(streamInfo, "Stopping Scanner ID " + scannerId);
 		SessionContainerEntityScanner scanner = scanners.get(scannerId);
 		if(scanner != null) { 
 			scanner.dispose();
+			logger.info(streamInfo, "Stopped Scanner ID " + scannerId);
 			scanners.remove(scannerId);
 		}
 		

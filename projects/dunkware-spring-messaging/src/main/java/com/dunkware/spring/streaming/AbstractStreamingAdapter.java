@@ -31,9 +31,9 @@ public abstract class AbstractStreamingAdapter implements StreamingResponseBody 
 		Connected,ClientDisconnect,ServerDisconnect
 	}
 	
-	public AbstractStreamingAdapter(String identifer) { 
+	public AbstractStreamingAdapter() { 
 		status = Status.Connected;
-		this.identifier = identifer;
+		
 	}
 	
 	public boolean isConnected() { 
