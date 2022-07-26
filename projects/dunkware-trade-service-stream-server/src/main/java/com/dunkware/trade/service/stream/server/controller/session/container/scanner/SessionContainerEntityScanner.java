@@ -36,6 +36,8 @@ public class SessionContainerEntityScanner {
 	
 	private List<SessionContainerEntityScannerListener> listeners = new ArrayList<SessionContainerEntityScannerListener>();
 	
+	private Marker scannerMarker = MarkerFactory.getMarker("EntityScanner");
+	
 	private boolean disposed = false; 
 	
 	private Marker marker = MarkerFactory.getMarker("SessionContainerEntityScanner");
@@ -45,15 +47,16 @@ public class SessionContainerEntityScanner {
 	public String start(EntityScannerStartReq req, SessionContainer sessionContainer) throws Exception { 
 		this.req = req;
 		scannerId = DUUID.randomUUID(5);
-		
+		logger.info(scannerMarker, "Starting Entity Scanner and Created Scanner ID " + scannerId);
 		this.sessionContainer = sessionContainer;
 		try {
 			for (SessionContainerNode node : sessionContainer.getNodes()) {
+				logger.info(scannerMarker,"Creating Scanner Entity node " + node.getCluserNode().getId());
 				SessionEntityScannerNode scannerNode = new SessionEntityScannerNode(node);
 				this.scannerNodes.add(scannerNode);
 			}
 		} catch (Exception e) {
-			logger.error("Exception creating scanner entity nodes wtf " + e.toString());
+			logger.error(scannerMarker,"Exception creating scanner entity nodes wtf " + e.toString());
 			throw new Exception("Exception creating scanner nodes " + e.toString());
 		}
 		
@@ -134,9 +137,12 @@ public class SessionContainerEntityScanner {
 		public void run() { 
 			// send a start request 
 			try {
+			logger.info(scannerMarker,"Sending EntityScannerStartReq to Worker Node " + node.getCluserNode().getId());
 			Message response = node.getChannel().sendReply(req);
+			logger.info(scannerMarker, "Receieved EntityScannerStartResponse from worker node " + node.getCluserNode().getId());
 			EntityScannerStartResp resp = (EntityScannerStartResp)response.getPayload();
 			if(resp.getException() != null) { 
+				logger.error(scannerMarker, "Exception Sending EntityScannerStartReq to Worker Node  " + node.getCluserNode().getId() + " " + resp.getException());
 				startException = true; 
 				startError = "Returned Response Error " + resp.getException(); 
 				nodeStartCallbackQueue.add(this);

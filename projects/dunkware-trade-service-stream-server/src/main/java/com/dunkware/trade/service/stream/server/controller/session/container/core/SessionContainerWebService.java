@@ -39,14 +39,22 @@ public class SessionContainerWebService {
 	
 	private Logger logger = LoggerFactory.getLogger(getClass());
 	private Marker streamInfo = MarkerFactory.getMarker("StreamInfo");
+	private Marker entityScanner = MarkerFactory.getMarker("EntityScanner");
 	
 	@PostMapping(path = "/stream/session/entity/scanner/start")
-	public EntityScannerStartResp entityScannerStart(@RequestBody() EntityScannerStartReq req) { 
+	public EntityScannerStartResp entityScannerStart(@RequestBody() EntityScannerStartReq req) {
+		try {
+			logger.info(entityScanner,"Handling REST Entity Scanner Start Request " + DJson.serializePretty(req));	
+		} catch (Exception e) {
+			logger.error(entityScanner, "Shit can't event deserialize EntityScannerStartReq in start API call");
+		}
+		
 		EntityScannerStartResp resp = new EntityScannerStartResp();
 		SessionContainer container = null;
 		try {
 			container = containerService.getContainer(req.getScanner().getStreamIdentifier());
 		} catch (Exception e) {
+			logger.error(entityScanner, "Exception getting session container with identifier " + req.getScanner().getStreamIdentifier());
 			logger.error(streamInfo, "Exception getting session container with identifier " + req.getScanner().getStreamIdentifier() + " " + e.toString());
 			resp.setException("Stream " + req.getScanner().getStreamIdentifier() + " not found");
 			resp.setSuccess(false);
@@ -56,12 +64,15 @@ public class SessionContainerWebService {
 		String scannerId = null;
 		try {
 			SessionContainerEntityScanner entityScanner = new SessionContainerEntityScanner();
+			logger.info(this.entityScanner, "Starting Entity Scanner");
 			scannerId = entityScanner.start(req,container);
+			logger.info(this.entityScanner, "Started Entity Scanner");
 			this.scanners.put(scannerId, entityScanner);
 			resp.setSuccess(true);
 			resp.setScannerId(scannerId);
 			return resp;
 		} catch (Exception e) {
+			logger.error(this.entityScanner, "Exception Starting Entity Scanner " + e.toString());
 			logger.warn("Exception Starting Session Container Entity Scanner " + e.toString());
 			resp.setSuccess(false);
 			resp.setException("Exception Starting Scanner " + e.toString());

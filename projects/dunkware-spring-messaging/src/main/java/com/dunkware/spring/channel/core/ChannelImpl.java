@@ -102,8 +102,12 @@ public class ChannelImpl implements Channel, DKafkaByteHandler2 {
 			ChannelHandler channelHandler = null;
 			try {
 				channelHandler = ChannelHandler.newInstance(handler, this);
-				if(logger.isDebugEnabled()) { 
-					logger.debug(marker, "Channel {} Default Handler {} Added", type, channelHandler.getTarget().getClass().getName());
+				logger.info(marker, "Channel {} Default Handler {} Added", type, channelHandler.getTarget().getClass().getName());
+				// summarize the shit
+				logger.info(marker, "Channel {} Default Handler to string {}", type, channelHandler.getTarget().getClass().toString());
+				for (MessageReply reply : channelHandler.getMessageReplies()) {
+					logger.info(marker, "Channel {} Handler {}  Message Reply Incoming {} Response {}", type,channelHandler.getTarget().getClass().toString(), reply.getMessageType().toString(), reply.getResponseType().toString());
+					
 				}
 				this.channelHandlers.add(channelHandler);
 			} catch (Exception e) {

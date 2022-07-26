@@ -47,9 +47,14 @@ public class ChannelHandler {
 			MessageReply reply = new MessageReply(); 
 			reply.setMethod(method);
 			Class<?>[] args =  method.getParameterTypes();
+			
 			if(args.length == 0) { 
 				// well then annotated method with no arguments 
 				throw new ChannelException("Method marked as message reply " + method.getName() + " needs a message param arg");
+			}
+			Class<?> returnType = method.getReturnType();
+			if(returnType != null) { 
+				reply.setResponseType(returnType);
 			}
 			reply.setMessageType(args[0]);
 			messageReplies.add(reply);
@@ -77,6 +82,11 @@ public class ChannelHandler {
 	public List<ChannelSetter> getChannelSetters() { 
 		return channelSetters;
 	}
+	
+	public List<MessageReply> getMessageReplies() { 
+		return messageReplies;
+	}
+	
 	
 	public boolean hasMessageReply(Object payload) { 
 		for (MessageReply messageReply : messageReplies) {
@@ -123,6 +133,7 @@ public class ChannelHandler {
 
 		private Method method;
 		private Class<?> messageType;
+		private Class<?> responseType; 
 
 		public Method getMethod() {
 			return method;
@@ -139,6 +150,16 @@ public class ChannelHandler {
 		public void setMessageType(Class messageType) {
 			this.messageType = messageType;
 		}
+
+		public Class<?> getResponseType() {
+			return responseType;
+		}
+
+		public void setResponseType(Class<?> responseType) {
+			this.responseType = responseType;
+		}
+		
+		
 
 	}
 
