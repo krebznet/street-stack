@@ -152,6 +152,7 @@ public class SessionContainerEntityScanner {
 			this.scannerId = resp.getScannerId(); 
 			node.getChannel().addHandler(this);
 			nodeStartCallbackQueue.add(this);
+			logger.info(scannerMarker, "Added SessionContainerScannerNode to start callback node " + node.getCluserNode().getId());
 			} catch (Exception e) {
 				logger.error("Exception sending entity scanner start request to worker node " + e.toString());;
 				startError = e.toString();

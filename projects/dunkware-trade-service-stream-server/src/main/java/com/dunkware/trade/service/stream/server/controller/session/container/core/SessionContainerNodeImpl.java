@@ -65,6 +65,7 @@ public class SessionContainerNodeImpl implements SessionContainerNode {
 		injectables.put("stream", container.getStream());
 		
 		try {
+			
 			channel = channelService.createChannel("SessionContainer", input.getKafkaBroker(), input.getServerTopic(), input.getWorkerTopic(), injectables);
 	
 		} catch (Exception e) {
