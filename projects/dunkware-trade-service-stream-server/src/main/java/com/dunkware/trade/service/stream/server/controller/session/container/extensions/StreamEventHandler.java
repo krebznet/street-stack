@@ -1,14 +1,15 @@
 package com.dunkware.trade.service.stream.server.controller.session.container.extensions;
 
 import java.util.List;
-import java.util.Map;
 import java.util.concurrent.BlockingQueue;
-import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.LinkedBlockingQueue;
 
 import org.apache.kafka.clients.consumer.ConsumerRecord;
+import org.graalvm.compiler.asm.sparc.SPARCAssembler.ContinousBitSpec;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.slf4j.Marker;
+import org.slf4j.MarkerFactory;
 import org.springframework.beans.factory.annotation.Value;
 
 import com.dunkware.common.kafka.consumer.DKafkaByteConsumer2;
@@ -58,6 +59,8 @@ public class StreamEventHandler implements SessionContainerExtension, DKafkaByte
 	private Logger logger = LoggerFactory.getLogger(getClass());
 
 	private StreamEventRouter eventRouter;
+	
+	private Marker marker = MarkerFactory.getMarker("StreamEventHandler");
 
 	@Override
 	public void workerInit(WorkerContainerInput input) {
@@ -77,8 +80,41 @@ public class StreamEventHandler implements SessionContainerExtension, DKafkaByte
 	@Override
 	public void containerStart(SessionContainer container) throws SessionContainerException {
 		// assign the entities round robin to the worker nodes.
+		logger.info(marker, "Container Start Invoked");
+		if(container == null) { 
+			logger.error(marker, "Container is null on containerStart");
+			return;
+		}
 		int nextIndex = 0;
-		List<SessionContainerNode> nodes = container.getNodes();
+		List<SessionContainerNode> nodes = null;
+		try {
+			 nodes = container.getNodes();	
+		} catch (Exception e) {
+			logger.error(marker, "Exception getting container nodes " + e.toString());
+			return;
+		}
+		List<TradeTickerSpec> tickers = null;
+		if(container.getStream() == null) { 
+			logger.error(marker, "Container Stream is null cannot get tickers");
+			throw new SessionContainerException("Exception getting stream controller from session container in stream event handler");
+		}
+		try {
+			tickers = container.getStream().getTickers(); 
+		} catch (Exception e) {
+			logger.error(marker, "Exception getting Tickers from stream controller " + e.toString());
+			try {
+				Thread.sleep(5000);
+			} catch (Exception e2) {
+				try {
+					tickers = container.getStream().getTickers();
+				} catch (Exception e3) {
+					logger.error(marker, "Exception getting Tickers again after pausing 5 seconds " + e.toString());;
+					throw new SessionContainerException("Exception getting tickers after pasuing for 5 seconds in StreamEventHandler " + e.toString());
+					
+				}
+			}
+		}
+		logger.info(marker, "Received " + tickers.size() + " tickers for stream " + container.getStream().getName());
 		for (TradeTickerSpec ticker : container.getStream().getTickers()) {
 			if(nextIndex == nodes.size()) { 
 				nextIndex = 0; 
@@ -86,6 +122,7 @@ public class StreamEventHandler implements SessionContainerExtension, DKafkaByte
 			try {
 				nodes.get(nextIndex).addEntity(ticker.getSymbol());
 			} catch (Exception e) {
+				logger.error(marker, "Exception either getting node or ticker symbol fucked up"); 
 				throw new SessionContainerException("fucked up on entity assignment index out of bounds "  + e.toString());
 			}
 			nextIndex++;
@@ -108,6 +145,7 @@ public class StreamEventHandler implements SessionContainerExtension, DKafkaByte
 			eventRouter = new StreamEventRouter();
 			eventRouter.start();
 		} catch (Exception e) {
+			logger.error(marker,"Exception connecting to stream kafka event consumer " + e.toString());
 			throw new SessionContainerException("Exception starting session event extension " + e.toString());
 		}
 
