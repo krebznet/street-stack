@@ -5,7 +5,6 @@ import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.LinkedBlockingQueue;
 
 import org.apache.kafka.clients.consumer.ConsumerRecord;
-import org.graalvm.compiler.asm.sparc.SPARCAssembler.ContinousBitSpec;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.slf4j.Marker;
