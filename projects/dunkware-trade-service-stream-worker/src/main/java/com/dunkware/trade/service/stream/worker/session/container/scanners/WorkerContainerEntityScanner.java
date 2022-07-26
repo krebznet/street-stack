@@ -14,6 +14,7 @@ import com.dunkware.spring.message.Message;
 import com.dunkware.trade.service.stream.worker.session.container.WorkerContainer;
 import com.dunkware.xstream.container.proto.EntityScannerDelta;
 import com.dunkware.xstream.container.proto.EntityScannerStartReq;
+import com.dunkware.xstream.container.proto.EntityScannerStopReq;
 import com.dunkware.xstream.net.core.container.ContainerEntityScanner;
 
 public class WorkerContainerEntityScanner implements NetScannerWatcher {
@@ -41,8 +42,9 @@ public class WorkerContainerEntityScanner implements NetScannerWatcher {
 		
 	}
 	
-	@AMessageHandler()
-	public void dispose() { 
+	// very nice -- this is disposing shit then or what
+	@AMessageHandler
+	public void dispose(EntityScannerStopReq req) { 
 		if(logger.isDebugEnabled()) { 
 			logger.debug(marker, "Disposing Worker Container Entity Scanner {}", scannerId);
 		}
