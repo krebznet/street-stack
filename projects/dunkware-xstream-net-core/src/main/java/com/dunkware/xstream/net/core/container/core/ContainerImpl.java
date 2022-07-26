@@ -298,12 +298,12 @@ public class ContainerImpl implements Container {
 			try {
 				this.signalLock.acquire();
 				signals.add(sig);
-				ContainerEntity ent = getEntity(sig.getEntityIdent());
+				ContainerEntity ent = getEntity(signal.getEntityIdentifier());
 				if (ent != null) {
 					ent.consumeSignal(signal);
 				}
 			} catch (Exception e) {
-				logger.error("signal lock aquire exception" + e.toString());
+				logger.error("signal lock aquire exception for signal " + signal.getEntityIdentifier() + e.toString());
 			} finally {
 				this.signalLock.release();
 			}
