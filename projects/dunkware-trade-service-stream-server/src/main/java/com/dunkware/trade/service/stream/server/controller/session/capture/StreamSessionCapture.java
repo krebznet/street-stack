@@ -76,6 +76,8 @@ public class StreamSessionCapture {
 	
 
 	private LocalDateTime startTime;
+	
+	// test commit
 
 	private DataStreamSessionSnapshotWriter2 snapshotWriter;
 	private DataStreamSessionSignalWriter signalWriter;
