@@ -35,7 +35,7 @@ import com.dunkware.net.proto.stream.GEntitySnapshot;
 import com.dunkware.net.proto.stream.GStreamEvent;
 import com.dunkware.net.proto.stream.GStreamEventType;
 import com.dunkware.net.proto.stream.GStreamSessionStop;
-import com.dunkware.trade.service.data.json.stream.writer.DataStreamSnapshotWriterSessionStats2;
+import com.dunkware.trade.service.stream.data.DataStreamSnapshotWriterSessionStats2;
 import com.dunkware.trade.service.stream.server.controller.session.StreamSession;
 import com.dunkware.trade.service.stream.server.controller.session.capture.StreamSessionCapture;
 import com.dunkware.trade.service.stream.server.spring.ConfigService;
@@ -46,9 +46,6 @@ import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoDatabase;
 import com.mongodb.client.model.CreateCollectionOptions;
 import com.mongodb.client.model.InsertOneModel;
-import com.mongodb.client.model.TimeSeriesOptions;
-
-import com.mongodb.client.model.CreateCollectionOptions;
 import com.mongodb.client.model.TimeSeriesGranularity;
 import com.mongodb.client.model.TimeSeriesOptions;
 

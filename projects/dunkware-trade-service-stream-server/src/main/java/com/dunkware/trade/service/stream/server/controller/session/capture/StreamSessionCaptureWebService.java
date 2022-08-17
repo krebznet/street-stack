@@ -10,8 +10,9 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.dunkware.trade.service.data.json.stream.session.DataStreamSessionEntityStats;
 import com.dunkware.trade.service.data.json.stream.session.DataStreamSessionStats;
+import com.dunkware.trade.service.stream.DataStreamSessionEntityStats;
+
 
 @RestController
 public class StreamSessionCaptureWebService {

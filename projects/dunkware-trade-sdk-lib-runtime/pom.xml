@@ -5,9 +5,10 @@
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 	<parent>
-		<groupId>com.dunkware.maven</groupId>
-		<artifactId>dunkware-maven-parent</artifactId>
-		<version>6-SNAPSHOT</version>
+		<groupId>com.dunkware.street</groupId>
+		<artifactId>dunkware-street-cloud</artifactId>
+		<version>1.0.0-SNAPSHOT</version>
+		<relativePath>../../pom.xml</relativePath>
 	</parent>
 	<groupId>com.dunkware.trade.sdk</groupId>
 	<artifactId>dunkware-trade-sdk-lib-runtime</artifactId>
@@ -34,7 +35,7 @@
 			<artifactId>dunkware-trade-sdk-core-runtime</artifactId>
 			<version>1.0.0-SNAPSHOT</version>
 		</dependency>
-		
+
 		<dependency>
 			<groupId>com.dunkware.trade.sdk</groupId>
 			<artifactId>dunkware-trade-sdk-lib-model</artifactId>

@@ -37,9 +37,9 @@ import com.dunkware.net.proto.stream.GEntitySignal;
 import com.dunkware.net.proto.stream.GEntitySnapshot;
 import com.dunkware.net.proto.stream.GStreamEvent;
 import com.dunkware.trade.service.data.json.enums.DataStreamSessionState;
-import com.dunkware.trade.service.data.json.stream.session.DataStreamSessionEntityStats;
 import com.dunkware.trade.service.data.json.stream.session.DataStreamSessionStats;
-import com.dunkware.trade.service.data.json.stream.writer.DataStreamSnapshotWriterSessionStats2;
+import com.dunkware.trade.service.stream.DataStreamSessionEntityStats;
+import com.dunkware.trade.service.stream.data.DataStreamSnapshotWriterSessionStats2;
 import com.dunkware.trade.service.stream.json.controller.model.StreamSessionSpec;
 import com.dunkware.trade.service.stream.server.controller.StreamController;
 import com.dunkware.trade.service.stream.server.controller.session.StreamSession;
@@ -325,7 +325,7 @@ public class StreamSessionCapture {
 		stats.setSessionTime(DDateTime.from(getSessionTime()));
 		stats.setState(this.sessionEntity.getState());
 		stats.setSignalStats(signalWriter.getStats());
-		stats.setSnapshotStats(writerStats);
+		//stats.setSnapshotStats(writerStats);
 		stats.setState(state);
 
 		return stats;

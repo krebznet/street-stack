@@ -12,7 +12,7 @@ import com.dunkware.common.util.helpers.DProtoHelper;
 import com.dunkware.common.util.stopwatch.DStopWatch;
 import com.dunkware.net.proto.stream.GEntitySnapshot;
 import com.dunkware.net.proto.stream.GStreamSessionStop;
-import com.dunkware.trade.service.data.json.stream.writer.DataStreamSnapshotWriterSessionStats2;
+import com.dunkware.trade.service.stream.data.DataStreamSnapshotWriterSessionStats2;
 import com.google.common.util.concurrent.AtomicDouble;
 
 public class DataStreamSessionSnapshotWriterMetrics2 {

@@ -5,10 +5,11 @@
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 	<parent>
-		<groupId>com.dunkware.maven</groupId>
-		<artifactId>dunkware-maven-parent</artifactId>
-		<version>6-SNAPSHOT</version>
-	</parent>
+			<groupId>com.dunkware.street</groupId>
+			<artifactId>dunkware-street-cloud</artifactId>
+			<version>1.0.0-SNAPSHOT</version>
+			<relativePath>../../pom.xml</relativePath>
+		</parent>
 	<groupId>com.dunkware.trade.service</groupId>
 	<artifactId>dunkware-trade-service-beach-web</artifactId>
 	<version>1.0.0-SNAPSHOT</version>
