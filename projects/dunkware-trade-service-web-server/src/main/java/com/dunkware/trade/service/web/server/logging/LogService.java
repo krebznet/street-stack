@@ -7,7 +7,6 @@ import org.springframework.stereotype.Service;
 @Service
 public class LogService {
 
-	
 	public static Marker createMarker() { 
 		return MarkerFactory.getMarker("WEB-INSTANCE-ID");
 		
