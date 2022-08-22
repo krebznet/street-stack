@@ -24,7 +24,12 @@ public class StreamResourceService {
 	@Autowired
 	private StreamControllerService controllerService;
 	
-	
+	/**
+	 * Gets entity scanners
+	 * @param identifier
+	 * @return
+	 * @throws Exception
+	 */
 	public List<SessionEntityScanner> getStreamEntityScanners(String identifier) throws Exception { 
 		List<SessionEntityScanner> results = new ArrayList<SessionEntityScanner>();
 		for (StreamScannerEntity entity : scannerRepo.findAll()) {
