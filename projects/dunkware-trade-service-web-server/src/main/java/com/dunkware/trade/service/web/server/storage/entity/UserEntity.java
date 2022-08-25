@@ -5,12 +5,12 @@ import javax.persistence.*;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 
-@Table(name = "t_user")
+@Table(name = "web_user")
 @Entity
 public class UserEntity {
+    
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "userId")
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
     Long userId;
 
     @Column(name = "password")

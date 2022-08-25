@@ -1,9 +1,9 @@
 package com.dunkware.trade.service.web.server.model;
 
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 public class User {
+	
     Long userId;
     private String password;
     private String firstName;

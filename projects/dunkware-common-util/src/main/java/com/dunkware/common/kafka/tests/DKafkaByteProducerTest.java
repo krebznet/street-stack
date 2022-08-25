@@ -13,7 +13,7 @@ public class DKafkaByteProducerTest {
 
 	public static void main(String[] args) {
 		DProperties props = DPropertiesBuilder.newBuilder()
-				.addProperty("topics", "poop")
+				.addProperty("topics", "fuckpoop")
 		.addProperty(DKafkaProperties.BOOTSTRAP_SERVERS, " 172.16.16.55:31090").build();
 		//.addProperty(DKafkaProperties.BOOTSTRAP_SERVERS, "192.168.23.22:31090").build();
 		try {
@@ -28,7 +28,7 @@ public class DKafkaByteProducerTest {
 				byte[] array = tick.toByteArray();
 				producer.sendBytes(array);
 					System.out.println("sent");
-					Thread.sleep(500);
+					Thread.sleep(1000);
 			}
 			
 			

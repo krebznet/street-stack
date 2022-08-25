@@ -17,14 +17,22 @@ import com.dunkware.common.util.properties.DPropertiesBuilder;
 public class DKafkaByteConsumer2Test {
 
 	public static void main(String[] args) {
-		DProperties props = DPropertiesBuilder.newBuilder()
-		.addProperty(DKafkaProperties.BOOTSTRAP_SERVERS, "localhost:9091")
-		.addProperty("topics", "stream_us_equity_snapshots").build();
+	//	DProperties props = DPropertiesBuilder.newBuilder()
+		//		.addProperty("topics", "fuckpoop")
+		//.addProperty(DKafkaProperties.BOOTSTRAP_SERVERS, " 172.16.16.55:31090").build();
 		DKafkaByteConsumer2 consumer = null;
 		try {
-			DKafkaByteConsumer2Spec spec = DKafkaByteConsumer2SpecBuilder.newBuilder(ConsumerType.Auto, OffsetType.Earliest).addBroker("localhost:9091").setClientAndGroup("dd", "ff")
-					.addTopic("stream_us_equity_snapshots").build();
+			DKafkaByteConsumer2Spec spec = DKafkaByteConsumer2SpecBuilder.newBuilder(ConsumerType.Auto, OffsetType.Earliest).addBroker("172.16.16.55:31090").setClientAndGroup("dd", "ff")
+					.addTopic("fuckpoop").build();
 				consumer = DKafkaByteConsumer2.newInstance(spec);
+				consumer.addStreamHandler(new DKafkaByteHandler2() {
+					
+					@Override
+					public void record(ConsumerRecord<String, byte[]> record) {
+						System.out.println("recieved byte[] messsage");
+						System.out.println("received record " + String.valueOf(record));
+					}
+				});
 				consumer.start();
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -53,7 +61,7 @@ public class DKafkaByteConsumer2Test {
 						while(true) { 
 							Thread.sleep(1000);
 							System.out.println("Consumer2" + counter.get());
-							counter.set(0);	
+							counter.incrementAndGet();	
 						}
 						
 					} catch (Exception e) {
