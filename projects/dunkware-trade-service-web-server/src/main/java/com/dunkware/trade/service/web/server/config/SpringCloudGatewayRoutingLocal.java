@@ -26,5 +26,5 @@ public class SpringCloudGatewayRoutingLocal {
 	 // routing //.route("orderId", r->r.path("/order/**").uri("lb://ORDER-SERVICE"))
 	  //dynamic routing //.build(); }
 	  }
-	 
+	 // adding a comment here
 }
