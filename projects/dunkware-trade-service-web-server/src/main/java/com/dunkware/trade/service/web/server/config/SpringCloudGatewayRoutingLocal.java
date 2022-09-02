@@ -22,7 +22,7 @@ public class SpringCloudGatewayRoutingLocal {
 	
 	  @Bean public RouteLocator configureRoute(RouteLocatorBuilder builder) {
 	  return builder.routes() .route("stream",
-	  r->r.path("/stream/**").uri("http://localhost:8084/i")).build(); //static
+	  r->r.path("/stream/**").uri("http://localhost:8086")).build(); //static
 	 // routing //.route("orderId", r->r.path("/order/**").uri("lb://ORDER-SERVICE"))
 	  //dynamic routing //.build(); }
 	  }
