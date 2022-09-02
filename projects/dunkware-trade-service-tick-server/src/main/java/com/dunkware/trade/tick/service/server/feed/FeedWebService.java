@@ -8,7 +8,6 @@ import javax.annotation.PostConstruct;
 import org.slf4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Profile;
-import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -30,7 +29,6 @@ import com.dunkware.trade.tick.service.protocol.provider.TickProviderAddResp;
 
 @RestController
 @Profile("FeedWebService")
-@CrossOrigin(origins = "*", allowedHeaders = "*")
 public class FeedWebService {
 
 	private Logger logger = org.slf4j.LoggerFactory.getLogger(getClass());

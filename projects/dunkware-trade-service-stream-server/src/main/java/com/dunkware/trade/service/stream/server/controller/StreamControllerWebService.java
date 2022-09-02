@@ -9,7 +9,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.repository.query.Param;
-import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -45,7 +44,6 @@ import com.dunkware.xstream.model.spec.StreamSpec;
 // /stream/session/status 
 
 @RestController
-@CrossOrigin(origins = "*") 
 public class StreamControllerWebService {
 
 	@Autowired
@@ -194,7 +192,7 @@ public class StreamControllerWebService {
 	}
 	
 	
-	
+
 	@GetMapping(path = "/stream/core/specs")
 	public @ResponseBody List<StreamSpec> getSpecs() throws Exception { 
 		List<StreamSpec> specs = new ArrayList<StreamSpec>();

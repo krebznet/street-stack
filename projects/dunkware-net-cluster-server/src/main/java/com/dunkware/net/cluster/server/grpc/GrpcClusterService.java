@@ -3,7 +3,6 @@ package com.dunkware.net.cluster.server.grpc;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.CrossOrigin;
 
 import com.dunkware.net.cluster.server.core.ClusterNode;
 import com.dunkware.net.cluster.server.core.ClusterService;
@@ -22,7 +21,6 @@ import io.grpc.stub.StreamObserver;
 import net.devh.boot.grpc.server.service.GrpcService;
 
 @GrpcService()
-@CrossOrigin(origins = "*", allowedHeaders = "*")
 public class GrpcClusterService extends GClustererviceImplBase {
 
 	private Logger logger = LoggerFactory.getLogger(getClass());
