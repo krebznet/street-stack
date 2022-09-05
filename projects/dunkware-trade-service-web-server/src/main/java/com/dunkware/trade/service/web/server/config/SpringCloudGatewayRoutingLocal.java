@@ -17,14 +17,11 @@ public class SpringCloudGatewayRoutingLocal {
 	 * routing //.route("orderId", r->r.path("/order/**").uri("lb://ORDER-SERVICE"))
 	 * //dynamic routing //.build(); }
 	 */
-    
 
-	
-	  @Bean public RouteLocator configureRoute(RouteLocatorBuilder builder) {
-	  return builder.routes() .route("stream",
-	  r->r.path("/stream/**").uri("http://localhost:8086")).build(); //static
-	 // routing //.route("orderId", r->r.path("/order/**").uri("lb://ORDER-SERVICE"))
-	  //dynamic routing //.build(); }
-	  }
-	 // adding a comment here
+	@Bean
+	public RouteLocator configureRoute(RouteLocatorBuilder builder) {
+		return builder.routes().route("stream", r -> r.path("/stream/**").uri("http://localhost:8086")) // static
+				.route("trade", r -> r.path("/trade/**").uri(" http://localhost:8032")).build();
+	}
+
 }
