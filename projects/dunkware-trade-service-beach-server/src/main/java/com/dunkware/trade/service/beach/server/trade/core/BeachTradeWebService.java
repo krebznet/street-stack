@@ -40,7 +40,7 @@ public class BeachTradeWebService {
 	 * @param req
 	 * @return
 	 */
-	@PostMapping(path = "/broker/add")
+	@PostMapping(path = "/trade/broker/add")
 	public @ResponseBody() BeachBrokerAddResp addBroker(@RequestBody() BeachBrokerAddReq req) { 
 		BeachBrokerAddResp resp = new BeachBrokerAddResp();
 		try {
