@@ -1,19 +1,21 @@
 package com.dunkware.trade.service.stream.server.config;
 
-import java.util.concurrent.Executor;
+import java.util.concurrent.Callable;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.aop.interceptor.AsyncUncaughtExceptionHandler;
 import org.springframework.aop.interceptor.SimpleAsyncUncaughtExceptionHandler;
-import org.springframework.boot.autoconfigure.task.TaskExecutionProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.core.task.AsyncTaskExecutor;
 import org.springframework.scheduling.annotation.AsyncConfigurer;
 import org.springframework.scheduling.annotation.EnableAsync;
 import org.springframework.scheduling.annotation.EnableScheduling;
-import org.springframework.scheduling.concurrent.ConcurrentTaskExecutor;
 import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
+import org.springframework.web.context.request.NativeWebRequest;
+import org.springframework.web.context.request.async.CallableProcessingInterceptor;
+import org.springframework.web.context.request.async.TimeoutCallableProcessingInterceptor;
 import org.springframework.web.servlet.config.annotation.AsyncSupportConfigurer;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
@@ -21,49 +23,47 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 @EnableAsync
 @EnableScheduling
 public class AsyncConfig implements AsyncConfigurer {
-    private final Logger log = LoggerFactory.getLogger(AsyncConfig.class);
+	 private final Logger log = LoggerFactory.getLogger(AsyncConfig.class);
 
-    private final TaskExecutionProperties taskExecutionProperties;
+	    @Override
+	    @Bean (name = "taskExecutor")
+	    public AsyncTaskExecutor getAsyncExecutor() {
+	        log.debug("Creating Async Task Executor");
+	        ThreadPoolTaskExecutor executor = new ThreadPoolTaskExecutor();
+	        executor.setCorePoolSize(5);
+	        executor.setMaxPoolSize(10);
+	        executor.setQueueCapacity(25);
+	        return executor;
+	    }
 
-    public AsyncConfig(TaskExecutionProperties taskExecutionProperties) {
-        this.taskExecutionProperties = taskExecutionProperties;
-    }
+	    @Override
+	    public AsyncUncaughtExceptionHandler getAsyncUncaughtExceptionHandler() {
+	        return new SimpleAsyncUncaughtExceptionHandler();
+	    }
 
+	    /** Configure async support for Spring MVC. */
+	    @Bean
+	    public WebMvcConfigurer webMvcConfigurerConfigurer(AsyncTaskExecutor taskExecutor, CallableProcessingInterceptor callableProcessingInterceptor) {
+	        return new WebMvcConfigurer() {
+	            @Override
+	            public void configureAsyncSupport(AsyncSupportConfigurer configurer) {
+	                configurer.setDefaultTimeout(360000).setTaskExecutor(taskExecutor);
+	                configurer.registerCallableInterceptors(callableProcessingInterceptor);
+	                WebMvcConfigurer.super.configureAsyncSupport(configurer);
+	            }
+	        };
+	    }
 
-    @Override
-    public AsyncUncaughtExceptionHandler getAsyncUncaughtExceptionHandler() {
-        return new SimpleAsyncUncaughtExceptionHandler();
-    }
-
-    @Override
-    @Bean(name = "taskExecutor")
-    public Executor getAsyncExecutor() {
-        log.debug("Create Async Task Executor");
-        ThreadPoolTaskExecutor executor = new ThreadPoolTaskExecutor();
-     
-//        executor.setCorePoolSize(taskExecutionProperties.getPool().getCoreSize());
-//        executor.setMaxPoolSize(taskExecutionProperties.getPool().getMaxSize());
-//        executor.setQueueCapacity(taskExecutionProperties.getPool().getQueueCapacity());
-//        executor.setThreadNamePrefix(taskExecutionProperties.getThreadNamePrefix());
-        executor.setCorePoolSize(5);
-        executor.setMaxPoolSize(10);
-        executor.setQueueCapacity(50);
-        return executor;
-    }
-
-    @Bean
-    protected ConcurrentTaskExecutor getTaskExecutor() {
-        return new ConcurrentTaskExecutor(this.getAsyncExecutor());
-    }
-
-    @Bean
-    protected WebMvcConfigurer webMvcConfigurer() {
-        return new WebMvcConfigurer() {
-            @Override
-            public void configureAsyncSupport(AsyncSupportConfigurer configurer) {
-                configurer.setTaskExecutor(getTaskExecutor());
-            }
-        };
-    }
+	    @Bean
+	    public CallableProcessingInterceptor callableProcessingInterceptor() {
+	        return new TimeoutCallableProcessingInterceptor() {
+	            @Override
+	            public <T> Object handleTimeout(NativeWebRequest request, Callable<T> task) throws Exception {
+	                log.error("timeout!");
+	                return super.handleTimeout(request, task);
+	            }
+	        };
+	    }
+	
 
 }
