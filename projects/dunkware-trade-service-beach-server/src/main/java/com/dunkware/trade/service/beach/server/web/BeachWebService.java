@@ -1,8 +1,6 @@
 package com.dunkware.trade.service.beach.server.web;
 
-import org.springframework.beans.factory.annotation.Autowire;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.autoconfigure.AutoConfigureOrder;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -15,56 +13,61 @@ import com.dunkware.trade.service.beach.server.web.util.BeachWebConverter;
 import comm.dunkware.trade.service.beach.web.model.WebBroker;
 
 /**
- * Adapts to the angular world 
+ * Adapts to the angular world
+ * 
  * @author duncankrebs
  *
  */
 @RestController
 public class BeachWebService {
-	
+
 	@Autowired
-	BeachTradeService tradeService; 
+	BeachTradeService tradeService;
+
+	
 
 	@PostMapping(path = "/trade/web/broker/add")
-	public void addBroker(@RequestBody WebBroker broker) throws Exception { 
+	public void addBroker(@RequestBody WebBroker broker) throws Exception {
 		BrokerType type = null;
 		try {
+			broker.setType("interactive");
 			type = BeachWebConverter.toServerBrokerType(broker);
+			
 		} catch (Exception e) {
 			throw e;
 		}
-		
+
 		try {
 			tradeService.addBroker(type);
 		} catch (Exception e) {
 			throw new Exception("Exception creating broker " + e.toString());
 		}
 	}
-	
+
 	@PostMapping(path = "/trade/web/bot/save")
-	public String saveBot(Object bot) { 
+	public String saveBot(Object bot) {
 		return null;
 	}
-	
+
 	@PostMapping(path = "/trade/web/bot/add")
-	public String addBot(Object bot) { 
+	public String addBot(Object bot) {
 		return null;
 	}
-	
+
 	@GetMapping(path = "/trade/web/bot/start")
-	public void startBot(Object botId) { 
-		
+	public void startBot(Object botId) {
+
 	}
-	
+
 	@GetMapping(path = "/trade/web/bot/stop")
-	public void stopBot(Object botId) { 
-		
+	public void stopBot(Object botId) {
+
 	}
-	
+
 	@GetMapping(path = "/trade/web/bot/delete")
-	public void deleteBot(Object botId) { 
-		
+	public void deleteBot(Object botId) {
+
 	}
-	
-	// 
+
+	//
 }

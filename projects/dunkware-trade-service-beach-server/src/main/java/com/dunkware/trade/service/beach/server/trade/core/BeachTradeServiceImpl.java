@@ -97,11 +97,12 @@ public class BeachTradeServiceImpl implements BeachTradeService  {
 		BeachBrokerImpl broker = new BeachBrokerImpl();
 		ac.getAutowireCapableBeanFactory().autowireBean(broker);
 		try {
+			//lets not comment and see if we can connect to local host instance of trader workstation!
 			broker.init(entity);
 				
 		} catch (Exception e) {
 			logger.error("Internal Add Broker Init Exception " + e.toString(),e);
-			throw new Exception("Internal Exception Adding Broker " + e.toString());
+			//throw new Exception("Internal Exception Adding Broker " + e.toString());
 		}
 		brokers.put(entity.getIdentifier(), broker);
 		return broker;

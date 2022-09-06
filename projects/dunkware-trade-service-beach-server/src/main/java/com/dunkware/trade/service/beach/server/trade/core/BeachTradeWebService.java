@@ -1,5 +1,6 @@
 package com.dunkware.trade.service.beach.server.trade.core;
 
+import javax.annotation.PostConstruct;
 import javax.transaction.Transactional;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -35,6 +36,10 @@ public class BeachTradeWebService {
 	@Autowired
 	private BeachTradeService tradeService; 
 
+	@PostConstruct
+	public void init() { 
+		System.out.println("ghere");
+	}
 	/**
 	 * Broker Management 
 	 * @param req

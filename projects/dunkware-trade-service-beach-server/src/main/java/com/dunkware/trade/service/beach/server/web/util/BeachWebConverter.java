@@ -9,7 +9,7 @@ public class BeachWebConverter {
 
 	
 	public static BrokerType toServerBrokerType(WebBroker broker) throws Exception { 
-		if(broker.getType().equalsIgnoreCase("Interactive Brokers")) { 
+		if(broker.getType().equalsIgnoreCase("interactive")) { 
 			TwsBrokerType type = new TwsBrokerType(); 
 			type.setHost(broker.getHost());
 			type.setIdentifier(broker.getName());
