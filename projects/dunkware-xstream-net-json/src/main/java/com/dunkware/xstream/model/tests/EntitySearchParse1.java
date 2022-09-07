@@ -1,54 +1,19 @@
 package com.dunkware.xstream.model.tests;
 
+import com.dunkware.common.util.json.DJson;
 import com.dunkware.xstream.model.scanner.SessionEntityScanner;
+import com.dunkware.xstream.model.search.SessionEntitySearch;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 public class EntitySearchParse1 {
 	
-	private static String filter1 = "{\n"
-			+ "    \"name\": \"PL\",\n"
-			+ "    \"search\": {\n"
-			+ "        \"type\": \"Filter\",\n"
-			+ "        \"name\": \"PL\",\n"
-			+ "        \"filterSearch\": {\n"
-			+ "            \"filters\": [\n"
-			+ "                {\n"
-			+ "                    \"type\": \"Value\",\n"
-			+ "                    \"label\": \"(VolCount30sec Value) > 5\",\n"
-			+ "                    \"name\": \"RR\",\n"
-			+ "                    \"enabled\": null,\n"
-			+ "                    \"value\": {\n"
-			+ "                        \"value\": {\n"
-			+ "                            \"type\": \"CurrentValue\",\n"
-			+ "                            \"field\": {\n"
-			+ "                                \"id\": 1,\n"
-			+ "                                \"identifier\": \"Entity\",\n"
-			+ "                                \"name\": \"Entity\",\n"
-			+ "                                \"category\": null,\n"
-			+ "                                \"version\": 0\n"
-			+ "                            }\n"
-			+ "                        },\n"
-			+ "                        \"condition\": {\n"
-			+ "                            \"type\": \"Numerical\",\n"
-			+ "                            \"numeric\": {\n"
-			+ "                                \"operator\": \"GreaterThan\",\n"
-			+ "                                \"value\": 5\n"
-			+ "                            }\n"
-			+ "                        }\n"
-			+ "                    }\n"
-			+ "                }\n"
-			+ "            ]\n"
-			+ "        }\n"
-			+ "    },\n"
-			+ "    \"streamIdentifier\": \"us_equity\",\n"
-			+ "    \"id\": null\n"
-			+ "}";
-	
+	private static String TEST_JSON = "{\"search\":{\"type\":\"Filter\",\"filterSearch\":{\"filters\":[{\"type\":\"Value\",\"value\":{\"value\":{\"type\":\"CurrentValue\",\"field\":{\"id\":2,\"identifier\":\"Last\",\"name\":\"Last\",\"version\":0.0}},\"condition\":{\"type\":\"Numerical\",\"numeric\":{\"value\":110,\"operator\":\"GreaterThan\"}}},\"label\":\"(VolCount30sec Value) > 110\",\"enabled\":false,\"name\":\"Filter1\"}]},\"name\":\"Search 1\"},\"name\":\"Search 1\",\"streamIdentifier\":\"us_equity\"}";
 	public static void main(String[] args) {
 		try {
 			ObjectMapper mapper = new ObjectMapper();
-			SessionEntityScanner test = mapper.readValue(filter1, SessionEntityScanner.class); 
-			System.out.println(test.getSearch().getType().toString());
+			
+			SessionEntityScanner search = DJson.getObjectMapper().readValue(TEST_JSON,SessionEntityScanner.class);
+			System.out.println(search.toString());
 		} catch (Exception e) {
 			e.printStackTrace();
 			// TODO: handle exception

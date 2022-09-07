@@ -1,0 +1,31 @@
+{
+	"inserts": [
+		{
+			"id": "id10",
+			"name": "Name0",
+			"broker": "test broker0",
+			"trade": "Trade0",
+			"balance": 22,
+			"activeCapital": 10,
+			"status": "active",
+			"activeBot": "yes",
+			"router": "/home/markets"
+		}
+	],
+	"deletes": [
+		"id": "id1"
+	],
+	"updates": [
+		{
+			"id": "id9",
+			"name": "Name9",
+			"broker": "test broker9",
+			"trade": "Trade9",
+			"balance": 41,
+			"activeCapital": 59,
+			"status": "active",
+			"activeBot": "yes",
+			"router": "/home/markets"
+		}
+	]
+}

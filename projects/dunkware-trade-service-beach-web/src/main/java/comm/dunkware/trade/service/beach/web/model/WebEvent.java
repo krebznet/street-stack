@@ -8,6 +8,7 @@ public class WebEvent {
 	private String type; 
 	private String source; 
 	private String log; // 
+	
 	public LocalDateTime getTimestamp() {
 		return timestamp;
 	}

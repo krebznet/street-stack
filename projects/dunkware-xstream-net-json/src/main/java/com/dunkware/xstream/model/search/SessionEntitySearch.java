@@ -10,8 +10,7 @@ public class SessionEntitySearch {
 
 	private SessionEntitySearchType type; 
 	private SessionEntitySearchFilter filterSearch;
-	
-	
+	private String streamIdentifier; 
 	private String name;
 	
 	public SessionEntitySearchType getType() {
@@ -36,6 +35,14 @@ public class SessionEntitySearch {
 	public void setFilterSearch(SessionEntitySearchFilter filterSearch) {
 		this.filterSearch = filterSearch;
 	}
+	public String getStreamIdentifier() {
+		return streamIdentifier;
+	}
+	public void setStreamIdentifier(String streamIdentifier) {
+		this.streamIdentifier = streamIdentifier;
+	}
+	
+	
 	
 	
 	

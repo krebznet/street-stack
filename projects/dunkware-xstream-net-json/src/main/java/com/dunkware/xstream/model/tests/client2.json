@@ -1,0 +1,29 @@
+ {
+			"filters": [
+				{
+					"type": "Value",
+					"value": {
+						"value": {
+							"type": "CurrentValue",
+							"field": {
+								"id": 2,
+								"identifier": "Last",
+								"name": "Last",
+								"version": 0.0
+							}
+						},
+						"condition": {
+							"type": "Numerical",
+							"numeric": {
+								"value": 110,
+								"operator": "GreaterThan"
+							}
+						}
+					},
+					"label": "(VolCount30sec Value) > 110",
+					"enabled": false,
+					"name": "Filter1"
+				}
+			]
+		}
+	
