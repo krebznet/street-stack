@@ -1,10 +1,13 @@
 package com.dunkware.trade.service.beach.server.web;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.servlet.mvc.method.annotation.StreamingResponseBody;
 
 import com.dunkware.trade.sdk.core.model.broker.BrokerType;
 import com.dunkware.trade.service.beach.server.trade.BeachTradeService;
@@ -44,34 +47,72 @@ public class BeachWebService {
 		}
 	}
 	
-	// accounts grid stream 
+	/**
+	 * Returns serialized array of com.dunkware.trade.service.beach.web.model.WebEvent
+	 * @return
+	 */
+	@GetMapping(path = "/trade/web/street/events")
+	public ResponseEntity<StreamingResponseBody> getStreetEvents() {
+		return null;
 	
 	
 
-	@PostMapping(path = "/trade/web/bot/save")
-	public String saveBot(Object bot) {
+	}
+	
+	/**
+	 * Returns streaming array of all WebAccount model objects in array, we will refresh entire grid on each streaming
+	 * response. 
+	 * @return
+	 */
+	@GetMapping(path = "/trade/web/street/accounts")
+	public ResponseEntity<StreamingResponseBody> getStreetAccounts() { 
 		return null;
 	}
 
-	@PostMapping(path = "/trade/web/bot/add")
-	public String addBot(Object bot) {
+	
+	/**
+	 * Returns serialized array of WebOrder objects. 
+	 * @return
+	 */
+	@GetMapping(path = "/trade/web/street/orders/")
+	public ResponseEntity<StreamingResponseBody> getStreetOrders() { 
 		return null;
 	}
 
-	@GetMapping(path = "/trade/web/bot/start")
-	public void startBot(Object botId) {
-
+	
+	
+	@GetMapping(path = "/trade/web/street/systems")
+	public ResponseEntity<StreamingResponseBody> getStreetSystems() { 
+		return null;
 	}
 
-	@GetMapping(path = "/trade/web/bot/stop")
-	public void stopBot(Object botId) {
-
+	
+	
+	@GetMapping(path = "/trade/web/account/systems")
+	public ResponseEntity<StreamingResponseBody> getAccountSystems(@RequestParam int accountId) { 
+		return null;
 	}
 
-	@GetMapping(path = "/trade/web/bot/delete")
-	public void deleteBot(Object botId) {
-
+	/**
+	 * returns all the trades for an account 
+	 * @return
+	 */
+	@GetMapping(path = "/trade/web/account/trades")
+	public ResponseEntity<StreamingResponseBody> getAccountTrades(@RequestParam int accountId) { 
+		return null;
 	}
-
+	
+	
+	/**
+	 * returns all the trades for an account 
+	 * @return
+	 */
+	@GetMapping(path = "/trade/web/system/trades")
+	public ResponseEntity<StreamingResponseBody> getSystemTrades(@RequestParam int systemId) { 
+		return null;
+	}
+	
+	
+	
 	//
 }

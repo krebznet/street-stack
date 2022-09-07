@@ -1,0 +1,61 @@
+columnDefs: [
+    {
+	    name:'Bot Actions',
+	    actions: [
+			{
+				// Stop icon/action when bot is running
+		   action: {
+			'name': "Stop",
+			cellClassRules {
+            // if bot status us active then we display this icon with link or route
+            // action could also hyper link text
+            'bot-status': params => params.value === "active",
+            // apply amber 2004
+            }, // if evauluates to true then the icon will be displayed and its route expressione vaulated 
+            'icon': '/material/icon/stop',
+            link': '/trade/web/bot/stop?bot=params.value'
+            // or it could be a route and not a call to a web service
+            route: /route/botview?bot=params.value
+        },	
+        	// start icon/action when bot is not running	
+         action: {
+	 		'name': 'Edit',
+			cellClassRules {
+            // if bot status us active then we display this icon with link or route
+            // action could also hyper link text
+            'bot-status': params => params.value === "inactive",
+            // apply amber 2004
+            }, // if evauluates to true then the icon will be displayed and its route expressione vaulated 
+            'icon': '/material/icon/start',
+            link': '/trade/web/bot/start?bot=params.value'
+            // or it could be a route and not a call to a web service
+            route: /route/botview?bot=params.value
+        },
+        
+        // delete always displayed with no cellClassRules
+         action: {
+			'name': "Delete"
+			// if evauluates to true then the icon will be displayed and its route expressione vaulated 
+            'icon': '/material/icon/Delete',
+            link': '/trade/web/bot/delete?bot=params.value'
+            // or it could be a route and not a call to a web service
+           
+        },
+        // always display edit icon with no cell class rules 
+           // delete always displayed with no cellClassRules
+         action: {
+			'name': "Edit"
+			// if evauluates to true then the icon will be displayed and its route expressione vaulated 
+            'icon': '/material/icon/edit',
+            route': '/trade/components/bot/editorbot=params.value'
+            // or it could be a route and not a call to a web service
+           
+        },
+			}
+			
+	
+		
+	]
+       
+    }
+],

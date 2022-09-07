@@ -2,7 +2,7 @@ package comm.dunkware.trade.service.beach.web.model;
 
 import java.time.LocalDateTime;
 
-public class WebLog {
+public class WebEvent {
 	
 	private LocalDateTime timestamp;
 	private String type; 

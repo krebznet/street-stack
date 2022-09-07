@@ -11,6 +11,7 @@ public class WebAccount {
 	private int activeTrades;
 	private double activeCapital; 
 	private double gainLossPercent; 
+	private double gainLossAmount;
 	private double capitalTraded; 
 	private int tradeCount; 
 	
@@ -80,6 +81,14 @@ public class WebAccount {
 	public void setActiveOrders(int activeOrders) {
 		this.activeOrders = activeOrders;
 	}
+	public double getGainLossAmount() {
+		return gainLossAmount;
+	}
+	public void setGainLossAmount(double gainLossAmount) {
+		this.gainLossAmount = gainLossAmount;
+	}
+	
+	
 	
 	
 
