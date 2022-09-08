@@ -9,7 +9,6 @@ import org.slf4j.LoggerFactory;
 import org.slf4j.Marker;
 import org.slf4j.MarkerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.autoconfigure.domain.EntityScanner;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -19,6 +18,9 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.mvc.method.annotation.StreamingResponseBody;
 
+import com.dunkware.common.util.grid.GridFormat;
+import com.dunkware.common.util.grid.GridOptions;
+import com.dunkware.common.util.grid.GridOptionsBuilder;
 import com.dunkware.common.util.json.DJson;
 import com.dunkware.trade.service.stream.server.controller.session.container.SessionContainer;
 import com.dunkware.trade.service.stream.server.controller.session.container.SessionContainerService;
@@ -28,7 +30,6 @@ import com.dunkware.trade.service.stream.server.streaming.StreamingAdapter;
 import com.dunkware.xstream.container.proto.EntityScannerStartReq;
 import com.dunkware.xstream.container.proto.EntityScannerStartResp;
 import com.dunkware.xstream.model.scanner.SessionEntityScanner;
-import com.dunkware.xstream.model.search.SessionEntitySearch;
 
 @RestController
 public class SessionContainerWebService {
@@ -45,9 +46,8 @@ public class SessionContainerWebService {
 	@PostMapping(path = "/stream/session/entity/scanner/start")
 	public EntityScannerStartResp entityScannerStart(@RequestBody() SessionEntityScanner scanner) {
 		EntityScannerStartReq req = new EntityScannerStartReq();
-
 		try {
-			
+			// Let's work together team 
 			// scanner.setStreamIdentifier(search.getFilterSearch().get) req.setVars(new
 			req.setScanner(scanner);
 			req.setVars(new ArrayList<String>());
@@ -58,6 +58,9 @@ public class SessionContainerWebService {
 		}
 
 		EntityScannerStartResp resp = new EntityScannerStartResp();
+		// mock grid column 
+		GridOptions options = GridOptionsBuilder.newInstnace("Entity").column("Last","last",GridFormat.TEXT).column("Last", "last", GridFormat.CURRENCY).column("Volume", "Volume", GridFormat.INTEGER).build();
+		resp.setOptions(options);
 		SessionContainer container = null;
 		try {
 			container = containerService.getContainer(req.getScanner().getStreamIdentifier());
