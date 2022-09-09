@@ -1,9 +1,14 @@
 package com.dunkware.common.util.grid;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
+@JsonIgnoreProperties(value = { "format" })
 public class GridColumn {
 
 	private Object field; 
 	private String headerName; 
+	@JsonIgnore()
 	private GridFormat format;
 	private boolean hide = false; 
 	

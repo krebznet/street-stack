@@ -506,22 +506,30 @@ public class ChannelImpl implements Channel, DKafkaByteHandler2 {
 					
 
 					// we will take care of message replies soon enough.
-					for (ChannelHandler channelHandler : channelHandlers) {
-						if (message.getPayload() != null) {
-							List<MessageHandler> handlers = channelHandler.getMessageHandlers(message.getPayload());
-							for (MessageHandler messageHandler : handlers) {
-								try {
-									Method method = messageHandler.getMethod();
-									messageHandler.getMethod().invoke(channelHandler.getTarget(), message.getPayload());
-								} catch (Exception e) {
-									logger.error("Exception Invoking Message Handler method "
-											+ messageHandler.getMethod().getName() + " class " + e.toString());
-									;
+					try {
+						channelHandlerLock.acquire();
+						for (ChannelHandler channelHandler : channelHandlers) {
+							if (message.getPayload() != null) {
+								List<MessageHandler> handlers = channelHandler.getMessageHandlers(message.getPayload());
+								for (MessageHandler messageHandler : handlers) {
+									try {
+										Method method = messageHandler.getMethod();
+										messageHandler.getMethod().invoke(channelHandler.getTarget(), message.getPayload());
+									} catch (Exception e) {
+										logger.error("Exception Invoking Message Handler method "
+												+ messageHandler.getMethod().getName() + " class " + e.toString());
+										;
+									}
 								}
 							}
 						}
-					}
 
+					} catch (Exception e) {
+						// TODO: handle exception 
+					} finally { 
+						channelHandlerLock.release();
+					}
+				
 				} catch (Exception e) {
 					e.printStackTrace();
 				}

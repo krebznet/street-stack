@@ -1,11 +1,16 @@
 package com.dunkware.trade.service.stream.server.controller.session.container.scanner;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.dunkware.common.util.data.NetBean;
 import com.dunkware.common.util.data.NetScannerDelta;
 import com.dunkware.common.util.data.NetScannerDeltaWeb;
+import com.dunkware.common.util.json.DJson;
 import com.dunkware.trade.service.stream.server.streaming.StreamingAdapter;
 import com.dunkware.trade.service.stream.server.streaming.StreamingListener;
 
@@ -17,6 +22,7 @@ public class SessionContainerEntityScannerStream implements SessionContainerEnti
 	private Logger logger = LoggerFactory.getLogger(getClass());
 	
 	private boolean disposed = false; 
+	private boolean initailized = false; 
 	
 	public void start(SessionContainerEntityScanner scanner, StreamingAdapter adapter) { 
 		this.scanner = scanner; 
@@ -28,17 +34,38 @@ public class SessionContainerEntityScannerStream implements SessionContainerEnti
 
 	@Override
 	public void scannerDelta(NetScannerDelta delta) {
-		try {
+	try {
 			NetScannerDeltaWeb web = new NetScannerDeltaWeb();
-			if(delta.getDeletes().size() > 0) {
-				web.setDeletes(delta.getDeletes().toArray(new NetBean[delta.getDeletes().size()]));
+			List<Map<String,Object>> inserts = new ArrayList<Map<String,Object>>();
+			List<Object> deletes = new ArrayList<Object>();
+			List<Map<String,Object>> updates = new ArrayList<Map<String,Object>>();
+			
+			for (NetBean bean : delta.getInserts()) {
+				inserts.add(bean.getValues());
 			}
-			if(delta.getInserts().size() > 0) {
-				web.setInserts(delta.getInserts().toArray(new NetBean[delta.getInserts().size()]));
+			
+			for (NetBean bean : delta.getUpdates()) {
+				updates.add(bean.getValues());
 			}
-			if(delta.getUpdates().size() > 0) { 
-				web.setUpdates(delta.getUpdates().toArray(new NetBean[delta.getUpdates().size()]));
+			
+			for (Object object : delta.getDeletes()) {
+				deletes.add(object);
+			
 			}
+			if(!initailized) {
+				inserts.addAll(updates);
+				initailized = true;
+			}
+			if(deletes.size() > 0)
+			web.setDeletes(deletes);
+			if(inserts.size() > 0)
+			web.setInserts(inserts);
+			if(updates.size() > 0)
+			web.setUpdates(updates);
+			
+			
+			
+			System.out.println(DJson.serialize(web));
 			
 			adapter.send(web);
 		} catch (Exception e) {
