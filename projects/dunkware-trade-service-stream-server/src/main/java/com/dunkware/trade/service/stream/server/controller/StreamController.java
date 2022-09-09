@@ -114,6 +114,7 @@ public class StreamController {
 
 	public void start(StreamEntity ent) throws Exception {
 		logger.info(":Starting Stream Controller " + ent.getName());
+		
 		// set member variabbes
 		this.ent = ent;
 		stats = new StreamControllerStreamStats();

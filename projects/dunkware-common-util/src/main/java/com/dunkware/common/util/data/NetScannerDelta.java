@@ -7,6 +7,7 @@ import com.dunkware.common.util.json.DJson;
 
 public class NetScannerDelta {
 
+	
 	private List<NetBean> inserts = new ArrayList<NetBean>();
 	private List<Object> deletes = new ArrayList<Object>();
 	private List<NetBean> updates = new ArrayList<NetBean>();

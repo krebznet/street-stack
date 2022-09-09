@@ -14,6 +14,8 @@ public class WebBotPlay {
 	private WebBotExitStrategy exitStrategy;
 	private Number rank; 
 	private boolean rankEnabled;
+	
+	
 	public String getName() {
 		return name;
 	}

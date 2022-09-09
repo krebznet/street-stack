@@ -100,7 +100,7 @@ public class DKafkaByteConsumer2 {
 		props.put("max.poll.records", 1000);
 		props.put("enable.auto.commit", "true");
 		props.put("auto.commit.interval.ms", "2500");
-		props.put("session.timeout.ms", "50000");
+		props.put("session.timeout.ms", "500000");
 		props.put("buffer.memory", 835544323);
 		props.put("fetch.max.wait.ms", 30);
 		props.put("key.deserializer", "org.apache.kafka.common.serialization.StringDeserializer");

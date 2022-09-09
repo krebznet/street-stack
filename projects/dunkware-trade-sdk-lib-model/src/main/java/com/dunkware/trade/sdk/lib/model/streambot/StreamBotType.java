@@ -1,17 +1,19 @@
-package com.dunkware.trade.sdk.lib.model.bot;
+package com.dunkware.trade.sdk.lib.model.streambot;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class Bot {
+import com.dunkware.trade.sdk.core.model.system.SystemType;
+
+public class StreamBotType extends SystemType {
 	
 	private String name; 
 	private String account; 
-	private Number allocatedCapital; 
-	private List<BotPlay> plays = new ArrayList<BotPlay>();
+	private double allocatedCapital; 
+	private List<StreamBotPlayType> plays = new ArrayList<StreamBotPlayType>();
 	private boolean enabled; 
-	private Number activeTradeLimit; 
-	private Number tradeThrottle;
+	private int activeTradeLimit; 
+	private int tradeThrottle;
 	
 	
 	public String getName() {
@@ -29,13 +31,11 @@ public class Bot {
 	public Number getAllocatedCapital() {
 		return allocatedCapital;
 	}
-	public void setAllocatedCapital(Number allocatedCapital) {
-		this.allocatedCapital = allocatedCapital;
-	}
-	public List<BotPlay> getPlays() {
+	
+	public List<StreamBotPlayType> getPlays() {
 		return plays;
 	}
-	public void setPlays(List<BotPlay> plays) {
+	public void setPlays(List<StreamBotPlayType> plays) {
 		this.plays = plays;
 	}
 	public boolean isEnabled() {
@@ -47,15 +47,22 @@ public class Bot {
 	public Number getActiveTradeLimit() {
 		return activeTradeLimit;
 	}
-	public void setActiveTradeLimit(Number activeTradeLimit) {
-		this.activeTradeLimit = activeTradeLimit;
-	}
-	public Number getTradeThrottle() {
+	public int getTradeThrottle() {
 		return tradeThrottle;
 	}
-	public void setTradeThrottle(Number tradeThrottle) {
+	public void setTradeThrottle(int tradeThrottle) {
 		this.tradeThrottle = tradeThrottle;
-	} 
+	}
+	public void setAllocatedCapital(double allocatedCapital) {
+		this.allocatedCapital = allocatedCapital;
+	}
+	public void setActiveTradeLimit(int activeTradeLimit) {
+		this.activeTradeLimit = activeTradeLimit;
+	}
+	
+	
+	
+
 	
 	
 	

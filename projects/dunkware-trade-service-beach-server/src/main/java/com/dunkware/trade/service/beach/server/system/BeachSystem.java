@@ -4,13 +4,13 @@ import com.dunkware.trade.sdk.core.model.system.SystemType;
 
 public interface BeachSystem {
 
-	public SystemType getType();
+	// okay if active it has a beachContext -> 
+	// a beach context is started/
 	
-	// this have to have running all the time
+	// schedule 
+	// start()
+	// stop(); 
 	
-	// beachPool 
-	
-	
-	
-	// status = running / stopping / starting / stopped / 
+	// context.stop(); 
+	// context.
 }

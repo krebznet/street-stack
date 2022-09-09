@@ -3,7 +3,10 @@ package com.dunkware.common.util.data;
 import java.util.HashMap;
 import java.util.Map;
 
+import com.fasterxml.jackson.annotation.JsonValue;
+
 public class NetBean {
+	
 	
 	private Map<String,Object> values = new HashMap<String,Object>();
 	

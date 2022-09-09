@@ -439,44 +439,53 @@ public class ChannelImpl implements Channel, DKafkaByteHandler2 {
 								continue;
 							}
 							boolean handled = false;
-							for (ChannelHandler channelHandler : channelHandlers) {
-								if(channelHandler.hasMessageReply(payload)) { 
-									try {
-										MessageReply messageReply = channelHandler.getMessageReply(payload);
-										Method method = messageReply.getMethod();
-										Object response = method.invoke(channelHandler.getTarget(), payload);
-										Message responseMessage = Message.newInstance(response);
-										responseMessage.setHeader(Message.HEADER_KEY_MESSAGE_TYPE, Message.HEADER_REQUEST_TYPE_RESPONSE);
-										responseMessage.setHeader(Message.HEADER_KEY_MESSAGE_REQUEST_ID, message.getHeader(Message.HEADER_KEY_MESSAGE_ID));
-										send(responseMessage);
-										handled = true; 
-									} catch (Exception e) {
-										Message responseMessage = Message.newInstance();
-										responseMessage.setHeader(Message.HEADER_KEY_MESSAGE_TYPE, Message.HEADER_REQUEST_TYPE_RESPONSE);
-										responseMessage.setHeader(Message.HEADER_KEY_MESSAGE_REQUEST_ID, message.getHeader(Message.HEADER_KEY_MESSAGE_ID));
-										responseMessage.setHeader(Message.HEADER_KEY_MESSAGE_RESPONSE_ERROR, e.toString());
+							try {
+								channelHandlerLock.acquire();
+								for (ChannelHandler channelHandler : channelHandlers) {
+									if(channelHandler.hasMessageReply(payload)) { 
 										try {
+											MessageReply messageReply = channelHandler.getMessageReply(payload);
+											Method method = messageReply.getMethod();
+											Object response = method.invoke(channelHandler.getTarget(), payload);
+											Message responseMessage = Message.newInstance(response);
+											responseMessage.setHeader(Message.HEADER_KEY_MESSAGE_TYPE, Message.HEADER_REQUEST_TYPE_RESPONSE);
+											responseMessage.setHeader(Message.HEADER_KEY_MESSAGE_REQUEST_ID, message.getHeader(Message.HEADER_KEY_MESSAGE_ID));
 											send(responseMessage);
-											handled = true;
-										} catch (Exception e2) {
-											logger.error("Exception sending response error message " + e2.toString());
+											handled = true; 
+										} catch (Exception e) {
+											Message responseMessage = Message.newInstance();
+											responseMessage.setHeader(Message.HEADER_KEY_MESSAGE_TYPE, Message.HEADER_REQUEST_TYPE_RESPONSE);
+											responseMessage.setHeader(Message.HEADER_KEY_MESSAGE_REQUEST_ID, message.getHeader(Message.HEADER_KEY_MESSAGE_ID));
+											responseMessage.setHeader(Message.HEADER_KEY_MESSAGE_RESPONSE_ERROR, e.toString());
+											try {
+												send(responseMessage);
+												handled = true;
+											} catch (Exception e2) {
+												logger.error("Exception sending response error message " + e2.toString());
+											}
 										}
 									}
 								}
-							}
-							if(!handled) {
-								// not found --> 
-								Message responseMessage = Message.newInstance();
-								responseMessage.setHeader(Message.HEADER_KEY_MESSAGE_TYPE, Message.HEADER_REQUEST_TYPE_RESPONSE);
-								responseMessage.setHeader(Message.HEADER_KEY_MESSAGE_REQUEST_ID, message.getHeader(Message.HEADER_KEY_MESSAGE_ID));
-								responseMessage.setHeader(Message.HEADER_KEY_MESSAGE_RESPONSE_ERROR, "No handlers found");
-								try {
-									send(responseMessage);
-								} catch (Exception e2) {
-									logger.error("Exception sending response error message " + e2.toString());
+								if(!handled) {
+									// not found --> 
+									Message responseMessage = Message.newInstance();
+									responseMessage.setHeader(Message.HEADER_KEY_MESSAGE_TYPE, Message.HEADER_REQUEST_TYPE_RESPONSE);
+									responseMessage.setHeader(Message.HEADER_KEY_MESSAGE_REQUEST_ID, message.getHeader(Message.HEADER_KEY_MESSAGE_ID));
+									responseMessage.setHeader(Message.HEADER_KEY_MESSAGE_RESPONSE_ERROR, "No handlers found");
+									try {
+										send(responseMessage);
+									} catch (Exception e2) {
+										logger.error("Exception sending response error message " + e2.toString());
+									}
+									
 								}
-								
+							} catch (Exception e) {
+								logger.error(e.toString());
+								// TODO: handle exception
+							} finally {
+								channelHandlerLock.release();
 							}
+						
 							continue;
 						}
 					}

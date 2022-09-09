@@ -1,19 +1,25 @@
 package com.dunkware.trade.service.beach.server.web;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.mvc.method.annotation.StreamingResponseBody;
 
 import com.dunkware.trade.sdk.core.model.broker.BrokerType;
+import com.dunkware.trade.service.beach.server.resources.BeachResourceService;
 import com.dunkware.trade.service.beach.server.trade.BeachTradeService;
 import com.dunkware.trade.service.beach.server.web.util.BeachWebConverter;
 
 import comm.dunkware.trade.service.beach.web.model.WebBroker;
+import comm.dunkware.trade.service.beach.web.model.WebSystemResource;
 
 /**
  * Adapts to the angular world
@@ -25,7 +31,11 @@ import comm.dunkware.trade.service.beach.web.model.WebBroker;
 public class BeachWebService {
 
 	@Autowired
-	BeachTradeService tradeService;
+	private BeachTradeService tradeService;
+	
+	
+	@Autowired
+	private BeachResourceService resourceService; 
 
 	
 
@@ -47,12 +57,22 @@ public class BeachWebService {
 		}
 	}
 	
+	
+	@GetMapping(path = "/trade/web/resources/systems")
+	public @ResponseBody()List<WebSystemResource> getSystemResources() { 
+		List<WebSystemResource> results = new ArrayList<WebSystemResource>();
+		
+		
+		return results;
+	}
+	
 	/**
 	 * Returns serialized array of com.dunkware.trade.service.beach.web.model.WebEvent
 	 * @return
 	 */
 	@GetMapping(path = "/trade/web/street/events")
 	public ResponseEntity<StreamingResponseBody> getStreetEvents() {
+		
 		return null;
 	
 	
