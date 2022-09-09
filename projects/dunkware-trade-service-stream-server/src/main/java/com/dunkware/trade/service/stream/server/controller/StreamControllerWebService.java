@@ -34,14 +34,6 @@ import com.dunkware.trade.service.stream.web.workspace.proto.GetSavedEntitySearc
 import com.dunkware.xstream.model.scanner.SessionEntityScanner;
 import com.dunkware.xstream.model.spec.StreamSpec;
 
-// /stream/admin/add
-// /stream/admin/update 
-// /stream/session/start
-// /stream/session/stop
-// /stream/session/notify/signal
-// /stream/session/notify/ticker
-
-// /stream/session/status 
 
 @RestController
 public class StreamControllerWebService {
