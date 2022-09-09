@@ -59,7 +59,8 @@ public class SessionContainerWebService {
 
 		EntityScannerStartResp resp = new EntityScannerStartResp();
 		// mock grid column 
-		GridOptions options = GridOptionsBuilder.newInstnace("Entity").column("Last","last",GridFormat.TEXT).column("Last", "last", GridFormat.CURRENCY).column("Volume", "Volume", GridFormat.INTEGER).build();
+		GridOptions options = GridOptionsBuilder.newInstnace().column("Last","last",GridFormat.TEXT).column("Last", "last", GridFormat.CURRENCY).column("Volume", "Volume", GridFormat.INTEGER).
+				column("Cool", "cool", GridFormat.CURRENCY).build();
 		resp.setOptions(options);
 		SessionContainer container = null;
 		try {
