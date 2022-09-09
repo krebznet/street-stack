@@ -2,16 +2,15 @@ package com.dunkware.common.util.grid;
 
 public class GridOptionsBuilder {
 	
-	public static GridOptionsBuilder newInstnace(Object id) { 
-		return new GridOptionsBuilder(id);
+	public static GridOptionsBuilder newInstnace() { 
+		return new GridOptionsBuilder();
 	}
 
 	private GridOptions options = new GridOptions(); 
 	
-	private Object id; 
-	
-	private GridOptionsBuilder(Object id) { 
-		this.id = id;
+
+	private GridOptionsBuilder() { 
+		
 		column("id", "id",GridFormat.TEXT,true);
 		
 	}

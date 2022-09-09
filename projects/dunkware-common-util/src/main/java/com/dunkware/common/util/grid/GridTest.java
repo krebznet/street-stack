@@ -6,7 +6,7 @@ public class GridTest {
 
 	public static void main(String[] args) {
 		
-		GridOptions options = GridOptionsBuilder.newInstnace(32).column("Last", "last", GridFormat.CURRENCY)
+		GridOptions options = GridOptionsBuilder.newInstnace().column("Last", "last", GridFormat.CURRENCY)
 		.column("Volume", "volume", GridFormat.INTEGER).build();
 		
 		try {
