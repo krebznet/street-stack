@@ -53,7 +53,8 @@ public class SessionContainerEntityScannerStream implements SessionContainerEnti
 			
 			}
 			if(!initailized) {
-				inserts.addAll(updates);
+			 	inserts.addAll(updates);
+			 	updates.clear();
 				initailized = true;
 			}
 			if(deletes.size() > 0)
