@@ -1,5 +1,9 @@
 package com.dunkware.common.util.grid;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import com.dunkware.common.util.grid.action.GridAction;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
@@ -9,11 +13,12 @@ public class GridColumn {
 	private Object field; 
 	private String headerName; 
 	@JsonIgnore()
-	private GridFormat format;
-	private boolean hide = false; 
+	private String valueFormatter = null;
+	private boolean hide = false;
+	private List<GridAction> actions = new ArrayList<GridAction>();
 	
 	
-	
+
 	public Object getField() {
 		return field;
 	}
@@ -33,12 +38,26 @@ public class GridColumn {
 	public void setHide(boolean hide) {
 		this.hide = hide;
 	}
-	public GridFormat getFormat() {
-		return format;
+	public String getValueFormatter() {
+		return valueFormatter;
 	}
-	public void setFormat(GridFormat format) {
-		this.format = format;
+	
+	public void setValueFormatter(String valueFormatter) {
+		this.valueFormatter = valueFormatter;
 	}
+	public List<GridAction> getActions() {
+		return actions;
+	}
+	public void setActions(List<GridAction> actions) {
+		this.actions = actions;
+	}
+	
+	
+	
+	
+	
+	
+	
 	
 	
 	

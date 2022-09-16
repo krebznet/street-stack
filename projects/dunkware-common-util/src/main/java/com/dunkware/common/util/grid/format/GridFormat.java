@@ -1,4 +1,4 @@
-package com.dunkware.common.util.grid;
+package com.dunkware.common.util.grid.format;
 
 public enum GridFormat {
 TEXT, // assume value is string 
