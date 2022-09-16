@@ -6,6 +6,6 @@ public interface BeachTrade extends Trade {
 
 	BeachAccount getAccount();
 	
-	
-	
+	// beach trade spec -> open orders -, runtime, opentime, openingTime, closeTime, closingTime 
+	// comissions
 }

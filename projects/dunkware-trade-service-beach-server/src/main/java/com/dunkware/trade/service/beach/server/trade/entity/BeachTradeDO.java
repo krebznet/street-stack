@@ -28,7 +28,7 @@ public class BeachTradeDO  {
 	private long id;
 	
 	@ManyToOne()
-	private BeachPoolDO pool;
+	private BeachSessionDO pool;
 	
 	private LocalDateTime openingTime;
 	private LocalDateTime openTime; 
@@ -74,10 +74,10 @@ public class BeachTradeDO  {
 	public void setId(long id) {
 		this.id = id;
 	}
-	public BeachPoolDO getPool() {
+	public BeachSessionDO getPool() {
 		return pool;
 	}
-	public void setPool(BeachPoolDO pool) {
+	public void setPool(BeachSessionDO pool) {
 		this.pool = pool;
 	}
 	public LocalDateTime getOpeningTime() {

@@ -9,4 +9,10 @@ public interface BeachAccount extends BrokerAccount {
 	
 	BeachAccountDO getEntity();	
 	
+	
+	
+	// need a spec that has the active counted, open trades, order orders, orders filled, 
+			// needs to observe a system for unrealized gainloss, active capital 
+			// then aggregate those 
+	
 }

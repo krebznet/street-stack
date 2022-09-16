@@ -23,7 +23,7 @@ import com.dunkware.trade.sdk.core.runtime.registry.TradeRegistry;
 import com.dunkware.trade.service.beach.server.common.BeachRuntime;
 import com.dunkware.trade.service.beach.server.trade.BeachAccount;
 import com.dunkware.trade.service.beach.server.trade.BeachBroker;
-import com.dunkware.trade.service.beach.server.trade.BeachTradeService;
+import com.dunkware.trade.service.beach.server.trade.BeachService;
 import com.dunkware.trade.service.beach.server.trade.entity.BeachAccountDO;
 import com.dunkware.trade.service.beach.server.trade.entity.BeachBrokerDO;
 import com.dunkware.trade.service.beach.server.trade.entity.BeachTradeRepo;
@@ -45,7 +45,7 @@ public class BeachBrokerImpl implements BeachBroker {
 	private ApplicationContext ac;
 
 	@Autowired
-	private BeachTradeService tradeService;
+	private BeachService tradeService;
 
 	@Autowired
 	private BeachTradeRepo tradeRepo;

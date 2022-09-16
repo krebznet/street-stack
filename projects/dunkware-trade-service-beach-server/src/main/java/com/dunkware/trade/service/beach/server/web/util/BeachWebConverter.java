@@ -2,16 +2,13 @@ package com.dunkware.trade.service.beach.server.web.util;
 
 import com.dunkware.trade.sdk.core.model.broker.BrokerType;
 import com.dunkware.trade.sdk.tws.model.TwsBrokerType;
-import com.dunkware.trade.service.beach.server.resources.BeachResourceSystem;
-import com.dunkware.trade.service.beach.server.resources.BeachResourceUtil;
 
-import comm.dunkware.trade.service.beach.web.model.WebBroker;
-import comm.dunkware.trade.service.beach.web.model.WebSystemResource;
+import comm.dunkware.trade.service.beach.web.model.BeachWebBroker;
 
 public class BeachWebConverter {
 
 	
-	public static BrokerType toServerBrokerType(WebBroker broker) throws Exception { 
+	public static BrokerType toServerBrokerType(BeachWebBroker broker) throws Exception { 
 		if(broker.getType().equalsIgnoreCase("interactive")) { 
 			TwsBrokerType type = new TwsBrokerType(); 
 			type.setHost(broker.getHost());
@@ -24,11 +21,5 @@ public class BeachWebConverter {
 	}
 	
 	
-	public static WebSystemResource toWebSystemResource(BeachResourceSystem resource) { 
-		WebSystemResource web = new WebSystemResource();
-		web.setId(resource.getId());
-		web.setName(resource.getName());
-		web.setType(BeachResourceUtil.getSystemTypeName(resource.getType()));
-		return web;
-	}
+	
 }

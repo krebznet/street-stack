@@ -7,21 +7,21 @@ import com.dunkware.common.util.calc.DCalc;
 import com.dunkware.common.util.events.DEventNode;
 import com.dunkware.common.util.events.anot.ADEventMethod;
 import com.dunkware.common.util.json.DJson;
-import com.dunkware.common.util.uuid.DUUID;
 import com.dunkware.trade.sdk.core.model.trade.TradeSpec;
 import com.dunkware.trade.sdk.core.model.trade.TradeStatus;
 import com.dunkware.trade.sdk.core.model.trade.TradeType;
 import com.dunkware.trade.sdk.core.runtime.registry.TradeRegistry;
-import com.dunkware.trade.sdk.core.runtime.trade.TradeContext;
 import com.dunkware.trade.sdk.core.runtime.trade.TradeEntry;
 import com.dunkware.trade.sdk.core.runtime.trade.TradeExit;
+import com.dunkware.trade.sdk.core.runtime.trade.TradeSession;
 import com.dunkware.trade.sdk.core.runtime.trade.event.ETradeEntryCompleted;
 import com.dunkware.trade.sdk.core.runtime.trade.event.ETradeEntryException;
 import com.dunkware.trade.sdk.core.runtime.trade.event.ETradeExitCompleted;
 import com.dunkware.trade.sdk.core.runtime.trade.event.ETradeSpecUpdate;
 import com.dunkware.trade.service.beach.protocol.trade.spec.BeachTradeSpec;
 import com.dunkware.trade.service.beach.server.trade.BeachAccount;
-import com.dunkware.trade.service.beach.server.trade.BeachPool;
+import com.dunkware.trade.service.beach.server.trade.BeachSession;
+import com.dunkware.trade.service.beach.server.trade.BeachSystem;
 import com.dunkware.trade.service.beach.server.trade.BeachTrade;
 import com.dunkware.trade.service.beach.server.trade.entity.BeachEntryDO;
 import com.dunkware.trade.service.beach.server.trade.entity.BeachExitDO;
@@ -41,7 +41,7 @@ public class BeachTradeImpl implements BeachTrade, InstrumentListener {
 	private BeachAccount account; 
 	
 	private BeachTradeDO entity; 
-	private BeachPool pool;
+	private BeachSession session;
 	
 	private BeachEntryImpl entry; 
 	private BeachExitImpl exit; 
@@ -58,22 +58,22 @@ public class BeachTradeImpl implements BeachTrade, InstrumentListener {
 	 * @param entity
 	 * @throws Exception
 	 */
-	public void init(BeachTradeDO entity, BeachPool pool, boolean created) throws Exception { 
-		this.entity = entity;
-		this.pool = pool;
-		this.eventNode = pool.getEventNode().createChild("/trades/" + DUUID.randomUUID(5));
-		spec = new BeachTradeSpec();
-		spec.setAccount(pool.getAccount().getIdentifier());
-		spec.setBroker(pool.getAccount().getBroker().getIdentifier());
+	public void init(BeachTradeDO entity, BeachSystem pool, boolean created) throws Exception { 
+		/*
+		 * this.entity = entity; this.pool = pool; this.eventNode =
+		 * pool.getEventNode().createChild("/trades/" + DUUID.randomUUID(5)); spec = new
+		 * BeachTradeSpec(); spec.setAccount(pool.getAccount().getIdentifier());
+		 * spec.setBroker(pool.getAccount().getBroker().getIdentifier());
+		 */
 	}
 	
 	
 
 	@Override
-	public void create(TradeType type, TradeContext context) throws Exception {
+	public void create(TradeType type, TradeSession context) throws Exception {
 		// try to get the instrument
 		try {
-			instrument = pool.getAccount().getBroker().acquireInstrument(type.getTicker());
+			//instrument = pool.getAccount().getBroker().acquireInstrument(type.getTicker());
 		} catch (Exception e) {
 			throw new Exception("Could not get trading instrument for " + type.getTicker().toString() + " exception " + e.toString());
 		}
@@ -85,7 +85,8 @@ public class BeachTradeImpl implements BeachTrade, InstrumentListener {
 		double lastPrice = instrument.getLast();
 		double doubleSize = capital/lastPrice;
 		int intSize = (int)doubleSize;
-		spec.setAllocatedSize(intSize);
+		//spec.setCapitalAllocated(intSize);
+	//	spec.setAllocatedSize(intSize);
 		spec.setStatus(TradeStatus.Allocated);
 		
 		this.entity.setAllocatedCapital(type.getCapital());
@@ -155,19 +156,19 @@ public class BeachTradeImpl implements BeachTrade, InstrumentListener {
 
 	@Override
 	public void close() throws Exception {
-		if(spec.getStatus() != TradeStatus.Open) { 
+		if(getSpec().getStatus() != TradeStatus.Open) { 
 			throw new Exception("Cannot Close Trade When Status Is " + getStatus());
 		}
 	}
 
 	@Override
 	public TradeStatus getStatus() {
-		return spec.getStatus();
+		return getSpec().getStatus();
 	}
 
 	@Override
 	public TradeSpec getSpec() {
-		return spec; 
+		return getSpec(); 
 	}
 
 	@Override
@@ -196,8 +197,8 @@ public class BeachTradeImpl implements BeachTrade, InstrumentListener {
 	}
 
 	@Override
-	public TradeContext getContext() {
-		return pool;
+	public TradeSession getSession() {
+		return session;
 	}
 	
 	/**
@@ -235,7 +236,7 @@ public class BeachTradeImpl implements BeachTrade, InstrumentListener {
 	 */
 	@Override
 	public void instrumentUpdate(Instrument instrument) {
-		getContext().execute(new TradeUpdater());		
+		getSession().execute(new TradeUpdater());		
 	}
 	
 	

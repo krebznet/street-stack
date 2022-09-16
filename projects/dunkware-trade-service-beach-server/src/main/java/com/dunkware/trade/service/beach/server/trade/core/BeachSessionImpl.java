@@ -1,8 +1,10 @@
 package com.dunkware.trade.service.beach.server.trade.core;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 import java.util.concurrent.Semaphore;
+import java.util.stream.Stream;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -15,22 +17,23 @@ import com.dunkware.trade.sdk.core.model.trade.TradeStatus;
 import com.dunkware.trade.sdk.core.model.trade.TradeType;
 import com.dunkware.trade.sdk.core.runtime.order.Order;
 import com.dunkware.trade.sdk.core.runtime.registry.TradeRegistry;
-import com.dunkware.trade.service.beach.protocol.trade.pool.BeachPoolStatus;
-import com.dunkware.trade.service.beach.protocol.trade.pool.spec.BeachPoolSpec;
+import com.dunkware.trade.sdk.core.runtime.trade.Trade;
+import com.dunkware.trade.sdk.core.runtime.trade.TradeException;
 import com.dunkware.trade.service.beach.server.common.BeachRuntime;
 import com.dunkware.trade.service.beach.server.trade.BeachAccount;
-import com.dunkware.trade.service.beach.server.trade.BeachPool;
+import com.dunkware.trade.service.beach.server.trade.BeachService;
+import com.dunkware.trade.service.beach.server.trade.BeachSession;
+import com.dunkware.trade.service.beach.server.trade.BeachSystem;
 import com.dunkware.trade.service.beach.server.trade.BeachTrade;
-import com.dunkware.trade.service.beach.server.trade.BeachTradeService;
-import com.dunkware.trade.service.beach.server.trade.entity.BeachPoolDO;
+import com.dunkware.trade.service.beach.server.trade.entity.BeachSessionDO;
 import com.dunkware.trade.service.beach.server.trade.entity.BeachTradeDO;
 
-public class BeachPoolImpl implements BeachPool {
+public class BeachSessionImpl implements BeachSession {
 	
 	private Logger logger = LoggerFactory.getLogger(getClass());
 	
 	@Autowired
-	private BeachTradeService tradeService; 
+	private BeachService tradeService; 
 	
 	@Autowired
 	private BeachRuntime beachRuntime; 
@@ -40,9 +43,9 @@ public class BeachPoolImpl implements BeachPool {
 	private ApplicationContext ac;
 	
 	private BeachAccount account;
-	private BeachPoolDO entity;
+	private BeachSessionDO entity;
 	
-	private BeachPoolSpec spec = new BeachPoolSpec();
+	
 	
 	private List<BeachTradeImpl> trades = new ArrayList<BeachTradeImpl>();
 	private Semaphore tradeLock = new Semaphore(1);
@@ -51,19 +54,30 @@ public class BeachPoolImpl implements BeachPool {
 	private DEventNode eventNode; 
 	
 	
-	public void init(BeachPoolDO entity) throws Exception { 
-		this.entity = entity;
-		eventNode =  tradeService.getEventNode().createChild("/pools/" + entity.getIdentifier());
-		try {
-			account = tradeService.getAccount(entity.getAccount().getBroker().getIdentifier(), entity.getAccount().getIdentifier());
-			spec.setStatus(BeachPoolStatus.EXCEPTION);
-		} catch (Exception e) {
-			logger.warn("Beach Pool {} Init Exception, Account Get Exception " + e.toString(),entity.getIdentifier());
-		}
-		spec.setStatus(BeachPoolStatus.RUNNING);
+	public void init(BeachSessionDO entity) throws Exception { 
+		/*
+		 * this.entity = entity; eventNode =
+		 * tradeService.getEventNode().createChild("/pools/" + entity.getIdentifier());
+		 * try { account =
+		 * tradeService.getAccount(entity.getAccount().getBroker().getIdentifier(),
+		 * entity.getAccount().getIdentifier());
+		 * spec.setStatus(BeachPoolStatus.EXCEPTION); } catch (Exception e) {
+		 * logger.warn("Beach Pool {} Init Exception, Account Get Exception " +
+		 * e.toString(),entity.getIdentifier()); }
+		 * spec.setStatus(BeachPoolStatus.RUNNING);
+		 */
 	}
 	
 	
+	
+	@Override
+	public void event(String source, String type, String message) throws Exception {
+		// TODO Auto-generated method stub
+		
+	}
+
+
+
 	@Override
 	public BeachTrade createTrade(TradeType tradeType) throws Exception {
 		// validate trade
@@ -77,7 +91,7 @@ public class BeachPoolImpl implements BeachPool {
 		ent.setTickerType(tradeType.getTicker().getType());
 		ent.setAllocatedCapital(tradeType.getCapital());
 		ent.setStatus(TradeStatus.Initializing);
-		trade.init(ent, this,false);
+	//	trade.init(ent, this,false);
 		trade.create(tradeType, this);
 		
 		try {
@@ -93,8 +107,14 @@ public class BeachPoolImpl implements BeachPool {
 	}
 	
 	@Override
-	public Order createOrder(OrderType type) throws Exception {
-		return account.createOrder(type);
+	public Order createOrder(OrderType type) throws TradeException {
+		try {
+			return account.createOrder(type);	
+		} catch (Exception e) {
+			
+			throw new TradeException(e.toString(),e);
+		}
+		
 	}
 
 
@@ -105,27 +125,13 @@ public class BeachPoolImpl implements BeachPool {
 	}
 
 
-	@Override
-	public BeachAccount getAccount() {
-		return account;
-	}
+	
 
 	@Override
-	public BeachPoolDO getEntity() {
+	public BeachSessionDO getEntity() {
 		return entity;
 	}
 
-
-	@Override
-	public BeachPoolStatus getStatus() {
-		return spec.getStatus();
-	}
-
-
-	@Override
-	public BeachPoolSpec getSpec() {
-		return spec;
-	}
 
 
 	@Override
@@ -156,6 +162,35 @@ public class BeachPoolImpl implements BeachPool {
 		if(type.getCapital() == 0.0 || type.getCapital() < 0.0)  {
 			throw new Exception("Trade Capital Is Invalid " + type.getCapital() );
 		}
+	}
+
+
+	@Override
+	public Collection<Trade> getOpenTrades() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+
+	@Override
+	public void liquidate() throws TradeException {
+		// TODO Auto-generated method stub
+		
+	}
+
+
+	@Override
+	public Stream getStream(String ident) throws TradeException {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+
+
+	@Override
+	public BeachSystem getSystem() {
+		// TODO Auto-generated method stub
+		return null;
 	}
 	
 	

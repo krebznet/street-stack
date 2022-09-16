@@ -18,26 +18,27 @@ import org.springframework.stereotype.Component;
 import com.dunkware.common.util.events.DEventNode;
 import com.dunkware.common.util.json.DJson;
 import com.dunkware.trade.sdk.core.model.broker.BrokerType;
+import com.dunkware.trade.sdk.core.model.system.SystemType;
 import com.dunkware.trade.sdk.core.runtime.broker.BrokerAccount;
 import com.dunkware.trade.sdk.core.runtime.registry.TradeRegistry;
 import com.dunkware.trade.service.beach.server.common.BeachRuntime;
 import com.dunkware.trade.service.beach.server.trade.BeachAccount;
 import com.dunkware.trade.service.beach.server.trade.BeachBroker;
-import com.dunkware.trade.service.beach.server.trade.BeachPool;
-import com.dunkware.trade.service.beach.server.trade.BeachTradeService;
+import com.dunkware.trade.service.beach.server.trade.BeachService;
+import com.dunkware.trade.service.beach.server.trade.BeachSystem;
 import com.dunkware.trade.service.beach.server.trade.entity.BeachBrokerDO;
-import com.dunkware.trade.service.beach.server.trade.entity.BeachPoolDO;
+import com.dunkware.trade.service.beach.server.trade.entity.BeachSessionDO;
 import com.dunkware.trade.service.beach.server.trade.entity.BeachTradeRepo;
 
 @Component
 @Profile("TradeService")
 @Transactional
-public class BeachTradeServiceImpl implements BeachTradeService  {
+public class BeachServiceImpl implements BeachService  {
 
 	private Logger logger = LoggerFactory.getLogger(getClass());
 	
 	private ConcurrentHashMap<String, BeachBroker> brokers = new ConcurrentHashMap<String,BeachBroker>();
-	private ConcurrentHashMap<String, BeachPool> pools = new ConcurrentHashMap<String, BeachPool>();
+	private ConcurrentHashMap<String, BeachSystem> pools = new ConcurrentHashMap<String, BeachSystem>();
 	
 	@Autowired
 	private BeachRuntime runtime;
@@ -147,7 +148,7 @@ public class BeachTradeServiceImpl implements BeachTradeService  {
 	}
 
 	@Override
-	public BeachPool getPool(String identifier) throws Exception {
+	public BeachSystem getSystem(String identifier) throws Exception {
 		if(pools.containsKey(identifier) == false) { 
 			throw new Exception("Beach Pool " + identifier + " Not Found");
 		}
@@ -155,34 +156,25 @@ public class BeachTradeServiceImpl implements BeachTradeService  {
 	}
 
 	@Override
-	public BeachPool createPool(String broker, String account, String identifier) throws Exception {
-		if(pools.containsKey(identifier)) { 
-			throw new Exception("Trade Pool " + identifier + " Already Exists, Cannot create");
-		}
-		BeachAccount act = getAccount(broker, account);
-		BeachPoolDO ent = new BeachPoolDO();
-		ent.setAccount(act.getEntity());
-		ent.setIdentifier(identifier);
-		EntityManager em = null;
-		try {
-			em = tradeRepo.createEntityManager();
-			em.getTransaction().begin();
-			em.persist(ent);
-			em.getTransaction().commit();
-		} catch (Exception e) {
-			throw new Exception("Exception persisting trade pool entitty " + e.toString());
-		} finally { 
-			em.close();
-		}
-		BeachPoolImpl pool = new BeachPoolImpl();
-		ac.getAutowireCapableBeanFactory().autowireBean(pool);
-		pool.init(ent);
-		this.pools.put(identifier, pool);
-		return pool;
+	public BeachSystem addSystem(String broker, String account, String identifier, SystemType type) throws Exception {
+		/*
+		 * if(pools.containsKey(identifier)) { throw new Exception("Trade Pool " +
+		 * identifier + " Already Exists, Cannot create"); } BeachAccount act =
+		 * getAccount(broker, account); BeachSessionDO ent = new BeachSessionDO();
+		 * ent.setAccount(act.getEntity()); ent.setIdentifier(identifier); EntityManager
+		 * em = null; try { em = tradeRepo.createEntityManager();
+		 * em.getTransaction().begin(); em.persist(ent); em.getTransaction().commit(); }
+		 * catch (Exception e) { throw new
+		 * Exception("Exception persisting trade pool entitty " + e.toString()); }
+		 * finally { em.close(); } BeachSessionImpl pool = new BeachSessionImpl();
+		 * ac.getAutowireCapableBeanFactory().autowireBean(pool); pool.init(ent);
+		 * //this.pools.put(identifier, pool); //return pool; return null;
+		 */
+		return null;
 	}
 
 	@Override
-	public boolean poolExists(String identifier) {
+	public boolean systemExists(String identifier) {
 		if(pools.containsKey(identifier)) { 
 			return true; 
 		}

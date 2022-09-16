@@ -94,7 +94,7 @@ public class BeachEntryImpl implements BeachEntry {
 				}
 			}
 		};
-		getTrade().getContext().execute(runnable);
+		getTrade().getSession().execute(runnable);
 	}
 
 	@ADEventMethod()
@@ -117,7 +117,7 @@ public class BeachEntryImpl implements BeachEntry {
 				}
 			}
 		};
-		getTrade().getContext().execute(runnable);
+		getTrade().getSession().execute(runnable);
 	}
 
 }

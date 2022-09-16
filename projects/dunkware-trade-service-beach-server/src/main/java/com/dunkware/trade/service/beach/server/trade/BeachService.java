@@ -3,8 +3,9 @@ package com.dunkware.trade.service.beach.server.trade;
 
 import com.dunkware.common.util.events.DEventNode;
 import com.dunkware.trade.sdk.core.model.broker.BrokerType;
+import com.dunkware.trade.sdk.core.model.system.SystemType;
 
-public interface BeachTradeService {
+public interface BeachService {
 	
 	BeachBroker addBroker(BrokerType type) throws Exception; 
 	
@@ -18,10 +19,12 @@ public interface BeachTradeService {
 
 	DEventNode getEventNode();
 	
-	BeachPool getPool(String identifier) throws Exception;
+	BeachSystem getSystem(String identifier) throws Exception;
 	
-	BeachPool createPool(String broker, String account, String identifier) throws Exception;
+	BeachSystem addSystem(String broker, String account, String identifier, SystemType systemType) throws Exception;
 	
-	boolean poolExists(String identifier);
+	boolean systemExists(String identifier);
+	
+	
 	
 }

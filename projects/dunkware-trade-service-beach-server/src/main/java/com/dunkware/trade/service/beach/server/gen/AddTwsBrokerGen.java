@@ -2,7 +2,7 @@ package com.dunkware.trade.service.beach.server.gen;
 
 import com.dunkware.common.util.json.DJson;
 import com.dunkware.trade.sdk.tws.model.TwsBrokerType;
-import com.dunkware.trade.service.beach.protocol.trade.BeachBrokerAddReq;
+import com.dunkware.trade.service.beach.protocol.trade.service.BeachBrokerAddReq;
 
 public class AddTwsBrokerGen {
 

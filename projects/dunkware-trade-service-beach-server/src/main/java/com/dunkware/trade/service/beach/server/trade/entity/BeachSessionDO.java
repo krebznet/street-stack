@@ -13,8 +13,8 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 
-@Entity(name = "trade_pool")
-public class BeachPoolDO {
+@Entity(name = "beach_session")
+public class BeachSessionDO {
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -24,9 +24,11 @@ public class BeachPoolDO {
 	private String identifier; 
 	
 	@ManyToOne()
-	private BeachAccountDO account;
+	private BeachSystemDO system;
+	
 	
 	private LocalDateTime created;
+	private LocalDateTime stopped;
 	
 	
 	@OneToMany(cascade = CascadeType.ALL)
@@ -48,14 +50,22 @@ public class BeachPoolDO {
 	public void setIdentifier(String identifier) {
 		this.identifier = identifier;
 	}
+	
 
-
-	public BeachAccountDO getAccount() {
-		return account;
+	public BeachSystemDO getSystem() {
+		return system;
 	}
 
-	public void setAccount(BeachAccountDO account) {
-		this.account = account;
+	public void setSystem(BeachSystemDO system) {
+		this.system = system;
+	}
+
+	public LocalDateTime getStopped() {
+		return stopped;
+	}
+
+	public void setStopped(LocalDateTime stopped) {
+		this.stopped = stopped;
 	}
 
 	public LocalDateTime getCreated() {

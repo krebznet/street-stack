@@ -15,7 +15,7 @@ import org.springframework.context.ApplicationContext;
 import com.dunkware.common.util.dtime.DDateTime;
 import com.dunkware.common.util.dtime.DTimeZone;
 import com.dunkware.common.util.events.DEventNode;
-import com.dunkware.trade.sdk.core.model.broker.BrokerAccountSpec;
+import com.dunkware.trade.sdk.core.model.broker.AccountSpec;
 import com.dunkware.trade.sdk.core.model.order.OrderType;
 import com.dunkware.trade.sdk.core.runtime.broker.BrokerAccount;
 import com.dunkware.trade.sdk.core.runtime.order.Order;
@@ -25,7 +25,7 @@ import com.dunkware.trade.service.beach.protocol.trade.spec.BeachAccountSpec;
 import com.dunkware.trade.service.beach.server.trade.BeachAccount;
 import com.dunkware.trade.service.beach.server.trade.BeachBroker;
 import com.dunkware.trade.service.beach.server.trade.BeachOrder;
-import com.dunkware.trade.service.beach.server.trade.BeachPool;
+import com.dunkware.trade.service.beach.server.trade.BeachSystem;
 import com.dunkware.trade.service.beach.server.trade.BeachTrade;
 import com.dunkware.trade.service.beach.server.trade.entity.BeachAccountDO;
 import com.dunkware.trade.service.beach.server.trade.entity.BeachOrderDO;
@@ -47,7 +47,7 @@ public class BeachAccountImpl implements BeachAccount {
 	private List<BeachTrade> activeTrades = new ArrayList<BeachTrade>();
 	private Semaphore activeTradeLock = new Semaphore(1);
 	
-	private ConcurrentHashMap<String, BeachPool> pools = new ConcurrentHashMap<String, BeachPool>();
+	private ConcurrentHashMap<String, BeachSystem> pools = new ConcurrentHashMap<String, BeachSystem>();
 
 	private BeachBroker broker; 
 	private BeachAccountDO entity;
@@ -131,7 +131,7 @@ public class BeachAccountImpl implements BeachAccount {
 	}
 	
 	@Override
-	public BrokerAccountSpec getSpec() {
+	public AccountSpec getSpec() {
 		return account.getSpec();
 	}
 
