@@ -1,5 +1,6 @@
 package com.dunkware.spring.channel.core;
 
+import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -480,6 +481,10 @@ public class ChannelImpl implements Channel, DKafkaByteHandler2 {
 									
 								}
 							} catch (Exception e) {
+								if (e instanceof InvocationTargetException) { 
+									logger.error("invocation target exception cause " + e.getCause().getMessage());
+									
+								}
 								logger.error(e.toString());
 								// TODO: handle exception
 							} finally {
