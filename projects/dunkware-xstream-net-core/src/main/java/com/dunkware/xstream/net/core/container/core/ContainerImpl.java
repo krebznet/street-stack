@@ -227,6 +227,7 @@ public class ContainerImpl implements Container {
 	public ContainerSearchResults<ContainerEntity> entitySearch(List<Predicate<ContainerEntity>> predicates)
 			throws ContainerSearchException {
 		ContainerSearchResults<ContainerEntity> results = new ContainerSearchResults<ContainerEntity>();
+		// this is bad here we need to make it concurrent.
 		for (ContainerEntity entity : entities) {
 			for (Predicate<ContainerEntity> predicate : predicates) {
 				if(!predicate.test(entity)) { 
@@ -298,10 +299,13 @@ public class ContainerImpl implements Container {
 			try {
 				this.signalLock.acquire();
 				signals.add(sig);
-				ContainerEntity ent = getEntity(signal.getEntityIdentifier());
-				if (ent != null) {
-					ent.consumeSignal(signal);
+				if(hasEntity(signal.getEntityIdentifier())) { 
+					ContainerEntity ent = getEntity(signal.getEntityIdentifier());
+					if (ent != null) {
+						ent.consumeSignal(signal);
+					}	
 				}
+				
 			} catch (Exception e) {
 				logger.error("signal lock aquire exception for signal " + signal.getEntityIdentifier() + e.toString());
 			} finally {
@@ -329,6 +333,7 @@ public class ContainerImpl implements Container {
 				try {
 					list.timeUpdate(this);					
 				} catch (Exception e) {
+					
 					logger.error("Time Listener class " + list.getClass().getName() + " Exception " + e.toString());
 				}
 

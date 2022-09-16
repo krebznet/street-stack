@@ -246,6 +246,9 @@ public class StreamEventPublisherExt implements XStreamExtension, XStreamRowList
 					}
 					lastUpdate = time;
 				} catch (Exception e) {
+					if (e instanceof InterruptedException) { 
+						return;
+					}
 					logger.error("Exception sending time update " + e.toString());
 					// TODO: handle exception
 				}
@@ -272,11 +275,17 @@ public class StreamEventPublisherExt implements XStreamExtension, XStreamRowList
 						//		DTimeZone.toZoneId(stream.getInput().getTimeZone()), signals);
 						//publishQueue.add(event);
 					} catch (Exception e) {
+						if (e instanceof InterruptedException) { 
+							return;
+						}
 						logger.error("Exception creating entity snapshot event " + e.toString());
 						// TODO: handle exception
 					}
 				}
 			} catch (Exception e) {
+				if (e instanceof InterruptedException) { 
+					return;
+				}
 				logger.error("Exception Taking Row Snapshots " + e.toString());
 			}
 		}
@@ -381,6 +390,9 @@ public class StreamEventPublisherExt implements XStreamExtension, XStreamRowList
 					}
 
 				} catch (Exception e) {
+					if (e instanceof InterruptedException) { 
+						return;
+					}
 					logger.error("Exception Publishing Stream Event " + e.toString());
 				}
 
@@ -400,6 +412,9 @@ public class StreamEventPublisherExt implements XStreamExtension, XStreamRowList
 					event = eventQueue.take();
 					
 				} catch (Exception e) {
+					if (e instanceof InterruptedException) { 
+						return;
+					}
 					logger.error("Exception taking event from  " + e.toString());
 					continue;
 				}

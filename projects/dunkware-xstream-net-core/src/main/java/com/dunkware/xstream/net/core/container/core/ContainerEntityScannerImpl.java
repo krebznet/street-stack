@@ -112,12 +112,17 @@ public class ContainerEntityScannerImpl implements ContainerEntityScanner, Conta
 		@Override
 		public void run() {
 			// okay here we go 
-			
+			boolean acquired = false;
 			try {
+				
 				if(logger.isDebugEnabled()) { 
 					logger.debug(marker, "Running Scanner Updater");
 				}
+				
 				ContainerSearchResults<ContainerEntity> results = entityQuery.execute();
+				// get lock afer we execute search 
+				entityLock.acquire();
+				acquired = true;
 				if(results.getResults().size() == 0) { 
 					return; 
 				}
@@ -125,6 +130,7 @@ public class ContainerEntityScannerImpl implements ContainerEntityScanner, Conta
 					logger.debug(marker, "Scanner Update Query returned {} " + results.getResults().size());
 				}
 				for (ContainerEntity resultEntity : results.getResults()) {
+					
 					// if already in scanner entity list update it 
 					if(entities.contains(resultEntity)) { 
 						if(logger.isDebugEnabled()) { 
@@ -143,7 +149,7 @@ public class ContainerEntityScannerImpl implements ContainerEntityScanner, Conta
 					try {
 						List<ContainerEntity> removals = new ArrayList<ContainerEntity>();
 						
-						entityLock.acquire();
+						
 						for (ContainerEntity scannerEntity : entities) {
 							if(results.getResults().contains(scannerEntity) == false) { 
 								removals.add(resultEntity);
@@ -162,14 +168,25 @@ public class ContainerEntityScannerImpl implements ContainerEntityScanner, Conta
 						}
 						
 					} catch (Exception e) {
+						if (e instanceof InterruptedException) { 
+							return;
+						}
 						logger.error("Internal Exception updating scanner entity " + e.toString());
 					} finally { 
-						entityLock.release();
+						
 					}
 					
 				}
 			} catch (Exception e) {
+				if (e instanceof InterruptedException) { 
+					return;
+					
+				}
 				logger.error("Outside exception in entity container scanner updater " + e.toString());
+			} finally {
+				// if we acquired lock release it. 
+				if(acquired)
+					entityLock.release();
 			}
 		}
 
