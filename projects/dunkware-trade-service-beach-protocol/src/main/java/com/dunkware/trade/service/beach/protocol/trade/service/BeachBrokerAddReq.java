@@ -1,4 +1,4 @@
-package com.dunkware.trade.service.beach.protocol.trade;
+package com.dunkware.trade.service.beach.protocol.trade.service;
 
 import com.dunkware.trade.sdk.core.model.broker.BrokerType;
 
