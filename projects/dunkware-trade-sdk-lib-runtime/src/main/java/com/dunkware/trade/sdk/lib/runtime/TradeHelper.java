@@ -1,6 +1,6 @@
-package com.dunkware.trade.sdk.lib.runtime.util;
+package com.dunkware.trade.sdk.lib.runtime;
 
-public class TrailingHelper {
+public class TradeHelper {
 
 	
 	public static double round(double value, int places) {

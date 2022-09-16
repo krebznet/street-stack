@@ -1,4 +1,4 @@
-package com.dunkware.trade.sdk.lib.runtime.smart;
+package com.dunkware.trade.sdk.lib.runtime.exit;
 
 import com.dunkware.trade.sdk.core.model.order.OrderAction;
 import com.dunkware.trade.sdk.core.model.order.OrderKind;
@@ -7,7 +7,7 @@ import com.dunkware.trade.sdk.core.model.trade.TradeSide;
 import com.dunkware.trade.sdk.core.model.trade.TradeType;
 import com.dunkware.trade.sdk.core.runtime.order.builder.OrderTypeBuilder;
 import com.dunkware.trade.sdk.core.runtime.trade.Trade;
-import com.dunkware.trade.sdk.lib.model.smart.SmartExitRuleType;
+import com.dunkware.trade.sdk.lib.model.exit.SmartExitRuleType;
 
 public abstract class SmartExitRule {
 

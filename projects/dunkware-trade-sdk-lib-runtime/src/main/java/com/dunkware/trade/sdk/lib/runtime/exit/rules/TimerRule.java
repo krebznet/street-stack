@@ -1,4 +1,4 @@
-package com.dunkware.trade.sdk.lib.runtime.smart.rules;
+package com.dunkware.trade.sdk.lib.runtime.exit.rules;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -9,16 +9,16 @@ import com.dunkware.trade.sdk.core.runtime.order.Order;
 import com.dunkware.trade.sdk.core.runtime.order.event.EOrderException;
 import com.dunkware.trade.sdk.core.runtime.order.event.EOrderFilled;
 import com.dunkware.trade.sdk.core.runtime.trade.Trade;
-import com.dunkware.trade.sdk.lib.model.smart.SmartExitRuleType;
-import com.dunkware.trade.sdk.lib.model.smart.rules.TimerRuleType;
-import com.dunkware.trade.sdk.lib.runtime.smart.SmartExit;
-import com.dunkware.trade.sdk.lib.runtime.smart.SmartExitRule;
+import com.dunkware.trade.sdk.lib.model.exit.SmartExitRuleType;
+import com.dunkware.trade.sdk.lib.model.exit.rules.SmartExitTimer;
+import com.dunkware.trade.sdk.lib.runtime.exit.SmartExit;
+import com.dunkware.trade.sdk.lib.runtime.exit.SmartExitRule;
 
 public class TimerRule extends SmartExitRule {
 
 	private Logger logger = LoggerFactory.getLogger(getClass());
 	
-	private TimerRuleType type;
+	private SmartExitTimer type;
 	private SmartExit exit; 
 	
 	private TimerThread timerThread; 
@@ -28,7 +28,7 @@ public class TimerRule extends SmartExitRule {
 	
 	@Override
 	public void init(SmartExitRuleType type, SmartExit exit) throws Exception {
-		this.type = (TimerRuleType)type; 	
+		this.type = (SmartExitTimer)type; 	
 		this.exit = exit;
 	}
 
@@ -58,7 +58,7 @@ public class TimerRule extends SmartExitRule {
 				logger.debug("Timer Lock Acquired Initiating Market Exit Order");
 			}
 			OrderType exitType = createExitOrder();			
-			exitOrder = exit.getTrade().getContext().createOrder(exitType);
+			exitOrder = exit.getTrade().getSession().createOrder(exitType);
 			exitOrder.getEventNode().addEventHandler(this);
 			exitOrder.send();
 		} catch (Exception e) {

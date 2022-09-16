@@ -1,11 +1,8 @@
-package com.dunkware.trade.sdk.lib.runtime.smart.rules;
-
-import java.math.BigDecimal;
+package com.dunkware.trade.sdk.lib.runtime.exit.rules;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.dunkware.common.util.calc.DCalc;
 import com.dunkware.common.util.events.anot.ADEventMethod;
 import com.dunkware.trade.sdk.core.model.order.OrderAction;
 import com.dunkware.trade.sdk.core.model.order.OrderKind;
@@ -19,17 +16,17 @@ import com.dunkware.trade.sdk.core.runtime.order.event.EOrderCancelled;
 import com.dunkware.trade.sdk.core.runtime.order.event.EOrderFilled;
 import com.dunkware.trade.sdk.core.runtime.order.event.EOrderUpdate;
 import com.dunkware.trade.sdk.core.runtime.trade.Trade;
-import com.dunkware.trade.sdk.lib.model.smart.SmartExitRuleType;
-import com.dunkware.trade.sdk.lib.model.smart.rules.TrailingStopRuleType;
-import com.dunkware.trade.sdk.lib.runtime.smart.SmartExit;
-import com.dunkware.trade.sdk.lib.runtime.smart.SmartExitRule;
-import com.dunkware.trade.sdk.lib.runtime.util.TrailingHelper;
+import com.dunkware.trade.sdk.lib.model.exit.SmartExitRuleType;
+import com.dunkware.trade.sdk.lib.model.exit.rules.SmartExitTrailingStop;
+import com.dunkware.trade.sdk.lib.runtime.TradeHelper;
+import com.dunkware.trade.sdk.lib.runtime.exit.SmartExit;
+import com.dunkware.trade.sdk.lib.runtime.exit.SmartExitRule;
 
 public class TrailingStopRule extends SmartExitRule {
 
 	private Logger logger = LoggerFactory.getLogger(getClass());
 	
-	private TrailingStopRuleType type; 
+	private SmartExitTrailingStop type; 
 	private SmartExit exit; 
 	
 	private Order trailingOrder;
@@ -40,7 +37,7 @@ public class TrailingStopRule extends SmartExitRule {
 	
 	@Override
 	public void init(SmartExitRuleType type, SmartExit exit) throws Exception {
-		this.type = (TrailingStopRuleType)type;
+		this.type = (SmartExitTrailingStop)type;
 		this.exit = exit; 
 		
 	}
@@ -88,7 +85,7 @@ public class TrailingStopRule extends SmartExitRule {
 			// calculate percent off from last price
 			double lastPrice = getTrade().getInstrument().getLast();
 			// minus percent 
-			double stopPrice = TrailingHelper.subtractPercent(lastPrice, type.getStop());
+			double stopPrice = TradeHelper.subtractPercent(lastPrice, type.getStop());
 			if(logger.isDebugEnabled()) { 
 				logger.debug("Trailing Stop Calculated Stop Price " + stopPrice + " from last price " + lastPrice + " with stop percent " + type.getStop());
 			}
@@ -103,7 +100,7 @@ public class TrailingStopRule extends SmartExitRule {
 			return;
 		}
 		try {
-			trailingOrder = exit.getTrade().getContext().createOrder(orderType);
+			trailingOrder = exit.getTrade().getSession().createOrder(orderType);
 		} catch (Exception e) {
 			exit.exception("Trailing Stop Order Create Exception " + e.toString());
 			return;

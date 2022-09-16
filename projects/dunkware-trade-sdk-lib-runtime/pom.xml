@@ -31,6 +31,12 @@
 	<dependencies>
 		<!-- Dunkware Dependencies -->
 		<dependency>
+
+			<groupId>com.dunkware.xstream.net</groupId>
+			<artifactId>dunkware-xstream-net-client</artifactId>
+			<version>1.0.0-SNAPSHOT</version>
+		</dependency>
+		<dependency>
 			<groupId>com.dunkware.trade.sdk</groupId>
 			<artifactId>dunkware-trade-sdk-core-runtime</artifactId>
 			<version>1.0.0-SNAPSHOT</version>
@@ -55,7 +61,7 @@
 		</dependency>
 
 
-<dependency>
+		<dependency>
 			<groupId>org.slf4j</groupId>
 			<artifactId>slf4j-api</artifactId>
 			<version>${slf4j-api-version}</version>
@@ -73,7 +79,7 @@
 	</dependencies>
 
 	<build>
-		<pluginManagement><!-- lock down plugins versions to avoid using Maven
+		<pluginManagement><!-- lock down plugins versions to avoid using Maven 
 				defaults (may be moved to parent pom) -->
 			<plugins>
 				<plugin>

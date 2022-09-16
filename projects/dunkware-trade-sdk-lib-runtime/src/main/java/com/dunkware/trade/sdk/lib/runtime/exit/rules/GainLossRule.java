@@ -1,4 +1,4 @@
-package com.dunkware.trade.sdk.lib.runtime.smart.rules;
+package com.dunkware.trade.sdk.lib.runtime.exit.rules;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -9,16 +9,16 @@ import com.dunkware.trade.sdk.core.runtime.order.Order;
 import com.dunkware.trade.sdk.core.runtime.order.event.EOrderFilled;
 import com.dunkware.trade.sdk.core.runtime.trade.Trade;
 import com.dunkware.trade.sdk.core.runtime.trade.event.ETradeSpecUpdate;
-import com.dunkware.trade.sdk.lib.model.smart.SmartExitRuleType;
-import com.dunkware.trade.sdk.lib.model.smart.rules.GainLossRuleType;
-import com.dunkware.trade.sdk.lib.runtime.smart.SmartExit;
-import com.dunkware.trade.sdk.lib.runtime.smart.SmartExitRule;
+import com.dunkware.trade.sdk.lib.model.exit.SmartExitRuleType;
+import com.dunkware.trade.sdk.lib.model.exit.rules.SmartExitGainLossAmount;
+import com.dunkware.trade.sdk.lib.runtime.exit.SmartExit;
+import com.dunkware.trade.sdk.lib.runtime.exit.SmartExitRule;
 
 public class GainLossRule extends SmartExitRule {
 	
 	private Logger logger = LoggerFactory.getLogger(getClass());
 	
-	private GainLossRuleType type; 
+	private SmartExitGainLossAmount type; 
 	private SmartExit exit; 
 	
 	private boolean triggered = false;
@@ -27,7 +27,7 @@ public class GainLossRule extends SmartExitRule {
 
 	@Override
 	public void init(SmartExitRuleType type, SmartExit exit) throws Exception {
-		this.type = (GainLossRuleType)type;
+		this.type = (SmartExitGainLossAmount)type;
 		this.exit = exit;
 		
 	}
@@ -56,7 +56,7 @@ public class GainLossRule extends SmartExitRule {
 	public void lockAcquired() {
 		try {
 			OrderType orderType = createExitOrder();
-			this.exitOrder = getTrade().getContext().createOrder(orderType);
+			this.exitOrder = getTrade().getSession().createOrder(orderType);
 			exitOrder.getEventNode().addEventHandler(this);
 			exitOrder.send();
 		} catch (Exception e) {

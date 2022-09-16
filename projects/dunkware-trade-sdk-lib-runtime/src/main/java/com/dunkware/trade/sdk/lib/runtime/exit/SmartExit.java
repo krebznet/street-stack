@@ -1,4 +1,4 @@
-package com.dunkware.trade.sdk.lib.runtime.smart;
+package com.dunkware.trade.sdk.lib.runtime.exit;
 
 import java.util.ArrayList;
 import java.util.LinkedList;
@@ -13,14 +13,14 @@ import com.dunkware.trade.sdk.core.runtime.trade.TradeExit;
 import com.dunkware.trade.sdk.core.runtime.trade.anot.ATradeExit;
 import com.dunkware.trade.sdk.core.runtime.trade.event.ETradeExitCompleted;
 import com.dunkware.trade.sdk.core.runtime.trade.event.ETradeExitException;
-import com.dunkware.trade.sdk.lib.model.smart.SmartExitRuleType;
-import com.dunkware.trade.sdk.lib.model.smart.SmartExitType;
-import com.dunkware.trade.sdk.lib.model.smart.rules.GainLossRuleType;
-import com.dunkware.trade.sdk.lib.model.smart.rules.TimerRuleType;
-import com.dunkware.trade.sdk.lib.model.smart.rules.TrailingStopRuleType;
-import com.dunkware.trade.sdk.lib.runtime.smart.rules.GainLossRule;
-import com.dunkware.trade.sdk.lib.runtime.smart.rules.TimerRule;
-import com.dunkware.trade.sdk.lib.runtime.smart.rules.TrailingStopRule;
+import com.dunkware.trade.sdk.lib.model.exit.SmartExitRuleType;
+import com.dunkware.trade.sdk.lib.model.exit.SmartExitType;
+import com.dunkware.trade.sdk.lib.model.exit.rules.SmartExitGainLossAmount;
+import com.dunkware.trade.sdk.lib.model.exit.rules.SmartExitTimer;
+import com.dunkware.trade.sdk.lib.model.exit.rules.SmartExitTrailingStop;
+import com.dunkware.trade.sdk.lib.runtime.exit.rules.GainLossRule;
+import com.dunkware.trade.sdk.lib.runtime.exit.rules.TimerRule;
+import com.dunkware.trade.sdk.lib.runtime.exit.rules.TrailingStopRule;
 
 @ATradeExit(type = SmartExitType.class)
 public class SmartExit implements TradeExit {
@@ -44,13 +44,13 @@ public class SmartExit implements TradeExit {
 		spec = new ExitSpec();
 		for (SmartExitRuleType ruleType : this.type.getRules()) {
 			SmartExitRule rule = null;
-			if (ruleType instanceof GainLossRuleType) {
+			if (ruleType instanceof SmartExitGainLossAmount) {
 				rule = new GainLossRule();
 			}
-			if (ruleType instanceof TrailingStopRuleType) {
+			if (ruleType instanceof SmartExitTrailingStop) {
 				rule = new TrailingStopRule();
 			}
-			if (ruleType instanceof TimerRuleType) {
+			if (ruleType instanceof SmartExitTimer) {
 				rule = new TimerRule();
 			}
 			

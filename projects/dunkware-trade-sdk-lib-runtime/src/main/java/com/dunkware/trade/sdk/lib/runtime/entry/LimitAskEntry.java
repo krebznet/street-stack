@@ -1,6 +1,4 @@
-package com.dunkware.trade.sdk.lib.runtime;
-
-import java.time.LocalTime;
+package com.dunkware.trade.sdk.lib.runtime.entry;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -25,11 +23,11 @@ import com.dunkware.trade.sdk.core.runtime.trade.event.ETradeEntryCompleted;
 import com.dunkware.trade.sdk.core.runtime.trade.event.ETradeEntryException;
 import com.dunkware.trade.sdk.core.runtime.trade.event.ETradeEntryUpdate;
 import com.dunkware.trade.sdk.core.runtime.trade.impl.TradeEntryImpl;
-import com.dunkware.trade.sdk.lib.model.MarketEntryType;
+import com.dunkware.trade.sdk.lib.model.entry.LimitAskEntryType;
+import com.dunkware.trade.sdk.lib.model.entry.MarketEntryType;
 
-
-@ATradeEntry(type = MarketEntryType.class)
-public class MarketEntry extends TradeEntryImpl  {
+@ATradeEntry(type = LimitAskEntryType.class)
+public class LimitAskEntry  extends TradeEntryImpl  {
 	
 	private Logger logger = LoggerFactory.getLogger(getClass());
 	private MarketEntryType type;
@@ -46,11 +44,14 @@ public class MarketEntry extends TradeEntryImpl  {
 
 	@Override
 	protected void doStart(Trade trade) throws Exception {
+		
 		OrderTypeBuilder builder = OrderTypeBuilder.newInstance()
 		.size(trade.getSpec().getAllocatedSize())
-		.kind(OrderKind.MKT)
+		.kind(OrderKind.LMT)
 		.outsideRth(true)
+		.limit(trade.getInstrument().getAskPrice())
 		.ticker(trade.getType().getTicker());
+	
 		if(trade.getType().getSide() == TradeSide.LONG) { 
 			builder.action(OrderAction.BUY);
 		} else { 
@@ -63,7 +64,7 @@ public class MarketEntry extends TradeEntryImpl  {
 		OrderType orderType = builder.build();
 		
 	    // create orders right!? where the fuck lol 
-		order = trade.getContext().createOrder(orderType);
+		order = trade.getSession().createOrder(orderType);
 		try {
 			getSpec().setOpeningTime(DDateTime.now());
 			getSpec().setAllocatedSize(trade.getSpec().getAllocatedSize());
