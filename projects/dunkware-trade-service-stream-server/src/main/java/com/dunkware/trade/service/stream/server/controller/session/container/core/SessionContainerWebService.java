@@ -18,9 +18,9 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.mvc.method.annotation.StreamingResponseBody;
 
-import com.dunkware.common.util.grid.GridFormat;
 import com.dunkware.common.util.grid.GridOptions;
 import com.dunkware.common.util.grid.GridOptionsBuilder;
+import com.dunkware.common.util.grid.format.GridFormat;
 import com.dunkware.common.util.json.DJson;
 import com.dunkware.trade.service.stream.server.controller.session.container.SessionContainer;
 import com.dunkware.trade.service.stream.server.controller.session.container.SessionContainerService;
