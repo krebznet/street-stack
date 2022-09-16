@@ -26,8 +26,8 @@ public class DKafkaProperties {
 		props.put("key.serializer", "org.apache.kafka.common.serialization.StringSerializer");
 		props.put("value.serializer", "org.apache.kafka.common.serialization.ByteArraySerializer");
 		props.put("enable.auto.commit", "true");
-		props.put("auto.commit.interval.ms", "50000");
-		props.put("session.timeout.ms", "30000");
+		props.put("auto.commit.interval.ms", "5000");
+		props.put("session.timeout.ms", "3000");
 	}
 	
 	
@@ -61,7 +61,7 @@ public class DKafkaProperties {
 		}
 		props.put("enable.auto.commit", "true");
 		props.put("auto.commit.interval.ms", "1000");
-		props.put("session.timeout.ms", "15000");
+		props.put("session.timeout.ms", "5000");
 		props.put("key.deserializer", "org.apache.kafka.common.serialization.StringDeserializer");
 		props.put("value.deserializer", "org.apache.kafka.common.serialization.ByteArrayDeserializer");
 
