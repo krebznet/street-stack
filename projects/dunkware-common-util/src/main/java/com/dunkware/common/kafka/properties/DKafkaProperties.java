@@ -50,7 +50,7 @@ public class DKafkaProperties {
 		props.put("max.poll.records", 10000);
 		props.put("enable.auto.commit", "true");
 		props.put("auto.commit.interval.ms", "5000");
-		props.put("session.timeout.ms", "50000");
+		props.put("session.timeout.ms", "5000");
 		
 		
 		if(props.containsKey(GROUP_ID_CONFIG) == false) { 
