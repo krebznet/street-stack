@@ -2,9 +2,9 @@ package comm.dunkware.trade.service.beach.web.model;
 
 import java.time.LocalDateTime;
 
-public class WebTrade {
+public class BeachWebTrade {
 
-	private long tradeId; 
+	private long id; 
 	private String status; 
 	private String symbol; 
 	private String account; 
@@ -15,11 +15,12 @@ public class WebTrade {
 	private int activeOrders; 
 	private double marketValue; 
 	private double gainLossAmount; 
-	private double gainLossPercent; 
-	private LocalDateTime openingTimestamp;
-	private LocalDateTime openTimestamp;
-	private LocalDateTime closingTimestamp;
-	private LocalDateTime closeTImestamp; 
+	private double gainLossPercent;
+	private String date; 
+	private String openingTime; 
+	private String openTime;
+	private String closingTime;
+	private String closeTime;; 
 	
 	public String getStatus() {
 		return status;
@@ -36,11 +37,12 @@ public class WebTrade {
 	public Number getMarketValue() {
 		return marketValue;
 	}
-	public long getTradeId() {
-		return tradeId;
+	
+	public long getId() {
+		return id;
 	}
-	public void setTradeId(long tradeId) {
-		this.tradeId = tradeId;
+	public void setId(long id) {
+		this.id = id;
 	}
 	public String getAccount() {
 		return account;
@@ -84,29 +86,37 @@ public class WebTrade {
 	public void setGainLossPercent(double gainLossPercent) {
 		this.gainLossPercent = gainLossPercent;
 	}
-	public LocalDateTime getOpeningTimestamp() {
-		return openingTimestamp;
+	
+	
+	public String getDate() {
+		return date;
 	}
-	public void setOpeningTimestamp(LocalDateTime openingTimestamp) {
-		this.openingTimestamp = openingTimestamp;
+	public void setDate(String date) {
+		this.date = date;
 	}
-	public LocalDateTime getOpenTimestamp() {
-		return openTimestamp;
+	public String getOpeningTime() {
+		return openingTime;
 	}
-	public void setOpenTimestamp(LocalDateTime openTimestamp) {
-		this.openTimestamp = openTimestamp;
+	public void setOpeningTime(String openingTime) {
+		this.openingTime = openingTime;
 	}
-	public LocalDateTime getClosingTimestamp() {
-		return closingTimestamp;
+	public String getOpenTime() {
+		return openTime;
 	}
-	public void setClosingTimestamp(LocalDateTime closingTimestamp) {
-		this.closingTimestamp = closingTimestamp;
+	public void setOpenTime(String openTime) {
+		this.openTime = openTime;
 	}
-	public LocalDateTime getCloseTImestamp() {
-		return closeTImestamp;
+	public String getClosingTime() {
+		return closingTime;
 	}
-	public void setCloseTImestamp(LocalDateTime closeTImestamp) {
-		this.closeTImestamp = closeTImestamp;
+	public void setClosingTime(String closingTime) {
+		this.closingTime = closingTime;
+	}
+	public String getCloseTime() {
+		return closeTime;
+	}
+	public void setCloseTime(String closeTime) {
+		this.closeTime = closeTime;
 	}
 	public void setMarketValue(double marketValue) {
 		this.marketValue = marketValue;

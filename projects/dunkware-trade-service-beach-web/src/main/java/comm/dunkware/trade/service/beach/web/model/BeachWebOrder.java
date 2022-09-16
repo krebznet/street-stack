@@ -1,6 +1,6 @@
 package comm.dunkware.trade.service.beach.web.model;
 
-public class WebOrder {
+public class BeachWebOrder {
 
 	private String side; // LONG | SHORT 
 	private String status; // PENDING | FILLED ETC

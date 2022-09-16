@@ -2,7 +2,7 @@ package comm.dunkware.trade.service.beach.web.model;
 
 import java.time.LocalDateTime;
 
-public class WebEvent {
+public class BeachWebEvent {
 	
 	private LocalDateTime timestamp;
 	private String type; 

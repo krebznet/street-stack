@@ -1,6 +1,6 @@
 package comm.dunkware.trade.service.beach.web.model;
 
-public class WebAccount {
+public class BeachWebAccount {
 
 	private long id; 
 	private String name; 
