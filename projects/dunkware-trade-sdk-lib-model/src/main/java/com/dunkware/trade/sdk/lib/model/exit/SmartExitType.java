@@ -1,4 +1,4 @@
-package com.dunkware.trade.sdk.lib.model.smart;
+package com.dunkware.trade.sdk.lib.model.exit;
 
 import java.util.ArrayList;
 import java.util.List;

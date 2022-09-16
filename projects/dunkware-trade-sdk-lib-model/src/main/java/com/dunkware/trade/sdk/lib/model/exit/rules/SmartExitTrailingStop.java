@@ -1,8 +1,8 @@
-package com.dunkware.trade.sdk.lib.model.smart.rules;
+package com.dunkware.trade.sdk.lib.model.exit.rules;
 
-import com.dunkware.trade.sdk.lib.model.smart.SmartExitRuleType;
+import com.dunkware.trade.sdk.lib.model.exit.SmartExitRuleType;
 
-public class TrailingStopRuleType extends SmartExitRuleType {
+public class SmartExitTrailingStop extends SmartExitRuleType {
 	
 	private double stop = Double.MIN_VALUE;
 	private double trail;

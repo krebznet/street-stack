@@ -1,4 +1,4 @@
-package com.dunkware.trade.sdk.lib.model.smart;
+package com.dunkware.trade.sdk.lib.model.exit;
 
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 
