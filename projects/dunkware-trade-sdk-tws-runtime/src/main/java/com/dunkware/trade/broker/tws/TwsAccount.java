@@ -8,7 +8,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.dunkware.common.util.events.DEventNode;
-import com.dunkware.trade.sdk.core.model.broker.BrokerAccountSpec;
+import com.dunkware.trade.sdk.core.model.broker.AccountSpec;
 import com.dunkware.trade.sdk.core.model.order.OrderType;
 import com.dunkware.trade.sdk.core.runtime.broker.Broker;
 import com.dunkware.trade.sdk.core.runtime.broker.BrokerAccount;
@@ -34,8 +34,8 @@ public class TwsAccount implements BrokerAccount {
 	}
 
 	@Override
-	public BrokerAccountSpec getSpec() {
-		return new BrokerAccountSpec();
+	public AccountSpec getSpec() {
+		return new AccountSpec();
 	}
 	
 	
