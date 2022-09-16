@@ -60,8 +60,6 @@ public class DKafkaProperties {
 			props.put(CLIENT_ID_CONFIG, DUUID.randomUUID(5));
 		}
 		props.put("enable.auto.commit", "true");
-		props.put("auto.commit.interval.ms", "1000");
-		props.put("session.timeout.ms", "5000");
 		props.put("key.deserializer", "org.apache.kafka.common.serialization.StringDeserializer");
 		props.put("value.deserializer", "org.apache.kafka.common.serialization.ByteArrayDeserializer");
 

@@ -81,6 +81,7 @@ public class DKafkaByteConsumer {
 		props.put(DKafkaProperties.GROUP_ID_CONFIG, DUUID.randomUUID(5) + 5);
 		props.put(DKafkaProperties.BOOTSTRAP_SERVERS, brokers);
 		props.put(DKafkaProperties.TOPICS, topics);
+	//	DKafkaProperties.addConsumerProperties(props);
 		consumer.connect(props);
 		return consumer;
 	}
@@ -90,7 +91,9 @@ public class DKafkaByteConsumer {
 		
 	}
 	private void connect(Properties props) throws DKafkaException { 
+		//DKafkaProperties.addConsumerProperties(props);
 		this.regProperties = props;
+		
 		instanceCount = instanceCounter.incrementAndGet();
 		if (props.containsKey("topics") == false) {
 			throw new DKafkaException("topic property not set on consumer ");
@@ -102,6 +105,8 @@ public class DKafkaByteConsumer {
 	}
 
 	private void connect(DProperties properties) throws DKafkaException {
+		//DKafkaProperties.addConsumerProperties(properties.toJavaProperties());
+		
 		instanceCount = instanceCounter.incrementAndGet();
 		this.properties = properties;
 
