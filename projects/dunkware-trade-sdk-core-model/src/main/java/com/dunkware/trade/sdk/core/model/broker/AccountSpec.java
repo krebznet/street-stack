@@ -1,6 +1,6 @@
 package com.dunkware.trade.sdk.core.model.broker;
 
-public class BrokerAccountSpec {
+public class AccountSpec {
 
 	private String identifier;
 

@@ -1,5 +1,7 @@
 package com.dunkware.trade.sdk.core.model.trade;
 
+import com.dunkware.common.util.dtime.DDateTime;
+
 public class TradeSpec {
 
 	private TradeStatus status; 
@@ -9,6 +11,11 @@ public class TradeSpec {
 	
 	private double unrealizedPL; 
 	private double realizedPL;
+	
+	private DDateTime openingTime; 
+	private DDateTime closingTime; 
+	private DDateTime openTime; 
+	private DDateTime closeTime; 
 	
 	private int allocatedSize; 
 	
@@ -61,7 +68,32 @@ public class TradeSpec {
 	}
 	public void setAllocatedSize(int allocatedSize) {
 		this.allocatedSize = allocatedSize;
+	}
+	public DDateTime getOpeningTime() {
+		return openingTime;
+	}
+	public void setOpeningTime(DDateTime openingTime) {
+		this.openingTime = openingTime;
+	}
+	public DDateTime getClosingTime() {
+		return closingTime;
+	}
+	public void setClosingTime(DDateTime closingTime) {
+		this.closingTime = closingTime;
+	}
+	public DDateTime getOpenTime() {
+		return openTime;
+	}
+	public void setOpenTime(DDateTime openTime) {
+		this.openTime = openTime;
+	}
+	public DDateTime getCloseTime() {
+		return closeTime;
+	}
+	public void setCloseTime(DDateTime closeTime) {
+		this.closeTime = closeTime;
 	} 
+	
 	
 	
 	
