@@ -150,15 +150,6 @@ public interface XScriptFactory extends EFactory
   SessionSignalExpressionType createSessionSignalExpressionType();
 
   /**
-   * Returns a new object of class '<em>Entity Query Type</em>'.
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @return a new object of class '<em>Entity Query Type</em>'.
-   * @generated
-   */
-  EntityQueryType createEntityQueryType();
-
-  /**
    * Returns a new object of class '<em>Signal Type</em>'.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
@@ -526,6 +517,105 @@ public interface XScriptFactory extends EFactory
    * @generated
    */
   XRocExpType createXRocExpType();
+
+  /**
+   * Returns a new object of class '<em>XTime Range</em>'.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @return a new object of class '<em>XTime Range</em>'.
+   * @generated
+   */
+  XTimeRange createXTimeRange();
+
+  /**
+   * Returns a new object of class '<em>XTime Range Relative</em>'.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @return a new object of class '<em>XTime Range Relative</em>'.
+   * @generated
+   */
+  XTimeRangeRelative createXTimeRangeRelative();
+
+  /**
+   * Returns a new object of class '<em>XValue Type</em>'.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @return a new object of class '<em>XValue Type</em>'.
+   * @generated
+   */
+  XValueType createXValueType();
+
+  /**
+   * Returns a new object of class '<em>XValue Var Current Type</em>'.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @return a new object of class '<em>XValue Var Current Type</em>'.
+   * @generated
+   */
+  XValueVarCurrentType createXValueVarCurrentType();
+
+  /**
+   * Returns a new object of class '<em>XValue Var Session Agg Type</em>'.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @return a new object of class '<em>XValue Var Session Agg Type</em>'.
+   * @generated
+   */
+  XValueVarSessionAggType createXValueVarSessionAggType();
+
+  /**
+   * Returns a new object of class '<em>XValue Signal Session Count Type</em>'.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @return a new object of class '<em>XValue Signal Session Count Type</em>'.
+   * @generated
+   */
+  XValueSignalSessionCountType createXValueSignalSessionCountType();
+
+  /**
+   * Returns a new object of class '<em>XValue Signal Historical Count Type</em>'.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @return a new object of class '<em>XValue Signal Historical Count Type</em>'.
+   * @generated
+   */
+  XValueSignalHistoricalCountType createXValueSignalHistoricalCountType();
+
+  /**
+   * Returns a new object of class '<em>XQuery Type</em>'.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @return a new object of class '<em>XQuery Type</em>'.
+   * @generated
+   */
+  XQueryType createXQueryType();
+
+  /**
+   * Returns a new object of class '<em>XQuery Filter Type</em>'.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @return a new object of class '<em>XQuery Filter Type</em>'.
+   * @generated
+   */
+  XQueryFilterType createXQueryFilterType();
+
+  /**
+   * Returns a new object of class '<em>XQuery Filter Value Type</em>'.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @return a new object of class '<em>XQuery Filter Value Type</em>'.
+   * @generated
+   */
+  XQueryFilterValueType createXQueryFilterValueType();
+
+  /**
+   * Returns a new object of class '<em>XQuery Filter Value Compare Type</em>'.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @return a new object of class '<em>XQuery Filter Value Compare Type</em>'.
+   * @generated
+   */
+  XQueryFilterValueCompareType createXQueryFilterValueCompareType();
 
   /**
    * Returns a new object of class '<em>Or Type</em>'.

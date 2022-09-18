@@ -11,7 +11,6 @@ import com.dunkware.xstream.xScript.ComparisonType;
 import com.dunkware.xstream.xScript.CoreAbstractElement;
 import com.dunkware.xstream.xScript.DataType;
 import com.dunkware.xstream.xScript.DoubleConstantType;
-import com.dunkware.xstream.xScript.EntityQueryType;
 import com.dunkware.xstream.xScript.EqualityType;
 import com.dunkware.xstream.xScript.ExpressionType;
 import com.dunkware.xstream.xScript.IntConstantType;
@@ -61,6 +60,11 @@ import com.dunkware.xstream.xScript.XNotType;
 import com.dunkware.xstream.xScript.XOrType;
 import com.dunkware.xstream.xScript.XPercentChangeExpType;
 import com.dunkware.xstream.xScript.XPlusType;
+import com.dunkware.xstream.xScript.XQueryFilterType;
+import com.dunkware.xstream.xScript.XQueryFilterValueCompareType;
+import com.dunkware.xstream.xScript.XQueryFilterValueType;
+import com.dunkware.xstream.xScript.XQueryType;
+import com.dunkware.xstream.xScript.XQueryValueCompareFunction;
 import com.dunkware.xstream.xScript.XRocExpType;
 import com.dunkware.xstream.xScript.XScript;
 import com.dunkware.xstream.xScript.XScriptFactory;
@@ -71,11 +75,21 @@ import com.dunkware.xstream.xScript.XSignalTriggerCountType;
 import com.dunkware.xstream.xScript.XSignalTriggerType;
 import com.dunkware.xstream.xScript.XSleepType;
 import com.dunkware.xstream.xScript.XSlrAvgExpType;
+import com.dunkware.xstream.xScript.XStreamOperator;
 import com.dunkware.xstream.xScript.XStreamVarListenerType;
 import com.dunkware.xstream.xScript.XStreamVarValueExpType;
 import com.dunkware.xstream.xScript.XStreamWrapperExpType;
 import com.dunkware.xstream.xScript.XStringConstantType;
 import com.dunkware.xstream.xScript.XSubExpType;
+import com.dunkware.xstream.xScript.XTimeRange;
+import com.dunkware.xstream.xScript.XTimeRangeRelative;
+import com.dunkware.xstream.xScript.XValueSignalHistoricalCountType;
+import com.dunkware.xstream.xScript.XValueSignalSessionCountType;
+import com.dunkware.xstream.xScript.XValueType;
+import com.dunkware.xstream.xScript.XValueVarCurrentType;
+import com.dunkware.xstream.xScript.XValueVarHistoricalAggFunction;
+import com.dunkware.xstream.xScript.XValueVarSessionAggFunction;
+import com.dunkware.xstream.xScript.XValueVarSessionAggType;
 import com.dunkware.xstream.xScript.XVarCompareStreakType;
 import com.dunkware.xstream.xScript.XVarDecrementType;
 import com.dunkware.xstream.xScript.XVarExpType;
@@ -203,13 +217,6 @@ public class XScriptPackageImpl extends EPackageImpl implements XScriptPackage
    * @generated
    */
   private EClass sessionSignalExpressionTypeEClass = null;
-
-  /**
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   */
-  private EClass entityQueryTypeEClass = null;
 
   /**
    * <!-- begin-user-doc -->
@@ -503,6 +510,83 @@ public class XScriptPackageImpl extends EPackageImpl implements XScriptPackage
    * <!-- end-user-doc -->
    * @generated
    */
+  private EClass xTimeRangeEClass = null;
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  private EClass xTimeRangeRelativeEClass = null;
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  private EClass xValueTypeEClass = null;
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  private EClass xValueVarCurrentTypeEClass = null;
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  private EClass xValueVarSessionAggTypeEClass = null;
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  private EClass xValueSignalSessionCountTypeEClass = null;
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  private EClass xValueSignalHistoricalCountTypeEClass = null;
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  private EClass xQueryTypeEClass = null;
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  private EClass xQueryFilterTypeEClass = null;
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  private EClass xQueryFilterValueTypeEClass = null;
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  private EClass xQueryFilterValueCompareTypeEClass = null;
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
   private EClass orTypeEClass = null;
 
   /**
@@ -693,6 +777,34 @@ public class XScriptPackageImpl extends EPackageImpl implements XScriptPackage
    * @generated
    */
   private EEnum dataTypeEEnum = null;
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  private EEnum xValueVarHistoricalAggFunctionEEnum = null;
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  private EEnum xValueVarSessionAggFunctionEEnum = null;
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  private EEnum xStreamOperatorEEnum = null;
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  private EEnum xQueryValueCompareFunctionEEnum = null;
 
   /**
    * Creates an instance of the model <b>Package</b>, registered with
@@ -1195,50 +1307,6 @@ public class XScriptPackageImpl extends EPackageImpl implements XScriptPackage
   public EAttribute getSessionSignalExpressionType_Unit()
   {
     return (EAttribute)sessionSignalExpressionTypeEClass.getEStructuralFeatures().get(4);
-  }
-
-  /**
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   */
-  @Override
-  public EClass getEntityQueryType()
-  {
-    return entityQueryTypeEClass;
-  }
-
-  /**
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   */
-  @Override
-  public EAttribute getEntityQueryType_Name()
-  {
-    return (EAttribute)entityQueryTypeEClass.getEStructuralFeatures().get(0);
-  }
-
-  /**
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   */
-  @Override
-  public EReference getEntityQueryType_Exp()
-  {
-    return (EReference)entityQueryTypeEClass.getEStructuralFeatures().get(1);
-  }
-
-  /**
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   */
-  @Override
-  public EAttribute getEntityQueryType_Limit()
-  {
-    return (EAttribute)entityQueryTypeEClass.getEStructuralFeatures().get(2);
   }
 
   /**
@@ -2567,6 +2635,358 @@ public class XScriptPackageImpl extends EPackageImpl implements XScriptPackage
    * @generated
    */
   @Override
+  public EClass getXTimeRange()
+  {
+    return xTimeRangeEClass;
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  @Override
+  public EClass getXTimeRangeRelative()
+  {
+    return xTimeRangeRelativeEClass;
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  @Override
+  public EAttribute getXTimeRangeRelative_Unit()
+  {
+    return (EAttribute)xTimeRangeRelativeEClass.getEStructuralFeatures().get(0);
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  @Override
+  public EAttribute getXTimeRangeRelative_Value()
+  {
+    return (EAttribute)xTimeRangeRelativeEClass.getEStructuralFeatures().get(1);
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  @Override
+  public EClass getXValueType()
+  {
+    return xValueTypeEClass;
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  @Override
+  public EClass getXValueVarCurrentType()
+  {
+    return xValueVarCurrentTypeEClass;
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  @Override
+  public EReference getXValueVarCurrentType_Var()
+  {
+    return (EReference)xValueVarCurrentTypeEClass.getEStructuralFeatures().get(0);
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  @Override
+  public EAttribute getXValueVarCurrentType_Index()
+  {
+    return (EAttribute)xValueVarCurrentTypeEClass.getEStructuralFeatures().get(1);
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  @Override
+  public EClass getXValueVarSessionAggType()
+  {
+    return xValueVarSessionAggTypeEClass;
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  @Override
+  public EReference getXValueVarSessionAggType_Var()
+  {
+    return (EReference)xValueVarSessionAggTypeEClass.getEStructuralFeatures().get(0);
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  @Override
+  public EAttribute getXValueVarSessionAggType_Function()
+  {
+    return (EAttribute)xValueVarSessionAggTypeEClass.getEStructuralFeatures().get(1);
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  @Override
+  public EReference getXValueVarSessionAggType_Range()
+  {
+    return (EReference)xValueVarSessionAggTypeEClass.getEStructuralFeatures().get(2);
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  @Override
+  public EClass getXValueSignalSessionCountType()
+  {
+    return xValueSignalSessionCountTypeEClass;
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  @Override
+  public EReference getXValueSignalSessionCountType_Signal()
+  {
+    return (EReference)xValueSignalSessionCountTypeEClass.getEStructuralFeatures().get(0);
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  @Override
+  public EReference getXValueSignalSessionCountType_TimeRange()
+  {
+    return (EReference)xValueSignalSessionCountTypeEClass.getEStructuralFeatures().get(1);
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  @Override
+  public EAttribute getXValueSignalSessionCountType_Value()
+  {
+    return (EAttribute)xValueSignalSessionCountTypeEClass.getEStructuralFeatures().get(2);
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  @Override
+  public EClass getXValueSignalHistoricalCountType()
+  {
+    return xValueSignalHistoricalCountTypeEClass;
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  @Override
+  public EReference getXValueSignalHistoricalCountType_Signal()
+  {
+    return (EReference)xValueSignalHistoricalCountTypeEClass.getEStructuralFeatures().get(0);
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  @Override
+  public EAttribute getXValueSignalHistoricalCountType_Days()
+  {
+    return (EAttribute)xValueSignalHistoricalCountTypeEClass.getEStructuralFeatures().get(1);
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  @Override
+  public EAttribute getXValueSignalHistoricalCountType_Count()
+  {
+    return (EAttribute)xValueSignalHistoricalCountTypeEClass.getEStructuralFeatures().get(2);
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  @Override
+  public EClass getXQueryType()
+  {
+    return xQueryTypeEClass;
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  @Override
+  public EAttribute getXQueryType_Name()
+  {
+    return (EAttribute)xQueryTypeEClass.getEStructuralFeatures().get(0);
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  @Override
+  public EReference getXQueryType_Filters()
+  {
+    return (EReference)xQueryTypeEClass.getEStructuralFeatures().get(1);
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  @Override
+  public EClass getXQueryFilterType()
+  {
+    return xQueryFilterTypeEClass;
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  @Override
+  public EAttribute getXQueryFilterType_Operator()
+  {
+    return (EAttribute)xQueryFilterTypeEClass.getEStructuralFeatures().get(0);
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  @Override
+  public EAttribute getXQueryFilterType_Criteria()
+  {
+    return (EAttribute)xQueryFilterTypeEClass.getEStructuralFeatures().get(1);
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  @Override
+  public EClass getXQueryFilterValueType()
+  {
+    return xQueryFilterValueTypeEClass;
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  @Override
+  public EReference getXQueryFilterValueType_Value()
+  {
+    return (EReference)xQueryFilterValueTypeEClass.getEStructuralFeatures().get(0);
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  @Override
+  public EClass getXQueryFilterValueCompareType()
+  {
+    return xQueryFilterValueCompareTypeEClass;
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  @Override
+  public EReference getXQueryFilterValueCompareType_Value1()
+  {
+    return (EReference)xQueryFilterValueCompareTypeEClass.getEStructuralFeatures().get(0);
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  @Override
+  public EReference getXQueryFilterValueCompareType_Value2()
+  {
+    return (EReference)xQueryFilterValueCompareTypeEClass.getEStructuralFeatures().get(1);
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  @Override
+  public EAttribute getXQueryFilterValueCompareType_Function()
+  {
+    return (EAttribute)xQueryFilterValueCompareTypeEClass.getEStructuralFeatures().get(2);
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  @Override
   public EClass getOrType()
   {
     return orTypeEClass;
@@ -3425,6 +3845,50 @@ public class XScriptPackageImpl extends EPackageImpl implements XScriptPackage
    * @generated
    */
   @Override
+  public EEnum getXValueVarHistoricalAggFunction()
+  {
+    return xValueVarHistoricalAggFunctionEEnum;
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  @Override
+  public EEnum getXValueVarSessionAggFunction()
+  {
+    return xValueVarSessionAggFunctionEEnum;
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  @Override
+  public EEnum getXStreamOperator()
+  {
+    return xStreamOperatorEEnum;
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  @Override
+  public EEnum getXQueryValueCompareFunction()
+  {
+    return xQueryValueCompareFunctionEEnum;
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  @Override
   public XScriptFactory getXScriptFactory()
   {
     return (XScriptFactory)getEFactoryInstance();
@@ -3503,11 +3967,6 @@ public class XScriptPackageImpl extends EPackageImpl implements XScriptPackage
     createEAttribute(sessionSignalExpressionTypeEClass, SESSION_SIGNAL_EXPRESSION_TYPE__COUNT);
     createEAttribute(sessionSignalExpressionTypeEClass, SESSION_SIGNAL_EXPRESSION_TYPE__TIME);
     createEAttribute(sessionSignalExpressionTypeEClass, SESSION_SIGNAL_EXPRESSION_TYPE__UNIT);
-
-    entityQueryTypeEClass = createEClass(ENTITY_QUERY_TYPE);
-    createEAttribute(entityQueryTypeEClass, ENTITY_QUERY_TYPE__NAME);
-    createEReference(entityQueryTypeEClass, ENTITY_QUERY_TYPE__EXP);
-    createEAttribute(entityQueryTypeEClass, ENTITY_QUERY_TYPE__LIMIT);
 
     signalTypeEClass = createEClass(SIGNAL_TYPE);
     createEAttribute(signalTypeEClass, SIGNAL_TYPE__NAME);
@@ -3670,6 +4129,49 @@ public class XScriptPackageImpl extends EPackageImpl implements XScriptPackage
     createEReference(xRocExpTypeEClass, XROC_EXP_TYPE__VALUE1);
     createEReference(xRocExpTypeEClass, XROC_EXP_TYPE__VALUE2);
 
+    xTimeRangeEClass = createEClass(XTIME_RANGE);
+
+    xTimeRangeRelativeEClass = createEClass(XTIME_RANGE_RELATIVE);
+    createEAttribute(xTimeRangeRelativeEClass, XTIME_RANGE_RELATIVE__UNIT);
+    createEAttribute(xTimeRangeRelativeEClass, XTIME_RANGE_RELATIVE__VALUE);
+
+    xValueTypeEClass = createEClass(XVALUE_TYPE);
+
+    xValueVarCurrentTypeEClass = createEClass(XVALUE_VAR_CURRENT_TYPE);
+    createEReference(xValueVarCurrentTypeEClass, XVALUE_VAR_CURRENT_TYPE__VAR);
+    createEAttribute(xValueVarCurrentTypeEClass, XVALUE_VAR_CURRENT_TYPE__INDEX);
+
+    xValueVarSessionAggTypeEClass = createEClass(XVALUE_VAR_SESSION_AGG_TYPE);
+    createEReference(xValueVarSessionAggTypeEClass, XVALUE_VAR_SESSION_AGG_TYPE__VAR);
+    createEAttribute(xValueVarSessionAggTypeEClass, XVALUE_VAR_SESSION_AGG_TYPE__FUNCTION);
+    createEReference(xValueVarSessionAggTypeEClass, XVALUE_VAR_SESSION_AGG_TYPE__RANGE);
+
+    xValueSignalSessionCountTypeEClass = createEClass(XVALUE_SIGNAL_SESSION_COUNT_TYPE);
+    createEReference(xValueSignalSessionCountTypeEClass, XVALUE_SIGNAL_SESSION_COUNT_TYPE__SIGNAL);
+    createEReference(xValueSignalSessionCountTypeEClass, XVALUE_SIGNAL_SESSION_COUNT_TYPE__TIME_RANGE);
+    createEAttribute(xValueSignalSessionCountTypeEClass, XVALUE_SIGNAL_SESSION_COUNT_TYPE__VALUE);
+
+    xValueSignalHistoricalCountTypeEClass = createEClass(XVALUE_SIGNAL_HISTORICAL_COUNT_TYPE);
+    createEReference(xValueSignalHistoricalCountTypeEClass, XVALUE_SIGNAL_HISTORICAL_COUNT_TYPE__SIGNAL);
+    createEAttribute(xValueSignalHistoricalCountTypeEClass, XVALUE_SIGNAL_HISTORICAL_COUNT_TYPE__DAYS);
+    createEAttribute(xValueSignalHistoricalCountTypeEClass, XVALUE_SIGNAL_HISTORICAL_COUNT_TYPE__COUNT);
+
+    xQueryTypeEClass = createEClass(XQUERY_TYPE);
+    createEAttribute(xQueryTypeEClass, XQUERY_TYPE__NAME);
+    createEReference(xQueryTypeEClass, XQUERY_TYPE__FILTERS);
+
+    xQueryFilterTypeEClass = createEClass(XQUERY_FILTER_TYPE);
+    createEAttribute(xQueryFilterTypeEClass, XQUERY_FILTER_TYPE__OPERATOR);
+    createEAttribute(xQueryFilterTypeEClass, XQUERY_FILTER_TYPE__CRITERIA);
+
+    xQueryFilterValueTypeEClass = createEClass(XQUERY_FILTER_VALUE_TYPE);
+    createEReference(xQueryFilterValueTypeEClass, XQUERY_FILTER_VALUE_TYPE__VALUE);
+
+    xQueryFilterValueCompareTypeEClass = createEClass(XQUERY_FILTER_VALUE_COMPARE_TYPE);
+    createEReference(xQueryFilterValueCompareTypeEClass, XQUERY_FILTER_VALUE_COMPARE_TYPE__VALUE1);
+    createEReference(xQueryFilterValueCompareTypeEClass, XQUERY_FILTER_VALUE_COMPARE_TYPE__VALUE2);
+    createEAttribute(xQueryFilterValueCompareTypeEClass, XQUERY_FILTER_VALUE_COMPARE_TYPE__FUNCTION);
+
     orTypeEClass = createEClass(OR_TYPE);
     createEReference(orTypeEClass, OR_TYPE__LEFT);
     createEReference(orTypeEClass, OR_TYPE__RIGHT);
@@ -3775,6 +4277,10 @@ public class XScriptPackageImpl extends EPackageImpl implements XScriptPackage
     // Create enums
     streamTimeUnitEEnum = createEEnum(STREAM_TIME_UNIT);
     dataTypeEEnum = createEEnum(DATA_TYPE);
+    xValueVarHistoricalAggFunctionEEnum = createEEnum(XVALUE_VAR_HISTORICAL_AGG_FUNCTION);
+    xValueVarSessionAggFunctionEEnum = createEEnum(XVALUE_VAR_SESSION_AGG_FUNCTION);
+    xStreamOperatorEEnum = createEEnum(XSTREAM_OPERATOR);
+    xQueryValueCompareFunctionEEnum = createEEnum(XQUERY_VALUE_COMPARE_FUNCTION);
   }
 
   /**
@@ -3817,7 +4323,6 @@ public class XScriptPackageImpl extends EPackageImpl implements XScriptPackage
     avgExpressionTypeEClass.getESuperTypes().add(this.getExpressionType());
     subExpressionTypeEClass.getESuperTypes().add(this.getExpressionType());
     sessionSignalExpressionTypeEClass.getESuperTypes().add(this.getExpressionType());
-    entityQueryTypeEClass.getESuperTypes().add(this.getCoreAbstractElement());
     signalTypeEClass.getESuperTypes().add(this.getCoreAbstractElement());
     abstractElementEClass.getESuperTypes().add(this.getCoreAbstractElement());
     xClassCoreElementTypeEClass.getESuperTypes().add(this.getXClassElementType());
@@ -3854,6 +4359,14 @@ public class XScriptPackageImpl extends EPackageImpl implements XScriptPackage
     xVarianceAverageTypeEClass.getESuperTypes().add(this.getXExpressionType());
     xVarianceMaxTypeEClass.getESuperTypes().add(this.getXExpressionType());
     xRocExpTypeEClass.getESuperTypes().add(this.getXExpressionType());
+    xTimeRangeRelativeEClass.getESuperTypes().add(this.getXTimeRange());
+    xValueVarCurrentTypeEClass.getESuperTypes().add(this.getXValueType());
+    xValueVarSessionAggTypeEClass.getESuperTypes().add(this.getXValueType());
+    xValueSignalSessionCountTypeEClass.getESuperTypes().add(this.getXValueType());
+    xValueSignalHistoricalCountTypeEClass.getESuperTypes().add(this.getXValueType());
+    xQueryTypeEClass.getESuperTypes().add(this.getCoreAbstractElement());
+    xQueryFilterValueTypeEClass.getESuperTypes().add(this.getXQueryFilterType());
+    xQueryFilterValueCompareTypeEClass.getESuperTypes().add(this.getXQueryFilterType());
     orTypeEClass.getESuperTypes().add(this.getExpressionType());
     andTypeEClass.getESuperTypes().add(this.getExpressionType());
     equalityTypeEClass.getESuperTypes().add(this.getExpressionType());
@@ -3935,11 +4448,6 @@ public class XScriptPackageImpl extends EPackageImpl implements XScriptPackage
     initEAttribute(getSessionSignalExpressionType_Count(), ecorePackage.getEInt(), "count", null, 0, 1, SessionSignalExpressionType.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
     initEAttribute(getSessionSignalExpressionType_Time(), ecorePackage.getEInt(), "time", null, 0, 1, SessionSignalExpressionType.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
     initEAttribute(getSessionSignalExpressionType_Unit(), this.getStreamTimeUnit(), "unit", null, 0, 1, SessionSignalExpressionType.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-
-    initEClass(entityQueryTypeEClass, EntityQueryType.class, "EntityQueryType", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
-    initEAttribute(getEntityQueryType_Name(), ecorePackage.getEString(), "name", null, 0, 1, EntityQueryType.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-    initEReference(getEntityQueryType_Exp(), this.getExpressionType(), null, "exp", null, 0, 1, EntityQueryType.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-    initEAttribute(getEntityQueryType_Limit(), ecorePackage.getEInt(), "limit", null, 0, 1, EntityQueryType.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
     initEClass(signalTypeEClass, SignalType.class, "SignalType", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
     initEAttribute(getSignalType_Name(), ecorePackage.getEString(), "name", null, 0, 1, SignalType.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
@@ -4102,6 +4610,49 @@ public class XScriptPackageImpl extends EPackageImpl implements XScriptPackage
     initEReference(getXRocExpType_Value1(), this.getXExpressionType(), null, "value1", null, 0, 1, XRocExpType.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
     initEReference(getXRocExpType_Value2(), this.getXExpressionType(), null, "value2", null, 0, 1, XRocExpType.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
+    initEClass(xTimeRangeEClass, XTimeRange.class, "XTimeRange", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+
+    initEClass(xTimeRangeRelativeEClass, XTimeRangeRelative.class, "XTimeRangeRelative", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+    initEAttribute(getXTimeRangeRelative_Unit(), this.getStreamTimeUnit(), "unit", null, 0, 1, XTimeRangeRelative.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+    initEAttribute(getXTimeRangeRelative_Value(), ecorePackage.getEInt(), "value", null, 0, 1, XTimeRangeRelative.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+
+    initEClass(xValueTypeEClass, XValueType.class, "XValueType", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+
+    initEClass(xValueVarCurrentTypeEClass, XValueVarCurrentType.class, "XValueVarCurrentType", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+    initEReference(getXValueVarCurrentType_Var(), this.getVarType(), null, "var", null, 0, 1, XValueVarCurrentType.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+    initEAttribute(getXValueVarCurrentType_Index(), ecorePackage.getEInt(), "index", null, 0, 1, XValueVarCurrentType.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+
+    initEClass(xValueVarSessionAggTypeEClass, XValueVarSessionAggType.class, "XValueVarSessionAggType", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+    initEReference(getXValueVarSessionAggType_Var(), this.getVarType(), null, "var", null, 0, 1, XValueVarSessionAggType.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+    initEAttribute(getXValueVarSessionAggType_Function(), this.getXValueVarSessionAggFunction(), "function", null, 0, 1, XValueVarSessionAggType.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+    initEReference(getXValueVarSessionAggType_Range(), this.getXTimeRange(), null, "range", null, 0, 1, XValueVarSessionAggType.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+
+    initEClass(xValueSignalSessionCountTypeEClass, XValueSignalSessionCountType.class, "XValueSignalSessionCountType", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+    initEReference(getXValueSignalSessionCountType_Signal(), this.getSignalType(), null, "signal", null, 0, 1, XValueSignalSessionCountType.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+    initEReference(getXValueSignalSessionCountType_TimeRange(), this.getXTimeRange(), null, "timeRange", null, 0, 1, XValueSignalSessionCountType.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+    initEAttribute(getXValueSignalSessionCountType_Value(), ecorePackage.getEInt(), "value", null, 0, 1, XValueSignalSessionCountType.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+
+    initEClass(xValueSignalHistoricalCountTypeEClass, XValueSignalHistoricalCountType.class, "XValueSignalHistoricalCountType", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+    initEReference(getXValueSignalHistoricalCountType_Signal(), this.getSignalType(), null, "signal", null, 0, 1, XValueSignalHistoricalCountType.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+    initEAttribute(getXValueSignalHistoricalCountType_Days(), ecorePackage.getEInt(), "days", null, 0, 1, XValueSignalHistoricalCountType.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+    initEAttribute(getXValueSignalHistoricalCountType_Count(), ecorePackage.getEInt(), "count", null, 0, 1, XValueSignalHistoricalCountType.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+
+    initEClass(xQueryTypeEClass, XQueryType.class, "XQueryType", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+    initEAttribute(getXQueryType_Name(), ecorePackage.getEString(), "name", null, 0, 1, XQueryType.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+    initEReference(getXQueryType_Filters(), this.getXQueryFilterType(), null, "filters", null, 0, -1, XQueryType.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+
+    initEClass(xQueryFilterTypeEClass, XQueryFilterType.class, "XQueryFilterType", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+    initEAttribute(getXQueryFilterType_Operator(), this.getXStreamOperator(), "operator", null, 0, 1, XQueryFilterType.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+    initEAttribute(getXQueryFilterType_Criteria(), ecorePackage.getEString(), "criteria", null, 0, 1, XQueryFilterType.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+
+    initEClass(xQueryFilterValueTypeEClass, XQueryFilterValueType.class, "XQueryFilterValueType", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+    initEReference(getXQueryFilterValueType_Value(), this.getXValueType(), null, "value", null, 0, 1, XQueryFilterValueType.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+
+    initEClass(xQueryFilterValueCompareTypeEClass, XQueryFilterValueCompareType.class, "XQueryFilterValueCompareType", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+    initEReference(getXQueryFilterValueCompareType_Value1(), this.getXValueType(), null, "value1", null, 0, 1, XQueryFilterValueCompareType.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+    initEReference(getXQueryFilterValueCompareType_Value2(), this.getXValueType(), null, "value2", null, 0, 1, XQueryFilterValueCompareType.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+    initEAttribute(getXQueryFilterValueCompareType_Function(), this.getXQueryValueCompareFunction(), "function", null, 0, 1, XQueryFilterValueCompareType.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+
     initEClass(orTypeEClass, OrType.class, "OrType", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
     initEReference(getOrType_Left(), this.getExpressionType(), null, "left", null, 0, 1, OrType.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
     initEReference(getOrType_Right(), this.getExpressionType(), null, "right", null, 0, 1, OrType.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
@@ -4219,6 +4770,24 @@ public class XScriptPackageImpl extends EPackageImpl implements XScriptPackage
     addEEnumLiteral(dataTypeEEnum, DataType.DATE);
     addEEnumLiteral(dataTypeEEnum, DataType.DUB);
     addEEnumLiteral(dataTypeEEnum, DataType.LONG);
+
+    initEEnum(xValueVarHistoricalAggFunctionEEnum, XValueVarHistoricalAggFunction.class, "XValueVarHistoricalAggFunction");
+    addEEnumLiteral(xValueVarHistoricalAggFunctionEEnum, XValueVarHistoricalAggFunction.HIGH);
+    addEEnumLiteral(xValueVarHistoricalAggFunctionEEnum, XValueVarHistoricalAggFunction.LOW);
+
+    initEEnum(xValueVarSessionAggFunctionEEnum, XValueVarSessionAggFunction.class, "XValueVarSessionAggFunction");
+    addEEnumLiteral(xValueVarSessionAggFunctionEEnum, XValueVarSessionAggFunction.HIGH);
+    addEEnumLiteral(xValueVarSessionAggFunctionEEnum, XValueVarSessionAggFunction.LOW);
+
+    initEEnum(xStreamOperatorEEnum, XStreamOperator.class, "XStreamOperator");
+    addEEnumLiteral(xStreamOperatorEEnum, XStreamOperator.GT);
+    addEEnumLiteral(xStreamOperatorEEnum, XStreamOperator.LT);
+    addEEnumLiteral(xStreamOperatorEEnum, XStreamOperator.EQ);
+    addEEnumLiteral(xStreamOperatorEEnum, XStreamOperator.NQ);
+
+    initEEnum(xQueryValueCompareFunctionEEnum, XQueryValueCompareFunction.class, "XQueryValueCompareFunction");
+    addEEnumLiteral(xQueryValueCompareFunctionEEnum, XQueryValueCompareFunction.ROC);
+    addEEnumLiteral(xQueryValueCompareFunctionEEnum, XQueryValueCompareFunction.DIFF);
 
     // Create resource
     createResource(eNS_URI);

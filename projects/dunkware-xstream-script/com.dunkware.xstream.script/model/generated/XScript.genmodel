@@ -21,6 +21,24 @@
       <genEnumLiterals ecoreEnumLiteral="XScript.ecore#//DataType/DUB"/>
       <genEnumLiterals ecoreEnumLiteral="XScript.ecore#//DataType/LONG"/>
     </genEnums>
+    <genEnums typeSafeEnumCompatible="false" ecoreEnum="XScript.ecore#//XValueVarHistoricalAggFunction">
+      <genEnumLiterals ecoreEnumLiteral="XScript.ecore#//XValueVarHistoricalAggFunction/high"/>
+      <genEnumLiterals ecoreEnumLiteral="XScript.ecore#//XValueVarHistoricalAggFunction/low"/>
+    </genEnums>
+    <genEnums typeSafeEnumCompatible="false" ecoreEnum="XScript.ecore#//XValueVarSessionAggFunction">
+      <genEnumLiterals ecoreEnumLiteral="XScript.ecore#//XValueVarSessionAggFunction/high"/>
+      <genEnumLiterals ecoreEnumLiteral="XScript.ecore#//XValueVarSessionAggFunction/low"/>
+    </genEnums>
+    <genEnums typeSafeEnumCompatible="false" ecoreEnum="XScript.ecore#//XStreamOperator">
+      <genEnumLiterals ecoreEnumLiteral="XScript.ecore#//XStreamOperator/gt"/>
+      <genEnumLiterals ecoreEnumLiteral="XScript.ecore#//XStreamOperator/lt"/>
+      <genEnumLiterals ecoreEnumLiteral="XScript.ecore#//XStreamOperator/eq"/>
+      <genEnumLiterals ecoreEnumLiteral="XScript.ecore#//XStreamOperator/nq"/>
+    </genEnums>
+    <genEnums typeSafeEnumCompatible="false" ecoreEnum="XScript.ecore#//XQueryValueCompareFunction">
+      <genEnumLiterals ecoreEnumLiteral="XScript.ecore#//XQueryValueCompareFunction/roc"/>
+      <genEnumLiterals ecoreEnumLiteral="XScript.ecore#//XQueryValueCompareFunction/diff"/>
+    </genEnums>
     <genClasses ecoreClass="XScript.ecore#//XScript">
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference XScript.ecore#//XScript/elements"/>
     </genClasses>
@@ -71,11 +89,6 @@
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute XScript.ecore#//SessionSignalExpressionType/count"/>
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute XScript.ecore#//SessionSignalExpressionType/time"/>
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute XScript.ecore#//SessionSignalExpressionType/unit"/>
-    </genClasses>
-    <genClasses ecoreClass="XScript.ecore#//EntityQueryType">
-      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute XScript.ecore#//EntityQueryType/name"/>
-      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference XScript.ecore#//EntityQueryType/exp"/>
-      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute XScript.ecore#//EntityQueryType/limit"/>
     </genClasses>
     <genClasses ecoreClass="XScript.ecore#//SignalType">
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute XScript.ecore#//SignalType/name"/>
@@ -232,6 +245,47 @@
     <genClasses ecoreClass="XScript.ecore#//XRocExpType">
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference XScript.ecore#//XRocExpType/value1"/>
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference XScript.ecore#//XRocExpType/value2"/>
+    </genClasses>
+    <genClasses ecoreClass="XScript.ecore#//XTimeRange"/>
+    <genClasses ecoreClass="XScript.ecore#//XTimeRangeRelative">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute XScript.ecore#//XTimeRangeRelative/unit"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute XScript.ecore#//XTimeRangeRelative/value"/>
+    </genClasses>
+    <genClasses ecoreClass="XScript.ecore#//XValueType"/>
+    <genClasses ecoreClass="XScript.ecore#//XValueVarCurrentType">
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference XScript.ecore#//XValueVarCurrentType/var"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute XScript.ecore#//XValueVarCurrentType/index"/>
+    </genClasses>
+    <genClasses ecoreClass="XScript.ecore#//XValueVarSessionAggType">
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference XScript.ecore#//XValueVarSessionAggType/var"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute XScript.ecore#//XValueVarSessionAggType/function"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference XScript.ecore#//XValueVarSessionAggType/range"/>
+    </genClasses>
+    <genClasses ecoreClass="XScript.ecore#//XValueSignalSessionCountType">
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference XScript.ecore#//XValueSignalSessionCountType/signal"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference XScript.ecore#//XValueSignalSessionCountType/timeRange"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute XScript.ecore#//XValueSignalSessionCountType/value"/>
+    </genClasses>
+    <genClasses ecoreClass="XScript.ecore#//XValueSignalHistoricalCountType">
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference XScript.ecore#//XValueSignalHistoricalCountType/signal"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute XScript.ecore#//XValueSignalHistoricalCountType/days"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute XScript.ecore#//XValueSignalHistoricalCountType/count"/>
+    </genClasses>
+    <genClasses ecoreClass="XScript.ecore#//XQueryType">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute XScript.ecore#//XQueryType/name"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference XScript.ecore#//XQueryType/filters"/>
+    </genClasses>
+    <genClasses ecoreClass="XScript.ecore#//XQueryFilterType">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute XScript.ecore#//XQueryFilterType/operator"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute XScript.ecore#//XQueryFilterType/criteria"/>
+    </genClasses>
+    <genClasses ecoreClass="XScript.ecore#//XQueryFilterValueType">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference XScript.ecore#//XQueryFilterValueType/value"/>
+    </genClasses>
+    <genClasses ecoreClass="XScript.ecore#//XQueryFilterValueCompareType">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference XScript.ecore#//XQueryFilterValueCompareType/value1"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference XScript.ecore#//XQueryFilterValueCompareType/value2"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute XScript.ecore#//XQueryFilterValueCompareType/function"/>
     </genClasses>
     <genClasses ecoreClass="XScript.ecore#//OrType">
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference XScript.ecore#//OrType/left"/>

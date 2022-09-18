@@ -59,8 +59,14 @@ public class XScriptParser extends AbstractContentAssistParser {
 			builder.put(grammarAccess.getXVarCompareStreakTypeAccess().getDirectionAlternatives_7_0(), "rule__XVarCompareStreakType__DirectionAlternatives_7_0");
 			builder.put(grammarAccess.getXVarCompareStreakTypeAccess().getFunctionAlternatives_11_0(), "rule__XVarCompareStreakType__FunctionAlternatives_11_0");
 			builder.put(grammarAccess.getXVarCompareStreakTypeAccess().getOpAlternatives_12_0(), "rule__XVarCompareStreakType__OpAlternatives_12_0");
+			builder.put(grammarAccess.getXValueTypeAccess().getAlternatives(), "rule__XValueType__Alternatives");
+			builder.put(grammarAccess.getXQueryFilterTypeAccess().getAlternatives(), "rule__XQueryFilterType__Alternatives");
 			builder.put(grammarAccess.getStreamTimeUnitAccess().getAlternatives(), "rule__StreamTimeUnit__Alternatives");
 			builder.put(grammarAccess.getDataTypeAccess().getAlternatives(), "rule__DataType__Alternatives");
+			builder.put(grammarAccess.getXValueVarHistoricalAggFunctionAccess().getAlternatives(), "rule__XValueVarHistoricalAggFunction__Alternatives");
+			builder.put(grammarAccess.getXValueVarSessionAggFunctionAccess().getAlternatives(), "rule__XValueVarSessionAggFunction__Alternatives");
+			builder.put(grammarAccess.getXStreamOperatorAccess().getAlternatives(), "rule__XStreamOperator__Alternatives");
+			builder.put(grammarAccess.getXQueryValueCompareFunctionAccess().getAlternatives(), "rule__XQueryValueCompareFunction__Alternatives");
 			builder.put(grammarAccess.getVarTypeAccess().getGroup(), "rule__VarType__Group__0");
 			builder.put(grammarAccess.getOrTypeAccess().getGroup(), "rule__OrType__Group__0");
 			builder.put(grammarAccess.getOrTypeAccess().getGroup_1(), "rule__OrType__Group_1__0");
@@ -96,8 +102,6 @@ public class XScriptParser extends AbstractContentAssistParser {
 			builder.put(grammarAccess.getAvgExpressionTypeAccess().getGroup(), "rule__AvgExpressionType__Group__0");
 			builder.put(grammarAccess.getSubExpressionTypeAccess().getGroup(), "rule__SubExpressionType__Group__0");
 			builder.put(grammarAccess.getSessionSignalExpressionTypeAccess().getGroup(), "rule__SessionSignalExpressionType__Group__0");
-			builder.put(grammarAccess.getEntityQueryTypeAccess().getGroup(), "rule__EntityQueryType__Group__0");
-			builder.put(grammarAccess.getEntityQueryTypeAccess().getGroup_6(), "rule__EntityQueryType__Group_6__0");
 			builder.put(grammarAccess.getSignalTypeAccess().getGroup(), "rule__SignalType__Group__0");
 			builder.put(grammarAccess.getXClassTypeAccess().getGroup(), "rule__XClassType__Group__0");
 			builder.put(grammarAccess.getXClassTypeAccess().getGroup_3(), "rule__XClassType__Group_3__0");
@@ -161,6 +165,14 @@ public class XScriptParser extends AbstractContentAssistParser {
 			builder.put(grammarAccess.getXVarianceAverageTypeAccess().getGroup(), "rule__XVarianceAverageType__Group__0");
 			builder.put(grammarAccess.getXVarianceMaxTypeAccess().getGroup(), "rule__XVarianceMaxType__Group__0");
 			builder.put(grammarAccess.getXRocExpTypeAccess().getGroup(), "rule__XRocExpType__Group__0");
+			builder.put(grammarAccess.getXTimeRangeRelativeAccess().getGroup(), "rule__XTimeRangeRelative__Group__0");
+			builder.put(grammarAccess.getXValueVarCurrentTypeAccess().getGroup(), "rule__XValueVarCurrentType__Group__0");
+			builder.put(grammarAccess.getXValueVarSessionAggTypeAccess().getGroup(), "rule__XValueVarSessionAggType__Group__0");
+			builder.put(grammarAccess.getXValueSignalSessionCountTypeAccess().getGroup(), "rule__XValueSignalSessionCountType__Group__0");
+			builder.put(grammarAccess.getXValueSignalHistoricalCountTypeAccess().getGroup(), "rule__XValueSignalHistoricalCountType__Group__0");
+			builder.put(grammarAccess.getXQueryTypeAccess().getGroup(), "rule__XQueryType__Group__0");
+			builder.put(grammarAccess.getXQueryFilterValueTypeAccess().getGroup(), "rule__XQueryFilterValueType__Group__0");
+			builder.put(grammarAccess.getXQueryFilterValueCompareTypeAccess().getGroup(), "rule__XQueryFilterValueCompareType__Group__0");
 			builder.put(grammarAccess.getXScriptAccess().getElementsAssignment(), "rule__XScript__ElementsAssignment");
 			builder.put(grammarAccess.getVarTypeAccess().getNameAssignment_1(), "rule__VarType__NameAssignment_1");
 			builder.put(grammarAccess.getVarTypeAccess().getCodeAssignment_3(), "rule__VarType__CodeAssignment_3");
@@ -205,9 +217,6 @@ public class XScriptParser extends AbstractContentAssistParser {
 			builder.put(grammarAccess.getSessionSignalExpressionTypeAccess().getCountAssignment_5(), "rule__SessionSignalExpressionType__CountAssignment_5");
 			builder.put(grammarAccess.getSessionSignalExpressionTypeAccess().getTimeAssignment_7(), "rule__SessionSignalExpressionType__TimeAssignment_7");
 			builder.put(grammarAccess.getSessionSignalExpressionTypeAccess().getUnitAssignment_8(), "rule__SessionSignalExpressionType__UnitAssignment_8");
-			builder.put(grammarAccess.getEntityQueryTypeAccess().getNameAssignment_2(), "rule__EntityQueryType__NameAssignment_2");
-			builder.put(grammarAccess.getEntityQueryTypeAccess().getExpAssignment_4(), "rule__EntityQueryType__ExpAssignment_4");
-			builder.put(grammarAccess.getEntityQueryTypeAccess().getLimitAssignment_6_1(), "rule__EntityQueryType__LimitAssignment_6_1");
 			builder.put(grammarAccess.getSignalTypeAccess().getNameAssignment_2(), "rule__SignalType__NameAssignment_2");
 			builder.put(grammarAccess.getSignalTypeAccess().getIdAssignment_4(), "rule__SignalType__IdAssignment_4");
 			builder.put(grammarAccess.getXClassTypeAccess().getNameAssignment_2(), "rule__XClassType__NameAssignment_2");
@@ -306,6 +315,29 @@ public class XScriptParser extends AbstractContentAssistParser {
 			builder.put(grammarAccess.getXVarianceMaxTypeAccess().getEndAssignment_9(), "rule__XVarianceMaxType__EndAssignment_9");
 			builder.put(grammarAccess.getXRocExpTypeAccess().getValue1Assignment_3(), "rule__XRocExpType__Value1Assignment_3");
 			builder.put(grammarAccess.getXRocExpTypeAccess().getValue2Assignment_5(), "rule__XRocExpType__Value2Assignment_5");
+			builder.put(grammarAccess.getXTimeRangeRelativeAccess().getUnitAssignment_3(), "rule__XTimeRangeRelative__UnitAssignment_3");
+			builder.put(grammarAccess.getXTimeRangeRelativeAccess().getValueAssignment_5(), "rule__XTimeRangeRelative__ValueAssignment_5");
+			builder.put(grammarAccess.getXValueVarCurrentTypeAccess().getVarAssignment_3(), "rule__XValueVarCurrentType__VarAssignment_3");
+			builder.put(grammarAccess.getXValueVarCurrentTypeAccess().getIndexAssignment_5(), "rule__XValueVarCurrentType__IndexAssignment_5");
+			builder.put(grammarAccess.getXValueVarSessionAggTypeAccess().getVarAssignment_3(), "rule__XValueVarSessionAggType__VarAssignment_3");
+			builder.put(grammarAccess.getXValueVarSessionAggTypeAccess().getFunctionAssignment_5(), "rule__XValueVarSessionAggType__FunctionAssignment_5");
+			builder.put(grammarAccess.getXValueVarSessionAggTypeAccess().getRangeAssignment_7(), "rule__XValueVarSessionAggType__RangeAssignment_7");
+			builder.put(grammarAccess.getXValueSignalSessionCountTypeAccess().getSignalAssignment_3(), "rule__XValueSignalSessionCountType__SignalAssignment_3");
+			builder.put(grammarAccess.getXValueSignalSessionCountTypeAccess().getTimeRangeAssignment_5(), "rule__XValueSignalSessionCountType__TimeRangeAssignment_5");
+			builder.put(grammarAccess.getXValueSignalSessionCountTypeAccess().getValueAssignment_7(), "rule__XValueSignalSessionCountType__ValueAssignment_7");
+			builder.put(grammarAccess.getXValueSignalHistoricalCountTypeAccess().getSignalAssignment_3(), "rule__XValueSignalHistoricalCountType__SignalAssignment_3");
+			builder.put(grammarAccess.getXValueSignalHistoricalCountTypeAccess().getDaysAssignment_5(), "rule__XValueSignalHistoricalCountType__DaysAssignment_5");
+			builder.put(grammarAccess.getXValueSignalHistoricalCountTypeAccess().getCountAssignment_7(), "rule__XValueSignalHistoricalCountType__CountAssignment_7");
+			builder.put(grammarAccess.getXQueryTypeAccess().getNameAssignment_2(), "rule__XQueryType__NameAssignment_2");
+			builder.put(grammarAccess.getXQueryTypeAccess().getFiltersAssignment_5(), "rule__XQueryType__FiltersAssignment_5");
+			builder.put(grammarAccess.getXQueryFilterValueTypeAccess().getValueAssignment_3(), "rule__XQueryFilterValueType__ValueAssignment_3");
+			builder.put(grammarAccess.getXQueryFilterValueTypeAccess().getOperatorAssignment_5(), "rule__XQueryFilterValueType__OperatorAssignment_5");
+			builder.put(grammarAccess.getXQueryFilterValueTypeAccess().getCriteriaAssignment_7(), "rule__XQueryFilterValueType__CriteriaAssignment_7");
+			builder.put(grammarAccess.getXQueryFilterValueCompareTypeAccess().getValue1Assignment_2(), "rule__XQueryFilterValueCompareType__Value1Assignment_2");
+			builder.put(grammarAccess.getXQueryFilterValueCompareTypeAccess().getValue2Assignment_4(), "rule__XQueryFilterValueCompareType__Value2Assignment_4");
+			builder.put(grammarAccess.getXQueryFilterValueCompareTypeAccess().getFunctionAssignment_6(), "rule__XQueryFilterValueCompareType__FunctionAssignment_6");
+			builder.put(grammarAccess.getXQueryFilterValueCompareTypeAccess().getOperatorAssignment_8(), "rule__XQueryFilterValueCompareType__OperatorAssignment_8");
+			builder.put(grammarAccess.getXQueryFilterValueCompareTypeAccess().getCriteriaAssignment_10(), "rule__XQueryFilterValueCompareType__CriteriaAssignment_10");
 		}
 	}
 	

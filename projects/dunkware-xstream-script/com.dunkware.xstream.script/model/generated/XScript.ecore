@@ -78,12 +78,6 @@
     <eLiterals name="DUB" value="6" literal="DUB"/>
     <eLiterals name="LONG" value="7" literal="LONG"/>
   </eClassifiers>
-  <eClassifiers xsi:type="ecore:EClass" name="EntityQueryType" eSuperTypes="#//CoreAbstractElement">
-    <eStructuralFeatures xsi:type="ecore:EAttribute" name="name" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
-    <eStructuralFeatures xsi:type="ecore:EReference" name="exp" eType="#//ExpressionType"
-        containment="true"/>
-    <eStructuralFeatures xsi:type="ecore:EAttribute" name="limit" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EInt"/>
-  </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="SignalType" eSuperTypes="#//CoreAbstractElement">
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="name" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="id" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EInt"/>
@@ -273,6 +267,71 @@
         containment="true"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="value2" eType="#//XExpressionType"
         containment="true"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="XTimeRange"/>
+  <eClassifiers xsi:type="ecore:EClass" name="XTimeRangeRelative" eSuperTypes="#//XTimeRange">
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="unit" eType="#//StreamTimeUnit"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="value" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EInt"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EEnum" name="XValueVarHistoricalAggFunction">
+    <eLiterals name="high" literal="HIGH"/>
+    <eLiterals name="low" value="1" literal="LOW"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EEnum" name="XValueVarSessionAggFunction">
+    <eLiterals name="high" literal="HIGH"/>
+    <eLiterals name="low" value="1" literal="LOW"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EEnum" name="XStreamOperator">
+    <eLiterals name="gt" literal="GT"/>
+    <eLiterals name="lt" value="1" literal="LT"/>
+    <eLiterals name="eq" value="2" literal="EQ"/>
+    <eLiterals name="nq" value="3" literal="NE"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="XValueType"/>
+  <eClassifiers xsi:type="ecore:EClass" name="XValueVarCurrentType" eSuperTypes="#//XValueType">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="var" eType="#//VarType"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="index" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EInt"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="XValueVarSessionAggType" eSuperTypes="#//XValueType">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="var" eType="#//VarType"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="function" eType="#//XValueVarSessionAggFunction"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="range" eType="#//XTimeRange"
+        containment="true"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="XValueSignalSessionCountType" eSuperTypes="#//XValueType">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="signal" eType="#//SignalType"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="timeRange" eType="#//XTimeRange"
+        containment="true"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="value" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EInt"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="XValueSignalHistoricalCountType" eSuperTypes="#//XValueType">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="signal" eType="#//SignalType"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="days" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EInt"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="count" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EInt"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EEnum" name="XQueryValueCompareFunction">
+    <eLiterals name="roc" literal="ROC"/>
+    <eLiterals name="diff" value="1" literal="DIFF"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="XQueryType" eSuperTypes="#//CoreAbstractElement">
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="name" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="filters" upperBound="-1"
+        eType="#//XQueryFilterType" containment="true"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="XQueryFilterType">
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="operator" eType="#//XStreamOperator"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="criteria" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="XQueryFilterValueType" eSuperTypes="#//XQueryFilterType">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="value" eType="#//XValueType"
+        containment="true"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="XQueryFilterValueCompareType" eSuperTypes="#//XQueryFilterType">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="value1" eType="#//XValueType"
+        containment="true"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="value2" eType="#//XValueType"
+        containment="true"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="function" eType="#//XQueryValueCompareFunction"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="OrType" eSuperTypes="#//ExpressionType">
     <eStructuralFeatures xsi:type="ecore:EReference" name="left" eType="#//ExpressionType"

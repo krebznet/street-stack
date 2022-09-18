@@ -166,11 +166,11 @@ ruleCoreAbstractElement returns [EObject current=null]
 		}
 		    |
 		{
-			newCompositeNode(grammarAccess.getCoreAbstractElementAccess().getEntityQueryTypeParserRuleCall_3());
+			newCompositeNode(grammarAccess.getCoreAbstractElementAccess().getXQueryTypeParserRuleCall_3());
 		}
-		this_EntityQueryType_3=ruleEntityQueryType
+		this_XQueryType_3=ruleXQueryType
 		{
-			$current = $this_EntityQueryType_3.current;
+			$current = $this_XQueryType_3.current;
 			afterParserOrEnumRuleCall();
 		}
 	)
@@ -1997,109 +1997,6 @@ ruleSessionSignalExpressionType returns [EObject current=null]
 		otherlv_9=')'
 		{
 			newLeafNode(otherlv_9, grammarAccess.getSessionSignalExpressionTypeAccess().getRightParenthesisKeyword_9());
-		}
-	)
-;
-
-// Entry rule entryRuleEntityQueryType
-entryRuleEntityQueryType returns [EObject current=null]:
-	{ newCompositeNode(grammarAccess.getEntityQueryTypeRule()); }
-	iv_ruleEntityQueryType=ruleEntityQueryType
-	{ $current=$iv_ruleEntityQueryType.current; }
-	EOF;
-
-// Rule EntityQueryType
-ruleEntityQueryType returns [EObject current=null]
-@init {
-	enterRule();
-}
-@after {
-	leaveRule();
-}:
-	(
-		(
-			{
-				$current = forceCreateModelElement(
-					grammarAccess.getEntityQueryTypeAccess().getEntityQueryTypeAction_0(),
-					$current);
-			}
-		)
-		otherlv_1='EntityQuery'
-		{
-			newLeafNode(otherlv_1, grammarAccess.getEntityQueryTypeAccess().getEntityQueryKeyword_1());
-		}
-		(
-			(
-				lv_name_2_0=RULE_ID
-				{
-					newLeafNode(lv_name_2_0, grammarAccess.getEntityQueryTypeAccess().getNameIDTerminalRuleCall_2_0());
-				}
-				{
-					if ($current==null) {
-						$current = createModelElement(grammarAccess.getEntityQueryTypeRule());
-					}
-					setWithLastConsumed(
-						$current,
-						"name",
-						lv_name_2_0,
-						"org.eclipse.xtext.common.Terminals.ID");
-				}
-			)
-		)
-		otherlv_3='('
-		{
-			newLeafNode(otherlv_3, grammarAccess.getEntityQueryTypeAccess().getLeftParenthesisKeyword_3());
-		}
-		(
-			(
-				{
-					newCompositeNode(grammarAccess.getEntityQueryTypeAccess().getExpExpressionTypeParserRuleCall_4_0());
-				}
-				lv_exp_4_0=ruleExpressionType
-				{
-					if ($current==null) {
-						$current = createModelElementForParent(grammarAccess.getEntityQueryTypeRule());
-					}
-					set(
-						$current,
-						"exp",
-						lv_exp_4_0,
-						"com.dunkware.xstream.XScript.ExpressionType");
-					afterParserOrEnumRuleCall();
-				}
-			)
-		)
-		otherlv_5=')'
-		{
-			newLeafNode(otherlv_5, grammarAccess.getEntityQueryTypeAccess().getRightParenthesisKeyword_5());
-		}
-		(
-			otherlv_6='LIMIT '
-			{
-				newLeafNode(otherlv_6, grammarAccess.getEntityQueryTypeAccess().getLIMITKeyword_6_0());
-			}
-			(
-				(
-					lv_limit_7_0=RULE_INT
-					{
-						newLeafNode(lv_limit_7_0, grammarAccess.getEntityQueryTypeAccess().getLimitINTTerminalRuleCall_6_1_0());
-					}
-					{
-						if ($current==null) {
-							$current = createModelElement(grammarAccess.getEntityQueryTypeRule());
-						}
-						setWithLastConsumed(
-							$current,
-							"limit",
-							lv_limit_7_0,
-							"org.eclipse.xtext.common.Terminals.INT");
-					}
-				)
-			)
-		)?
-		otherlv_8=';'
-		{
-			newLeafNode(otherlv_8, grammarAccess.getEntityQueryTypeAccess().getSemicolonKeyword_7());
 		}
 	)
 ;
@@ -6319,6 +6216,880 @@ ruleXRocExpType returns [EObject current=null]
 	)
 ;
 
+// Entry rule entryRuleXTimeRange
+entryRuleXTimeRange returns [EObject current=null]:
+	{ newCompositeNode(grammarAccess.getXTimeRangeRule()); }
+	iv_ruleXTimeRange=ruleXTimeRange
+	{ $current=$iv_ruleXTimeRange.current; }
+	EOF;
+
+// Rule XTimeRange
+ruleXTimeRange returns [EObject current=null]
+@init {
+	enterRule();
+}
+@after {
+	leaveRule();
+}:
+	{
+		newCompositeNode(grammarAccess.getXTimeRangeAccess().getXTimeRangeRelativeParserRuleCall());
+	}
+	this_XTimeRangeRelative_0=ruleXTimeRangeRelative
+	{
+		$current = $this_XTimeRangeRelative_0.current;
+		afterParserOrEnumRuleCall();
+	}
+;
+
+// Entry rule entryRuleXTimeRangeRelative
+entryRuleXTimeRangeRelative returns [EObject current=null]:
+	{ newCompositeNode(grammarAccess.getXTimeRangeRelativeRule()); }
+	iv_ruleXTimeRangeRelative=ruleXTimeRangeRelative
+	{ $current=$iv_ruleXTimeRangeRelative.current; }
+	EOF;
+
+// Rule XTimeRangeRelative
+ruleXTimeRangeRelative returns [EObject current=null]
+@init {
+	enterRule();
+}
+@after {
+	leaveRule();
+}:
+	(
+		(
+			{
+				$current = forceCreateModelElement(
+					grammarAccess.getXTimeRangeRelativeAccess().getXTimeRangeRelativeAction_0(),
+					$current);
+			}
+		)
+		otherlv_1='relative'
+		{
+			newLeafNode(otherlv_1, grammarAccess.getXTimeRangeRelativeAccess().getRelativeKeyword_1());
+		}
+		otherlv_2='('
+		{
+			newLeafNode(otherlv_2, grammarAccess.getXTimeRangeRelativeAccess().getLeftParenthesisKeyword_2());
+		}
+		(
+			(
+				{
+					newCompositeNode(grammarAccess.getXTimeRangeRelativeAccess().getUnitStreamTimeUnitEnumRuleCall_3_0());
+				}
+				lv_unit_3_0=ruleStreamTimeUnit
+				{
+					if ($current==null) {
+						$current = createModelElementForParent(grammarAccess.getXTimeRangeRelativeRule());
+					}
+					set(
+						$current,
+						"unit",
+						lv_unit_3_0,
+						"com.dunkware.xstream.XScript.StreamTimeUnit");
+					afterParserOrEnumRuleCall();
+				}
+			)
+		)
+		otherlv_4=','
+		{
+			newLeafNode(otherlv_4, grammarAccess.getXTimeRangeRelativeAccess().getCommaKeyword_4());
+		}
+		(
+			(
+				lv_value_5_0=RULE_INT
+				{
+					newLeafNode(lv_value_5_0, grammarAccess.getXTimeRangeRelativeAccess().getValueINTTerminalRuleCall_5_0());
+				}
+				{
+					if ($current==null) {
+						$current = createModelElement(grammarAccess.getXTimeRangeRelativeRule());
+					}
+					setWithLastConsumed(
+						$current,
+						"value",
+						lv_value_5_0,
+						"org.eclipse.xtext.common.Terminals.INT");
+				}
+			)
+		)
+		otherlv_6=')'
+		{
+			newLeafNode(otherlv_6, grammarAccess.getXTimeRangeRelativeAccess().getRightParenthesisKeyword_6());
+		}
+	)
+;
+
+// Entry rule entryRuleXValueType
+entryRuleXValueType returns [EObject current=null]:
+	{ newCompositeNode(grammarAccess.getXValueTypeRule()); }
+	iv_ruleXValueType=ruleXValueType
+	{ $current=$iv_ruleXValueType.current; }
+	EOF;
+
+// Rule XValueType
+ruleXValueType returns [EObject current=null]
+@init {
+	enterRule();
+}
+@after {
+	leaveRule();
+}:
+	(
+		{
+			newCompositeNode(grammarAccess.getXValueTypeAccess().getXValueVarCurrentTypeParserRuleCall_0());
+		}
+		this_XValueVarCurrentType_0=ruleXValueVarCurrentType
+		{
+			$current = $this_XValueVarCurrentType_0.current;
+			afterParserOrEnumRuleCall();
+		}
+		    |
+		{
+			newCompositeNode(grammarAccess.getXValueTypeAccess().getXValueVarSessionAggTypeParserRuleCall_1());
+		}
+		this_XValueVarSessionAggType_1=ruleXValueVarSessionAggType
+		{
+			$current = $this_XValueVarSessionAggType_1.current;
+			afterParserOrEnumRuleCall();
+		}
+		    |
+		{
+			newCompositeNode(grammarAccess.getXValueTypeAccess().getXValueSignalSessionCountTypeParserRuleCall_2());
+		}
+		this_XValueSignalSessionCountType_2=ruleXValueSignalSessionCountType
+		{
+			$current = $this_XValueSignalSessionCountType_2.current;
+			afterParserOrEnumRuleCall();
+		}
+		    |
+		{
+			newCompositeNode(grammarAccess.getXValueTypeAccess().getXValueSignalHistoricalCountTypeParserRuleCall_3());
+		}
+		this_XValueSignalHistoricalCountType_3=ruleXValueSignalHistoricalCountType
+		{
+			$current = $this_XValueSignalHistoricalCountType_3.current;
+			afterParserOrEnumRuleCall();
+		}
+	)
+;
+
+// Entry rule entryRuleXValueVarCurrentType
+entryRuleXValueVarCurrentType returns [EObject current=null]:
+	{ newCompositeNode(grammarAccess.getXValueVarCurrentTypeRule()); }
+	iv_ruleXValueVarCurrentType=ruleXValueVarCurrentType
+	{ $current=$iv_ruleXValueVarCurrentType.current; }
+	EOF;
+
+// Rule XValueVarCurrentType
+ruleXValueVarCurrentType returns [EObject current=null]
+@init {
+	enterRule();
+}
+@after {
+	leaveRule();
+}:
+	(
+		(
+			{
+				$current = forceCreateModelElement(
+					grammarAccess.getXValueVarCurrentTypeAccess().getXValueVarCurrentTypeAction_0(),
+					$current);
+			}
+		)
+		otherlv_1='sessionVarValue'
+		{
+			newLeafNode(otherlv_1, grammarAccess.getXValueVarCurrentTypeAccess().getSessionVarValueKeyword_1());
+		}
+		otherlv_2='('
+		{
+			newLeafNode(otherlv_2, grammarAccess.getXValueVarCurrentTypeAccess().getLeftParenthesisKeyword_2());
+		}
+		(
+			(
+				{
+					if ($current==null) {
+						$current = createModelElement(grammarAccess.getXValueVarCurrentTypeRule());
+					}
+				}
+				otherlv_3=RULE_ID
+				{
+					newLeafNode(otherlv_3, grammarAccess.getXValueVarCurrentTypeAccess().getVarVarTypeCrossReference_3_0());
+				}
+			)
+		)
+		otherlv_4=','
+		{
+			newLeafNode(otherlv_4, grammarAccess.getXValueVarCurrentTypeAccess().getCommaKeyword_4());
+		}
+		(
+			(
+				lv_index_5_0=RULE_INT
+				{
+					newLeafNode(lv_index_5_0, grammarAccess.getXValueVarCurrentTypeAccess().getIndexINTTerminalRuleCall_5_0());
+				}
+				{
+					if ($current==null) {
+						$current = createModelElement(grammarAccess.getXValueVarCurrentTypeRule());
+					}
+					setWithLastConsumed(
+						$current,
+						"index",
+						lv_index_5_0,
+						"org.eclipse.xtext.common.Terminals.INT");
+				}
+			)
+		)
+		otherlv_6=')'
+		{
+			newLeafNode(otherlv_6, grammarAccess.getXValueVarCurrentTypeAccess().getRightParenthesisKeyword_6());
+		}
+	)
+;
+
+// Entry rule entryRuleXValueVarSessionAggType
+entryRuleXValueVarSessionAggType returns [EObject current=null]:
+	{ newCompositeNode(grammarAccess.getXValueVarSessionAggTypeRule()); }
+	iv_ruleXValueVarSessionAggType=ruleXValueVarSessionAggType
+	{ $current=$iv_ruleXValueVarSessionAggType.current; }
+	EOF;
+
+// Rule XValueVarSessionAggType
+ruleXValueVarSessionAggType returns [EObject current=null]
+@init {
+	enterRule();
+}
+@after {
+	leaveRule();
+}:
+	(
+		(
+			{
+				$current = forceCreateModelElement(
+					grammarAccess.getXValueVarSessionAggTypeAccess().getXValueVarSessionAggTypeAction_0(),
+					$current);
+			}
+		)
+		otherlv_1='sessionVarAgg'
+		{
+			newLeafNode(otherlv_1, grammarAccess.getXValueVarSessionAggTypeAccess().getSessionVarAggKeyword_1());
+		}
+		otherlv_2='('
+		{
+			newLeafNode(otherlv_2, grammarAccess.getXValueVarSessionAggTypeAccess().getLeftParenthesisKeyword_2());
+		}
+		(
+			(
+				{
+					if ($current==null) {
+						$current = createModelElement(grammarAccess.getXValueVarSessionAggTypeRule());
+					}
+				}
+				otherlv_3=RULE_ID
+				{
+					newLeafNode(otherlv_3, grammarAccess.getXValueVarSessionAggTypeAccess().getVarVarTypeCrossReference_3_0());
+				}
+			)
+		)
+		otherlv_4=','
+		{
+			newLeafNode(otherlv_4, grammarAccess.getXValueVarSessionAggTypeAccess().getCommaKeyword_4());
+		}
+		(
+			(
+				{
+					newCompositeNode(grammarAccess.getXValueVarSessionAggTypeAccess().getFunctionXValueVarSessionAggFunctionEnumRuleCall_5_0());
+				}
+				lv_function_5_0=ruleXValueVarSessionAggFunction
+				{
+					if ($current==null) {
+						$current = createModelElementForParent(grammarAccess.getXValueVarSessionAggTypeRule());
+					}
+					set(
+						$current,
+						"function",
+						lv_function_5_0,
+						"com.dunkware.xstream.XScript.XValueVarSessionAggFunction");
+					afterParserOrEnumRuleCall();
+				}
+			)
+		)
+		otherlv_6=','
+		{
+			newLeafNode(otherlv_6, grammarAccess.getXValueVarSessionAggTypeAccess().getCommaKeyword_6());
+		}
+		(
+			(
+				{
+					newCompositeNode(grammarAccess.getXValueVarSessionAggTypeAccess().getRangeXTimeRangeParserRuleCall_7_0());
+				}
+				lv_range_7_0=ruleXTimeRange
+				{
+					if ($current==null) {
+						$current = createModelElementForParent(grammarAccess.getXValueVarSessionAggTypeRule());
+					}
+					set(
+						$current,
+						"range",
+						lv_range_7_0,
+						"com.dunkware.xstream.XScript.XTimeRange");
+					afterParserOrEnumRuleCall();
+				}
+			)
+		)
+		otherlv_8=')'
+		{
+			newLeafNode(otherlv_8, grammarAccess.getXValueVarSessionAggTypeAccess().getRightParenthesisKeyword_8());
+		}
+	)
+;
+
+// Entry rule entryRuleXValueSignalSessionCountType
+entryRuleXValueSignalSessionCountType returns [EObject current=null]:
+	{ newCompositeNode(grammarAccess.getXValueSignalSessionCountTypeRule()); }
+	iv_ruleXValueSignalSessionCountType=ruleXValueSignalSessionCountType
+	{ $current=$iv_ruleXValueSignalSessionCountType.current; }
+	EOF;
+
+// Rule XValueSignalSessionCountType
+ruleXValueSignalSessionCountType returns [EObject current=null]
+@init {
+	enterRule();
+}
+@after {
+	leaveRule();
+}:
+	(
+		(
+			{
+				$current = forceCreateModelElement(
+					grammarAccess.getXValueSignalSessionCountTypeAccess().getXValueSignalSessionCountTypeAction_0(),
+					$current);
+			}
+		)
+		otherlv_1='sessionSignalCount'
+		{
+			newLeafNode(otherlv_1, grammarAccess.getXValueSignalSessionCountTypeAccess().getSessionSignalCountKeyword_1());
+		}
+		otherlv_2='('
+		{
+			newLeafNode(otherlv_2, grammarAccess.getXValueSignalSessionCountTypeAccess().getLeftParenthesisKeyword_2());
+		}
+		(
+			(
+				{
+					if ($current==null) {
+						$current = createModelElement(grammarAccess.getXValueSignalSessionCountTypeRule());
+					}
+				}
+				otherlv_3=RULE_ID
+				{
+					newLeafNode(otherlv_3, grammarAccess.getXValueSignalSessionCountTypeAccess().getSignalSignalTypeCrossReference_3_0());
+				}
+			)
+		)
+		otherlv_4=','
+		{
+			newLeafNode(otherlv_4, grammarAccess.getXValueSignalSessionCountTypeAccess().getCommaKeyword_4());
+		}
+		(
+			(
+				{
+					newCompositeNode(grammarAccess.getXValueSignalSessionCountTypeAccess().getTimeRangeXTimeRangeParserRuleCall_5_0());
+				}
+				lv_timeRange_5_0=ruleXTimeRange
+				{
+					if ($current==null) {
+						$current = createModelElementForParent(grammarAccess.getXValueSignalSessionCountTypeRule());
+					}
+					set(
+						$current,
+						"timeRange",
+						lv_timeRange_5_0,
+						"com.dunkware.xstream.XScript.XTimeRange");
+					afterParserOrEnumRuleCall();
+				}
+			)
+		)
+		otherlv_6=','
+		{
+			newLeafNode(otherlv_6, grammarAccess.getXValueSignalSessionCountTypeAccess().getCommaKeyword_6());
+		}
+		(
+			(
+				lv_value_7_0=RULE_INT
+				{
+					newLeafNode(lv_value_7_0, grammarAccess.getXValueSignalSessionCountTypeAccess().getValueINTTerminalRuleCall_7_0());
+				}
+				{
+					if ($current==null) {
+						$current = createModelElement(grammarAccess.getXValueSignalSessionCountTypeRule());
+					}
+					setWithLastConsumed(
+						$current,
+						"value",
+						lv_value_7_0,
+						"org.eclipse.xtext.common.Terminals.INT");
+				}
+			)
+		)
+		otherlv_8=')'
+		{
+			newLeafNode(otherlv_8, grammarAccess.getXValueSignalSessionCountTypeAccess().getRightParenthesisKeyword_8());
+		}
+	)
+;
+
+// Entry rule entryRuleXValueSignalHistoricalCountType
+entryRuleXValueSignalHistoricalCountType returns [EObject current=null]:
+	{ newCompositeNode(grammarAccess.getXValueSignalHistoricalCountTypeRule()); }
+	iv_ruleXValueSignalHistoricalCountType=ruleXValueSignalHistoricalCountType
+	{ $current=$iv_ruleXValueSignalHistoricalCountType.current; }
+	EOF;
+
+// Rule XValueSignalHistoricalCountType
+ruleXValueSignalHistoricalCountType returns [EObject current=null]
+@init {
+	enterRule();
+}
+@after {
+	leaveRule();
+}:
+	(
+		(
+			{
+				$current = forceCreateModelElement(
+					grammarAccess.getXValueSignalHistoricalCountTypeAccess().getXValueSignalHistoricalCountTypeAction_0(),
+					$current);
+			}
+		)
+		otherlv_1='historicalSignalCount'
+		{
+			newLeafNode(otherlv_1, grammarAccess.getXValueSignalHistoricalCountTypeAccess().getHistoricalSignalCountKeyword_1());
+		}
+		otherlv_2='('
+		{
+			newLeafNode(otherlv_2, grammarAccess.getXValueSignalHistoricalCountTypeAccess().getLeftParenthesisKeyword_2());
+		}
+		(
+			(
+				{
+					if ($current==null) {
+						$current = createModelElement(grammarAccess.getXValueSignalHistoricalCountTypeRule());
+					}
+				}
+				otherlv_3=RULE_ID
+				{
+					newLeafNode(otherlv_3, grammarAccess.getXValueSignalHistoricalCountTypeAccess().getSignalSignalTypeCrossReference_3_0());
+				}
+			)
+		)
+		otherlv_4=','
+		{
+			newLeafNode(otherlv_4, grammarAccess.getXValueSignalHistoricalCountTypeAccess().getCommaKeyword_4());
+		}
+		(
+			(
+				lv_days_5_0=RULE_INT
+				{
+					newLeafNode(lv_days_5_0, grammarAccess.getXValueSignalHistoricalCountTypeAccess().getDaysINTTerminalRuleCall_5_0());
+				}
+				{
+					if ($current==null) {
+						$current = createModelElement(grammarAccess.getXValueSignalHistoricalCountTypeRule());
+					}
+					setWithLastConsumed(
+						$current,
+						"days",
+						lv_days_5_0,
+						"org.eclipse.xtext.common.Terminals.INT");
+				}
+			)
+		)
+		otherlv_6=','
+		{
+			newLeafNode(otherlv_6, grammarAccess.getXValueSignalHistoricalCountTypeAccess().getCommaKeyword_6());
+		}
+		(
+			(
+				lv_count_7_0=RULE_INT
+				{
+					newLeafNode(lv_count_7_0, grammarAccess.getXValueSignalHistoricalCountTypeAccess().getCountINTTerminalRuleCall_7_0());
+				}
+				{
+					if ($current==null) {
+						$current = createModelElement(grammarAccess.getXValueSignalHistoricalCountTypeRule());
+					}
+					setWithLastConsumed(
+						$current,
+						"count",
+						lv_count_7_0,
+						"org.eclipse.xtext.common.Terminals.INT");
+				}
+			)
+		)
+		otherlv_8=')'
+		{
+			newLeafNode(otherlv_8, grammarAccess.getXValueSignalHistoricalCountTypeAccess().getRightParenthesisKeyword_8());
+		}
+	)
+;
+
+// Entry rule entryRuleXQueryType
+entryRuleXQueryType returns [EObject current=null]:
+	{ newCompositeNode(grammarAccess.getXQueryTypeRule()); }
+	iv_ruleXQueryType=ruleXQueryType
+	{ $current=$iv_ruleXQueryType.current; }
+	EOF;
+
+// Rule XQueryType
+ruleXQueryType returns [EObject current=null]
+@init {
+	enterRule();
+}
+@after {
+	leaveRule();
+}:
+	(
+		otherlv_0='query'
+		{
+			newLeafNode(otherlv_0, grammarAccess.getXQueryTypeAccess().getQueryKeyword_0());
+		}
+		otherlv_1='('
+		{
+			newLeafNode(otherlv_1, grammarAccess.getXQueryTypeAccess().getLeftParenthesisKeyword_1());
+		}
+		(
+			(
+				lv_name_2_0=RULE_ID
+				{
+					newLeafNode(lv_name_2_0, grammarAccess.getXQueryTypeAccess().getNameIDTerminalRuleCall_2_0());
+				}
+				{
+					if ($current==null) {
+						$current = createModelElement(grammarAccess.getXQueryTypeRule());
+					}
+					setWithLastConsumed(
+						$current,
+						"name",
+						lv_name_2_0,
+						"org.eclipse.xtext.common.Terminals.ID");
+				}
+			)
+		)
+		otherlv_3=')'
+		{
+			newLeafNode(otherlv_3, grammarAccess.getXQueryTypeAccess().getRightParenthesisKeyword_3());
+		}
+		otherlv_4='{'
+		{
+			newLeafNode(otherlv_4, grammarAccess.getXQueryTypeAccess().getLeftCurlyBracketKeyword_4());
+		}
+		(
+			(
+				{
+					newCompositeNode(grammarAccess.getXQueryTypeAccess().getFiltersXQueryFilterTypeParserRuleCall_5_0());
+				}
+				lv_filters_5_0=ruleXQueryFilterType
+				{
+					if ($current==null) {
+						$current = createModelElementForParent(grammarAccess.getXQueryTypeRule());
+					}
+					add(
+						$current,
+						"filters",
+						lv_filters_5_0,
+						"com.dunkware.xstream.XScript.XQueryFilterType");
+					afterParserOrEnumRuleCall();
+				}
+			)
+		)*
+		otherlv_6='}'
+		{
+			newLeafNode(otherlv_6, grammarAccess.getXQueryTypeAccess().getRightCurlyBracketKeyword_6());
+		}
+	)
+;
+
+// Entry rule entryRuleXQueryFilterType
+entryRuleXQueryFilterType returns [EObject current=null]:
+	{ newCompositeNode(grammarAccess.getXQueryFilterTypeRule()); }
+	iv_ruleXQueryFilterType=ruleXQueryFilterType
+	{ $current=$iv_ruleXQueryFilterType.current; }
+	EOF;
+
+// Rule XQueryFilterType
+ruleXQueryFilterType returns [EObject current=null]
+@init {
+	enterRule();
+}
+@after {
+	leaveRule();
+}:
+	(
+		{
+			newCompositeNode(grammarAccess.getXQueryFilterTypeAccess().getXQueryFilterValueCompareTypeParserRuleCall_0());
+		}
+		this_XQueryFilterValueCompareType_0=ruleXQueryFilterValueCompareType
+		{
+			$current = $this_XQueryFilterValueCompareType_0.current;
+			afterParserOrEnumRuleCall();
+		}
+		    |
+		{
+			newCompositeNode(grammarAccess.getXQueryFilterTypeAccess().getXQueryFilterValueTypeParserRuleCall_1());
+		}
+		this_XQueryFilterValueType_1=ruleXQueryFilterValueType
+		{
+			$current = $this_XQueryFilterValueType_1.current;
+			afterParserOrEnumRuleCall();
+		}
+	)
+;
+
+// Entry rule entryRuleXQueryFilterValueType
+entryRuleXQueryFilterValueType returns [EObject current=null]:
+	{ newCompositeNode(grammarAccess.getXQueryFilterValueTypeRule()); }
+	iv_ruleXQueryFilterValueType=ruleXQueryFilterValueType
+	{ $current=$iv_ruleXQueryFilterValueType.current; }
+	EOF;
+
+// Rule XQueryFilterValueType
+ruleXQueryFilterValueType returns [EObject current=null]
+@init {
+	enterRule();
+}
+@after {
+	leaveRule();
+}:
+	(
+		(
+			{
+				$current = forceCreateModelElement(
+					grammarAccess.getXQueryFilterValueTypeAccess().getXQueryFilterValueTypeAction_0(),
+					$current);
+			}
+		)
+		otherlv_1='valueFilter'
+		{
+			newLeafNode(otherlv_1, grammarAccess.getXQueryFilterValueTypeAccess().getValueFilterKeyword_1());
+		}
+		otherlv_2='('
+		{
+			newLeafNode(otherlv_2, grammarAccess.getXQueryFilterValueTypeAccess().getLeftParenthesisKeyword_2());
+		}
+		(
+			(
+				{
+					newCompositeNode(grammarAccess.getXQueryFilterValueTypeAccess().getValueXValueTypeParserRuleCall_3_0());
+				}
+				lv_value_3_0=ruleXValueType
+				{
+					if ($current==null) {
+						$current = createModelElementForParent(grammarAccess.getXQueryFilterValueTypeRule());
+					}
+					set(
+						$current,
+						"value",
+						lv_value_3_0,
+						"com.dunkware.xstream.XScript.XValueType");
+					afterParserOrEnumRuleCall();
+				}
+			)
+		)
+		otherlv_4=','
+		{
+			newLeafNode(otherlv_4, grammarAccess.getXQueryFilterValueTypeAccess().getCommaKeyword_4());
+		}
+		(
+			(
+				{
+					newCompositeNode(grammarAccess.getXQueryFilterValueTypeAccess().getOperatorXStreamOperatorEnumRuleCall_5_0());
+				}
+				lv_operator_5_0=ruleXStreamOperator
+				{
+					if ($current==null) {
+						$current = createModelElementForParent(grammarAccess.getXQueryFilterValueTypeRule());
+					}
+					set(
+						$current,
+						"operator",
+						lv_operator_5_0,
+						"com.dunkware.xstream.XScript.XStreamOperator");
+					afterParserOrEnumRuleCall();
+				}
+			)
+		)
+		otherlv_6=','
+		{
+			newLeafNode(otherlv_6, grammarAccess.getXQueryFilterValueTypeAccess().getCommaKeyword_6());
+		}
+		(
+			(
+				lv_criteria_7_0=RULE_STRING
+				{
+					newLeafNode(lv_criteria_7_0, grammarAccess.getXQueryFilterValueTypeAccess().getCriteriaSTRINGTerminalRuleCall_7_0());
+				}
+				{
+					if ($current==null) {
+						$current = createModelElement(grammarAccess.getXQueryFilterValueTypeRule());
+					}
+					setWithLastConsumed(
+						$current,
+						"criteria",
+						lv_criteria_7_0,
+						"org.eclipse.xtext.common.Terminals.STRING");
+				}
+			)
+		)
+		otherlv_8=')'
+		{
+			newLeafNode(otherlv_8, grammarAccess.getXQueryFilterValueTypeAccess().getRightParenthesisKeyword_8());
+		}
+	)
+;
+
+// Entry rule entryRuleXQueryFilterValueCompareType
+entryRuleXQueryFilterValueCompareType returns [EObject current=null]:
+	{ newCompositeNode(grammarAccess.getXQueryFilterValueCompareTypeRule()); }
+	iv_ruleXQueryFilterValueCompareType=ruleXQueryFilterValueCompareType
+	{ $current=$iv_ruleXQueryFilterValueCompareType.current; }
+	EOF;
+
+// Rule XQueryFilterValueCompareType
+ruleXQueryFilterValueCompareType returns [EObject current=null]
+@init {
+	enterRule();
+}
+@after {
+	leaveRule();
+}:
+	(
+		otherlv_0='valueCompareFilter'
+		{
+			newLeafNode(otherlv_0, grammarAccess.getXQueryFilterValueCompareTypeAccess().getValueCompareFilterKeyword_0());
+		}
+		otherlv_1='('
+		{
+			newLeafNode(otherlv_1, grammarAccess.getXQueryFilterValueCompareTypeAccess().getLeftParenthesisKeyword_1());
+		}
+		(
+			(
+				{
+					newCompositeNode(grammarAccess.getXQueryFilterValueCompareTypeAccess().getValue1XValueTypeParserRuleCall_2_0());
+				}
+				lv_value1_2_0=ruleXValueType
+				{
+					if ($current==null) {
+						$current = createModelElementForParent(grammarAccess.getXQueryFilterValueCompareTypeRule());
+					}
+					set(
+						$current,
+						"value1",
+						lv_value1_2_0,
+						"com.dunkware.xstream.XScript.XValueType");
+					afterParserOrEnumRuleCall();
+				}
+			)
+		)
+		otherlv_3=','
+		{
+			newLeafNode(otherlv_3, grammarAccess.getXQueryFilterValueCompareTypeAccess().getCommaKeyword_3());
+		}
+		(
+			(
+				{
+					newCompositeNode(grammarAccess.getXQueryFilterValueCompareTypeAccess().getValue2XValueTypeParserRuleCall_4_0());
+				}
+				lv_value2_4_0=ruleXValueType
+				{
+					if ($current==null) {
+						$current = createModelElementForParent(grammarAccess.getXQueryFilterValueCompareTypeRule());
+					}
+					set(
+						$current,
+						"value2",
+						lv_value2_4_0,
+						"com.dunkware.xstream.XScript.XValueType");
+					afterParserOrEnumRuleCall();
+				}
+			)
+		)
+		otherlv_5=','
+		{
+			newLeafNode(otherlv_5, grammarAccess.getXQueryFilterValueCompareTypeAccess().getCommaKeyword_5());
+		}
+		(
+			(
+				{
+					newCompositeNode(grammarAccess.getXQueryFilterValueCompareTypeAccess().getFunctionXQueryValueCompareFunctionEnumRuleCall_6_0());
+				}
+				lv_function_6_0=ruleXQueryValueCompareFunction
+				{
+					if ($current==null) {
+						$current = createModelElementForParent(grammarAccess.getXQueryFilterValueCompareTypeRule());
+					}
+					set(
+						$current,
+						"function",
+						lv_function_6_0,
+						"com.dunkware.xstream.XScript.XQueryValueCompareFunction");
+					afterParserOrEnumRuleCall();
+				}
+			)
+		)
+		otherlv_7=','
+		{
+			newLeafNode(otherlv_7, grammarAccess.getXQueryFilterValueCompareTypeAccess().getCommaKeyword_7());
+		}
+		(
+			(
+				{
+					newCompositeNode(grammarAccess.getXQueryFilterValueCompareTypeAccess().getOperatorXStreamOperatorEnumRuleCall_8_0());
+				}
+				lv_operator_8_0=ruleXStreamOperator
+				{
+					if ($current==null) {
+						$current = createModelElementForParent(grammarAccess.getXQueryFilterValueCompareTypeRule());
+					}
+					set(
+						$current,
+						"operator",
+						lv_operator_8_0,
+						"com.dunkware.xstream.XScript.XStreamOperator");
+					afterParserOrEnumRuleCall();
+				}
+			)
+		)
+		otherlv_9=','
+		{
+			newLeafNode(otherlv_9, grammarAccess.getXQueryFilterValueCompareTypeAccess().getCommaKeyword_9());
+		}
+		(
+			(
+				lv_criteria_10_0=RULE_STRING
+				{
+					newLeafNode(lv_criteria_10_0, grammarAccess.getXQueryFilterValueCompareTypeAccess().getCriteriaSTRINGTerminalRuleCall_10_0());
+				}
+				{
+					if ($current==null) {
+						$current = createModelElement(grammarAccess.getXQueryFilterValueCompareTypeRule());
+					}
+					setWithLastConsumed(
+						$current,
+						"criteria",
+						lv_criteria_10_0,
+						"org.eclipse.xtext.common.Terminals.STRING");
+				}
+			)
+		)
+		otherlv_11=')'
+		{
+			newLeafNode(otherlv_11, grammarAccess.getXQueryFilterValueCompareTypeAccess().getRightParenthesisKeyword_11());
+		}
+	)
+;
+
 // Rule StreamTimeUnit
 ruleStreamTimeUnit returns [Enumerator current=null]
 @init {
@@ -6424,6 +7195,103 @@ ruleDataType returns [Enumerator current=null]
 			{
 				$current = grammarAccess.getDataTypeAccess().getLONGEnumLiteralDeclaration_7().getEnumLiteral().getInstance();
 				newLeafNode(enumLiteral_7, grammarAccess.getDataTypeAccess().getLONGEnumLiteralDeclaration_7());
+			}
+		)
+	)
+;
+
+// Rule XValueVarSessionAggFunction
+ruleXValueVarSessionAggFunction returns [Enumerator current=null]
+@init {
+	enterRule();
+}
+@after {
+	leaveRule();
+}:
+	(
+		(
+			enumLiteral_0='HIGH'
+			{
+				$current = grammarAccess.getXValueVarSessionAggFunctionAccess().getHighEnumLiteralDeclaration_0().getEnumLiteral().getInstance();
+				newLeafNode(enumLiteral_0, grammarAccess.getXValueVarSessionAggFunctionAccess().getHighEnumLiteralDeclaration_0());
+			}
+		)
+		    |
+		(
+			enumLiteral_1='LOW'
+			{
+				$current = grammarAccess.getXValueVarSessionAggFunctionAccess().getLowEnumLiteralDeclaration_1().getEnumLiteral().getInstance();
+				newLeafNode(enumLiteral_1, grammarAccess.getXValueVarSessionAggFunctionAccess().getLowEnumLiteralDeclaration_1());
+			}
+		)
+	)
+;
+
+// Rule XStreamOperator
+ruleXStreamOperator returns [Enumerator current=null]
+@init {
+	enterRule();
+}
+@after {
+	leaveRule();
+}:
+	(
+		(
+			enumLiteral_0='GT'
+			{
+				$current = grammarAccess.getXStreamOperatorAccess().getGtEnumLiteralDeclaration_0().getEnumLiteral().getInstance();
+				newLeafNode(enumLiteral_0, grammarAccess.getXStreamOperatorAccess().getGtEnumLiteralDeclaration_0());
+			}
+		)
+		    |
+		(
+			enumLiteral_1='LT'
+			{
+				$current = grammarAccess.getXStreamOperatorAccess().getLtEnumLiteralDeclaration_1().getEnumLiteral().getInstance();
+				newLeafNode(enumLiteral_1, grammarAccess.getXStreamOperatorAccess().getLtEnumLiteralDeclaration_1());
+			}
+		)
+		    |
+		(
+			enumLiteral_2='EQ'
+			{
+				$current = grammarAccess.getXStreamOperatorAccess().getEqEnumLiteralDeclaration_2().getEnumLiteral().getInstance();
+				newLeafNode(enumLiteral_2, grammarAccess.getXStreamOperatorAccess().getEqEnumLiteralDeclaration_2());
+			}
+		)
+		    |
+		(
+			enumLiteral_3='NE'
+			{
+				$current = grammarAccess.getXStreamOperatorAccess().getNqEnumLiteralDeclaration_3().getEnumLiteral().getInstance();
+				newLeafNode(enumLiteral_3, grammarAccess.getXStreamOperatorAccess().getNqEnumLiteralDeclaration_3());
+			}
+		)
+	)
+;
+
+// Rule XQueryValueCompareFunction
+ruleXQueryValueCompareFunction returns [Enumerator current=null]
+@init {
+	enterRule();
+}
+@after {
+	leaveRule();
+}:
+	(
+		(
+			enumLiteral_0='ROC'
+			{
+				$current = grammarAccess.getXQueryValueCompareFunctionAccess().getRocEnumLiteralDeclaration_0().getEnumLiteral().getInstance();
+				newLeafNode(enumLiteral_0, grammarAccess.getXQueryValueCompareFunctionAccess().getRocEnumLiteralDeclaration_0());
+			}
+		)
+		    |
+		(
+			enumLiteral_1='DIFF'
+			{
+				$current = grammarAccess.getXQueryValueCompareFunctionAccess().getDiffEnumLiteralDeclaration_1().getEnumLiteral().getInstance();
+				newLeafNode(enumLiteral_1, grammarAccess.getXQueryValueCompareFunctionAccess().getDiffEnumLiteralDeclaration_1());
 			}
 		)
 	)
