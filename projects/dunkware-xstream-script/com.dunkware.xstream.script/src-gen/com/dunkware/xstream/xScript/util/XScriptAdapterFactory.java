@@ -366,24 +366,29 @@ public class XScriptAdapterFactory extends AdapterFactoryImpl
         return createXValueTypeAdapter();
       }
       @Override
-      public Adapter caseXValueVarCurrentType(XValueVarCurrentType object)
+      public Adapter caseXValueSessionVarValueType(XValueSessionVarValueType object)
       {
-        return createXValueVarCurrentTypeAdapter();
+        return createXValueSessionVarValueTypeAdapter();
       }
       @Override
-      public Adapter caseXValueVarSessionAggType(XValueVarSessionAggType object)
+      public Adapter caseXValueSessionVarAggType(XValueSessionVarAggType object)
       {
-        return createXValueVarSessionAggTypeAdapter();
+        return createXValueSessionVarAggTypeAdapter();
       }
       @Override
-      public Adapter caseXValueSignalSessionCountType(XValueSignalSessionCountType object)
+      public Adapter caseXValueSessionSignalCountType(XValueSessionSignalCountType object)
       {
-        return createXValueSignalSessionCountTypeAdapter();
+        return createXValueSessionSignalCountTypeAdapter();
       }
       @Override
-      public Adapter caseXValueSignalHistoricalCountType(XValueSignalHistoricalCountType object)
+      public Adapter caseXValueHistoricalVarAggType(XValueHistoricalVarAggType object)
       {
-        return createXValueSignalHistoricalCountTypeAdapter();
+        return createXValueHistoricalVarAggTypeAdapter();
+      }
+      @Override
+      public Adapter caseXValueHistoricalSignalCountType(XValueHistoricalSignalCountType object)
+      {
+        return createXValueHistoricalSignalCountTypeAdapter();
       }
       @Override
       public Adapter caseXQueryType(XQueryType object)
@@ -1428,61 +1433,76 @@ public class XScriptAdapterFactory extends AdapterFactoryImpl
   }
 
   /**
-   * Creates a new adapter for an object of class '{@link com.dunkware.xstream.xScript.XValueVarCurrentType <em>XValue Var Current Type</em>}'.
+   * Creates a new adapter for an object of class '{@link com.dunkware.xstream.xScript.XValueSessionVarValueType <em>XValue Session Var Value Type</em>}'.
    * <!-- begin-user-doc -->
    * This default implementation returns null so that we can easily ignore cases;
    * it's useful to ignore a case when inheritance will catch all the cases anyway.
    * <!-- end-user-doc -->
    * @return the new adapter.
-   * @see com.dunkware.xstream.xScript.XValueVarCurrentType
+   * @see com.dunkware.xstream.xScript.XValueSessionVarValueType
    * @generated
    */
-  public Adapter createXValueVarCurrentTypeAdapter()
+  public Adapter createXValueSessionVarValueTypeAdapter()
   {
     return null;
   }
 
   /**
-   * Creates a new adapter for an object of class '{@link com.dunkware.xstream.xScript.XValueVarSessionAggType <em>XValue Var Session Agg Type</em>}'.
+   * Creates a new adapter for an object of class '{@link com.dunkware.xstream.xScript.XValueSessionVarAggType <em>XValue Session Var Agg Type</em>}'.
    * <!-- begin-user-doc -->
    * This default implementation returns null so that we can easily ignore cases;
    * it's useful to ignore a case when inheritance will catch all the cases anyway.
    * <!-- end-user-doc -->
    * @return the new adapter.
-   * @see com.dunkware.xstream.xScript.XValueVarSessionAggType
+   * @see com.dunkware.xstream.xScript.XValueSessionVarAggType
    * @generated
    */
-  public Adapter createXValueVarSessionAggTypeAdapter()
+  public Adapter createXValueSessionVarAggTypeAdapter()
   {
     return null;
   }
 
   /**
-   * Creates a new adapter for an object of class '{@link com.dunkware.xstream.xScript.XValueSignalSessionCountType <em>XValue Signal Session Count Type</em>}'.
+   * Creates a new adapter for an object of class '{@link com.dunkware.xstream.xScript.XValueSessionSignalCountType <em>XValue Session Signal Count Type</em>}'.
    * <!-- begin-user-doc -->
    * This default implementation returns null so that we can easily ignore cases;
    * it's useful to ignore a case when inheritance will catch all the cases anyway.
    * <!-- end-user-doc -->
    * @return the new adapter.
-   * @see com.dunkware.xstream.xScript.XValueSignalSessionCountType
+   * @see com.dunkware.xstream.xScript.XValueSessionSignalCountType
    * @generated
    */
-  public Adapter createXValueSignalSessionCountTypeAdapter()
+  public Adapter createXValueSessionSignalCountTypeAdapter()
   {
     return null;
   }
 
   /**
-   * Creates a new adapter for an object of class '{@link com.dunkware.xstream.xScript.XValueSignalHistoricalCountType <em>XValue Signal Historical Count Type</em>}'.
+   * Creates a new adapter for an object of class '{@link com.dunkware.xstream.xScript.XValueHistoricalVarAggType <em>XValue Historical Var Agg Type</em>}'.
    * <!-- begin-user-doc -->
    * This default implementation returns null so that we can easily ignore cases;
    * it's useful to ignore a case when inheritance will catch all the cases anyway.
    * <!-- end-user-doc -->
    * @return the new adapter.
-   * @see com.dunkware.xstream.xScript.XValueSignalHistoricalCountType
+   * @see com.dunkware.xstream.xScript.XValueHistoricalVarAggType
    * @generated
    */
-  public Adapter createXValueSignalHistoricalCountTypeAdapter()
+  public Adapter createXValueHistoricalVarAggTypeAdapter()
+  {
+    return null;
+  }
+
+  /**
+   * Creates a new adapter for an object of class '{@link com.dunkware.xstream.xScript.XValueHistoricalSignalCountType <em>XValue Historical Signal Count Type</em>}'.
+   * <!-- begin-user-doc -->
+   * This default implementation returns null so that we can easily ignore cases;
+   * it's useful to ignore a case when inheritance will catch all the cases anyway.
+   * <!-- end-user-doc -->
+   * @return the new adapter.
+   * @see com.dunkware.xstream.xScript.XValueHistoricalSignalCountType
+   * @generated
+   */
+  public Adapter createXValueHistoricalSignalCountTypeAdapter()
   {
     return null;
   }

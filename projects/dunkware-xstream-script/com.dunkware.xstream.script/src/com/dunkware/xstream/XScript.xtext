@@ -365,26 +365,26 @@ enum XStreamOperator:
 	gt="GT" | lt="LT" | eq="EQ" | nq="NE";
 
 XValueType:
-	XValueVarCurrentType | XValueVarSessionAggType | 
-	XValueSignalSessionCountType | XValueSignalHistoricalCountType;
+	XValueSessionVarValueType | XValueSessionVarAggType | 
+	XValueSessionSignalCountType | XValueHistoricalSignalCountType;
 	
-XValueVarCurrentType:
-	{XValueVarCurrentType}'sessionVarValue' '('var=[VarType]','index=INT')';
+XValueSessionVarValueType:
+	{XValueSessionVarValueType}'sessionVarValue' '('var=[VarType]','index=INT')';
 	
 	
-XValueVarSessionAggType:
-	{XValueVarSessionAggType}'sessionVarAgg' '('var=[VarType]',' function=XValueVarSessionAggFunction','range=XTimeRange')';
+XValueSessionVarAggType:
+	{XValueSessionVarAggType}'sessionVarAgg' '('var=[VarType]',' function=XValueVarSessionAggFunction','range=XTimeRange')';
 	
-XValueSignalSessionCountType:
-	{XValueSignalSessionCountType}'sessionSignalCount' '('signal=[SignalType]','
+XValueSessionSignalCountType:
+	{XValueSessionSignalCountType}'sessionSignalCount' '('signal=[SignalType]','
 	timeRange=XTimeRange','
 	value=INT')';
-	
-XValueSignalHistoricalCountType:
-{XValueSignalHistoricalCountType}	
-    'historicalSignalCount' '('signal=[SignalType]','
-	days=INT','
-	count=INT ')'
+
+XValueHistoricalVarAggType: 'historicalVarAgg' '('var=[VarType]',' function=XValueVarHistoricalAggFunction ',' days=INT')';
+
+XValueHistoricalSignalCountType:
+{XValueHistoricalSignalCountType}	
+    'historicalSignalCount' '('signal=[SignalType]',' days=INT ')'
 	// value
 ;
 

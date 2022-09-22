@@ -5,7 +5,7 @@ package com.dunkware.xstream.xScript.impl;
 
 import com.dunkware.xstream.xScript.SignalType;
 import com.dunkware.xstream.xScript.XScriptPackage;
-import com.dunkware.xstream.xScript.XValueSignalHistoricalCountType;
+import com.dunkware.xstream.xScript.XValueHistoricalSignalCountType;
 
 import org.eclipse.emf.common.notify.Notification;
 
@@ -16,20 +16,19 @@ import org.eclipse.emf.ecore.impl.ENotificationImpl;
 
 /**
  * <!-- begin-user-doc -->
- * An implementation of the model object '<em><b>XValue Signal Historical Count Type</b></em>'.
+ * An implementation of the model object '<em><b>XValue Historical Signal Count Type</b></em>'.
  * <!-- end-user-doc -->
  * <p>
  * The following features are implemented:
  * </p>
  * <ul>
- *   <li>{@link com.dunkware.xstream.xScript.impl.XValueSignalHistoricalCountTypeImpl#getSignal <em>Signal</em>}</li>
- *   <li>{@link com.dunkware.xstream.xScript.impl.XValueSignalHistoricalCountTypeImpl#getDays <em>Days</em>}</li>
- *   <li>{@link com.dunkware.xstream.xScript.impl.XValueSignalHistoricalCountTypeImpl#getCount <em>Count</em>}</li>
+ *   <li>{@link com.dunkware.xstream.xScript.impl.XValueHistoricalSignalCountTypeImpl#getSignal <em>Signal</em>}</li>
+ *   <li>{@link com.dunkware.xstream.xScript.impl.XValueHistoricalSignalCountTypeImpl#getDays <em>Days</em>}</li>
  * </ul>
  *
  * @generated
  */
-public class XValueSignalHistoricalCountTypeImpl extends XValueTypeImpl implements XValueSignalHistoricalCountType
+public class XValueHistoricalSignalCountTypeImpl extends XValueTypeImpl implements XValueHistoricalSignalCountType
 {
   /**
    * The cached value of the '{@link #getSignal() <em>Signal</em>}' reference.
@@ -62,31 +61,11 @@ public class XValueSignalHistoricalCountTypeImpl extends XValueTypeImpl implemen
   protected int days = DAYS_EDEFAULT;
 
   /**
-   * The default value of the '{@link #getCount() <em>Count</em>}' attribute.
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @see #getCount()
-   * @generated
-   * @ordered
-   */
-  protected static final int COUNT_EDEFAULT = 0;
-
-  /**
-   * The cached value of the '{@link #getCount() <em>Count</em>}' attribute.
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @see #getCount()
-   * @generated
-   * @ordered
-   */
-  protected int count = COUNT_EDEFAULT;
-
-  /**
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
    * @generated
    */
-  protected XValueSignalHistoricalCountTypeImpl()
+  protected XValueHistoricalSignalCountTypeImpl()
   {
     super();
   }
@@ -99,7 +78,7 @@ public class XValueSignalHistoricalCountTypeImpl extends XValueTypeImpl implemen
   @Override
   protected EClass eStaticClass()
   {
-    return XScriptPackage.Literals.XVALUE_SIGNAL_HISTORICAL_COUNT_TYPE;
+    return XScriptPackage.Literals.XVALUE_HISTORICAL_SIGNAL_COUNT_TYPE;
   }
 
   /**
@@ -117,7 +96,7 @@ public class XValueSignalHistoricalCountTypeImpl extends XValueTypeImpl implemen
       if (signal != oldSignal)
       {
         if (eNotificationRequired())
-          eNotify(new ENotificationImpl(this, Notification.RESOLVE, XScriptPackage.XVALUE_SIGNAL_HISTORICAL_COUNT_TYPE__SIGNAL, oldSignal, signal));
+          eNotify(new ENotificationImpl(this, Notification.RESOLVE, XScriptPackage.XVALUE_HISTORICAL_SIGNAL_COUNT_TYPE__SIGNAL, oldSignal, signal));
       }
     }
     return signal;
@@ -144,7 +123,7 @@ public class XValueSignalHistoricalCountTypeImpl extends XValueTypeImpl implemen
     SignalType oldSignal = signal;
     signal = newSignal;
     if (eNotificationRequired())
-      eNotify(new ENotificationImpl(this, Notification.SET, XScriptPackage.XVALUE_SIGNAL_HISTORICAL_COUNT_TYPE__SIGNAL, oldSignal, signal));
+      eNotify(new ENotificationImpl(this, Notification.SET, XScriptPackage.XVALUE_HISTORICAL_SIGNAL_COUNT_TYPE__SIGNAL, oldSignal, signal));
   }
 
   /**
@@ -169,32 +148,7 @@ public class XValueSignalHistoricalCountTypeImpl extends XValueTypeImpl implemen
     int oldDays = days;
     days = newDays;
     if (eNotificationRequired())
-      eNotify(new ENotificationImpl(this, Notification.SET, XScriptPackage.XVALUE_SIGNAL_HISTORICAL_COUNT_TYPE__DAYS, oldDays, days));
-  }
-
-  /**
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   */
-  @Override
-  public int getCount()
-  {
-    return count;
-  }
-
-  /**
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   */
-  @Override
-  public void setCount(int newCount)
-  {
-    int oldCount = count;
-    count = newCount;
-    if (eNotificationRequired())
-      eNotify(new ENotificationImpl(this, Notification.SET, XScriptPackage.XVALUE_SIGNAL_HISTORICAL_COUNT_TYPE__COUNT, oldCount, count));
+      eNotify(new ENotificationImpl(this, Notification.SET, XScriptPackage.XVALUE_HISTORICAL_SIGNAL_COUNT_TYPE__DAYS, oldDays, days));
   }
 
   /**
@@ -207,13 +161,11 @@ public class XValueSignalHistoricalCountTypeImpl extends XValueTypeImpl implemen
   {
     switch (featureID)
     {
-      case XScriptPackage.XVALUE_SIGNAL_HISTORICAL_COUNT_TYPE__SIGNAL:
+      case XScriptPackage.XVALUE_HISTORICAL_SIGNAL_COUNT_TYPE__SIGNAL:
         if (resolve) return getSignal();
         return basicGetSignal();
-      case XScriptPackage.XVALUE_SIGNAL_HISTORICAL_COUNT_TYPE__DAYS:
+      case XScriptPackage.XVALUE_HISTORICAL_SIGNAL_COUNT_TYPE__DAYS:
         return getDays();
-      case XScriptPackage.XVALUE_SIGNAL_HISTORICAL_COUNT_TYPE__COUNT:
-        return getCount();
     }
     return super.eGet(featureID, resolve, coreType);
   }
@@ -228,14 +180,11 @@ public class XValueSignalHistoricalCountTypeImpl extends XValueTypeImpl implemen
   {
     switch (featureID)
     {
-      case XScriptPackage.XVALUE_SIGNAL_HISTORICAL_COUNT_TYPE__SIGNAL:
+      case XScriptPackage.XVALUE_HISTORICAL_SIGNAL_COUNT_TYPE__SIGNAL:
         setSignal((SignalType)newValue);
         return;
-      case XScriptPackage.XVALUE_SIGNAL_HISTORICAL_COUNT_TYPE__DAYS:
+      case XScriptPackage.XVALUE_HISTORICAL_SIGNAL_COUNT_TYPE__DAYS:
         setDays((Integer)newValue);
-        return;
-      case XScriptPackage.XVALUE_SIGNAL_HISTORICAL_COUNT_TYPE__COUNT:
-        setCount((Integer)newValue);
         return;
     }
     super.eSet(featureID, newValue);
@@ -251,14 +200,11 @@ public class XValueSignalHistoricalCountTypeImpl extends XValueTypeImpl implemen
   {
     switch (featureID)
     {
-      case XScriptPackage.XVALUE_SIGNAL_HISTORICAL_COUNT_TYPE__SIGNAL:
+      case XScriptPackage.XVALUE_HISTORICAL_SIGNAL_COUNT_TYPE__SIGNAL:
         setSignal((SignalType)null);
         return;
-      case XScriptPackage.XVALUE_SIGNAL_HISTORICAL_COUNT_TYPE__DAYS:
+      case XScriptPackage.XVALUE_HISTORICAL_SIGNAL_COUNT_TYPE__DAYS:
         setDays(DAYS_EDEFAULT);
-        return;
-      case XScriptPackage.XVALUE_SIGNAL_HISTORICAL_COUNT_TYPE__COUNT:
-        setCount(COUNT_EDEFAULT);
         return;
     }
     super.eUnset(featureID);
@@ -274,12 +220,10 @@ public class XValueSignalHistoricalCountTypeImpl extends XValueTypeImpl implemen
   {
     switch (featureID)
     {
-      case XScriptPackage.XVALUE_SIGNAL_HISTORICAL_COUNT_TYPE__SIGNAL:
+      case XScriptPackage.XVALUE_HISTORICAL_SIGNAL_COUNT_TYPE__SIGNAL:
         return signal != null;
-      case XScriptPackage.XVALUE_SIGNAL_HISTORICAL_COUNT_TYPE__DAYS:
+      case XScriptPackage.XVALUE_HISTORICAL_SIGNAL_COUNT_TYPE__DAYS:
         return days != DAYS_EDEFAULT;
-      case XScriptPackage.XVALUE_SIGNAL_HISTORICAL_COUNT_TYPE__COUNT:
-        return count != COUNT_EDEFAULT;
     }
     return super.eIsSet(featureID);
   }
@@ -297,10 +241,8 @@ public class XValueSignalHistoricalCountTypeImpl extends XValueTypeImpl implemen
     StringBuilder result = new StringBuilder(super.toString());
     result.append(" (days: ");
     result.append(days);
-    result.append(", count: ");
-    result.append(count);
     result.append(')');
     return result.toString();
   }
 
-} //XValueSignalHistoricalCountTypeImpl
+} //XValueHistoricalSignalCountTypeImpl

@@ -546,35 +546,42 @@ public class XScriptSwitch<T> extends Switch<T>
         if (result == null) result = defaultCase(theEObject);
         return result;
       }
-      case XScriptPackage.XVALUE_VAR_CURRENT_TYPE:
+      case XScriptPackage.XVALUE_SESSION_VAR_VALUE_TYPE:
       {
-        XValueVarCurrentType xValueVarCurrentType = (XValueVarCurrentType)theEObject;
-        T result = caseXValueVarCurrentType(xValueVarCurrentType);
-        if (result == null) result = caseXValueType(xValueVarCurrentType);
+        XValueSessionVarValueType xValueSessionVarValueType = (XValueSessionVarValueType)theEObject;
+        T result = caseXValueSessionVarValueType(xValueSessionVarValueType);
+        if (result == null) result = caseXValueType(xValueSessionVarValueType);
         if (result == null) result = defaultCase(theEObject);
         return result;
       }
-      case XScriptPackage.XVALUE_VAR_SESSION_AGG_TYPE:
+      case XScriptPackage.XVALUE_SESSION_VAR_AGG_TYPE:
       {
-        XValueVarSessionAggType xValueVarSessionAggType = (XValueVarSessionAggType)theEObject;
-        T result = caseXValueVarSessionAggType(xValueVarSessionAggType);
-        if (result == null) result = caseXValueType(xValueVarSessionAggType);
+        XValueSessionVarAggType xValueSessionVarAggType = (XValueSessionVarAggType)theEObject;
+        T result = caseXValueSessionVarAggType(xValueSessionVarAggType);
+        if (result == null) result = caseXValueType(xValueSessionVarAggType);
         if (result == null) result = defaultCase(theEObject);
         return result;
       }
-      case XScriptPackage.XVALUE_SIGNAL_SESSION_COUNT_TYPE:
+      case XScriptPackage.XVALUE_SESSION_SIGNAL_COUNT_TYPE:
       {
-        XValueSignalSessionCountType xValueSignalSessionCountType = (XValueSignalSessionCountType)theEObject;
-        T result = caseXValueSignalSessionCountType(xValueSignalSessionCountType);
-        if (result == null) result = caseXValueType(xValueSignalSessionCountType);
+        XValueSessionSignalCountType xValueSessionSignalCountType = (XValueSessionSignalCountType)theEObject;
+        T result = caseXValueSessionSignalCountType(xValueSessionSignalCountType);
+        if (result == null) result = caseXValueType(xValueSessionSignalCountType);
         if (result == null) result = defaultCase(theEObject);
         return result;
       }
-      case XScriptPackage.XVALUE_SIGNAL_HISTORICAL_COUNT_TYPE:
+      case XScriptPackage.XVALUE_HISTORICAL_VAR_AGG_TYPE:
       {
-        XValueSignalHistoricalCountType xValueSignalHistoricalCountType = (XValueSignalHistoricalCountType)theEObject;
-        T result = caseXValueSignalHistoricalCountType(xValueSignalHistoricalCountType);
-        if (result == null) result = caseXValueType(xValueSignalHistoricalCountType);
+        XValueHistoricalVarAggType xValueHistoricalVarAggType = (XValueHistoricalVarAggType)theEObject;
+        T result = caseXValueHistoricalVarAggType(xValueHistoricalVarAggType);
+        if (result == null) result = defaultCase(theEObject);
+        return result;
+      }
+      case XScriptPackage.XVALUE_HISTORICAL_SIGNAL_COUNT_TYPE:
+      {
+        XValueHistoricalSignalCountType xValueHistoricalSignalCountType = (XValueHistoricalSignalCountType)theEObject;
+        T result = caseXValueHistoricalSignalCountType(xValueHistoricalSignalCountType);
+        if (result == null) result = caseXValueType(xValueHistoricalSignalCountType);
         if (result == null) result = defaultCase(theEObject);
         return result;
       }
@@ -1753,65 +1760,81 @@ public class XScriptSwitch<T> extends Switch<T>
   }
 
   /**
-   * Returns the result of interpreting the object as an instance of '<em>XValue Var Current Type</em>'.
+   * Returns the result of interpreting the object as an instance of '<em>XValue Session Var Value Type</em>'.
    * <!-- begin-user-doc -->
    * This implementation returns null;
    * returning a non-null result will terminate the switch.
    * <!-- end-user-doc -->
    * @param object the target of the switch.
-   * @return the result of interpreting the object as an instance of '<em>XValue Var Current Type</em>'.
+   * @return the result of interpreting the object as an instance of '<em>XValue Session Var Value Type</em>'.
    * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
    * @generated
    */
-  public T caseXValueVarCurrentType(XValueVarCurrentType object)
+  public T caseXValueSessionVarValueType(XValueSessionVarValueType object)
   {
     return null;
   }
 
   /**
-   * Returns the result of interpreting the object as an instance of '<em>XValue Var Session Agg Type</em>'.
+   * Returns the result of interpreting the object as an instance of '<em>XValue Session Var Agg Type</em>'.
    * <!-- begin-user-doc -->
    * This implementation returns null;
    * returning a non-null result will terminate the switch.
    * <!-- end-user-doc -->
    * @param object the target of the switch.
-   * @return the result of interpreting the object as an instance of '<em>XValue Var Session Agg Type</em>'.
+   * @return the result of interpreting the object as an instance of '<em>XValue Session Var Agg Type</em>'.
    * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
    * @generated
    */
-  public T caseXValueVarSessionAggType(XValueVarSessionAggType object)
+  public T caseXValueSessionVarAggType(XValueSessionVarAggType object)
   {
     return null;
   }
 
   /**
-   * Returns the result of interpreting the object as an instance of '<em>XValue Signal Session Count Type</em>'.
+   * Returns the result of interpreting the object as an instance of '<em>XValue Session Signal Count Type</em>'.
    * <!-- begin-user-doc -->
    * This implementation returns null;
    * returning a non-null result will terminate the switch.
    * <!-- end-user-doc -->
    * @param object the target of the switch.
-   * @return the result of interpreting the object as an instance of '<em>XValue Signal Session Count Type</em>'.
+   * @return the result of interpreting the object as an instance of '<em>XValue Session Signal Count Type</em>'.
    * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
    * @generated
    */
-  public T caseXValueSignalSessionCountType(XValueSignalSessionCountType object)
+  public T caseXValueSessionSignalCountType(XValueSessionSignalCountType object)
   {
     return null;
   }
 
   /**
-   * Returns the result of interpreting the object as an instance of '<em>XValue Signal Historical Count Type</em>'.
+   * Returns the result of interpreting the object as an instance of '<em>XValue Historical Var Agg Type</em>'.
    * <!-- begin-user-doc -->
    * This implementation returns null;
    * returning a non-null result will terminate the switch.
    * <!-- end-user-doc -->
    * @param object the target of the switch.
-   * @return the result of interpreting the object as an instance of '<em>XValue Signal Historical Count Type</em>'.
+   * @return the result of interpreting the object as an instance of '<em>XValue Historical Var Agg Type</em>'.
    * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
    * @generated
    */
-  public T caseXValueSignalHistoricalCountType(XValueSignalHistoricalCountType object)
+  public T caseXValueHistoricalVarAggType(XValueHistoricalVarAggType object)
+  {
+    return null;
+  }
+
+  /**
+   * Returns the result of interpreting the object as an instance of '<em>XValue Historical Signal Count Type</em>'.
+   * <!-- begin-user-doc -->
+   * This implementation returns null;
+   * returning a non-null result will terminate the switch.
+   * <!-- end-user-doc -->
+   * @param object the target of the switch.
+   * @return the result of interpreting the object as an instance of '<em>XValue Historical Signal Count Type</em>'.
+   * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+   * @generated
+   */
+  public T caseXValueHistoricalSignalCountType(XValueHistoricalSignalCountType object)
   {
     return null;
   }

@@ -6,8 +6,8 @@ package com.dunkware.xstream.xScript.impl;
 import com.dunkware.xstream.xScript.VarType;
 import com.dunkware.xstream.xScript.XScriptPackage;
 import com.dunkware.xstream.xScript.XTimeRange;
+import com.dunkware.xstream.xScript.XValueSessionVarAggType;
 import com.dunkware.xstream.xScript.XValueVarSessionAggFunction;
-import com.dunkware.xstream.xScript.XValueVarSessionAggType;
 
 import org.eclipse.emf.common.notify.Notification;
 import org.eclipse.emf.common.notify.NotificationChain;
@@ -19,20 +19,20 @@ import org.eclipse.emf.ecore.impl.ENotificationImpl;
 
 /**
  * <!-- begin-user-doc -->
- * An implementation of the model object '<em><b>XValue Var Session Agg Type</b></em>'.
+ * An implementation of the model object '<em><b>XValue Session Var Agg Type</b></em>'.
  * <!-- end-user-doc -->
  * <p>
  * The following features are implemented:
  * </p>
  * <ul>
- *   <li>{@link com.dunkware.xstream.xScript.impl.XValueVarSessionAggTypeImpl#getVar <em>Var</em>}</li>
- *   <li>{@link com.dunkware.xstream.xScript.impl.XValueVarSessionAggTypeImpl#getFunction <em>Function</em>}</li>
- *   <li>{@link com.dunkware.xstream.xScript.impl.XValueVarSessionAggTypeImpl#getRange <em>Range</em>}</li>
+ *   <li>{@link com.dunkware.xstream.xScript.impl.XValueSessionVarAggTypeImpl#getVar <em>Var</em>}</li>
+ *   <li>{@link com.dunkware.xstream.xScript.impl.XValueSessionVarAggTypeImpl#getFunction <em>Function</em>}</li>
+ *   <li>{@link com.dunkware.xstream.xScript.impl.XValueSessionVarAggTypeImpl#getRange <em>Range</em>}</li>
  * </ul>
  *
  * @generated
  */
-public class XValueVarSessionAggTypeImpl extends XValueTypeImpl implements XValueVarSessionAggType
+public class XValueSessionVarAggTypeImpl extends XValueTypeImpl implements XValueSessionVarAggType
 {
   /**
    * The cached value of the '{@link #getVar() <em>Var</em>}' reference.
@@ -79,7 +79,7 @@ public class XValueVarSessionAggTypeImpl extends XValueTypeImpl implements XValu
    * <!-- end-user-doc -->
    * @generated
    */
-  protected XValueVarSessionAggTypeImpl()
+  protected XValueSessionVarAggTypeImpl()
   {
     super();
   }
@@ -92,7 +92,7 @@ public class XValueVarSessionAggTypeImpl extends XValueTypeImpl implements XValu
   @Override
   protected EClass eStaticClass()
   {
-    return XScriptPackage.Literals.XVALUE_VAR_SESSION_AGG_TYPE;
+    return XScriptPackage.Literals.XVALUE_SESSION_VAR_AGG_TYPE;
   }
 
   /**
@@ -110,7 +110,7 @@ public class XValueVarSessionAggTypeImpl extends XValueTypeImpl implements XValu
       if (var != oldVar)
       {
         if (eNotificationRequired())
-          eNotify(new ENotificationImpl(this, Notification.RESOLVE, XScriptPackage.XVALUE_VAR_SESSION_AGG_TYPE__VAR, oldVar, var));
+          eNotify(new ENotificationImpl(this, Notification.RESOLVE, XScriptPackage.XVALUE_SESSION_VAR_AGG_TYPE__VAR, oldVar, var));
       }
     }
     return var;
@@ -137,7 +137,7 @@ public class XValueVarSessionAggTypeImpl extends XValueTypeImpl implements XValu
     VarType oldVar = var;
     var = newVar;
     if (eNotificationRequired())
-      eNotify(new ENotificationImpl(this, Notification.SET, XScriptPackage.XVALUE_VAR_SESSION_AGG_TYPE__VAR, oldVar, var));
+      eNotify(new ENotificationImpl(this, Notification.SET, XScriptPackage.XVALUE_SESSION_VAR_AGG_TYPE__VAR, oldVar, var));
   }
 
   /**
@@ -162,7 +162,7 @@ public class XValueVarSessionAggTypeImpl extends XValueTypeImpl implements XValu
     XValueVarSessionAggFunction oldFunction = function;
     function = newFunction == null ? FUNCTION_EDEFAULT : newFunction;
     if (eNotificationRequired())
-      eNotify(new ENotificationImpl(this, Notification.SET, XScriptPackage.XVALUE_VAR_SESSION_AGG_TYPE__FUNCTION, oldFunction, function));
+      eNotify(new ENotificationImpl(this, Notification.SET, XScriptPackage.XVALUE_SESSION_VAR_AGG_TYPE__FUNCTION, oldFunction, function));
   }
 
   /**
@@ -187,7 +187,7 @@ public class XValueVarSessionAggTypeImpl extends XValueTypeImpl implements XValu
     range = newRange;
     if (eNotificationRequired())
     {
-      ENotificationImpl notification = new ENotificationImpl(this, Notification.SET, XScriptPackage.XVALUE_VAR_SESSION_AGG_TYPE__RANGE, oldRange, newRange);
+      ENotificationImpl notification = new ENotificationImpl(this, Notification.SET, XScriptPackage.XVALUE_SESSION_VAR_AGG_TYPE__RANGE, oldRange, newRange);
       if (msgs == null) msgs = notification; else msgs.add(notification);
     }
     return msgs;
@@ -205,14 +205,14 @@ public class XValueVarSessionAggTypeImpl extends XValueTypeImpl implements XValu
     {
       NotificationChain msgs = null;
       if (range != null)
-        msgs = ((InternalEObject)range).eInverseRemove(this, EOPPOSITE_FEATURE_BASE - XScriptPackage.XVALUE_VAR_SESSION_AGG_TYPE__RANGE, null, msgs);
+        msgs = ((InternalEObject)range).eInverseRemove(this, EOPPOSITE_FEATURE_BASE - XScriptPackage.XVALUE_SESSION_VAR_AGG_TYPE__RANGE, null, msgs);
       if (newRange != null)
-        msgs = ((InternalEObject)newRange).eInverseAdd(this, EOPPOSITE_FEATURE_BASE - XScriptPackage.XVALUE_VAR_SESSION_AGG_TYPE__RANGE, null, msgs);
+        msgs = ((InternalEObject)newRange).eInverseAdd(this, EOPPOSITE_FEATURE_BASE - XScriptPackage.XVALUE_SESSION_VAR_AGG_TYPE__RANGE, null, msgs);
       msgs = basicSetRange(newRange, msgs);
       if (msgs != null) msgs.dispatch();
     }
     else if (eNotificationRequired())
-      eNotify(new ENotificationImpl(this, Notification.SET, XScriptPackage.XVALUE_VAR_SESSION_AGG_TYPE__RANGE, newRange, newRange));
+      eNotify(new ENotificationImpl(this, Notification.SET, XScriptPackage.XVALUE_SESSION_VAR_AGG_TYPE__RANGE, newRange, newRange));
   }
 
   /**
@@ -225,7 +225,7 @@ public class XValueVarSessionAggTypeImpl extends XValueTypeImpl implements XValu
   {
     switch (featureID)
     {
-      case XScriptPackage.XVALUE_VAR_SESSION_AGG_TYPE__RANGE:
+      case XScriptPackage.XVALUE_SESSION_VAR_AGG_TYPE__RANGE:
         return basicSetRange(null, msgs);
     }
     return super.eInverseRemove(otherEnd, featureID, msgs);
@@ -241,12 +241,12 @@ public class XValueVarSessionAggTypeImpl extends XValueTypeImpl implements XValu
   {
     switch (featureID)
     {
-      case XScriptPackage.XVALUE_VAR_SESSION_AGG_TYPE__VAR:
+      case XScriptPackage.XVALUE_SESSION_VAR_AGG_TYPE__VAR:
         if (resolve) return getVar();
         return basicGetVar();
-      case XScriptPackage.XVALUE_VAR_SESSION_AGG_TYPE__FUNCTION:
+      case XScriptPackage.XVALUE_SESSION_VAR_AGG_TYPE__FUNCTION:
         return getFunction();
-      case XScriptPackage.XVALUE_VAR_SESSION_AGG_TYPE__RANGE:
+      case XScriptPackage.XVALUE_SESSION_VAR_AGG_TYPE__RANGE:
         return getRange();
     }
     return super.eGet(featureID, resolve, coreType);
@@ -262,13 +262,13 @@ public class XValueVarSessionAggTypeImpl extends XValueTypeImpl implements XValu
   {
     switch (featureID)
     {
-      case XScriptPackage.XVALUE_VAR_SESSION_AGG_TYPE__VAR:
+      case XScriptPackage.XVALUE_SESSION_VAR_AGG_TYPE__VAR:
         setVar((VarType)newValue);
         return;
-      case XScriptPackage.XVALUE_VAR_SESSION_AGG_TYPE__FUNCTION:
+      case XScriptPackage.XVALUE_SESSION_VAR_AGG_TYPE__FUNCTION:
         setFunction((XValueVarSessionAggFunction)newValue);
         return;
-      case XScriptPackage.XVALUE_VAR_SESSION_AGG_TYPE__RANGE:
+      case XScriptPackage.XVALUE_SESSION_VAR_AGG_TYPE__RANGE:
         setRange((XTimeRange)newValue);
         return;
     }
@@ -285,13 +285,13 @@ public class XValueVarSessionAggTypeImpl extends XValueTypeImpl implements XValu
   {
     switch (featureID)
     {
-      case XScriptPackage.XVALUE_VAR_SESSION_AGG_TYPE__VAR:
+      case XScriptPackage.XVALUE_SESSION_VAR_AGG_TYPE__VAR:
         setVar((VarType)null);
         return;
-      case XScriptPackage.XVALUE_VAR_SESSION_AGG_TYPE__FUNCTION:
+      case XScriptPackage.XVALUE_SESSION_VAR_AGG_TYPE__FUNCTION:
         setFunction(FUNCTION_EDEFAULT);
         return;
-      case XScriptPackage.XVALUE_VAR_SESSION_AGG_TYPE__RANGE:
+      case XScriptPackage.XVALUE_SESSION_VAR_AGG_TYPE__RANGE:
         setRange((XTimeRange)null);
         return;
     }
@@ -308,11 +308,11 @@ public class XValueVarSessionAggTypeImpl extends XValueTypeImpl implements XValu
   {
     switch (featureID)
     {
-      case XScriptPackage.XVALUE_VAR_SESSION_AGG_TYPE__VAR:
+      case XScriptPackage.XVALUE_SESSION_VAR_AGG_TYPE__VAR:
         return var != null;
-      case XScriptPackage.XVALUE_VAR_SESSION_AGG_TYPE__FUNCTION:
+      case XScriptPackage.XVALUE_SESSION_VAR_AGG_TYPE__FUNCTION:
         return function != FUNCTION_EDEFAULT;
-      case XScriptPackage.XVALUE_VAR_SESSION_AGG_TYPE__RANGE:
+      case XScriptPackage.XVALUE_SESSION_VAR_AGG_TYPE__RANGE:
         return range != null;
     }
     return super.eIsSet(featureID);
@@ -335,4 +335,4 @@ public class XValueVarSessionAggTypeImpl extends XValueTypeImpl implements XValu
     return result.toString();
   }
 
-} //XValueVarSessionAggTypeImpl
+} //XValueSessionVarAggTypeImpl

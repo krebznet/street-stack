@@ -546,40 +546,49 @@ public interface XScriptFactory extends EFactory
   XValueType createXValueType();
 
   /**
-   * Returns a new object of class '<em>XValue Var Current Type</em>'.
+   * Returns a new object of class '<em>XValue Session Var Value Type</em>'.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
-   * @return a new object of class '<em>XValue Var Current Type</em>'.
+   * @return a new object of class '<em>XValue Session Var Value Type</em>'.
    * @generated
    */
-  XValueVarCurrentType createXValueVarCurrentType();
+  XValueSessionVarValueType createXValueSessionVarValueType();
 
   /**
-   * Returns a new object of class '<em>XValue Var Session Agg Type</em>'.
+   * Returns a new object of class '<em>XValue Session Var Agg Type</em>'.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
-   * @return a new object of class '<em>XValue Var Session Agg Type</em>'.
+   * @return a new object of class '<em>XValue Session Var Agg Type</em>'.
    * @generated
    */
-  XValueVarSessionAggType createXValueVarSessionAggType();
+  XValueSessionVarAggType createXValueSessionVarAggType();
 
   /**
-   * Returns a new object of class '<em>XValue Signal Session Count Type</em>'.
+   * Returns a new object of class '<em>XValue Session Signal Count Type</em>'.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
-   * @return a new object of class '<em>XValue Signal Session Count Type</em>'.
+   * @return a new object of class '<em>XValue Session Signal Count Type</em>'.
    * @generated
    */
-  XValueSignalSessionCountType createXValueSignalSessionCountType();
+  XValueSessionSignalCountType createXValueSessionSignalCountType();
 
   /**
-   * Returns a new object of class '<em>XValue Signal Historical Count Type</em>'.
+   * Returns a new object of class '<em>XValue Historical Var Agg Type</em>'.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
-   * @return a new object of class '<em>XValue Signal Historical Count Type</em>'.
+   * @return a new object of class '<em>XValue Historical Var Agg Type</em>'.
    * @generated
    */
-  XValueSignalHistoricalCountType createXValueSignalHistoricalCountType();
+  XValueHistoricalVarAggType createXValueHistoricalVarAggType();
+
+  /**
+   * Returns a new object of class '<em>XValue Historical Signal Count Type</em>'.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @return a new object of class '<em>XValue Historical Signal Count Type</em>'.
+   * @generated
+   */
+  XValueHistoricalSignalCountType createXValueHistoricalSignalCountType();
 
   /**
    * Returns a new object of class '<em>XQuery Type</em>'.

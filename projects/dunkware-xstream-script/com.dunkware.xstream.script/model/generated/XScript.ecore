@@ -288,26 +288,30 @@
     <eLiterals name="nq" value="3" literal="NE"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="XValueType"/>
-  <eClassifiers xsi:type="ecore:EClass" name="XValueVarCurrentType" eSuperTypes="#//XValueType">
+  <eClassifiers xsi:type="ecore:EClass" name="XValueSessionVarValueType" eSuperTypes="#//XValueType">
     <eStructuralFeatures xsi:type="ecore:EReference" name="var" eType="#//VarType"/>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="index" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EInt"/>
   </eClassifiers>
-  <eClassifiers xsi:type="ecore:EClass" name="XValueVarSessionAggType" eSuperTypes="#//XValueType">
+  <eClassifiers xsi:type="ecore:EClass" name="XValueSessionVarAggType" eSuperTypes="#//XValueType">
     <eStructuralFeatures xsi:type="ecore:EReference" name="var" eType="#//VarType"/>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="function" eType="#//XValueVarSessionAggFunction"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="range" eType="#//XTimeRange"
         containment="true"/>
   </eClassifiers>
-  <eClassifiers xsi:type="ecore:EClass" name="XValueSignalSessionCountType" eSuperTypes="#//XValueType">
+  <eClassifiers xsi:type="ecore:EClass" name="XValueSessionSignalCountType" eSuperTypes="#//XValueType">
     <eStructuralFeatures xsi:type="ecore:EReference" name="signal" eType="#//SignalType"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="timeRange" eType="#//XTimeRange"
         containment="true"/>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="value" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EInt"/>
   </eClassifiers>
-  <eClassifiers xsi:type="ecore:EClass" name="XValueSignalHistoricalCountType" eSuperTypes="#//XValueType">
+  <eClassifiers xsi:type="ecore:EClass" name="XValueHistoricalVarAggType">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="var" eType="#//VarType"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="function" eType="#//XValueVarHistoricalAggFunction"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="days" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EInt"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="XValueHistoricalSignalCountType" eSuperTypes="#//XValueType">
     <eStructuralFeatures xsi:type="ecore:EReference" name="signal" eType="#//SignalType"/>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="days" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EInt"/>
-    <eStructuralFeatures xsi:type="ecore:EAttribute" name="count" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EInt"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EEnum" name="XQueryValueCompareFunction">
     <eLiterals name="roc" literal="ROC"/>

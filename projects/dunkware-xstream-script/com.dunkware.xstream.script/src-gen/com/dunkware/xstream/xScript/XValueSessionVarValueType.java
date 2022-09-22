@@ -6,22 +6,22 @@ package com.dunkware.xstream.xScript;
 
 /**
  * <!-- begin-user-doc -->
- * A representation of the model object '<em><b>XValue Var Current Type</b></em>'.
+ * A representation of the model object '<em><b>XValue Session Var Value Type</b></em>'.
  * <!-- end-user-doc -->
  *
  * <p>
  * The following features are supported:
  * </p>
  * <ul>
- *   <li>{@link com.dunkware.xstream.xScript.XValueVarCurrentType#getVar <em>Var</em>}</li>
- *   <li>{@link com.dunkware.xstream.xScript.XValueVarCurrentType#getIndex <em>Index</em>}</li>
+ *   <li>{@link com.dunkware.xstream.xScript.XValueSessionVarValueType#getVar <em>Var</em>}</li>
+ *   <li>{@link com.dunkware.xstream.xScript.XValueSessionVarValueType#getIndex <em>Index</em>}</li>
  * </ul>
  *
- * @see com.dunkware.xstream.xScript.XScriptPackage#getXValueVarCurrentType()
+ * @see com.dunkware.xstream.xScript.XScriptPackage#getXValueSessionVarValueType()
  * @model
  * @generated
  */
-public interface XValueVarCurrentType extends XValueType
+public interface XValueSessionVarValueType extends XValueType
 {
   /**
    * Returns the value of the '<em><b>Var</b></em>' reference.
@@ -29,14 +29,14 @@ public interface XValueVarCurrentType extends XValueType
    * <!-- end-user-doc -->
    * @return the value of the '<em>Var</em>' reference.
    * @see #setVar(VarType)
-   * @see com.dunkware.xstream.xScript.XScriptPackage#getXValueVarCurrentType_Var()
+   * @see com.dunkware.xstream.xScript.XScriptPackage#getXValueSessionVarValueType_Var()
    * @model
    * @generated
    */
   VarType getVar();
 
   /**
-   * Sets the value of the '{@link com.dunkware.xstream.xScript.XValueVarCurrentType#getVar <em>Var</em>}' reference.
+   * Sets the value of the '{@link com.dunkware.xstream.xScript.XValueSessionVarValueType#getVar <em>Var</em>}' reference.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
    * @param value the new value of the '<em>Var</em>' reference.
@@ -51,14 +51,14 @@ public interface XValueVarCurrentType extends XValueType
    * <!-- end-user-doc -->
    * @return the value of the '<em>Index</em>' attribute.
    * @see #setIndex(int)
-   * @see com.dunkware.xstream.xScript.XScriptPackage#getXValueVarCurrentType_Index()
+   * @see com.dunkware.xstream.xScript.XScriptPackage#getXValueSessionVarValueType_Index()
    * @model
    * @generated
    */
   int getIndex();
 
   /**
-   * Sets the value of the '{@link com.dunkware.xstream.xScript.XValueVarCurrentType#getIndex <em>Index</em>}' attribute.
+   * Sets the value of the '{@link com.dunkware.xstream.xScript.XValueSessionVarValueType#getIndex <em>Index</em>}' attribute.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
    * @param value the new value of the '<em>Index</em>' attribute.
@@ -67,4 +67,4 @@ public interface XValueVarCurrentType extends XValueType
    */
   void setIndex(int value);
 
-} // XValueVarCurrentType
+} // XValueSessionVarValueType

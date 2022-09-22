@@ -83,13 +83,14 @@ import com.dunkware.xstream.xScript.XStringConstantType;
 import com.dunkware.xstream.xScript.XSubExpType;
 import com.dunkware.xstream.xScript.XTimeRange;
 import com.dunkware.xstream.xScript.XTimeRangeRelative;
-import com.dunkware.xstream.xScript.XValueSignalHistoricalCountType;
-import com.dunkware.xstream.xScript.XValueSignalSessionCountType;
+import com.dunkware.xstream.xScript.XValueHistoricalSignalCountType;
+import com.dunkware.xstream.xScript.XValueHistoricalVarAggType;
+import com.dunkware.xstream.xScript.XValueSessionSignalCountType;
+import com.dunkware.xstream.xScript.XValueSessionVarAggType;
+import com.dunkware.xstream.xScript.XValueSessionVarValueType;
 import com.dunkware.xstream.xScript.XValueType;
-import com.dunkware.xstream.xScript.XValueVarCurrentType;
 import com.dunkware.xstream.xScript.XValueVarHistoricalAggFunction;
 import com.dunkware.xstream.xScript.XValueVarSessionAggFunction;
-import com.dunkware.xstream.xScript.XValueVarSessionAggType;
 import com.dunkware.xstream.xScript.XVarCompareStreakType;
 import com.dunkware.xstream.xScript.XVarDecrementType;
 import com.dunkware.xstream.xScript.XVarExpType;
@@ -531,28 +532,35 @@ public class XScriptPackageImpl extends EPackageImpl implements XScriptPackage
    * <!-- end-user-doc -->
    * @generated
    */
-  private EClass xValueVarCurrentTypeEClass = null;
+  private EClass xValueSessionVarValueTypeEClass = null;
 
   /**
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
    * @generated
    */
-  private EClass xValueVarSessionAggTypeEClass = null;
+  private EClass xValueSessionVarAggTypeEClass = null;
 
   /**
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
    * @generated
    */
-  private EClass xValueSignalSessionCountTypeEClass = null;
+  private EClass xValueSessionSignalCountTypeEClass = null;
 
   /**
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
    * @generated
    */
-  private EClass xValueSignalHistoricalCountTypeEClass = null;
+  private EClass xValueHistoricalVarAggTypeEClass = null;
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  private EClass xValueHistoricalSignalCountTypeEClass = null;
 
   /**
    * <!-- begin-user-doc -->
@@ -2690,9 +2698,9 @@ public class XScriptPackageImpl extends EPackageImpl implements XScriptPackage
    * @generated
    */
   @Override
-  public EClass getXValueVarCurrentType()
+  public EClass getXValueSessionVarValueType()
   {
-    return xValueVarCurrentTypeEClass;
+    return xValueSessionVarValueTypeEClass;
   }
 
   /**
@@ -2701,9 +2709,9 @@ public class XScriptPackageImpl extends EPackageImpl implements XScriptPackage
    * @generated
    */
   @Override
-  public EReference getXValueVarCurrentType_Var()
+  public EReference getXValueSessionVarValueType_Var()
   {
-    return (EReference)xValueVarCurrentTypeEClass.getEStructuralFeatures().get(0);
+    return (EReference)xValueSessionVarValueTypeEClass.getEStructuralFeatures().get(0);
   }
 
   /**
@@ -2712,9 +2720,9 @@ public class XScriptPackageImpl extends EPackageImpl implements XScriptPackage
    * @generated
    */
   @Override
-  public EAttribute getXValueVarCurrentType_Index()
+  public EAttribute getXValueSessionVarValueType_Index()
   {
-    return (EAttribute)xValueVarCurrentTypeEClass.getEStructuralFeatures().get(1);
+    return (EAttribute)xValueSessionVarValueTypeEClass.getEStructuralFeatures().get(1);
   }
 
   /**
@@ -2723,9 +2731,9 @@ public class XScriptPackageImpl extends EPackageImpl implements XScriptPackage
    * @generated
    */
   @Override
-  public EClass getXValueVarSessionAggType()
+  public EClass getXValueSessionVarAggType()
   {
-    return xValueVarSessionAggTypeEClass;
+    return xValueSessionVarAggTypeEClass;
   }
 
   /**
@@ -2734,9 +2742,9 @@ public class XScriptPackageImpl extends EPackageImpl implements XScriptPackage
    * @generated
    */
   @Override
-  public EReference getXValueVarSessionAggType_Var()
+  public EReference getXValueSessionVarAggType_Var()
   {
-    return (EReference)xValueVarSessionAggTypeEClass.getEStructuralFeatures().get(0);
+    return (EReference)xValueSessionVarAggTypeEClass.getEStructuralFeatures().get(0);
   }
 
   /**
@@ -2745,9 +2753,9 @@ public class XScriptPackageImpl extends EPackageImpl implements XScriptPackage
    * @generated
    */
   @Override
-  public EAttribute getXValueVarSessionAggType_Function()
+  public EAttribute getXValueSessionVarAggType_Function()
   {
-    return (EAttribute)xValueVarSessionAggTypeEClass.getEStructuralFeatures().get(1);
+    return (EAttribute)xValueSessionVarAggTypeEClass.getEStructuralFeatures().get(1);
   }
 
   /**
@@ -2756,9 +2764,9 @@ public class XScriptPackageImpl extends EPackageImpl implements XScriptPackage
    * @generated
    */
   @Override
-  public EReference getXValueVarSessionAggType_Range()
+  public EReference getXValueSessionVarAggType_Range()
   {
-    return (EReference)xValueVarSessionAggTypeEClass.getEStructuralFeatures().get(2);
+    return (EReference)xValueSessionVarAggTypeEClass.getEStructuralFeatures().get(2);
   }
 
   /**
@@ -2767,9 +2775,9 @@ public class XScriptPackageImpl extends EPackageImpl implements XScriptPackage
    * @generated
    */
   @Override
-  public EClass getXValueSignalSessionCountType()
+  public EClass getXValueSessionSignalCountType()
   {
-    return xValueSignalSessionCountTypeEClass;
+    return xValueSessionSignalCountTypeEClass;
   }
 
   /**
@@ -2778,9 +2786,9 @@ public class XScriptPackageImpl extends EPackageImpl implements XScriptPackage
    * @generated
    */
   @Override
-  public EReference getXValueSignalSessionCountType_Signal()
+  public EReference getXValueSessionSignalCountType_Signal()
   {
-    return (EReference)xValueSignalSessionCountTypeEClass.getEStructuralFeatures().get(0);
+    return (EReference)xValueSessionSignalCountTypeEClass.getEStructuralFeatures().get(0);
   }
 
   /**
@@ -2789,9 +2797,9 @@ public class XScriptPackageImpl extends EPackageImpl implements XScriptPackage
    * @generated
    */
   @Override
-  public EReference getXValueSignalSessionCountType_TimeRange()
+  public EReference getXValueSessionSignalCountType_TimeRange()
   {
-    return (EReference)xValueSignalSessionCountTypeEClass.getEStructuralFeatures().get(1);
+    return (EReference)xValueSessionSignalCountTypeEClass.getEStructuralFeatures().get(1);
   }
 
   /**
@@ -2800,9 +2808,9 @@ public class XScriptPackageImpl extends EPackageImpl implements XScriptPackage
    * @generated
    */
   @Override
-  public EAttribute getXValueSignalSessionCountType_Value()
+  public EAttribute getXValueSessionSignalCountType_Value()
   {
-    return (EAttribute)xValueSignalSessionCountTypeEClass.getEStructuralFeatures().get(2);
+    return (EAttribute)xValueSessionSignalCountTypeEClass.getEStructuralFeatures().get(2);
   }
 
   /**
@@ -2811,9 +2819,9 @@ public class XScriptPackageImpl extends EPackageImpl implements XScriptPackage
    * @generated
    */
   @Override
-  public EClass getXValueSignalHistoricalCountType()
+  public EClass getXValueHistoricalVarAggType()
   {
-    return xValueSignalHistoricalCountTypeEClass;
+    return xValueHistoricalVarAggTypeEClass;
   }
 
   /**
@@ -2822,9 +2830,9 @@ public class XScriptPackageImpl extends EPackageImpl implements XScriptPackage
    * @generated
    */
   @Override
-  public EReference getXValueSignalHistoricalCountType_Signal()
+  public EReference getXValueHistoricalVarAggType_Var()
   {
-    return (EReference)xValueSignalHistoricalCountTypeEClass.getEStructuralFeatures().get(0);
+    return (EReference)xValueHistoricalVarAggTypeEClass.getEStructuralFeatures().get(0);
   }
 
   /**
@@ -2833,9 +2841,9 @@ public class XScriptPackageImpl extends EPackageImpl implements XScriptPackage
    * @generated
    */
   @Override
-  public EAttribute getXValueSignalHistoricalCountType_Days()
+  public EAttribute getXValueHistoricalVarAggType_Function()
   {
-    return (EAttribute)xValueSignalHistoricalCountTypeEClass.getEStructuralFeatures().get(1);
+    return (EAttribute)xValueHistoricalVarAggTypeEClass.getEStructuralFeatures().get(1);
   }
 
   /**
@@ -2844,9 +2852,42 @@ public class XScriptPackageImpl extends EPackageImpl implements XScriptPackage
    * @generated
    */
   @Override
-  public EAttribute getXValueSignalHistoricalCountType_Count()
+  public EAttribute getXValueHistoricalVarAggType_Days()
   {
-    return (EAttribute)xValueSignalHistoricalCountTypeEClass.getEStructuralFeatures().get(2);
+    return (EAttribute)xValueHistoricalVarAggTypeEClass.getEStructuralFeatures().get(2);
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  @Override
+  public EClass getXValueHistoricalSignalCountType()
+  {
+    return xValueHistoricalSignalCountTypeEClass;
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  @Override
+  public EReference getXValueHistoricalSignalCountType_Signal()
+  {
+    return (EReference)xValueHistoricalSignalCountTypeEClass.getEStructuralFeatures().get(0);
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  @Override
+  public EAttribute getXValueHistoricalSignalCountType_Days()
+  {
+    return (EAttribute)xValueHistoricalSignalCountTypeEClass.getEStructuralFeatures().get(1);
   }
 
   /**
@@ -4137,24 +4178,28 @@ public class XScriptPackageImpl extends EPackageImpl implements XScriptPackage
 
     xValueTypeEClass = createEClass(XVALUE_TYPE);
 
-    xValueVarCurrentTypeEClass = createEClass(XVALUE_VAR_CURRENT_TYPE);
-    createEReference(xValueVarCurrentTypeEClass, XVALUE_VAR_CURRENT_TYPE__VAR);
-    createEAttribute(xValueVarCurrentTypeEClass, XVALUE_VAR_CURRENT_TYPE__INDEX);
+    xValueSessionVarValueTypeEClass = createEClass(XVALUE_SESSION_VAR_VALUE_TYPE);
+    createEReference(xValueSessionVarValueTypeEClass, XVALUE_SESSION_VAR_VALUE_TYPE__VAR);
+    createEAttribute(xValueSessionVarValueTypeEClass, XVALUE_SESSION_VAR_VALUE_TYPE__INDEX);
 
-    xValueVarSessionAggTypeEClass = createEClass(XVALUE_VAR_SESSION_AGG_TYPE);
-    createEReference(xValueVarSessionAggTypeEClass, XVALUE_VAR_SESSION_AGG_TYPE__VAR);
-    createEAttribute(xValueVarSessionAggTypeEClass, XVALUE_VAR_SESSION_AGG_TYPE__FUNCTION);
-    createEReference(xValueVarSessionAggTypeEClass, XVALUE_VAR_SESSION_AGG_TYPE__RANGE);
+    xValueSessionVarAggTypeEClass = createEClass(XVALUE_SESSION_VAR_AGG_TYPE);
+    createEReference(xValueSessionVarAggTypeEClass, XVALUE_SESSION_VAR_AGG_TYPE__VAR);
+    createEAttribute(xValueSessionVarAggTypeEClass, XVALUE_SESSION_VAR_AGG_TYPE__FUNCTION);
+    createEReference(xValueSessionVarAggTypeEClass, XVALUE_SESSION_VAR_AGG_TYPE__RANGE);
 
-    xValueSignalSessionCountTypeEClass = createEClass(XVALUE_SIGNAL_SESSION_COUNT_TYPE);
-    createEReference(xValueSignalSessionCountTypeEClass, XVALUE_SIGNAL_SESSION_COUNT_TYPE__SIGNAL);
-    createEReference(xValueSignalSessionCountTypeEClass, XVALUE_SIGNAL_SESSION_COUNT_TYPE__TIME_RANGE);
-    createEAttribute(xValueSignalSessionCountTypeEClass, XVALUE_SIGNAL_SESSION_COUNT_TYPE__VALUE);
+    xValueSessionSignalCountTypeEClass = createEClass(XVALUE_SESSION_SIGNAL_COUNT_TYPE);
+    createEReference(xValueSessionSignalCountTypeEClass, XVALUE_SESSION_SIGNAL_COUNT_TYPE__SIGNAL);
+    createEReference(xValueSessionSignalCountTypeEClass, XVALUE_SESSION_SIGNAL_COUNT_TYPE__TIME_RANGE);
+    createEAttribute(xValueSessionSignalCountTypeEClass, XVALUE_SESSION_SIGNAL_COUNT_TYPE__VALUE);
 
-    xValueSignalHistoricalCountTypeEClass = createEClass(XVALUE_SIGNAL_HISTORICAL_COUNT_TYPE);
-    createEReference(xValueSignalHistoricalCountTypeEClass, XVALUE_SIGNAL_HISTORICAL_COUNT_TYPE__SIGNAL);
-    createEAttribute(xValueSignalHistoricalCountTypeEClass, XVALUE_SIGNAL_HISTORICAL_COUNT_TYPE__DAYS);
-    createEAttribute(xValueSignalHistoricalCountTypeEClass, XVALUE_SIGNAL_HISTORICAL_COUNT_TYPE__COUNT);
+    xValueHistoricalVarAggTypeEClass = createEClass(XVALUE_HISTORICAL_VAR_AGG_TYPE);
+    createEReference(xValueHistoricalVarAggTypeEClass, XVALUE_HISTORICAL_VAR_AGG_TYPE__VAR);
+    createEAttribute(xValueHistoricalVarAggTypeEClass, XVALUE_HISTORICAL_VAR_AGG_TYPE__FUNCTION);
+    createEAttribute(xValueHistoricalVarAggTypeEClass, XVALUE_HISTORICAL_VAR_AGG_TYPE__DAYS);
+
+    xValueHistoricalSignalCountTypeEClass = createEClass(XVALUE_HISTORICAL_SIGNAL_COUNT_TYPE);
+    createEReference(xValueHistoricalSignalCountTypeEClass, XVALUE_HISTORICAL_SIGNAL_COUNT_TYPE__SIGNAL);
+    createEAttribute(xValueHistoricalSignalCountTypeEClass, XVALUE_HISTORICAL_SIGNAL_COUNT_TYPE__DAYS);
 
     xQueryTypeEClass = createEClass(XQUERY_TYPE);
     createEAttribute(xQueryTypeEClass, XQUERY_TYPE__NAME);
@@ -4360,10 +4405,10 @@ public class XScriptPackageImpl extends EPackageImpl implements XScriptPackage
     xVarianceMaxTypeEClass.getESuperTypes().add(this.getXExpressionType());
     xRocExpTypeEClass.getESuperTypes().add(this.getXExpressionType());
     xTimeRangeRelativeEClass.getESuperTypes().add(this.getXTimeRange());
-    xValueVarCurrentTypeEClass.getESuperTypes().add(this.getXValueType());
-    xValueVarSessionAggTypeEClass.getESuperTypes().add(this.getXValueType());
-    xValueSignalSessionCountTypeEClass.getESuperTypes().add(this.getXValueType());
-    xValueSignalHistoricalCountTypeEClass.getESuperTypes().add(this.getXValueType());
+    xValueSessionVarValueTypeEClass.getESuperTypes().add(this.getXValueType());
+    xValueSessionVarAggTypeEClass.getESuperTypes().add(this.getXValueType());
+    xValueSessionSignalCountTypeEClass.getESuperTypes().add(this.getXValueType());
+    xValueHistoricalSignalCountTypeEClass.getESuperTypes().add(this.getXValueType());
     xQueryTypeEClass.getESuperTypes().add(this.getCoreAbstractElement());
     xQueryFilterValueTypeEClass.getESuperTypes().add(this.getXQueryFilterType());
     xQueryFilterValueCompareTypeEClass.getESuperTypes().add(this.getXQueryFilterType());
@@ -4618,24 +4663,28 @@ public class XScriptPackageImpl extends EPackageImpl implements XScriptPackage
 
     initEClass(xValueTypeEClass, XValueType.class, "XValueType", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 
-    initEClass(xValueVarCurrentTypeEClass, XValueVarCurrentType.class, "XValueVarCurrentType", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
-    initEReference(getXValueVarCurrentType_Var(), this.getVarType(), null, "var", null, 0, 1, XValueVarCurrentType.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-    initEAttribute(getXValueVarCurrentType_Index(), ecorePackage.getEInt(), "index", null, 0, 1, XValueVarCurrentType.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+    initEClass(xValueSessionVarValueTypeEClass, XValueSessionVarValueType.class, "XValueSessionVarValueType", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+    initEReference(getXValueSessionVarValueType_Var(), this.getVarType(), null, "var", null, 0, 1, XValueSessionVarValueType.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+    initEAttribute(getXValueSessionVarValueType_Index(), ecorePackage.getEInt(), "index", null, 0, 1, XValueSessionVarValueType.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
-    initEClass(xValueVarSessionAggTypeEClass, XValueVarSessionAggType.class, "XValueVarSessionAggType", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
-    initEReference(getXValueVarSessionAggType_Var(), this.getVarType(), null, "var", null, 0, 1, XValueVarSessionAggType.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-    initEAttribute(getXValueVarSessionAggType_Function(), this.getXValueVarSessionAggFunction(), "function", null, 0, 1, XValueVarSessionAggType.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-    initEReference(getXValueVarSessionAggType_Range(), this.getXTimeRange(), null, "range", null, 0, 1, XValueVarSessionAggType.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+    initEClass(xValueSessionVarAggTypeEClass, XValueSessionVarAggType.class, "XValueSessionVarAggType", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+    initEReference(getXValueSessionVarAggType_Var(), this.getVarType(), null, "var", null, 0, 1, XValueSessionVarAggType.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+    initEAttribute(getXValueSessionVarAggType_Function(), this.getXValueVarSessionAggFunction(), "function", null, 0, 1, XValueSessionVarAggType.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+    initEReference(getXValueSessionVarAggType_Range(), this.getXTimeRange(), null, "range", null, 0, 1, XValueSessionVarAggType.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
-    initEClass(xValueSignalSessionCountTypeEClass, XValueSignalSessionCountType.class, "XValueSignalSessionCountType", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
-    initEReference(getXValueSignalSessionCountType_Signal(), this.getSignalType(), null, "signal", null, 0, 1, XValueSignalSessionCountType.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-    initEReference(getXValueSignalSessionCountType_TimeRange(), this.getXTimeRange(), null, "timeRange", null, 0, 1, XValueSignalSessionCountType.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-    initEAttribute(getXValueSignalSessionCountType_Value(), ecorePackage.getEInt(), "value", null, 0, 1, XValueSignalSessionCountType.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+    initEClass(xValueSessionSignalCountTypeEClass, XValueSessionSignalCountType.class, "XValueSessionSignalCountType", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+    initEReference(getXValueSessionSignalCountType_Signal(), this.getSignalType(), null, "signal", null, 0, 1, XValueSessionSignalCountType.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+    initEReference(getXValueSessionSignalCountType_TimeRange(), this.getXTimeRange(), null, "timeRange", null, 0, 1, XValueSessionSignalCountType.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+    initEAttribute(getXValueSessionSignalCountType_Value(), ecorePackage.getEInt(), "value", null, 0, 1, XValueSessionSignalCountType.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
-    initEClass(xValueSignalHistoricalCountTypeEClass, XValueSignalHistoricalCountType.class, "XValueSignalHistoricalCountType", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
-    initEReference(getXValueSignalHistoricalCountType_Signal(), this.getSignalType(), null, "signal", null, 0, 1, XValueSignalHistoricalCountType.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-    initEAttribute(getXValueSignalHistoricalCountType_Days(), ecorePackage.getEInt(), "days", null, 0, 1, XValueSignalHistoricalCountType.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-    initEAttribute(getXValueSignalHistoricalCountType_Count(), ecorePackage.getEInt(), "count", null, 0, 1, XValueSignalHistoricalCountType.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+    initEClass(xValueHistoricalVarAggTypeEClass, XValueHistoricalVarAggType.class, "XValueHistoricalVarAggType", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+    initEReference(getXValueHistoricalVarAggType_Var(), this.getVarType(), null, "var", null, 0, 1, XValueHistoricalVarAggType.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+    initEAttribute(getXValueHistoricalVarAggType_Function(), this.getXValueVarHistoricalAggFunction(), "function", null, 0, 1, XValueHistoricalVarAggType.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+    initEAttribute(getXValueHistoricalVarAggType_Days(), ecorePackage.getEInt(), "days", null, 0, 1, XValueHistoricalVarAggType.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+
+    initEClass(xValueHistoricalSignalCountTypeEClass, XValueHistoricalSignalCountType.class, "XValueHistoricalSignalCountType", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+    initEReference(getXValueHistoricalSignalCountType_Signal(), this.getSignalType(), null, "signal", null, 0, 1, XValueHistoricalSignalCountType.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+    initEAttribute(getXValueHistoricalSignalCountType_Days(), ecorePackage.getEInt(), "days", null, 0, 1, XValueHistoricalSignalCountType.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
     initEClass(xQueryTypeEClass, XQueryType.class, "XQueryType", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
     initEAttribute(getXQueryType_Name(), ecorePackage.getEString(), "name", null, 0, 1, XQueryType.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);

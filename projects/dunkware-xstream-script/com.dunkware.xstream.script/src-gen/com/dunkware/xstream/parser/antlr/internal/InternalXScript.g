@@ -6337,52 +6337,52 @@ ruleXValueType returns [EObject current=null]
 }:
 	(
 		{
-			newCompositeNode(grammarAccess.getXValueTypeAccess().getXValueVarCurrentTypeParserRuleCall_0());
+			newCompositeNode(grammarAccess.getXValueTypeAccess().getXValueSessionVarValueTypeParserRuleCall_0());
 		}
-		this_XValueVarCurrentType_0=ruleXValueVarCurrentType
+		this_XValueSessionVarValueType_0=ruleXValueSessionVarValueType
 		{
-			$current = $this_XValueVarCurrentType_0.current;
+			$current = $this_XValueSessionVarValueType_0.current;
 			afterParserOrEnumRuleCall();
 		}
 		    |
 		{
-			newCompositeNode(grammarAccess.getXValueTypeAccess().getXValueVarSessionAggTypeParserRuleCall_1());
+			newCompositeNode(grammarAccess.getXValueTypeAccess().getXValueSessionVarAggTypeParserRuleCall_1());
 		}
-		this_XValueVarSessionAggType_1=ruleXValueVarSessionAggType
+		this_XValueSessionVarAggType_1=ruleXValueSessionVarAggType
 		{
-			$current = $this_XValueVarSessionAggType_1.current;
+			$current = $this_XValueSessionVarAggType_1.current;
 			afterParserOrEnumRuleCall();
 		}
 		    |
 		{
-			newCompositeNode(grammarAccess.getXValueTypeAccess().getXValueSignalSessionCountTypeParserRuleCall_2());
+			newCompositeNode(grammarAccess.getXValueTypeAccess().getXValueSessionSignalCountTypeParserRuleCall_2());
 		}
-		this_XValueSignalSessionCountType_2=ruleXValueSignalSessionCountType
+		this_XValueSessionSignalCountType_2=ruleXValueSessionSignalCountType
 		{
-			$current = $this_XValueSignalSessionCountType_2.current;
+			$current = $this_XValueSessionSignalCountType_2.current;
 			afterParserOrEnumRuleCall();
 		}
 		    |
 		{
-			newCompositeNode(grammarAccess.getXValueTypeAccess().getXValueSignalHistoricalCountTypeParserRuleCall_3());
+			newCompositeNode(grammarAccess.getXValueTypeAccess().getXValueHistoricalSignalCountTypeParserRuleCall_3());
 		}
-		this_XValueSignalHistoricalCountType_3=ruleXValueSignalHistoricalCountType
+		this_XValueHistoricalSignalCountType_3=ruleXValueHistoricalSignalCountType
 		{
-			$current = $this_XValueSignalHistoricalCountType_3.current;
+			$current = $this_XValueHistoricalSignalCountType_3.current;
 			afterParserOrEnumRuleCall();
 		}
 	)
 ;
 
-// Entry rule entryRuleXValueVarCurrentType
-entryRuleXValueVarCurrentType returns [EObject current=null]:
-	{ newCompositeNode(grammarAccess.getXValueVarCurrentTypeRule()); }
-	iv_ruleXValueVarCurrentType=ruleXValueVarCurrentType
-	{ $current=$iv_ruleXValueVarCurrentType.current; }
+// Entry rule entryRuleXValueSessionVarValueType
+entryRuleXValueSessionVarValueType returns [EObject current=null]:
+	{ newCompositeNode(grammarAccess.getXValueSessionVarValueTypeRule()); }
+	iv_ruleXValueSessionVarValueType=ruleXValueSessionVarValueType
+	{ $current=$iv_ruleXValueSessionVarValueType.current; }
 	EOF;
 
-// Rule XValueVarCurrentType
-ruleXValueVarCurrentType returns [EObject current=null]
+// Rule XValueSessionVarValueType
+ruleXValueSessionVarValueType returns [EObject current=null]
 @init {
 	enterRule();
 }
@@ -6393,44 +6393,44 @@ ruleXValueVarCurrentType returns [EObject current=null]
 		(
 			{
 				$current = forceCreateModelElement(
-					grammarAccess.getXValueVarCurrentTypeAccess().getXValueVarCurrentTypeAction_0(),
+					grammarAccess.getXValueSessionVarValueTypeAccess().getXValueSessionVarValueTypeAction_0(),
 					$current);
 			}
 		)
 		otherlv_1='sessionVarValue'
 		{
-			newLeafNode(otherlv_1, grammarAccess.getXValueVarCurrentTypeAccess().getSessionVarValueKeyword_1());
+			newLeafNode(otherlv_1, grammarAccess.getXValueSessionVarValueTypeAccess().getSessionVarValueKeyword_1());
 		}
 		otherlv_2='('
 		{
-			newLeafNode(otherlv_2, grammarAccess.getXValueVarCurrentTypeAccess().getLeftParenthesisKeyword_2());
+			newLeafNode(otherlv_2, grammarAccess.getXValueSessionVarValueTypeAccess().getLeftParenthesisKeyword_2());
 		}
 		(
 			(
 				{
 					if ($current==null) {
-						$current = createModelElement(grammarAccess.getXValueVarCurrentTypeRule());
+						$current = createModelElement(grammarAccess.getXValueSessionVarValueTypeRule());
 					}
 				}
 				otherlv_3=RULE_ID
 				{
-					newLeafNode(otherlv_3, grammarAccess.getXValueVarCurrentTypeAccess().getVarVarTypeCrossReference_3_0());
+					newLeafNode(otherlv_3, grammarAccess.getXValueSessionVarValueTypeAccess().getVarVarTypeCrossReference_3_0());
 				}
 			)
 		)
 		otherlv_4=','
 		{
-			newLeafNode(otherlv_4, grammarAccess.getXValueVarCurrentTypeAccess().getCommaKeyword_4());
+			newLeafNode(otherlv_4, grammarAccess.getXValueSessionVarValueTypeAccess().getCommaKeyword_4());
 		}
 		(
 			(
 				lv_index_5_0=RULE_INT
 				{
-					newLeafNode(lv_index_5_0, grammarAccess.getXValueVarCurrentTypeAccess().getIndexINTTerminalRuleCall_5_0());
+					newLeafNode(lv_index_5_0, grammarAccess.getXValueSessionVarValueTypeAccess().getIndexINTTerminalRuleCall_5_0());
 				}
 				{
 					if ($current==null) {
-						$current = createModelElement(grammarAccess.getXValueVarCurrentTypeRule());
+						$current = createModelElement(grammarAccess.getXValueSessionVarValueTypeRule());
 					}
 					setWithLastConsumed(
 						$current,
@@ -6442,20 +6442,20 @@ ruleXValueVarCurrentType returns [EObject current=null]
 		)
 		otherlv_6=')'
 		{
-			newLeafNode(otherlv_6, grammarAccess.getXValueVarCurrentTypeAccess().getRightParenthesisKeyword_6());
+			newLeafNode(otherlv_6, grammarAccess.getXValueSessionVarValueTypeAccess().getRightParenthesisKeyword_6());
 		}
 	)
 ;
 
-// Entry rule entryRuleXValueVarSessionAggType
-entryRuleXValueVarSessionAggType returns [EObject current=null]:
-	{ newCompositeNode(grammarAccess.getXValueVarSessionAggTypeRule()); }
-	iv_ruleXValueVarSessionAggType=ruleXValueVarSessionAggType
-	{ $current=$iv_ruleXValueVarSessionAggType.current; }
+// Entry rule entryRuleXValueSessionVarAggType
+entryRuleXValueSessionVarAggType returns [EObject current=null]:
+	{ newCompositeNode(grammarAccess.getXValueSessionVarAggTypeRule()); }
+	iv_ruleXValueSessionVarAggType=ruleXValueSessionVarAggType
+	{ $current=$iv_ruleXValueSessionVarAggType.current; }
 	EOF;
 
-// Rule XValueVarSessionAggType
-ruleXValueVarSessionAggType returns [EObject current=null]
+// Rule XValueSessionVarAggType
+ruleXValueSessionVarAggType returns [EObject current=null]
 @init {
 	enterRule();
 }
@@ -6466,44 +6466,44 @@ ruleXValueVarSessionAggType returns [EObject current=null]
 		(
 			{
 				$current = forceCreateModelElement(
-					grammarAccess.getXValueVarSessionAggTypeAccess().getXValueVarSessionAggTypeAction_0(),
+					grammarAccess.getXValueSessionVarAggTypeAccess().getXValueSessionVarAggTypeAction_0(),
 					$current);
 			}
 		)
 		otherlv_1='sessionVarAgg'
 		{
-			newLeafNode(otherlv_1, grammarAccess.getXValueVarSessionAggTypeAccess().getSessionVarAggKeyword_1());
+			newLeafNode(otherlv_1, grammarAccess.getXValueSessionVarAggTypeAccess().getSessionVarAggKeyword_1());
 		}
 		otherlv_2='('
 		{
-			newLeafNode(otherlv_2, grammarAccess.getXValueVarSessionAggTypeAccess().getLeftParenthesisKeyword_2());
+			newLeafNode(otherlv_2, grammarAccess.getXValueSessionVarAggTypeAccess().getLeftParenthesisKeyword_2());
 		}
 		(
 			(
 				{
 					if ($current==null) {
-						$current = createModelElement(grammarAccess.getXValueVarSessionAggTypeRule());
+						$current = createModelElement(grammarAccess.getXValueSessionVarAggTypeRule());
 					}
 				}
 				otherlv_3=RULE_ID
 				{
-					newLeafNode(otherlv_3, grammarAccess.getXValueVarSessionAggTypeAccess().getVarVarTypeCrossReference_3_0());
+					newLeafNode(otherlv_3, grammarAccess.getXValueSessionVarAggTypeAccess().getVarVarTypeCrossReference_3_0());
 				}
 			)
 		)
 		otherlv_4=','
 		{
-			newLeafNode(otherlv_4, grammarAccess.getXValueVarSessionAggTypeAccess().getCommaKeyword_4());
+			newLeafNode(otherlv_4, grammarAccess.getXValueSessionVarAggTypeAccess().getCommaKeyword_4());
 		}
 		(
 			(
 				{
-					newCompositeNode(grammarAccess.getXValueVarSessionAggTypeAccess().getFunctionXValueVarSessionAggFunctionEnumRuleCall_5_0());
+					newCompositeNode(grammarAccess.getXValueSessionVarAggTypeAccess().getFunctionXValueVarSessionAggFunctionEnumRuleCall_5_0());
 				}
 				lv_function_5_0=ruleXValueVarSessionAggFunction
 				{
 					if ($current==null) {
-						$current = createModelElementForParent(grammarAccess.getXValueVarSessionAggTypeRule());
+						$current = createModelElementForParent(grammarAccess.getXValueSessionVarAggTypeRule());
 					}
 					set(
 						$current,
@@ -6516,17 +6516,17 @@ ruleXValueVarSessionAggType returns [EObject current=null]
 		)
 		otherlv_6=','
 		{
-			newLeafNode(otherlv_6, grammarAccess.getXValueVarSessionAggTypeAccess().getCommaKeyword_6());
+			newLeafNode(otherlv_6, grammarAccess.getXValueSessionVarAggTypeAccess().getCommaKeyword_6());
 		}
 		(
 			(
 				{
-					newCompositeNode(grammarAccess.getXValueVarSessionAggTypeAccess().getRangeXTimeRangeParserRuleCall_7_0());
+					newCompositeNode(grammarAccess.getXValueSessionVarAggTypeAccess().getRangeXTimeRangeParserRuleCall_7_0());
 				}
 				lv_range_7_0=ruleXTimeRange
 				{
 					if ($current==null) {
-						$current = createModelElementForParent(grammarAccess.getXValueVarSessionAggTypeRule());
+						$current = createModelElementForParent(grammarAccess.getXValueSessionVarAggTypeRule());
 					}
 					set(
 						$current,
@@ -6539,20 +6539,20 @@ ruleXValueVarSessionAggType returns [EObject current=null]
 		)
 		otherlv_8=')'
 		{
-			newLeafNode(otherlv_8, grammarAccess.getXValueVarSessionAggTypeAccess().getRightParenthesisKeyword_8());
+			newLeafNode(otherlv_8, grammarAccess.getXValueSessionVarAggTypeAccess().getRightParenthesisKeyword_8());
 		}
 	)
 ;
 
-// Entry rule entryRuleXValueSignalSessionCountType
-entryRuleXValueSignalSessionCountType returns [EObject current=null]:
-	{ newCompositeNode(grammarAccess.getXValueSignalSessionCountTypeRule()); }
-	iv_ruleXValueSignalSessionCountType=ruleXValueSignalSessionCountType
-	{ $current=$iv_ruleXValueSignalSessionCountType.current; }
+// Entry rule entryRuleXValueSessionSignalCountType
+entryRuleXValueSessionSignalCountType returns [EObject current=null]:
+	{ newCompositeNode(grammarAccess.getXValueSessionSignalCountTypeRule()); }
+	iv_ruleXValueSessionSignalCountType=ruleXValueSessionSignalCountType
+	{ $current=$iv_ruleXValueSessionSignalCountType.current; }
 	EOF;
 
-// Rule XValueSignalSessionCountType
-ruleXValueSignalSessionCountType returns [EObject current=null]
+// Rule XValueSessionSignalCountType
+ruleXValueSessionSignalCountType returns [EObject current=null]
 @init {
 	enterRule();
 }
@@ -6563,44 +6563,44 @@ ruleXValueSignalSessionCountType returns [EObject current=null]
 		(
 			{
 				$current = forceCreateModelElement(
-					grammarAccess.getXValueSignalSessionCountTypeAccess().getXValueSignalSessionCountTypeAction_0(),
+					grammarAccess.getXValueSessionSignalCountTypeAccess().getXValueSessionSignalCountTypeAction_0(),
 					$current);
 			}
 		)
 		otherlv_1='sessionSignalCount'
 		{
-			newLeafNode(otherlv_1, grammarAccess.getXValueSignalSessionCountTypeAccess().getSessionSignalCountKeyword_1());
+			newLeafNode(otherlv_1, grammarAccess.getXValueSessionSignalCountTypeAccess().getSessionSignalCountKeyword_1());
 		}
 		otherlv_2='('
 		{
-			newLeafNode(otherlv_2, grammarAccess.getXValueSignalSessionCountTypeAccess().getLeftParenthesisKeyword_2());
+			newLeafNode(otherlv_2, grammarAccess.getXValueSessionSignalCountTypeAccess().getLeftParenthesisKeyword_2());
 		}
 		(
 			(
 				{
 					if ($current==null) {
-						$current = createModelElement(grammarAccess.getXValueSignalSessionCountTypeRule());
+						$current = createModelElement(grammarAccess.getXValueSessionSignalCountTypeRule());
 					}
 				}
 				otherlv_3=RULE_ID
 				{
-					newLeafNode(otherlv_3, grammarAccess.getXValueSignalSessionCountTypeAccess().getSignalSignalTypeCrossReference_3_0());
+					newLeafNode(otherlv_3, grammarAccess.getXValueSessionSignalCountTypeAccess().getSignalSignalTypeCrossReference_3_0());
 				}
 			)
 		)
 		otherlv_4=','
 		{
-			newLeafNode(otherlv_4, grammarAccess.getXValueSignalSessionCountTypeAccess().getCommaKeyword_4());
+			newLeafNode(otherlv_4, grammarAccess.getXValueSessionSignalCountTypeAccess().getCommaKeyword_4());
 		}
 		(
 			(
 				{
-					newCompositeNode(grammarAccess.getXValueSignalSessionCountTypeAccess().getTimeRangeXTimeRangeParserRuleCall_5_0());
+					newCompositeNode(grammarAccess.getXValueSessionSignalCountTypeAccess().getTimeRangeXTimeRangeParserRuleCall_5_0());
 				}
 				lv_timeRange_5_0=ruleXTimeRange
 				{
 					if ($current==null) {
-						$current = createModelElementForParent(grammarAccess.getXValueSignalSessionCountTypeRule());
+						$current = createModelElementForParent(grammarAccess.getXValueSessionSignalCountTypeRule());
 					}
 					set(
 						$current,
@@ -6613,17 +6613,17 @@ ruleXValueSignalSessionCountType returns [EObject current=null]
 		)
 		otherlv_6=','
 		{
-			newLeafNode(otherlv_6, grammarAccess.getXValueSignalSessionCountTypeAccess().getCommaKeyword_6());
+			newLeafNode(otherlv_6, grammarAccess.getXValueSessionSignalCountTypeAccess().getCommaKeyword_6());
 		}
 		(
 			(
 				lv_value_7_0=RULE_INT
 				{
-					newLeafNode(lv_value_7_0, grammarAccess.getXValueSignalSessionCountTypeAccess().getValueINTTerminalRuleCall_7_0());
+					newLeafNode(lv_value_7_0, grammarAccess.getXValueSessionSignalCountTypeAccess().getValueINTTerminalRuleCall_7_0());
 				}
 				{
 					if ($current==null) {
-						$current = createModelElement(grammarAccess.getXValueSignalSessionCountTypeRule());
+						$current = createModelElement(grammarAccess.getXValueSessionSignalCountTypeRule());
 					}
 					setWithLastConsumed(
 						$current,
@@ -6635,20 +6635,20 @@ ruleXValueSignalSessionCountType returns [EObject current=null]
 		)
 		otherlv_8=')'
 		{
-			newLeafNode(otherlv_8, grammarAccess.getXValueSignalSessionCountTypeAccess().getRightParenthesisKeyword_8());
+			newLeafNode(otherlv_8, grammarAccess.getXValueSessionSignalCountTypeAccess().getRightParenthesisKeyword_8());
 		}
 	)
 ;
 
-// Entry rule entryRuleXValueSignalHistoricalCountType
-entryRuleXValueSignalHistoricalCountType returns [EObject current=null]:
-	{ newCompositeNode(grammarAccess.getXValueSignalHistoricalCountTypeRule()); }
-	iv_ruleXValueSignalHistoricalCountType=ruleXValueSignalHistoricalCountType
-	{ $current=$iv_ruleXValueSignalHistoricalCountType.current; }
+// Entry rule entryRuleXValueHistoricalSignalCountType
+entryRuleXValueHistoricalSignalCountType returns [EObject current=null]:
+	{ newCompositeNode(grammarAccess.getXValueHistoricalSignalCountTypeRule()); }
+	iv_ruleXValueHistoricalSignalCountType=ruleXValueHistoricalSignalCountType
+	{ $current=$iv_ruleXValueHistoricalSignalCountType.current; }
 	EOF;
 
-// Rule XValueSignalHistoricalCountType
-ruleXValueSignalHistoricalCountType returns [EObject current=null]
+// Rule XValueHistoricalSignalCountType
+ruleXValueHistoricalSignalCountType returns [EObject current=null]
 @init {
 	enterRule();
 }
@@ -6659,44 +6659,44 @@ ruleXValueSignalHistoricalCountType returns [EObject current=null]
 		(
 			{
 				$current = forceCreateModelElement(
-					grammarAccess.getXValueSignalHistoricalCountTypeAccess().getXValueSignalHistoricalCountTypeAction_0(),
+					grammarAccess.getXValueHistoricalSignalCountTypeAccess().getXValueHistoricalSignalCountTypeAction_0(),
 					$current);
 			}
 		)
 		otherlv_1='historicalSignalCount'
 		{
-			newLeafNode(otherlv_1, grammarAccess.getXValueSignalHistoricalCountTypeAccess().getHistoricalSignalCountKeyword_1());
+			newLeafNode(otherlv_1, grammarAccess.getXValueHistoricalSignalCountTypeAccess().getHistoricalSignalCountKeyword_1());
 		}
 		otherlv_2='('
 		{
-			newLeafNode(otherlv_2, grammarAccess.getXValueSignalHistoricalCountTypeAccess().getLeftParenthesisKeyword_2());
+			newLeafNode(otherlv_2, grammarAccess.getXValueHistoricalSignalCountTypeAccess().getLeftParenthesisKeyword_2());
 		}
 		(
 			(
 				{
 					if ($current==null) {
-						$current = createModelElement(grammarAccess.getXValueSignalHistoricalCountTypeRule());
+						$current = createModelElement(grammarAccess.getXValueHistoricalSignalCountTypeRule());
 					}
 				}
 				otherlv_3=RULE_ID
 				{
-					newLeafNode(otherlv_3, grammarAccess.getXValueSignalHistoricalCountTypeAccess().getSignalSignalTypeCrossReference_3_0());
+					newLeafNode(otherlv_3, grammarAccess.getXValueHistoricalSignalCountTypeAccess().getSignalSignalTypeCrossReference_3_0());
 				}
 			)
 		)
 		otherlv_4=','
 		{
-			newLeafNode(otherlv_4, grammarAccess.getXValueSignalHistoricalCountTypeAccess().getCommaKeyword_4());
+			newLeafNode(otherlv_4, grammarAccess.getXValueHistoricalSignalCountTypeAccess().getCommaKeyword_4());
 		}
 		(
 			(
 				lv_days_5_0=RULE_INT
 				{
-					newLeafNode(lv_days_5_0, grammarAccess.getXValueSignalHistoricalCountTypeAccess().getDaysINTTerminalRuleCall_5_0());
+					newLeafNode(lv_days_5_0, grammarAccess.getXValueHistoricalSignalCountTypeAccess().getDaysINTTerminalRuleCall_5_0());
 				}
 				{
 					if ($current==null) {
-						$current = createModelElement(grammarAccess.getXValueSignalHistoricalCountTypeRule());
+						$current = createModelElement(grammarAccess.getXValueHistoricalSignalCountTypeRule());
 					}
 					setWithLastConsumed(
 						$current,
@@ -6706,31 +6706,9 @@ ruleXValueSignalHistoricalCountType returns [EObject current=null]
 				}
 			)
 		)
-		otherlv_6=','
+		otherlv_6=')'
 		{
-			newLeafNode(otherlv_6, grammarAccess.getXValueSignalHistoricalCountTypeAccess().getCommaKeyword_6());
-		}
-		(
-			(
-				lv_count_7_0=RULE_INT
-				{
-					newLeafNode(lv_count_7_0, grammarAccess.getXValueSignalHistoricalCountTypeAccess().getCountINTTerminalRuleCall_7_0());
-				}
-				{
-					if ($current==null) {
-						$current = createModelElement(grammarAccess.getXValueSignalHistoricalCountTypeRule());
-					}
-					setWithLastConsumed(
-						$current,
-						"count",
-						lv_count_7_0,
-						"org.eclipse.xtext.common.Terminals.INT");
-				}
-			)
-		)
-		otherlv_8=')'
-		{
-			newLeafNode(otherlv_8, grammarAccess.getXValueSignalHistoricalCountTypeAccess().getRightParenthesisKeyword_8());
+			newLeafNode(otherlv_6, grammarAccess.getXValueHistoricalSignalCountTypeAccess().getRightParenthesisKeyword_6());
 		}
 	)
 ;
@@ -7195,6 +7173,33 @@ ruleDataType returns [Enumerator current=null]
 			{
 				$current = grammarAccess.getDataTypeAccess().getLONGEnumLiteralDeclaration_7().getEnumLiteral().getInstance();
 				newLeafNode(enumLiteral_7, grammarAccess.getDataTypeAccess().getLONGEnumLiteralDeclaration_7());
+			}
+		)
+	)
+;
+
+// Rule XValueVarHistoricalAggFunction
+ruleXValueVarHistoricalAggFunction returns [Enumerator current=null]
+@init {
+	enterRule();
+}
+@after {
+	leaveRule();
+}:
+	(
+		(
+			enumLiteral_0='HIGH'
+			{
+				$current = grammarAccess.getXValueVarHistoricalAggFunctionAccess().getHighEnumLiteralDeclaration_0().getEnumLiteral().getInstance();
+				newLeafNode(enumLiteral_0, grammarAccess.getXValueVarHistoricalAggFunctionAccess().getHighEnumLiteralDeclaration_0());
+			}
+		)
+		    |
+		(
+			enumLiteral_1='LOW'
+			{
+				$current = grammarAccess.getXValueVarHistoricalAggFunctionAccess().getLowEnumLiteralDeclaration_1().getEnumLiteral().getInstance();
+				newLeafNode(enumLiteral_1, grammarAccess.getXValueVarHistoricalAggFunctionAccess().getLowEnumLiteralDeclaration_1());
 			}
 		)
 	)

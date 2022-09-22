@@ -5,7 +5,7 @@ package com.dunkware.xstream.xScript.impl;
 
 import com.dunkware.xstream.xScript.VarType;
 import com.dunkware.xstream.xScript.XScriptPackage;
-import com.dunkware.xstream.xScript.XValueVarCurrentType;
+import com.dunkware.xstream.xScript.XValueSessionVarValueType;
 
 import org.eclipse.emf.common.notify.Notification;
 
@@ -16,19 +16,19 @@ import org.eclipse.emf.ecore.impl.ENotificationImpl;
 
 /**
  * <!-- begin-user-doc -->
- * An implementation of the model object '<em><b>XValue Var Current Type</b></em>'.
+ * An implementation of the model object '<em><b>XValue Session Var Value Type</b></em>'.
  * <!-- end-user-doc -->
  * <p>
  * The following features are implemented:
  * </p>
  * <ul>
- *   <li>{@link com.dunkware.xstream.xScript.impl.XValueVarCurrentTypeImpl#getVar <em>Var</em>}</li>
- *   <li>{@link com.dunkware.xstream.xScript.impl.XValueVarCurrentTypeImpl#getIndex <em>Index</em>}</li>
+ *   <li>{@link com.dunkware.xstream.xScript.impl.XValueSessionVarValueTypeImpl#getVar <em>Var</em>}</li>
+ *   <li>{@link com.dunkware.xstream.xScript.impl.XValueSessionVarValueTypeImpl#getIndex <em>Index</em>}</li>
  * </ul>
  *
  * @generated
  */
-public class XValueVarCurrentTypeImpl extends XValueTypeImpl implements XValueVarCurrentType
+public class XValueSessionVarValueTypeImpl extends XValueTypeImpl implements XValueSessionVarValueType
 {
   /**
    * The cached value of the '{@link #getVar() <em>Var</em>}' reference.
@@ -65,7 +65,7 @@ public class XValueVarCurrentTypeImpl extends XValueTypeImpl implements XValueVa
    * <!-- end-user-doc -->
    * @generated
    */
-  protected XValueVarCurrentTypeImpl()
+  protected XValueSessionVarValueTypeImpl()
   {
     super();
   }
@@ -78,7 +78,7 @@ public class XValueVarCurrentTypeImpl extends XValueTypeImpl implements XValueVa
   @Override
   protected EClass eStaticClass()
   {
-    return XScriptPackage.Literals.XVALUE_VAR_CURRENT_TYPE;
+    return XScriptPackage.Literals.XVALUE_SESSION_VAR_VALUE_TYPE;
   }
 
   /**
@@ -96,7 +96,7 @@ public class XValueVarCurrentTypeImpl extends XValueTypeImpl implements XValueVa
       if (var != oldVar)
       {
         if (eNotificationRequired())
-          eNotify(new ENotificationImpl(this, Notification.RESOLVE, XScriptPackage.XVALUE_VAR_CURRENT_TYPE__VAR, oldVar, var));
+          eNotify(new ENotificationImpl(this, Notification.RESOLVE, XScriptPackage.XVALUE_SESSION_VAR_VALUE_TYPE__VAR, oldVar, var));
       }
     }
     return var;
@@ -123,7 +123,7 @@ public class XValueVarCurrentTypeImpl extends XValueTypeImpl implements XValueVa
     VarType oldVar = var;
     var = newVar;
     if (eNotificationRequired())
-      eNotify(new ENotificationImpl(this, Notification.SET, XScriptPackage.XVALUE_VAR_CURRENT_TYPE__VAR, oldVar, var));
+      eNotify(new ENotificationImpl(this, Notification.SET, XScriptPackage.XVALUE_SESSION_VAR_VALUE_TYPE__VAR, oldVar, var));
   }
 
   /**
@@ -148,7 +148,7 @@ public class XValueVarCurrentTypeImpl extends XValueTypeImpl implements XValueVa
     int oldIndex = index;
     index = newIndex;
     if (eNotificationRequired())
-      eNotify(new ENotificationImpl(this, Notification.SET, XScriptPackage.XVALUE_VAR_CURRENT_TYPE__INDEX, oldIndex, index));
+      eNotify(new ENotificationImpl(this, Notification.SET, XScriptPackage.XVALUE_SESSION_VAR_VALUE_TYPE__INDEX, oldIndex, index));
   }
 
   /**
@@ -161,10 +161,10 @@ public class XValueVarCurrentTypeImpl extends XValueTypeImpl implements XValueVa
   {
     switch (featureID)
     {
-      case XScriptPackage.XVALUE_VAR_CURRENT_TYPE__VAR:
+      case XScriptPackage.XVALUE_SESSION_VAR_VALUE_TYPE__VAR:
         if (resolve) return getVar();
         return basicGetVar();
-      case XScriptPackage.XVALUE_VAR_CURRENT_TYPE__INDEX:
+      case XScriptPackage.XVALUE_SESSION_VAR_VALUE_TYPE__INDEX:
         return getIndex();
     }
     return super.eGet(featureID, resolve, coreType);
@@ -180,10 +180,10 @@ public class XValueVarCurrentTypeImpl extends XValueTypeImpl implements XValueVa
   {
     switch (featureID)
     {
-      case XScriptPackage.XVALUE_VAR_CURRENT_TYPE__VAR:
+      case XScriptPackage.XVALUE_SESSION_VAR_VALUE_TYPE__VAR:
         setVar((VarType)newValue);
         return;
-      case XScriptPackage.XVALUE_VAR_CURRENT_TYPE__INDEX:
+      case XScriptPackage.XVALUE_SESSION_VAR_VALUE_TYPE__INDEX:
         setIndex((Integer)newValue);
         return;
     }
@@ -200,10 +200,10 @@ public class XValueVarCurrentTypeImpl extends XValueTypeImpl implements XValueVa
   {
     switch (featureID)
     {
-      case XScriptPackage.XVALUE_VAR_CURRENT_TYPE__VAR:
+      case XScriptPackage.XVALUE_SESSION_VAR_VALUE_TYPE__VAR:
         setVar((VarType)null);
         return;
-      case XScriptPackage.XVALUE_VAR_CURRENT_TYPE__INDEX:
+      case XScriptPackage.XVALUE_SESSION_VAR_VALUE_TYPE__INDEX:
         setIndex(INDEX_EDEFAULT);
         return;
     }
@@ -220,9 +220,9 @@ public class XValueVarCurrentTypeImpl extends XValueTypeImpl implements XValueVa
   {
     switch (featureID)
     {
-      case XScriptPackage.XVALUE_VAR_CURRENT_TYPE__VAR:
+      case XScriptPackage.XVALUE_SESSION_VAR_VALUE_TYPE__VAR:
         return var != null;
-      case XScriptPackage.XVALUE_VAR_CURRENT_TYPE__INDEX:
+      case XScriptPackage.XVALUE_SESSION_VAR_VALUE_TYPE__INDEX:
         return index != INDEX_EDEFAULT;
     }
     return super.eIsSet(featureID);
@@ -245,4 +245,4 @@ public class XValueVarCurrentTypeImpl extends XValueTypeImpl implements XValueVa
     return result.toString();
   }
 
-} //XValueVarCurrentTypeImpl
+} //XValueSessionVarValueTypeImpl

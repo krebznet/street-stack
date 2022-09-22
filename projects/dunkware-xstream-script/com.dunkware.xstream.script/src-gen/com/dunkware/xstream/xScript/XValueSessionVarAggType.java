@@ -6,23 +6,23 @@ package com.dunkware.xstream.xScript;
 
 /**
  * <!-- begin-user-doc -->
- * A representation of the model object '<em><b>XValue Var Session Agg Type</b></em>'.
+ * A representation of the model object '<em><b>XValue Session Var Agg Type</b></em>'.
  * <!-- end-user-doc -->
  *
  * <p>
  * The following features are supported:
  * </p>
  * <ul>
- *   <li>{@link com.dunkware.xstream.xScript.XValueVarSessionAggType#getVar <em>Var</em>}</li>
- *   <li>{@link com.dunkware.xstream.xScript.XValueVarSessionAggType#getFunction <em>Function</em>}</li>
- *   <li>{@link com.dunkware.xstream.xScript.XValueVarSessionAggType#getRange <em>Range</em>}</li>
+ *   <li>{@link com.dunkware.xstream.xScript.XValueSessionVarAggType#getVar <em>Var</em>}</li>
+ *   <li>{@link com.dunkware.xstream.xScript.XValueSessionVarAggType#getFunction <em>Function</em>}</li>
+ *   <li>{@link com.dunkware.xstream.xScript.XValueSessionVarAggType#getRange <em>Range</em>}</li>
  * </ul>
  *
- * @see com.dunkware.xstream.xScript.XScriptPackage#getXValueVarSessionAggType()
+ * @see com.dunkware.xstream.xScript.XScriptPackage#getXValueSessionVarAggType()
  * @model
  * @generated
  */
-public interface XValueVarSessionAggType extends XValueType
+public interface XValueSessionVarAggType extends XValueType
 {
   /**
    * Returns the value of the '<em><b>Var</b></em>' reference.
@@ -30,14 +30,14 @@ public interface XValueVarSessionAggType extends XValueType
    * <!-- end-user-doc -->
    * @return the value of the '<em>Var</em>' reference.
    * @see #setVar(VarType)
-   * @see com.dunkware.xstream.xScript.XScriptPackage#getXValueVarSessionAggType_Var()
+   * @see com.dunkware.xstream.xScript.XScriptPackage#getXValueSessionVarAggType_Var()
    * @model
    * @generated
    */
   VarType getVar();
 
   /**
-   * Sets the value of the '{@link com.dunkware.xstream.xScript.XValueVarSessionAggType#getVar <em>Var</em>}' reference.
+   * Sets the value of the '{@link com.dunkware.xstream.xScript.XValueSessionVarAggType#getVar <em>Var</em>}' reference.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
    * @param value the new value of the '<em>Var</em>' reference.
@@ -54,14 +54,14 @@ public interface XValueVarSessionAggType extends XValueType
    * @return the value of the '<em>Function</em>' attribute.
    * @see com.dunkware.xstream.xScript.XValueVarSessionAggFunction
    * @see #setFunction(XValueVarSessionAggFunction)
-   * @see com.dunkware.xstream.xScript.XScriptPackage#getXValueVarSessionAggType_Function()
+   * @see com.dunkware.xstream.xScript.XScriptPackage#getXValueSessionVarAggType_Function()
    * @model
    * @generated
    */
   XValueVarSessionAggFunction getFunction();
 
   /**
-   * Sets the value of the '{@link com.dunkware.xstream.xScript.XValueVarSessionAggType#getFunction <em>Function</em>}' attribute.
+   * Sets the value of the '{@link com.dunkware.xstream.xScript.XValueSessionVarAggType#getFunction <em>Function</em>}' attribute.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
    * @param value the new value of the '<em>Function</em>' attribute.
@@ -77,14 +77,14 @@ public interface XValueVarSessionAggType extends XValueType
    * <!-- end-user-doc -->
    * @return the value of the '<em>Range</em>' containment reference.
    * @see #setRange(XTimeRange)
-   * @see com.dunkware.xstream.xScript.XScriptPackage#getXValueVarSessionAggType_Range()
+   * @see com.dunkware.xstream.xScript.XScriptPackage#getXValueSessionVarAggType_Range()
    * @model containment="true"
    * @generated
    */
   XTimeRange getRange();
 
   /**
-   * Sets the value of the '{@link com.dunkware.xstream.xScript.XValueVarSessionAggType#getRange <em>Range</em>}' containment reference.
+   * Sets the value of the '{@link com.dunkware.xstream.xScript.XValueSessionVarAggType#getRange <em>Range</em>}' containment reference.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
    * @param value the new value of the '<em>Range</em>' containment reference.
@@ -93,4 +93,4 @@ public interface XValueVarSessionAggType extends XValueType
    */
   void setRange(XTimeRange value);
 
-} // XValueVarSessionAggType
+} // XValueSessionVarAggType

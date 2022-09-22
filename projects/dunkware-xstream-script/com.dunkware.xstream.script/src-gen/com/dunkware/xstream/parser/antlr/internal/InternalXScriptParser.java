@@ -15103,27 +15103,27 @@ public class InternalXScriptParser extends AbstractInternalAntlrParser {
 
 
     // $ANTLR start "ruleXValueType"
-    // InternalXScript.g:6331:1: ruleXValueType returns [EObject current=null] : (this_XValueVarCurrentType_0= ruleXValueVarCurrentType | this_XValueVarSessionAggType_1= ruleXValueVarSessionAggType | this_XValueSignalSessionCountType_2= ruleXValueSignalSessionCountType | this_XValueSignalHistoricalCountType_3= ruleXValueSignalHistoricalCountType ) ;
+    // InternalXScript.g:6331:1: ruleXValueType returns [EObject current=null] : (this_XValueSessionVarValueType_0= ruleXValueSessionVarValueType | this_XValueSessionVarAggType_1= ruleXValueSessionVarAggType | this_XValueSessionSignalCountType_2= ruleXValueSessionSignalCountType | this_XValueHistoricalSignalCountType_3= ruleXValueHistoricalSignalCountType ) ;
     public final EObject ruleXValueType() throws RecognitionException {
         EObject current = null;
 
-        EObject this_XValueVarCurrentType_0 = null;
+        EObject this_XValueSessionVarValueType_0 = null;
 
-        EObject this_XValueVarSessionAggType_1 = null;
+        EObject this_XValueSessionVarAggType_1 = null;
 
-        EObject this_XValueSignalSessionCountType_2 = null;
+        EObject this_XValueSessionSignalCountType_2 = null;
 
-        EObject this_XValueSignalHistoricalCountType_3 = null;
+        EObject this_XValueHistoricalSignalCountType_3 = null;
 
 
 
         	enterRule();
 
         try {
-            // InternalXScript.g:6337:2: ( (this_XValueVarCurrentType_0= ruleXValueVarCurrentType | this_XValueVarSessionAggType_1= ruleXValueVarSessionAggType | this_XValueSignalSessionCountType_2= ruleXValueSignalSessionCountType | this_XValueSignalHistoricalCountType_3= ruleXValueSignalHistoricalCountType ) )
-            // InternalXScript.g:6338:2: (this_XValueVarCurrentType_0= ruleXValueVarCurrentType | this_XValueVarSessionAggType_1= ruleXValueVarSessionAggType | this_XValueSignalSessionCountType_2= ruleXValueSignalSessionCountType | this_XValueSignalHistoricalCountType_3= ruleXValueSignalHistoricalCountType )
+            // InternalXScript.g:6337:2: ( (this_XValueSessionVarValueType_0= ruleXValueSessionVarValueType | this_XValueSessionVarAggType_1= ruleXValueSessionVarAggType | this_XValueSessionSignalCountType_2= ruleXValueSessionSignalCountType | this_XValueHistoricalSignalCountType_3= ruleXValueHistoricalSignalCountType ) )
+            // InternalXScript.g:6338:2: (this_XValueSessionVarValueType_0= ruleXValueSessionVarValueType | this_XValueSessionVarAggType_1= ruleXValueSessionVarAggType | this_XValueSessionSignalCountType_2= ruleXValueSessionSignalCountType | this_XValueHistoricalSignalCountType_3= ruleXValueHistoricalSignalCountType )
             {
-            // InternalXScript.g:6338:2: (this_XValueVarCurrentType_0= ruleXValueVarCurrentType | this_XValueVarSessionAggType_1= ruleXValueVarSessionAggType | this_XValueSignalSessionCountType_2= ruleXValueSignalSessionCountType | this_XValueSignalHistoricalCountType_3= ruleXValueSignalHistoricalCountType )
+            // InternalXScript.g:6338:2: (this_XValueSessionVarValueType_0= ruleXValueSessionVarValueType | this_XValueSessionVarAggType_1= ruleXValueSessionVarAggType | this_XValueSessionSignalCountType_2= ruleXValueSessionSignalCountType | this_XValueHistoricalSignalCountType_3= ruleXValueHistoricalSignalCountType )
             int alt60=4;
             switch ( input.LA(1) ) {
             case 79:
@@ -15155,72 +15155,72 @@ public class InternalXScriptParser extends AbstractInternalAntlrParser {
 
             switch (alt60) {
                 case 1 :
-                    // InternalXScript.g:6339:3: this_XValueVarCurrentType_0= ruleXValueVarCurrentType
+                    // InternalXScript.g:6339:3: this_XValueSessionVarValueType_0= ruleXValueSessionVarValueType
                     {
 
-                    			newCompositeNode(grammarAccess.getXValueTypeAccess().getXValueVarCurrentTypeParserRuleCall_0());
+                    			newCompositeNode(grammarAccess.getXValueTypeAccess().getXValueSessionVarValueTypeParserRuleCall_0());
                     		
                     pushFollow(FOLLOW_2);
-                    this_XValueVarCurrentType_0=ruleXValueVarCurrentType();
+                    this_XValueSessionVarValueType_0=ruleXValueSessionVarValueType();
 
                     state._fsp--;
 
 
-                    			current = this_XValueVarCurrentType_0;
+                    			current = this_XValueSessionVarValueType_0;
                     			afterParserOrEnumRuleCall();
                     		
 
                     }
                     break;
                 case 2 :
-                    // InternalXScript.g:6348:3: this_XValueVarSessionAggType_1= ruleXValueVarSessionAggType
+                    // InternalXScript.g:6348:3: this_XValueSessionVarAggType_1= ruleXValueSessionVarAggType
                     {
 
-                    			newCompositeNode(grammarAccess.getXValueTypeAccess().getXValueVarSessionAggTypeParserRuleCall_1());
+                    			newCompositeNode(grammarAccess.getXValueTypeAccess().getXValueSessionVarAggTypeParserRuleCall_1());
                     		
                     pushFollow(FOLLOW_2);
-                    this_XValueVarSessionAggType_1=ruleXValueVarSessionAggType();
+                    this_XValueSessionVarAggType_1=ruleXValueSessionVarAggType();
 
                     state._fsp--;
 
 
-                    			current = this_XValueVarSessionAggType_1;
+                    			current = this_XValueSessionVarAggType_1;
                     			afterParserOrEnumRuleCall();
                     		
 
                     }
                     break;
                 case 3 :
-                    // InternalXScript.g:6357:3: this_XValueSignalSessionCountType_2= ruleXValueSignalSessionCountType
+                    // InternalXScript.g:6357:3: this_XValueSessionSignalCountType_2= ruleXValueSessionSignalCountType
                     {
 
-                    			newCompositeNode(grammarAccess.getXValueTypeAccess().getXValueSignalSessionCountTypeParserRuleCall_2());
+                    			newCompositeNode(grammarAccess.getXValueTypeAccess().getXValueSessionSignalCountTypeParserRuleCall_2());
                     		
                     pushFollow(FOLLOW_2);
-                    this_XValueSignalSessionCountType_2=ruleXValueSignalSessionCountType();
+                    this_XValueSessionSignalCountType_2=ruleXValueSessionSignalCountType();
 
                     state._fsp--;
 
 
-                    			current = this_XValueSignalSessionCountType_2;
+                    			current = this_XValueSessionSignalCountType_2;
                     			afterParserOrEnumRuleCall();
                     		
 
                     }
                     break;
                 case 4 :
-                    // InternalXScript.g:6366:3: this_XValueSignalHistoricalCountType_3= ruleXValueSignalHistoricalCountType
+                    // InternalXScript.g:6366:3: this_XValueHistoricalSignalCountType_3= ruleXValueHistoricalSignalCountType
                     {
 
-                    			newCompositeNode(grammarAccess.getXValueTypeAccess().getXValueSignalHistoricalCountTypeParserRuleCall_3());
+                    			newCompositeNode(grammarAccess.getXValueTypeAccess().getXValueHistoricalSignalCountTypeParserRuleCall_3());
                     		
                     pushFollow(FOLLOW_2);
-                    this_XValueSignalHistoricalCountType_3=ruleXValueSignalHistoricalCountType();
+                    this_XValueHistoricalSignalCountType_3=ruleXValueHistoricalSignalCountType();
 
                     state._fsp--;
 
 
-                    			current = this_XValueSignalHistoricalCountType_3;
+                    			current = this_XValueHistoricalSignalCountType_3;
                     			afterParserOrEnumRuleCall();
                     		
 
@@ -15248,25 +15248,25 @@ public class InternalXScriptParser extends AbstractInternalAntlrParser {
     // $ANTLR end "ruleXValueType"
 
 
-    // $ANTLR start "entryRuleXValueVarCurrentType"
-    // InternalXScript.g:6378:1: entryRuleXValueVarCurrentType returns [EObject current=null] : iv_ruleXValueVarCurrentType= ruleXValueVarCurrentType EOF ;
-    public final EObject entryRuleXValueVarCurrentType() throws RecognitionException {
+    // $ANTLR start "entryRuleXValueSessionVarValueType"
+    // InternalXScript.g:6378:1: entryRuleXValueSessionVarValueType returns [EObject current=null] : iv_ruleXValueSessionVarValueType= ruleXValueSessionVarValueType EOF ;
+    public final EObject entryRuleXValueSessionVarValueType() throws RecognitionException {
         EObject current = null;
 
-        EObject iv_ruleXValueVarCurrentType = null;
+        EObject iv_ruleXValueSessionVarValueType = null;
 
 
         try {
-            // InternalXScript.g:6378:61: (iv_ruleXValueVarCurrentType= ruleXValueVarCurrentType EOF )
-            // InternalXScript.g:6379:2: iv_ruleXValueVarCurrentType= ruleXValueVarCurrentType EOF
+            // InternalXScript.g:6378:66: (iv_ruleXValueSessionVarValueType= ruleXValueSessionVarValueType EOF )
+            // InternalXScript.g:6379:2: iv_ruleXValueSessionVarValueType= ruleXValueSessionVarValueType EOF
             {
-             newCompositeNode(grammarAccess.getXValueVarCurrentTypeRule()); 
+             newCompositeNode(grammarAccess.getXValueSessionVarValueTypeRule()); 
             pushFollow(FOLLOW_1);
-            iv_ruleXValueVarCurrentType=ruleXValueVarCurrentType();
+            iv_ruleXValueSessionVarValueType=ruleXValueSessionVarValueType();
 
             state._fsp--;
 
-             current =iv_ruleXValueVarCurrentType; 
+             current =iv_ruleXValueSessionVarValueType; 
             match(input,EOF,FOLLOW_2); 
 
             }
@@ -15281,12 +15281,12 @@ public class InternalXScriptParser extends AbstractInternalAntlrParser {
         }
         return current;
     }
-    // $ANTLR end "entryRuleXValueVarCurrentType"
+    // $ANTLR end "entryRuleXValueSessionVarValueType"
 
 
-    // $ANTLR start "ruleXValueVarCurrentType"
-    // InternalXScript.g:6385:1: ruleXValueVarCurrentType returns [EObject current=null] : ( () otherlv_1= 'sessionVarValue' otherlv_2= '(' ( (otherlv_3= RULE_ID ) ) otherlv_4= ',' ( (lv_index_5_0= RULE_INT ) ) otherlv_6= ')' ) ;
-    public final EObject ruleXValueVarCurrentType() throws RecognitionException {
+    // $ANTLR start "ruleXValueSessionVarValueType"
+    // InternalXScript.g:6385:1: ruleXValueSessionVarValueType returns [EObject current=null] : ( () otherlv_1= 'sessionVarValue' otherlv_2= '(' ( (otherlv_3= RULE_ID ) ) otherlv_4= ',' ( (lv_index_5_0= RULE_INT ) ) otherlv_6= ')' ) ;
+    public final EObject ruleXValueSessionVarValueType() throws RecognitionException {
         EObject current = null;
 
         Token otherlv_1=null;
@@ -15311,7 +15311,7 @@ public class InternalXScriptParser extends AbstractInternalAntlrParser {
             {
 
             				current = forceCreateModelElement(
-            					grammarAccess.getXValueVarCurrentTypeAccess().getXValueVarCurrentTypeAction_0(),
+            					grammarAccess.getXValueSessionVarValueTypeAccess().getXValueSessionVarValueTypeAction_0(),
             					current);
             			
 
@@ -15319,11 +15319,11 @@ public class InternalXScriptParser extends AbstractInternalAntlrParser {
 
             otherlv_1=(Token)match(input,79,FOLLOW_5); 
 
-            			newLeafNode(otherlv_1, grammarAccess.getXValueVarCurrentTypeAccess().getSessionVarValueKeyword_1());
+            			newLeafNode(otherlv_1, grammarAccess.getXValueSessionVarValueTypeAccess().getSessionVarValueKeyword_1());
             		
             otherlv_2=(Token)match(input,13,FOLLOW_4); 
 
-            			newLeafNode(otherlv_2, grammarAccess.getXValueVarCurrentTypeAccess().getLeftParenthesisKeyword_2());
+            			newLeafNode(otherlv_2, grammarAccess.getXValueSessionVarValueTypeAccess().getLeftParenthesisKeyword_2());
             		
             // InternalXScript.g:6408:3: ( (otherlv_3= RULE_ID ) )
             // InternalXScript.g:6409:4: (otherlv_3= RULE_ID )
@@ -15333,12 +15333,12 @@ public class InternalXScriptParser extends AbstractInternalAntlrParser {
             {
 
             					if (current==null) {
-            						current = createModelElement(grammarAccess.getXValueVarCurrentTypeRule());
+            						current = createModelElement(grammarAccess.getXValueSessionVarValueTypeRule());
             					}
             				
             otherlv_3=(Token)match(input,RULE_ID,FOLLOW_7); 
 
-            					newLeafNode(otherlv_3, grammarAccess.getXValueVarCurrentTypeAccess().getVarVarTypeCrossReference_3_0());
+            					newLeafNode(otherlv_3, grammarAccess.getXValueSessionVarValueTypeAccess().getVarVarTypeCrossReference_3_0());
             				
 
             }
@@ -15348,7 +15348,7 @@ public class InternalXScriptParser extends AbstractInternalAntlrParser {
 
             otherlv_4=(Token)match(input,14,FOLLOW_6); 
 
-            			newLeafNode(otherlv_4, grammarAccess.getXValueVarCurrentTypeAccess().getCommaKeyword_4());
+            			newLeafNode(otherlv_4, grammarAccess.getXValueSessionVarValueTypeAccess().getCommaKeyword_4());
             		
             // InternalXScript.g:6425:3: ( (lv_index_5_0= RULE_INT ) )
             // InternalXScript.g:6426:4: (lv_index_5_0= RULE_INT )
@@ -15358,11 +15358,11 @@ public class InternalXScriptParser extends AbstractInternalAntlrParser {
             {
             lv_index_5_0=(Token)match(input,RULE_INT,FOLLOW_9); 
 
-            					newLeafNode(lv_index_5_0, grammarAccess.getXValueVarCurrentTypeAccess().getIndexINTTerminalRuleCall_5_0());
+            					newLeafNode(lv_index_5_0, grammarAccess.getXValueSessionVarValueTypeAccess().getIndexINTTerminalRuleCall_5_0());
             				
 
             					if (current==null) {
-            						current = createModelElement(grammarAccess.getXValueVarCurrentTypeRule());
+            						current = createModelElement(grammarAccess.getXValueSessionVarValueTypeRule());
             					}
             					setWithLastConsumed(
             						current,
@@ -15378,7 +15378,7 @@ public class InternalXScriptParser extends AbstractInternalAntlrParser {
 
             otherlv_6=(Token)match(input,15,FOLLOW_2); 
 
-            			newLeafNode(otherlv_6, grammarAccess.getXValueVarCurrentTypeAccess().getRightParenthesisKeyword_6());
+            			newLeafNode(otherlv_6, grammarAccess.getXValueSessionVarValueTypeAccess().getRightParenthesisKeyword_6());
             		
 
             }
@@ -15399,28 +15399,28 @@ public class InternalXScriptParser extends AbstractInternalAntlrParser {
         }
         return current;
     }
-    // $ANTLR end "ruleXValueVarCurrentType"
+    // $ANTLR end "ruleXValueSessionVarValueType"
 
 
-    // $ANTLR start "entryRuleXValueVarSessionAggType"
-    // InternalXScript.g:6451:1: entryRuleXValueVarSessionAggType returns [EObject current=null] : iv_ruleXValueVarSessionAggType= ruleXValueVarSessionAggType EOF ;
-    public final EObject entryRuleXValueVarSessionAggType() throws RecognitionException {
+    // $ANTLR start "entryRuleXValueSessionVarAggType"
+    // InternalXScript.g:6451:1: entryRuleXValueSessionVarAggType returns [EObject current=null] : iv_ruleXValueSessionVarAggType= ruleXValueSessionVarAggType EOF ;
+    public final EObject entryRuleXValueSessionVarAggType() throws RecognitionException {
         EObject current = null;
 
-        EObject iv_ruleXValueVarSessionAggType = null;
+        EObject iv_ruleXValueSessionVarAggType = null;
 
 
         try {
-            // InternalXScript.g:6451:64: (iv_ruleXValueVarSessionAggType= ruleXValueVarSessionAggType EOF )
-            // InternalXScript.g:6452:2: iv_ruleXValueVarSessionAggType= ruleXValueVarSessionAggType EOF
+            // InternalXScript.g:6451:64: (iv_ruleXValueSessionVarAggType= ruleXValueSessionVarAggType EOF )
+            // InternalXScript.g:6452:2: iv_ruleXValueSessionVarAggType= ruleXValueSessionVarAggType EOF
             {
-             newCompositeNode(grammarAccess.getXValueVarSessionAggTypeRule()); 
+             newCompositeNode(grammarAccess.getXValueSessionVarAggTypeRule()); 
             pushFollow(FOLLOW_1);
-            iv_ruleXValueVarSessionAggType=ruleXValueVarSessionAggType();
+            iv_ruleXValueSessionVarAggType=ruleXValueSessionVarAggType();
 
             state._fsp--;
 
-             current =iv_ruleXValueVarSessionAggType; 
+             current =iv_ruleXValueSessionVarAggType; 
             match(input,EOF,FOLLOW_2); 
 
             }
@@ -15435,12 +15435,12 @@ public class InternalXScriptParser extends AbstractInternalAntlrParser {
         }
         return current;
     }
-    // $ANTLR end "entryRuleXValueVarSessionAggType"
+    // $ANTLR end "entryRuleXValueSessionVarAggType"
 
 
-    // $ANTLR start "ruleXValueVarSessionAggType"
-    // InternalXScript.g:6458:1: ruleXValueVarSessionAggType returns [EObject current=null] : ( () otherlv_1= 'sessionVarAgg' otherlv_2= '(' ( (otherlv_3= RULE_ID ) ) otherlv_4= ',' ( (lv_function_5_0= ruleXValueVarSessionAggFunction ) ) otherlv_6= ',' ( (lv_range_7_0= ruleXTimeRange ) ) otherlv_8= ')' ) ;
-    public final EObject ruleXValueVarSessionAggType() throws RecognitionException {
+    // $ANTLR start "ruleXValueSessionVarAggType"
+    // InternalXScript.g:6458:1: ruleXValueSessionVarAggType returns [EObject current=null] : ( () otherlv_1= 'sessionVarAgg' otherlv_2= '(' ( (otherlv_3= RULE_ID ) ) otherlv_4= ',' ( (lv_function_5_0= ruleXValueVarSessionAggFunction ) ) otherlv_6= ',' ( (lv_range_7_0= ruleXTimeRange ) ) otherlv_8= ')' ) ;
+    public final EObject ruleXValueSessionVarAggType() throws RecognitionException {
         EObject current = null;
 
         Token otherlv_1=null;
@@ -15469,7 +15469,7 @@ public class InternalXScriptParser extends AbstractInternalAntlrParser {
             {
 
             				current = forceCreateModelElement(
-            					grammarAccess.getXValueVarSessionAggTypeAccess().getXValueVarSessionAggTypeAction_0(),
+            					grammarAccess.getXValueSessionVarAggTypeAccess().getXValueSessionVarAggTypeAction_0(),
             					current);
             			
 
@@ -15477,11 +15477,11 @@ public class InternalXScriptParser extends AbstractInternalAntlrParser {
 
             otherlv_1=(Token)match(input,80,FOLLOW_5); 
 
-            			newLeafNode(otherlv_1, grammarAccess.getXValueVarSessionAggTypeAccess().getSessionVarAggKeyword_1());
+            			newLeafNode(otherlv_1, grammarAccess.getXValueSessionVarAggTypeAccess().getSessionVarAggKeyword_1());
             		
             otherlv_2=(Token)match(input,13,FOLLOW_4); 
 
-            			newLeafNode(otherlv_2, grammarAccess.getXValueVarSessionAggTypeAccess().getLeftParenthesisKeyword_2());
+            			newLeafNode(otherlv_2, grammarAccess.getXValueSessionVarAggTypeAccess().getLeftParenthesisKeyword_2());
             		
             // InternalXScript.g:6481:3: ( (otherlv_3= RULE_ID ) )
             // InternalXScript.g:6482:4: (otherlv_3= RULE_ID )
@@ -15491,12 +15491,12 @@ public class InternalXScriptParser extends AbstractInternalAntlrParser {
             {
 
             					if (current==null) {
-            						current = createModelElement(grammarAccess.getXValueVarSessionAggTypeRule());
+            						current = createModelElement(grammarAccess.getXValueSessionVarAggTypeRule());
             					}
             				
             otherlv_3=(Token)match(input,RULE_ID,FOLLOW_7); 
 
-            					newLeafNode(otherlv_3, grammarAccess.getXValueVarSessionAggTypeAccess().getVarVarTypeCrossReference_3_0());
+            					newLeafNode(otherlv_3, grammarAccess.getXValueSessionVarAggTypeAccess().getVarVarTypeCrossReference_3_0());
             				
 
             }
@@ -15506,7 +15506,7 @@ public class InternalXScriptParser extends AbstractInternalAntlrParser {
 
             otherlv_4=(Token)match(input,14,FOLLOW_47); 
 
-            			newLeafNode(otherlv_4, grammarAccess.getXValueVarSessionAggTypeAccess().getCommaKeyword_4());
+            			newLeafNode(otherlv_4, grammarAccess.getXValueSessionVarAggTypeAccess().getCommaKeyword_4());
             		
             // InternalXScript.g:6498:3: ( (lv_function_5_0= ruleXValueVarSessionAggFunction ) )
             // InternalXScript.g:6499:4: (lv_function_5_0= ruleXValueVarSessionAggFunction )
@@ -15515,7 +15515,7 @@ public class InternalXScriptParser extends AbstractInternalAntlrParser {
             // InternalXScript.g:6500:5: lv_function_5_0= ruleXValueVarSessionAggFunction
             {
 
-            					newCompositeNode(grammarAccess.getXValueVarSessionAggTypeAccess().getFunctionXValueVarSessionAggFunctionEnumRuleCall_5_0());
+            					newCompositeNode(grammarAccess.getXValueSessionVarAggTypeAccess().getFunctionXValueVarSessionAggFunctionEnumRuleCall_5_0());
             				
             pushFollow(FOLLOW_7);
             lv_function_5_0=ruleXValueVarSessionAggFunction();
@@ -15524,7 +15524,7 @@ public class InternalXScriptParser extends AbstractInternalAntlrParser {
 
 
             					if (current==null) {
-            						current = createModelElementForParent(grammarAccess.getXValueVarSessionAggTypeRule());
+            						current = createModelElementForParent(grammarAccess.getXValueSessionVarAggTypeRule());
             					}
             					set(
             						current,
@@ -15541,7 +15541,7 @@ public class InternalXScriptParser extends AbstractInternalAntlrParser {
 
             otherlv_6=(Token)match(input,14,FOLLOW_48); 
 
-            			newLeafNode(otherlv_6, grammarAccess.getXValueVarSessionAggTypeAccess().getCommaKeyword_6());
+            			newLeafNode(otherlv_6, grammarAccess.getXValueSessionVarAggTypeAccess().getCommaKeyword_6());
             		
             // InternalXScript.g:6521:3: ( (lv_range_7_0= ruleXTimeRange ) )
             // InternalXScript.g:6522:4: (lv_range_7_0= ruleXTimeRange )
@@ -15550,7 +15550,7 @@ public class InternalXScriptParser extends AbstractInternalAntlrParser {
             // InternalXScript.g:6523:5: lv_range_7_0= ruleXTimeRange
             {
 
-            					newCompositeNode(grammarAccess.getXValueVarSessionAggTypeAccess().getRangeXTimeRangeParserRuleCall_7_0());
+            					newCompositeNode(grammarAccess.getXValueSessionVarAggTypeAccess().getRangeXTimeRangeParserRuleCall_7_0());
             				
             pushFollow(FOLLOW_9);
             lv_range_7_0=ruleXTimeRange();
@@ -15559,7 +15559,7 @@ public class InternalXScriptParser extends AbstractInternalAntlrParser {
 
 
             					if (current==null) {
-            						current = createModelElementForParent(grammarAccess.getXValueVarSessionAggTypeRule());
+            						current = createModelElementForParent(grammarAccess.getXValueSessionVarAggTypeRule());
             					}
             					set(
             						current,
@@ -15576,7 +15576,7 @@ public class InternalXScriptParser extends AbstractInternalAntlrParser {
 
             otherlv_8=(Token)match(input,15,FOLLOW_2); 
 
-            			newLeafNode(otherlv_8, grammarAccess.getXValueVarSessionAggTypeAccess().getRightParenthesisKeyword_8());
+            			newLeafNode(otherlv_8, grammarAccess.getXValueSessionVarAggTypeAccess().getRightParenthesisKeyword_8());
             		
 
             }
@@ -15597,28 +15597,28 @@ public class InternalXScriptParser extends AbstractInternalAntlrParser {
         }
         return current;
     }
-    // $ANTLR end "ruleXValueVarSessionAggType"
+    // $ANTLR end "ruleXValueSessionVarAggType"
 
 
-    // $ANTLR start "entryRuleXValueSignalSessionCountType"
-    // InternalXScript.g:6548:1: entryRuleXValueSignalSessionCountType returns [EObject current=null] : iv_ruleXValueSignalSessionCountType= ruleXValueSignalSessionCountType EOF ;
-    public final EObject entryRuleXValueSignalSessionCountType() throws RecognitionException {
+    // $ANTLR start "entryRuleXValueSessionSignalCountType"
+    // InternalXScript.g:6548:1: entryRuleXValueSessionSignalCountType returns [EObject current=null] : iv_ruleXValueSessionSignalCountType= ruleXValueSessionSignalCountType EOF ;
+    public final EObject entryRuleXValueSessionSignalCountType() throws RecognitionException {
         EObject current = null;
 
-        EObject iv_ruleXValueSignalSessionCountType = null;
+        EObject iv_ruleXValueSessionSignalCountType = null;
 
 
         try {
-            // InternalXScript.g:6548:69: (iv_ruleXValueSignalSessionCountType= ruleXValueSignalSessionCountType EOF )
-            // InternalXScript.g:6549:2: iv_ruleXValueSignalSessionCountType= ruleXValueSignalSessionCountType EOF
+            // InternalXScript.g:6548:69: (iv_ruleXValueSessionSignalCountType= ruleXValueSessionSignalCountType EOF )
+            // InternalXScript.g:6549:2: iv_ruleXValueSessionSignalCountType= ruleXValueSessionSignalCountType EOF
             {
-             newCompositeNode(grammarAccess.getXValueSignalSessionCountTypeRule()); 
+             newCompositeNode(grammarAccess.getXValueSessionSignalCountTypeRule()); 
             pushFollow(FOLLOW_1);
-            iv_ruleXValueSignalSessionCountType=ruleXValueSignalSessionCountType();
+            iv_ruleXValueSessionSignalCountType=ruleXValueSessionSignalCountType();
 
             state._fsp--;
 
-             current =iv_ruleXValueSignalSessionCountType; 
+             current =iv_ruleXValueSessionSignalCountType; 
             match(input,EOF,FOLLOW_2); 
 
             }
@@ -15633,12 +15633,12 @@ public class InternalXScriptParser extends AbstractInternalAntlrParser {
         }
         return current;
     }
-    // $ANTLR end "entryRuleXValueSignalSessionCountType"
+    // $ANTLR end "entryRuleXValueSessionSignalCountType"
 
 
-    // $ANTLR start "ruleXValueSignalSessionCountType"
-    // InternalXScript.g:6555:1: ruleXValueSignalSessionCountType returns [EObject current=null] : ( () otherlv_1= 'sessionSignalCount' otherlv_2= '(' ( (otherlv_3= RULE_ID ) ) otherlv_4= ',' ( (lv_timeRange_5_0= ruleXTimeRange ) ) otherlv_6= ',' ( (lv_value_7_0= RULE_INT ) ) otherlv_8= ')' ) ;
-    public final EObject ruleXValueSignalSessionCountType() throws RecognitionException {
+    // $ANTLR start "ruleXValueSessionSignalCountType"
+    // InternalXScript.g:6555:1: ruleXValueSessionSignalCountType returns [EObject current=null] : ( () otherlv_1= 'sessionSignalCount' otherlv_2= '(' ( (otherlv_3= RULE_ID ) ) otherlv_4= ',' ( (lv_timeRange_5_0= ruleXTimeRange ) ) otherlv_6= ',' ( (lv_value_7_0= RULE_INT ) ) otherlv_8= ')' ) ;
+    public final EObject ruleXValueSessionSignalCountType() throws RecognitionException {
         EObject current = null;
 
         Token otherlv_1=null;
@@ -15666,7 +15666,7 @@ public class InternalXScriptParser extends AbstractInternalAntlrParser {
             {
 
             				current = forceCreateModelElement(
-            					grammarAccess.getXValueSignalSessionCountTypeAccess().getXValueSignalSessionCountTypeAction_0(),
+            					grammarAccess.getXValueSessionSignalCountTypeAccess().getXValueSessionSignalCountTypeAction_0(),
             					current);
             			
 
@@ -15674,11 +15674,11 @@ public class InternalXScriptParser extends AbstractInternalAntlrParser {
 
             otherlv_1=(Token)match(input,81,FOLLOW_5); 
 
-            			newLeafNode(otherlv_1, grammarAccess.getXValueSignalSessionCountTypeAccess().getSessionSignalCountKeyword_1());
+            			newLeafNode(otherlv_1, grammarAccess.getXValueSessionSignalCountTypeAccess().getSessionSignalCountKeyword_1());
             		
             otherlv_2=(Token)match(input,13,FOLLOW_4); 
 
-            			newLeafNode(otherlv_2, grammarAccess.getXValueSignalSessionCountTypeAccess().getLeftParenthesisKeyword_2());
+            			newLeafNode(otherlv_2, grammarAccess.getXValueSessionSignalCountTypeAccess().getLeftParenthesisKeyword_2());
             		
             // InternalXScript.g:6578:3: ( (otherlv_3= RULE_ID ) )
             // InternalXScript.g:6579:4: (otherlv_3= RULE_ID )
@@ -15688,12 +15688,12 @@ public class InternalXScriptParser extends AbstractInternalAntlrParser {
             {
 
             					if (current==null) {
-            						current = createModelElement(grammarAccess.getXValueSignalSessionCountTypeRule());
+            						current = createModelElement(grammarAccess.getXValueSessionSignalCountTypeRule());
             					}
             				
             otherlv_3=(Token)match(input,RULE_ID,FOLLOW_7); 
 
-            					newLeafNode(otherlv_3, grammarAccess.getXValueSignalSessionCountTypeAccess().getSignalSignalTypeCrossReference_3_0());
+            					newLeafNode(otherlv_3, grammarAccess.getXValueSessionSignalCountTypeAccess().getSignalSignalTypeCrossReference_3_0());
             				
 
             }
@@ -15703,7 +15703,7 @@ public class InternalXScriptParser extends AbstractInternalAntlrParser {
 
             otherlv_4=(Token)match(input,14,FOLLOW_48); 
 
-            			newLeafNode(otherlv_4, grammarAccess.getXValueSignalSessionCountTypeAccess().getCommaKeyword_4());
+            			newLeafNode(otherlv_4, grammarAccess.getXValueSessionSignalCountTypeAccess().getCommaKeyword_4());
             		
             // InternalXScript.g:6595:3: ( (lv_timeRange_5_0= ruleXTimeRange ) )
             // InternalXScript.g:6596:4: (lv_timeRange_5_0= ruleXTimeRange )
@@ -15712,7 +15712,7 @@ public class InternalXScriptParser extends AbstractInternalAntlrParser {
             // InternalXScript.g:6597:5: lv_timeRange_5_0= ruleXTimeRange
             {
 
-            					newCompositeNode(grammarAccess.getXValueSignalSessionCountTypeAccess().getTimeRangeXTimeRangeParserRuleCall_5_0());
+            					newCompositeNode(grammarAccess.getXValueSessionSignalCountTypeAccess().getTimeRangeXTimeRangeParserRuleCall_5_0());
             				
             pushFollow(FOLLOW_7);
             lv_timeRange_5_0=ruleXTimeRange();
@@ -15721,7 +15721,7 @@ public class InternalXScriptParser extends AbstractInternalAntlrParser {
 
 
             					if (current==null) {
-            						current = createModelElementForParent(grammarAccess.getXValueSignalSessionCountTypeRule());
+            						current = createModelElementForParent(grammarAccess.getXValueSessionSignalCountTypeRule());
             					}
             					set(
             						current,
@@ -15738,7 +15738,7 @@ public class InternalXScriptParser extends AbstractInternalAntlrParser {
 
             otherlv_6=(Token)match(input,14,FOLLOW_6); 
 
-            			newLeafNode(otherlv_6, grammarAccess.getXValueSignalSessionCountTypeAccess().getCommaKeyword_6());
+            			newLeafNode(otherlv_6, grammarAccess.getXValueSessionSignalCountTypeAccess().getCommaKeyword_6());
             		
             // InternalXScript.g:6618:3: ( (lv_value_7_0= RULE_INT ) )
             // InternalXScript.g:6619:4: (lv_value_7_0= RULE_INT )
@@ -15748,11 +15748,11 @@ public class InternalXScriptParser extends AbstractInternalAntlrParser {
             {
             lv_value_7_0=(Token)match(input,RULE_INT,FOLLOW_9); 
 
-            					newLeafNode(lv_value_7_0, grammarAccess.getXValueSignalSessionCountTypeAccess().getValueINTTerminalRuleCall_7_0());
+            					newLeafNode(lv_value_7_0, grammarAccess.getXValueSessionSignalCountTypeAccess().getValueINTTerminalRuleCall_7_0());
             				
 
             					if (current==null) {
-            						current = createModelElement(grammarAccess.getXValueSignalSessionCountTypeRule());
+            						current = createModelElement(grammarAccess.getXValueSessionSignalCountTypeRule());
             					}
             					setWithLastConsumed(
             						current,
@@ -15768,7 +15768,7 @@ public class InternalXScriptParser extends AbstractInternalAntlrParser {
 
             otherlv_8=(Token)match(input,15,FOLLOW_2); 
 
-            			newLeafNode(otherlv_8, grammarAccess.getXValueSignalSessionCountTypeAccess().getRightParenthesisKeyword_8());
+            			newLeafNode(otherlv_8, grammarAccess.getXValueSessionSignalCountTypeAccess().getRightParenthesisKeyword_8());
             		
 
             }
@@ -15789,28 +15789,28 @@ public class InternalXScriptParser extends AbstractInternalAntlrParser {
         }
         return current;
     }
-    // $ANTLR end "ruleXValueSignalSessionCountType"
+    // $ANTLR end "ruleXValueSessionSignalCountType"
 
 
-    // $ANTLR start "entryRuleXValueSignalHistoricalCountType"
-    // InternalXScript.g:6644:1: entryRuleXValueSignalHistoricalCountType returns [EObject current=null] : iv_ruleXValueSignalHistoricalCountType= ruleXValueSignalHistoricalCountType EOF ;
-    public final EObject entryRuleXValueSignalHistoricalCountType() throws RecognitionException {
+    // $ANTLR start "entryRuleXValueHistoricalSignalCountType"
+    // InternalXScript.g:6644:1: entryRuleXValueHistoricalSignalCountType returns [EObject current=null] : iv_ruleXValueHistoricalSignalCountType= ruleXValueHistoricalSignalCountType EOF ;
+    public final EObject entryRuleXValueHistoricalSignalCountType() throws RecognitionException {
         EObject current = null;
 
-        EObject iv_ruleXValueSignalHistoricalCountType = null;
+        EObject iv_ruleXValueHistoricalSignalCountType = null;
 
 
         try {
-            // InternalXScript.g:6644:72: (iv_ruleXValueSignalHistoricalCountType= ruleXValueSignalHistoricalCountType EOF )
-            // InternalXScript.g:6645:2: iv_ruleXValueSignalHistoricalCountType= ruleXValueSignalHistoricalCountType EOF
+            // InternalXScript.g:6644:72: (iv_ruleXValueHistoricalSignalCountType= ruleXValueHistoricalSignalCountType EOF )
+            // InternalXScript.g:6645:2: iv_ruleXValueHistoricalSignalCountType= ruleXValueHistoricalSignalCountType EOF
             {
-             newCompositeNode(grammarAccess.getXValueSignalHistoricalCountTypeRule()); 
+             newCompositeNode(grammarAccess.getXValueHistoricalSignalCountTypeRule()); 
             pushFollow(FOLLOW_1);
-            iv_ruleXValueSignalHistoricalCountType=ruleXValueSignalHistoricalCountType();
+            iv_ruleXValueHistoricalSignalCountType=ruleXValueHistoricalSignalCountType();
 
             state._fsp--;
 
-             current =iv_ruleXValueSignalHistoricalCountType; 
+             current =iv_ruleXValueHistoricalSignalCountType; 
             match(input,EOF,FOLLOW_2); 
 
             }
@@ -15825,12 +15825,12 @@ public class InternalXScriptParser extends AbstractInternalAntlrParser {
         }
         return current;
     }
-    // $ANTLR end "entryRuleXValueSignalHistoricalCountType"
+    // $ANTLR end "entryRuleXValueHistoricalSignalCountType"
 
 
-    // $ANTLR start "ruleXValueSignalHistoricalCountType"
-    // InternalXScript.g:6651:1: ruleXValueSignalHistoricalCountType returns [EObject current=null] : ( () otherlv_1= 'historicalSignalCount' otherlv_2= '(' ( (otherlv_3= RULE_ID ) ) otherlv_4= ',' ( (lv_days_5_0= RULE_INT ) ) otherlv_6= ',' ( (lv_count_7_0= RULE_INT ) ) otherlv_8= ')' ) ;
-    public final EObject ruleXValueSignalHistoricalCountType() throws RecognitionException {
+    // $ANTLR start "ruleXValueHistoricalSignalCountType"
+    // InternalXScript.g:6651:1: ruleXValueHistoricalSignalCountType returns [EObject current=null] : ( () otherlv_1= 'historicalSignalCount' otherlv_2= '(' ( (otherlv_3= RULE_ID ) ) otherlv_4= ',' ( (lv_days_5_0= RULE_INT ) ) otherlv_6= ')' ) ;
+    public final EObject ruleXValueHistoricalSignalCountType() throws RecognitionException {
         EObject current = null;
 
         Token otherlv_1=null;
@@ -15839,25 +15839,23 @@ public class InternalXScriptParser extends AbstractInternalAntlrParser {
         Token otherlv_4=null;
         Token lv_days_5_0=null;
         Token otherlv_6=null;
-        Token lv_count_7_0=null;
-        Token otherlv_8=null;
 
 
         	enterRule();
 
         try {
-            // InternalXScript.g:6657:2: ( ( () otherlv_1= 'historicalSignalCount' otherlv_2= '(' ( (otherlv_3= RULE_ID ) ) otherlv_4= ',' ( (lv_days_5_0= RULE_INT ) ) otherlv_6= ',' ( (lv_count_7_0= RULE_INT ) ) otherlv_8= ')' ) )
-            // InternalXScript.g:6658:2: ( () otherlv_1= 'historicalSignalCount' otherlv_2= '(' ( (otherlv_3= RULE_ID ) ) otherlv_4= ',' ( (lv_days_5_0= RULE_INT ) ) otherlv_6= ',' ( (lv_count_7_0= RULE_INT ) ) otherlv_8= ')' )
+            // InternalXScript.g:6657:2: ( ( () otherlv_1= 'historicalSignalCount' otherlv_2= '(' ( (otherlv_3= RULE_ID ) ) otherlv_4= ',' ( (lv_days_5_0= RULE_INT ) ) otherlv_6= ')' ) )
+            // InternalXScript.g:6658:2: ( () otherlv_1= 'historicalSignalCount' otherlv_2= '(' ( (otherlv_3= RULE_ID ) ) otherlv_4= ',' ( (lv_days_5_0= RULE_INT ) ) otherlv_6= ')' )
             {
-            // InternalXScript.g:6658:2: ( () otherlv_1= 'historicalSignalCount' otherlv_2= '(' ( (otherlv_3= RULE_ID ) ) otherlv_4= ',' ( (lv_days_5_0= RULE_INT ) ) otherlv_6= ',' ( (lv_count_7_0= RULE_INT ) ) otherlv_8= ')' )
-            // InternalXScript.g:6659:3: () otherlv_1= 'historicalSignalCount' otherlv_2= '(' ( (otherlv_3= RULE_ID ) ) otherlv_4= ',' ( (lv_days_5_0= RULE_INT ) ) otherlv_6= ',' ( (lv_count_7_0= RULE_INT ) ) otherlv_8= ')'
+            // InternalXScript.g:6658:2: ( () otherlv_1= 'historicalSignalCount' otherlv_2= '(' ( (otherlv_3= RULE_ID ) ) otherlv_4= ',' ( (lv_days_5_0= RULE_INT ) ) otherlv_6= ')' )
+            // InternalXScript.g:6659:3: () otherlv_1= 'historicalSignalCount' otherlv_2= '(' ( (otherlv_3= RULE_ID ) ) otherlv_4= ',' ( (lv_days_5_0= RULE_INT ) ) otherlv_6= ')'
             {
             // InternalXScript.g:6659:3: ()
             // InternalXScript.g:6660:4: 
             {
 
             				current = forceCreateModelElement(
-            					grammarAccess.getXValueSignalHistoricalCountTypeAccess().getXValueSignalHistoricalCountTypeAction_0(),
+            					grammarAccess.getXValueHistoricalSignalCountTypeAccess().getXValueHistoricalSignalCountTypeAction_0(),
             					current);
             			
 
@@ -15865,11 +15863,11 @@ public class InternalXScriptParser extends AbstractInternalAntlrParser {
 
             otherlv_1=(Token)match(input,82,FOLLOW_5); 
 
-            			newLeafNode(otherlv_1, grammarAccess.getXValueSignalHistoricalCountTypeAccess().getHistoricalSignalCountKeyword_1());
+            			newLeafNode(otherlv_1, grammarAccess.getXValueHistoricalSignalCountTypeAccess().getHistoricalSignalCountKeyword_1());
             		
             otherlv_2=(Token)match(input,13,FOLLOW_4); 
 
-            			newLeafNode(otherlv_2, grammarAccess.getXValueSignalHistoricalCountTypeAccess().getLeftParenthesisKeyword_2());
+            			newLeafNode(otherlv_2, grammarAccess.getXValueHistoricalSignalCountTypeAccess().getLeftParenthesisKeyword_2());
             		
             // InternalXScript.g:6674:3: ( (otherlv_3= RULE_ID ) )
             // InternalXScript.g:6675:4: (otherlv_3= RULE_ID )
@@ -15879,12 +15877,12 @@ public class InternalXScriptParser extends AbstractInternalAntlrParser {
             {
 
             					if (current==null) {
-            						current = createModelElement(grammarAccess.getXValueSignalHistoricalCountTypeRule());
+            						current = createModelElement(grammarAccess.getXValueHistoricalSignalCountTypeRule());
             					}
             				
             otherlv_3=(Token)match(input,RULE_ID,FOLLOW_7); 
 
-            					newLeafNode(otherlv_3, grammarAccess.getXValueSignalHistoricalCountTypeAccess().getSignalSignalTypeCrossReference_3_0());
+            					newLeafNode(otherlv_3, grammarAccess.getXValueHistoricalSignalCountTypeAccess().getSignalSignalTypeCrossReference_3_0());
             				
 
             }
@@ -15894,7 +15892,7 @@ public class InternalXScriptParser extends AbstractInternalAntlrParser {
 
             otherlv_4=(Token)match(input,14,FOLLOW_6); 
 
-            			newLeafNode(otherlv_4, grammarAccess.getXValueSignalHistoricalCountTypeAccess().getCommaKeyword_4());
+            			newLeafNode(otherlv_4, grammarAccess.getXValueHistoricalSignalCountTypeAccess().getCommaKeyword_4());
             		
             // InternalXScript.g:6691:3: ( (lv_days_5_0= RULE_INT ) )
             // InternalXScript.g:6692:4: (lv_days_5_0= RULE_INT )
@@ -15902,13 +15900,13 @@ public class InternalXScriptParser extends AbstractInternalAntlrParser {
             // InternalXScript.g:6692:4: (lv_days_5_0= RULE_INT )
             // InternalXScript.g:6693:5: lv_days_5_0= RULE_INT
             {
-            lv_days_5_0=(Token)match(input,RULE_INT,FOLLOW_7); 
+            lv_days_5_0=(Token)match(input,RULE_INT,FOLLOW_9); 
 
-            					newLeafNode(lv_days_5_0, grammarAccess.getXValueSignalHistoricalCountTypeAccess().getDaysINTTerminalRuleCall_5_0());
+            					newLeafNode(lv_days_5_0, grammarAccess.getXValueHistoricalSignalCountTypeAccess().getDaysINTTerminalRuleCall_5_0());
             				
 
             					if (current==null) {
-            						current = createModelElement(grammarAccess.getXValueSignalHistoricalCountTypeRule());
+            						current = createModelElement(grammarAccess.getXValueHistoricalSignalCountTypeRule());
             					}
             					setWithLastConsumed(
             						current,
@@ -15922,39 +15920,9 @@ public class InternalXScriptParser extends AbstractInternalAntlrParser {
 
             }
 
-            otherlv_6=(Token)match(input,14,FOLLOW_6); 
+            otherlv_6=(Token)match(input,15,FOLLOW_2); 
 
-            			newLeafNode(otherlv_6, grammarAccess.getXValueSignalHistoricalCountTypeAccess().getCommaKeyword_6());
-            		
-            // InternalXScript.g:6713:3: ( (lv_count_7_0= RULE_INT ) )
-            // InternalXScript.g:6714:4: (lv_count_7_0= RULE_INT )
-            {
-            // InternalXScript.g:6714:4: (lv_count_7_0= RULE_INT )
-            // InternalXScript.g:6715:5: lv_count_7_0= RULE_INT
-            {
-            lv_count_7_0=(Token)match(input,RULE_INT,FOLLOW_9); 
-
-            					newLeafNode(lv_count_7_0, grammarAccess.getXValueSignalHistoricalCountTypeAccess().getCountINTTerminalRuleCall_7_0());
-            				
-
-            					if (current==null) {
-            						current = createModelElement(grammarAccess.getXValueSignalHistoricalCountTypeRule());
-            					}
-            					setWithLastConsumed(
-            						current,
-            						"count",
-            						lv_count_7_0,
-            						"org.eclipse.xtext.common.Terminals.INT");
-            				
-
-            }
-
-
-            }
-
-            otherlv_8=(Token)match(input,15,FOLLOW_2); 
-
-            			newLeafNode(otherlv_8, grammarAccess.getXValueSignalHistoricalCountTypeAccess().getRightParenthesisKeyword_8());
+            			newLeafNode(otherlv_6, grammarAccess.getXValueHistoricalSignalCountTypeAccess().getRightParenthesisKeyword_6());
             		
 
             }
@@ -15975,11 +15943,11 @@ public class InternalXScriptParser extends AbstractInternalAntlrParser {
         }
         return current;
     }
-    // $ANTLR end "ruleXValueSignalHistoricalCountType"
+    // $ANTLR end "ruleXValueHistoricalSignalCountType"
 
 
     // $ANTLR start "entryRuleXQueryType"
-    // InternalXScript.g:6739:1: entryRuleXQueryType returns [EObject current=null] : iv_ruleXQueryType= ruleXQueryType EOF ;
+    // InternalXScript.g:6717:1: entryRuleXQueryType returns [EObject current=null] : iv_ruleXQueryType= ruleXQueryType EOF ;
     public final EObject entryRuleXQueryType() throws RecognitionException {
         EObject current = null;
 
@@ -15987,8 +15955,8 @@ public class InternalXScriptParser extends AbstractInternalAntlrParser {
 
 
         try {
-            // InternalXScript.g:6739:51: (iv_ruleXQueryType= ruleXQueryType EOF )
-            // InternalXScript.g:6740:2: iv_ruleXQueryType= ruleXQueryType EOF
+            // InternalXScript.g:6717:51: (iv_ruleXQueryType= ruleXQueryType EOF )
+            // InternalXScript.g:6718:2: iv_ruleXQueryType= ruleXQueryType EOF
             {
              newCompositeNode(grammarAccess.getXQueryTypeRule()); 
             pushFollow(FOLLOW_1);
@@ -16015,7 +15983,7 @@ public class InternalXScriptParser extends AbstractInternalAntlrParser {
 
 
     // $ANTLR start "ruleXQueryType"
-    // InternalXScript.g:6746:1: ruleXQueryType returns [EObject current=null] : (otherlv_0= 'query' otherlv_1= '(' ( (lv_name_2_0= RULE_ID ) ) otherlv_3= ')' otherlv_4= '{' ( (lv_filters_5_0= ruleXQueryFilterType ) )* otherlv_6= '}' ) ;
+    // InternalXScript.g:6724:1: ruleXQueryType returns [EObject current=null] : (otherlv_0= 'query' otherlv_1= '(' ( (lv_name_2_0= RULE_ID ) ) otherlv_3= ')' otherlv_4= '{' ( (lv_filters_5_0= ruleXQueryFilterType ) )* otherlv_6= '}' ) ;
     public final EObject ruleXQueryType() throws RecognitionException {
         EObject current = null;
 
@@ -16032,11 +16000,11 @@ public class InternalXScriptParser extends AbstractInternalAntlrParser {
         	enterRule();
 
         try {
-            // InternalXScript.g:6752:2: ( (otherlv_0= 'query' otherlv_1= '(' ( (lv_name_2_0= RULE_ID ) ) otherlv_3= ')' otherlv_4= '{' ( (lv_filters_5_0= ruleXQueryFilterType ) )* otherlv_6= '}' ) )
-            // InternalXScript.g:6753:2: (otherlv_0= 'query' otherlv_1= '(' ( (lv_name_2_0= RULE_ID ) ) otherlv_3= ')' otherlv_4= '{' ( (lv_filters_5_0= ruleXQueryFilterType ) )* otherlv_6= '}' )
+            // InternalXScript.g:6730:2: ( (otherlv_0= 'query' otherlv_1= '(' ( (lv_name_2_0= RULE_ID ) ) otherlv_3= ')' otherlv_4= '{' ( (lv_filters_5_0= ruleXQueryFilterType ) )* otherlv_6= '}' ) )
+            // InternalXScript.g:6731:2: (otherlv_0= 'query' otherlv_1= '(' ( (lv_name_2_0= RULE_ID ) ) otherlv_3= ')' otherlv_4= '{' ( (lv_filters_5_0= ruleXQueryFilterType ) )* otherlv_6= '}' )
             {
-            // InternalXScript.g:6753:2: (otherlv_0= 'query' otherlv_1= '(' ( (lv_name_2_0= RULE_ID ) ) otherlv_3= ')' otherlv_4= '{' ( (lv_filters_5_0= ruleXQueryFilterType ) )* otherlv_6= '}' )
-            // InternalXScript.g:6754:3: otherlv_0= 'query' otherlv_1= '(' ( (lv_name_2_0= RULE_ID ) ) otherlv_3= ')' otherlv_4= '{' ( (lv_filters_5_0= ruleXQueryFilterType ) )* otherlv_6= '}'
+            // InternalXScript.g:6731:2: (otherlv_0= 'query' otherlv_1= '(' ( (lv_name_2_0= RULE_ID ) ) otherlv_3= ')' otherlv_4= '{' ( (lv_filters_5_0= ruleXQueryFilterType ) )* otherlv_6= '}' )
+            // InternalXScript.g:6732:3: otherlv_0= 'query' otherlv_1= '(' ( (lv_name_2_0= RULE_ID ) ) otherlv_3= ')' otherlv_4= '{' ( (lv_filters_5_0= ruleXQueryFilterType ) )* otherlv_6= '}'
             {
             otherlv_0=(Token)match(input,83,FOLLOW_5); 
 
@@ -16046,11 +16014,11 @@ public class InternalXScriptParser extends AbstractInternalAntlrParser {
 
             			newLeafNode(otherlv_1, grammarAccess.getXQueryTypeAccess().getLeftParenthesisKeyword_1());
             		
-            // InternalXScript.g:6762:3: ( (lv_name_2_0= RULE_ID ) )
-            // InternalXScript.g:6763:4: (lv_name_2_0= RULE_ID )
+            // InternalXScript.g:6740:3: ( (lv_name_2_0= RULE_ID ) )
+            // InternalXScript.g:6741:4: (lv_name_2_0= RULE_ID )
             {
-            // InternalXScript.g:6763:4: (lv_name_2_0= RULE_ID )
-            // InternalXScript.g:6764:5: lv_name_2_0= RULE_ID
+            // InternalXScript.g:6741:4: (lv_name_2_0= RULE_ID )
+            // InternalXScript.g:6742:5: lv_name_2_0= RULE_ID
             {
             lv_name_2_0=(Token)match(input,RULE_ID,FOLLOW_9); 
 
@@ -16080,7 +16048,7 @@ public class InternalXScriptParser extends AbstractInternalAntlrParser {
 
             			newLeafNode(otherlv_4, grammarAccess.getXQueryTypeAccess().getLeftCurlyBracketKeyword_4());
             		
-            // InternalXScript.g:6788:3: ( (lv_filters_5_0= ruleXQueryFilterType ) )*
+            // InternalXScript.g:6766:3: ( (lv_filters_5_0= ruleXQueryFilterType ) )*
             loop61:
             do {
                 int alt61=2;
@@ -16093,10 +16061,10 @@ public class InternalXScriptParser extends AbstractInternalAntlrParser {
 
                 switch (alt61) {
             	case 1 :
-            	    // InternalXScript.g:6789:4: (lv_filters_5_0= ruleXQueryFilterType )
+            	    // InternalXScript.g:6767:4: (lv_filters_5_0= ruleXQueryFilterType )
             	    {
-            	    // InternalXScript.g:6789:4: (lv_filters_5_0= ruleXQueryFilterType )
-            	    // InternalXScript.g:6790:5: lv_filters_5_0= ruleXQueryFilterType
+            	    // InternalXScript.g:6767:4: (lv_filters_5_0= ruleXQueryFilterType )
+            	    // InternalXScript.g:6768:5: lv_filters_5_0= ruleXQueryFilterType
             	    {
 
             	    					newCompositeNode(grammarAccess.getXQueryTypeAccess().getFiltersXQueryFilterTypeParserRuleCall_5_0());
@@ -16156,7 +16124,7 @@ public class InternalXScriptParser extends AbstractInternalAntlrParser {
 
 
     // $ANTLR start "entryRuleXQueryFilterType"
-    // InternalXScript.g:6815:1: entryRuleXQueryFilterType returns [EObject current=null] : iv_ruleXQueryFilterType= ruleXQueryFilterType EOF ;
+    // InternalXScript.g:6793:1: entryRuleXQueryFilterType returns [EObject current=null] : iv_ruleXQueryFilterType= ruleXQueryFilterType EOF ;
     public final EObject entryRuleXQueryFilterType() throws RecognitionException {
         EObject current = null;
 
@@ -16164,8 +16132,8 @@ public class InternalXScriptParser extends AbstractInternalAntlrParser {
 
 
         try {
-            // InternalXScript.g:6815:57: (iv_ruleXQueryFilterType= ruleXQueryFilterType EOF )
-            // InternalXScript.g:6816:2: iv_ruleXQueryFilterType= ruleXQueryFilterType EOF
+            // InternalXScript.g:6793:57: (iv_ruleXQueryFilterType= ruleXQueryFilterType EOF )
+            // InternalXScript.g:6794:2: iv_ruleXQueryFilterType= ruleXQueryFilterType EOF
             {
              newCompositeNode(grammarAccess.getXQueryFilterTypeRule()); 
             pushFollow(FOLLOW_1);
@@ -16192,7 +16160,7 @@ public class InternalXScriptParser extends AbstractInternalAntlrParser {
 
 
     // $ANTLR start "ruleXQueryFilterType"
-    // InternalXScript.g:6822:1: ruleXQueryFilterType returns [EObject current=null] : (this_XQueryFilterValueCompareType_0= ruleXQueryFilterValueCompareType | this_XQueryFilterValueType_1= ruleXQueryFilterValueType ) ;
+    // InternalXScript.g:6800:1: ruleXQueryFilterType returns [EObject current=null] : (this_XQueryFilterValueCompareType_0= ruleXQueryFilterValueCompareType | this_XQueryFilterValueType_1= ruleXQueryFilterValueType ) ;
     public final EObject ruleXQueryFilterType() throws RecognitionException {
         EObject current = null;
 
@@ -16205,10 +16173,10 @@ public class InternalXScriptParser extends AbstractInternalAntlrParser {
         	enterRule();
 
         try {
-            // InternalXScript.g:6828:2: ( (this_XQueryFilterValueCompareType_0= ruleXQueryFilterValueCompareType | this_XQueryFilterValueType_1= ruleXQueryFilterValueType ) )
-            // InternalXScript.g:6829:2: (this_XQueryFilterValueCompareType_0= ruleXQueryFilterValueCompareType | this_XQueryFilterValueType_1= ruleXQueryFilterValueType )
+            // InternalXScript.g:6806:2: ( (this_XQueryFilterValueCompareType_0= ruleXQueryFilterValueCompareType | this_XQueryFilterValueType_1= ruleXQueryFilterValueType ) )
+            // InternalXScript.g:6807:2: (this_XQueryFilterValueCompareType_0= ruleXQueryFilterValueCompareType | this_XQueryFilterValueType_1= ruleXQueryFilterValueType )
             {
-            // InternalXScript.g:6829:2: (this_XQueryFilterValueCompareType_0= ruleXQueryFilterValueCompareType | this_XQueryFilterValueType_1= ruleXQueryFilterValueType )
+            // InternalXScript.g:6807:2: (this_XQueryFilterValueCompareType_0= ruleXQueryFilterValueCompareType | this_XQueryFilterValueType_1= ruleXQueryFilterValueType )
             int alt62=2;
             int LA62_0 = input.LA(1);
 
@@ -16226,7 +16194,7 @@ public class InternalXScriptParser extends AbstractInternalAntlrParser {
             }
             switch (alt62) {
                 case 1 :
-                    // InternalXScript.g:6830:3: this_XQueryFilterValueCompareType_0= ruleXQueryFilterValueCompareType
+                    // InternalXScript.g:6808:3: this_XQueryFilterValueCompareType_0= ruleXQueryFilterValueCompareType
                     {
 
                     			newCompositeNode(grammarAccess.getXQueryFilterTypeAccess().getXQueryFilterValueCompareTypeParserRuleCall_0());
@@ -16244,7 +16212,7 @@ public class InternalXScriptParser extends AbstractInternalAntlrParser {
                     }
                     break;
                 case 2 :
-                    // InternalXScript.g:6839:3: this_XQueryFilterValueType_1= ruleXQueryFilterValueType
+                    // InternalXScript.g:6817:3: this_XQueryFilterValueType_1= ruleXQueryFilterValueType
                     {
 
                     			newCompositeNode(grammarAccess.getXQueryFilterTypeAccess().getXQueryFilterValueTypeParserRuleCall_1());
@@ -16284,7 +16252,7 @@ public class InternalXScriptParser extends AbstractInternalAntlrParser {
 
 
     // $ANTLR start "entryRuleXQueryFilterValueType"
-    // InternalXScript.g:6851:1: entryRuleXQueryFilterValueType returns [EObject current=null] : iv_ruleXQueryFilterValueType= ruleXQueryFilterValueType EOF ;
+    // InternalXScript.g:6829:1: entryRuleXQueryFilterValueType returns [EObject current=null] : iv_ruleXQueryFilterValueType= ruleXQueryFilterValueType EOF ;
     public final EObject entryRuleXQueryFilterValueType() throws RecognitionException {
         EObject current = null;
 
@@ -16292,8 +16260,8 @@ public class InternalXScriptParser extends AbstractInternalAntlrParser {
 
 
         try {
-            // InternalXScript.g:6851:62: (iv_ruleXQueryFilterValueType= ruleXQueryFilterValueType EOF )
-            // InternalXScript.g:6852:2: iv_ruleXQueryFilterValueType= ruleXQueryFilterValueType EOF
+            // InternalXScript.g:6829:62: (iv_ruleXQueryFilterValueType= ruleXQueryFilterValueType EOF )
+            // InternalXScript.g:6830:2: iv_ruleXQueryFilterValueType= ruleXQueryFilterValueType EOF
             {
              newCompositeNode(grammarAccess.getXQueryFilterValueTypeRule()); 
             pushFollow(FOLLOW_1);
@@ -16320,7 +16288,7 @@ public class InternalXScriptParser extends AbstractInternalAntlrParser {
 
 
     // $ANTLR start "ruleXQueryFilterValueType"
-    // InternalXScript.g:6858:1: ruleXQueryFilterValueType returns [EObject current=null] : ( () otherlv_1= 'valueFilter' otherlv_2= '(' ( (lv_value_3_0= ruleXValueType ) ) otherlv_4= ',' ( (lv_operator_5_0= ruleXStreamOperator ) ) otherlv_6= ',' ( (lv_criteria_7_0= RULE_STRING ) ) otherlv_8= ')' ) ;
+    // InternalXScript.g:6836:1: ruleXQueryFilterValueType returns [EObject current=null] : ( () otherlv_1= 'valueFilter' otherlv_2= '(' ( (lv_value_3_0= ruleXValueType ) ) otherlv_4= ',' ( (lv_operator_5_0= ruleXStreamOperator ) ) otherlv_6= ',' ( (lv_criteria_7_0= RULE_STRING ) ) otherlv_8= ')' ) ;
     public final EObject ruleXQueryFilterValueType() throws RecognitionException {
         EObject current = null;
 
@@ -16339,14 +16307,14 @@ public class InternalXScriptParser extends AbstractInternalAntlrParser {
         	enterRule();
 
         try {
-            // InternalXScript.g:6864:2: ( ( () otherlv_1= 'valueFilter' otherlv_2= '(' ( (lv_value_3_0= ruleXValueType ) ) otherlv_4= ',' ( (lv_operator_5_0= ruleXStreamOperator ) ) otherlv_6= ',' ( (lv_criteria_7_0= RULE_STRING ) ) otherlv_8= ')' ) )
-            // InternalXScript.g:6865:2: ( () otherlv_1= 'valueFilter' otherlv_2= '(' ( (lv_value_3_0= ruleXValueType ) ) otherlv_4= ',' ( (lv_operator_5_0= ruleXStreamOperator ) ) otherlv_6= ',' ( (lv_criteria_7_0= RULE_STRING ) ) otherlv_8= ')' )
+            // InternalXScript.g:6842:2: ( ( () otherlv_1= 'valueFilter' otherlv_2= '(' ( (lv_value_3_0= ruleXValueType ) ) otherlv_4= ',' ( (lv_operator_5_0= ruleXStreamOperator ) ) otherlv_6= ',' ( (lv_criteria_7_0= RULE_STRING ) ) otherlv_8= ')' ) )
+            // InternalXScript.g:6843:2: ( () otherlv_1= 'valueFilter' otherlv_2= '(' ( (lv_value_3_0= ruleXValueType ) ) otherlv_4= ',' ( (lv_operator_5_0= ruleXStreamOperator ) ) otherlv_6= ',' ( (lv_criteria_7_0= RULE_STRING ) ) otherlv_8= ')' )
             {
-            // InternalXScript.g:6865:2: ( () otherlv_1= 'valueFilter' otherlv_2= '(' ( (lv_value_3_0= ruleXValueType ) ) otherlv_4= ',' ( (lv_operator_5_0= ruleXStreamOperator ) ) otherlv_6= ',' ( (lv_criteria_7_0= RULE_STRING ) ) otherlv_8= ')' )
-            // InternalXScript.g:6866:3: () otherlv_1= 'valueFilter' otherlv_2= '(' ( (lv_value_3_0= ruleXValueType ) ) otherlv_4= ',' ( (lv_operator_5_0= ruleXStreamOperator ) ) otherlv_6= ',' ( (lv_criteria_7_0= RULE_STRING ) ) otherlv_8= ')'
+            // InternalXScript.g:6843:2: ( () otherlv_1= 'valueFilter' otherlv_2= '(' ( (lv_value_3_0= ruleXValueType ) ) otherlv_4= ',' ( (lv_operator_5_0= ruleXStreamOperator ) ) otherlv_6= ',' ( (lv_criteria_7_0= RULE_STRING ) ) otherlv_8= ')' )
+            // InternalXScript.g:6844:3: () otherlv_1= 'valueFilter' otherlv_2= '(' ( (lv_value_3_0= ruleXValueType ) ) otherlv_4= ',' ( (lv_operator_5_0= ruleXStreamOperator ) ) otherlv_6= ',' ( (lv_criteria_7_0= RULE_STRING ) ) otherlv_8= ')'
             {
-            // InternalXScript.g:6866:3: ()
-            // InternalXScript.g:6867:4: 
+            // InternalXScript.g:6844:3: ()
+            // InternalXScript.g:6845:4: 
             {
 
             				current = forceCreateModelElement(
@@ -16364,11 +16332,11 @@ public class InternalXScriptParser extends AbstractInternalAntlrParser {
 
             			newLeafNode(otherlv_2, grammarAccess.getXQueryFilterValueTypeAccess().getLeftParenthesisKeyword_2());
             		
-            // InternalXScript.g:6881:3: ( (lv_value_3_0= ruleXValueType ) )
-            // InternalXScript.g:6882:4: (lv_value_3_0= ruleXValueType )
+            // InternalXScript.g:6859:3: ( (lv_value_3_0= ruleXValueType ) )
+            // InternalXScript.g:6860:4: (lv_value_3_0= ruleXValueType )
             {
-            // InternalXScript.g:6882:4: (lv_value_3_0= ruleXValueType )
-            // InternalXScript.g:6883:5: lv_value_3_0= ruleXValueType
+            // InternalXScript.g:6860:4: (lv_value_3_0= ruleXValueType )
+            // InternalXScript.g:6861:5: lv_value_3_0= ruleXValueType
             {
 
             					newCompositeNode(grammarAccess.getXQueryFilterValueTypeAccess().getValueXValueTypeParserRuleCall_3_0());
@@ -16399,11 +16367,11 @@ public class InternalXScriptParser extends AbstractInternalAntlrParser {
 
             			newLeafNode(otherlv_4, grammarAccess.getXQueryFilterValueTypeAccess().getCommaKeyword_4());
             		
-            // InternalXScript.g:6904:3: ( (lv_operator_5_0= ruleXStreamOperator ) )
-            // InternalXScript.g:6905:4: (lv_operator_5_0= ruleXStreamOperator )
+            // InternalXScript.g:6882:3: ( (lv_operator_5_0= ruleXStreamOperator ) )
+            // InternalXScript.g:6883:4: (lv_operator_5_0= ruleXStreamOperator )
             {
-            // InternalXScript.g:6905:4: (lv_operator_5_0= ruleXStreamOperator )
-            // InternalXScript.g:6906:5: lv_operator_5_0= ruleXStreamOperator
+            // InternalXScript.g:6883:4: (lv_operator_5_0= ruleXStreamOperator )
+            // InternalXScript.g:6884:5: lv_operator_5_0= ruleXStreamOperator
             {
 
             					newCompositeNode(grammarAccess.getXQueryFilterValueTypeAccess().getOperatorXStreamOperatorEnumRuleCall_5_0());
@@ -16434,11 +16402,11 @@ public class InternalXScriptParser extends AbstractInternalAntlrParser {
 
             			newLeafNode(otherlv_6, grammarAccess.getXQueryFilterValueTypeAccess().getCommaKeyword_6());
             		
-            // InternalXScript.g:6927:3: ( (lv_criteria_7_0= RULE_STRING ) )
-            // InternalXScript.g:6928:4: (lv_criteria_7_0= RULE_STRING )
+            // InternalXScript.g:6905:3: ( (lv_criteria_7_0= RULE_STRING ) )
+            // InternalXScript.g:6906:4: (lv_criteria_7_0= RULE_STRING )
             {
-            // InternalXScript.g:6928:4: (lv_criteria_7_0= RULE_STRING )
-            // InternalXScript.g:6929:5: lv_criteria_7_0= RULE_STRING
+            // InternalXScript.g:6906:4: (lv_criteria_7_0= RULE_STRING )
+            // InternalXScript.g:6907:5: lv_criteria_7_0= RULE_STRING
             {
             lv_criteria_7_0=(Token)match(input,RULE_STRING,FOLLOW_9); 
 
@@ -16487,7 +16455,7 @@ public class InternalXScriptParser extends AbstractInternalAntlrParser {
 
 
     // $ANTLR start "entryRuleXQueryFilterValueCompareType"
-    // InternalXScript.g:6953:1: entryRuleXQueryFilterValueCompareType returns [EObject current=null] : iv_ruleXQueryFilterValueCompareType= ruleXQueryFilterValueCompareType EOF ;
+    // InternalXScript.g:6931:1: entryRuleXQueryFilterValueCompareType returns [EObject current=null] : iv_ruleXQueryFilterValueCompareType= ruleXQueryFilterValueCompareType EOF ;
     public final EObject entryRuleXQueryFilterValueCompareType() throws RecognitionException {
         EObject current = null;
 
@@ -16495,8 +16463,8 @@ public class InternalXScriptParser extends AbstractInternalAntlrParser {
 
 
         try {
-            // InternalXScript.g:6953:69: (iv_ruleXQueryFilterValueCompareType= ruleXQueryFilterValueCompareType EOF )
-            // InternalXScript.g:6954:2: iv_ruleXQueryFilterValueCompareType= ruleXQueryFilterValueCompareType EOF
+            // InternalXScript.g:6931:69: (iv_ruleXQueryFilterValueCompareType= ruleXQueryFilterValueCompareType EOF )
+            // InternalXScript.g:6932:2: iv_ruleXQueryFilterValueCompareType= ruleXQueryFilterValueCompareType EOF
             {
              newCompositeNode(grammarAccess.getXQueryFilterValueCompareTypeRule()); 
             pushFollow(FOLLOW_1);
@@ -16523,7 +16491,7 @@ public class InternalXScriptParser extends AbstractInternalAntlrParser {
 
 
     // $ANTLR start "ruleXQueryFilterValueCompareType"
-    // InternalXScript.g:6960:1: ruleXQueryFilterValueCompareType returns [EObject current=null] : (otherlv_0= 'valueCompareFilter' otherlv_1= '(' ( (lv_value1_2_0= ruleXValueType ) ) otherlv_3= ',' ( (lv_value2_4_0= ruleXValueType ) ) otherlv_5= ',' ( (lv_function_6_0= ruleXQueryValueCompareFunction ) ) otherlv_7= ',' ( (lv_operator_8_0= ruleXStreamOperator ) ) otherlv_9= ',' ( (lv_criteria_10_0= RULE_STRING ) ) otherlv_11= ')' ) ;
+    // InternalXScript.g:6938:1: ruleXQueryFilterValueCompareType returns [EObject current=null] : (otherlv_0= 'valueCompareFilter' otherlv_1= '(' ( (lv_value1_2_0= ruleXValueType ) ) otherlv_3= ',' ( (lv_value2_4_0= ruleXValueType ) ) otherlv_5= ',' ( (lv_function_6_0= ruleXQueryValueCompareFunction ) ) otherlv_7= ',' ( (lv_operator_8_0= ruleXStreamOperator ) ) otherlv_9= ',' ( (lv_criteria_10_0= RULE_STRING ) ) otherlv_11= ')' ) ;
     public final EObject ruleXQueryFilterValueCompareType() throws RecognitionException {
         EObject current = null;
 
@@ -16548,11 +16516,11 @@ public class InternalXScriptParser extends AbstractInternalAntlrParser {
         	enterRule();
 
         try {
-            // InternalXScript.g:6966:2: ( (otherlv_0= 'valueCompareFilter' otherlv_1= '(' ( (lv_value1_2_0= ruleXValueType ) ) otherlv_3= ',' ( (lv_value2_4_0= ruleXValueType ) ) otherlv_5= ',' ( (lv_function_6_0= ruleXQueryValueCompareFunction ) ) otherlv_7= ',' ( (lv_operator_8_0= ruleXStreamOperator ) ) otherlv_9= ',' ( (lv_criteria_10_0= RULE_STRING ) ) otherlv_11= ')' ) )
-            // InternalXScript.g:6967:2: (otherlv_0= 'valueCompareFilter' otherlv_1= '(' ( (lv_value1_2_0= ruleXValueType ) ) otherlv_3= ',' ( (lv_value2_4_0= ruleXValueType ) ) otherlv_5= ',' ( (lv_function_6_0= ruleXQueryValueCompareFunction ) ) otherlv_7= ',' ( (lv_operator_8_0= ruleXStreamOperator ) ) otherlv_9= ',' ( (lv_criteria_10_0= RULE_STRING ) ) otherlv_11= ')' )
+            // InternalXScript.g:6944:2: ( (otherlv_0= 'valueCompareFilter' otherlv_1= '(' ( (lv_value1_2_0= ruleXValueType ) ) otherlv_3= ',' ( (lv_value2_4_0= ruleXValueType ) ) otherlv_5= ',' ( (lv_function_6_0= ruleXQueryValueCompareFunction ) ) otherlv_7= ',' ( (lv_operator_8_0= ruleXStreamOperator ) ) otherlv_9= ',' ( (lv_criteria_10_0= RULE_STRING ) ) otherlv_11= ')' ) )
+            // InternalXScript.g:6945:2: (otherlv_0= 'valueCompareFilter' otherlv_1= '(' ( (lv_value1_2_0= ruleXValueType ) ) otherlv_3= ',' ( (lv_value2_4_0= ruleXValueType ) ) otherlv_5= ',' ( (lv_function_6_0= ruleXQueryValueCompareFunction ) ) otherlv_7= ',' ( (lv_operator_8_0= ruleXStreamOperator ) ) otherlv_9= ',' ( (lv_criteria_10_0= RULE_STRING ) ) otherlv_11= ')' )
             {
-            // InternalXScript.g:6967:2: (otherlv_0= 'valueCompareFilter' otherlv_1= '(' ( (lv_value1_2_0= ruleXValueType ) ) otherlv_3= ',' ( (lv_value2_4_0= ruleXValueType ) ) otherlv_5= ',' ( (lv_function_6_0= ruleXQueryValueCompareFunction ) ) otherlv_7= ',' ( (lv_operator_8_0= ruleXStreamOperator ) ) otherlv_9= ',' ( (lv_criteria_10_0= RULE_STRING ) ) otherlv_11= ')' )
-            // InternalXScript.g:6968:3: otherlv_0= 'valueCompareFilter' otherlv_1= '(' ( (lv_value1_2_0= ruleXValueType ) ) otherlv_3= ',' ( (lv_value2_4_0= ruleXValueType ) ) otherlv_5= ',' ( (lv_function_6_0= ruleXQueryValueCompareFunction ) ) otherlv_7= ',' ( (lv_operator_8_0= ruleXStreamOperator ) ) otherlv_9= ',' ( (lv_criteria_10_0= RULE_STRING ) ) otherlv_11= ')'
+            // InternalXScript.g:6945:2: (otherlv_0= 'valueCompareFilter' otherlv_1= '(' ( (lv_value1_2_0= ruleXValueType ) ) otherlv_3= ',' ( (lv_value2_4_0= ruleXValueType ) ) otherlv_5= ',' ( (lv_function_6_0= ruleXQueryValueCompareFunction ) ) otherlv_7= ',' ( (lv_operator_8_0= ruleXStreamOperator ) ) otherlv_9= ',' ( (lv_criteria_10_0= RULE_STRING ) ) otherlv_11= ')' )
+            // InternalXScript.g:6946:3: otherlv_0= 'valueCompareFilter' otherlv_1= '(' ( (lv_value1_2_0= ruleXValueType ) ) otherlv_3= ',' ( (lv_value2_4_0= ruleXValueType ) ) otherlv_5= ',' ( (lv_function_6_0= ruleXQueryValueCompareFunction ) ) otherlv_7= ',' ( (lv_operator_8_0= ruleXStreamOperator ) ) otherlv_9= ',' ( (lv_criteria_10_0= RULE_STRING ) ) otherlv_11= ')'
             {
             otherlv_0=(Token)match(input,85,FOLLOW_5); 
 
@@ -16562,11 +16530,11 @@ public class InternalXScriptParser extends AbstractInternalAntlrParser {
 
             			newLeafNode(otherlv_1, grammarAccess.getXQueryFilterValueCompareTypeAccess().getLeftParenthesisKeyword_1());
             		
-            // InternalXScript.g:6976:3: ( (lv_value1_2_0= ruleXValueType ) )
-            // InternalXScript.g:6977:4: (lv_value1_2_0= ruleXValueType )
+            // InternalXScript.g:6954:3: ( (lv_value1_2_0= ruleXValueType ) )
+            // InternalXScript.g:6955:4: (lv_value1_2_0= ruleXValueType )
             {
-            // InternalXScript.g:6977:4: (lv_value1_2_0= ruleXValueType )
-            // InternalXScript.g:6978:5: lv_value1_2_0= ruleXValueType
+            // InternalXScript.g:6955:4: (lv_value1_2_0= ruleXValueType )
+            // InternalXScript.g:6956:5: lv_value1_2_0= ruleXValueType
             {
 
             					newCompositeNode(grammarAccess.getXQueryFilterValueCompareTypeAccess().getValue1XValueTypeParserRuleCall_2_0());
@@ -16597,11 +16565,11 @@ public class InternalXScriptParser extends AbstractInternalAntlrParser {
 
             			newLeafNode(otherlv_3, grammarAccess.getXQueryFilterValueCompareTypeAccess().getCommaKeyword_3());
             		
-            // InternalXScript.g:6999:3: ( (lv_value2_4_0= ruleXValueType ) )
-            // InternalXScript.g:7000:4: (lv_value2_4_0= ruleXValueType )
+            // InternalXScript.g:6977:3: ( (lv_value2_4_0= ruleXValueType ) )
+            // InternalXScript.g:6978:4: (lv_value2_4_0= ruleXValueType )
             {
-            // InternalXScript.g:7000:4: (lv_value2_4_0= ruleXValueType )
-            // InternalXScript.g:7001:5: lv_value2_4_0= ruleXValueType
+            // InternalXScript.g:6978:4: (lv_value2_4_0= ruleXValueType )
+            // InternalXScript.g:6979:5: lv_value2_4_0= ruleXValueType
             {
 
             					newCompositeNode(grammarAccess.getXQueryFilterValueCompareTypeAccess().getValue2XValueTypeParserRuleCall_4_0());
@@ -16632,11 +16600,11 @@ public class InternalXScriptParser extends AbstractInternalAntlrParser {
 
             			newLeafNode(otherlv_5, grammarAccess.getXQueryFilterValueCompareTypeAccess().getCommaKeyword_5());
             		
-            // InternalXScript.g:7022:3: ( (lv_function_6_0= ruleXQueryValueCompareFunction ) )
-            // InternalXScript.g:7023:4: (lv_function_6_0= ruleXQueryValueCompareFunction )
+            // InternalXScript.g:7000:3: ( (lv_function_6_0= ruleXQueryValueCompareFunction ) )
+            // InternalXScript.g:7001:4: (lv_function_6_0= ruleXQueryValueCompareFunction )
             {
-            // InternalXScript.g:7023:4: (lv_function_6_0= ruleXQueryValueCompareFunction )
-            // InternalXScript.g:7024:5: lv_function_6_0= ruleXQueryValueCompareFunction
+            // InternalXScript.g:7001:4: (lv_function_6_0= ruleXQueryValueCompareFunction )
+            // InternalXScript.g:7002:5: lv_function_6_0= ruleXQueryValueCompareFunction
             {
 
             					newCompositeNode(grammarAccess.getXQueryFilterValueCompareTypeAccess().getFunctionXQueryValueCompareFunctionEnumRuleCall_6_0());
@@ -16667,11 +16635,11 @@ public class InternalXScriptParser extends AbstractInternalAntlrParser {
 
             			newLeafNode(otherlv_7, grammarAccess.getXQueryFilterValueCompareTypeAccess().getCommaKeyword_7());
             		
-            // InternalXScript.g:7045:3: ( (lv_operator_8_0= ruleXStreamOperator ) )
-            // InternalXScript.g:7046:4: (lv_operator_8_0= ruleXStreamOperator )
+            // InternalXScript.g:7023:3: ( (lv_operator_8_0= ruleXStreamOperator ) )
+            // InternalXScript.g:7024:4: (lv_operator_8_0= ruleXStreamOperator )
             {
-            // InternalXScript.g:7046:4: (lv_operator_8_0= ruleXStreamOperator )
-            // InternalXScript.g:7047:5: lv_operator_8_0= ruleXStreamOperator
+            // InternalXScript.g:7024:4: (lv_operator_8_0= ruleXStreamOperator )
+            // InternalXScript.g:7025:5: lv_operator_8_0= ruleXStreamOperator
             {
 
             					newCompositeNode(grammarAccess.getXQueryFilterValueCompareTypeAccess().getOperatorXStreamOperatorEnumRuleCall_8_0());
@@ -16702,11 +16670,11 @@ public class InternalXScriptParser extends AbstractInternalAntlrParser {
 
             			newLeafNode(otherlv_9, grammarAccess.getXQueryFilterValueCompareTypeAccess().getCommaKeyword_9());
             		
-            // InternalXScript.g:7068:3: ( (lv_criteria_10_0= RULE_STRING ) )
-            // InternalXScript.g:7069:4: (lv_criteria_10_0= RULE_STRING )
+            // InternalXScript.g:7046:3: ( (lv_criteria_10_0= RULE_STRING ) )
+            // InternalXScript.g:7047:4: (lv_criteria_10_0= RULE_STRING )
             {
-            // InternalXScript.g:7069:4: (lv_criteria_10_0= RULE_STRING )
-            // InternalXScript.g:7070:5: lv_criteria_10_0= RULE_STRING
+            // InternalXScript.g:7047:4: (lv_criteria_10_0= RULE_STRING )
+            // InternalXScript.g:7048:5: lv_criteria_10_0= RULE_STRING
             {
             lv_criteria_10_0=(Token)match(input,RULE_STRING,FOLLOW_9); 
 
@@ -16755,7 +16723,7 @@ public class InternalXScriptParser extends AbstractInternalAntlrParser {
 
 
     // $ANTLR start "ruleStreamTimeUnit"
-    // InternalXScript.g:7094:1: ruleStreamTimeUnit returns [Enumerator current=null] : ( (enumLiteral_0= 'SEC' ) | (enumLiteral_1= 'MIN' ) | (enumLiteral_2= 'HOUR' ) ) ;
+    // InternalXScript.g:7072:1: ruleStreamTimeUnit returns [Enumerator current=null] : ( (enumLiteral_0= 'SEC' ) | (enumLiteral_1= 'MIN' ) | (enumLiteral_2= 'HOUR' ) ) ;
     public final Enumerator ruleStreamTimeUnit() throws RecognitionException {
         Enumerator current = null;
 
@@ -16767,10 +16735,10 @@ public class InternalXScriptParser extends AbstractInternalAntlrParser {
         	enterRule();
 
         try {
-            // InternalXScript.g:7100:2: ( ( (enumLiteral_0= 'SEC' ) | (enumLiteral_1= 'MIN' ) | (enumLiteral_2= 'HOUR' ) ) )
-            // InternalXScript.g:7101:2: ( (enumLiteral_0= 'SEC' ) | (enumLiteral_1= 'MIN' ) | (enumLiteral_2= 'HOUR' ) )
+            // InternalXScript.g:7078:2: ( ( (enumLiteral_0= 'SEC' ) | (enumLiteral_1= 'MIN' ) | (enumLiteral_2= 'HOUR' ) ) )
+            // InternalXScript.g:7079:2: ( (enumLiteral_0= 'SEC' ) | (enumLiteral_1= 'MIN' ) | (enumLiteral_2= 'HOUR' ) )
             {
-            // InternalXScript.g:7101:2: ( (enumLiteral_0= 'SEC' ) | (enumLiteral_1= 'MIN' ) | (enumLiteral_2= 'HOUR' ) )
+            // InternalXScript.g:7079:2: ( (enumLiteral_0= 'SEC' ) | (enumLiteral_1= 'MIN' ) | (enumLiteral_2= 'HOUR' ) )
             int alt63=3;
             switch ( input.LA(1) ) {
             case 86:
@@ -16797,10 +16765,10 @@ public class InternalXScriptParser extends AbstractInternalAntlrParser {
 
             switch (alt63) {
                 case 1 :
-                    // InternalXScript.g:7102:3: (enumLiteral_0= 'SEC' )
+                    // InternalXScript.g:7080:3: (enumLiteral_0= 'SEC' )
                     {
-                    // InternalXScript.g:7102:3: (enumLiteral_0= 'SEC' )
-                    // InternalXScript.g:7103:4: enumLiteral_0= 'SEC'
+                    // InternalXScript.g:7080:3: (enumLiteral_0= 'SEC' )
+                    // InternalXScript.g:7081:4: enumLiteral_0= 'SEC'
                     {
                     enumLiteral_0=(Token)match(input,86,FOLLOW_2); 
 
@@ -16814,10 +16782,10 @@ public class InternalXScriptParser extends AbstractInternalAntlrParser {
                     }
                     break;
                 case 2 :
-                    // InternalXScript.g:7110:3: (enumLiteral_1= 'MIN' )
+                    // InternalXScript.g:7088:3: (enumLiteral_1= 'MIN' )
                     {
-                    // InternalXScript.g:7110:3: (enumLiteral_1= 'MIN' )
-                    // InternalXScript.g:7111:4: enumLiteral_1= 'MIN'
+                    // InternalXScript.g:7088:3: (enumLiteral_1= 'MIN' )
+                    // InternalXScript.g:7089:4: enumLiteral_1= 'MIN'
                     {
                     enumLiteral_1=(Token)match(input,87,FOLLOW_2); 
 
@@ -16831,10 +16799,10 @@ public class InternalXScriptParser extends AbstractInternalAntlrParser {
                     }
                     break;
                 case 3 :
-                    // InternalXScript.g:7118:3: (enumLiteral_2= 'HOUR' )
+                    // InternalXScript.g:7096:3: (enumLiteral_2= 'HOUR' )
                     {
-                    // InternalXScript.g:7118:3: (enumLiteral_2= 'HOUR' )
-                    // InternalXScript.g:7119:4: enumLiteral_2= 'HOUR'
+                    // InternalXScript.g:7096:3: (enumLiteral_2= 'HOUR' )
+                    // InternalXScript.g:7097:4: enumLiteral_2= 'HOUR'
                     {
                     enumLiteral_2=(Token)match(input,88,FOLLOW_2); 
 
@@ -16870,7 +16838,7 @@ public class InternalXScriptParser extends AbstractInternalAntlrParser {
 
 
     // $ANTLR start "ruleDataType"
-    // InternalXScript.g:7129:1: ruleDataType returns [Enumerator current=null] : ( (enumLiteral_0= 'STR' ) | (enumLiteral_1= 'INT' ) | (enumLiteral_2= 'BOOl' ) | (enumLiteral_3= 'T' ) | (enumLiteral_4= 'DT' ) | (enumLiteral_5= 'DATE' ) | (enumLiteral_6= 'DUB' ) | (enumLiteral_7= 'LONG' ) ) ;
+    // InternalXScript.g:7107:1: ruleDataType returns [Enumerator current=null] : ( (enumLiteral_0= 'STR' ) | (enumLiteral_1= 'INT' ) | (enumLiteral_2= 'BOOl' ) | (enumLiteral_3= 'T' ) | (enumLiteral_4= 'DT' ) | (enumLiteral_5= 'DATE' ) | (enumLiteral_6= 'DUB' ) | (enumLiteral_7= 'LONG' ) ) ;
     public final Enumerator ruleDataType() throws RecognitionException {
         Enumerator current = null;
 
@@ -16887,10 +16855,10 @@ public class InternalXScriptParser extends AbstractInternalAntlrParser {
         	enterRule();
 
         try {
-            // InternalXScript.g:7135:2: ( ( (enumLiteral_0= 'STR' ) | (enumLiteral_1= 'INT' ) | (enumLiteral_2= 'BOOl' ) | (enumLiteral_3= 'T' ) | (enumLiteral_4= 'DT' ) | (enumLiteral_5= 'DATE' ) | (enumLiteral_6= 'DUB' ) | (enumLiteral_7= 'LONG' ) ) )
-            // InternalXScript.g:7136:2: ( (enumLiteral_0= 'STR' ) | (enumLiteral_1= 'INT' ) | (enumLiteral_2= 'BOOl' ) | (enumLiteral_3= 'T' ) | (enumLiteral_4= 'DT' ) | (enumLiteral_5= 'DATE' ) | (enumLiteral_6= 'DUB' ) | (enumLiteral_7= 'LONG' ) )
+            // InternalXScript.g:7113:2: ( ( (enumLiteral_0= 'STR' ) | (enumLiteral_1= 'INT' ) | (enumLiteral_2= 'BOOl' ) | (enumLiteral_3= 'T' ) | (enumLiteral_4= 'DT' ) | (enumLiteral_5= 'DATE' ) | (enumLiteral_6= 'DUB' ) | (enumLiteral_7= 'LONG' ) ) )
+            // InternalXScript.g:7114:2: ( (enumLiteral_0= 'STR' ) | (enumLiteral_1= 'INT' ) | (enumLiteral_2= 'BOOl' ) | (enumLiteral_3= 'T' ) | (enumLiteral_4= 'DT' ) | (enumLiteral_5= 'DATE' ) | (enumLiteral_6= 'DUB' ) | (enumLiteral_7= 'LONG' ) )
             {
-            // InternalXScript.g:7136:2: ( (enumLiteral_0= 'STR' ) | (enumLiteral_1= 'INT' ) | (enumLiteral_2= 'BOOl' ) | (enumLiteral_3= 'T' ) | (enumLiteral_4= 'DT' ) | (enumLiteral_5= 'DATE' ) | (enumLiteral_6= 'DUB' ) | (enumLiteral_7= 'LONG' ) )
+            // InternalXScript.g:7114:2: ( (enumLiteral_0= 'STR' ) | (enumLiteral_1= 'INT' ) | (enumLiteral_2= 'BOOl' ) | (enumLiteral_3= 'T' ) | (enumLiteral_4= 'DT' ) | (enumLiteral_5= 'DATE' ) | (enumLiteral_6= 'DUB' ) | (enumLiteral_7= 'LONG' ) )
             int alt64=8;
             switch ( input.LA(1) ) {
             case 89:
@@ -16942,10 +16910,10 @@ public class InternalXScriptParser extends AbstractInternalAntlrParser {
 
             switch (alt64) {
                 case 1 :
-                    // InternalXScript.g:7137:3: (enumLiteral_0= 'STR' )
+                    // InternalXScript.g:7115:3: (enumLiteral_0= 'STR' )
                     {
-                    // InternalXScript.g:7137:3: (enumLiteral_0= 'STR' )
-                    // InternalXScript.g:7138:4: enumLiteral_0= 'STR'
+                    // InternalXScript.g:7115:3: (enumLiteral_0= 'STR' )
+                    // InternalXScript.g:7116:4: enumLiteral_0= 'STR'
                     {
                     enumLiteral_0=(Token)match(input,89,FOLLOW_2); 
 
@@ -16959,10 +16927,10 @@ public class InternalXScriptParser extends AbstractInternalAntlrParser {
                     }
                     break;
                 case 2 :
-                    // InternalXScript.g:7145:3: (enumLiteral_1= 'INT' )
+                    // InternalXScript.g:7123:3: (enumLiteral_1= 'INT' )
                     {
-                    // InternalXScript.g:7145:3: (enumLiteral_1= 'INT' )
-                    // InternalXScript.g:7146:4: enumLiteral_1= 'INT'
+                    // InternalXScript.g:7123:3: (enumLiteral_1= 'INT' )
+                    // InternalXScript.g:7124:4: enumLiteral_1= 'INT'
                     {
                     enumLiteral_1=(Token)match(input,90,FOLLOW_2); 
 
@@ -16976,10 +16944,10 @@ public class InternalXScriptParser extends AbstractInternalAntlrParser {
                     }
                     break;
                 case 3 :
-                    // InternalXScript.g:7153:3: (enumLiteral_2= 'BOOl' )
+                    // InternalXScript.g:7131:3: (enumLiteral_2= 'BOOl' )
                     {
-                    // InternalXScript.g:7153:3: (enumLiteral_2= 'BOOl' )
-                    // InternalXScript.g:7154:4: enumLiteral_2= 'BOOl'
+                    // InternalXScript.g:7131:3: (enumLiteral_2= 'BOOl' )
+                    // InternalXScript.g:7132:4: enumLiteral_2= 'BOOl'
                     {
                     enumLiteral_2=(Token)match(input,91,FOLLOW_2); 
 
@@ -16993,10 +16961,10 @@ public class InternalXScriptParser extends AbstractInternalAntlrParser {
                     }
                     break;
                 case 4 :
-                    // InternalXScript.g:7161:3: (enumLiteral_3= 'T' )
+                    // InternalXScript.g:7139:3: (enumLiteral_3= 'T' )
                     {
-                    // InternalXScript.g:7161:3: (enumLiteral_3= 'T' )
-                    // InternalXScript.g:7162:4: enumLiteral_3= 'T'
+                    // InternalXScript.g:7139:3: (enumLiteral_3= 'T' )
+                    // InternalXScript.g:7140:4: enumLiteral_3= 'T'
                     {
                     enumLiteral_3=(Token)match(input,92,FOLLOW_2); 
 
@@ -17010,10 +16978,10 @@ public class InternalXScriptParser extends AbstractInternalAntlrParser {
                     }
                     break;
                 case 5 :
-                    // InternalXScript.g:7169:3: (enumLiteral_4= 'DT' )
+                    // InternalXScript.g:7147:3: (enumLiteral_4= 'DT' )
                     {
-                    // InternalXScript.g:7169:3: (enumLiteral_4= 'DT' )
-                    // InternalXScript.g:7170:4: enumLiteral_4= 'DT'
+                    // InternalXScript.g:7147:3: (enumLiteral_4= 'DT' )
+                    // InternalXScript.g:7148:4: enumLiteral_4= 'DT'
                     {
                     enumLiteral_4=(Token)match(input,93,FOLLOW_2); 
 
@@ -17027,10 +16995,10 @@ public class InternalXScriptParser extends AbstractInternalAntlrParser {
                     }
                     break;
                 case 6 :
-                    // InternalXScript.g:7177:3: (enumLiteral_5= 'DATE' )
+                    // InternalXScript.g:7155:3: (enumLiteral_5= 'DATE' )
                     {
-                    // InternalXScript.g:7177:3: (enumLiteral_5= 'DATE' )
-                    // InternalXScript.g:7178:4: enumLiteral_5= 'DATE'
+                    // InternalXScript.g:7155:3: (enumLiteral_5= 'DATE' )
+                    // InternalXScript.g:7156:4: enumLiteral_5= 'DATE'
                     {
                     enumLiteral_5=(Token)match(input,94,FOLLOW_2); 
 
@@ -17044,10 +17012,10 @@ public class InternalXScriptParser extends AbstractInternalAntlrParser {
                     }
                     break;
                 case 7 :
-                    // InternalXScript.g:7185:3: (enumLiteral_6= 'DUB' )
+                    // InternalXScript.g:7163:3: (enumLiteral_6= 'DUB' )
                     {
-                    // InternalXScript.g:7185:3: (enumLiteral_6= 'DUB' )
-                    // InternalXScript.g:7186:4: enumLiteral_6= 'DUB'
+                    // InternalXScript.g:7163:3: (enumLiteral_6= 'DUB' )
+                    // InternalXScript.g:7164:4: enumLiteral_6= 'DUB'
                     {
                     enumLiteral_6=(Token)match(input,95,FOLLOW_2); 
 
@@ -17061,10 +17029,10 @@ public class InternalXScriptParser extends AbstractInternalAntlrParser {
                     }
                     break;
                 case 8 :
-                    // InternalXScript.g:7193:3: (enumLiteral_7= 'LONG' )
+                    // InternalXScript.g:7171:3: (enumLiteral_7= 'LONG' )
                     {
-                    // InternalXScript.g:7193:3: (enumLiteral_7= 'LONG' )
-                    // InternalXScript.g:7194:4: enumLiteral_7= 'LONG'
+                    // InternalXScript.g:7171:3: (enumLiteral_7= 'LONG' )
+                    // InternalXScript.g:7172:4: enumLiteral_7= 'LONG'
                     {
                     enumLiteral_7=(Token)match(input,96,FOLLOW_2); 
 
@@ -17099,9 +17067,9 @@ public class InternalXScriptParser extends AbstractInternalAntlrParser {
     // $ANTLR end "ruleDataType"
 
 
-    // $ANTLR start "ruleXValueVarSessionAggFunction"
-    // InternalXScript.g:7204:1: ruleXValueVarSessionAggFunction returns [Enumerator current=null] : ( (enumLiteral_0= 'HIGH' ) | (enumLiteral_1= 'LOW' ) ) ;
-    public final Enumerator ruleXValueVarSessionAggFunction() throws RecognitionException {
+    // $ANTLR start "ruleXValueVarHistoricalAggFunction"
+    // InternalXScript.g:7182:1: ruleXValueVarHistoricalAggFunction returns [Enumerator current=null] : ( (enumLiteral_0= 'HIGH' ) | (enumLiteral_1= 'LOW' ) ) ;
+    public final Enumerator ruleXValueVarHistoricalAggFunction() throws RecognitionException {
         Enumerator current = null;
 
         Token enumLiteral_0=null;
@@ -17111,10 +17079,10 @@ public class InternalXScriptParser extends AbstractInternalAntlrParser {
         	enterRule();
 
         try {
-            // InternalXScript.g:7210:2: ( ( (enumLiteral_0= 'HIGH' ) | (enumLiteral_1= 'LOW' ) ) )
-            // InternalXScript.g:7211:2: ( (enumLiteral_0= 'HIGH' ) | (enumLiteral_1= 'LOW' ) )
+            // InternalXScript.g:7188:2: ( ( (enumLiteral_0= 'HIGH' ) | (enumLiteral_1= 'LOW' ) ) )
+            // InternalXScript.g:7189:2: ( (enumLiteral_0= 'HIGH' ) | (enumLiteral_1= 'LOW' ) )
             {
-            // InternalXScript.g:7211:2: ( (enumLiteral_0= 'HIGH' ) | (enumLiteral_1= 'LOW' ) )
+            // InternalXScript.g:7189:2: ( (enumLiteral_0= 'HIGH' ) | (enumLiteral_1= 'LOW' ) )
             int alt65=2;
             int LA65_0 = input.LA(1);
 
@@ -17132,10 +17100,98 @@ public class InternalXScriptParser extends AbstractInternalAntlrParser {
             }
             switch (alt65) {
                 case 1 :
-                    // InternalXScript.g:7212:3: (enumLiteral_0= 'HIGH' )
+                    // InternalXScript.g:7190:3: (enumLiteral_0= 'HIGH' )
                     {
-                    // InternalXScript.g:7212:3: (enumLiteral_0= 'HIGH' )
-                    // InternalXScript.g:7213:4: enumLiteral_0= 'HIGH'
+                    // InternalXScript.g:7190:3: (enumLiteral_0= 'HIGH' )
+                    // InternalXScript.g:7191:4: enumLiteral_0= 'HIGH'
+                    {
+                    enumLiteral_0=(Token)match(input,97,FOLLOW_2); 
+
+                    				current = grammarAccess.getXValueVarHistoricalAggFunctionAccess().getHighEnumLiteralDeclaration_0().getEnumLiteral().getInstance();
+                    				newLeafNode(enumLiteral_0, grammarAccess.getXValueVarHistoricalAggFunctionAccess().getHighEnumLiteralDeclaration_0());
+                    			
+
+                    }
+
+
+                    }
+                    break;
+                case 2 :
+                    // InternalXScript.g:7198:3: (enumLiteral_1= 'LOW' )
+                    {
+                    // InternalXScript.g:7198:3: (enumLiteral_1= 'LOW' )
+                    // InternalXScript.g:7199:4: enumLiteral_1= 'LOW'
+                    {
+                    enumLiteral_1=(Token)match(input,98,FOLLOW_2); 
+
+                    				current = grammarAccess.getXValueVarHistoricalAggFunctionAccess().getLowEnumLiteralDeclaration_1().getEnumLiteral().getInstance();
+                    				newLeafNode(enumLiteral_1, grammarAccess.getXValueVarHistoricalAggFunctionAccess().getLowEnumLiteralDeclaration_1());
+                    			
+
+                    }
+
+
+                    }
+                    break;
+
+            }
+
+
+            }
+
+
+            	leaveRule();
+
+        }
+
+            catch (RecognitionException re) {
+                recover(input,re);
+                appendSkippedTokens();
+            }
+        finally {
+        }
+        return current;
+    }
+    // $ANTLR end "ruleXValueVarHistoricalAggFunction"
+
+
+    // $ANTLR start "ruleXValueVarSessionAggFunction"
+    // InternalXScript.g:7209:1: ruleXValueVarSessionAggFunction returns [Enumerator current=null] : ( (enumLiteral_0= 'HIGH' ) | (enumLiteral_1= 'LOW' ) ) ;
+    public final Enumerator ruleXValueVarSessionAggFunction() throws RecognitionException {
+        Enumerator current = null;
+
+        Token enumLiteral_0=null;
+        Token enumLiteral_1=null;
+
+
+        	enterRule();
+
+        try {
+            // InternalXScript.g:7215:2: ( ( (enumLiteral_0= 'HIGH' ) | (enumLiteral_1= 'LOW' ) ) )
+            // InternalXScript.g:7216:2: ( (enumLiteral_0= 'HIGH' ) | (enumLiteral_1= 'LOW' ) )
+            {
+            // InternalXScript.g:7216:2: ( (enumLiteral_0= 'HIGH' ) | (enumLiteral_1= 'LOW' ) )
+            int alt66=2;
+            int LA66_0 = input.LA(1);
+
+            if ( (LA66_0==97) ) {
+                alt66=1;
+            }
+            else if ( (LA66_0==98) ) {
+                alt66=2;
+            }
+            else {
+                NoViableAltException nvae =
+                    new NoViableAltException("", 66, 0, input);
+
+                throw nvae;
+            }
+            switch (alt66) {
+                case 1 :
+                    // InternalXScript.g:7217:3: (enumLiteral_0= 'HIGH' )
+                    {
+                    // InternalXScript.g:7217:3: (enumLiteral_0= 'HIGH' )
+                    // InternalXScript.g:7218:4: enumLiteral_0= 'HIGH'
                     {
                     enumLiteral_0=(Token)match(input,97,FOLLOW_2); 
 
@@ -17149,10 +17205,10 @@ public class InternalXScriptParser extends AbstractInternalAntlrParser {
                     }
                     break;
                 case 2 :
-                    // InternalXScript.g:7220:3: (enumLiteral_1= 'LOW' )
+                    // InternalXScript.g:7225:3: (enumLiteral_1= 'LOW' )
                     {
-                    // InternalXScript.g:7220:3: (enumLiteral_1= 'LOW' )
-                    // InternalXScript.g:7221:4: enumLiteral_1= 'LOW'
+                    // InternalXScript.g:7225:3: (enumLiteral_1= 'LOW' )
+                    // InternalXScript.g:7226:4: enumLiteral_1= 'LOW'
                     {
                     enumLiteral_1=(Token)match(input,98,FOLLOW_2); 
 
@@ -17188,7 +17244,7 @@ public class InternalXScriptParser extends AbstractInternalAntlrParser {
 
 
     // $ANTLR start "ruleXStreamOperator"
-    // InternalXScript.g:7231:1: ruleXStreamOperator returns [Enumerator current=null] : ( (enumLiteral_0= 'GT' ) | (enumLiteral_1= 'LT' ) | (enumLiteral_2= 'EQ' ) | (enumLiteral_3= 'NE' ) ) ;
+    // InternalXScript.g:7236:1: ruleXStreamOperator returns [Enumerator current=null] : ( (enumLiteral_0= 'GT' ) | (enumLiteral_1= 'LT' ) | (enumLiteral_2= 'EQ' ) | (enumLiteral_3= 'NE' ) ) ;
     public final Enumerator ruleXStreamOperator() throws RecognitionException {
         Enumerator current = null;
 
@@ -17201,45 +17257,45 @@ public class InternalXScriptParser extends AbstractInternalAntlrParser {
         	enterRule();
 
         try {
-            // InternalXScript.g:7237:2: ( ( (enumLiteral_0= 'GT' ) | (enumLiteral_1= 'LT' ) | (enumLiteral_2= 'EQ' ) | (enumLiteral_3= 'NE' ) ) )
-            // InternalXScript.g:7238:2: ( (enumLiteral_0= 'GT' ) | (enumLiteral_1= 'LT' ) | (enumLiteral_2= 'EQ' ) | (enumLiteral_3= 'NE' ) )
+            // InternalXScript.g:7242:2: ( ( (enumLiteral_0= 'GT' ) | (enumLiteral_1= 'LT' ) | (enumLiteral_2= 'EQ' ) | (enumLiteral_3= 'NE' ) ) )
+            // InternalXScript.g:7243:2: ( (enumLiteral_0= 'GT' ) | (enumLiteral_1= 'LT' ) | (enumLiteral_2= 'EQ' ) | (enumLiteral_3= 'NE' ) )
             {
-            // InternalXScript.g:7238:2: ( (enumLiteral_0= 'GT' ) | (enumLiteral_1= 'LT' ) | (enumLiteral_2= 'EQ' ) | (enumLiteral_3= 'NE' ) )
-            int alt66=4;
+            // InternalXScript.g:7243:2: ( (enumLiteral_0= 'GT' ) | (enumLiteral_1= 'LT' ) | (enumLiteral_2= 'EQ' ) | (enumLiteral_3= 'NE' ) )
+            int alt67=4;
             switch ( input.LA(1) ) {
             case 99:
                 {
-                alt66=1;
+                alt67=1;
                 }
                 break;
             case 100:
                 {
-                alt66=2;
+                alt67=2;
                 }
                 break;
             case 101:
                 {
-                alt66=3;
+                alt67=3;
                 }
                 break;
             case 102:
                 {
-                alt66=4;
+                alt67=4;
                 }
                 break;
             default:
                 NoViableAltException nvae =
-                    new NoViableAltException("", 66, 0, input);
+                    new NoViableAltException("", 67, 0, input);
 
                 throw nvae;
             }
 
-            switch (alt66) {
+            switch (alt67) {
                 case 1 :
-                    // InternalXScript.g:7239:3: (enumLiteral_0= 'GT' )
+                    // InternalXScript.g:7244:3: (enumLiteral_0= 'GT' )
                     {
-                    // InternalXScript.g:7239:3: (enumLiteral_0= 'GT' )
-                    // InternalXScript.g:7240:4: enumLiteral_0= 'GT'
+                    // InternalXScript.g:7244:3: (enumLiteral_0= 'GT' )
+                    // InternalXScript.g:7245:4: enumLiteral_0= 'GT'
                     {
                     enumLiteral_0=(Token)match(input,99,FOLLOW_2); 
 
@@ -17253,10 +17309,10 @@ public class InternalXScriptParser extends AbstractInternalAntlrParser {
                     }
                     break;
                 case 2 :
-                    // InternalXScript.g:7247:3: (enumLiteral_1= 'LT' )
+                    // InternalXScript.g:7252:3: (enumLiteral_1= 'LT' )
                     {
-                    // InternalXScript.g:7247:3: (enumLiteral_1= 'LT' )
-                    // InternalXScript.g:7248:4: enumLiteral_1= 'LT'
+                    // InternalXScript.g:7252:3: (enumLiteral_1= 'LT' )
+                    // InternalXScript.g:7253:4: enumLiteral_1= 'LT'
                     {
                     enumLiteral_1=(Token)match(input,100,FOLLOW_2); 
 
@@ -17270,10 +17326,10 @@ public class InternalXScriptParser extends AbstractInternalAntlrParser {
                     }
                     break;
                 case 3 :
-                    // InternalXScript.g:7255:3: (enumLiteral_2= 'EQ' )
+                    // InternalXScript.g:7260:3: (enumLiteral_2= 'EQ' )
                     {
-                    // InternalXScript.g:7255:3: (enumLiteral_2= 'EQ' )
-                    // InternalXScript.g:7256:4: enumLiteral_2= 'EQ'
+                    // InternalXScript.g:7260:3: (enumLiteral_2= 'EQ' )
+                    // InternalXScript.g:7261:4: enumLiteral_2= 'EQ'
                     {
                     enumLiteral_2=(Token)match(input,101,FOLLOW_2); 
 
@@ -17287,10 +17343,10 @@ public class InternalXScriptParser extends AbstractInternalAntlrParser {
                     }
                     break;
                 case 4 :
-                    // InternalXScript.g:7263:3: (enumLiteral_3= 'NE' )
+                    // InternalXScript.g:7268:3: (enumLiteral_3= 'NE' )
                     {
-                    // InternalXScript.g:7263:3: (enumLiteral_3= 'NE' )
-                    // InternalXScript.g:7264:4: enumLiteral_3= 'NE'
+                    // InternalXScript.g:7268:3: (enumLiteral_3= 'NE' )
+                    // InternalXScript.g:7269:4: enumLiteral_3= 'NE'
                     {
                     enumLiteral_3=(Token)match(input,102,FOLLOW_2); 
 
@@ -17326,7 +17382,7 @@ public class InternalXScriptParser extends AbstractInternalAntlrParser {
 
 
     // $ANTLR start "ruleXQueryValueCompareFunction"
-    // InternalXScript.g:7274:1: ruleXQueryValueCompareFunction returns [Enumerator current=null] : ( (enumLiteral_0= 'ROC' ) | (enumLiteral_1= 'DIFF' ) ) ;
+    // InternalXScript.g:7279:1: ruleXQueryValueCompareFunction returns [Enumerator current=null] : ( (enumLiteral_0= 'ROC' ) | (enumLiteral_1= 'DIFF' ) ) ;
     public final Enumerator ruleXQueryValueCompareFunction() throws RecognitionException {
         Enumerator current = null;
 
@@ -17337,31 +17393,31 @@ public class InternalXScriptParser extends AbstractInternalAntlrParser {
         	enterRule();
 
         try {
-            // InternalXScript.g:7280:2: ( ( (enumLiteral_0= 'ROC' ) | (enumLiteral_1= 'DIFF' ) ) )
-            // InternalXScript.g:7281:2: ( (enumLiteral_0= 'ROC' ) | (enumLiteral_1= 'DIFF' ) )
+            // InternalXScript.g:7285:2: ( ( (enumLiteral_0= 'ROC' ) | (enumLiteral_1= 'DIFF' ) ) )
+            // InternalXScript.g:7286:2: ( (enumLiteral_0= 'ROC' ) | (enumLiteral_1= 'DIFF' ) )
             {
-            // InternalXScript.g:7281:2: ( (enumLiteral_0= 'ROC' ) | (enumLiteral_1= 'DIFF' ) )
-            int alt67=2;
-            int LA67_0 = input.LA(1);
+            // InternalXScript.g:7286:2: ( (enumLiteral_0= 'ROC' ) | (enumLiteral_1= 'DIFF' ) )
+            int alt68=2;
+            int LA68_0 = input.LA(1);
 
-            if ( (LA67_0==103) ) {
-                alt67=1;
+            if ( (LA68_0==103) ) {
+                alt68=1;
             }
-            else if ( (LA67_0==104) ) {
-                alt67=2;
+            else if ( (LA68_0==104) ) {
+                alt68=2;
             }
             else {
                 NoViableAltException nvae =
-                    new NoViableAltException("", 67, 0, input);
+                    new NoViableAltException("", 68, 0, input);
 
                 throw nvae;
             }
-            switch (alt67) {
+            switch (alt68) {
                 case 1 :
-                    // InternalXScript.g:7282:3: (enumLiteral_0= 'ROC' )
+                    // InternalXScript.g:7287:3: (enumLiteral_0= 'ROC' )
                     {
-                    // InternalXScript.g:7282:3: (enumLiteral_0= 'ROC' )
-                    // InternalXScript.g:7283:4: enumLiteral_0= 'ROC'
+                    // InternalXScript.g:7287:3: (enumLiteral_0= 'ROC' )
+                    // InternalXScript.g:7288:4: enumLiteral_0= 'ROC'
                     {
                     enumLiteral_0=(Token)match(input,103,FOLLOW_2); 
 
@@ -17375,10 +17431,10 @@ public class InternalXScriptParser extends AbstractInternalAntlrParser {
                     }
                     break;
                 case 2 :
-                    // InternalXScript.g:7290:3: (enumLiteral_1= 'DIFF' )
+                    // InternalXScript.g:7295:3: (enumLiteral_1= 'DIFF' )
                     {
-                    // InternalXScript.g:7290:3: (enumLiteral_1= 'DIFF' )
-                    // InternalXScript.g:7291:4: enumLiteral_1= 'DIFF'
+                    // InternalXScript.g:7295:3: (enumLiteral_1= 'DIFF' )
+                    // InternalXScript.g:7296:4: enumLiteral_1= 'DIFF'
                     {
                     enumLiteral_1=(Token)match(input,104,FOLLOW_2); 
 
@@ -17471,7 +17527,7 @@ public class InternalXScriptParser extends AbstractInternalAntlrParser {
     static final String dfa_7s = "\21\uffff";
     static final String dfa_8s = "\1\4\6\uffff\1\15\11\uffff";
     static final String dfa_9s = "\1\76\6\uffff\1\66\11\uffff";
-    static final String dfa_10s = "\1\uffff\1\1\1\2\1\3\1\4\1\5\1\6\1\uffff\1\11\1\13\1\15\1\16\1\17\1\7\1\14\1\12\1\10";
+    static final String dfa_10s = "\1\uffff\1\1\1\2\1\3\1\4\1\5\1\6\1\uffff\1\11\1\13\1\15\1\16\1\17\1\10\1\7\1\14\1\12";
     static final String dfa_11s = "\21\uffff}>";
     static final String[] dfa_12s = {
             "\1\7\50\uffff\1\10\1\uffff\1\2\1\uffff\1\1\1\4\1\5\1\6\2\uffff\1\11\1\12\1\3\2\uffff\1\14\1\uffff\1\13",
@@ -17481,7 +17537,7 @@ public class InternalXScriptParser extends AbstractInternalAntlrParser {
             "",
             "",
             "",
-            "\1\15\2\uffff\1\20\44\uffff\1\16\1\17",
+            "\1\16\2\uffff\1\15\44\uffff\1\17\1\20",
             "",
             "",
             "",
@@ -17518,10 +17574,10 @@ public class InternalXScriptParser extends AbstractInternalAntlrParser {
         }
     }
     static final String dfa_13s = "\24\uffff";
-    static final String dfa_14s = "\7\uffff\1\21\14\uffff";
+    static final String dfa_14s = "\7\uffff\1\23\14\uffff";
     static final String dfa_15s = "\1\4\6\uffff\1\15\14\uffff";
     static final String dfa_16s = "\1\115\6\uffff\1\43\14\uffff";
-    static final String dfa_17s = "\1\uffff\1\1\1\2\1\3\1\4\1\5\1\6\1\uffff\1\10\1\13\1\14\1\15\1\16\1\17\1\20\1\21\1\22\1\7\1\11\1\12";
+    static final String dfa_17s = "\1\uffff\1\1\1\2\1\3\1\4\1\5\1\6\1\uffff\1\10\1\13\1\14\1\15\1\16\1\17\1\20\1\21\1\22\1\11\1\12\1\7";
     static final String dfa_18s = "\24\uffff}>";
     static final String[] dfa_19s = {
             "\1\7\1\2\1\1\1\3\27\uffff\2\4\3\uffff\1\10\5\uffff\1\6\24\uffff\1\5\1\11\5\uffff\1\12\1\uffff\1\13\1\14\1\15\1\16\1\20\1\17",
@@ -17531,7 +17587,7 @@ public class InternalXScriptParser extends AbstractInternalAntlrParser {
             "",
             "",
             "",
-            "\1\23\2\21\1\uffff\15\21\4\uffff\1\22\1\21",
+            "\1\22\2\23\1\uffff\15\23\4\uffff\1\21\1\23",
             "",
             "",
             "",

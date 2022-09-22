@@ -6,7 +6,7 @@ package com.dunkware.xstream.xScript.impl;
 import com.dunkware.xstream.xScript.SignalType;
 import com.dunkware.xstream.xScript.XScriptPackage;
 import com.dunkware.xstream.xScript.XTimeRange;
-import com.dunkware.xstream.xScript.XValueSignalSessionCountType;
+import com.dunkware.xstream.xScript.XValueSessionSignalCountType;
 
 import org.eclipse.emf.common.notify.Notification;
 import org.eclipse.emf.common.notify.NotificationChain;
@@ -18,20 +18,20 @@ import org.eclipse.emf.ecore.impl.ENotificationImpl;
 
 /**
  * <!-- begin-user-doc -->
- * An implementation of the model object '<em><b>XValue Signal Session Count Type</b></em>'.
+ * An implementation of the model object '<em><b>XValue Session Signal Count Type</b></em>'.
  * <!-- end-user-doc -->
  * <p>
  * The following features are implemented:
  * </p>
  * <ul>
- *   <li>{@link com.dunkware.xstream.xScript.impl.XValueSignalSessionCountTypeImpl#getSignal <em>Signal</em>}</li>
- *   <li>{@link com.dunkware.xstream.xScript.impl.XValueSignalSessionCountTypeImpl#getTimeRange <em>Time Range</em>}</li>
- *   <li>{@link com.dunkware.xstream.xScript.impl.XValueSignalSessionCountTypeImpl#getValue <em>Value</em>}</li>
+ *   <li>{@link com.dunkware.xstream.xScript.impl.XValueSessionSignalCountTypeImpl#getSignal <em>Signal</em>}</li>
+ *   <li>{@link com.dunkware.xstream.xScript.impl.XValueSessionSignalCountTypeImpl#getTimeRange <em>Time Range</em>}</li>
+ *   <li>{@link com.dunkware.xstream.xScript.impl.XValueSessionSignalCountTypeImpl#getValue <em>Value</em>}</li>
  * </ul>
  *
  * @generated
  */
-public class XValueSignalSessionCountTypeImpl extends XValueTypeImpl implements XValueSignalSessionCountType
+public class XValueSessionSignalCountTypeImpl extends XValueTypeImpl implements XValueSessionSignalCountType
 {
   /**
    * The cached value of the '{@link #getSignal() <em>Signal</em>}' reference.
@@ -78,7 +78,7 @@ public class XValueSignalSessionCountTypeImpl extends XValueTypeImpl implements 
    * <!-- end-user-doc -->
    * @generated
    */
-  protected XValueSignalSessionCountTypeImpl()
+  protected XValueSessionSignalCountTypeImpl()
   {
     super();
   }
@@ -91,7 +91,7 @@ public class XValueSignalSessionCountTypeImpl extends XValueTypeImpl implements 
   @Override
   protected EClass eStaticClass()
   {
-    return XScriptPackage.Literals.XVALUE_SIGNAL_SESSION_COUNT_TYPE;
+    return XScriptPackage.Literals.XVALUE_SESSION_SIGNAL_COUNT_TYPE;
   }
 
   /**
@@ -109,7 +109,7 @@ public class XValueSignalSessionCountTypeImpl extends XValueTypeImpl implements 
       if (signal != oldSignal)
       {
         if (eNotificationRequired())
-          eNotify(new ENotificationImpl(this, Notification.RESOLVE, XScriptPackage.XVALUE_SIGNAL_SESSION_COUNT_TYPE__SIGNAL, oldSignal, signal));
+          eNotify(new ENotificationImpl(this, Notification.RESOLVE, XScriptPackage.XVALUE_SESSION_SIGNAL_COUNT_TYPE__SIGNAL, oldSignal, signal));
       }
     }
     return signal;
@@ -136,7 +136,7 @@ public class XValueSignalSessionCountTypeImpl extends XValueTypeImpl implements 
     SignalType oldSignal = signal;
     signal = newSignal;
     if (eNotificationRequired())
-      eNotify(new ENotificationImpl(this, Notification.SET, XScriptPackage.XVALUE_SIGNAL_SESSION_COUNT_TYPE__SIGNAL, oldSignal, signal));
+      eNotify(new ENotificationImpl(this, Notification.SET, XScriptPackage.XVALUE_SESSION_SIGNAL_COUNT_TYPE__SIGNAL, oldSignal, signal));
   }
 
   /**
@@ -161,7 +161,7 @@ public class XValueSignalSessionCountTypeImpl extends XValueTypeImpl implements 
     timeRange = newTimeRange;
     if (eNotificationRequired())
     {
-      ENotificationImpl notification = new ENotificationImpl(this, Notification.SET, XScriptPackage.XVALUE_SIGNAL_SESSION_COUNT_TYPE__TIME_RANGE, oldTimeRange, newTimeRange);
+      ENotificationImpl notification = new ENotificationImpl(this, Notification.SET, XScriptPackage.XVALUE_SESSION_SIGNAL_COUNT_TYPE__TIME_RANGE, oldTimeRange, newTimeRange);
       if (msgs == null) msgs = notification; else msgs.add(notification);
     }
     return msgs;
@@ -179,14 +179,14 @@ public class XValueSignalSessionCountTypeImpl extends XValueTypeImpl implements 
     {
       NotificationChain msgs = null;
       if (timeRange != null)
-        msgs = ((InternalEObject)timeRange).eInverseRemove(this, EOPPOSITE_FEATURE_BASE - XScriptPackage.XVALUE_SIGNAL_SESSION_COUNT_TYPE__TIME_RANGE, null, msgs);
+        msgs = ((InternalEObject)timeRange).eInverseRemove(this, EOPPOSITE_FEATURE_BASE - XScriptPackage.XVALUE_SESSION_SIGNAL_COUNT_TYPE__TIME_RANGE, null, msgs);
       if (newTimeRange != null)
-        msgs = ((InternalEObject)newTimeRange).eInverseAdd(this, EOPPOSITE_FEATURE_BASE - XScriptPackage.XVALUE_SIGNAL_SESSION_COUNT_TYPE__TIME_RANGE, null, msgs);
+        msgs = ((InternalEObject)newTimeRange).eInverseAdd(this, EOPPOSITE_FEATURE_BASE - XScriptPackage.XVALUE_SESSION_SIGNAL_COUNT_TYPE__TIME_RANGE, null, msgs);
       msgs = basicSetTimeRange(newTimeRange, msgs);
       if (msgs != null) msgs.dispatch();
     }
     else if (eNotificationRequired())
-      eNotify(new ENotificationImpl(this, Notification.SET, XScriptPackage.XVALUE_SIGNAL_SESSION_COUNT_TYPE__TIME_RANGE, newTimeRange, newTimeRange));
+      eNotify(new ENotificationImpl(this, Notification.SET, XScriptPackage.XVALUE_SESSION_SIGNAL_COUNT_TYPE__TIME_RANGE, newTimeRange, newTimeRange));
   }
 
   /**
@@ -211,7 +211,7 @@ public class XValueSignalSessionCountTypeImpl extends XValueTypeImpl implements 
     int oldValue = value;
     value = newValue;
     if (eNotificationRequired())
-      eNotify(new ENotificationImpl(this, Notification.SET, XScriptPackage.XVALUE_SIGNAL_SESSION_COUNT_TYPE__VALUE, oldValue, value));
+      eNotify(new ENotificationImpl(this, Notification.SET, XScriptPackage.XVALUE_SESSION_SIGNAL_COUNT_TYPE__VALUE, oldValue, value));
   }
 
   /**
@@ -224,7 +224,7 @@ public class XValueSignalSessionCountTypeImpl extends XValueTypeImpl implements 
   {
     switch (featureID)
     {
-      case XScriptPackage.XVALUE_SIGNAL_SESSION_COUNT_TYPE__TIME_RANGE:
+      case XScriptPackage.XVALUE_SESSION_SIGNAL_COUNT_TYPE__TIME_RANGE:
         return basicSetTimeRange(null, msgs);
     }
     return super.eInverseRemove(otherEnd, featureID, msgs);
@@ -240,12 +240,12 @@ public class XValueSignalSessionCountTypeImpl extends XValueTypeImpl implements 
   {
     switch (featureID)
     {
-      case XScriptPackage.XVALUE_SIGNAL_SESSION_COUNT_TYPE__SIGNAL:
+      case XScriptPackage.XVALUE_SESSION_SIGNAL_COUNT_TYPE__SIGNAL:
         if (resolve) return getSignal();
         return basicGetSignal();
-      case XScriptPackage.XVALUE_SIGNAL_SESSION_COUNT_TYPE__TIME_RANGE:
+      case XScriptPackage.XVALUE_SESSION_SIGNAL_COUNT_TYPE__TIME_RANGE:
         return getTimeRange();
-      case XScriptPackage.XVALUE_SIGNAL_SESSION_COUNT_TYPE__VALUE:
+      case XScriptPackage.XVALUE_SESSION_SIGNAL_COUNT_TYPE__VALUE:
         return getValue();
     }
     return super.eGet(featureID, resolve, coreType);
@@ -261,13 +261,13 @@ public class XValueSignalSessionCountTypeImpl extends XValueTypeImpl implements 
   {
     switch (featureID)
     {
-      case XScriptPackage.XVALUE_SIGNAL_SESSION_COUNT_TYPE__SIGNAL:
+      case XScriptPackage.XVALUE_SESSION_SIGNAL_COUNT_TYPE__SIGNAL:
         setSignal((SignalType)newValue);
         return;
-      case XScriptPackage.XVALUE_SIGNAL_SESSION_COUNT_TYPE__TIME_RANGE:
+      case XScriptPackage.XVALUE_SESSION_SIGNAL_COUNT_TYPE__TIME_RANGE:
         setTimeRange((XTimeRange)newValue);
         return;
-      case XScriptPackage.XVALUE_SIGNAL_SESSION_COUNT_TYPE__VALUE:
+      case XScriptPackage.XVALUE_SESSION_SIGNAL_COUNT_TYPE__VALUE:
         setValue((Integer)newValue);
         return;
     }
@@ -284,13 +284,13 @@ public class XValueSignalSessionCountTypeImpl extends XValueTypeImpl implements 
   {
     switch (featureID)
     {
-      case XScriptPackage.XVALUE_SIGNAL_SESSION_COUNT_TYPE__SIGNAL:
+      case XScriptPackage.XVALUE_SESSION_SIGNAL_COUNT_TYPE__SIGNAL:
         setSignal((SignalType)null);
         return;
-      case XScriptPackage.XVALUE_SIGNAL_SESSION_COUNT_TYPE__TIME_RANGE:
+      case XScriptPackage.XVALUE_SESSION_SIGNAL_COUNT_TYPE__TIME_RANGE:
         setTimeRange((XTimeRange)null);
         return;
-      case XScriptPackage.XVALUE_SIGNAL_SESSION_COUNT_TYPE__VALUE:
+      case XScriptPackage.XVALUE_SESSION_SIGNAL_COUNT_TYPE__VALUE:
         setValue(VALUE_EDEFAULT);
         return;
     }
@@ -307,11 +307,11 @@ public class XValueSignalSessionCountTypeImpl extends XValueTypeImpl implements 
   {
     switch (featureID)
     {
-      case XScriptPackage.XVALUE_SIGNAL_SESSION_COUNT_TYPE__SIGNAL:
+      case XScriptPackage.XVALUE_SESSION_SIGNAL_COUNT_TYPE__SIGNAL:
         return signal != null;
-      case XScriptPackage.XVALUE_SIGNAL_SESSION_COUNT_TYPE__TIME_RANGE:
+      case XScriptPackage.XVALUE_SESSION_SIGNAL_COUNT_TYPE__TIME_RANGE:
         return timeRange != null;
-      case XScriptPackage.XVALUE_SIGNAL_SESSION_COUNT_TYPE__VALUE:
+      case XScriptPackage.XVALUE_SESSION_SIGNAL_COUNT_TYPE__VALUE:
         return value != VALUE_EDEFAULT;
     }
     return super.eIsSet(featureID);
@@ -334,4 +334,4 @@ public class XValueSignalSessionCountTypeImpl extends XValueTypeImpl implements 
     return result.toString();
   }
 
-} //XValueSignalSessionCountTypeImpl
+} //XValueSessionSignalCountTypeImpl

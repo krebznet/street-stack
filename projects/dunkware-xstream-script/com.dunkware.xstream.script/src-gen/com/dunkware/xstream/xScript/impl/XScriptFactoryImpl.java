@@ -124,10 +124,11 @@ public class XScriptFactoryImpl extends EFactoryImpl implements XScriptFactory
       case XScriptPackage.XTIME_RANGE: return createXTimeRange();
       case XScriptPackage.XTIME_RANGE_RELATIVE: return createXTimeRangeRelative();
       case XScriptPackage.XVALUE_TYPE: return createXValueType();
-      case XScriptPackage.XVALUE_VAR_CURRENT_TYPE: return createXValueVarCurrentType();
-      case XScriptPackage.XVALUE_VAR_SESSION_AGG_TYPE: return createXValueVarSessionAggType();
-      case XScriptPackage.XVALUE_SIGNAL_SESSION_COUNT_TYPE: return createXValueSignalSessionCountType();
-      case XScriptPackage.XVALUE_SIGNAL_HISTORICAL_COUNT_TYPE: return createXValueSignalHistoricalCountType();
+      case XScriptPackage.XVALUE_SESSION_VAR_VALUE_TYPE: return createXValueSessionVarValueType();
+      case XScriptPackage.XVALUE_SESSION_VAR_AGG_TYPE: return createXValueSessionVarAggType();
+      case XScriptPackage.XVALUE_SESSION_SIGNAL_COUNT_TYPE: return createXValueSessionSignalCountType();
+      case XScriptPackage.XVALUE_HISTORICAL_VAR_AGG_TYPE: return createXValueHistoricalVarAggType();
+      case XScriptPackage.XVALUE_HISTORICAL_SIGNAL_COUNT_TYPE: return createXValueHistoricalSignalCountType();
       case XScriptPackage.XQUERY_TYPE: return createXQueryType();
       case XScriptPackage.XQUERY_FILTER_TYPE: return createXQueryFilterType();
       case XScriptPackage.XQUERY_FILTER_VALUE_TYPE: return createXQueryFilterValueType();
@@ -919,10 +920,10 @@ public class XScriptFactoryImpl extends EFactoryImpl implements XScriptFactory
    * @generated
    */
   @Override
-  public XValueVarCurrentType createXValueVarCurrentType()
+  public XValueSessionVarValueType createXValueSessionVarValueType()
   {
-    XValueVarCurrentTypeImpl xValueVarCurrentType = new XValueVarCurrentTypeImpl();
-    return xValueVarCurrentType;
+    XValueSessionVarValueTypeImpl xValueSessionVarValueType = new XValueSessionVarValueTypeImpl();
+    return xValueSessionVarValueType;
   }
 
   /**
@@ -931,10 +932,10 @@ public class XScriptFactoryImpl extends EFactoryImpl implements XScriptFactory
    * @generated
    */
   @Override
-  public XValueVarSessionAggType createXValueVarSessionAggType()
+  public XValueSessionVarAggType createXValueSessionVarAggType()
   {
-    XValueVarSessionAggTypeImpl xValueVarSessionAggType = new XValueVarSessionAggTypeImpl();
-    return xValueVarSessionAggType;
+    XValueSessionVarAggTypeImpl xValueSessionVarAggType = new XValueSessionVarAggTypeImpl();
+    return xValueSessionVarAggType;
   }
 
   /**
@@ -943,10 +944,10 @@ public class XScriptFactoryImpl extends EFactoryImpl implements XScriptFactory
    * @generated
    */
   @Override
-  public XValueSignalSessionCountType createXValueSignalSessionCountType()
+  public XValueSessionSignalCountType createXValueSessionSignalCountType()
   {
-    XValueSignalSessionCountTypeImpl xValueSignalSessionCountType = new XValueSignalSessionCountTypeImpl();
-    return xValueSignalSessionCountType;
+    XValueSessionSignalCountTypeImpl xValueSessionSignalCountType = new XValueSessionSignalCountTypeImpl();
+    return xValueSessionSignalCountType;
   }
 
   /**
@@ -955,10 +956,22 @@ public class XScriptFactoryImpl extends EFactoryImpl implements XScriptFactory
    * @generated
    */
   @Override
-  public XValueSignalHistoricalCountType createXValueSignalHistoricalCountType()
+  public XValueHistoricalVarAggType createXValueHistoricalVarAggType()
   {
-    XValueSignalHistoricalCountTypeImpl xValueSignalHistoricalCountType = new XValueSignalHistoricalCountTypeImpl();
-    return xValueSignalHistoricalCountType;
+    XValueHistoricalVarAggTypeImpl xValueHistoricalVarAggType = new XValueHistoricalVarAggTypeImpl();
+    return xValueHistoricalVarAggType;
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  @Override
+  public XValueHistoricalSignalCountType createXValueHistoricalSignalCountType()
+  {
+    XValueHistoricalSignalCountTypeImpl xValueHistoricalSignalCountType = new XValueHistoricalSignalCountTypeImpl();
+    return xValueHistoricalSignalCountType;
   }
 
   /**

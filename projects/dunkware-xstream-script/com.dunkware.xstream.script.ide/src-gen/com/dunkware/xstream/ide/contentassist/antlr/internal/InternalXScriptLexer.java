@@ -2069,10 +2069,10 @@ public class InternalXScriptLexer extends Lexer {
         try {
             int _type = RULE_DOUBLE;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // InternalXScript.g:19946:13: ( ( '-' )? ( '0' .. '9' )+ '.' ( '0' .. '9' )+ ( ( 'e' | 'E' ) ( '-' )? ( '0' .. '9' )+ )? )
-            // InternalXScript.g:19946:15: ( '-' )? ( '0' .. '9' )+ '.' ( '0' .. '9' )+ ( ( 'e' | 'E' ) ( '-' )? ( '0' .. '9' )+ )?
+            // InternalXScript.g:19914:13: ( ( '-' )? ( '0' .. '9' )+ '.' ( '0' .. '9' )+ ( ( 'e' | 'E' ) ( '-' )? ( '0' .. '9' )+ )? )
+            // InternalXScript.g:19914:15: ( '-' )? ( '0' .. '9' )+ '.' ( '0' .. '9' )+ ( ( 'e' | 'E' ) ( '-' )? ( '0' .. '9' )+ )?
             {
-            // InternalXScript.g:19946:15: ( '-' )?
+            // InternalXScript.g:19914:15: ( '-' )?
             int alt1=2;
             int LA1_0 = input.LA(1);
 
@@ -2081,7 +2081,7 @@ public class InternalXScriptLexer extends Lexer {
             }
             switch (alt1) {
                 case 1 :
-                    // InternalXScript.g:19946:15: '-'
+                    // InternalXScript.g:19914:15: '-'
                     {
                     match('-'); 
 
@@ -2090,7 +2090,7 @@ public class InternalXScriptLexer extends Lexer {
 
             }
 
-            // InternalXScript.g:19946:20: ( '0' .. '9' )+
+            // InternalXScript.g:19914:20: ( '0' .. '9' )+
             int cnt2=0;
             loop2:
             do {
@@ -2104,7 +2104,7 @@ public class InternalXScriptLexer extends Lexer {
 
                 switch (alt2) {
             	case 1 :
-            	    // InternalXScript.g:19946:21: '0' .. '9'
+            	    // InternalXScript.g:19914:21: '0' .. '9'
             	    {
             	    matchRange('0','9'); 
 
@@ -2121,7 +2121,7 @@ public class InternalXScriptLexer extends Lexer {
             } while (true);
 
             match('.'); 
-            // InternalXScript.g:19946:36: ( '0' .. '9' )+
+            // InternalXScript.g:19914:36: ( '0' .. '9' )+
             int cnt3=0;
             loop3:
             do {
@@ -2135,7 +2135,7 @@ public class InternalXScriptLexer extends Lexer {
 
                 switch (alt3) {
             	case 1 :
-            	    // InternalXScript.g:19946:37: '0' .. '9'
+            	    // InternalXScript.g:19914:37: '0' .. '9'
             	    {
             	    matchRange('0','9'); 
 
@@ -2151,7 +2151,7 @@ public class InternalXScriptLexer extends Lexer {
                 cnt3++;
             } while (true);
 
-            // InternalXScript.g:19946:48: ( ( 'e' | 'E' ) ( '-' )? ( '0' .. '9' )+ )?
+            // InternalXScript.g:19914:48: ( ( 'e' | 'E' ) ( '-' )? ( '0' .. '9' )+ )?
             int alt6=2;
             int LA6_0 = input.LA(1);
 
@@ -2160,7 +2160,7 @@ public class InternalXScriptLexer extends Lexer {
             }
             switch (alt6) {
                 case 1 :
-                    // InternalXScript.g:19946:49: ( 'e' | 'E' ) ( '-' )? ( '0' .. '9' )+
+                    // InternalXScript.g:19914:49: ( 'e' | 'E' ) ( '-' )? ( '0' .. '9' )+
                     {
                     if ( input.LA(1)=='E'||input.LA(1)=='e' ) {
                         input.consume();
@@ -2171,7 +2171,7 @@ public class InternalXScriptLexer extends Lexer {
                         recover(mse);
                         throw mse;}
 
-                    // InternalXScript.g:19946:59: ( '-' )?
+                    // InternalXScript.g:19914:59: ( '-' )?
                     int alt4=2;
                     int LA4_0 = input.LA(1);
 
@@ -2180,7 +2180,7 @@ public class InternalXScriptLexer extends Lexer {
                     }
                     switch (alt4) {
                         case 1 :
-                            // InternalXScript.g:19946:59: '-'
+                            // InternalXScript.g:19914:59: '-'
                             {
                             match('-'); 
 
@@ -2189,7 +2189,7 @@ public class InternalXScriptLexer extends Lexer {
 
                     }
 
-                    // InternalXScript.g:19946:64: ( '0' .. '9' )+
+                    // InternalXScript.g:19914:64: ( '0' .. '9' )+
                     int cnt5=0;
                     loop5:
                     do {
@@ -2203,7 +2203,7 @@ public class InternalXScriptLexer extends Lexer {
 
                         switch (alt5) {
                     	case 1 :
-                    	    // InternalXScript.g:19946:65: '0' .. '9'
+                    	    // InternalXScript.g:19914:65: '0' .. '9'
                     	    {
                     	    matchRange('0','9'); 
 
@@ -2241,10 +2241,10 @@ public class InternalXScriptLexer extends Lexer {
         try {
             int _type = RULE_ID;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // InternalXScript.g:19948:9: ( ( '^' )? ( 'a' .. 'z' | 'A' .. 'Z' | '_' ) ( 'a' .. 'z' | 'A' .. 'Z' | '_' | '0' .. '9' )* )
-            // InternalXScript.g:19948:11: ( '^' )? ( 'a' .. 'z' | 'A' .. 'Z' | '_' ) ( 'a' .. 'z' | 'A' .. 'Z' | '_' | '0' .. '9' )*
+            // InternalXScript.g:19916:9: ( ( '^' )? ( 'a' .. 'z' | 'A' .. 'Z' | '_' ) ( 'a' .. 'z' | 'A' .. 'Z' | '_' | '0' .. '9' )* )
+            // InternalXScript.g:19916:11: ( '^' )? ( 'a' .. 'z' | 'A' .. 'Z' | '_' ) ( 'a' .. 'z' | 'A' .. 'Z' | '_' | '0' .. '9' )*
             {
-            // InternalXScript.g:19948:11: ( '^' )?
+            // InternalXScript.g:19916:11: ( '^' )?
             int alt7=2;
             int LA7_0 = input.LA(1);
 
@@ -2253,7 +2253,7 @@ public class InternalXScriptLexer extends Lexer {
             }
             switch (alt7) {
                 case 1 :
-                    // InternalXScript.g:19948:11: '^'
+                    // InternalXScript.g:19916:11: '^'
                     {
                     match('^'); 
 
@@ -2271,7 +2271,7 @@ public class InternalXScriptLexer extends Lexer {
                 recover(mse);
                 throw mse;}
 
-            // InternalXScript.g:19948:40: ( 'a' .. 'z' | 'A' .. 'Z' | '_' | '0' .. '9' )*
+            // InternalXScript.g:19916:40: ( 'a' .. 'z' | 'A' .. 'Z' | '_' | '0' .. '9' )*
             loop8:
             do {
                 int alt8=2;
@@ -2320,10 +2320,10 @@ public class InternalXScriptLexer extends Lexer {
         try {
             int _type = RULE_INT;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // InternalXScript.g:19950:10: ( ( '0' .. '9' )+ )
-            // InternalXScript.g:19950:12: ( '0' .. '9' )+
+            // InternalXScript.g:19918:10: ( ( '0' .. '9' )+ )
+            // InternalXScript.g:19918:12: ( '0' .. '9' )+
             {
-            // InternalXScript.g:19950:12: ( '0' .. '9' )+
+            // InternalXScript.g:19918:12: ( '0' .. '9' )+
             int cnt9=0;
             loop9:
             do {
@@ -2337,7 +2337,7 @@ public class InternalXScriptLexer extends Lexer {
 
                 switch (alt9) {
             	case 1 :
-            	    // InternalXScript.g:19950:13: '0' .. '9'
+            	    // InternalXScript.g:19918:13: '0' .. '9'
             	    {
             	    matchRange('0','9'); 
 
@@ -2369,10 +2369,10 @@ public class InternalXScriptLexer extends Lexer {
         try {
             int _type = RULE_STRING;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // InternalXScript.g:19952:13: ( ( '\"' ( '\\\\' . | ~ ( ( '\\\\' | '\"' ) ) )* '\"' | '\\'' ( '\\\\' . | ~ ( ( '\\\\' | '\\'' ) ) )* '\\'' ) )
-            // InternalXScript.g:19952:15: ( '\"' ( '\\\\' . | ~ ( ( '\\\\' | '\"' ) ) )* '\"' | '\\'' ( '\\\\' . | ~ ( ( '\\\\' | '\\'' ) ) )* '\\'' )
+            // InternalXScript.g:19920:13: ( ( '\"' ( '\\\\' . | ~ ( ( '\\\\' | '\"' ) ) )* '\"' | '\\'' ( '\\\\' . | ~ ( ( '\\\\' | '\\'' ) ) )* '\\'' ) )
+            // InternalXScript.g:19920:15: ( '\"' ( '\\\\' . | ~ ( ( '\\\\' | '\"' ) ) )* '\"' | '\\'' ( '\\\\' . | ~ ( ( '\\\\' | '\\'' ) ) )* '\\'' )
             {
-            // InternalXScript.g:19952:15: ( '\"' ( '\\\\' . | ~ ( ( '\\\\' | '\"' ) ) )* '\"' | '\\'' ( '\\\\' . | ~ ( ( '\\\\' | '\\'' ) ) )* '\\'' )
+            // InternalXScript.g:19920:15: ( '\"' ( '\\\\' . | ~ ( ( '\\\\' | '\"' ) ) )* '\"' | '\\'' ( '\\\\' . | ~ ( ( '\\\\' | '\\'' ) ) )* '\\'' )
             int alt12=2;
             int LA12_0 = input.LA(1);
 
@@ -2390,10 +2390,10 @@ public class InternalXScriptLexer extends Lexer {
             }
             switch (alt12) {
                 case 1 :
-                    // InternalXScript.g:19952:16: '\"' ( '\\\\' . | ~ ( ( '\\\\' | '\"' ) ) )* '\"'
+                    // InternalXScript.g:19920:16: '\"' ( '\\\\' . | ~ ( ( '\\\\' | '\"' ) ) )* '\"'
                     {
                     match('\"'); 
-                    // InternalXScript.g:19952:20: ( '\\\\' . | ~ ( ( '\\\\' | '\"' ) ) )*
+                    // InternalXScript.g:19920:20: ( '\\\\' . | ~ ( ( '\\\\' | '\"' ) ) )*
                     loop10:
                     do {
                         int alt10=3;
@@ -2409,7 +2409,7 @@ public class InternalXScriptLexer extends Lexer {
 
                         switch (alt10) {
                     	case 1 :
-                    	    // InternalXScript.g:19952:21: '\\\\' .
+                    	    // InternalXScript.g:19920:21: '\\\\' .
                     	    {
                     	    match('\\'); 
                     	    matchAny(); 
@@ -2417,7 +2417,7 @@ public class InternalXScriptLexer extends Lexer {
                     	    }
                     	    break;
                     	case 2 :
-                    	    // InternalXScript.g:19952:28: ~ ( ( '\\\\' | '\"' ) )
+                    	    // InternalXScript.g:19920:28: ~ ( ( '\\\\' | '\"' ) )
                     	    {
                     	    if ( (input.LA(1)>='\u0000' && input.LA(1)<='!')||(input.LA(1)>='#' && input.LA(1)<='[')||(input.LA(1)>=']' && input.LA(1)<='\uFFFF') ) {
                     	        input.consume();
@@ -2442,10 +2442,10 @@ public class InternalXScriptLexer extends Lexer {
                     }
                     break;
                 case 2 :
-                    // InternalXScript.g:19952:48: '\\'' ( '\\\\' . | ~ ( ( '\\\\' | '\\'' ) ) )* '\\''
+                    // InternalXScript.g:19920:48: '\\'' ( '\\\\' . | ~ ( ( '\\\\' | '\\'' ) ) )* '\\''
                     {
                     match('\''); 
-                    // InternalXScript.g:19952:53: ( '\\\\' . | ~ ( ( '\\\\' | '\\'' ) ) )*
+                    // InternalXScript.g:19920:53: ( '\\\\' . | ~ ( ( '\\\\' | '\\'' ) ) )*
                     loop11:
                     do {
                         int alt11=3;
@@ -2461,7 +2461,7 @@ public class InternalXScriptLexer extends Lexer {
 
                         switch (alt11) {
                     	case 1 :
-                    	    // InternalXScript.g:19952:54: '\\\\' .
+                    	    // InternalXScript.g:19920:54: '\\\\' .
                     	    {
                     	    match('\\'); 
                     	    matchAny(); 
@@ -2469,7 +2469,7 @@ public class InternalXScriptLexer extends Lexer {
                     	    }
                     	    break;
                     	case 2 :
-                    	    // InternalXScript.g:19952:61: ~ ( ( '\\\\' | '\\'' ) )
+                    	    // InternalXScript.g:19920:61: ~ ( ( '\\\\' | '\\'' ) )
                     	    {
                     	    if ( (input.LA(1)>='\u0000' && input.LA(1)<='&')||(input.LA(1)>='(' && input.LA(1)<='[')||(input.LA(1)>=']' && input.LA(1)<='\uFFFF') ) {
                     	        input.consume();
@@ -2512,12 +2512,12 @@ public class InternalXScriptLexer extends Lexer {
         try {
             int _type = RULE_ML_COMMENT;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // InternalXScript.g:19954:17: ( '/*' ( options {greedy=false; } : . )* '*/' )
-            // InternalXScript.g:19954:19: '/*' ( options {greedy=false; } : . )* '*/'
+            // InternalXScript.g:19922:17: ( '/*' ( options {greedy=false; } : . )* '*/' )
+            // InternalXScript.g:19922:19: '/*' ( options {greedy=false; } : . )* '*/'
             {
             match("/*"); 
 
-            // InternalXScript.g:19954:24: ( options {greedy=false; } : . )*
+            // InternalXScript.g:19922:24: ( options {greedy=false; } : . )*
             loop13:
             do {
                 int alt13=2;
@@ -2542,7 +2542,7 @@ public class InternalXScriptLexer extends Lexer {
 
                 switch (alt13) {
             	case 1 :
-            	    // InternalXScript.g:19954:52: .
+            	    // InternalXScript.g:19922:52: .
             	    {
             	    matchAny(); 
 
@@ -2572,12 +2572,12 @@ public class InternalXScriptLexer extends Lexer {
         try {
             int _type = RULE_SL_COMMENT;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // InternalXScript.g:19956:17: ( '//' (~ ( ( '\\n' | '\\r' ) ) )* ( ( '\\r' )? '\\n' )? )
-            // InternalXScript.g:19956:19: '//' (~ ( ( '\\n' | '\\r' ) ) )* ( ( '\\r' )? '\\n' )?
+            // InternalXScript.g:19924:17: ( '//' (~ ( ( '\\n' | '\\r' ) ) )* ( ( '\\r' )? '\\n' )? )
+            // InternalXScript.g:19924:19: '//' (~ ( ( '\\n' | '\\r' ) ) )* ( ( '\\r' )? '\\n' )?
             {
             match("//"); 
 
-            // InternalXScript.g:19956:24: (~ ( ( '\\n' | '\\r' ) ) )*
+            // InternalXScript.g:19924:24: (~ ( ( '\\n' | '\\r' ) ) )*
             loop14:
             do {
                 int alt14=2;
@@ -2590,7 +2590,7 @@ public class InternalXScriptLexer extends Lexer {
 
                 switch (alt14) {
             	case 1 :
-            	    // InternalXScript.g:19956:24: ~ ( ( '\\n' | '\\r' ) )
+            	    // InternalXScript.g:19924:24: ~ ( ( '\\n' | '\\r' ) )
             	    {
             	    if ( (input.LA(1)>='\u0000' && input.LA(1)<='\t')||(input.LA(1)>='\u000B' && input.LA(1)<='\f')||(input.LA(1)>='\u000E' && input.LA(1)<='\uFFFF') ) {
             	        input.consume();
@@ -2610,7 +2610,7 @@ public class InternalXScriptLexer extends Lexer {
                 }
             } while (true);
 
-            // InternalXScript.g:19956:40: ( ( '\\r' )? '\\n' )?
+            // InternalXScript.g:19924:40: ( ( '\\r' )? '\\n' )?
             int alt16=2;
             int LA16_0 = input.LA(1);
 
@@ -2619,9 +2619,9 @@ public class InternalXScriptLexer extends Lexer {
             }
             switch (alt16) {
                 case 1 :
-                    // InternalXScript.g:19956:41: ( '\\r' )? '\\n'
+                    // InternalXScript.g:19924:41: ( '\\r' )? '\\n'
                     {
-                    // InternalXScript.g:19956:41: ( '\\r' )?
+                    // InternalXScript.g:19924:41: ( '\\r' )?
                     int alt15=2;
                     int LA15_0 = input.LA(1);
 
@@ -2630,7 +2630,7 @@ public class InternalXScriptLexer extends Lexer {
                     }
                     switch (alt15) {
                         case 1 :
-                            // InternalXScript.g:19956:41: '\\r'
+                            // InternalXScript.g:19924:41: '\\r'
                             {
                             match('\r'); 
 
@@ -2662,10 +2662,10 @@ public class InternalXScriptLexer extends Lexer {
         try {
             int _type = RULE_WS;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // InternalXScript.g:19958:9: ( ( ' ' | '\\t' | '\\r' | '\\n' )+ )
-            // InternalXScript.g:19958:11: ( ' ' | '\\t' | '\\r' | '\\n' )+
+            // InternalXScript.g:19926:9: ( ( ' ' | '\\t' | '\\r' | '\\n' )+ )
+            // InternalXScript.g:19926:11: ( ' ' | '\\t' | '\\r' | '\\n' )+
             {
-            // InternalXScript.g:19958:11: ( ' ' | '\\t' | '\\r' | '\\n' )+
+            // InternalXScript.g:19926:11: ( ' ' | '\\t' | '\\r' | '\\n' )+
             int cnt17=0;
             loop17:
             do {
@@ -2719,8 +2719,8 @@ public class InternalXScriptLexer extends Lexer {
         try {
             int _type = RULE_ANY_OTHER;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // InternalXScript.g:19960:16: ( . )
-            // InternalXScript.g:19960:18: .
+            // InternalXScript.g:19928:16: ( . )
+            // InternalXScript.g:19928:18: .
             {
             matchAny(); 
 

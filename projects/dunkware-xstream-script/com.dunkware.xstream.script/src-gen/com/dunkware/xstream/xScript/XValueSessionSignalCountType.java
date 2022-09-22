@@ -6,23 +6,23 @@ package com.dunkware.xstream.xScript;
 
 /**
  * <!-- begin-user-doc -->
- * A representation of the model object '<em><b>XValue Signal Session Count Type</b></em>'.
+ * A representation of the model object '<em><b>XValue Session Signal Count Type</b></em>'.
  * <!-- end-user-doc -->
  *
  * <p>
  * The following features are supported:
  * </p>
  * <ul>
- *   <li>{@link com.dunkware.xstream.xScript.XValueSignalSessionCountType#getSignal <em>Signal</em>}</li>
- *   <li>{@link com.dunkware.xstream.xScript.XValueSignalSessionCountType#getTimeRange <em>Time Range</em>}</li>
- *   <li>{@link com.dunkware.xstream.xScript.XValueSignalSessionCountType#getValue <em>Value</em>}</li>
+ *   <li>{@link com.dunkware.xstream.xScript.XValueSessionSignalCountType#getSignal <em>Signal</em>}</li>
+ *   <li>{@link com.dunkware.xstream.xScript.XValueSessionSignalCountType#getTimeRange <em>Time Range</em>}</li>
+ *   <li>{@link com.dunkware.xstream.xScript.XValueSessionSignalCountType#getValue <em>Value</em>}</li>
  * </ul>
  *
- * @see com.dunkware.xstream.xScript.XScriptPackage#getXValueSignalSessionCountType()
+ * @see com.dunkware.xstream.xScript.XScriptPackage#getXValueSessionSignalCountType()
  * @model
  * @generated
  */
-public interface XValueSignalSessionCountType extends XValueType
+public interface XValueSessionSignalCountType extends XValueType
 {
   /**
    * Returns the value of the '<em><b>Signal</b></em>' reference.
@@ -30,14 +30,14 @@ public interface XValueSignalSessionCountType extends XValueType
    * <!-- end-user-doc -->
    * @return the value of the '<em>Signal</em>' reference.
    * @see #setSignal(SignalType)
-   * @see com.dunkware.xstream.xScript.XScriptPackage#getXValueSignalSessionCountType_Signal()
+   * @see com.dunkware.xstream.xScript.XScriptPackage#getXValueSessionSignalCountType_Signal()
    * @model
    * @generated
    */
   SignalType getSignal();
 
   /**
-   * Sets the value of the '{@link com.dunkware.xstream.xScript.XValueSignalSessionCountType#getSignal <em>Signal</em>}' reference.
+   * Sets the value of the '{@link com.dunkware.xstream.xScript.XValueSessionSignalCountType#getSignal <em>Signal</em>}' reference.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
    * @param value the new value of the '<em>Signal</em>' reference.
@@ -52,14 +52,14 @@ public interface XValueSignalSessionCountType extends XValueType
    * <!-- end-user-doc -->
    * @return the value of the '<em>Time Range</em>' containment reference.
    * @see #setTimeRange(XTimeRange)
-   * @see com.dunkware.xstream.xScript.XScriptPackage#getXValueSignalSessionCountType_TimeRange()
+   * @see com.dunkware.xstream.xScript.XScriptPackage#getXValueSessionSignalCountType_TimeRange()
    * @model containment="true"
    * @generated
    */
   XTimeRange getTimeRange();
 
   /**
-   * Sets the value of the '{@link com.dunkware.xstream.xScript.XValueSignalSessionCountType#getTimeRange <em>Time Range</em>}' containment reference.
+   * Sets the value of the '{@link com.dunkware.xstream.xScript.XValueSessionSignalCountType#getTimeRange <em>Time Range</em>}' containment reference.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
    * @param value the new value of the '<em>Time Range</em>' containment reference.
@@ -74,14 +74,14 @@ public interface XValueSignalSessionCountType extends XValueType
    * <!-- end-user-doc -->
    * @return the value of the '<em>Value</em>' attribute.
    * @see #setValue(int)
-   * @see com.dunkware.xstream.xScript.XScriptPackage#getXValueSignalSessionCountType_Value()
+   * @see com.dunkware.xstream.xScript.XScriptPackage#getXValueSessionSignalCountType_Value()
    * @model
    * @generated
    */
   int getValue();
 
   /**
-   * Sets the value of the '{@link com.dunkware.xstream.xScript.XValueSignalSessionCountType#getValue <em>Value</em>}' attribute.
+   * Sets the value of the '{@link com.dunkware.xstream.xScript.XValueSessionSignalCountType#getValue <em>Value</em>}' attribute.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
    * @param value the new value of the '<em>Value</em>' attribute.
@@ -90,4 +90,4 @@ public interface XValueSignalSessionCountType extends XValueType
    */
   void setValue(int value);
 
-} // XValueSignalSessionCountType
+} // XValueSessionSignalCountType

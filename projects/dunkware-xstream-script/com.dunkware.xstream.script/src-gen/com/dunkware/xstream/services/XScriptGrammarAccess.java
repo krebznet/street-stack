@@ -3903,34 +3903,34 @@ public class XScriptGrammarAccess extends AbstractGrammarElementFinder {
 	public class XValueTypeElements extends AbstractParserRuleElementFinder {
 		private final ParserRule rule = (ParserRule) GrammarUtil.findRuleForName(getGrammar(), "com.dunkware.xstream.XScript.XValueType");
 		private final Alternatives cAlternatives = (Alternatives)rule.eContents().get(1);
-		private final RuleCall cXValueVarCurrentTypeParserRuleCall_0 = (RuleCall)cAlternatives.eContents().get(0);
-		private final RuleCall cXValueVarSessionAggTypeParserRuleCall_1 = (RuleCall)cAlternatives.eContents().get(1);
-		private final RuleCall cXValueSignalSessionCountTypeParserRuleCall_2 = (RuleCall)cAlternatives.eContents().get(2);
-		private final RuleCall cXValueSignalHistoricalCountTypeParserRuleCall_3 = (RuleCall)cAlternatives.eContents().get(3);
+		private final RuleCall cXValueSessionVarValueTypeParserRuleCall_0 = (RuleCall)cAlternatives.eContents().get(0);
+		private final RuleCall cXValueSessionVarAggTypeParserRuleCall_1 = (RuleCall)cAlternatives.eContents().get(1);
+		private final RuleCall cXValueSessionSignalCountTypeParserRuleCall_2 = (RuleCall)cAlternatives.eContents().get(2);
+		private final RuleCall cXValueHistoricalSignalCountTypeParserRuleCall_3 = (RuleCall)cAlternatives.eContents().get(3);
 		
 		//XValueType:
-		//	XValueVarCurrentType | XValueVarSessionAggType | XValueSignalSessionCountType | XValueSignalHistoricalCountType;
+		//	XValueSessionVarValueType | XValueSessionVarAggType | XValueSessionSignalCountType | XValueHistoricalSignalCountType;
 		@Override public ParserRule getRule() { return rule; }
 		
-		//XValueVarCurrentType | XValueVarSessionAggType | XValueSignalSessionCountType | XValueSignalHistoricalCountType
+		//XValueSessionVarValueType | XValueSessionVarAggType | XValueSessionSignalCountType | XValueHistoricalSignalCountType
 		public Alternatives getAlternatives() { return cAlternatives; }
 		
-		//XValueVarCurrentType
-		public RuleCall getXValueVarCurrentTypeParserRuleCall_0() { return cXValueVarCurrentTypeParserRuleCall_0; }
+		//XValueSessionVarValueType
+		public RuleCall getXValueSessionVarValueTypeParserRuleCall_0() { return cXValueSessionVarValueTypeParserRuleCall_0; }
 		
-		//XValueVarSessionAggType
-		public RuleCall getXValueVarSessionAggTypeParserRuleCall_1() { return cXValueVarSessionAggTypeParserRuleCall_1; }
+		//XValueSessionVarAggType
+		public RuleCall getXValueSessionVarAggTypeParserRuleCall_1() { return cXValueSessionVarAggTypeParserRuleCall_1; }
 		
-		//XValueSignalSessionCountType
-		public RuleCall getXValueSignalSessionCountTypeParserRuleCall_2() { return cXValueSignalSessionCountTypeParserRuleCall_2; }
+		//XValueSessionSignalCountType
+		public RuleCall getXValueSessionSignalCountTypeParserRuleCall_2() { return cXValueSessionSignalCountTypeParserRuleCall_2; }
 		
-		//XValueSignalHistoricalCountType
-		public RuleCall getXValueSignalHistoricalCountTypeParserRuleCall_3() { return cXValueSignalHistoricalCountTypeParserRuleCall_3; }
+		//XValueHistoricalSignalCountType
+		public RuleCall getXValueHistoricalSignalCountTypeParserRuleCall_3() { return cXValueHistoricalSignalCountTypeParserRuleCall_3; }
 	}
-	public class XValueVarCurrentTypeElements extends AbstractParserRuleElementFinder {
-		private final ParserRule rule = (ParserRule) GrammarUtil.findRuleForName(getGrammar(), "com.dunkware.xstream.XScript.XValueVarCurrentType");
+	public class XValueSessionVarValueTypeElements extends AbstractParserRuleElementFinder {
+		private final ParserRule rule = (ParserRule) GrammarUtil.findRuleForName(getGrammar(), "com.dunkware.xstream.XScript.XValueSessionVarValueType");
 		private final Group cGroup = (Group)rule.eContents().get(1);
-		private final Action cXValueVarCurrentTypeAction_0 = (Action)cGroup.eContents().get(0);
+		private final Action cXValueSessionVarValueTypeAction_0 = (Action)cGroup.eContents().get(0);
 		private final Keyword cSessionVarValueKeyword_1 = (Keyword)cGroup.eContents().get(1);
 		private final Keyword cLeftParenthesisKeyword_2 = (Keyword)cGroup.eContents().get(2);
 		private final Assignment cVarAssignment_3 = (Assignment)cGroup.eContents().get(3);
@@ -3941,15 +3941,15 @@ public class XScriptGrammarAccess extends AbstractGrammarElementFinder {
 		private final RuleCall cIndexINTTerminalRuleCall_5_0 = (RuleCall)cIndexAssignment_5.eContents().get(0);
 		private final Keyword cRightParenthesisKeyword_6 = (Keyword)cGroup.eContents().get(6);
 		
-		//XValueVarCurrentType:
-		//	{XValueVarCurrentType} 'sessionVarValue' '(' var=[VarType] ',' index=INT ')';
+		//XValueSessionVarValueType:
+		//	{XValueSessionVarValueType} 'sessionVarValue' '(' var=[VarType] ',' index=INT ')';
 		@Override public ParserRule getRule() { return rule; }
 		
-		//{XValueVarCurrentType} 'sessionVarValue' '(' var=[VarType] ',' index=INT ')'
+		//{XValueSessionVarValueType} 'sessionVarValue' '(' var=[VarType] ',' index=INT ')'
 		public Group getGroup() { return cGroup; }
 		
-		//{XValueVarCurrentType}
-		public Action getXValueVarCurrentTypeAction_0() { return cXValueVarCurrentTypeAction_0; }
+		//{XValueSessionVarValueType}
+		public Action getXValueSessionVarValueTypeAction_0() { return cXValueSessionVarValueTypeAction_0; }
 		
 		//'sessionVarValue'
 		public Keyword getSessionVarValueKeyword_1() { return cSessionVarValueKeyword_1; }
@@ -3978,10 +3978,10 @@ public class XScriptGrammarAccess extends AbstractGrammarElementFinder {
 		//')'
 		public Keyword getRightParenthesisKeyword_6() { return cRightParenthesisKeyword_6; }
 	}
-	public class XValueVarSessionAggTypeElements extends AbstractParserRuleElementFinder {
-		private final ParserRule rule = (ParserRule) GrammarUtil.findRuleForName(getGrammar(), "com.dunkware.xstream.XScript.XValueVarSessionAggType");
+	public class XValueSessionVarAggTypeElements extends AbstractParserRuleElementFinder {
+		private final ParserRule rule = (ParserRule) GrammarUtil.findRuleForName(getGrammar(), "com.dunkware.xstream.XScript.XValueSessionVarAggType");
 		private final Group cGroup = (Group)rule.eContents().get(1);
-		private final Action cXValueVarSessionAggTypeAction_0 = (Action)cGroup.eContents().get(0);
+		private final Action cXValueSessionVarAggTypeAction_0 = (Action)cGroup.eContents().get(0);
 		private final Keyword cSessionVarAggKeyword_1 = (Keyword)cGroup.eContents().get(1);
 		private final Keyword cLeftParenthesisKeyword_2 = (Keyword)cGroup.eContents().get(2);
 		private final Assignment cVarAssignment_3 = (Assignment)cGroup.eContents().get(3);
@@ -3995,17 +3995,17 @@ public class XScriptGrammarAccess extends AbstractGrammarElementFinder {
 		private final RuleCall cRangeXTimeRangeParserRuleCall_7_0 = (RuleCall)cRangeAssignment_7.eContents().get(0);
 		private final Keyword cRightParenthesisKeyword_8 = (Keyword)cGroup.eContents().get(8);
 		
-		//XValueVarSessionAggType:
-		//	{XValueVarSessionAggType} 'sessionVarAgg' '(' var=[VarType] ',' function=XValueVarSessionAggFunction ','
+		//XValueSessionVarAggType:
+		//	{XValueSessionVarAggType} 'sessionVarAgg' '(' var=[VarType] ',' function=XValueVarSessionAggFunction ','
 		//	range=XTimeRange ')';
 		@Override public ParserRule getRule() { return rule; }
 		
-		//{XValueVarSessionAggType} 'sessionVarAgg' '(' var=[VarType] ',' function=XValueVarSessionAggFunction ','
+		//{XValueSessionVarAggType} 'sessionVarAgg' '(' var=[VarType] ',' function=XValueVarSessionAggFunction ','
 		//range=XTimeRange ')'
 		public Group getGroup() { return cGroup; }
 		
-		//{XValueVarSessionAggType}
-		public Action getXValueVarSessionAggTypeAction_0() { return cXValueVarSessionAggTypeAction_0; }
+		//{XValueSessionVarAggType}
+		public Action getXValueSessionVarAggTypeAction_0() { return cXValueSessionVarAggTypeAction_0; }
 		
 		//'sessionVarAgg'
 		public Keyword getSessionVarAggKeyword_1() { return cSessionVarAggKeyword_1; }
@@ -4043,10 +4043,10 @@ public class XScriptGrammarAccess extends AbstractGrammarElementFinder {
 		//')'
 		public Keyword getRightParenthesisKeyword_8() { return cRightParenthesisKeyword_8; }
 	}
-	public class XValueSignalSessionCountTypeElements extends AbstractParserRuleElementFinder {
-		private final ParserRule rule = (ParserRule) GrammarUtil.findRuleForName(getGrammar(), "com.dunkware.xstream.XScript.XValueSignalSessionCountType");
+	public class XValueSessionSignalCountTypeElements extends AbstractParserRuleElementFinder {
+		private final ParserRule rule = (ParserRule) GrammarUtil.findRuleForName(getGrammar(), "com.dunkware.xstream.XScript.XValueSessionSignalCountType");
 		private final Group cGroup = (Group)rule.eContents().get(1);
-		private final Action cXValueSignalSessionCountTypeAction_0 = (Action)cGroup.eContents().get(0);
+		private final Action cXValueSessionSignalCountTypeAction_0 = (Action)cGroup.eContents().get(0);
 		private final Keyword cSessionSignalCountKeyword_1 = (Keyword)cGroup.eContents().get(1);
 		private final Keyword cLeftParenthesisKeyword_2 = (Keyword)cGroup.eContents().get(2);
 		private final Assignment cSignalAssignment_3 = (Assignment)cGroup.eContents().get(3);
@@ -4060,17 +4060,17 @@ public class XScriptGrammarAccess extends AbstractGrammarElementFinder {
 		private final RuleCall cValueINTTerminalRuleCall_7_0 = (RuleCall)cValueAssignment_7.eContents().get(0);
 		private final Keyword cRightParenthesisKeyword_8 = (Keyword)cGroup.eContents().get(8);
 		
-		//XValueSignalSessionCountType:
-		//	{XValueSignalSessionCountType} 'sessionSignalCount' '(' signal=[SignalType] ','
+		//XValueSessionSignalCountType:
+		//	{XValueSessionSignalCountType} 'sessionSignalCount' '(' signal=[SignalType] ','
 		//	timeRange=XTimeRange ','
 		//	value=INT ')';
 		@Override public ParserRule getRule() { return rule; }
 		
-		//{XValueSignalSessionCountType} 'sessionSignalCount' '(' signal=[SignalType] ',' timeRange=XTimeRange ',' value=INT ')'
+		//{XValueSessionSignalCountType} 'sessionSignalCount' '(' signal=[SignalType] ',' timeRange=XTimeRange ',' value=INT ')'
 		public Group getGroup() { return cGroup; }
 		
-		//{XValueSignalSessionCountType}
-		public Action getXValueSignalSessionCountTypeAction_0() { return cXValueSignalSessionCountTypeAction_0; }
+		//{XValueSessionSignalCountType}
+		public Action getXValueSessionSignalCountTypeAction_0() { return cXValueSessionSignalCountTypeAction_0; }
 		
 		//'sessionSignalCount'
 		public Keyword getSessionSignalCountKeyword_1() { return cSessionSignalCountKeyword_1; }
@@ -4108,10 +4108,69 @@ public class XScriptGrammarAccess extends AbstractGrammarElementFinder {
 		//')'
 		public Keyword getRightParenthesisKeyword_8() { return cRightParenthesisKeyword_8; }
 	}
-	public class XValueSignalHistoricalCountTypeElements extends AbstractParserRuleElementFinder {
-		private final ParserRule rule = (ParserRule) GrammarUtil.findRuleForName(getGrammar(), "com.dunkware.xstream.XScript.XValueSignalHistoricalCountType");
+	public class XValueHistoricalVarAggTypeElements extends AbstractParserRuleElementFinder {
+		private final ParserRule rule = (ParserRule) GrammarUtil.findRuleForName(getGrammar(), "com.dunkware.xstream.XScript.XValueHistoricalVarAggType");
 		private final Group cGroup = (Group)rule.eContents().get(1);
-		private final Action cXValueSignalHistoricalCountTypeAction_0 = (Action)cGroup.eContents().get(0);
+		private final Keyword cHistoricalVarAggKeyword_0 = (Keyword)cGroup.eContents().get(0);
+		private final Keyword cLeftParenthesisKeyword_1 = (Keyword)cGroup.eContents().get(1);
+		private final Assignment cVarAssignment_2 = (Assignment)cGroup.eContents().get(2);
+		private final CrossReference cVarVarTypeCrossReference_2_0 = (CrossReference)cVarAssignment_2.eContents().get(0);
+		private final RuleCall cVarVarTypeIDTerminalRuleCall_2_0_1 = (RuleCall)cVarVarTypeCrossReference_2_0.eContents().get(1);
+		private final Keyword cCommaKeyword_3 = (Keyword)cGroup.eContents().get(3);
+		private final Assignment cFunctionAssignment_4 = (Assignment)cGroup.eContents().get(4);
+		private final RuleCall cFunctionXValueVarHistoricalAggFunctionEnumRuleCall_4_0 = (RuleCall)cFunctionAssignment_4.eContents().get(0);
+		private final Keyword cCommaKeyword_5 = (Keyword)cGroup.eContents().get(5);
+		private final Assignment cDaysAssignment_6 = (Assignment)cGroup.eContents().get(6);
+		private final RuleCall cDaysINTTerminalRuleCall_6_0 = (RuleCall)cDaysAssignment_6.eContents().get(0);
+		private final Keyword cRightParenthesisKeyword_7 = (Keyword)cGroup.eContents().get(7);
+		
+		//XValueHistoricalVarAggType:
+		//	'historicalVarAgg' '(' var=[VarType] ',' function=XValueVarHistoricalAggFunction ',' days=INT ')';
+		@Override public ParserRule getRule() { return rule; }
+		
+		//'historicalVarAgg' '(' var=[VarType] ',' function=XValueVarHistoricalAggFunction ',' days=INT ')'
+		public Group getGroup() { return cGroup; }
+		
+		//'historicalVarAgg'
+		public Keyword getHistoricalVarAggKeyword_0() { return cHistoricalVarAggKeyword_0; }
+		
+		//'('
+		public Keyword getLeftParenthesisKeyword_1() { return cLeftParenthesisKeyword_1; }
+		
+		//var=[VarType]
+		public Assignment getVarAssignment_2() { return cVarAssignment_2; }
+		
+		//[VarType]
+		public CrossReference getVarVarTypeCrossReference_2_0() { return cVarVarTypeCrossReference_2_0; }
+		
+		//ID
+		public RuleCall getVarVarTypeIDTerminalRuleCall_2_0_1() { return cVarVarTypeIDTerminalRuleCall_2_0_1; }
+		
+		//','
+		public Keyword getCommaKeyword_3() { return cCommaKeyword_3; }
+		
+		//function=XValueVarHistoricalAggFunction
+		public Assignment getFunctionAssignment_4() { return cFunctionAssignment_4; }
+		
+		//XValueVarHistoricalAggFunction
+		public RuleCall getFunctionXValueVarHistoricalAggFunctionEnumRuleCall_4_0() { return cFunctionXValueVarHistoricalAggFunctionEnumRuleCall_4_0; }
+		
+		//','
+		public Keyword getCommaKeyword_5() { return cCommaKeyword_5; }
+		
+		//days=INT
+		public Assignment getDaysAssignment_6() { return cDaysAssignment_6; }
+		
+		//INT
+		public RuleCall getDaysINTTerminalRuleCall_6_0() { return cDaysINTTerminalRuleCall_6_0; }
+		
+		//')'
+		public Keyword getRightParenthesisKeyword_7() { return cRightParenthesisKeyword_7; }
+	}
+	public class XValueHistoricalSignalCountTypeElements extends AbstractParserRuleElementFinder {
+		private final ParserRule rule = (ParserRule) GrammarUtil.findRuleForName(getGrammar(), "com.dunkware.xstream.XScript.XValueHistoricalSignalCountType");
+		private final Group cGroup = (Group)rule.eContents().get(1);
+		private final Action cXValueHistoricalSignalCountTypeAction_0 = (Action)cGroup.eContents().get(0);
 		private final Keyword cHistoricalSignalCountKeyword_1 = (Keyword)cGroup.eContents().get(1);
 		private final Keyword cLeftParenthesisKeyword_2 = (Keyword)cGroup.eContents().get(2);
 		private final Assignment cSignalAssignment_3 = (Assignment)cGroup.eContents().get(3);
@@ -4120,25 +4179,20 @@ public class XScriptGrammarAccess extends AbstractGrammarElementFinder {
 		private final Keyword cCommaKeyword_4 = (Keyword)cGroup.eContents().get(4);
 		private final Assignment cDaysAssignment_5 = (Assignment)cGroup.eContents().get(5);
 		private final RuleCall cDaysINTTerminalRuleCall_5_0 = (RuleCall)cDaysAssignment_5.eContents().get(0);
-		private final Keyword cCommaKeyword_6 = (Keyword)cGroup.eContents().get(6);
-		private final Assignment cCountAssignment_7 = (Assignment)cGroup.eContents().get(7);
-		private final RuleCall cCountINTTerminalRuleCall_7_0 = (RuleCall)cCountAssignment_7.eContents().get(0);
-		private final Keyword cRightParenthesisKeyword_8 = (Keyword)cGroup.eContents().get(8);
+		private final Keyword cRightParenthesisKeyword_6 = (Keyword)cGroup.eContents().get(6);
 		
-		//XValueSignalHistoricalCountType:
-		//	{XValueSignalHistoricalCountType}
-		//	'historicalSignalCount' '(' signal=[SignalType] ','
-		//	days=INT ','
-		//	count=INT ')'
+		//XValueHistoricalSignalCountType:
+		//	{XValueHistoricalSignalCountType}
+		//	'historicalSignalCount' '(' signal=[SignalType] ',' days=INT ')'
 		//	// value
 		//;
 		@Override public ParserRule getRule() { return rule; }
 		
-		//{XValueSignalHistoricalCountType} 'historicalSignalCount' '(' signal=[SignalType] ',' days=INT ',' count=INT ')'
+		//{XValueHistoricalSignalCountType} 'historicalSignalCount' '(' signal=[SignalType] ',' days=INT ')'
 		public Group getGroup() { return cGroup; }
 		
-		//{XValueSignalHistoricalCountType}
-		public Action getXValueSignalHistoricalCountTypeAction_0() { return cXValueSignalHistoricalCountTypeAction_0; }
+		//{XValueHistoricalSignalCountType}
+		public Action getXValueHistoricalSignalCountTypeAction_0() { return cXValueHistoricalSignalCountTypeAction_0; }
 		
 		//'historicalSignalCount'
 		public Keyword getHistoricalSignalCountKeyword_1() { return cHistoricalSignalCountKeyword_1; }
@@ -4164,17 +4218,8 @@ public class XScriptGrammarAccess extends AbstractGrammarElementFinder {
 		//INT
 		public RuleCall getDaysINTTerminalRuleCall_5_0() { return cDaysINTTerminalRuleCall_5_0; }
 		
-		//','
-		public Keyword getCommaKeyword_6() { return cCommaKeyword_6; }
-		
-		//count=INT
-		public Assignment getCountAssignment_7() { return cCountAssignment_7; }
-		
-		//INT
-		public RuleCall getCountINTTerminalRuleCall_7_0() { return cCountINTTerminalRuleCall_7_0; }
-		
 		//')'
-		public Keyword getRightParenthesisKeyword_8() { return cRightParenthesisKeyword_8; }
+		public Keyword getRightParenthesisKeyword_6() { return cRightParenthesisKeyword_6; }
 	}
 	public class XQueryTypeElements extends AbstractParserRuleElementFinder {
 		private final ParserRule rule = (ParserRule) GrammarUtil.findRuleForName(getGrammar(), "com.dunkware.xstream.XScript.XQueryType");
@@ -4705,10 +4750,11 @@ public class XScriptGrammarAccess extends AbstractGrammarElementFinder {
 	private final XValueVarSessionAggFunctionElements eXValueVarSessionAggFunction;
 	private final XStreamOperatorElements eXStreamOperator;
 	private final XValueTypeElements pXValueType;
-	private final XValueVarCurrentTypeElements pXValueVarCurrentType;
-	private final XValueVarSessionAggTypeElements pXValueVarSessionAggType;
-	private final XValueSignalSessionCountTypeElements pXValueSignalSessionCountType;
-	private final XValueSignalHistoricalCountTypeElements pXValueSignalHistoricalCountType;
+	private final XValueSessionVarValueTypeElements pXValueSessionVarValueType;
+	private final XValueSessionVarAggTypeElements pXValueSessionVarAggType;
+	private final XValueSessionSignalCountTypeElements pXValueSessionSignalCountType;
+	private final XValueHistoricalVarAggTypeElements pXValueHistoricalVarAggType;
+	private final XValueHistoricalSignalCountTypeElements pXValueHistoricalSignalCountType;
 	private final XQueryValueCompareFunctionElements eXQueryValueCompareFunction;
 	private final XQueryTypeElements pXQueryType;
 	private final XQueryFilterTypeElements pXQueryFilterType;
@@ -4809,10 +4855,11 @@ public class XScriptGrammarAccess extends AbstractGrammarElementFinder {
 		this.eXValueVarSessionAggFunction = new XValueVarSessionAggFunctionElements();
 		this.eXStreamOperator = new XStreamOperatorElements();
 		this.pXValueType = new XValueTypeElements();
-		this.pXValueVarCurrentType = new XValueVarCurrentTypeElements();
-		this.pXValueVarSessionAggType = new XValueVarSessionAggTypeElements();
-		this.pXValueSignalSessionCountType = new XValueSignalSessionCountTypeElements();
-		this.pXValueSignalHistoricalCountType = new XValueSignalHistoricalCountTypeElements();
+		this.pXValueSessionVarValueType = new XValueSessionVarValueTypeElements();
+		this.pXValueSessionVarAggType = new XValueSessionVarAggTypeElements();
+		this.pXValueSessionSignalCountType = new XValueSessionSignalCountTypeElements();
+		this.pXValueHistoricalVarAggType = new XValueHistoricalVarAggTypeElements();
+		this.pXValueHistoricalSignalCountType = new XValueHistoricalSignalCountTypeElements();
 		this.eXQueryValueCompareFunction = new XQueryValueCompareFunctionElements();
 		this.pXQueryType = new XQueryTypeElements();
 		this.pXQueryFilterType = new XQueryFilterTypeElements();
@@ -5739,7 +5786,7 @@ public class XScriptGrammarAccess extends AbstractGrammarElementFinder {
 	}
 	
 	//XValueType:
-	//	XValueVarCurrentType | XValueVarSessionAggType | XValueSignalSessionCountType | XValueSignalHistoricalCountType;
+	//	XValueSessionVarValueType | XValueSessionVarAggType | XValueSessionSignalCountType | XValueHistoricalSignalCountType;
 	public XValueTypeElements getXValueTypeAccess() {
 		return pXValueType;
 	}
@@ -5748,52 +5795,60 @@ public class XScriptGrammarAccess extends AbstractGrammarElementFinder {
 		return getXValueTypeAccess().getRule();
 	}
 	
-	//XValueVarCurrentType:
-	//	{XValueVarCurrentType} 'sessionVarValue' '(' var=[VarType] ',' index=INT ')';
-	public XValueVarCurrentTypeElements getXValueVarCurrentTypeAccess() {
-		return pXValueVarCurrentType;
+	//XValueSessionVarValueType:
+	//	{XValueSessionVarValueType} 'sessionVarValue' '(' var=[VarType] ',' index=INT ')';
+	public XValueSessionVarValueTypeElements getXValueSessionVarValueTypeAccess() {
+		return pXValueSessionVarValueType;
 	}
 	
-	public ParserRule getXValueVarCurrentTypeRule() {
-		return getXValueVarCurrentTypeAccess().getRule();
+	public ParserRule getXValueSessionVarValueTypeRule() {
+		return getXValueSessionVarValueTypeAccess().getRule();
 	}
 	
-	//XValueVarSessionAggType:
-	//	{XValueVarSessionAggType} 'sessionVarAgg' '(' var=[VarType] ',' function=XValueVarSessionAggFunction ','
+	//XValueSessionVarAggType:
+	//	{XValueSessionVarAggType} 'sessionVarAgg' '(' var=[VarType] ',' function=XValueVarSessionAggFunction ','
 	//	range=XTimeRange ')';
-	public XValueVarSessionAggTypeElements getXValueVarSessionAggTypeAccess() {
-		return pXValueVarSessionAggType;
+	public XValueSessionVarAggTypeElements getXValueSessionVarAggTypeAccess() {
+		return pXValueSessionVarAggType;
 	}
 	
-	public ParserRule getXValueVarSessionAggTypeRule() {
-		return getXValueVarSessionAggTypeAccess().getRule();
+	public ParserRule getXValueSessionVarAggTypeRule() {
+		return getXValueSessionVarAggTypeAccess().getRule();
 	}
 	
-	//XValueSignalSessionCountType:
-	//	{XValueSignalSessionCountType} 'sessionSignalCount' '(' signal=[SignalType] ','
+	//XValueSessionSignalCountType:
+	//	{XValueSessionSignalCountType} 'sessionSignalCount' '(' signal=[SignalType] ','
 	//	timeRange=XTimeRange ','
 	//	value=INT ')';
-	public XValueSignalSessionCountTypeElements getXValueSignalSessionCountTypeAccess() {
-		return pXValueSignalSessionCountType;
+	public XValueSessionSignalCountTypeElements getXValueSessionSignalCountTypeAccess() {
+		return pXValueSessionSignalCountType;
 	}
 	
-	public ParserRule getXValueSignalSessionCountTypeRule() {
-		return getXValueSignalSessionCountTypeAccess().getRule();
+	public ParserRule getXValueSessionSignalCountTypeRule() {
+		return getXValueSessionSignalCountTypeAccess().getRule();
 	}
 	
-	//XValueSignalHistoricalCountType:
-	//	{XValueSignalHistoricalCountType}
-	//	'historicalSignalCount' '(' signal=[SignalType] ','
-	//	days=INT ','
-	//	count=INT ')'
+	//XValueHistoricalVarAggType:
+	//	'historicalVarAgg' '(' var=[VarType] ',' function=XValueVarHistoricalAggFunction ',' days=INT ')';
+	public XValueHistoricalVarAggTypeElements getXValueHistoricalVarAggTypeAccess() {
+		return pXValueHistoricalVarAggType;
+	}
+	
+	public ParserRule getXValueHistoricalVarAggTypeRule() {
+		return getXValueHistoricalVarAggTypeAccess().getRule();
+	}
+	
+	//XValueHistoricalSignalCountType:
+	//	{XValueHistoricalSignalCountType}
+	//	'historicalSignalCount' '(' signal=[SignalType] ',' days=INT ')'
 	//	// value
 	//;
-	public XValueSignalHistoricalCountTypeElements getXValueSignalHistoricalCountTypeAccess() {
-		return pXValueSignalHistoricalCountType;
+	public XValueHistoricalSignalCountTypeElements getXValueHistoricalSignalCountTypeAccess() {
+		return pXValueHistoricalSignalCountType;
 	}
 	
-	public ParserRule getXValueSignalHistoricalCountTypeRule() {
-		return getXValueSignalHistoricalCountTypeAccess().getRule();
+	public ParserRule getXValueHistoricalSignalCountTypeRule() {
+		return getXValueHistoricalSignalCountTypeAccess().getRule();
 	}
 	
 	//enum XQueryValueCompareFunction:
