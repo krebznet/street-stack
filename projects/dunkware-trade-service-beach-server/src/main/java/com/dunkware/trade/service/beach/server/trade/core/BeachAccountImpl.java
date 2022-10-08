@@ -15,17 +15,17 @@ import org.springframework.context.ApplicationContext;
 import com.dunkware.common.util.dtime.DDateTime;
 import com.dunkware.common.util.dtime.DTimeZone;
 import com.dunkware.common.util.events.DEventNode;
-import com.dunkware.trade.sdk.core.model.broker.AccountSpec;
+import com.dunkware.trade.sdk.core.model.broker.BrokerAccountSpec;
 import com.dunkware.trade.sdk.core.model.order.OrderType;
 import com.dunkware.trade.sdk.core.runtime.broker.BrokerAccount;
 import com.dunkware.trade.sdk.core.runtime.order.Order;
 import com.dunkware.trade.sdk.core.runtime.order.OrderException;
 import com.dunkware.trade.sdk.core.runtime.order.event.EOrderCreated;
 import com.dunkware.trade.service.beach.protocol.trade.spec.BeachAccountSpec;
+import com.dunkware.trade.service.beach.server.system.BeachSystem;
 import com.dunkware.trade.service.beach.server.trade.BeachAccount;
 import com.dunkware.trade.service.beach.server.trade.BeachBroker;
 import com.dunkware.trade.service.beach.server.trade.BeachOrder;
-import com.dunkware.trade.service.beach.server.trade.BeachSystem;
 import com.dunkware.trade.service.beach.server.trade.BeachTrade;
 import com.dunkware.trade.service.beach.server.trade.entity.BeachAccountDO;
 import com.dunkware.trade.service.beach.server.trade.entity.BeachOrderDO;
@@ -46,6 +46,9 @@ public class BeachAccountImpl implements BeachAccount {
 	private BeachAccountSpec spec; 
 	private List<BeachTrade> activeTrades = new ArrayList<BeachTrade>();
 	private Semaphore activeTradeLock = new Semaphore(1);
+	
+	// account has multiple pools right they are systems. they ca configured to run and stop 
+	// at programmed times. 
 	
 	private ConcurrentHashMap<String, BeachSystem> pools = new ConcurrentHashMap<String, BeachSystem>();
 
@@ -129,11 +132,17 @@ public class BeachAccountImpl implements BeachAccount {
 
 		return beachOrder;
 	}
-	
+
 	@Override
-	public AccountSpec getSpec() {
-		return account.getSpec();
+	public BrokerAccountSpec getSpec() {
+		// okay need to listen and mock up shit here 
+		// right duncan? 
+		//TODO: Code this! 
+		return null;
 	}
+
+
+	
 
 	
 }

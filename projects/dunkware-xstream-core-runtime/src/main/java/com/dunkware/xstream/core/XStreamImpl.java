@@ -10,6 +10,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.slf4j.MarkerFactory;
 
+import com.dunkware.xstream.api.XQuery;
+import com.dunkware.xstream.api.XQueryException;
 import com.dunkware.xstream.api.XStream;
 import com.dunkware.xstream.api.XStreamClock;
 import com.dunkware.xstream.api.XStreamException;
@@ -24,9 +26,11 @@ import com.dunkware.xstream.api.XStreamRuntimeException;
 import com.dunkware.xstream.api.XStreamService;
 import com.dunkware.xstream.api.XStreamStatus;
 import com.dunkware.xstream.api.XStreamTickRouter;
+import com.dunkware.xstream.core.xquery.XQueryImpl;
 import com.dunkware.xstream.model.metrics.XStreamMetrics;
 import com.dunkware.xstream.model.signal.XStreamSignalSpec;
 import com.dunkware.xstream.util.XStreamStatsBuilder;
+import com.dunkware.xstream.xScript.XQueryType;
 import com.dunkware.xstream.xproject.model.XStreamExtensionType;
 
 public class XStreamImpl implements XStream {
@@ -292,6 +296,20 @@ public class XStreamImpl implements XStream {
 	}
 	
 	
+	
+	
+	
+	@Override
+	public XQuery createQuery(XQueryType type) throws XQueryException {
+		XQueryImpl query = new XQueryImpl();
+		query.init(type);
+		return query;
+	}
+
+
+
+
+
 	/**
 	 * RowListener for routing stream row events to RowListeners
 	 * registered on the stream level. 

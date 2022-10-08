@@ -9,6 +9,7 @@ public class ContainerStats {
 	private String lastSignal; 
 	private String lastTimeUpdate;
 	
+	
 	public int getSnapshotCount() {
 		return snapshotCount;
 	}

@@ -3,6 +3,7 @@ package com.dunkware.xstream.api;
 import java.util.List;
 
 import com.dunkware.xstream.model.metrics.XStreamMetrics;
+import com.dunkware.xstream.xScript.XQueryType;
 
 public interface XStream {
 	
@@ -94,5 +95,13 @@ public interface XStream {
 	 * @throws XStreamException
 	 */
 	public <T> T getService(Class<T> service) throws XStreamException;
+	
+	/**
+	 * Creates a XQuery and initializes the query for execution. 
+	 * @param type
+	 * @return
+	 * @throws XQueryException
+	 */
+	public XQuery createQuery(XQueryType type) throws XQueryException;
 }
 

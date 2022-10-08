@@ -228,6 +228,7 @@ public class ContainerImpl implements Container {
 			throws ContainerSearchException {
 		ContainerSearchResults<ContainerEntity> results = new ContainerSearchResults<ContainerEntity>();
 		// this is bad here we need to make it concurrent.
+		
 		for (ContainerEntity entity : entities) {
 			for (Predicate<ContainerEntity> predicate : predicates) {
 				if(!predicate.test(entity)) { 

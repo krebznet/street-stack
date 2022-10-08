@@ -12,6 +12,7 @@ public class TradeHelper {
 	    return (double) tmp / factor;
 	}
 	
+	// all of this code on dope
 	public static double subtractPercent(double value, double percent) { 
 		double factor = 100 - Math.abs(percent);
 		factor = factor * 0.01;

@@ -4,6 +4,7 @@ package com.dunkware.trade.service.beach.server.trade;
 import com.dunkware.common.util.events.DEventNode;
 import com.dunkware.trade.sdk.core.model.broker.BrokerType;
 import com.dunkware.trade.sdk.core.model.system.SystemType;
+import com.dunkware.trade.service.beach.server.system.BeachSystem;
 
 public interface BeachService {
 	

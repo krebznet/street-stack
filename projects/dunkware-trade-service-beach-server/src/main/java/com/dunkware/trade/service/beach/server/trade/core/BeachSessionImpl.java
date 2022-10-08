@@ -20,10 +20,11 @@ import com.dunkware.trade.sdk.core.runtime.registry.TradeRegistry;
 import com.dunkware.trade.sdk.core.runtime.trade.Trade;
 import com.dunkware.trade.sdk.core.runtime.trade.TradeException;
 import com.dunkware.trade.service.beach.server.common.BeachRuntime;
+import com.dunkware.trade.service.beach.server.system.BeachSystem;
 import com.dunkware.trade.service.beach.server.trade.BeachAccount;
+import com.dunkware.trade.service.beach.server.trade.BeachOrder;
 import com.dunkware.trade.service.beach.server.trade.BeachService;
 import com.dunkware.trade.service.beach.server.trade.BeachSession;
-import com.dunkware.trade.service.beach.server.trade.BeachSystem;
 import com.dunkware.trade.service.beach.server.trade.BeachTrade;
 import com.dunkware.trade.service.beach.server.trade.entity.BeachSessionDO;
 import com.dunkware.trade.service.beach.server.trade.entity.BeachTradeDO;
@@ -35,6 +36,7 @@ public class BeachSessionImpl implements BeachSession {
 	@Autowired
 	private BeachService tradeService; 
 	
+	
 	@Autowired
 	private BeachRuntime beachRuntime; 
 	
@@ -42,9 +44,14 @@ public class BeachSessionImpl implements BeachSession {
 	@Autowired
 	private ApplicationContext ac;
 	
+
+	
 	private BeachAccount account;
 	private BeachSessionDO entity;
 	
+
+	private List<BeachOrderImpl> orders = new ArrayList<BeachOrderImpl>();
+	private Semaphore orderLock = new Semaphore(1);
 	
 	
 	private List<BeachTradeImpl> trades = new ArrayList<BeachTradeImpl>();
@@ -54,7 +61,12 @@ public class BeachSessionImpl implements BeachSession {
 	private DEventNode eventNode; 
 	
 	
-	public void init(BeachSessionDO entity) throws Exception { 
+	public void init(BeachSystem system) throws Exception { 
+		// create a new session
+		entity = new BeachSessionDO();
+		
+		
+		
 		/*
 		 * this.entity = entity; eventNode =
 		 * tradeService.getEventNode().createChild("/pools/" + entity.getIdentifier());
@@ -123,9 +135,32 @@ public class BeachSessionImpl implements BeachSession {
 		beachRuntime.getExecutor().execute(runnable);
 		
 	}
-
-
 	
+	
+
+	@Override
+	public Collection<BeachTrade> getTrades() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+
+
+	@Override
+	public Collection<BeachOrder> getOrders() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+
+
+	@Override
+	public void close() throws Exception {
+		// TODO Auto-generated method stub
+		
+	}
+
+
 
 	@Override
 	public BeachSessionDO getEntity() {

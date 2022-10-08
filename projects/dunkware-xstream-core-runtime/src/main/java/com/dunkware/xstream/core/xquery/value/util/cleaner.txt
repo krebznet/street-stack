@@ -1,0 +1,3 @@
+- Relative Time Ragne resolver 
+- criteria logic was a bitch 
+- casting data as well 

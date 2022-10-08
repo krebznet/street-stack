@@ -1,3 +1,4 @@
+
 package com.dunkware.trade.service.beach.server.gen;
 
 import com.dunkware.common.util.json.DJson;

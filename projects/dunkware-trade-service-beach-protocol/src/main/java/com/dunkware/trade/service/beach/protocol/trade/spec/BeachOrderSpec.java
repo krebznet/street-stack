@@ -1,7 +1,5 @@
 package com.dunkware.trade.service.beach.protocol.trade.spec;
 
-import com.dunkware.trade.sdk.core.model.order.OrderSpec;
-
 public class BeachOrderSpec {
 
 	private int id; 
