@@ -24,6 +24,8 @@ public class BeachAccountDO {
 	private BeachBrokerDO broker; 
 	private String identifier;
 	
+
+	
 	//@OneToMany(fetch = FetchType.LAZY, orphanRemoval = true)
 	@Transient
 	private List<BeachOrderDO> orders = new ArrayList<BeachOrderDO>();
@@ -54,9 +56,7 @@ public class BeachAccountDO {
 
 	public void setOrders(List<BeachOrderDO> orders) {
 		this.orders = orders;
-	} 
-	
-	
+	}
 	
 	
 }

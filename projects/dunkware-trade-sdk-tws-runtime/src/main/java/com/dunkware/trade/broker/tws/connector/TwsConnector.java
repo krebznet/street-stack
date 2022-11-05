@@ -16,7 +16,6 @@ import com.dunkware.common.util.helpers.DRandom;
 import com.ib.client.Contract;
 import com.ib.client.ContractDetails;
 
-
 /**
  * Hang Out and Program and get this for a few days vacation Build a connector
  * that is extendible with services.
@@ -25,7 +24,7 @@ import com.ib.client.ContractDetails;
  * @since June-Junly 2013
  * @category Halliburton
  */
-public class TwsConnector implements TwsSocketReader  {
+public class TwsConnector implements TwsSocketReader {
 
 	private Logger _logger = LoggerFactory.getLogger(getClass());
 
@@ -38,42 +37,33 @@ public class TwsConnector implements TwsSocketReader  {
 	private AtomicInteger _nextValidIdFactory = new AtomicInteger(0);
 
 	private int connectionId = DRandom.getRandom(1, 40000);
-	
+
 	private String _managedAccounts = null;
 
 	private Map<String, ContractDetails> _contractDetailsMap = new HashMap<String, ContractDetails>();
 	private Semaphore _contractDetailsSemaphore = new Semaphore(1);
 	private TimeUpdater _timeUpdater = null;
 
-	
-	private Semaphore _timeListenerSemaphore = new Semaphore(1);
-
-	private Semaphore _timeSemaphore = new Semaphore(1);
-	
-	private int _lastReturnedOrderId = -1;
-
 	public TwsConnector() {
 		_connectorSocket = new TwsConnectorSocket();
 	}
-	
-	public void addConnectorService(TwsConnectorService service) { 
+
+	public void addConnectorService(TwsConnectorService service) {
 		_connectorServices.add(service);
 	}
 
 	public void startConnector(String connectorHost, int connectorPort) throws Exception {
 
-
 		// add this we should get a error on callback?
 
 		_connectorSocket.addSocketReader(this);
-		_connectorSocket.connect(this, connectorHost, connectorPort,
-				connectionId);
+		_connectorSocket.connect(this, connectorHost, connectorPort, connectionId);
 		Thread delay = new Thread() {
 			public void run() {
 				try {
 					Thread.sleep(1000);
-					getConnectorSocket().getClientSocket().reqAccountSummary(
-							_nextValidIdFactory.incrementAndGet(), "All", "AccountType");
+					getConnectorSocket().getClientSocket().reqAccountSummary(_nextValidIdFactory.incrementAndGet(),
+							"All", "AccountType");
 
 					try {
 						_timeUpdater = new TimeUpdater();
@@ -84,7 +74,7 @@ public class TwsConnector implements TwsSocketReader  {
 
 					}
 				} catch (Exception e) {
-					// TODO: handle exception
+					_logger.error("Uncaught exception " + e.toString());
 				}
 			}
 		};
@@ -130,8 +120,6 @@ public class TwsConnector implements TwsSocketReader  {
 		return _nextValidIdFactory.incrementAndGet();
 	}
 
-
-
 	public ContractDetails getContractDetails(String symbol) throws Exception {
 		boolean aquired = false;
 		try {
@@ -152,18 +140,15 @@ public class TwsConnector implements TwsSocketReader  {
 			Contract contract = new Contract();
 			contract.m_symbol = symbol;
 			contract.m_localSymbol = symbol;
-			getConnectorSocket().getClientSocket().reqContractDetails(
-					getNextOrderId(), contract);
+			getConnectorSocket().getClientSocket().reqContractDetails(getNextOrderId(), contract);
 			int loopcount = 0;
 			while (true) {
 				Thread.sleep(100);
 				try {
 					if (loopcount > 60000) {
-						throw new Exception(
-								"3 second timeout on ContractDetails Lookup");
+						throw new Exception("3 second timeout on ContractDetails Lookup");
 					}
-					aquired = _contractDetailsSemaphore.tryAcquire(3,
-							TimeUnit.SECONDS);
+					aquired = _contractDetailsSemaphore.tryAcquire(3, TimeUnit.SECONDS);
 					ContractDetails details = _contractDetailsMap.get(symbol);
 					if (details != null) {
 						return details;
@@ -173,8 +158,7 @@ public class TwsConnector implements TwsSocketReader  {
 						throw new Exception("Semaphore not aquired");
 					}
 				} catch (Exception e) {
-					_logger.error("Error looping for contract details "
-							+ e.toString());
+					_logger.error("Error looping for contract details " + e.toString());
 				} finally {
 					if (aquired) {
 						_contractDetailsSemaphore.release();
@@ -184,28 +168,22 @@ public class TwsConnector implements TwsSocketReader  {
 			}
 
 		} catch (Exception e) {
-			throw new Exception("Error getting contract details "
-					+ e.toString());
+			throw new Exception("Error getting contract details " + e.toString());
 		}
 
 	}
 
-	
-
 	@Override
 	public void contractDetails(int reqId, ContractDetails contractDetails) {
 		try {
-			boolean aquired = _contractDetailsSemaphore.tryAcquire(3,
-					TimeUnit.SECONDS);
+			boolean aquired = _contractDetailsSemaphore.tryAcquire(3, TimeUnit.SECONDS);
 			if (!aquired) {
 				_logger.error("Contract Detail Semaphore not aquired in 3 seconds");
 				return;
 			}
-			_contractDetailsMap.put(contractDetails.m_summary.m_symbol,
-					contractDetails);
+			_contractDetailsMap.put(contractDetails.m_summary.m_symbol, contractDetails);
 		} catch (Exception e) {
-			_logger.error("error getting contract details semaphore "
-					+ e.toString());
+			_logger.error("error getting contract details semaphore " + e.toString());
 		} finally {
 			_contractDetailsSemaphore.release();
 		}
@@ -219,12 +197,12 @@ public class TwsConnector implements TwsSocketReader  {
 	 */
 	@Override
 	public void contractDetailsEnd(int reqId) {
-		
+
 	}
 
 	@Override
 	public void updateAccountTime(String timeStamp) {
-		
+
 	}
 
 	@Override
@@ -232,12 +210,9 @@ public class TwsConnector implements TwsSocketReader  {
 		if (_managedAccounts == null) {
 			_managedAccounts = accountsList;
 			String[] accounts = accountsList.split(",");
-			_connectorSocket.getClientSocket().reqAccountUpdates(true,
-					accounts[0]);
+			_connectorSocket.getClientSocket().reqAccountUpdates(true, accounts[0]);
 		}
 	}
-
-	
 
 	private class TimeUpdater extends Thread {
 

@@ -3,6 +3,8 @@ package com.dunkware.trade.service.beach.server.resources.core;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.annotation.PostConstruct;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
@@ -23,6 +25,11 @@ public class BeachResourceServiceImpl implements BeachResourceService {
 	@Override
 	public List<BeachResourceSystem> getSystems() {
 		return systems;
+	}
+	
+	@PostConstruct
+	public void init() { 
+		System.out.println("hello world");
 	}
 
 	@Override
@@ -45,6 +52,13 @@ public class BeachResourceServiceImpl implements BeachResourceService {
 		BeachResourceSystemDO entity = new BeachResourceSystemDO();
 		entity.setJson(json);
 		entity.setName(name);
+		
+		try {
+			// now lets insert it right? 
+			
+		} catch (Exception e) {
+			// TODO: handle exception
+		}
 		
 
 	}

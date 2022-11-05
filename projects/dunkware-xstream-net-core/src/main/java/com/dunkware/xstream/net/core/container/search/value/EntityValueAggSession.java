@@ -7,7 +7,6 @@ import com.dunkware.xstream.net.core.container.Container;
 import com.dunkware.xstream.net.core.container.ContainerEntity;
 import com.dunkware.xstream.net.core.container.ContainerSearchException;
 import com.dunkware.xstream.net.core.container.search.entity.EntitySearchHelper;
-import com.dunkware.xstream.net.core.container.search.util.StreamSearchUtil;
 
 public class EntityValueAggSession implements EntityValue {
 

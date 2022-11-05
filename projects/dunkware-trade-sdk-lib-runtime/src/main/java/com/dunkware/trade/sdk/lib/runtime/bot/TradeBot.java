@@ -4,11 +4,11 @@ import com.dunkware.trade.sdk.core.model.system.SystemType;
 import com.dunkware.trade.sdk.core.runtime.system.System;
 import com.dunkware.trade.sdk.core.runtime.system.SystemException;
 import com.dunkware.trade.sdk.core.runtime.trade.TradeSession;
-import com.dunkware.trade.sdk.lib.model.bot.TradeBotType;
+import com.dunkware.trade.sdk.lib.model.bot.web.WebTradeBot;
 
 public class TradeBot implements System {
 
-	private TradeBotType type;
+	private TradeBot type;
 
 	
 	

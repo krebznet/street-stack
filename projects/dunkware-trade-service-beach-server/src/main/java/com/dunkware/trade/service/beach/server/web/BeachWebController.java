@@ -5,16 +5,20 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.mvc.method.annotation.StreamingResponseBody;
 
+import com.dunkware.common.util.json.DJson;
 import com.dunkware.trade.sdk.core.model.broker.BrokerType;
+import com.dunkware.trade.sdk.core.model.system.SystemType;
+import com.dunkware.trade.sdk.lib.model.bot.model.TradeBotType;
+import com.dunkware.trade.sdk.lib.model.bot.web.WebTradeBot;
 import com.dunkware.trade.service.beach.server.resources.BeachResourceService;
 import com.dunkware.trade.service.beach.server.trade.BeachService;
 import com.dunkware.trade.service.beach.server.web.util.BeachWebConverter;
 
 import comm.dunkware.trade.service.beach.web.model.BeachWebBroker;
-import comm.dunkware.trade.service.beach.web.model.WebScope;
 
 /**
  * Adapts to the angular world
@@ -53,77 +57,88 @@ public class BeachWebController {
 	}
 	
 	
-	
-	/**
-	 * Returns serialized array of com.dunkware.trade.service.beach.web.model.WebEvent
-	 * @return
-	 */
-	@GetMapping(path = "/trade/web/dash/stream/events")
-	public ResponseEntity<StreamingResponseBody> getDashEvents() {
-		
-		return null;
-	
-	}
-	
+
 	/**
 	 * Returns streaming array of all WebAccount model objects in array, we will refresh entire grid on each streaming
 	 * response. 
 	 * @return
 	 */
-	@GetMapping(path = "/trade/web/dash/stream/accounts")
+	@GetMapping(path = "/trade/web/dash/accounts/snapshot")
 	public ResponseEntity<StreamingResponseBody> getDashAccounts() { 
 		return null;
 	}
 
-	
 	/**
 	 * Returns serialized array of WebOrder objects. 
 	 * @return
 	 */
-	@GetMapping(path = "/trade/web/dash/stream/orders/")
+	@GetMapping(path = "/trade/web/dash/orders/snapshot")
 	public ResponseEntity<StreamingResponseBody> getDashOrders() { 
 		return null;
 	}
 
 	
+	/**
+	 * System End Points 
+	 * @return
+	 */
 	
-	@GetMapping(path = "/trade/web/dash/stream/systems")
+	@GetMapping(path = "/trade/web/dash/systems/snapshot")
 	public ResponseEntity<StreamingResponseBody> getDashSystems() { 
 		return null;
 	}
+	
+	
+	@PostMapping(path = "/trade/web/dash/systems/add")
+	public void addSystem(@RequestBody String json) throws Exception {
+		WebTradeBot bot = null;
+		try {
+			bot = DJson.getObjectMapper().readValue(json, WebTradeBot.class);
+			
+		} catch (Exception e) {
+			throw new Exception("Invalid JSON could not deserialize into server-side model " + e.toString());
+		}
+		TradeBotType nativeBotType = new TradeBotType(); 
+		nativeBotType.setWrapper(bot);
+		try {
+			resourceService.insertSystem(nativeBotType.getIdentifier(), nativeBotType);
+		} catch (Exception e) {
+			throw new Exception("Exception saving bot resource " + e.toString());
+		}
+	}
+	
+	
+	@PostMapping(path = "/trade/web/dash/systems/save")
+	public void saveSystem(@RequestBody String json) { 
+		
+	}
 
 	
-	@PostMapping(path = "trade/web/dash/scope/add")
-	public void addScope(@RequestBody() WebScope scope) { 
-		// if account scope --> what if account is already scoped, do we add it to the existing ones 
-		// yes -> it adds a scope matcher on accounts 
-		// adds a account matcher on accounts/systems/trades/events
-		// 
-		// if system scope add 
-		// adds a system matcher on systems/trades/orders/events
-		
-		// if system scope remove -- if no more scopes
-		
-		// Level | Target 
-		// Account DLK Paper 
-		// System Momentum 1
-		// Trade 43
-		//Scope DLK Paper 
-		// System Scope Momentum 1 
-	}
-	
-	@PostMapping(path = "trade/web/dash/scope/reset")
-	public void resetScope() { 
+	@PostMapping(path = "/trade/web/dash/systems/delete")
+	public void deleteSystem(@RequestBody String json) { 
 		
 	}
-	
-	@PostMapping(path = "trade/web/dash/scope/remove")
-	public void removeScope(@RequestBody() WebScope scope) { 
+
+	@GetMapping(path = "/trade/web/dash/systems/start")
+	public void startSystem(@RequestParam int id) { 
 		
+	}
+
+	@GetMapping(path = "/trade/web/dash/systems/stop")
+	public void stopSystem(@RequestParam int id) {
+		
+	}
+
+	@GetMapping(path = "/trade/web/dash/trades/snapshot")
+	public ResponseEntity<StreamingResponseBody> getDashTrades() { 
+		return null;
 	}
 	
 	
 	
 	
-	//
+	
+	
+	
+	
 }

@@ -15,7 +15,9 @@ public class SystemType {
 
 	public void setIdentifier(String identifier) {
 		this.identifier = identifier;
-	} 
+	}
+	
+	
 	
 	
 	

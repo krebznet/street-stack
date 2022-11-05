@@ -32,12 +32,23 @@
 		<grpc.version>1.32.1</grpc.version>
 		<spring-cloud.version>Hoxton.SR6</spring-cloud.version>
 	</properties>
-	
+
 
 
 
 
 	<dependencies>
+		<!-- Dunkware Dependencies -->
+		<dependency>
+			<artifactId>com.dunkware.xstream.script</artifactId>
+			<groupId>com.dunkware.xstream.script</groupId>
+			<version>1.3.0-SNAPSHOT</version>
+		</dependency>
+		<dependency>
+			<groupId>com.dunkware.xstream.core</groupId>
+			<artifactId>dunkware-xstream-core-model</artifactId>
+			<version>1.3.0-SNAPSHOT</version>
+		</dependency>
 		<dependency>
 			<groupId>junit</groupId>
 			<artifactId>junit</artifactId>
@@ -56,11 +67,11 @@
 		</dependency>
 
 
-<dependency>
-<groupId>com.dunkware.net</groupId>
-	<artifactId>dunkware-net-core-runtime</artifactId>
-	<version>1.0.0-SNAPSHOT</version>
-</dependency>
+		<dependency>
+			<groupId>com.dunkware.net</groupId>
+			<artifactId>dunkware-net-core-runtime</artifactId>
+			<version>1.0.0-SNAPSHOT</version>
+		</dependency>
 
 		<!-- https://mvnrepository.com/artifact/org.eclipse.emf/org.eclipse.emf.ecore -->
 
@@ -91,7 +102,7 @@
 
 
 		<!-- https://mvnrepository.com/artifact/com.google.inject/guice -->
-	<dependency>
+		<dependency>
 			<groupId>io.grpc</groupId>
 			<artifactId>grpc-all</artifactId>
 			<version>${grpc.version}</version>
@@ -116,7 +127,7 @@
 
 
 
-		
+
 		<dependency>
 			<groupId>com.dunkware.net</groupId>
 			<artifactId>dunkware-net-core-proto</artifactId>
@@ -127,11 +138,11 @@
 	</dependencies>
 
 	<build>
-		
+
 		<plugins>
 
 
-			
+
 		</plugins>
 
 
