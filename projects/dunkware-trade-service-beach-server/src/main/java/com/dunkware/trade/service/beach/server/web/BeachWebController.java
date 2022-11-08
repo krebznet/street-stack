@@ -115,7 +115,7 @@ public class BeachWebController {
 
 	
 	@PostMapping(path = "/trade/web/dash/systems/delete")
-	public void deleteSystem(@RequestBody String json) { 
+	public void deleteSystem(@RequestBody Integer id) { 
 		
 	}
 
