@@ -31,7 +31,7 @@ public class WebFluxSecurityConfig {
 
     @Bean
     public SecurityWebFilterChain springSecurityFilterChain(ServerHttpSecurity http) {
-        http.csrf().disable();
+//        http.csrf().disable();
         http.cors();
         http
             .authorizeExchange(exchanges -> exchanges
@@ -42,15 +42,12 @@ public class WebFluxSecurityConfig {
     }
 
     @Bean
-    CorsConfigurationSource corsConfiguration() {
-        CorsConfiguration corsConfig = new CorsConfiguration();
-        corsConfig.applyPermitDefaultValues();
-        corsConfig.addAllowedMethod("*");
-        corsConfig.setAllowedOrigins(Arrays.asList("*"));
-        corsConfig.addAllowedHeader("*");
-        UrlBasedCorsConfigurationSource source =
-                new UrlBasedCorsConfigurationSource();
-        source.registerCorsConfiguration("/**", corsConfig);
-        return source;
+    CorsConfigurationSource corsConfigurationSource() {
+    	CorsConfiguration configuration = new CorsConfiguration();
+    	configuration.setAllowedOrigins(Arrays.asList("http://localhost:4200","http://testrock1.dunkware.net:32369"));
+    	configuration.setAllowedMethods(Arrays.asList("GET","POST"));
+    	UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
+    	source.registerCorsConfiguration("/**", configuration);
+    	return source;
     }
 }
