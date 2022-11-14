@@ -45,7 +45,8 @@ public class WebFluxSecurityConfig {
     CorsConfigurationSource corsConfigurationSource() {
     	CorsConfiguration configuration = new CorsConfiguration();
     	configuration.setAllowedOrigins(Arrays.asList("http://localhost:4200","http://testrock1.dunkware.net:32369"));
-    	configuration.setAllowedMethods(Arrays.asList("GET","POST"));
+    	configuration.setAllowedMethods(Arrays.asList("GET","POST","HEAD","OPTIONS"));
+    	configuration.setAllowedHeaders(Arrays.asList("*"));
     	UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
     	source.registerCorsConfiguration("/**", configuration);
     	return source;
