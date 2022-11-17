@@ -10,21 +10,28 @@ import com.dunkware.xstream.xScript.BoolConstantType;
 import com.dunkware.xstream.xScript.ComparisonType;
 import com.dunkware.xstream.xScript.DoubleConstantType;
 import com.dunkware.xstream.xScript.EqualityType;
+import com.dunkware.xstream.xScript.HistoryTimeRange;
 import com.dunkware.xstream.xScript.IntConstantType;
 import com.dunkware.xstream.xScript.MinusType;
 import com.dunkware.xstream.xScript.MulOrDivType;
 import com.dunkware.xstream.xScript.NotType;
 import com.dunkware.xstream.xScript.OrType;
 import com.dunkware.xstream.xScript.PlusType;
+import com.dunkware.xstream.xScript.RelativeSessionTimeRange;
 import com.dunkware.xstream.xScript.RocExpressionType;
-import com.dunkware.xstream.xScript.SessionSignalExpressionType;
 import com.dunkware.xstream.xScript.SetExpressionType;
+import com.dunkware.xstream.xScript.SignalCountHistory;
+import com.dunkware.xstream.xScript.SignalCountSession;
 import com.dunkware.xstream.xScript.SignalType;
 import com.dunkware.xstream.xScript.SnapshotExpressionType;
 import com.dunkware.xstream.xScript.StringConstantType;
 import com.dunkware.xstream.xScript.SubExpressionType;
 import com.dunkware.xstream.xScript.TickExpressionType;
-import com.dunkware.xstream.xScript.VarType;
+import com.dunkware.xstream.xScript.TodaySessionTimeRange;
+import com.dunkware.xstream.xScript.VarAggHistoryType;
+import com.dunkware.xstream.xScript.VarAggSessionType;
+import com.dunkware.xstream.xScript.VarStoreType;
+import com.dunkware.xstream.xScript.VarTransType;
 import com.dunkware.xstream.xScript.VariableValueExpType;
 import com.dunkware.xstream.xScript.VariableValueRangeType;
 import com.dunkware.xstream.xScript.VariableValueType;
@@ -51,9 +58,6 @@ import com.dunkware.xstream.xScript.XNotType;
 import com.dunkware.xstream.xScript.XOrType;
 import com.dunkware.xstream.xScript.XPercentChangeExpType;
 import com.dunkware.xstream.xScript.XPlusType;
-import com.dunkware.xstream.xScript.XQueryFilterValueCompareType;
-import com.dunkware.xstream.xScript.XQueryFilterValueType;
-import com.dunkware.xstream.xScript.XQueryType;
 import com.dunkware.xstream.xScript.XRocExpType;
 import com.dunkware.xstream.xScript.XScript;
 import com.dunkware.xstream.xScript.XScriptPackage;
@@ -68,12 +72,6 @@ import com.dunkware.xstream.xScript.XStreamVarValueExpType;
 import com.dunkware.xstream.xScript.XStreamWrapperExpType;
 import com.dunkware.xstream.xScript.XStringConstantType;
 import com.dunkware.xstream.xScript.XSubExpType;
-import com.dunkware.xstream.xScript.XTimeRangeRelative;
-import com.dunkware.xstream.xScript.XValueHistoricalSignalCountType;
-import com.dunkware.xstream.xScript.XValueHistoricalVarAggType;
-import com.dunkware.xstream.xScript.XValueSessionSignalCountType;
-import com.dunkware.xstream.xScript.XValueSessionVarAggType;
-import com.dunkware.xstream.xScript.XValueSessionVarValueType;
 import com.dunkware.xstream.xScript.XVarCompareStreakType;
 import com.dunkware.xstream.xScript.XVarDecrementType;
 import com.dunkware.xstream.xScript.XVarExpType;
@@ -131,6 +129,9 @@ public class XScriptSemanticSequencer extends AbstractDelegatingSemanticSequence
 			case XScriptPackage.EQUALITY_TYPE:
 				sequence_EqualityType(context, (EqualityType) semanticObject); 
 				return; 
+			case XScriptPackage.HISTORY_TIME_RANGE:
+				sequence_HistoryTimeRange(context, (HistoryTimeRange) semanticObject); 
+				return; 
 			case XScriptPackage.INT_CONSTANT_TYPE:
 				sequence_AtomicBaseType(context, (IntConstantType) semanticObject); 
 				return; 
@@ -149,14 +150,20 @@ public class XScriptSemanticSequencer extends AbstractDelegatingSemanticSequence
 			case XScriptPackage.PLUS_TYPE:
 				sequence_PlusOrMinusType(context, (PlusType) semanticObject); 
 				return; 
+			case XScriptPackage.RELATIVE_SESSION_TIME_RANGE:
+				sequence_RelativeSessionTimeRange(context, (RelativeSessionTimeRange) semanticObject); 
+				return; 
 			case XScriptPackage.ROC_EXPRESSION_TYPE:
 				sequence_RocExpressionType(context, (RocExpressionType) semanticObject); 
 				return; 
-			case XScriptPackage.SESSION_SIGNAL_EXPRESSION_TYPE:
-				sequence_SessionSignalExpressionType(context, (SessionSignalExpressionType) semanticObject); 
-				return; 
 			case XScriptPackage.SET_EXPRESSION_TYPE:
 				sequence_SetExpressionType(context, (SetExpressionType) semanticObject); 
+				return; 
+			case XScriptPackage.SIGNAL_COUNT_HISTORY:
+				sequence_SignalCountHistory(context, (SignalCountHistory) semanticObject); 
+				return; 
+			case XScriptPackage.SIGNAL_COUNT_SESSION:
+				sequence_SignalCountSession(context, (SignalCountSession) semanticObject); 
 				return; 
 			case XScriptPackage.SIGNAL_TYPE:
 				sequence_SignalType(context, (SignalType) semanticObject); 
@@ -173,8 +180,20 @@ public class XScriptSemanticSequencer extends AbstractDelegatingSemanticSequence
 			case XScriptPackage.TICK_EXPRESSION_TYPE:
 				sequence_TickExpressionType(context, (TickExpressionType) semanticObject); 
 				return; 
-			case XScriptPackage.VAR_TYPE:
-				sequence_VarType(context, (VarType) semanticObject); 
+			case XScriptPackage.TODAY_SESSION_TIME_RANGE:
+				sequence_TodaySessionTimeRange(context, (TodaySessionTimeRange) semanticObject); 
+				return; 
+			case XScriptPackage.VAR_AGG_HISTORY_TYPE:
+				sequence_VarAggHistoryType(context, (VarAggHistoryType) semanticObject); 
+				return; 
+			case XScriptPackage.VAR_AGG_SESSION_TYPE:
+				sequence_VarAggSessionType(context, (VarAggSessionType) semanticObject); 
+				return; 
+			case XScriptPackage.VAR_STORE_TYPE:
+				sequence_VarStoreType(context, (VarStoreType) semanticObject); 
+				return; 
+			case XScriptPackage.VAR_TRANS_TYPE:
+				sequence_VarTransType(context, (VarTransType) semanticObject); 
 				return; 
 			case XScriptPackage.VARIABLE_VALUE_EXP_TYPE:
 				sequence_VariableValueExpType(context, (VariableValueExpType) semanticObject); 
@@ -254,15 +273,6 @@ public class XScriptSemanticSequencer extends AbstractDelegatingSemanticSequence
 			case XScriptPackage.XPLUS_TYPE:
 				sequence_XPlusOrMinusType(context, (XPlusType) semanticObject); 
 				return; 
-			case XScriptPackage.XQUERY_FILTER_VALUE_COMPARE_TYPE:
-				sequence_XQueryFilterValueCompareType(context, (XQueryFilterValueCompareType) semanticObject); 
-				return; 
-			case XScriptPackage.XQUERY_FILTER_VALUE_TYPE:
-				sequence_XQueryFilterValueType(context, (XQueryFilterValueType) semanticObject); 
-				return; 
-			case XScriptPackage.XQUERY_TYPE:
-				sequence_XQueryType(context, (XQueryType) semanticObject); 
-				return; 
 			case XScriptPackage.XROC_EXP_TYPE:
 				sequence_XRocExpType(context, (XRocExpType) semanticObject); 
 				return; 
@@ -301,24 +311,6 @@ public class XScriptSemanticSequencer extends AbstractDelegatingSemanticSequence
 				return; 
 			case XScriptPackage.XSUB_EXP_TYPE:
 				sequence_XSubExpType(context, (XSubExpType) semanticObject); 
-				return; 
-			case XScriptPackage.XTIME_RANGE_RELATIVE:
-				sequence_XTimeRangeRelative(context, (XTimeRangeRelative) semanticObject); 
-				return; 
-			case XScriptPackage.XVALUE_HISTORICAL_SIGNAL_COUNT_TYPE:
-				sequence_XValueHistoricalSignalCountType(context, (XValueHistoricalSignalCountType) semanticObject); 
-				return; 
-			case XScriptPackage.XVALUE_HISTORICAL_VAR_AGG_TYPE:
-				sequence_XValueHistoricalVarAggType(context, (XValueHistoricalVarAggType) semanticObject); 
-				return; 
-			case XScriptPackage.XVALUE_SESSION_SIGNAL_COUNT_TYPE:
-				sequence_XValueSessionSignalCountType(context, (XValueSessionSignalCountType) semanticObject); 
-				return; 
-			case XScriptPackage.XVALUE_SESSION_VAR_AGG_TYPE:
-				sequence_XValueSessionVarAggType(context, (XValueSessionVarAggType) semanticObject); 
-				return; 
-			case XScriptPackage.XVALUE_SESSION_VAR_VALUE_TYPE:
-				sequence_XValueSessionVarValueType(context, (XValueSessionVarValueType) semanticObject); 
 				return; 
 			case XScriptPackage.XVAR_COMPARE_STREAK_TYPE:
 				sequence_XVarCompareStreakType(context, (XVarCompareStreakType) semanticObject); 
@@ -618,6 +610,24 @@ public class XScriptSemanticSequencer extends AbstractDelegatingSemanticSequence
 	
 	/**
 	 * Contexts:
+	 *     HistoryTimeRange returns HistoryTimeRange
+	 *
+	 * Constraint:
+	 *     value=INT
+	 */
+	protected void sequence_HistoryTimeRange(ISerializationContext context, HistoryTimeRange semanticObject) {
+		if (errorAcceptor != null) {
+			if (transientValues.isValueTransient(semanticObject, XScriptPackage.Literals.HISTORY_TIME_RANGE__VALUE) == ValueTransient.YES)
+				errorAcceptor.accept(diagnosticProvider.createFeatureValueMissing(semanticObject, XScriptPackage.Literals.HISTORY_TIME_RANGE__VALUE));
+		}
+		SequenceFeeder feeder = createSequencerFeeder(context, semanticObject);
+		feeder.accept(grammarAccess.getHistoryTimeRangeAccess().getValueINTTerminalRuleCall_3_0(), semanticObject.getValue());
+		feeder.finish();
+	}
+	
+	
+	/**
+	 * Contexts:
 	 *     ExpressionType returns MulOrDivType
 	 *     OrType returns MulOrDivType
 	 *     OrType.OrType_1_0 returns MulOrDivType
@@ -781,6 +791,28 @@ public class XScriptSemanticSequencer extends AbstractDelegatingSemanticSequence
 	
 	/**
 	 * Contexts:
+	 *     SessionTimeRange returns RelativeSessionTimeRange
+	 *     RelativeSessionTimeRange returns RelativeSessionTimeRange
+	 *
+	 * Constraint:
+	 *     (relativeVale=INT timeUnit=SessionTimeUnit)
+	 */
+	protected void sequence_RelativeSessionTimeRange(ISerializationContext context, RelativeSessionTimeRange semanticObject) {
+		if (errorAcceptor != null) {
+			if (transientValues.isValueTransient(semanticObject, XScriptPackage.Literals.RELATIVE_SESSION_TIME_RANGE__RELATIVE_VALE) == ValueTransient.YES)
+				errorAcceptor.accept(diagnosticProvider.createFeatureValueMissing(semanticObject, XScriptPackage.Literals.RELATIVE_SESSION_TIME_RANGE__RELATIVE_VALE));
+			if (transientValues.isValueTransient(semanticObject, XScriptPackage.Literals.RELATIVE_SESSION_TIME_RANGE__TIME_UNIT) == ValueTransient.YES)
+				errorAcceptor.accept(diagnosticProvider.createFeatureValueMissing(semanticObject, XScriptPackage.Literals.RELATIVE_SESSION_TIME_RANGE__TIME_UNIT));
+		}
+		SequenceFeeder feeder = createSequencerFeeder(context, semanticObject);
+		feeder.accept(grammarAccess.getRelativeSessionTimeRangeAccess().getRelativeValeINTTerminalRuleCall_1_2_0(), semanticObject.getRelativeVale());
+		feeder.accept(grammarAccess.getRelativeSessionTimeRangeAccess().getTimeUnitSessionTimeUnitEnumRuleCall_1_4_0(), semanticObject.getTimeUnit());
+		feeder.finish();
+	}
+	
+	
+	/**
+	 * Contexts:
 	 *     ExpressionType returns RocExpressionType
 	 *     OrType returns RocExpressionType
 	 *     OrType.OrType_1_0 returns RocExpressionType
@@ -819,35 +851,6 @@ public class XScriptSemanticSequencer extends AbstractDelegatingSemanticSequence
 	
 	/**
 	 * Contexts:
-	 *     ExpressionType returns SessionSignalExpressionType
-	 *     OrType returns SessionSignalExpressionType
-	 *     OrType.OrType_1_0 returns SessionSignalExpressionType
-	 *     AndType returns SessionSignalExpressionType
-	 *     AndType.AndType_1_0 returns SessionSignalExpressionType
-	 *     EqualityType returns SessionSignalExpressionType
-	 *     EqualityType.EqualityType_1_0 returns SessionSignalExpressionType
-	 *     ComparisonType returns SessionSignalExpressionType
-	 *     ComparisonType.ComparisonType_1_0 returns SessionSignalExpressionType
-	 *     PlusOrMinusType returns SessionSignalExpressionType
-	 *     PlusOrMinusType.PlusType_1_0_0_0 returns SessionSignalExpressionType
-	 *     PlusOrMinusType.MinusType_1_0_1_0 returns SessionSignalExpressionType
-	 *     MulOrDivType returns SessionSignalExpressionType
-	 *     MulOrDivType.MulOrDivType_1_0 returns SessionSignalExpressionType
-	 *     PrimaryType returns SessionSignalExpressionType
-	 *     AtomicType returns SessionSignalExpressionType
-	 *     AtomicBaseType returns SessionSignalExpressionType
-	 *     SessionSignalExpressionType returns SessionSignalExpressionType
-	 *
-	 * Constraint:
-	 *     (signal=[SignalType|ID] (op='>' | op='<' | op='=') count=INT time=INT unit=StreamTimeUnit)
-	 */
-	protected void sequence_SessionSignalExpressionType(ISerializationContext context, SessionSignalExpressionType semanticObject) {
-		genericSequencer.createSequence(context, semanticObject);
-	}
-	
-	
-	/**
-	 * Contexts:
 	 *     ExpressionType returns SetExpressionType
 	 *     OrType returns SetExpressionType
 	 *     OrType.OrType_1_0 returns SetExpressionType
@@ -872,6 +875,82 @@ public class XScriptSemanticSequencer extends AbstractDelegatingSemanticSequence
 	 */
 	protected void sequence_SetExpressionType(ISerializationContext context, SetExpressionType semanticObject) {
 		genericSequencer.createSequence(context, semanticObject);
+	}
+	
+	
+	/**
+	 * Contexts:
+	 *     ExpressionType returns SignalCountHistory
+	 *     OrType returns SignalCountHistory
+	 *     OrType.OrType_1_0 returns SignalCountHistory
+	 *     AndType returns SignalCountHistory
+	 *     AndType.AndType_1_0 returns SignalCountHistory
+	 *     EqualityType returns SignalCountHistory
+	 *     EqualityType.EqualityType_1_0 returns SignalCountHistory
+	 *     ComparisonType returns SignalCountHistory
+	 *     ComparisonType.ComparisonType_1_0 returns SignalCountHistory
+	 *     PlusOrMinusType returns SignalCountHistory
+	 *     PlusOrMinusType.PlusType_1_0_0_0 returns SignalCountHistory
+	 *     PlusOrMinusType.MinusType_1_0_1_0 returns SignalCountHistory
+	 *     MulOrDivType returns SignalCountHistory
+	 *     MulOrDivType.MulOrDivType_1_0 returns SignalCountHistory
+	 *     PrimaryType returns SignalCountHistory
+	 *     AtomicType returns SignalCountHistory
+	 *     AtomicBaseType returns SignalCountHistory
+	 *     SignalCountHistory returns SignalCountHistory
+	 *
+	 * Constraint:
+	 *     (signal=[SignalType|ID] timeRange=HistoryTimeRange)
+	 */
+	protected void sequence_SignalCountHistory(ISerializationContext context, SignalCountHistory semanticObject) {
+		if (errorAcceptor != null) {
+			if (transientValues.isValueTransient(semanticObject, XScriptPackage.Literals.SIGNAL_COUNT_HISTORY__SIGNAL) == ValueTransient.YES)
+				errorAcceptor.accept(diagnosticProvider.createFeatureValueMissing(semanticObject, XScriptPackage.Literals.SIGNAL_COUNT_HISTORY__SIGNAL));
+			if (transientValues.isValueTransient(semanticObject, XScriptPackage.Literals.SIGNAL_COUNT_HISTORY__TIME_RANGE) == ValueTransient.YES)
+				errorAcceptor.accept(diagnosticProvider.createFeatureValueMissing(semanticObject, XScriptPackage.Literals.SIGNAL_COUNT_HISTORY__TIME_RANGE));
+		}
+		SequenceFeeder feeder = createSequencerFeeder(context, semanticObject);
+		feeder.accept(grammarAccess.getSignalCountHistoryAccess().getSignalSignalTypeIDTerminalRuleCall_3_0_1(), semanticObject.eGet(XScriptPackage.Literals.SIGNAL_COUNT_HISTORY__SIGNAL, false));
+		feeder.accept(grammarAccess.getSignalCountHistoryAccess().getTimeRangeHistoryTimeRangeParserRuleCall_5_0(), semanticObject.getTimeRange());
+		feeder.finish();
+	}
+	
+	
+	/**
+	 * Contexts:
+	 *     ExpressionType returns SignalCountSession
+	 *     OrType returns SignalCountSession
+	 *     OrType.OrType_1_0 returns SignalCountSession
+	 *     AndType returns SignalCountSession
+	 *     AndType.AndType_1_0 returns SignalCountSession
+	 *     EqualityType returns SignalCountSession
+	 *     EqualityType.EqualityType_1_0 returns SignalCountSession
+	 *     ComparisonType returns SignalCountSession
+	 *     ComparisonType.ComparisonType_1_0 returns SignalCountSession
+	 *     PlusOrMinusType returns SignalCountSession
+	 *     PlusOrMinusType.PlusType_1_0_0_0 returns SignalCountSession
+	 *     PlusOrMinusType.MinusType_1_0_1_0 returns SignalCountSession
+	 *     MulOrDivType returns SignalCountSession
+	 *     MulOrDivType.MulOrDivType_1_0 returns SignalCountSession
+	 *     PrimaryType returns SignalCountSession
+	 *     AtomicType returns SignalCountSession
+	 *     AtomicBaseType returns SignalCountSession
+	 *     SignalCountSession returns SignalCountSession
+	 *
+	 * Constraint:
+	 *     (signal=[SignalType|ID] timeRange=SessionTimeRange)
+	 */
+	protected void sequence_SignalCountSession(ISerializationContext context, SignalCountSession semanticObject) {
+		if (errorAcceptor != null) {
+			if (transientValues.isValueTransient(semanticObject, XScriptPackage.Literals.SIGNAL_COUNT_SESSION__SIGNAL) == ValueTransient.YES)
+				errorAcceptor.accept(diagnosticProvider.createFeatureValueMissing(semanticObject, XScriptPackage.Literals.SIGNAL_COUNT_SESSION__SIGNAL));
+			if (transientValues.isValueTransient(semanticObject, XScriptPackage.Literals.SIGNAL_COUNT_SESSION__TIME_RANGE) == ValueTransient.YES)
+				errorAcceptor.accept(diagnosticProvider.createFeatureValueMissing(semanticObject, XScriptPackage.Literals.SIGNAL_COUNT_SESSION__TIME_RANGE));
+		}
+		SequenceFeeder feeder = createSequencerFeeder(context, semanticObject);
+		feeder.accept(grammarAccess.getSignalCountSessionAccess().getSignalSignalTypeIDTerminalRuleCall_3_0_1(), semanticObject.eGet(XScriptPackage.Literals.SIGNAL_COUNT_SESSION__SIGNAL, false));
+		feeder.accept(grammarAccess.getSignalCountSessionAccess().getTimeRangeSessionTimeRangeParserRuleCall_5_0(), semanticObject.getTimeRange());
+		feeder.finish();
 	}
 	
 	
@@ -1020,14 +1099,110 @@ public class XScriptSemanticSequencer extends AbstractDelegatingSemanticSequence
 	
 	/**
 	 * Contexts:
-	 *     ScriptElement returns VarType
-	 *     CoreAbstractElement returns VarType
-	 *     VarType returns VarType
+	 *     SessionTimeRange returns TodaySessionTimeRange
+	 *     TodaySessionTimeRange returns TodaySessionTimeRange
+	 *
+	 * Constraint:
+	 *     {TodaySessionTimeRange}
+	 */
+	protected void sequence_TodaySessionTimeRange(ISerializationContext context, TodaySessionTimeRange semanticObject) {
+		genericSequencer.createSequence(context, semanticObject);
+	}
+	
+	
+	/**
+	 * Contexts:
+	 *     ExpressionType returns VarAggHistoryType
+	 *     OrType returns VarAggHistoryType
+	 *     OrType.OrType_1_0 returns VarAggHistoryType
+	 *     AndType returns VarAggHistoryType
+	 *     AndType.AndType_1_0 returns VarAggHistoryType
+	 *     EqualityType returns VarAggHistoryType
+	 *     EqualityType.EqualityType_1_0 returns VarAggHistoryType
+	 *     ComparisonType returns VarAggHistoryType
+	 *     ComparisonType.ComparisonType_1_0 returns VarAggHistoryType
+	 *     PlusOrMinusType returns VarAggHistoryType
+	 *     PlusOrMinusType.PlusType_1_0_0_0 returns VarAggHistoryType
+	 *     PlusOrMinusType.MinusType_1_0_1_0 returns VarAggHistoryType
+	 *     MulOrDivType returns VarAggHistoryType
+	 *     MulOrDivType.MulOrDivType_1_0 returns VarAggHistoryType
+	 *     PrimaryType returns VarAggHistoryType
+	 *     AtomicType returns VarAggHistoryType
+	 *     AtomicBaseType returns VarAggHistoryType
+	 *     VarAggHistoryType returns VarAggHistoryType
+	 *
+	 * Constraint:
+	 *     (var=[VarType|ID] function=HistoricalAggFunc timeRange=HistoryTimeRange)
+	 */
+	protected void sequence_VarAggHistoryType(ISerializationContext context, VarAggHistoryType semanticObject) {
+		if (errorAcceptor != null) {
+			if (transientValues.isValueTransient(semanticObject, XScriptPackage.Literals.VAR_AGG_HISTORY_TYPE__VAR) == ValueTransient.YES)
+				errorAcceptor.accept(diagnosticProvider.createFeatureValueMissing(semanticObject, XScriptPackage.Literals.VAR_AGG_HISTORY_TYPE__VAR));
+			if (transientValues.isValueTransient(semanticObject, XScriptPackage.Literals.VAR_AGG_HISTORY_TYPE__FUNCTION) == ValueTransient.YES)
+				errorAcceptor.accept(diagnosticProvider.createFeatureValueMissing(semanticObject, XScriptPackage.Literals.VAR_AGG_HISTORY_TYPE__FUNCTION));
+			if (transientValues.isValueTransient(semanticObject, XScriptPackage.Literals.VAR_AGG_HISTORY_TYPE__TIME_RANGE) == ValueTransient.YES)
+				errorAcceptor.accept(diagnosticProvider.createFeatureValueMissing(semanticObject, XScriptPackage.Literals.VAR_AGG_HISTORY_TYPE__TIME_RANGE));
+		}
+		SequenceFeeder feeder = createSequencerFeeder(context, semanticObject);
+		feeder.accept(grammarAccess.getVarAggHistoryTypeAccess().getVarVarTypeIDTerminalRuleCall_3_0_1(), semanticObject.eGet(XScriptPackage.Literals.VAR_AGG_HISTORY_TYPE__VAR, false));
+		feeder.accept(grammarAccess.getVarAggHistoryTypeAccess().getFunctionHistoricalAggFuncEnumRuleCall_5_0(), semanticObject.getFunction());
+		feeder.accept(grammarAccess.getVarAggHistoryTypeAccess().getTimeRangeHistoryTimeRangeParserRuleCall_7_0(), semanticObject.getTimeRange());
+		feeder.finish();
+	}
+	
+	
+	/**
+	 * Contexts:
+	 *     ExpressionType returns VarAggSessionType
+	 *     OrType returns VarAggSessionType
+	 *     OrType.OrType_1_0 returns VarAggSessionType
+	 *     AndType returns VarAggSessionType
+	 *     AndType.AndType_1_0 returns VarAggSessionType
+	 *     EqualityType returns VarAggSessionType
+	 *     EqualityType.EqualityType_1_0 returns VarAggSessionType
+	 *     ComparisonType returns VarAggSessionType
+	 *     ComparisonType.ComparisonType_1_0 returns VarAggSessionType
+	 *     PlusOrMinusType returns VarAggSessionType
+	 *     PlusOrMinusType.PlusType_1_0_0_0 returns VarAggSessionType
+	 *     PlusOrMinusType.MinusType_1_0_1_0 returns VarAggSessionType
+	 *     MulOrDivType returns VarAggSessionType
+	 *     MulOrDivType.MulOrDivType_1_0 returns VarAggSessionType
+	 *     PrimaryType returns VarAggSessionType
+	 *     AtomicType returns VarAggSessionType
+	 *     AtomicBaseType returns VarAggSessionType
+	 *     VarAggSessionType returns VarAggSessionType
+	 *
+	 * Constraint:
+	 *     (var=[VarType|ID] function=SessionAggFunc timeRange=SessionTimeRange)
+	 */
+	protected void sequence_VarAggSessionType(ISerializationContext context, VarAggSessionType semanticObject) {
+		if (errorAcceptor != null) {
+			if (transientValues.isValueTransient(semanticObject, XScriptPackage.Literals.VAR_AGG_SESSION_TYPE__VAR) == ValueTransient.YES)
+				errorAcceptor.accept(diagnosticProvider.createFeatureValueMissing(semanticObject, XScriptPackage.Literals.VAR_AGG_SESSION_TYPE__VAR));
+			if (transientValues.isValueTransient(semanticObject, XScriptPackage.Literals.VAR_AGG_SESSION_TYPE__FUNCTION) == ValueTransient.YES)
+				errorAcceptor.accept(diagnosticProvider.createFeatureValueMissing(semanticObject, XScriptPackage.Literals.VAR_AGG_SESSION_TYPE__FUNCTION));
+			if (transientValues.isValueTransient(semanticObject, XScriptPackage.Literals.VAR_AGG_SESSION_TYPE__TIME_RANGE) == ValueTransient.YES)
+				errorAcceptor.accept(diagnosticProvider.createFeatureValueMissing(semanticObject, XScriptPackage.Literals.VAR_AGG_SESSION_TYPE__TIME_RANGE));
+		}
+		SequenceFeeder feeder = createSequencerFeeder(context, semanticObject);
+		feeder.accept(grammarAccess.getVarAggSessionTypeAccess().getVarVarTypeIDTerminalRuleCall_3_0_1(), semanticObject.eGet(XScriptPackage.Literals.VAR_AGG_SESSION_TYPE__VAR, false));
+		feeder.accept(grammarAccess.getVarAggSessionTypeAccess().getFunctionSessionAggFuncEnumRuleCall_5_0(), semanticObject.getFunction());
+		feeder.accept(grammarAccess.getVarAggSessionTypeAccess().getTimeRangeSessionTimeRangeParserRuleCall_7_0(), semanticObject.getTimeRange());
+		feeder.finish();
+	}
+	
+	
+	/**
+	 * Contexts:
+	 *     ScriptElement returns VarStoreType
+	 *     CoreAbstractElement returns VarStoreType
+	 *     VarType returns VarStoreType
+	 *     VarStoreType returns VarStoreType
 	 *
 	 * Constraint:
 	 *     (name=ID code=INT type=DataType expression=ExpressionType)
 	 */
-	protected void sequence_VarType(ISerializationContext context, VarType semanticObject) {
+	protected void sequence_VarStoreType(ISerializationContext context, VarStoreType semanticObject) {
 		if (errorAcceptor != null) {
 			if (transientValues.isValueTransient(semanticObject, XScriptPackage.Literals.VAR_TYPE__NAME) == ValueTransient.YES)
 				errorAcceptor.accept(diagnosticProvider.createFeatureValueMissing(semanticObject, XScriptPackage.Literals.VAR_TYPE__NAME));
@@ -1039,10 +1214,40 @@ public class XScriptSemanticSequencer extends AbstractDelegatingSemanticSequence
 				errorAcceptor.accept(diagnosticProvider.createFeatureValueMissing(semanticObject, XScriptPackage.Literals.VAR_TYPE__EXPRESSION));
 		}
 		SequenceFeeder feeder = createSequencerFeeder(context, semanticObject);
-		feeder.accept(grammarAccess.getVarTypeAccess().getNameIDTerminalRuleCall_1_0(), semanticObject.getName());
-		feeder.accept(grammarAccess.getVarTypeAccess().getCodeINTTerminalRuleCall_3_0(), semanticObject.getCode());
-		feeder.accept(grammarAccess.getVarTypeAccess().getTypeDataTypeEnumRuleCall_5_0(), semanticObject.getType());
-		feeder.accept(grammarAccess.getVarTypeAccess().getExpressionExpressionTypeParserRuleCall_8_0(), semanticObject.getExpression());
+		feeder.accept(grammarAccess.getVarStoreTypeAccess().getNameIDTerminalRuleCall_1_0(), semanticObject.getName());
+		feeder.accept(grammarAccess.getVarStoreTypeAccess().getCodeINTTerminalRuleCall_3_0(), semanticObject.getCode());
+		feeder.accept(grammarAccess.getVarStoreTypeAccess().getTypeDataTypeEnumRuleCall_5_0(), semanticObject.getType());
+		feeder.accept(grammarAccess.getVarStoreTypeAccess().getExpressionExpressionTypeParserRuleCall_8_0(), semanticObject.getExpression());
+		feeder.finish();
+	}
+	
+	
+	/**
+	 * Contexts:
+	 *     ScriptElement returns VarTransType
+	 *     CoreAbstractElement returns VarTransType
+	 *     VarType returns VarTransType
+	 *     VarTransType returns VarTransType
+	 *
+	 * Constraint:
+	 *     (name=ID code=INT type=DataType expression=ExpressionType)
+	 */
+	protected void sequence_VarTransType(ISerializationContext context, VarTransType semanticObject) {
+		if (errorAcceptor != null) {
+			if (transientValues.isValueTransient(semanticObject, XScriptPackage.Literals.VAR_TYPE__NAME) == ValueTransient.YES)
+				errorAcceptor.accept(diagnosticProvider.createFeatureValueMissing(semanticObject, XScriptPackage.Literals.VAR_TYPE__NAME));
+			if (transientValues.isValueTransient(semanticObject, XScriptPackage.Literals.VAR_TYPE__CODE) == ValueTransient.YES)
+				errorAcceptor.accept(diagnosticProvider.createFeatureValueMissing(semanticObject, XScriptPackage.Literals.VAR_TYPE__CODE));
+			if (transientValues.isValueTransient(semanticObject, XScriptPackage.Literals.VAR_TYPE__TYPE) == ValueTransient.YES)
+				errorAcceptor.accept(diagnosticProvider.createFeatureValueMissing(semanticObject, XScriptPackage.Literals.VAR_TYPE__TYPE));
+			if (transientValues.isValueTransient(semanticObject, XScriptPackage.Literals.VAR_TYPE__EXPRESSION) == ValueTransient.YES)
+				errorAcceptor.accept(diagnosticProvider.createFeatureValueMissing(semanticObject, XScriptPackage.Literals.VAR_TYPE__EXPRESSION));
+		}
+		SequenceFeeder feeder = createSequencerFeeder(context, semanticObject);
+		feeder.accept(grammarAccess.getVarTransTypeAccess().getNameIDTerminalRuleCall_1_0(), semanticObject.getName());
+		feeder.accept(grammarAccess.getVarTransTypeAccess().getCodeINTTerminalRuleCall_3_0(), semanticObject.getCode());
+		feeder.accept(grammarAccess.getVarTransTypeAccess().getTypeDataTypeEnumRuleCall_5_0(), semanticObject.getType());
+		feeder.accept(grammarAccess.getVarTransTypeAccess().getExpressionExpressionTypeParserRuleCall_8_0(), semanticObject.getExpression());
 		feeder.finish();
 	}
 	
@@ -1775,76 +1980,6 @@ public class XScriptSemanticSequencer extends AbstractDelegatingSemanticSequence
 	
 	/**
 	 * Contexts:
-	 *     XQueryFilterType returns XQueryFilterValueCompareType
-	 *     XQueryFilterValueCompareType returns XQueryFilterValueCompareType
-	 *
-	 * Constraint:
-	 *     (value1=XValueType value2=XValueType function=XQueryValueCompareFunction operator=XStreamOperator criteria=STRING)
-	 */
-	protected void sequence_XQueryFilterValueCompareType(ISerializationContext context, XQueryFilterValueCompareType semanticObject) {
-		if (errorAcceptor != null) {
-			if (transientValues.isValueTransient(semanticObject, XScriptPackage.Literals.XQUERY_FILTER_VALUE_COMPARE_TYPE__VALUE1) == ValueTransient.YES)
-				errorAcceptor.accept(diagnosticProvider.createFeatureValueMissing(semanticObject, XScriptPackage.Literals.XQUERY_FILTER_VALUE_COMPARE_TYPE__VALUE1));
-			if (transientValues.isValueTransient(semanticObject, XScriptPackage.Literals.XQUERY_FILTER_VALUE_COMPARE_TYPE__VALUE2) == ValueTransient.YES)
-				errorAcceptor.accept(diagnosticProvider.createFeatureValueMissing(semanticObject, XScriptPackage.Literals.XQUERY_FILTER_VALUE_COMPARE_TYPE__VALUE2));
-			if (transientValues.isValueTransient(semanticObject, XScriptPackage.Literals.XQUERY_FILTER_VALUE_COMPARE_TYPE__FUNCTION) == ValueTransient.YES)
-				errorAcceptor.accept(diagnosticProvider.createFeatureValueMissing(semanticObject, XScriptPackage.Literals.XQUERY_FILTER_VALUE_COMPARE_TYPE__FUNCTION));
-			if (transientValues.isValueTransient(semanticObject, XScriptPackage.Literals.XQUERY_FILTER_TYPE__OPERATOR) == ValueTransient.YES)
-				errorAcceptor.accept(diagnosticProvider.createFeatureValueMissing(semanticObject, XScriptPackage.Literals.XQUERY_FILTER_TYPE__OPERATOR));
-			if (transientValues.isValueTransient(semanticObject, XScriptPackage.Literals.XQUERY_FILTER_TYPE__CRITERIA) == ValueTransient.YES)
-				errorAcceptor.accept(diagnosticProvider.createFeatureValueMissing(semanticObject, XScriptPackage.Literals.XQUERY_FILTER_TYPE__CRITERIA));
-		}
-		SequenceFeeder feeder = createSequencerFeeder(context, semanticObject);
-		feeder.accept(grammarAccess.getXQueryFilterValueCompareTypeAccess().getValue1XValueTypeParserRuleCall_2_0(), semanticObject.getValue1());
-		feeder.accept(grammarAccess.getXQueryFilterValueCompareTypeAccess().getValue2XValueTypeParserRuleCall_4_0(), semanticObject.getValue2());
-		feeder.accept(grammarAccess.getXQueryFilterValueCompareTypeAccess().getFunctionXQueryValueCompareFunctionEnumRuleCall_6_0(), semanticObject.getFunction());
-		feeder.accept(grammarAccess.getXQueryFilterValueCompareTypeAccess().getOperatorXStreamOperatorEnumRuleCall_8_0(), semanticObject.getOperator());
-		feeder.accept(grammarAccess.getXQueryFilterValueCompareTypeAccess().getCriteriaSTRINGTerminalRuleCall_10_0(), semanticObject.getCriteria());
-		feeder.finish();
-	}
-	
-	
-	/**
-	 * Contexts:
-	 *     XQueryFilterType returns XQueryFilterValueType
-	 *     XQueryFilterValueType returns XQueryFilterValueType
-	 *
-	 * Constraint:
-	 *     (value=XValueType operator=XStreamOperator criteria=STRING)
-	 */
-	protected void sequence_XQueryFilterValueType(ISerializationContext context, XQueryFilterValueType semanticObject) {
-		if (errorAcceptor != null) {
-			if (transientValues.isValueTransient(semanticObject, XScriptPackage.Literals.XQUERY_FILTER_VALUE_TYPE__VALUE) == ValueTransient.YES)
-				errorAcceptor.accept(diagnosticProvider.createFeatureValueMissing(semanticObject, XScriptPackage.Literals.XQUERY_FILTER_VALUE_TYPE__VALUE));
-			if (transientValues.isValueTransient(semanticObject, XScriptPackage.Literals.XQUERY_FILTER_TYPE__OPERATOR) == ValueTransient.YES)
-				errorAcceptor.accept(diagnosticProvider.createFeatureValueMissing(semanticObject, XScriptPackage.Literals.XQUERY_FILTER_TYPE__OPERATOR));
-			if (transientValues.isValueTransient(semanticObject, XScriptPackage.Literals.XQUERY_FILTER_TYPE__CRITERIA) == ValueTransient.YES)
-				errorAcceptor.accept(diagnosticProvider.createFeatureValueMissing(semanticObject, XScriptPackage.Literals.XQUERY_FILTER_TYPE__CRITERIA));
-		}
-		SequenceFeeder feeder = createSequencerFeeder(context, semanticObject);
-		feeder.accept(grammarAccess.getXQueryFilterValueTypeAccess().getValueXValueTypeParserRuleCall_3_0(), semanticObject.getValue());
-		feeder.accept(grammarAccess.getXQueryFilterValueTypeAccess().getOperatorXStreamOperatorEnumRuleCall_5_0(), semanticObject.getOperator());
-		feeder.accept(grammarAccess.getXQueryFilterValueTypeAccess().getCriteriaSTRINGTerminalRuleCall_7_0(), semanticObject.getCriteria());
-		feeder.finish();
-	}
-	
-	
-	/**
-	 * Contexts:
-	 *     ScriptElement returns XQueryType
-	 *     CoreAbstractElement returns XQueryType
-	 *     XQueryType returns XQueryType
-	 *
-	 * Constraint:
-	 *     (name=ID filters+=XQueryFilterType*)
-	 */
-	protected void sequence_XQueryType(ISerializationContext context, XQueryType semanticObject) {
-		genericSequencer.createSequence(context, semanticObject);
-	}
-	
-	
-	/**
-	 * Contexts:
 	 *     XExpressionType returns XRocExpType
 	 *     XOrType returns XRocExpType
 	 *     XOrType.XOrType_1_0 returns XRocExpType
@@ -2196,146 +2331,6 @@ public class XScriptSemanticSequencer extends AbstractDelegatingSemanticSequence
 		SequenceFeeder feeder = createSequencerFeeder(context, semanticObject);
 		feeder.accept(grammarAccess.getXSubExpTypeAccess().getValue1XExpressionTypeParserRuleCall_3_0(), semanticObject.getValue1());
 		feeder.accept(grammarAccess.getXSubExpTypeAccess().getValue2XExpressionTypeParserRuleCall_5_0(), semanticObject.getValue2());
-		feeder.finish();
-	}
-	
-	
-	/**
-	 * Contexts:
-	 *     XTimeRange returns XTimeRangeRelative
-	 *     XTimeRangeRelative returns XTimeRangeRelative
-	 *
-	 * Constraint:
-	 *     (unit=StreamTimeUnit value=INT)
-	 */
-	protected void sequence_XTimeRangeRelative(ISerializationContext context, XTimeRangeRelative semanticObject) {
-		if (errorAcceptor != null) {
-			if (transientValues.isValueTransient(semanticObject, XScriptPackage.Literals.XTIME_RANGE_RELATIVE__UNIT) == ValueTransient.YES)
-				errorAcceptor.accept(diagnosticProvider.createFeatureValueMissing(semanticObject, XScriptPackage.Literals.XTIME_RANGE_RELATIVE__UNIT));
-			if (transientValues.isValueTransient(semanticObject, XScriptPackage.Literals.XTIME_RANGE_RELATIVE__VALUE) == ValueTransient.YES)
-				errorAcceptor.accept(diagnosticProvider.createFeatureValueMissing(semanticObject, XScriptPackage.Literals.XTIME_RANGE_RELATIVE__VALUE));
-		}
-		SequenceFeeder feeder = createSequencerFeeder(context, semanticObject);
-		feeder.accept(grammarAccess.getXTimeRangeRelativeAccess().getUnitStreamTimeUnitEnumRuleCall_3_0(), semanticObject.getUnit());
-		feeder.accept(grammarAccess.getXTimeRangeRelativeAccess().getValueINTTerminalRuleCall_5_0(), semanticObject.getValue());
-		feeder.finish();
-	}
-	
-	
-	/**
-	 * Contexts:
-	 *     XValueType returns XValueHistoricalSignalCountType
-	 *     XValueHistoricalSignalCountType returns XValueHistoricalSignalCountType
-	 *
-	 * Constraint:
-	 *     (signal=[SignalType|ID] days=INT)
-	 */
-	protected void sequence_XValueHistoricalSignalCountType(ISerializationContext context, XValueHistoricalSignalCountType semanticObject) {
-		if (errorAcceptor != null) {
-			if (transientValues.isValueTransient(semanticObject, XScriptPackage.Literals.XVALUE_HISTORICAL_SIGNAL_COUNT_TYPE__SIGNAL) == ValueTransient.YES)
-				errorAcceptor.accept(diagnosticProvider.createFeatureValueMissing(semanticObject, XScriptPackage.Literals.XVALUE_HISTORICAL_SIGNAL_COUNT_TYPE__SIGNAL));
-			if (transientValues.isValueTransient(semanticObject, XScriptPackage.Literals.XVALUE_HISTORICAL_SIGNAL_COUNT_TYPE__DAYS) == ValueTransient.YES)
-				errorAcceptor.accept(diagnosticProvider.createFeatureValueMissing(semanticObject, XScriptPackage.Literals.XVALUE_HISTORICAL_SIGNAL_COUNT_TYPE__DAYS));
-		}
-		SequenceFeeder feeder = createSequencerFeeder(context, semanticObject);
-		feeder.accept(grammarAccess.getXValueHistoricalSignalCountTypeAccess().getSignalSignalTypeIDTerminalRuleCall_3_0_1(), semanticObject.eGet(XScriptPackage.Literals.XVALUE_HISTORICAL_SIGNAL_COUNT_TYPE__SIGNAL, false));
-		feeder.accept(grammarAccess.getXValueHistoricalSignalCountTypeAccess().getDaysINTTerminalRuleCall_5_0(), semanticObject.getDays());
-		feeder.finish();
-	}
-	
-	
-	/**
-	 * Contexts:
-	 *     XValueHistoricalVarAggType returns XValueHistoricalVarAggType
-	 *
-	 * Constraint:
-	 *     (var=[VarType|ID] function=XValueVarHistoricalAggFunction days=INT)
-	 */
-	protected void sequence_XValueHistoricalVarAggType(ISerializationContext context, XValueHistoricalVarAggType semanticObject) {
-		if (errorAcceptor != null) {
-			if (transientValues.isValueTransient(semanticObject, XScriptPackage.Literals.XVALUE_HISTORICAL_VAR_AGG_TYPE__VAR) == ValueTransient.YES)
-				errorAcceptor.accept(diagnosticProvider.createFeatureValueMissing(semanticObject, XScriptPackage.Literals.XVALUE_HISTORICAL_VAR_AGG_TYPE__VAR));
-			if (transientValues.isValueTransient(semanticObject, XScriptPackage.Literals.XVALUE_HISTORICAL_VAR_AGG_TYPE__FUNCTION) == ValueTransient.YES)
-				errorAcceptor.accept(diagnosticProvider.createFeatureValueMissing(semanticObject, XScriptPackage.Literals.XVALUE_HISTORICAL_VAR_AGG_TYPE__FUNCTION));
-			if (transientValues.isValueTransient(semanticObject, XScriptPackage.Literals.XVALUE_HISTORICAL_VAR_AGG_TYPE__DAYS) == ValueTransient.YES)
-				errorAcceptor.accept(diagnosticProvider.createFeatureValueMissing(semanticObject, XScriptPackage.Literals.XVALUE_HISTORICAL_VAR_AGG_TYPE__DAYS));
-		}
-		SequenceFeeder feeder = createSequencerFeeder(context, semanticObject);
-		feeder.accept(grammarAccess.getXValueHistoricalVarAggTypeAccess().getVarVarTypeIDTerminalRuleCall_2_0_1(), semanticObject.eGet(XScriptPackage.Literals.XVALUE_HISTORICAL_VAR_AGG_TYPE__VAR, false));
-		feeder.accept(grammarAccess.getXValueHistoricalVarAggTypeAccess().getFunctionXValueVarHistoricalAggFunctionEnumRuleCall_4_0(), semanticObject.getFunction());
-		feeder.accept(grammarAccess.getXValueHistoricalVarAggTypeAccess().getDaysINTTerminalRuleCall_6_0(), semanticObject.getDays());
-		feeder.finish();
-	}
-	
-	
-	/**
-	 * Contexts:
-	 *     XValueType returns XValueSessionSignalCountType
-	 *     XValueSessionSignalCountType returns XValueSessionSignalCountType
-	 *
-	 * Constraint:
-	 *     (signal=[SignalType|ID] timeRange=XTimeRange value=INT)
-	 */
-	protected void sequence_XValueSessionSignalCountType(ISerializationContext context, XValueSessionSignalCountType semanticObject) {
-		if (errorAcceptor != null) {
-			if (transientValues.isValueTransient(semanticObject, XScriptPackage.Literals.XVALUE_SESSION_SIGNAL_COUNT_TYPE__SIGNAL) == ValueTransient.YES)
-				errorAcceptor.accept(diagnosticProvider.createFeatureValueMissing(semanticObject, XScriptPackage.Literals.XVALUE_SESSION_SIGNAL_COUNT_TYPE__SIGNAL));
-			if (transientValues.isValueTransient(semanticObject, XScriptPackage.Literals.XVALUE_SESSION_SIGNAL_COUNT_TYPE__TIME_RANGE) == ValueTransient.YES)
-				errorAcceptor.accept(diagnosticProvider.createFeatureValueMissing(semanticObject, XScriptPackage.Literals.XVALUE_SESSION_SIGNAL_COUNT_TYPE__TIME_RANGE));
-			if (transientValues.isValueTransient(semanticObject, XScriptPackage.Literals.XVALUE_SESSION_SIGNAL_COUNT_TYPE__VALUE) == ValueTransient.YES)
-				errorAcceptor.accept(diagnosticProvider.createFeatureValueMissing(semanticObject, XScriptPackage.Literals.XVALUE_SESSION_SIGNAL_COUNT_TYPE__VALUE));
-		}
-		SequenceFeeder feeder = createSequencerFeeder(context, semanticObject);
-		feeder.accept(grammarAccess.getXValueSessionSignalCountTypeAccess().getSignalSignalTypeIDTerminalRuleCall_3_0_1(), semanticObject.eGet(XScriptPackage.Literals.XVALUE_SESSION_SIGNAL_COUNT_TYPE__SIGNAL, false));
-		feeder.accept(grammarAccess.getXValueSessionSignalCountTypeAccess().getTimeRangeXTimeRangeParserRuleCall_5_0(), semanticObject.getTimeRange());
-		feeder.accept(grammarAccess.getXValueSessionSignalCountTypeAccess().getValueINTTerminalRuleCall_7_0(), semanticObject.getValue());
-		feeder.finish();
-	}
-	
-	
-	/**
-	 * Contexts:
-	 *     XValueType returns XValueSessionVarAggType
-	 *     XValueSessionVarAggType returns XValueSessionVarAggType
-	 *
-	 * Constraint:
-	 *     (var=[VarType|ID] function=XValueVarSessionAggFunction range=XTimeRange)
-	 */
-	protected void sequence_XValueSessionVarAggType(ISerializationContext context, XValueSessionVarAggType semanticObject) {
-		if (errorAcceptor != null) {
-			if (transientValues.isValueTransient(semanticObject, XScriptPackage.Literals.XVALUE_SESSION_VAR_AGG_TYPE__VAR) == ValueTransient.YES)
-				errorAcceptor.accept(diagnosticProvider.createFeatureValueMissing(semanticObject, XScriptPackage.Literals.XVALUE_SESSION_VAR_AGG_TYPE__VAR));
-			if (transientValues.isValueTransient(semanticObject, XScriptPackage.Literals.XVALUE_SESSION_VAR_AGG_TYPE__FUNCTION) == ValueTransient.YES)
-				errorAcceptor.accept(diagnosticProvider.createFeatureValueMissing(semanticObject, XScriptPackage.Literals.XVALUE_SESSION_VAR_AGG_TYPE__FUNCTION));
-			if (transientValues.isValueTransient(semanticObject, XScriptPackage.Literals.XVALUE_SESSION_VAR_AGG_TYPE__RANGE) == ValueTransient.YES)
-				errorAcceptor.accept(diagnosticProvider.createFeatureValueMissing(semanticObject, XScriptPackage.Literals.XVALUE_SESSION_VAR_AGG_TYPE__RANGE));
-		}
-		SequenceFeeder feeder = createSequencerFeeder(context, semanticObject);
-		feeder.accept(grammarAccess.getXValueSessionVarAggTypeAccess().getVarVarTypeIDTerminalRuleCall_3_0_1(), semanticObject.eGet(XScriptPackage.Literals.XVALUE_SESSION_VAR_AGG_TYPE__VAR, false));
-		feeder.accept(grammarAccess.getXValueSessionVarAggTypeAccess().getFunctionXValueVarSessionAggFunctionEnumRuleCall_5_0(), semanticObject.getFunction());
-		feeder.accept(grammarAccess.getXValueSessionVarAggTypeAccess().getRangeXTimeRangeParserRuleCall_7_0(), semanticObject.getRange());
-		feeder.finish();
-	}
-	
-	
-	/**
-	 * Contexts:
-	 *     XValueType returns XValueSessionVarValueType
-	 *     XValueSessionVarValueType returns XValueSessionVarValueType
-	 *
-	 * Constraint:
-	 *     (var=[VarType|ID] index=INT)
-	 */
-	protected void sequence_XValueSessionVarValueType(ISerializationContext context, XValueSessionVarValueType semanticObject) {
-		if (errorAcceptor != null) {
-			if (transientValues.isValueTransient(semanticObject, XScriptPackage.Literals.XVALUE_SESSION_VAR_VALUE_TYPE__VAR) == ValueTransient.YES)
-				errorAcceptor.accept(diagnosticProvider.createFeatureValueMissing(semanticObject, XScriptPackage.Literals.XVALUE_SESSION_VAR_VALUE_TYPE__VAR));
-			if (transientValues.isValueTransient(semanticObject, XScriptPackage.Literals.XVALUE_SESSION_VAR_VALUE_TYPE__INDEX) == ValueTransient.YES)
-				errorAcceptor.accept(diagnosticProvider.createFeatureValueMissing(semanticObject, XScriptPackage.Literals.XVALUE_SESSION_VAR_VALUE_TYPE__INDEX));
-		}
-		SequenceFeeder feeder = createSequencerFeeder(context, semanticObject);
-		feeder.accept(grammarAccess.getXValueSessionVarValueTypeAccess().getVarVarTypeIDTerminalRuleCall_3_0_1(), semanticObject.eGet(XScriptPackage.Literals.XVALUE_SESSION_VAR_VALUE_TYPE__VAR, false));
-		feeder.accept(grammarAccess.getXValueSessionVarValueTypeAccess().getIndexINTTerminalRuleCall_5_0(), semanticObject.getIndex());
 		feeder.finish();
 	}
 	

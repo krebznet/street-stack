@@ -30,6 +30,7 @@ public class WorkerContainerEntityScanner implements NetScannerWatcher {
 	public String start(EntityScannerStartReq req, WorkerContainer container) throws Exception {
 		try {
 			this.container = container; 
+		   // ID ? 
 			scannerId = DUUID.randomUUID(5);
 			scanner = container.getCache().entityScanner(req.getScanner());
 			scanner.netScanner().addWatcher(this);

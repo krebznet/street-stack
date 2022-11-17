@@ -111,7 +111,7 @@ public class XStreamVarImpl implements XStreamVar, XStreamExpressionListener, XS
 		if(dataType == DataType.DUB) {
 			BigDecimal bd = new BigDecimal(Double.toString((Double)value), MathContext.DECIMAL64);
 			bd.setScale(2, RoundingMode.UP);
-			value = bd.doubleValue();
+			bd.doubleValue();
 		}
 		// value.toString());
 		if (currentIndex == -1) {

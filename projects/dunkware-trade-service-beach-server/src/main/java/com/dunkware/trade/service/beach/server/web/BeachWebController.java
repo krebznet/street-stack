@@ -88,10 +88,13 @@ public class BeachWebController {
 		return null;
 	}
 	
+	// i will add a get method for getting all systems of type trade bot and make sure they are in the JSON format you expect. 
+	
 	
 	@PostMapping(path = "/trade/web/dash/systems/add")
 	public void addSystem(@RequestBody String json) throws Exception {
 		WebTradeBot bot = null;
+				
 		try {
 			bot = DJson.getObjectMapper().readValue(json, WebTradeBot.class);
 			

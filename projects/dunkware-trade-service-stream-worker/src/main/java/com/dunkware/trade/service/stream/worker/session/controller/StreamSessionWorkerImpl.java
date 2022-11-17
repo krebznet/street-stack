@@ -15,8 +15,8 @@ import com.dunkware.trade.service.stream.json.worker.stream.StreamSessionWorkerS
 import com.dunkware.trade.service.stream.json.worker.stream.StreamSessionWorkerStats;
 import com.dunkware.xstream.api.XStream;
 import com.dunkware.xstream.api.XStreamInput;
+import com.dunkware.xstream.api.XStreamSignalService;
 import com.dunkware.xstream.core.XStreamCore;
-import com.dunkware.xstream.core.services.XStreamSignalService;
 import com.dunkware.xstream.xproject.model.XScriptBundle;
 import com.dunkware.xstream.xproject.model.XStreamBundle;
 
@@ -43,9 +43,6 @@ public class StreamSessionWorkerImpl implements StreamSessionWorker, ClusterJobR
 	
 	
 
-	
-	
-	
 	private ClusterJob clusterJob; 
 	
 	private StatusPublisher statusPublisher;

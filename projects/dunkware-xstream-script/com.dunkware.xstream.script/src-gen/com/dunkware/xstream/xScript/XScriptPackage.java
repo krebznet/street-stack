@@ -180,6 +180,116 @@ public interface XScriptPackage extends EPackage
   int VAR_TYPE_FEATURE_COUNT = CORE_ABSTRACT_ELEMENT_FEATURE_COUNT + 4;
 
   /**
+   * The meta object id for the '{@link com.dunkware.xstream.xScript.impl.VarStoreTypeImpl <em>Var Store Type</em>}' class.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @see com.dunkware.xstream.xScript.impl.VarStoreTypeImpl
+   * @see com.dunkware.xstream.xScript.impl.XScriptPackageImpl#getVarStoreType()
+   * @generated
+   */
+  int VAR_STORE_TYPE = 4;
+
+  /**
+   * The feature id for the '<em><b>Name</b></em>' attribute.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   * @ordered
+   */
+  int VAR_STORE_TYPE__NAME = VAR_TYPE__NAME;
+
+  /**
+   * The feature id for the '<em><b>Code</b></em>' attribute.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   * @ordered
+   */
+  int VAR_STORE_TYPE__CODE = VAR_TYPE__CODE;
+
+  /**
+   * The feature id for the '<em><b>Type</b></em>' attribute.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   * @ordered
+   */
+  int VAR_STORE_TYPE__TYPE = VAR_TYPE__TYPE;
+
+  /**
+   * The feature id for the '<em><b>Expression</b></em>' containment reference.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   * @ordered
+   */
+  int VAR_STORE_TYPE__EXPRESSION = VAR_TYPE__EXPRESSION;
+
+  /**
+   * The number of structural features of the '<em>Var Store Type</em>' class.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   * @ordered
+   */
+  int VAR_STORE_TYPE_FEATURE_COUNT = VAR_TYPE_FEATURE_COUNT + 0;
+
+  /**
+   * The meta object id for the '{@link com.dunkware.xstream.xScript.impl.VarTransTypeImpl <em>Var Trans Type</em>}' class.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @see com.dunkware.xstream.xScript.impl.VarTransTypeImpl
+   * @see com.dunkware.xstream.xScript.impl.XScriptPackageImpl#getVarTransType()
+   * @generated
+   */
+  int VAR_TRANS_TYPE = 5;
+
+  /**
+   * The feature id for the '<em><b>Name</b></em>' attribute.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   * @ordered
+   */
+  int VAR_TRANS_TYPE__NAME = VAR_TYPE__NAME;
+
+  /**
+   * The feature id for the '<em><b>Code</b></em>' attribute.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   * @ordered
+   */
+  int VAR_TRANS_TYPE__CODE = VAR_TYPE__CODE;
+
+  /**
+   * The feature id for the '<em><b>Type</b></em>' attribute.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   * @ordered
+   */
+  int VAR_TRANS_TYPE__TYPE = VAR_TYPE__TYPE;
+
+  /**
+   * The feature id for the '<em><b>Expression</b></em>' containment reference.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   * @ordered
+   */
+  int VAR_TRANS_TYPE__EXPRESSION = VAR_TYPE__EXPRESSION;
+
+  /**
+   * The number of structural features of the '<em>Var Trans Type</em>' class.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   * @ordered
+   */
+  int VAR_TRANS_TYPE_FEATURE_COUNT = VAR_TYPE_FEATURE_COUNT + 0;
+
+  /**
    * The meta object id for the '{@link com.dunkware.xstream.xScript.impl.ExpressionTypeImpl <em>Expression Type</em>}' class.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
@@ -187,7 +297,7 @@ public interface XScriptPackage extends EPackage
    * @see com.dunkware.xstream.xScript.impl.XScriptPackageImpl#getExpressionType()
    * @generated
    */
-  int EXPRESSION_TYPE = 4;
+  int EXPRESSION_TYPE = 6;
 
   /**
    * The number of structural features of the '<em>Expression Type</em>' class.
@@ -206,7 +316,7 @@ public interface XScriptPackage extends EPackage
    * @see com.dunkware.xstream.xScript.impl.XScriptPackageImpl#getVariableValueRangeType()
    * @generated
    */
-  int VARIABLE_VALUE_RANGE_TYPE = 5;
+  int VARIABLE_VALUE_RANGE_TYPE = 7;
 
   /**
    * The feature id for the '<em><b>Target Var</b></em>' reference.
@@ -252,7 +362,7 @@ public interface XScriptPackage extends EPackage
    * @see com.dunkware.xstream.xScript.impl.XScriptPackageImpl#getVariableValueType()
    * @generated
    */
-  int VARIABLE_VALUE_TYPE = 6;
+  int VARIABLE_VALUE_TYPE = 8;
 
   /**
    * The feature id for the '<em><b>Variable</b></em>' reference.
@@ -298,7 +408,7 @@ public interface XScriptPackage extends EPackage
    * @see com.dunkware.xstream.xScript.impl.XScriptPackageImpl#getVariableValueExpType()
    * @generated
    */
-  int VARIABLE_VALUE_EXP_TYPE = 7;
+  int VARIABLE_VALUE_EXP_TYPE = 9;
 
   /**
    * The feature id for the '<em><b>Exp Type</b></em>' containment reference.
@@ -326,7 +436,7 @@ public interface XScriptPackage extends EPackage
    * @see com.dunkware.xstream.xScript.impl.XScriptPackageImpl#getSetExpressionType()
    * @generated
    */
-  int SET_EXPRESSION_TYPE = 8;
+  int SET_EXPRESSION_TYPE = 10;
 
   /**
    * The feature id for the '<em><b>Args</b></em>' containment reference list.
@@ -354,7 +464,7 @@ public interface XScriptPackage extends EPackage
    * @see com.dunkware.xstream.xScript.impl.XScriptPackageImpl#getSnapshotExpressionType()
    * @generated
    */
-  int SNAPSHOT_EXPRESSION_TYPE = 9;
+  int SNAPSHOT_EXPRESSION_TYPE = 11;
 
   /**
    * The feature id for the '<em><b>Target</b></em>' containment reference.
@@ -400,7 +510,7 @@ public interface XScriptPackage extends EPackage
    * @see com.dunkware.xstream.xScript.impl.XScriptPackageImpl#getRocExpressionType()
    * @generated
    */
-  int ROC_EXPRESSION_TYPE = 10;
+  int ROC_EXPRESSION_TYPE = 12;
 
   /**
    * The feature id for the '<em><b>Target</b></em>' containment reference.
@@ -437,7 +547,7 @@ public interface XScriptPackage extends EPackage
    * @see com.dunkware.xstream.xScript.impl.XScriptPackageImpl#getAvgExpressionType()
    * @generated
    */
-  int AVG_EXPRESSION_TYPE = 11;
+  int AVG_EXPRESSION_TYPE = 13;
 
   /**
    * The feature id for the '<em><b>Target</b></em>' containment reference.
@@ -465,7 +575,7 @@ public interface XScriptPackage extends EPackage
    * @see com.dunkware.xstream.xScript.impl.XScriptPackageImpl#getSubExpressionType()
    * @generated
    */
-  int SUB_EXPRESSION_TYPE = 12;
+  int SUB_EXPRESSION_TYPE = 14;
 
   /**
    * The feature id for the '<em><b>Target</b></em>' containment reference.
@@ -495,14 +605,209 @@ public interface XScriptPackage extends EPackage
   int SUB_EXPRESSION_TYPE_FEATURE_COUNT = EXPRESSION_TYPE_FEATURE_COUNT + 2;
 
   /**
-   * The meta object id for the '{@link com.dunkware.xstream.xScript.impl.SessionSignalExpressionTypeImpl <em>Session Signal Expression Type</em>}' class.
+   * The meta object id for the '{@link com.dunkware.xstream.xScript.impl.HistoryTimeRangeImpl <em>History Time Range</em>}' class.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
-   * @see com.dunkware.xstream.xScript.impl.SessionSignalExpressionTypeImpl
-   * @see com.dunkware.xstream.xScript.impl.XScriptPackageImpl#getSessionSignalExpressionType()
+   * @see com.dunkware.xstream.xScript.impl.HistoryTimeRangeImpl
+   * @see com.dunkware.xstream.xScript.impl.XScriptPackageImpl#getHistoryTimeRange()
    * @generated
    */
-  int SESSION_SIGNAL_EXPRESSION_TYPE = 13;
+  int HISTORY_TIME_RANGE = 15;
+
+  /**
+   * The feature id for the '<em><b>Value</b></em>' attribute.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   * @ordered
+   */
+  int HISTORY_TIME_RANGE__VALUE = 0;
+
+  /**
+   * The number of structural features of the '<em>History Time Range</em>' class.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   * @ordered
+   */
+  int HISTORY_TIME_RANGE_FEATURE_COUNT = 1;
+
+  /**
+   * The meta object id for the '{@link com.dunkware.xstream.xScript.impl.SessionTimeRangeImpl <em>Session Time Range</em>}' class.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @see com.dunkware.xstream.xScript.impl.SessionTimeRangeImpl
+   * @see com.dunkware.xstream.xScript.impl.XScriptPackageImpl#getSessionTimeRange()
+   * @generated
+   */
+  int SESSION_TIME_RANGE = 16;
+
+  /**
+   * The number of structural features of the '<em>Session Time Range</em>' class.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   * @ordered
+   */
+  int SESSION_TIME_RANGE_FEATURE_COUNT = 0;
+
+  /**
+   * The meta object id for the '{@link com.dunkware.xstream.xScript.impl.RelativeSessionTimeRangeImpl <em>Relative Session Time Range</em>}' class.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @see com.dunkware.xstream.xScript.impl.RelativeSessionTimeRangeImpl
+   * @see com.dunkware.xstream.xScript.impl.XScriptPackageImpl#getRelativeSessionTimeRange()
+   * @generated
+   */
+  int RELATIVE_SESSION_TIME_RANGE = 17;
+
+  /**
+   * The feature id for the '<em><b>Relative Vale</b></em>' attribute.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   * @ordered
+   */
+  int RELATIVE_SESSION_TIME_RANGE__RELATIVE_VALE = SESSION_TIME_RANGE_FEATURE_COUNT + 0;
+
+  /**
+   * The feature id for the '<em><b>Time Unit</b></em>' attribute.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   * @ordered
+   */
+  int RELATIVE_SESSION_TIME_RANGE__TIME_UNIT = SESSION_TIME_RANGE_FEATURE_COUNT + 1;
+
+  /**
+   * The number of structural features of the '<em>Relative Session Time Range</em>' class.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   * @ordered
+   */
+  int RELATIVE_SESSION_TIME_RANGE_FEATURE_COUNT = SESSION_TIME_RANGE_FEATURE_COUNT + 2;
+
+  /**
+   * The meta object id for the '{@link com.dunkware.xstream.xScript.impl.TodaySessionTimeRangeImpl <em>Today Session Time Range</em>}' class.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @see com.dunkware.xstream.xScript.impl.TodaySessionTimeRangeImpl
+   * @see com.dunkware.xstream.xScript.impl.XScriptPackageImpl#getTodaySessionTimeRange()
+   * @generated
+   */
+  int TODAY_SESSION_TIME_RANGE = 18;
+
+  /**
+   * The number of structural features of the '<em>Today Session Time Range</em>' class.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   * @ordered
+   */
+  int TODAY_SESSION_TIME_RANGE_FEATURE_COUNT = SESSION_TIME_RANGE_FEATURE_COUNT + 0;
+
+  /**
+   * The meta object id for the '{@link com.dunkware.xstream.xScript.impl.VarAggSessionTypeImpl <em>Var Agg Session Type</em>}' class.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @see com.dunkware.xstream.xScript.impl.VarAggSessionTypeImpl
+   * @see com.dunkware.xstream.xScript.impl.XScriptPackageImpl#getVarAggSessionType()
+   * @generated
+   */
+  int VAR_AGG_SESSION_TYPE = 19;
+
+  /**
+   * The feature id for the '<em><b>Var</b></em>' reference.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   * @ordered
+   */
+  int VAR_AGG_SESSION_TYPE__VAR = EXPRESSION_TYPE_FEATURE_COUNT + 0;
+
+  /**
+   * The feature id for the '<em><b>Function</b></em>' attribute.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   * @ordered
+   */
+  int VAR_AGG_SESSION_TYPE__FUNCTION = EXPRESSION_TYPE_FEATURE_COUNT + 1;
+
+  /**
+   * The feature id for the '<em><b>Time Range</b></em>' containment reference.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   * @ordered
+   */
+  int VAR_AGG_SESSION_TYPE__TIME_RANGE = EXPRESSION_TYPE_FEATURE_COUNT + 2;
+
+  /**
+   * The number of structural features of the '<em>Var Agg Session Type</em>' class.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   * @ordered
+   */
+  int VAR_AGG_SESSION_TYPE_FEATURE_COUNT = EXPRESSION_TYPE_FEATURE_COUNT + 3;
+
+  /**
+   * The meta object id for the '{@link com.dunkware.xstream.xScript.impl.VarAggHistoryTypeImpl <em>Var Agg History Type</em>}' class.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @see com.dunkware.xstream.xScript.impl.VarAggHistoryTypeImpl
+   * @see com.dunkware.xstream.xScript.impl.XScriptPackageImpl#getVarAggHistoryType()
+   * @generated
+   */
+  int VAR_AGG_HISTORY_TYPE = 20;
+
+  /**
+   * The feature id for the '<em><b>Var</b></em>' reference.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   * @ordered
+   */
+  int VAR_AGG_HISTORY_TYPE__VAR = EXPRESSION_TYPE_FEATURE_COUNT + 0;
+
+  /**
+   * The feature id for the '<em><b>Function</b></em>' attribute.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   * @ordered
+   */
+  int VAR_AGG_HISTORY_TYPE__FUNCTION = EXPRESSION_TYPE_FEATURE_COUNT + 1;
+
+  /**
+   * The feature id for the '<em><b>Time Range</b></em>' containment reference.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   * @ordered
+   */
+  int VAR_AGG_HISTORY_TYPE__TIME_RANGE = EXPRESSION_TYPE_FEATURE_COUNT + 2;
+
+  /**
+   * The number of structural features of the '<em>Var Agg History Type</em>' class.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   * @ordered
+   */
+  int VAR_AGG_HISTORY_TYPE_FEATURE_COUNT = EXPRESSION_TYPE_FEATURE_COUNT + 3;
+
+  /**
+   * The meta object id for the '{@link com.dunkware.xstream.xScript.impl.SignalCountSessionImpl <em>Signal Count Session</em>}' class.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @see com.dunkware.xstream.xScript.impl.SignalCountSessionImpl
+   * @see com.dunkware.xstream.xScript.impl.XScriptPackageImpl#getSignalCountSession()
+   * @generated
+   */
+  int SIGNAL_COUNT_SESSION = 21;
 
   /**
    * The feature id for the '<em><b>Signal</b></em>' reference.
@@ -511,52 +816,62 @@ public interface XScriptPackage extends EPackage
    * @generated
    * @ordered
    */
-  int SESSION_SIGNAL_EXPRESSION_TYPE__SIGNAL = EXPRESSION_TYPE_FEATURE_COUNT + 0;
+  int SIGNAL_COUNT_SESSION__SIGNAL = EXPRESSION_TYPE_FEATURE_COUNT + 0;
 
   /**
-   * The feature id for the '<em><b>Op</b></em>' attribute.
+   * The feature id for the '<em><b>Time Range</b></em>' containment reference.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
    * @generated
    * @ordered
    */
-  int SESSION_SIGNAL_EXPRESSION_TYPE__OP = EXPRESSION_TYPE_FEATURE_COUNT + 1;
+  int SIGNAL_COUNT_SESSION__TIME_RANGE = EXPRESSION_TYPE_FEATURE_COUNT + 1;
 
   /**
-   * The feature id for the '<em><b>Count</b></em>' attribute.
+   * The number of structural features of the '<em>Signal Count Session</em>' class.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
    * @generated
    * @ordered
    */
-  int SESSION_SIGNAL_EXPRESSION_TYPE__COUNT = EXPRESSION_TYPE_FEATURE_COUNT + 2;
+  int SIGNAL_COUNT_SESSION_FEATURE_COUNT = EXPRESSION_TYPE_FEATURE_COUNT + 2;
 
   /**
-   * The feature id for the '<em><b>Time</b></em>' attribute.
+   * The meta object id for the '{@link com.dunkware.xstream.xScript.impl.SignalCountHistoryImpl <em>Signal Count History</em>}' class.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @see com.dunkware.xstream.xScript.impl.SignalCountHistoryImpl
+   * @see com.dunkware.xstream.xScript.impl.XScriptPackageImpl#getSignalCountHistory()
+   * @generated
+   */
+  int SIGNAL_COUNT_HISTORY = 22;
+
+  /**
+   * The feature id for the '<em><b>Signal</b></em>' reference.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
    * @generated
    * @ordered
    */
-  int SESSION_SIGNAL_EXPRESSION_TYPE__TIME = EXPRESSION_TYPE_FEATURE_COUNT + 3;
+  int SIGNAL_COUNT_HISTORY__SIGNAL = EXPRESSION_TYPE_FEATURE_COUNT + 0;
 
   /**
-   * The feature id for the '<em><b>Unit</b></em>' attribute.
+   * The feature id for the '<em><b>Time Range</b></em>' containment reference.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
    * @generated
    * @ordered
    */
-  int SESSION_SIGNAL_EXPRESSION_TYPE__UNIT = EXPRESSION_TYPE_FEATURE_COUNT + 4;
+  int SIGNAL_COUNT_HISTORY__TIME_RANGE = EXPRESSION_TYPE_FEATURE_COUNT + 1;
 
   /**
-   * The number of structural features of the '<em>Session Signal Expression Type</em>' class.
+   * The number of structural features of the '<em>Signal Count History</em>' class.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
    * @generated
    * @ordered
    */
-  int SESSION_SIGNAL_EXPRESSION_TYPE_FEATURE_COUNT = EXPRESSION_TYPE_FEATURE_COUNT + 5;
+  int SIGNAL_COUNT_HISTORY_FEATURE_COUNT = EXPRESSION_TYPE_FEATURE_COUNT + 2;
 
   /**
    * The meta object id for the '{@link com.dunkware.xstream.xScript.impl.SignalTypeImpl <em>Signal Type</em>}' class.
@@ -566,7 +881,7 @@ public interface XScriptPackage extends EPackage
    * @see com.dunkware.xstream.xScript.impl.XScriptPackageImpl#getSignalType()
    * @generated
    */
-  int SIGNAL_TYPE = 14;
+  int SIGNAL_TYPE = 23;
 
   /**
    * The feature id for the '<em><b>Name</b></em>' attribute.
@@ -603,7 +918,7 @@ public interface XScriptPackage extends EPackage
    * @see com.dunkware.xstream.xScript.impl.XScriptPackageImpl#getAbstractElement()
    * @generated
    */
-  int ABSTRACT_ELEMENT = 15;
+  int ABSTRACT_ELEMENT = 24;
 
   /**
    * The number of structural features of the '<em>Abstract Element</em>' class.
@@ -622,7 +937,7 @@ public interface XScriptPackage extends EPackage
    * @see com.dunkware.xstream.xScript.impl.XScriptPackageImpl#getXClassElementType()
    * @generated
    */
-  int XCLASS_ELEMENT_TYPE = 16;
+  int XCLASS_ELEMENT_TYPE = 25;
 
   /**
    * The number of structural features of the '<em>XClass Element Type</em>' class.
@@ -641,7 +956,7 @@ public interface XScriptPackage extends EPackage
    * @see com.dunkware.xstream.xScript.impl.XScriptPackageImpl#getXClassCoreElementType()
    * @generated
    */
-  int XCLASS_CORE_ELEMENT_TYPE = 17;
+  int XCLASS_CORE_ELEMENT_TYPE = 26;
 
   /**
    * The feature id for the '<em><b>Name</b></em>' attribute.
@@ -669,7 +984,7 @@ public interface XScriptPackage extends EPackage
    * @see com.dunkware.xstream.xScript.impl.XScriptPackageImpl#getXVarType()
    * @generated
    */
-  int XVAR_TYPE = 18;
+  int XVAR_TYPE = 27;
 
   /**
    * The feature id for the '<em><b>Name</b></em>' attribute.
@@ -706,7 +1021,7 @@ public interface XScriptPackage extends EPackage
    * @see com.dunkware.xstream.xScript.impl.XScriptPackageImpl#getXFunctionType()
    * @generated
    */
-  int XFUNCTION_TYPE = 19;
+  int XFUNCTION_TYPE = 28;
 
   /**
    * The feature id for the '<em><b>Name</b></em>' attribute.
@@ -752,7 +1067,7 @@ public interface XScriptPackage extends EPackage
    * @see com.dunkware.xstream.xScript.impl.XScriptPackageImpl#getXFunctionCoreElementType()
    * @generated
    */
-  int XFUNCTION_CORE_ELEMENT_TYPE = 20;
+  int XFUNCTION_CORE_ELEMENT_TYPE = 29;
 
   /**
    * The number of structural features of the '<em>XFunction Core Element Type</em>' class.
@@ -771,7 +1086,7 @@ public interface XScriptPackage extends EPackage
    * @see com.dunkware.xstream.xScript.impl.XScriptPackageImpl#getXFunctionReturnType()
    * @generated
    */
-  int XFUNCTION_RETURN_TYPE = 21;
+  int XFUNCTION_RETURN_TYPE = 30;
 
   /**
    * The feature id for the '<em><b>Return Value</b></em>' containment reference.
@@ -799,7 +1114,7 @@ public interface XScriptPackage extends EPackage
    * @see com.dunkware.xstream.xScript.impl.XScriptPackageImpl#getXFunctionCallType()
    * @generated
    */
-  int XFUNCTION_CALL_TYPE = 22;
+  int XFUNCTION_CALL_TYPE = 31;
 
   /**
    * The feature id for the '<em><b>Function</b></em>' reference.
@@ -836,7 +1151,7 @@ public interface XScriptPackage extends EPackage
    * @see com.dunkware.xstream.xScript.impl.XScriptPackageImpl#getXSignalListenerType()
    * @generated
    */
-  int XSIGNAL_LISTENER_TYPE = 23;
+  int XSIGNAL_LISTENER_TYPE = 32;
 
   /**
    * The feature id for the '<em><b>Signal Type</b></em>' reference.
@@ -873,7 +1188,7 @@ public interface XScriptPackage extends EPackage
    * @see com.dunkware.xstream.xScript.impl.XScriptPackageImpl#getXStreamVarListenerType()
    * @generated
    */
-  int XSTREAM_VAR_LISTENER_TYPE = 24;
+  int XSTREAM_VAR_LISTENER_TYPE = 33;
 
   /**
    * The feature id for the '<em><b>Column</b></em>' reference.
@@ -910,7 +1225,7 @@ public interface XScriptPackage extends EPackage
    * @see com.dunkware.xstream.xScript.impl.XScriptPackageImpl#getXSignalTriggerType()
    * @generated
    */
-  int XSIGNAL_TRIGGER_TYPE = 25;
+  int XSIGNAL_TRIGGER_TYPE = 34;
 
   /**
    * The feature id for the '<em><b>Signal</b></em>' reference.
@@ -938,7 +1253,7 @@ public interface XScriptPackage extends EPackage
    * @see com.dunkware.xstream.xScript.impl.XScriptPackageImpl#getXFunctionStartType()
    * @generated
    */
-  int XFUNCTION_START_TYPE = 26;
+  int XFUNCTION_START_TYPE = 35;
 
   /**
    * The feature id for the '<em><b>Function</b></em>' reference.
@@ -984,7 +1299,7 @@ public interface XScriptPackage extends EPackage
    * @see com.dunkware.xstream.xScript.impl.XScriptPackageImpl#getXVarSetterType()
    * @generated
    */
-  int XVAR_SETTER_TYPE = 27;
+  int XVAR_SETTER_TYPE = 36;
 
   /**
    * The feature id for the '<em><b>Var</b></em>' reference.
@@ -1021,7 +1336,7 @@ public interface XScriptPackage extends EPackage
    * @see com.dunkware.xstream.xScript.impl.XScriptPackageImpl#getXVarIncrementType()
    * @generated
    */
-  int XVAR_INCREMENT_TYPE = 28;
+  int XVAR_INCREMENT_TYPE = 37;
 
   /**
    * The feature id for the '<em><b>Var</b></em>' reference.
@@ -1049,7 +1364,7 @@ public interface XScriptPackage extends EPackage
    * @see com.dunkware.xstream.xScript.impl.XScriptPackageImpl#getXVarDecrementType()
    * @generated
    */
-  int XVAR_DECREMENT_TYPE = 29;
+  int XVAR_DECREMENT_TYPE = 38;
 
   /**
    * The feature id for the '<em><b>Var</b></em>' reference.
@@ -1077,7 +1392,7 @@ public interface XScriptPackage extends EPackage
    * @see com.dunkware.xstream.xScript.impl.XScriptPackageImpl#getXSetVarType()
    * @generated
    */
-  int XSET_VAR_TYPE = 30;
+  int XSET_VAR_TYPE = 39;
 
   /**
    * The feature id for the '<em><b>Var</b></em>' reference.
@@ -1114,7 +1429,7 @@ public interface XScriptPackage extends EPackage
    * @see com.dunkware.xstream.xScript.impl.XScriptPackageImpl#getXDebugType()
    * @generated
    */
-  int XDEBUG_TYPE = 31;
+  int XDEBUG_TYPE = 40;
 
   /**
    * The feature id for the '<em><b>Args</b></em>' containment reference list.
@@ -1142,7 +1457,7 @@ public interface XScriptPackage extends EPackage
    * @see com.dunkware.xstream.xScript.impl.XScriptPackageImpl#getXIfStatementType()
    * @generated
    */
-  int XIF_STATEMENT_TYPE = 32;
+  int XIF_STATEMENT_TYPE = 41;
 
   /**
    * The feature id for the '<em><b>Expression</b></em>' containment reference.
@@ -1197,7 +1512,7 @@ public interface XScriptPackage extends EPackage
    * @see com.dunkware.xstream.xScript.impl.XScriptPackageImpl#getXElseIfStatementType()
    * @generated
    */
-  int XELSE_IF_STATEMENT_TYPE = 33;
+  int XELSE_IF_STATEMENT_TYPE = 42;
 
   /**
    * The feature id for the '<em><b>Expression</b></em>' containment reference.
@@ -1234,7 +1549,7 @@ public interface XScriptPackage extends EPackage
    * @see com.dunkware.xstream.xScript.impl.XScriptPackageImpl#getXElseStatementType()
    * @generated
    */
-  int XELSE_STATEMENT_TYPE = 34;
+  int XELSE_STATEMENT_TYPE = 43;
 
   /**
    * The feature id for the '<em><b>Elements</b></em>' containment reference list.
@@ -1262,7 +1577,7 @@ public interface XScriptPackage extends EPackage
    * @see com.dunkware.xstream.xScript.impl.XScriptPackageImpl#getXWhileType()
    * @generated
    */
-  int XWHILE_TYPE = 35;
+  int XWHILE_TYPE = 44;
 
   /**
    * The feature id for the '<em><b>Expression</b></em>' containment reference.
@@ -1299,7 +1614,7 @@ public interface XScriptPackage extends EPackage
    * @see com.dunkware.xstream.xScript.impl.XScriptPackageImpl#getXWhileBreakType()
    * @generated
    */
-  int XWHILE_BREAK_TYPE = 36;
+  int XWHILE_BREAK_TYPE = 45;
 
   /**
    * The number of structural features of the '<em>XWhile Break Type</em>' class.
@@ -1318,7 +1633,7 @@ public interface XScriptPackage extends EPackage
    * @see com.dunkware.xstream.xScript.impl.XScriptPackageImpl#getXSleepType()
    * @generated
    */
-  int XSLEEP_TYPE = 37;
+  int XSLEEP_TYPE = 46;
 
   /**
    * The feature id for the '<em><b>Interval</b></em>' attribute.
@@ -1355,7 +1670,7 @@ public interface XScriptPackage extends EPackage
    * @see com.dunkware.xstream.xScript.impl.XScriptPackageImpl#getXExpressionType()
    * @generated
    */
-  int XEXPRESSION_TYPE = 38;
+  int XEXPRESSION_TYPE = 47;
 
   /**
    * The number of structural features of the '<em>XExpression Type</em>' class.
@@ -1374,7 +1689,7 @@ public interface XScriptPackage extends EPackage
    * @see com.dunkware.xstream.xScript.impl.XScriptPackageImpl#getXPercentChangeExpType()
    * @generated
    */
-  int XPERCENT_CHANGE_EXP_TYPE = 39;
+  int XPERCENT_CHANGE_EXP_TYPE = 48;
 
   /**
    * The feature id for the '<em><b>Value1</b></em>' containment reference.
@@ -1411,7 +1726,7 @@ public interface XScriptPackage extends EPackage
    * @see com.dunkware.xstream.xScript.impl.XScriptPackageImpl#getXSubExpType()
    * @generated
    */
-  int XSUB_EXP_TYPE = 40;
+  int XSUB_EXP_TYPE = 49;
 
   /**
    * The feature id for the '<em><b>Value1</b></em>' containment reference.
@@ -1448,7 +1763,7 @@ public interface XScriptPackage extends EPackage
    * @see com.dunkware.xstream.xScript.impl.XScriptPackageImpl#getXVarExpType()
    * @generated
    */
-  int XVAR_EXP_TYPE = 41;
+  int XVAR_EXP_TYPE = 50;
 
   /**
    * The feature id for the '<em><b>Exp Var</b></em>' reference.
@@ -1476,7 +1791,7 @@ public interface XScriptPackage extends EPackage
    * @see com.dunkware.xstream.xScript.impl.XScriptPackageImpl#getXStreamWrapperExpType()
    * @generated
    */
-  int XSTREAM_WRAPPER_EXP_TYPE = 42;
+  int XSTREAM_WRAPPER_EXP_TYPE = 51;
 
   /**
    * The feature id for the '<em><b>Wrapper Exp</b></em>' containment reference.
@@ -1504,7 +1819,7 @@ public interface XScriptPackage extends EPackage
    * @see com.dunkware.xstream.xScript.impl.XScriptPackageImpl#getXStreamVarValueExpType()
    * @generated
    */
-  int XSTREAM_VAR_VALUE_EXP_TYPE = 43;
+  int XSTREAM_VAR_VALUE_EXP_TYPE = 52;
 
   /**
    * The feature id for the '<em><b>Var</b></em>' reference.
@@ -1541,7 +1856,7 @@ public interface XScriptPackage extends EPackage
    * @see com.dunkware.xstream.xScript.impl.XScriptPackageImpl#getXFunctionCallExpType()
    * @generated
    */
-  int XFUNCTION_CALL_EXP_TYPE = 44;
+  int XFUNCTION_CALL_EXP_TYPE = 53;
 
   /**
    * The feature id for the '<em><b>Function</b></em>' reference.
@@ -1578,7 +1893,7 @@ public interface XScriptPackage extends EPackage
    * @see com.dunkware.xstream.xScript.impl.XScriptPackageImpl#getXVarStreakType()
    * @generated
    */
-  int XVAR_STREAK_TYPE = 45;
+  int XVAR_STREAK_TYPE = 54;
 
   /**
    * The feature id for the '<em><b>Var</b></em>' reference.
@@ -1642,7 +1957,7 @@ public interface XScriptPackage extends EPackage
    * @see com.dunkware.xstream.xScript.impl.XScriptPackageImpl#getXVarStreakCompareType()
    * @generated
    */
-  int XVAR_STREAK_COMPARE_TYPE = 46;
+  int XVAR_STREAK_COMPARE_TYPE = 55;
 
   /**
    * The feature id for the '<em><b>Function</b></em>' attribute.
@@ -1697,7 +2012,7 @@ public interface XScriptPackage extends EPackage
    * @see com.dunkware.xstream.xScript.impl.XScriptPackageImpl#getXVarStreakValueType()
    * @generated
    */
-  int XVAR_STREAK_VALUE_TYPE = 47;
+  int XVAR_STREAK_VALUE_TYPE = 56;
 
   /**
    * The feature id for the '<em><b>Op</b></em>' attribute.
@@ -1734,7 +2049,7 @@ public interface XScriptPackage extends EPackage
    * @see com.dunkware.xstream.xScript.impl.XScriptPackageImpl#getXVarCompareStreakType()
    * @generated
    */
-  int XVAR_COMPARE_STREAK_TYPE = 48;
+  int XVAR_COMPARE_STREAK_TYPE = 57;
 
   /**
    * The feature id for the '<em><b>Target Var</b></em>' reference.
@@ -1816,7 +2131,7 @@ public interface XScriptPackage extends EPackage
    * @see com.dunkware.xstream.xScript.impl.XScriptPackageImpl#getXSlrAvgExpType()
    * @generated
    */
-  int XSLR_AVG_EXP_TYPE = 49;
+  int XSLR_AVG_EXP_TYPE = 58;
 
   /**
    * The feature id for the '<em><b>Var</b></em>' reference.
@@ -1862,7 +2177,7 @@ public interface XScriptPackage extends EPackage
    * @see com.dunkware.xstream.xScript.impl.XScriptPackageImpl#getXLastSignalTriggerType()
    * @generated
    */
-  int XLAST_SIGNAL_TRIGGER_TYPE = 50;
+  int XLAST_SIGNAL_TRIGGER_TYPE = 59;
 
   /**
    * The feature id for the '<em><b>Signal</b></em>' reference.
@@ -1890,7 +2205,7 @@ public interface XScriptPackage extends EPackage
    * @see com.dunkware.xstream.xScript.impl.XScriptPackageImpl#getXSignalTriggerCountType()
    * @generated
    */
-  int XSIGNAL_TRIGGER_COUNT_TYPE = 51;
+  int XSIGNAL_TRIGGER_COUNT_TYPE = 60;
 
   /**
    * The feature id for the '<em><b>Signal</b></em>' reference.
@@ -1927,7 +2242,7 @@ public interface XScriptPackage extends EPackage
    * @see com.dunkware.xstream.xScript.impl.XScriptPackageImpl#getXVarianceAverageType()
    * @generated
    */
-  int XVARIANCE_AVERAGE_TYPE = 52;
+  int XVARIANCE_AVERAGE_TYPE = 61;
 
   /**
    * The feature id for the '<em><b>Target</b></em>' reference.
@@ -1982,7 +2297,7 @@ public interface XScriptPackage extends EPackage
    * @see com.dunkware.xstream.xScript.impl.XScriptPackageImpl#getXVarianceMaxType()
    * @generated
    */
-  int XVARIANCE_MAX_TYPE = 53;
+  int XVARIANCE_MAX_TYPE = 62;
 
   /**
    * The feature id for the '<em><b>Target</b></em>' reference.
@@ -2037,7 +2352,7 @@ public interface XScriptPackage extends EPackage
    * @see com.dunkware.xstream.xScript.impl.XScriptPackageImpl#getXRocExpType()
    * @generated
    */
-  int XROC_EXP_TYPE = 54;
+  int XROC_EXP_TYPE = 63;
 
   /**
    * The feature id for the '<em><b>Value1</b></em>' containment reference.
@@ -2067,477 +2382,6 @@ public interface XScriptPackage extends EPackage
   int XROC_EXP_TYPE_FEATURE_COUNT = XEXPRESSION_TYPE_FEATURE_COUNT + 2;
 
   /**
-   * The meta object id for the '{@link com.dunkware.xstream.xScript.impl.XTimeRangeImpl <em>XTime Range</em>}' class.
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @see com.dunkware.xstream.xScript.impl.XTimeRangeImpl
-   * @see com.dunkware.xstream.xScript.impl.XScriptPackageImpl#getXTimeRange()
-   * @generated
-   */
-  int XTIME_RANGE = 55;
-
-  /**
-   * The number of structural features of the '<em>XTime Range</em>' class.
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   * @ordered
-   */
-  int XTIME_RANGE_FEATURE_COUNT = 0;
-
-  /**
-   * The meta object id for the '{@link com.dunkware.xstream.xScript.impl.XTimeRangeRelativeImpl <em>XTime Range Relative</em>}' class.
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @see com.dunkware.xstream.xScript.impl.XTimeRangeRelativeImpl
-   * @see com.dunkware.xstream.xScript.impl.XScriptPackageImpl#getXTimeRangeRelative()
-   * @generated
-   */
-  int XTIME_RANGE_RELATIVE = 56;
-
-  /**
-   * The feature id for the '<em><b>Unit</b></em>' attribute.
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   * @ordered
-   */
-  int XTIME_RANGE_RELATIVE__UNIT = XTIME_RANGE_FEATURE_COUNT + 0;
-
-  /**
-   * The feature id for the '<em><b>Value</b></em>' attribute.
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   * @ordered
-   */
-  int XTIME_RANGE_RELATIVE__VALUE = XTIME_RANGE_FEATURE_COUNT + 1;
-
-  /**
-   * The number of structural features of the '<em>XTime Range Relative</em>' class.
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   * @ordered
-   */
-  int XTIME_RANGE_RELATIVE_FEATURE_COUNT = XTIME_RANGE_FEATURE_COUNT + 2;
-
-  /**
-   * The meta object id for the '{@link com.dunkware.xstream.xScript.impl.XValueTypeImpl <em>XValue Type</em>}' class.
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @see com.dunkware.xstream.xScript.impl.XValueTypeImpl
-   * @see com.dunkware.xstream.xScript.impl.XScriptPackageImpl#getXValueType()
-   * @generated
-   */
-  int XVALUE_TYPE = 57;
-
-  /**
-   * The number of structural features of the '<em>XValue Type</em>' class.
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   * @ordered
-   */
-  int XVALUE_TYPE_FEATURE_COUNT = 0;
-
-  /**
-   * The meta object id for the '{@link com.dunkware.xstream.xScript.impl.XValueSessionVarValueTypeImpl <em>XValue Session Var Value Type</em>}' class.
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @see com.dunkware.xstream.xScript.impl.XValueSessionVarValueTypeImpl
-   * @see com.dunkware.xstream.xScript.impl.XScriptPackageImpl#getXValueSessionVarValueType()
-   * @generated
-   */
-  int XVALUE_SESSION_VAR_VALUE_TYPE = 58;
-
-  /**
-   * The feature id for the '<em><b>Var</b></em>' reference.
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   * @ordered
-   */
-  int XVALUE_SESSION_VAR_VALUE_TYPE__VAR = XVALUE_TYPE_FEATURE_COUNT + 0;
-
-  /**
-   * The feature id for the '<em><b>Index</b></em>' attribute.
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   * @ordered
-   */
-  int XVALUE_SESSION_VAR_VALUE_TYPE__INDEX = XVALUE_TYPE_FEATURE_COUNT + 1;
-
-  /**
-   * The number of structural features of the '<em>XValue Session Var Value Type</em>' class.
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   * @ordered
-   */
-  int XVALUE_SESSION_VAR_VALUE_TYPE_FEATURE_COUNT = XVALUE_TYPE_FEATURE_COUNT + 2;
-
-  /**
-   * The meta object id for the '{@link com.dunkware.xstream.xScript.impl.XValueSessionVarAggTypeImpl <em>XValue Session Var Agg Type</em>}' class.
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @see com.dunkware.xstream.xScript.impl.XValueSessionVarAggTypeImpl
-   * @see com.dunkware.xstream.xScript.impl.XScriptPackageImpl#getXValueSessionVarAggType()
-   * @generated
-   */
-  int XVALUE_SESSION_VAR_AGG_TYPE = 59;
-
-  /**
-   * The feature id for the '<em><b>Var</b></em>' reference.
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   * @ordered
-   */
-  int XVALUE_SESSION_VAR_AGG_TYPE__VAR = XVALUE_TYPE_FEATURE_COUNT + 0;
-
-  /**
-   * The feature id for the '<em><b>Function</b></em>' attribute.
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   * @ordered
-   */
-  int XVALUE_SESSION_VAR_AGG_TYPE__FUNCTION = XVALUE_TYPE_FEATURE_COUNT + 1;
-
-  /**
-   * The feature id for the '<em><b>Range</b></em>' containment reference.
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   * @ordered
-   */
-  int XVALUE_SESSION_VAR_AGG_TYPE__RANGE = XVALUE_TYPE_FEATURE_COUNT + 2;
-
-  /**
-   * The number of structural features of the '<em>XValue Session Var Agg Type</em>' class.
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   * @ordered
-   */
-  int XVALUE_SESSION_VAR_AGG_TYPE_FEATURE_COUNT = XVALUE_TYPE_FEATURE_COUNT + 3;
-
-  /**
-   * The meta object id for the '{@link com.dunkware.xstream.xScript.impl.XValueSessionSignalCountTypeImpl <em>XValue Session Signal Count Type</em>}' class.
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @see com.dunkware.xstream.xScript.impl.XValueSessionSignalCountTypeImpl
-   * @see com.dunkware.xstream.xScript.impl.XScriptPackageImpl#getXValueSessionSignalCountType()
-   * @generated
-   */
-  int XVALUE_SESSION_SIGNAL_COUNT_TYPE = 60;
-
-  /**
-   * The feature id for the '<em><b>Signal</b></em>' reference.
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   * @ordered
-   */
-  int XVALUE_SESSION_SIGNAL_COUNT_TYPE__SIGNAL = XVALUE_TYPE_FEATURE_COUNT + 0;
-
-  /**
-   * The feature id for the '<em><b>Time Range</b></em>' containment reference.
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   * @ordered
-   */
-  int XVALUE_SESSION_SIGNAL_COUNT_TYPE__TIME_RANGE = XVALUE_TYPE_FEATURE_COUNT + 1;
-
-  /**
-   * The feature id for the '<em><b>Value</b></em>' attribute.
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   * @ordered
-   */
-  int XVALUE_SESSION_SIGNAL_COUNT_TYPE__VALUE = XVALUE_TYPE_FEATURE_COUNT + 2;
-
-  /**
-   * The number of structural features of the '<em>XValue Session Signal Count Type</em>' class.
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   * @ordered
-   */
-  int XVALUE_SESSION_SIGNAL_COUNT_TYPE_FEATURE_COUNT = XVALUE_TYPE_FEATURE_COUNT + 3;
-
-  /**
-   * The meta object id for the '{@link com.dunkware.xstream.xScript.impl.XValueHistoricalVarAggTypeImpl <em>XValue Historical Var Agg Type</em>}' class.
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @see com.dunkware.xstream.xScript.impl.XValueHistoricalVarAggTypeImpl
-   * @see com.dunkware.xstream.xScript.impl.XScriptPackageImpl#getXValueHistoricalVarAggType()
-   * @generated
-   */
-  int XVALUE_HISTORICAL_VAR_AGG_TYPE = 61;
-
-  /**
-   * The feature id for the '<em><b>Var</b></em>' reference.
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   * @ordered
-   */
-  int XVALUE_HISTORICAL_VAR_AGG_TYPE__VAR = 0;
-
-  /**
-   * The feature id for the '<em><b>Function</b></em>' attribute.
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   * @ordered
-   */
-  int XVALUE_HISTORICAL_VAR_AGG_TYPE__FUNCTION = 1;
-
-  /**
-   * The feature id for the '<em><b>Days</b></em>' attribute.
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   * @ordered
-   */
-  int XVALUE_HISTORICAL_VAR_AGG_TYPE__DAYS = 2;
-
-  /**
-   * The number of structural features of the '<em>XValue Historical Var Agg Type</em>' class.
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   * @ordered
-   */
-  int XVALUE_HISTORICAL_VAR_AGG_TYPE_FEATURE_COUNT = 3;
-
-  /**
-   * The meta object id for the '{@link com.dunkware.xstream.xScript.impl.XValueHistoricalSignalCountTypeImpl <em>XValue Historical Signal Count Type</em>}' class.
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @see com.dunkware.xstream.xScript.impl.XValueHistoricalSignalCountTypeImpl
-   * @see com.dunkware.xstream.xScript.impl.XScriptPackageImpl#getXValueHistoricalSignalCountType()
-   * @generated
-   */
-  int XVALUE_HISTORICAL_SIGNAL_COUNT_TYPE = 62;
-
-  /**
-   * The feature id for the '<em><b>Signal</b></em>' reference.
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   * @ordered
-   */
-  int XVALUE_HISTORICAL_SIGNAL_COUNT_TYPE__SIGNAL = XVALUE_TYPE_FEATURE_COUNT + 0;
-
-  /**
-   * The feature id for the '<em><b>Days</b></em>' attribute.
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   * @ordered
-   */
-  int XVALUE_HISTORICAL_SIGNAL_COUNT_TYPE__DAYS = XVALUE_TYPE_FEATURE_COUNT + 1;
-
-  /**
-   * The number of structural features of the '<em>XValue Historical Signal Count Type</em>' class.
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   * @ordered
-   */
-  int XVALUE_HISTORICAL_SIGNAL_COUNT_TYPE_FEATURE_COUNT = XVALUE_TYPE_FEATURE_COUNT + 2;
-
-  /**
-   * The meta object id for the '{@link com.dunkware.xstream.xScript.impl.XQueryTypeImpl <em>XQuery Type</em>}' class.
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @see com.dunkware.xstream.xScript.impl.XQueryTypeImpl
-   * @see com.dunkware.xstream.xScript.impl.XScriptPackageImpl#getXQueryType()
-   * @generated
-   */
-  int XQUERY_TYPE = 63;
-
-  /**
-   * The feature id for the '<em><b>Name</b></em>' attribute.
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   * @ordered
-   */
-  int XQUERY_TYPE__NAME = CORE_ABSTRACT_ELEMENT_FEATURE_COUNT + 0;
-
-  /**
-   * The feature id for the '<em><b>Filters</b></em>' containment reference list.
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   * @ordered
-   */
-  int XQUERY_TYPE__FILTERS = CORE_ABSTRACT_ELEMENT_FEATURE_COUNT + 1;
-
-  /**
-   * The number of structural features of the '<em>XQuery Type</em>' class.
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   * @ordered
-   */
-  int XQUERY_TYPE_FEATURE_COUNT = CORE_ABSTRACT_ELEMENT_FEATURE_COUNT + 2;
-
-  /**
-   * The meta object id for the '{@link com.dunkware.xstream.xScript.impl.XQueryFilterTypeImpl <em>XQuery Filter Type</em>}' class.
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @see com.dunkware.xstream.xScript.impl.XQueryFilterTypeImpl
-   * @see com.dunkware.xstream.xScript.impl.XScriptPackageImpl#getXQueryFilterType()
-   * @generated
-   */
-  int XQUERY_FILTER_TYPE = 64;
-
-  /**
-   * The feature id for the '<em><b>Operator</b></em>' attribute.
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   * @ordered
-   */
-  int XQUERY_FILTER_TYPE__OPERATOR = 0;
-
-  /**
-   * The feature id for the '<em><b>Criteria</b></em>' attribute.
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   * @ordered
-   */
-  int XQUERY_FILTER_TYPE__CRITERIA = 1;
-
-  /**
-   * The number of structural features of the '<em>XQuery Filter Type</em>' class.
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   * @ordered
-   */
-  int XQUERY_FILTER_TYPE_FEATURE_COUNT = 2;
-
-  /**
-   * The meta object id for the '{@link com.dunkware.xstream.xScript.impl.XQueryFilterValueTypeImpl <em>XQuery Filter Value Type</em>}' class.
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @see com.dunkware.xstream.xScript.impl.XQueryFilterValueTypeImpl
-   * @see com.dunkware.xstream.xScript.impl.XScriptPackageImpl#getXQueryFilterValueType()
-   * @generated
-   */
-  int XQUERY_FILTER_VALUE_TYPE = 65;
-
-  /**
-   * The feature id for the '<em><b>Operator</b></em>' attribute.
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   * @ordered
-   */
-  int XQUERY_FILTER_VALUE_TYPE__OPERATOR = XQUERY_FILTER_TYPE__OPERATOR;
-
-  /**
-   * The feature id for the '<em><b>Criteria</b></em>' attribute.
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   * @ordered
-   */
-  int XQUERY_FILTER_VALUE_TYPE__CRITERIA = XQUERY_FILTER_TYPE__CRITERIA;
-
-  /**
-   * The feature id for the '<em><b>Value</b></em>' containment reference.
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   * @ordered
-   */
-  int XQUERY_FILTER_VALUE_TYPE__VALUE = XQUERY_FILTER_TYPE_FEATURE_COUNT + 0;
-
-  /**
-   * The number of structural features of the '<em>XQuery Filter Value Type</em>' class.
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   * @ordered
-   */
-  int XQUERY_FILTER_VALUE_TYPE_FEATURE_COUNT = XQUERY_FILTER_TYPE_FEATURE_COUNT + 1;
-
-  /**
-   * The meta object id for the '{@link com.dunkware.xstream.xScript.impl.XQueryFilterValueCompareTypeImpl <em>XQuery Filter Value Compare Type</em>}' class.
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @see com.dunkware.xstream.xScript.impl.XQueryFilterValueCompareTypeImpl
-   * @see com.dunkware.xstream.xScript.impl.XScriptPackageImpl#getXQueryFilterValueCompareType()
-   * @generated
-   */
-  int XQUERY_FILTER_VALUE_COMPARE_TYPE = 66;
-
-  /**
-   * The feature id for the '<em><b>Operator</b></em>' attribute.
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   * @ordered
-   */
-  int XQUERY_FILTER_VALUE_COMPARE_TYPE__OPERATOR = XQUERY_FILTER_TYPE__OPERATOR;
-
-  /**
-   * The feature id for the '<em><b>Criteria</b></em>' attribute.
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   * @ordered
-   */
-  int XQUERY_FILTER_VALUE_COMPARE_TYPE__CRITERIA = XQUERY_FILTER_TYPE__CRITERIA;
-
-  /**
-   * The feature id for the '<em><b>Value1</b></em>' containment reference.
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   * @ordered
-   */
-  int XQUERY_FILTER_VALUE_COMPARE_TYPE__VALUE1 = XQUERY_FILTER_TYPE_FEATURE_COUNT + 0;
-
-  /**
-   * The feature id for the '<em><b>Value2</b></em>' containment reference.
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   * @ordered
-   */
-  int XQUERY_FILTER_VALUE_COMPARE_TYPE__VALUE2 = XQUERY_FILTER_TYPE_FEATURE_COUNT + 1;
-
-  /**
-   * The feature id for the '<em><b>Function</b></em>' attribute.
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   * @ordered
-   */
-  int XQUERY_FILTER_VALUE_COMPARE_TYPE__FUNCTION = XQUERY_FILTER_TYPE_FEATURE_COUNT + 2;
-
-  /**
-   * The number of structural features of the '<em>XQuery Filter Value Compare Type</em>' class.
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   * @ordered
-   */
-  int XQUERY_FILTER_VALUE_COMPARE_TYPE_FEATURE_COUNT = XQUERY_FILTER_TYPE_FEATURE_COUNT + 3;
-
-  /**
    * The meta object id for the '{@link com.dunkware.xstream.xScript.impl.OrTypeImpl <em>Or Type</em>}' class.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
@@ -2545,7 +2389,7 @@ public interface XScriptPackage extends EPackage
    * @see com.dunkware.xstream.xScript.impl.XScriptPackageImpl#getOrType()
    * @generated
    */
-  int OR_TYPE = 67;
+  int OR_TYPE = 64;
 
   /**
    * The feature id for the '<em><b>Left</b></em>' containment reference.
@@ -2582,7 +2426,7 @@ public interface XScriptPackage extends EPackage
    * @see com.dunkware.xstream.xScript.impl.XScriptPackageImpl#getAndType()
    * @generated
    */
-  int AND_TYPE = 68;
+  int AND_TYPE = 65;
 
   /**
    * The feature id for the '<em><b>Left</b></em>' containment reference.
@@ -2619,7 +2463,7 @@ public interface XScriptPackage extends EPackage
    * @see com.dunkware.xstream.xScript.impl.XScriptPackageImpl#getEqualityType()
    * @generated
    */
-  int EQUALITY_TYPE = 69;
+  int EQUALITY_TYPE = 66;
 
   /**
    * The feature id for the '<em><b>Left</b></em>' containment reference.
@@ -2665,7 +2509,7 @@ public interface XScriptPackage extends EPackage
    * @see com.dunkware.xstream.xScript.impl.XScriptPackageImpl#getComparisonType()
    * @generated
    */
-  int COMPARISON_TYPE = 70;
+  int COMPARISON_TYPE = 67;
 
   /**
    * The feature id for the '<em><b>Left</b></em>' containment reference.
@@ -2711,7 +2555,7 @@ public interface XScriptPackage extends EPackage
    * @see com.dunkware.xstream.xScript.impl.XScriptPackageImpl#getPlusType()
    * @generated
    */
-  int PLUS_TYPE = 71;
+  int PLUS_TYPE = 68;
 
   /**
    * The feature id for the '<em><b>Left</b></em>' containment reference.
@@ -2748,7 +2592,7 @@ public interface XScriptPackage extends EPackage
    * @see com.dunkware.xstream.xScript.impl.XScriptPackageImpl#getMinusType()
    * @generated
    */
-  int MINUS_TYPE = 72;
+  int MINUS_TYPE = 69;
 
   /**
    * The feature id for the '<em><b>Left</b></em>' containment reference.
@@ -2785,7 +2629,7 @@ public interface XScriptPackage extends EPackage
    * @see com.dunkware.xstream.xScript.impl.XScriptPackageImpl#getMulOrDivType()
    * @generated
    */
-  int MUL_OR_DIV_TYPE = 73;
+  int MUL_OR_DIV_TYPE = 70;
 
   /**
    * The feature id for the '<em><b>Left</b></em>' containment reference.
@@ -2831,7 +2675,7 @@ public interface XScriptPackage extends EPackage
    * @see com.dunkware.xstream.xScript.impl.XScriptPackageImpl#getNotType()
    * @generated
    */
-  int NOT_TYPE = 74;
+  int NOT_TYPE = 71;
 
   /**
    * The feature id for the '<em><b>Expression</b></em>' containment reference.
@@ -2859,7 +2703,7 @@ public interface XScriptPackage extends EPackage
    * @see com.dunkware.xstream.xScript.impl.XScriptPackageImpl#getDoubleConstantType()
    * @generated
    */
-  int DOUBLE_CONSTANT_TYPE = 75;
+  int DOUBLE_CONSTANT_TYPE = 72;
 
   /**
    * The feature id for the '<em><b>Value</b></em>' attribute.
@@ -2887,7 +2731,7 @@ public interface XScriptPackage extends EPackage
    * @see com.dunkware.xstream.xScript.impl.XScriptPackageImpl#getIntConstantType()
    * @generated
    */
-  int INT_CONSTANT_TYPE = 76;
+  int INT_CONSTANT_TYPE = 73;
 
   /**
    * The feature id for the '<em><b>Value</b></em>' attribute.
@@ -2915,7 +2759,7 @@ public interface XScriptPackage extends EPackage
    * @see com.dunkware.xstream.xScript.impl.XScriptPackageImpl#getStringConstantType()
    * @generated
    */
-  int STRING_CONSTANT_TYPE = 77;
+  int STRING_CONSTANT_TYPE = 74;
 
   /**
    * The feature id for the '<em><b>Value</b></em>' attribute.
@@ -2943,7 +2787,7 @@ public interface XScriptPackage extends EPackage
    * @see com.dunkware.xstream.xScript.impl.XScriptPackageImpl#getBoolConstantType()
    * @generated
    */
-  int BOOL_CONSTANT_TYPE = 78;
+  int BOOL_CONSTANT_TYPE = 75;
 
   /**
    * The feature id for the '<em><b>Value</b></em>' attribute.
@@ -2971,7 +2815,7 @@ public interface XScriptPackage extends EPackage
    * @see com.dunkware.xstream.xScript.impl.XScriptPackageImpl#getTickExpressionType()
    * @generated
    */
-  int TICK_EXPRESSION_TYPE = 79;
+  int TICK_EXPRESSION_TYPE = 76;
 
   /**
    * The feature id for the '<em><b>Type</b></em>' attribute.
@@ -3017,7 +2861,7 @@ public interface XScriptPackage extends EPackage
    * @see com.dunkware.xstream.xScript.impl.XScriptPackageImpl#getXClassType()
    * @generated
    */
-  int XCLASS_TYPE = 80;
+  int XCLASS_TYPE = 77;
 
   /**
    * The feature id for the '<em><b>Name</b></em>' attribute.
@@ -3063,7 +2907,7 @@ public interface XScriptPackage extends EPackage
    * @see com.dunkware.xstream.xScript.impl.XScriptPackageImpl#getXOrType()
    * @generated
    */
-  int XOR_TYPE = 81;
+  int XOR_TYPE = 78;
 
   /**
    * The feature id for the '<em><b>Left</b></em>' containment reference.
@@ -3100,7 +2944,7 @@ public interface XScriptPackage extends EPackage
    * @see com.dunkware.xstream.xScript.impl.XScriptPackageImpl#getXAndType()
    * @generated
    */
-  int XAND_TYPE = 82;
+  int XAND_TYPE = 79;
 
   /**
    * The feature id for the '<em><b>Left</b></em>' containment reference.
@@ -3137,7 +2981,7 @@ public interface XScriptPackage extends EPackage
    * @see com.dunkware.xstream.xScript.impl.XScriptPackageImpl#getXEqualityType()
    * @generated
    */
-  int XEQUALITY_TYPE = 83;
+  int XEQUALITY_TYPE = 80;
 
   /**
    * The feature id for the '<em><b>Left</b></em>' containment reference.
@@ -3183,7 +3027,7 @@ public interface XScriptPackage extends EPackage
    * @see com.dunkware.xstream.xScript.impl.XScriptPackageImpl#getXComparisonType()
    * @generated
    */
-  int XCOMPARISON_TYPE = 84;
+  int XCOMPARISON_TYPE = 81;
 
   /**
    * The feature id for the '<em><b>Left</b></em>' containment reference.
@@ -3229,7 +3073,7 @@ public interface XScriptPackage extends EPackage
    * @see com.dunkware.xstream.xScript.impl.XScriptPackageImpl#getXPlusType()
    * @generated
    */
-  int XPLUS_TYPE = 85;
+  int XPLUS_TYPE = 82;
 
   /**
    * The feature id for the '<em><b>Left</b></em>' containment reference.
@@ -3266,7 +3110,7 @@ public interface XScriptPackage extends EPackage
    * @see com.dunkware.xstream.xScript.impl.XScriptPackageImpl#getXMinusType()
    * @generated
    */
-  int XMINUS_TYPE = 86;
+  int XMINUS_TYPE = 83;
 
   /**
    * The feature id for the '<em><b>Left</b></em>' containment reference.
@@ -3303,7 +3147,7 @@ public interface XScriptPackage extends EPackage
    * @see com.dunkware.xstream.xScript.impl.XScriptPackageImpl#getXMulOrDivType()
    * @generated
    */
-  int XMUL_OR_DIV_TYPE = 87;
+  int XMUL_OR_DIV_TYPE = 84;
 
   /**
    * The feature id for the '<em><b>Left</b></em>' containment reference.
@@ -3349,7 +3193,7 @@ public interface XScriptPackage extends EPackage
    * @see com.dunkware.xstream.xScript.impl.XScriptPackageImpl#getXNotType()
    * @generated
    */
-  int XNOT_TYPE = 88;
+  int XNOT_TYPE = 85;
 
   /**
    * The feature id for the '<em><b>Expression</b></em>' containment reference.
@@ -3377,7 +3221,7 @@ public interface XScriptPackage extends EPackage
    * @see com.dunkware.xstream.xScript.impl.XScriptPackageImpl#getXDoubleConstantType()
    * @generated
    */
-  int XDOUBLE_CONSTANT_TYPE = 89;
+  int XDOUBLE_CONSTANT_TYPE = 86;
 
   /**
    * The feature id for the '<em><b>Value</b></em>' attribute.
@@ -3405,7 +3249,7 @@ public interface XScriptPackage extends EPackage
    * @see com.dunkware.xstream.xScript.impl.XScriptPackageImpl#getXIntConstantType()
    * @generated
    */
-  int XINT_CONSTANT_TYPE = 90;
+  int XINT_CONSTANT_TYPE = 87;
 
   /**
    * The feature id for the '<em><b>Value</b></em>' attribute.
@@ -3433,7 +3277,7 @@ public interface XScriptPackage extends EPackage
    * @see com.dunkware.xstream.xScript.impl.XScriptPackageImpl#getXStringConstantType()
    * @generated
    */
-  int XSTRING_CONSTANT_TYPE = 91;
+  int XSTRING_CONSTANT_TYPE = 88;
 
   /**
    * The feature id for the '<em><b>Value</b></em>' attribute.
@@ -3461,7 +3305,7 @@ public interface XScriptPackage extends EPackage
    * @see com.dunkware.xstream.xScript.impl.XScriptPackageImpl#getXBoolConstantType()
    * @generated
    */
-  int XBOOL_CONSTANT_TYPE = 92;
+  int XBOOL_CONSTANT_TYPE = 89;
 
   /**
    * The feature id for the '<em><b>Value</b></em>' attribute.
@@ -3482,6 +3326,36 @@ public interface XScriptPackage extends EPackage
   int XBOOL_CONSTANT_TYPE_FEATURE_COUNT = XEXPRESSION_TYPE_FEATURE_COUNT + 1;
 
   /**
+   * The meta object id for the '{@link com.dunkware.xstream.xScript.HistoricalAggFunc <em>Historical Agg Func</em>}' enum.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @see com.dunkware.xstream.xScript.HistoricalAggFunc
+   * @see com.dunkware.xstream.xScript.impl.XScriptPackageImpl#getHistoricalAggFunc()
+   * @generated
+   */
+  int HISTORICAL_AGG_FUNC = 90;
+
+  /**
+   * The meta object id for the '{@link com.dunkware.xstream.xScript.SessionAggFunc <em>Session Agg Func</em>}' enum.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @see com.dunkware.xstream.xScript.SessionAggFunc
+   * @see com.dunkware.xstream.xScript.impl.XScriptPackageImpl#getSessionAggFunc()
+   * @generated
+   */
+  int SESSION_AGG_FUNC = 91;
+
+  /**
+   * The meta object id for the '{@link com.dunkware.xstream.xScript.SessionTimeUnit <em>Session Time Unit</em>}' enum.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @see com.dunkware.xstream.xScript.SessionTimeUnit
+   * @see com.dunkware.xstream.xScript.impl.XScriptPackageImpl#getSessionTimeUnit()
+   * @generated
+   */
+  int SESSION_TIME_UNIT = 92;
+
+  /**
    * The meta object id for the '{@link com.dunkware.xstream.xScript.StreamTimeUnit <em>Stream Time Unit</em>}' enum.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
@@ -3500,46 +3374,6 @@ public interface XScriptPackage extends EPackage
    * @generated
    */
   int DATA_TYPE = 94;
-
-  /**
-   * The meta object id for the '{@link com.dunkware.xstream.xScript.XValueVarHistoricalAggFunction <em>XValue Var Historical Agg Function</em>}' enum.
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @see com.dunkware.xstream.xScript.XValueVarHistoricalAggFunction
-   * @see com.dunkware.xstream.xScript.impl.XScriptPackageImpl#getXValueVarHistoricalAggFunction()
-   * @generated
-   */
-  int XVALUE_VAR_HISTORICAL_AGG_FUNCTION = 95;
-
-  /**
-   * The meta object id for the '{@link com.dunkware.xstream.xScript.XValueVarSessionAggFunction <em>XValue Var Session Agg Function</em>}' enum.
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @see com.dunkware.xstream.xScript.XValueVarSessionAggFunction
-   * @see com.dunkware.xstream.xScript.impl.XScriptPackageImpl#getXValueVarSessionAggFunction()
-   * @generated
-   */
-  int XVALUE_VAR_SESSION_AGG_FUNCTION = 96;
-
-  /**
-   * The meta object id for the '{@link com.dunkware.xstream.xScript.XStreamOperator <em>XStream Operator</em>}' enum.
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @see com.dunkware.xstream.xScript.XStreamOperator
-   * @see com.dunkware.xstream.xScript.impl.XScriptPackageImpl#getXStreamOperator()
-   * @generated
-   */
-  int XSTREAM_OPERATOR = 97;
-
-  /**
-   * The meta object id for the '{@link com.dunkware.xstream.xScript.XQueryValueCompareFunction <em>XQuery Value Compare Function</em>}' enum.
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @see com.dunkware.xstream.xScript.XQueryValueCompareFunction
-   * @see com.dunkware.xstream.xScript.impl.XScriptPackageImpl#getXQueryValueCompareFunction()
-   * @generated
-   */
-  int XQUERY_VALUE_COMPARE_FUNCTION = 98;
 
 
   /**
@@ -3636,6 +3470,26 @@ public interface XScriptPackage extends EPackage
    * @generated
    */
   EReference getVarType_Expression();
+
+  /**
+   * Returns the meta object for class '{@link com.dunkware.xstream.xScript.VarStoreType <em>Var Store Type</em>}'.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @return the meta object for class '<em>Var Store Type</em>'.
+   * @see com.dunkware.xstream.xScript.VarStoreType
+   * @generated
+   */
+  EClass getVarStoreType();
+
+  /**
+   * Returns the meta object for class '{@link com.dunkware.xstream.xScript.VarTransType <em>Var Trans Type</em>}'.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @return the meta object for class '<em>Var Trans Type</em>'.
+   * @see com.dunkware.xstream.xScript.VarTransType
+   * @generated
+   */
+  EClass getVarTransType();
 
   /**
    * Returns the meta object for class '{@link com.dunkware.xstream.xScript.ExpressionType <em>Expression Type</em>}'.
@@ -3904,69 +3758,227 @@ public interface XScriptPackage extends EPackage
   EReference getSubExpressionType_Compare();
 
   /**
-   * Returns the meta object for class '{@link com.dunkware.xstream.xScript.SessionSignalExpressionType <em>Session Signal Expression Type</em>}'.
+   * Returns the meta object for class '{@link com.dunkware.xstream.xScript.HistoryTimeRange <em>History Time Range</em>}'.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
-   * @return the meta object for class '<em>Session Signal Expression Type</em>'.
-   * @see com.dunkware.xstream.xScript.SessionSignalExpressionType
+   * @return the meta object for class '<em>History Time Range</em>'.
+   * @see com.dunkware.xstream.xScript.HistoryTimeRange
    * @generated
    */
-  EClass getSessionSignalExpressionType();
+  EClass getHistoryTimeRange();
 
   /**
-   * Returns the meta object for the reference '{@link com.dunkware.xstream.xScript.SessionSignalExpressionType#getSignal <em>Signal</em>}'.
+   * Returns the meta object for the attribute '{@link com.dunkware.xstream.xScript.HistoryTimeRange#getValue <em>Value</em>}'.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @return the meta object for the attribute '<em>Value</em>'.
+   * @see com.dunkware.xstream.xScript.HistoryTimeRange#getValue()
+   * @see #getHistoryTimeRange()
+   * @generated
+   */
+  EAttribute getHistoryTimeRange_Value();
+
+  /**
+   * Returns the meta object for class '{@link com.dunkware.xstream.xScript.SessionTimeRange <em>Session Time Range</em>}'.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @return the meta object for class '<em>Session Time Range</em>'.
+   * @see com.dunkware.xstream.xScript.SessionTimeRange
+   * @generated
+   */
+  EClass getSessionTimeRange();
+
+  /**
+   * Returns the meta object for class '{@link com.dunkware.xstream.xScript.RelativeSessionTimeRange <em>Relative Session Time Range</em>}'.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @return the meta object for class '<em>Relative Session Time Range</em>'.
+   * @see com.dunkware.xstream.xScript.RelativeSessionTimeRange
+   * @generated
+   */
+  EClass getRelativeSessionTimeRange();
+
+  /**
+   * Returns the meta object for the attribute '{@link com.dunkware.xstream.xScript.RelativeSessionTimeRange#getRelativeVale <em>Relative Vale</em>}'.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @return the meta object for the attribute '<em>Relative Vale</em>'.
+   * @see com.dunkware.xstream.xScript.RelativeSessionTimeRange#getRelativeVale()
+   * @see #getRelativeSessionTimeRange()
+   * @generated
+   */
+  EAttribute getRelativeSessionTimeRange_RelativeVale();
+
+  /**
+   * Returns the meta object for the attribute '{@link com.dunkware.xstream.xScript.RelativeSessionTimeRange#getTimeUnit <em>Time Unit</em>}'.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @return the meta object for the attribute '<em>Time Unit</em>'.
+   * @see com.dunkware.xstream.xScript.RelativeSessionTimeRange#getTimeUnit()
+   * @see #getRelativeSessionTimeRange()
+   * @generated
+   */
+  EAttribute getRelativeSessionTimeRange_TimeUnit();
+
+  /**
+   * Returns the meta object for class '{@link com.dunkware.xstream.xScript.TodaySessionTimeRange <em>Today Session Time Range</em>}'.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @return the meta object for class '<em>Today Session Time Range</em>'.
+   * @see com.dunkware.xstream.xScript.TodaySessionTimeRange
+   * @generated
+   */
+  EClass getTodaySessionTimeRange();
+
+  /**
+   * Returns the meta object for class '{@link com.dunkware.xstream.xScript.VarAggSessionType <em>Var Agg Session Type</em>}'.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @return the meta object for class '<em>Var Agg Session Type</em>'.
+   * @see com.dunkware.xstream.xScript.VarAggSessionType
+   * @generated
+   */
+  EClass getVarAggSessionType();
+
+  /**
+   * Returns the meta object for the reference '{@link com.dunkware.xstream.xScript.VarAggSessionType#getVar <em>Var</em>}'.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @return the meta object for the reference '<em>Var</em>'.
+   * @see com.dunkware.xstream.xScript.VarAggSessionType#getVar()
+   * @see #getVarAggSessionType()
+   * @generated
+   */
+  EReference getVarAggSessionType_Var();
+
+  /**
+   * Returns the meta object for the attribute '{@link com.dunkware.xstream.xScript.VarAggSessionType#getFunction <em>Function</em>}'.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @return the meta object for the attribute '<em>Function</em>'.
+   * @see com.dunkware.xstream.xScript.VarAggSessionType#getFunction()
+   * @see #getVarAggSessionType()
+   * @generated
+   */
+  EAttribute getVarAggSessionType_Function();
+
+  /**
+   * Returns the meta object for the containment reference '{@link com.dunkware.xstream.xScript.VarAggSessionType#getTimeRange <em>Time Range</em>}'.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @return the meta object for the containment reference '<em>Time Range</em>'.
+   * @see com.dunkware.xstream.xScript.VarAggSessionType#getTimeRange()
+   * @see #getVarAggSessionType()
+   * @generated
+   */
+  EReference getVarAggSessionType_TimeRange();
+
+  /**
+   * Returns the meta object for class '{@link com.dunkware.xstream.xScript.VarAggHistoryType <em>Var Agg History Type</em>}'.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @return the meta object for class '<em>Var Agg History Type</em>'.
+   * @see com.dunkware.xstream.xScript.VarAggHistoryType
+   * @generated
+   */
+  EClass getVarAggHistoryType();
+
+  /**
+   * Returns the meta object for the reference '{@link com.dunkware.xstream.xScript.VarAggHistoryType#getVar <em>Var</em>}'.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @return the meta object for the reference '<em>Var</em>'.
+   * @see com.dunkware.xstream.xScript.VarAggHistoryType#getVar()
+   * @see #getVarAggHistoryType()
+   * @generated
+   */
+  EReference getVarAggHistoryType_Var();
+
+  /**
+   * Returns the meta object for the attribute '{@link com.dunkware.xstream.xScript.VarAggHistoryType#getFunction <em>Function</em>}'.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @return the meta object for the attribute '<em>Function</em>'.
+   * @see com.dunkware.xstream.xScript.VarAggHistoryType#getFunction()
+   * @see #getVarAggHistoryType()
+   * @generated
+   */
+  EAttribute getVarAggHistoryType_Function();
+
+  /**
+   * Returns the meta object for the containment reference '{@link com.dunkware.xstream.xScript.VarAggHistoryType#getTimeRange <em>Time Range</em>}'.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @return the meta object for the containment reference '<em>Time Range</em>'.
+   * @see com.dunkware.xstream.xScript.VarAggHistoryType#getTimeRange()
+   * @see #getVarAggHistoryType()
+   * @generated
+   */
+  EReference getVarAggHistoryType_TimeRange();
+
+  /**
+   * Returns the meta object for class '{@link com.dunkware.xstream.xScript.SignalCountSession <em>Signal Count Session</em>}'.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @return the meta object for class '<em>Signal Count Session</em>'.
+   * @see com.dunkware.xstream.xScript.SignalCountSession
+   * @generated
+   */
+  EClass getSignalCountSession();
+
+  /**
+   * Returns the meta object for the reference '{@link com.dunkware.xstream.xScript.SignalCountSession#getSignal <em>Signal</em>}'.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
    * @return the meta object for the reference '<em>Signal</em>'.
-   * @see com.dunkware.xstream.xScript.SessionSignalExpressionType#getSignal()
-   * @see #getSessionSignalExpressionType()
+   * @see com.dunkware.xstream.xScript.SignalCountSession#getSignal()
+   * @see #getSignalCountSession()
    * @generated
    */
-  EReference getSessionSignalExpressionType_Signal();
+  EReference getSignalCountSession_Signal();
 
   /**
-   * Returns the meta object for the attribute '{@link com.dunkware.xstream.xScript.SessionSignalExpressionType#getOp <em>Op</em>}'.
+   * Returns the meta object for the containment reference '{@link com.dunkware.xstream.xScript.SignalCountSession#getTimeRange <em>Time Range</em>}'.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
-   * @return the meta object for the attribute '<em>Op</em>'.
-   * @see com.dunkware.xstream.xScript.SessionSignalExpressionType#getOp()
-   * @see #getSessionSignalExpressionType()
+   * @return the meta object for the containment reference '<em>Time Range</em>'.
+   * @see com.dunkware.xstream.xScript.SignalCountSession#getTimeRange()
+   * @see #getSignalCountSession()
    * @generated
    */
-  EAttribute getSessionSignalExpressionType_Op();
+  EReference getSignalCountSession_TimeRange();
 
   /**
-   * Returns the meta object for the attribute '{@link com.dunkware.xstream.xScript.SessionSignalExpressionType#getCount <em>Count</em>}'.
+   * Returns the meta object for class '{@link com.dunkware.xstream.xScript.SignalCountHistory <em>Signal Count History</em>}'.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
-   * @return the meta object for the attribute '<em>Count</em>'.
-   * @see com.dunkware.xstream.xScript.SessionSignalExpressionType#getCount()
-   * @see #getSessionSignalExpressionType()
+   * @return the meta object for class '<em>Signal Count History</em>'.
+   * @see com.dunkware.xstream.xScript.SignalCountHistory
    * @generated
    */
-  EAttribute getSessionSignalExpressionType_Count();
+  EClass getSignalCountHistory();
 
   /**
-   * Returns the meta object for the attribute '{@link com.dunkware.xstream.xScript.SessionSignalExpressionType#getTime <em>Time</em>}'.
+   * Returns the meta object for the reference '{@link com.dunkware.xstream.xScript.SignalCountHistory#getSignal <em>Signal</em>}'.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
-   * @return the meta object for the attribute '<em>Time</em>'.
-   * @see com.dunkware.xstream.xScript.SessionSignalExpressionType#getTime()
-   * @see #getSessionSignalExpressionType()
+   * @return the meta object for the reference '<em>Signal</em>'.
+   * @see com.dunkware.xstream.xScript.SignalCountHistory#getSignal()
+   * @see #getSignalCountHistory()
    * @generated
    */
-  EAttribute getSessionSignalExpressionType_Time();
+  EReference getSignalCountHistory_Signal();
 
   /**
-   * Returns the meta object for the attribute '{@link com.dunkware.xstream.xScript.SessionSignalExpressionType#getUnit <em>Unit</em>}'.
+   * Returns the meta object for the containment reference '{@link com.dunkware.xstream.xScript.SignalCountHistory#getTimeRange <em>Time Range</em>}'.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
-   * @return the meta object for the attribute '<em>Unit</em>'.
-   * @see com.dunkware.xstream.xScript.SessionSignalExpressionType#getUnit()
-   * @see #getSessionSignalExpressionType()
+   * @return the meta object for the containment reference '<em>Time Range</em>'.
+   * @see com.dunkware.xstream.xScript.SignalCountHistory#getTimeRange()
+   * @see #getSignalCountHistory()
    * @generated
    */
-  EAttribute getSessionSignalExpressionType_Unit();
+  EReference getSignalCountHistory_TimeRange();
 
   /**
    * Returns the meta object for class '{@link com.dunkware.xstream.xScript.SignalType <em>Signal Type</em>}'.
@@ -5248,379 +5260,6 @@ public interface XScriptPackage extends EPackage
   EReference getXRocExpType_Value2();
 
   /**
-   * Returns the meta object for class '{@link com.dunkware.xstream.xScript.XTimeRange <em>XTime Range</em>}'.
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @return the meta object for class '<em>XTime Range</em>'.
-   * @see com.dunkware.xstream.xScript.XTimeRange
-   * @generated
-   */
-  EClass getXTimeRange();
-
-  /**
-   * Returns the meta object for class '{@link com.dunkware.xstream.xScript.XTimeRangeRelative <em>XTime Range Relative</em>}'.
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @return the meta object for class '<em>XTime Range Relative</em>'.
-   * @see com.dunkware.xstream.xScript.XTimeRangeRelative
-   * @generated
-   */
-  EClass getXTimeRangeRelative();
-
-  /**
-   * Returns the meta object for the attribute '{@link com.dunkware.xstream.xScript.XTimeRangeRelative#getUnit <em>Unit</em>}'.
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @return the meta object for the attribute '<em>Unit</em>'.
-   * @see com.dunkware.xstream.xScript.XTimeRangeRelative#getUnit()
-   * @see #getXTimeRangeRelative()
-   * @generated
-   */
-  EAttribute getXTimeRangeRelative_Unit();
-
-  /**
-   * Returns the meta object for the attribute '{@link com.dunkware.xstream.xScript.XTimeRangeRelative#getValue <em>Value</em>}'.
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @return the meta object for the attribute '<em>Value</em>'.
-   * @see com.dunkware.xstream.xScript.XTimeRangeRelative#getValue()
-   * @see #getXTimeRangeRelative()
-   * @generated
-   */
-  EAttribute getXTimeRangeRelative_Value();
-
-  /**
-   * Returns the meta object for class '{@link com.dunkware.xstream.xScript.XValueType <em>XValue Type</em>}'.
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @return the meta object for class '<em>XValue Type</em>'.
-   * @see com.dunkware.xstream.xScript.XValueType
-   * @generated
-   */
-  EClass getXValueType();
-
-  /**
-   * Returns the meta object for class '{@link com.dunkware.xstream.xScript.XValueSessionVarValueType <em>XValue Session Var Value Type</em>}'.
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @return the meta object for class '<em>XValue Session Var Value Type</em>'.
-   * @see com.dunkware.xstream.xScript.XValueSessionVarValueType
-   * @generated
-   */
-  EClass getXValueSessionVarValueType();
-
-  /**
-   * Returns the meta object for the reference '{@link com.dunkware.xstream.xScript.XValueSessionVarValueType#getVar <em>Var</em>}'.
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @return the meta object for the reference '<em>Var</em>'.
-   * @see com.dunkware.xstream.xScript.XValueSessionVarValueType#getVar()
-   * @see #getXValueSessionVarValueType()
-   * @generated
-   */
-  EReference getXValueSessionVarValueType_Var();
-
-  /**
-   * Returns the meta object for the attribute '{@link com.dunkware.xstream.xScript.XValueSessionVarValueType#getIndex <em>Index</em>}'.
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @return the meta object for the attribute '<em>Index</em>'.
-   * @see com.dunkware.xstream.xScript.XValueSessionVarValueType#getIndex()
-   * @see #getXValueSessionVarValueType()
-   * @generated
-   */
-  EAttribute getXValueSessionVarValueType_Index();
-
-  /**
-   * Returns the meta object for class '{@link com.dunkware.xstream.xScript.XValueSessionVarAggType <em>XValue Session Var Agg Type</em>}'.
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @return the meta object for class '<em>XValue Session Var Agg Type</em>'.
-   * @see com.dunkware.xstream.xScript.XValueSessionVarAggType
-   * @generated
-   */
-  EClass getXValueSessionVarAggType();
-
-  /**
-   * Returns the meta object for the reference '{@link com.dunkware.xstream.xScript.XValueSessionVarAggType#getVar <em>Var</em>}'.
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @return the meta object for the reference '<em>Var</em>'.
-   * @see com.dunkware.xstream.xScript.XValueSessionVarAggType#getVar()
-   * @see #getXValueSessionVarAggType()
-   * @generated
-   */
-  EReference getXValueSessionVarAggType_Var();
-
-  /**
-   * Returns the meta object for the attribute '{@link com.dunkware.xstream.xScript.XValueSessionVarAggType#getFunction <em>Function</em>}'.
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @return the meta object for the attribute '<em>Function</em>'.
-   * @see com.dunkware.xstream.xScript.XValueSessionVarAggType#getFunction()
-   * @see #getXValueSessionVarAggType()
-   * @generated
-   */
-  EAttribute getXValueSessionVarAggType_Function();
-
-  /**
-   * Returns the meta object for the containment reference '{@link com.dunkware.xstream.xScript.XValueSessionVarAggType#getRange <em>Range</em>}'.
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @return the meta object for the containment reference '<em>Range</em>'.
-   * @see com.dunkware.xstream.xScript.XValueSessionVarAggType#getRange()
-   * @see #getXValueSessionVarAggType()
-   * @generated
-   */
-  EReference getXValueSessionVarAggType_Range();
-
-  /**
-   * Returns the meta object for class '{@link com.dunkware.xstream.xScript.XValueSessionSignalCountType <em>XValue Session Signal Count Type</em>}'.
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @return the meta object for class '<em>XValue Session Signal Count Type</em>'.
-   * @see com.dunkware.xstream.xScript.XValueSessionSignalCountType
-   * @generated
-   */
-  EClass getXValueSessionSignalCountType();
-
-  /**
-   * Returns the meta object for the reference '{@link com.dunkware.xstream.xScript.XValueSessionSignalCountType#getSignal <em>Signal</em>}'.
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @return the meta object for the reference '<em>Signal</em>'.
-   * @see com.dunkware.xstream.xScript.XValueSessionSignalCountType#getSignal()
-   * @see #getXValueSessionSignalCountType()
-   * @generated
-   */
-  EReference getXValueSessionSignalCountType_Signal();
-
-  /**
-   * Returns the meta object for the containment reference '{@link com.dunkware.xstream.xScript.XValueSessionSignalCountType#getTimeRange <em>Time Range</em>}'.
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @return the meta object for the containment reference '<em>Time Range</em>'.
-   * @see com.dunkware.xstream.xScript.XValueSessionSignalCountType#getTimeRange()
-   * @see #getXValueSessionSignalCountType()
-   * @generated
-   */
-  EReference getXValueSessionSignalCountType_TimeRange();
-
-  /**
-   * Returns the meta object for the attribute '{@link com.dunkware.xstream.xScript.XValueSessionSignalCountType#getValue <em>Value</em>}'.
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @return the meta object for the attribute '<em>Value</em>'.
-   * @see com.dunkware.xstream.xScript.XValueSessionSignalCountType#getValue()
-   * @see #getXValueSessionSignalCountType()
-   * @generated
-   */
-  EAttribute getXValueSessionSignalCountType_Value();
-
-  /**
-   * Returns the meta object for class '{@link com.dunkware.xstream.xScript.XValueHistoricalVarAggType <em>XValue Historical Var Agg Type</em>}'.
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @return the meta object for class '<em>XValue Historical Var Agg Type</em>'.
-   * @see com.dunkware.xstream.xScript.XValueHistoricalVarAggType
-   * @generated
-   */
-  EClass getXValueHistoricalVarAggType();
-
-  /**
-   * Returns the meta object for the reference '{@link com.dunkware.xstream.xScript.XValueHistoricalVarAggType#getVar <em>Var</em>}'.
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @return the meta object for the reference '<em>Var</em>'.
-   * @see com.dunkware.xstream.xScript.XValueHistoricalVarAggType#getVar()
-   * @see #getXValueHistoricalVarAggType()
-   * @generated
-   */
-  EReference getXValueHistoricalVarAggType_Var();
-
-  /**
-   * Returns the meta object for the attribute '{@link com.dunkware.xstream.xScript.XValueHistoricalVarAggType#getFunction <em>Function</em>}'.
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @return the meta object for the attribute '<em>Function</em>'.
-   * @see com.dunkware.xstream.xScript.XValueHistoricalVarAggType#getFunction()
-   * @see #getXValueHistoricalVarAggType()
-   * @generated
-   */
-  EAttribute getXValueHistoricalVarAggType_Function();
-
-  /**
-   * Returns the meta object for the attribute '{@link com.dunkware.xstream.xScript.XValueHistoricalVarAggType#getDays <em>Days</em>}'.
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @return the meta object for the attribute '<em>Days</em>'.
-   * @see com.dunkware.xstream.xScript.XValueHistoricalVarAggType#getDays()
-   * @see #getXValueHistoricalVarAggType()
-   * @generated
-   */
-  EAttribute getXValueHistoricalVarAggType_Days();
-
-  /**
-   * Returns the meta object for class '{@link com.dunkware.xstream.xScript.XValueHistoricalSignalCountType <em>XValue Historical Signal Count Type</em>}'.
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @return the meta object for class '<em>XValue Historical Signal Count Type</em>'.
-   * @see com.dunkware.xstream.xScript.XValueHistoricalSignalCountType
-   * @generated
-   */
-  EClass getXValueHistoricalSignalCountType();
-
-  /**
-   * Returns the meta object for the reference '{@link com.dunkware.xstream.xScript.XValueHistoricalSignalCountType#getSignal <em>Signal</em>}'.
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @return the meta object for the reference '<em>Signal</em>'.
-   * @see com.dunkware.xstream.xScript.XValueHistoricalSignalCountType#getSignal()
-   * @see #getXValueHistoricalSignalCountType()
-   * @generated
-   */
-  EReference getXValueHistoricalSignalCountType_Signal();
-
-  /**
-   * Returns the meta object for the attribute '{@link com.dunkware.xstream.xScript.XValueHistoricalSignalCountType#getDays <em>Days</em>}'.
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @return the meta object for the attribute '<em>Days</em>'.
-   * @see com.dunkware.xstream.xScript.XValueHistoricalSignalCountType#getDays()
-   * @see #getXValueHistoricalSignalCountType()
-   * @generated
-   */
-  EAttribute getXValueHistoricalSignalCountType_Days();
-
-  /**
-   * Returns the meta object for class '{@link com.dunkware.xstream.xScript.XQueryType <em>XQuery Type</em>}'.
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @return the meta object for class '<em>XQuery Type</em>'.
-   * @see com.dunkware.xstream.xScript.XQueryType
-   * @generated
-   */
-  EClass getXQueryType();
-
-  /**
-   * Returns the meta object for the attribute '{@link com.dunkware.xstream.xScript.XQueryType#getName <em>Name</em>}'.
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @return the meta object for the attribute '<em>Name</em>'.
-   * @see com.dunkware.xstream.xScript.XQueryType#getName()
-   * @see #getXQueryType()
-   * @generated
-   */
-  EAttribute getXQueryType_Name();
-
-  /**
-   * Returns the meta object for the containment reference list '{@link com.dunkware.xstream.xScript.XQueryType#getFilters <em>Filters</em>}'.
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @return the meta object for the containment reference list '<em>Filters</em>'.
-   * @see com.dunkware.xstream.xScript.XQueryType#getFilters()
-   * @see #getXQueryType()
-   * @generated
-   */
-  EReference getXQueryType_Filters();
-
-  /**
-   * Returns the meta object for class '{@link com.dunkware.xstream.xScript.XQueryFilterType <em>XQuery Filter Type</em>}'.
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @return the meta object for class '<em>XQuery Filter Type</em>'.
-   * @see com.dunkware.xstream.xScript.XQueryFilterType
-   * @generated
-   */
-  EClass getXQueryFilterType();
-
-  /**
-   * Returns the meta object for the attribute '{@link com.dunkware.xstream.xScript.XQueryFilterType#getOperator <em>Operator</em>}'.
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @return the meta object for the attribute '<em>Operator</em>'.
-   * @see com.dunkware.xstream.xScript.XQueryFilterType#getOperator()
-   * @see #getXQueryFilterType()
-   * @generated
-   */
-  EAttribute getXQueryFilterType_Operator();
-
-  /**
-   * Returns the meta object for the attribute '{@link com.dunkware.xstream.xScript.XQueryFilterType#getCriteria <em>Criteria</em>}'.
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @return the meta object for the attribute '<em>Criteria</em>'.
-   * @see com.dunkware.xstream.xScript.XQueryFilterType#getCriteria()
-   * @see #getXQueryFilterType()
-   * @generated
-   */
-  EAttribute getXQueryFilterType_Criteria();
-
-  /**
-   * Returns the meta object for class '{@link com.dunkware.xstream.xScript.XQueryFilterValueType <em>XQuery Filter Value Type</em>}'.
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @return the meta object for class '<em>XQuery Filter Value Type</em>'.
-   * @see com.dunkware.xstream.xScript.XQueryFilterValueType
-   * @generated
-   */
-  EClass getXQueryFilterValueType();
-
-  /**
-   * Returns the meta object for the containment reference '{@link com.dunkware.xstream.xScript.XQueryFilterValueType#getValue <em>Value</em>}'.
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @return the meta object for the containment reference '<em>Value</em>'.
-   * @see com.dunkware.xstream.xScript.XQueryFilterValueType#getValue()
-   * @see #getXQueryFilterValueType()
-   * @generated
-   */
-  EReference getXQueryFilterValueType_Value();
-
-  /**
-   * Returns the meta object for class '{@link com.dunkware.xstream.xScript.XQueryFilterValueCompareType <em>XQuery Filter Value Compare Type</em>}'.
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @return the meta object for class '<em>XQuery Filter Value Compare Type</em>'.
-   * @see com.dunkware.xstream.xScript.XQueryFilterValueCompareType
-   * @generated
-   */
-  EClass getXQueryFilterValueCompareType();
-
-  /**
-   * Returns the meta object for the containment reference '{@link com.dunkware.xstream.xScript.XQueryFilterValueCompareType#getValue1 <em>Value1</em>}'.
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @return the meta object for the containment reference '<em>Value1</em>'.
-   * @see com.dunkware.xstream.xScript.XQueryFilterValueCompareType#getValue1()
-   * @see #getXQueryFilterValueCompareType()
-   * @generated
-   */
-  EReference getXQueryFilterValueCompareType_Value1();
-
-  /**
-   * Returns the meta object for the containment reference '{@link com.dunkware.xstream.xScript.XQueryFilterValueCompareType#getValue2 <em>Value2</em>}'.
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @return the meta object for the containment reference '<em>Value2</em>'.
-   * @see com.dunkware.xstream.xScript.XQueryFilterValueCompareType#getValue2()
-   * @see #getXQueryFilterValueCompareType()
-   * @generated
-   */
-  EReference getXQueryFilterValueCompareType_Value2();
-
-  /**
-   * Returns the meta object for the attribute '{@link com.dunkware.xstream.xScript.XQueryFilterValueCompareType#getFunction <em>Function</em>}'.
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @return the meta object for the attribute '<em>Function</em>'.
-   * @see com.dunkware.xstream.xScript.XQueryFilterValueCompareType#getFunction()
-   * @see #getXQueryFilterValueCompareType()
-   * @generated
-   */
-  EAttribute getXQueryFilterValueCompareType_Function();
-
-  /**
    * Returns the meta object for class '{@link com.dunkware.xstream.xScript.OrType <em>Or Type</em>}'.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
@@ -6431,6 +6070,36 @@ public interface XScriptPackage extends EPackage
   EAttribute getXBoolConstantType_Value();
 
   /**
+   * Returns the meta object for enum '{@link com.dunkware.xstream.xScript.HistoricalAggFunc <em>Historical Agg Func</em>}'.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @return the meta object for enum '<em>Historical Agg Func</em>'.
+   * @see com.dunkware.xstream.xScript.HistoricalAggFunc
+   * @generated
+   */
+  EEnum getHistoricalAggFunc();
+
+  /**
+   * Returns the meta object for enum '{@link com.dunkware.xstream.xScript.SessionAggFunc <em>Session Agg Func</em>}'.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @return the meta object for enum '<em>Session Agg Func</em>'.
+   * @see com.dunkware.xstream.xScript.SessionAggFunc
+   * @generated
+   */
+  EEnum getSessionAggFunc();
+
+  /**
+   * Returns the meta object for enum '{@link com.dunkware.xstream.xScript.SessionTimeUnit <em>Session Time Unit</em>}'.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @return the meta object for enum '<em>Session Time Unit</em>'.
+   * @see com.dunkware.xstream.xScript.SessionTimeUnit
+   * @generated
+   */
+  EEnum getSessionTimeUnit();
+
+  /**
    * Returns the meta object for enum '{@link com.dunkware.xstream.xScript.StreamTimeUnit <em>Stream Time Unit</em>}'.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
@@ -6449,46 +6118,6 @@ public interface XScriptPackage extends EPackage
    * @generated
    */
   EEnum getDataType();
-
-  /**
-   * Returns the meta object for enum '{@link com.dunkware.xstream.xScript.XValueVarHistoricalAggFunction <em>XValue Var Historical Agg Function</em>}'.
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @return the meta object for enum '<em>XValue Var Historical Agg Function</em>'.
-   * @see com.dunkware.xstream.xScript.XValueVarHistoricalAggFunction
-   * @generated
-   */
-  EEnum getXValueVarHistoricalAggFunction();
-
-  /**
-   * Returns the meta object for enum '{@link com.dunkware.xstream.xScript.XValueVarSessionAggFunction <em>XValue Var Session Agg Function</em>}'.
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @return the meta object for enum '<em>XValue Var Session Agg Function</em>'.
-   * @see com.dunkware.xstream.xScript.XValueVarSessionAggFunction
-   * @generated
-   */
-  EEnum getXValueVarSessionAggFunction();
-
-  /**
-   * Returns the meta object for enum '{@link com.dunkware.xstream.xScript.XStreamOperator <em>XStream Operator</em>}'.
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @return the meta object for enum '<em>XStream Operator</em>'.
-   * @see com.dunkware.xstream.xScript.XStreamOperator
-   * @generated
-   */
-  EEnum getXStreamOperator();
-
-  /**
-   * Returns the meta object for enum '{@link com.dunkware.xstream.xScript.XQueryValueCompareFunction <em>XQuery Value Compare Function</em>}'.
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @return the meta object for enum '<em>XQuery Value Compare Function</em>'.
-   * @see com.dunkware.xstream.xScript.XQueryValueCompareFunction
-   * @generated
-   */
-  EEnum getXQueryValueCompareFunction();
 
   /**
    * Returns the factory that creates the instances of the model.
@@ -6592,6 +6221,26 @@ public interface XScriptPackage extends EPackage
      * @generated
      */
     EReference VAR_TYPE__EXPRESSION = eINSTANCE.getVarType_Expression();
+
+    /**
+     * The meta object literal for the '{@link com.dunkware.xstream.xScript.impl.VarStoreTypeImpl <em>Var Store Type</em>}' class.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @see com.dunkware.xstream.xScript.impl.VarStoreTypeImpl
+     * @see com.dunkware.xstream.xScript.impl.XScriptPackageImpl#getVarStoreType()
+     * @generated
+     */
+    EClass VAR_STORE_TYPE = eINSTANCE.getVarStoreType();
+
+    /**
+     * The meta object literal for the '{@link com.dunkware.xstream.xScript.impl.VarTransTypeImpl <em>Var Trans Type</em>}' class.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @see com.dunkware.xstream.xScript.impl.VarTransTypeImpl
+     * @see com.dunkware.xstream.xScript.impl.XScriptPackageImpl#getVarTransType()
+     * @generated
+     */
+    EClass VAR_TRANS_TYPE = eINSTANCE.getVarTransType();
 
     /**
      * The meta object literal for the '{@link com.dunkware.xstream.xScript.impl.ExpressionTypeImpl <em>Expression Type</em>}' class.
@@ -6812,14 +6461,146 @@ public interface XScriptPackage extends EPackage
     EReference SUB_EXPRESSION_TYPE__COMPARE = eINSTANCE.getSubExpressionType_Compare();
 
     /**
-     * The meta object literal for the '{@link com.dunkware.xstream.xScript.impl.SessionSignalExpressionTypeImpl <em>Session Signal Expression Type</em>}' class.
+     * The meta object literal for the '{@link com.dunkware.xstream.xScript.impl.HistoryTimeRangeImpl <em>History Time Range</em>}' class.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @see com.dunkware.xstream.xScript.impl.SessionSignalExpressionTypeImpl
-     * @see com.dunkware.xstream.xScript.impl.XScriptPackageImpl#getSessionSignalExpressionType()
+     * @see com.dunkware.xstream.xScript.impl.HistoryTimeRangeImpl
+     * @see com.dunkware.xstream.xScript.impl.XScriptPackageImpl#getHistoryTimeRange()
      * @generated
      */
-    EClass SESSION_SIGNAL_EXPRESSION_TYPE = eINSTANCE.getSessionSignalExpressionType();
+    EClass HISTORY_TIME_RANGE = eINSTANCE.getHistoryTimeRange();
+
+    /**
+     * The meta object literal for the '<em><b>Value</b></em>' attribute feature.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    EAttribute HISTORY_TIME_RANGE__VALUE = eINSTANCE.getHistoryTimeRange_Value();
+
+    /**
+     * The meta object literal for the '{@link com.dunkware.xstream.xScript.impl.SessionTimeRangeImpl <em>Session Time Range</em>}' class.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @see com.dunkware.xstream.xScript.impl.SessionTimeRangeImpl
+     * @see com.dunkware.xstream.xScript.impl.XScriptPackageImpl#getSessionTimeRange()
+     * @generated
+     */
+    EClass SESSION_TIME_RANGE = eINSTANCE.getSessionTimeRange();
+
+    /**
+     * The meta object literal for the '{@link com.dunkware.xstream.xScript.impl.RelativeSessionTimeRangeImpl <em>Relative Session Time Range</em>}' class.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @see com.dunkware.xstream.xScript.impl.RelativeSessionTimeRangeImpl
+     * @see com.dunkware.xstream.xScript.impl.XScriptPackageImpl#getRelativeSessionTimeRange()
+     * @generated
+     */
+    EClass RELATIVE_SESSION_TIME_RANGE = eINSTANCE.getRelativeSessionTimeRange();
+
+    /**
+     * The meta object literal for the '<em><b>Relative Vale</b></em>' attribute feature.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    EAttribute RELATIVE_SESSION_TIME_RANGE__RELATIVE_VALE = eINSTANCE.getRelativeSessionTimeRange_RelativeVale();
+
+    /**
+     * The meta object literal for the '<em><b>Time Unit</b></em>' attribute feature.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    EAttribute RELATIVE_SESSION_TIME_RANGE__TIME_UNIT = eINSTANCE.getRelativeSessionTimeRange_TimeUnit();
+
+    /**
+     * The meta object literal for the '{@link com.dunkware.xstream.xScript.impl.TodaySessionTimeRangeImpl <em>Today Session Time Range</em>}' class.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @see com.dunkware.xstream.xScript.impl.TodaySessionTimeRangeImpl
+     * @see com.dunkware.xstream.xScript.impl.XScriptPackageImpl#getTodaySessionTimeRange()
+     * @generated
+     */
+    EClass TODAY_SESSION_TIME_RANGE = eINSTANCE.getTodaySessionTimeRange();
+
+    /**
+     * The meta object literal for the '{@link com.dunkware.xstream.xScript.impl.VarAggSessionTypeImpl <em>Var Agg Session Type</em>}' class.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @see com.dunkware.xstream.xScript.impl.VarAggSessionTypeImpl
+     * @see com.dunkware.xstream.xScript.impl.XScriptPackageImpl#getVarAggSessionType()
+     * @generated
+     */
+    EClass VAR_AGG_SESSION_TYPE = eINSTANCE.getVarAggSessionType();
+
+    /**
+     * The meta object literal for the '<em><b>Var</b></em>' reference feature.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    EReference VAR_AGG_SESSION_TYPE__VAR = eINSTANCE.getVarAggSessionType_Var();
+
+    /**
+     * The meta object literal for the '<em><b>Function</b></em>' attribute feature.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    EAttribute VAR_AGG_SESSION_TYPE__FUNCTION = eINSTANCE.getVarAggSessionType_Function();
+
+    /**
+     * The meta object literal for the '<em><b>Time Range</b></em>' containment reference feature.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    EReference VAR_AGG_SESSION_TYPE__TIME_RANGE = eINSTANCE.getVarAggSessionType_TimeRange();
+
+    /**
+     * The meta object literal for the '{@link com.dunkware.xstream.xScript.impl.VarAggHistoryTypeImpl <em>Var Agg History Type</em>}' class.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @see com.dunkware.xstream.xScript.impl.VarAggHistoryTypeImpl
+     * @see com.dunkware.xstream.xScript.impl.XScriptPackageImpl#getVarAggHistoryType()
+     * @generated
+     */
+    EClass VAR_AGG_HISTORY_TYPE = eINSTANCE.getVarAggHistoryType();
+
+    /**
+     * The meta object literal for the '<em><b>Var</b></em>' reference feature.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    EReference VAR_AGG_HISTORY_TYPE__VAR = eINSTANCE.getVarAggHistoryType_Var();
+
+    /**
+     * The meta object literal for the '<em><b>Function</b></em>' attribute feature.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    EAttribute VAR_AGG_HISTORY_TYPE__FUNCTION = eINSTANCE.getVarAggHistoryType_Function();
+
+    /**
+     * The meta object literal for the '<em><b>Time Range</b></em>' containment reference feature.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    EReference VAR_AGG_HISTORY_TYPE__TIME_RANGE = eINSTANCE.getVarAggHistoryType_TimeRange();
+
+    /**
+     * The meta object literal for the '{@link com.dunkware.xstream.xScript.impl.SignalCountSessionImpl <em>Signal Count Session</em>}' class.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @see com.dunkware.xstream.xScript.impl.SignalCountSessionImpl
+     * @see com.dunkware.xstream.xScript.impl.XScriptPackageImpl#getSignalCountSession()
+     * @generated
+     */
+    EClass SIGNAL_COUNT_SESSION = eINSTANCE.getSignalCountSession();
 
     /**
      * The meta object literal for the '<em><b>Signal</b></em>' reference feature.
@@ -6827,39 +6608,41 @@ public interface XScriptPackage extends EPackage
      * <!-- end-user-doc -->
      * @generated
      */
-    EReference SESSION_SIGNAL_EXPRESSION_TYPE__SIGNAL = eINSTANCE.getSessionSignalExpressionType_Signal();
+    EReference SIGNAL_COUNT_SESSION__SIGNAL = eINSTANCE.getSignalCountSession_Signal();
 
     /**
-     * The meta object literal for the '<em><b>Op</b></em>' attribute feature.
+     * The meta object literal for the '<em><b>Time Range</b></em>' containment reference feature.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
      * @generated
      */
-    EAttribute SESSION_SIGNAL_EXPRESSION_TYPE__OP = eINSTANCE.getSessionSignalExpressionType_Op();
+    EReference SIGNAL_COUNT_SESSION__TIME_RANGE = eINSTANCE.getSignalCountSession_TimeRange();
 
     /**
-     * The meta object literal for the '<em><b>Count</b></em>' attribute feature.
+     * The meta object literal for the '{@link com.dunkware.xstream.xScript.impl.SignalCountHistoryImpl <em>Signal Count History</em>}' class.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @see com.dunkware.xstream.xScript.impl.SignalCountHistoryImpl
+     * @see com.dunkware.xstream.xScript.impl.XScriptPackageImpl#getSignalCountHistory()
+     * @generated
+     */
+    EClass SIGNAL_COUNT_HISTORY = eINSTANCE.getSignalCountHistory();
+
+    /**
+     * The meta object literal for the '<em><b>Signal</b></em>' reference feature.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
      * @generated
      */
-    EAttribute SESSION_SIGNAL_EXPRESSION_TYPE__COUNT = eINSTANCE.getSessionSignalExpressionType_Count();
+    EReference SIGNAL_COUNT_HISTORY__SIGNAL = eINSTANCE.getSignalCountHistory_Signal();
 
     /**
-     * The meta object literal for the '<em><b>Time</b></em>' attribute feature.
+     * The meta object literal for the '<em><b>Time Range</b></em>' containment reference feature.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
      * @generated
      */
-    EAttribute SESSION_SIGNAL_EXPRESSION_TYPE__TIME = eINSTANCE.getSessionSignalExpressionType_Time();
-
-    /**
-     * The meta object literal for the '<em><b>Unit</b></em>' attribute feature.
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     * @generated
-     */
-    EAttribute SESSION_SIGNAL_EXPRESSION_TYPE__UNIT = eINSTANCE.getSessionSignalExpressionType_Unit();
+    EReference SIGNAL_COUNT_HISTORY__TIME_RANGE = eINSTANCE.getSignalCountHistory_TimeRange();
 
     /**
      * The meta object literal for the '{@link com.dunkware.xstream.xScript.impl.SignalTypeImpl <em>Signal Type</em>}' class.
@@ -7904,310 +7687,6 @@ public interface XScriptPackage extends EPackage
     EReference XROC_EXP_TYPE__VALUE2 = eINSTANCE.getXRocExpType_Value2();
 
     /**
-     * The meta object literal for the '{@link com.dunkware.xstream.xScript.impl.XTimeRangeImpl <em>XTime Range</em>}' class.
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     * @see com.dunkware.xstream.xScript.impl.XTimeRangeImpl
-     * @see com.dunkware.xstream.xScript.impl.XScriptPackageImpl#getXTimeRange()
-     * @generated
-     */
-    EClass XTIME_RANGE = eINSTANCE.getXTimeRange();
-
-    /**
-     * The meta object literal for the '{@link com.dunkware.xstream.xScript.impl.XTimeRangeRelativeImpl <em>XTime Range Relative</em>}' class.
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     * @see com.dunkware.xstream.xScript.impl.XTimeRangeRelativeImpl
-     * @see com.dunkware.xstream.xScript.impl.XScriptPackageImpl#getXTimeRangeRelative()
-     * @generated
-     */
-    EClass XTIME_RANGE_RELATIVE = eINSTANCE.getXTimeRangeRelative();
-
-    /**
-     * The meta object literal for the '<em><b>Unit</b></em>' attribute feature.
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     * @generated
-     */
-    EAttribute XTIME_RANGE_RELATIVE__UNIT = eINSTANCE.getXTimeRangeRelative_Unit();
-
-    /**
-     * The meta object literal for the '<em><b>Value</b></em>' attribute feature.
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     * @generated
-     */
-    EAttribute XTIME_RANGE_RELATIVE__VALUE = eINSTANCE.getXTimeRangeRelative_Value();
-
-    /**
-     * The meta object literal for the '{@link com.dunkware.xstream.xScript.impl.XValueTypeImpl <em>XValue Type</em>}' class.
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     * @see com.dunkware.xstream.xScript.impl.XValueTypeImpl
-     * @see com.dunkware.xstream.xScript.impl.XScriptPackageImpl#getXValueType()
-     * @generated
-     */
-    EClass XVALUE_TYPE = eINSTANCE.getXValueType();
-
-    /**
-     * The meta object literal for the '{@link com.dunkware.xstream.xScript.impl.XValueSessionVarValueTypeImpl <em>XValue Session Var Value Type</em>}' class.
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     * @see com.dunkware.xstream.xScript.impl.XValueSessionVarValueTypeImpl
-     * @see com.dunkware.xstream.xScript.impl.XScriptPackageImpl#getXValueSessionVarValueType()
-     * @generated
-     */
-    EClass XVALUE_SESSION_VAR_VALUE_TYPE = eINSTANCE.getXValueSessionVarValueType();
-
-    /**
-     * The meta object literal for the '<em><b>Var</b></em>' reference feature.
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     * @generated
-     */
-    EReference XVALUE_SESSION_VAR_VALUE_TYPE__VAR = eINSTANCE.getXValueSessionVarValueType_Var();
-
-    /**
-     * The meta object literal for the '<em><b>Index</b></em>' attribute feature.
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     * @generated
-     */
-    EAttribute XVALUE_SESSION_VAR_VALUE_TYPE__INDEX = eINSTANCE.getXValueSessionVarValueType_Index();
-
-    /**
-     * The meta object literal for the '{@link com.dunkware.xstream.xScript.impl.XValueSessionVarAggTypeImpl <em>XValue Session Var Agg Type</em>}' class.
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     * @see com.dunkware.xstream.xScript.impl.XValueSessionVarAggTypeImpl
-     * @see com.dunkware.xstream.xScript.impl.XScriptPackageImpl#getXValueSessionVarAggType()
-     * @generated
-     */
-    EClass XVALUE_SESSION_VAR_AGG_TYPE = eINSTANCE.getXValueSessionVarAggType();
-
-    /**
-     * The meta object literal for the '<em><b>Var</b></em>' reference feature.
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     * @generated
-     */
-    EReference XVALUE_SESSION_VAR_AGG_TYPE__VAR = eINSTANCE.getXValueSessionVarAggType_Var();
-
-    /**
-     * The meta object literal for the '<em><b>Function</b></em>' attribute feature.
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     * @generated
-     */
-    EAttribute XVALUE_SESSION_VAR_AGG_TYPE__FUNCTION = eINSTANCE.getXValueSessionVarAggType_Function();
-
-    /**
-     * The meta object literal for the '<em><b>Range</b></em>' containment reference feature.
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     * @generated
-     */
-    EReference XVALUE_SESSION_VAR_AGG_TYPE__RANGE = eINSTANCE.getXValueSessionVarAggType_Range();
-
-    /**
-     * The meta object literal for the '{@link com.dunkware.xstream.xScript.impl.XValueSessionSignalCountTypeImpl <em>XValue Session Signal Count Type</em>}' class.
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     * @see com.dunkware.xstream.xScript.impl.XValueSessionSignalCountTypeImpl
-     * @see com.dunkware.xstream.xScript.impl.XScriptPackageImpl#getXValueSessionSignalCountType()
-     * @generated
-     */
-    EClass XVALUE_SESSION_SIGNAL_COUNT_TYPE = eINSTANCE.getXValueSessionSignalCountType();
-
-    /**
-     * The meta object literal for the '<em><b>Signal</b></em>' reference feature.
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     * @generated
-     */
-    EReference XVALUE_SESSION_SIGNAL_COUNT_TYPE__SIGNAL = eINSTANCE.getXValueSessionSignalCountType_Signal();
-
-    /**
-     * The meta object literal for the '<em><b>Time Range</b></em>' containment reference feature.
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     * @generated
-     */
-    EReference XVALUE_SESSION_SIGNAL_COUNT_TYPE__TIME_RANGE = eINSTANCE.getXValueSessionSignalCountType_TimeRange();
-
-    /**
-     * The meta object literal for the '<em><b>Value</b></em>' attribute feature.
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     * @generated
-     */
-    EAttribute XVALUE_SESSION_SIGNAL_COUNT_TYPE__VALUE = eINSTANCE.getXValueSessionSignalCountType_Value();
-
-    /**
-     * The meta object literal for the '{@link com.dunkware.xstream.xScript.impl.XValueHistoricalVarAggTypeImpl <em>XValue Historical Var Agg Type</em>}' class.
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     * @see com.dunkware.xstream.xScript.impl.XValueHistoricalVarAggTypeImpl
-     * @see com.dunkware.xstream.xScript.impl.XScriptPackageImpl#getXValueHistoricalVarAggType()
-     * @generated
-     */
-    EClass XVALUE_HISTORICAL_VAR_AGG_TYPE = eINSTANCE.getXValueHistoricalVarAggType();
-
-    /**
-     * The meta object literal for the '<em><b>Var</b></em>' reference feature.
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     * @generated
-     */
-    EReference XVALUE_HISTORICAL_VAR_AGG_TYPE__VAR = eINSTANCE.getXValueHistoricalVarAggType_Var();
-
-    /**
-     * The meta object literal for the '<em><b>Function</b></em>' attribute feature.
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     * @generated
-     */
-    EAttribute XVALUE_HISTORICAL_VAR_AGG_TYPE__FUNCTION = eINSTANCE.getXValueHistoricalVarAggType_Function();
-
-    /**
-     * The meta object literal for the '<em><b>Days</b></em>' attribute feature.
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     * @generated
-     */
-    EAttribute XVALUE_HISTORICAL_VAR_AGG_TYPE__DAYS = eINSTANCE.getXValueHistoricalVarAggType_Days();
-
-    /**
-     * The meta object literal for the '{@link com.dunkware.xstream.xScript.impl.XValueHistoricalSignalCountTypeImpl <em>XValue Historical Signal Count Type</em>}' class.
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     * @see com.dunkware.xstream.xScript.impl.XValueHistoricalSignalCountTypeImpl
-     * @see com.dunkware.xstream.xScript.impl.XScriptPackageImpl#getXValueHistoricalSignalCountType()
-     * @generated
-     */
-    EClass XVALUE_HISTORICAL_SIGNAL_COUNT_TYPE = eINSTANCE.getXValueHistoricalSignalCountType();
-
-    /**
-     * The meta object literal for the '<em><b>Signal</b></em>' reference feature.
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     * @generated
-     */
-    EReference XVALUE_HISTORICAL_SIGNAL_COUNT_TYPE__SIGNAL = eINSTANCE.getXValueHistoricalSignalCountType_Signal();
-
-    /**
-     * The meta object literal for the '<em><b>Days</b></em>' attribute feature.
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     * @generated
-     */
-    EAttribute XVALUE_HISTORICAL_SIGNAL_COUNT_TYPE__DAYS = eINSTANCE.getXValueHistoricalSignalCountType_Days();
-
-    /**
-     * The meta object literal for the '{@link com.dunkware.xstream.xScript.impl.XQueryTypeImpl <em>XQuery Type</em>}' class.
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     * @see com.dunkware.xstream.xScript.impl.XQueryTypeImpl
-     * @see com.dunkware.xstream.xScript.impl.XScriptPackageImpl#getXQueryType()
-     * @generated
-     */
-    EClass XQUERY_TYPE = eINSTANCE.getXQueryType();
-
-    /**
-     * The meta object literal for the '<em><b>Name</b></em>' attribute feature.
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     * @generated
-     */
-    EAttribute XQUERY_TYPE__NAME = eINSTANCE.getXQueryType_Name();
-
-    /**
-     * The meta object literal for the '<em><b>Filters</b></em>' containment reference list feature.
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     * @generated
-     */
-    EReference XQUERY_TYPE__FILTERS = eINSTANCE.getXQueryType_Filters();
-
-    /**
-     * The meta object literal for the '{@link com.dunkware.xstream.xScript.impl.XQueryFilterTypeImpl <em>XQuery Filter Type</em>}' class.
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     * @see com.dunkware.xstream.xScript.impl.XQueryFilterTypeImpl
-     * @see com.dunkware.xstream.xScript.impl.XScriptPackageImpl#getXQueryFilterType()
-     * @generated
-     */
-    EClass XQUERY_FILTER_TYPE = eINSTANCE.getXQueryFilterType();
-
-    /**
-     * The meta object literal for the '<em><b>Operator</b></em>' attribute feature.
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     * @generated
-     */
-    EAttribute XQUERY_FILTER_TYPE__OPERATOR = eINSTANCE.getXQueryFilterType_Operator();
-
-    /**
-     * The meta object literal for the '<em><b>Criteria</b></em>' attribute feature.
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     * @generated
-     */
-    EAttribute XQUERY_FILTER_TYPE__CRITERIA = eINSTANCE.getXQueryFilterType_Criteria();
-
-    /**
-     * The meta object literal for the '{@link com.dunkware.xstream.xScript.impl.XQueryFilterValueTypeImpl <em>XQuery Filter Value Type</em>}' class.
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     * @see com.dunkware.xstream.xScript.impl.XQueryFilterValueTypeImpl
-     * @see com.dunkware.xstream.xScript.impl.XScriptPackageImpl#getXQueryFilterValueType()
-     * @generated
-     */
-    EClass XQUERY_FILTER_VALUE_TYPE = eINSTANCE.getXQueryFilterValueType();
-
-    /**
-     * The meta object literal for the '<em><b>Value</b></em>' containment reference feature.
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     * @generated
-     */
-    EReference XQUERY_FILTER_VALUE_TYPE__VALUE = eINSTANCE.getXQueryFilterValueType_Value();
-
-    /**
-     * The meta object literal for the '{@link com.dunkware.xstream.xScript.impl.XQueryFilterValueCompareTypeImpl <em>XQuery Filter Value Compare Type</em>}' class.
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     * @see com.dunkware.xstream.xScript.impl.XQueryFilterValueCompareTypeImpl
-     * @see com.dunkware.xstream.xScript.impl.XScriptPackageImpl#getXQueryFilterValueCompareType()
-     * @generated
-     */
-    EClass XQUERY_FILTER_VALUE_COMPARE_TYPE = eINSTANCE.getXQueryFilterValueCompareType();
-
-    /**
-     * The meta object literal for the '<em><b>Value1</b></em>' containment reference feature.
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     * @generated
-     */
-    EReference XQUERY_FILTER_VALUE_COMPARE_TYPE__VALUE1 = eINSTANCE.getXQueryFilterValueCompareType_Value1();
-
-    /**
-     * The meta object literal for the '<em><b>Value2</b></em>' containment reference feature.
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     * @generated
-     */
-    EReference XQUERY_FILTER_VALUE_COMPARE_TYPE__VALUE2 = eINSTANCE.getXQueryFilterValueCompareType_Value2();
-
-    /**
-     * The meta object literal for the '<em><b>Function</b></em>' attribute feature.
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     * @generated
-     */
-    EAttribute XQUERY_FILTER_VALUE_COMPARE_TYPE__FUNCTION = eINSTANCE.getXQueryFilterValueCompareType_Function();
-
-    /**
      * The meta object literal for the '{@link com.dunkware.xstream.xScript.impl.OrTypeImpl <em>Or Type</em>}' class.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
@@ -8868,6 +8347,36 @@ public interface XScriptPackage extends EPackage
     EAttribute XBOOL_CONSTANT_TYPE__VALUE = eINSTANCE.getXBoolConstantType_Value();
 
     /**
+     * The meta object literal for the '{@link com.dunkware.xstream.xScript.HistoricalAggFunc <em>Historical Agg Func</em>}' enum.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @see com.dunkware.xstream.xScript.HistoricalAggFunc
+     * @see com.dunkware.xstream.xScript.impl.XScriptPackageImpl#getHistoricalAggFunc()
+     * @generated
+     */
+    EEnum HISTORICAL_AGG_FUNC = eINSTANCE.getHistoricalAggFunc();
+
+    /**
+     * The meta object literal for the '{@link com.dunkware.xstream.xScript.SessionAggFunc <em>Session Agg Func</em>}' enum.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @see com.dunkware.xstream.xScript.SessionAggFunc
+     * @see com.dunkware.xstream.xScript.impl.XScriptPackageImpl#getSessionAggFunc()
+     * @generated
+     */
+    EEnum SESSION_AGG_FUNC = eINSTANCE.getSessionAggFunc();
+
+    /**
+     * The meta object literal for the '{@link com.dunkware.xstream.xScript.SessionTimeUnit <em>Session Time Unit</em>}' enum.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @see com.dunkware.xstream.xScript.SessionTimeUnit
+     * @see com.dunkware.xstream.xScript.impl.XScriptPackageImpl#getSessionTimeUnit()
+     * @generated
+     */
+    EEnum SESSION_TIME_UNIT = eINSTANCE.getSessionTimeUnit();
+
+    /**
      * The meta object literal for the '{@link com.dunkware.xstream.xScript.StreamTimeUnit <em>Stream Time Unit</em>}' enum.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
@@ -8886,46 +8395,6 @@ public interface XScriptPackage extends EPackage
      * @generated
      */
     EEnum DATA_TYPE = eINSTANCE.getDataType();
-
-    /**
-     * The meta object literal for the '{@link com.dunkware.xstream.xScript.XValueVarHistoricalAggFunction <em>XValue Var Historical Agg Function</em>}' enum.
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     * @see com.dunkware.xstream.xScript.XValueVarHistoricalAggFunction
-     * @see com.dunkware.xstream.xScript.impl.XScriptPackageImpl#getXValueVarHistoricalAggFunction()
-     * @generated
-     */
-    EEnum XVALUE_VAR_HISTORICAL_AGG_FUNCTION = eINSTANCE.getXValueVarHistoricalAggFunction();
-
-    /**
-     * The meta object literal for the '{@link com.dunkware.xstream.xScript.XValueVarSessionAggFunction <em>XValue Var Session Agg Function</em>}' enum.
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     * @see com.dunkware.xstream.xScript.XValueVarSessionAggFunction
-     * @see com.dunkware.xstream.xScript.impl.XScriptPackageImpl#getXValueVarSessionAggFunction()
-     * @generated
-     */
-    EEnum XVALUE_VAR_SESSION_AGG_FUNCTION = eINSTANCE.getXValueVarSessionAggFunction();
-
-    /**
-     * The meta object literal for the '{@link com.dunkware.xstream.xScript.XStreamOperator <em>XStream Operator</em>}' enum.
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     * @see com.dunkware.xstream.xScript.XStreamOperator
-     * @see com.dunkware.xstream.xScript.impl.XScriptPackageImpl#getXStreamOperator()
-     * @generated
-     */
-    EEnum XSTREAM_OPERATOR = eINSTANCE.getXStreamOperator();
-
-    /**
-     * The meta object literal for the '{@link com.dunkware.xstream.xScript.XQueryValueCompareFunction <em>XQuery Value Compare Function</em>}' enum.
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     * @see com.dunkware.xstream.xScript.XQueryValueCompareFunction
-     * @see com.dunkware.xstream.xScript.impl.XScriptPackageImpl#getXQueryValueCompareFunction()
-     * @generated
-     */
-    EEnum XQUERY_VALUE_COMPARE_FUNCTION = eINSTANCE.getXQueryValueCompareFunction();
 
   }
 

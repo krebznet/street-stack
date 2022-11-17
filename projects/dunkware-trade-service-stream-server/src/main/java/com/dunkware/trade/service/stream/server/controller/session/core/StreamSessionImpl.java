@@ -16,6 +16,7 @@ import org.slf4j.MarkerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 
+import com.dunkware.common.util.data.NetScanner;
 import com.dunkware.common.util.dtime.DTime;
 import com.dunkware.common.util.dtime.DTimeZone;
 import com.dunkware.common.util.events.DEventNode;
@@ -45,6 +46,8 @@ import com.dunkware.trade.service.stream.server.repository.StreamSessionProblemE
 import com.dunkware.trade.service.stream.server.repository.StreamSessionRepo;
 import com.dunkware.trade.service.stream.server.spring.ConfigService;
 import com.dunkware.trade.tick.model.ticker.TradeTickerSpec;
+import com.dunkware.xstream.api.XStreamRuntimeException;
+import com.dunkware.xstream.model.scanner.SessionEntityScanner;
 import com.dunkware.xstream.xproject.XScriptProject;
 
 public class StreamSessionImpl implements StreamSession {
@@ -342,6 +345,16 @@ public class StreamSessionImpl implements StreamSession {
 		
 
 	}
+	
+	
+
+	@Override
+	public NetScanner entityScanner(SessionEntityScanner model) throws XStreamRuntimeException {
+		// okay fun ->  
+		return null;
+	}
+
+
 
 	private class NodeCallback implements StreamSessionNodeCallback {
 
@@ -414,11 +427,6 @@ public class StreamSessionImpl implements StreamSession {
 				handleSessionStopped();
 			}
 		}
-		
-		
-	
-		
-		
 		
 
 	}

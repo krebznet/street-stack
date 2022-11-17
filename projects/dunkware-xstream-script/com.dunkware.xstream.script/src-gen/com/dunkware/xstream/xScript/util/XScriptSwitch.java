@@ -104,6 +104,26 @@ public class XScriptSwitch<T> extends Switch<T>
         if (result == null) result = defaultCase(theEObject);
         return result;
       }
+      case XScriptPackage.VAR_STORE_TYPE:
+      {
+        VarStoreType varStoreType = (VarStoreType)theEObject;
+        T result = caseVarStoreType(varStoreType);
+        if (result == null) result = caseVarType(varStoreType);
+        if (result == null) result = caseCoreAbstractElement(varStoreType);
+        if (result == null) result = caseScriptElement(varStoreType);
+        if (result == null) result = defaultCase(theEObject);
+        return result;
+      }
+      case XScriptPackage.VAR_TRANS_TYPE:
+      {
+        VarTransType varTransType = (VarTransType)theEObject;
+        T result = caseVarTransType(varTransType);
+        if (result == null) result = caseVarType(varTransType);
+        if (result == null) result = caseCoreAbstractElement(varTransType);
+        if (result == null) result = caseScriptElement(varTransType);
+        if (result == null) result = defaultCase(theEObject);
+        return result;
+      }
       case XScriptPackage.EXPRESSION_TYPE:
       {
         ExpressionType expressionType = (ExpressionType)theEObject;
@@ -175,11 +195,65 @@ public class XScriptSwitch<T> extends Switch<T>
         if (result == null) result = defaultCase(theEObject);
         return result;
       }
-      case XScriptPackage.SESSION_SIGNAL_EXPRESSION_TYPE:
+      case XScriptPackage.HISTORY_TIME_RANGE:
       {
-        SessionSignalExpressionType sessionSignalExpressionType = (SessionSignalExpressionType)theEObject;
-        T result = caseSessionSignalExpressionType(sessionSignalExpressionType);
-        if (result == null) result = caseExpressionType(sessionSignalExpressionType);
+        HistoryTimeRange historyTimeRange = (HistoryTimeRange)theEObject;
+        T result = caseHistoryTimeRange(historyTimeRange);
+        if (result == null) result = defaultCase(theEObject);
+        return result;
+      }
+      case XScriptPackage.SESSION_TIME_RANGE:
+      {
+        SessionTimeRange sessionTimeRange = (SessionTimeRange)theEObject;
+        T result = caseSessionTimeRange(sessionTimeRange);
+        if (result == null) result = defaultCase(theEObject);
+        return result;
+      }
+      case XScriptPackage.RELATIVE_SESSION_TIME_RANGE:
+      {
+        RelativeSessionTimeRange relativeSessionTimeRange = (RelativeSessionTimeRange)theEObject;
+        T result = caseRelativeSessionTimeRange(relativeSessionTimeRange);
+        if (result == null) result = caseSessionTimeRange(relativeSessionTimeRange);
+        if (result == null) result = defaultCase(theEObject);
+        return result;
+      }
+      case XScriptPackage.TODAY_SESSION_TIME_RANGE:
+      {
+        TodaySessionTimeRange todaySessionTimeRange = (TodaySessionTimeRange)theEObject;
+        T result = caseTodaySessionTimeRange(todaySessionTimeRange);
+        if (result == null) result = caseSessionTimeRange(todaySessionTimeRange);
+        if (result == null) result = defaultCase(theEObject);
+        return result;
+      }
+      case XScriptPackage.VAR_AGG_SESSION_TYPE:
+      {
+        VarAggSessionType varAggSessionType = (VarAggSessionType)theEObject;
+        T result = caseVarAggSessionType(varAggSessionType);
+        if (result == null) result = caseExpressionType(varAggSessionType);
+        if (result == null) result = defaultCase(theEObject);
+        return result;
+      }
+      case XScriptPackage.VAR_AGG_HISTORY_TYPE:
+      {
+        VarAggHistoryType varAggHistoryType = (VarAggHistoryType)theEObject;
+        T result = caseVarAggHistoryType(varAggHistoryType);
+        if (result == null) result = caseExpressionType(varAggHistoryType);
+        if (result == null) result = defaultCase(theEObject);
+        return result;
+      }
+      case XScriptPackage.SIGNAL_COUNT_SESSION:
+      {
+        SignalCountSession signalCountSession = (SignalCountSession)theEObject;
+        T result = caseSignalCountSession(signalCountSession);
+        if (result == null) result = caseExpressionType(signalCountSession);
+        if (result == null) result = defaultCase(theEObject);
+        return result;
+      }
+      case XScriptPackage.SIGNAL_COUNT_HISTORY:
+      {
+        SignalCountHistory signalCountHistory = (SignalCountHistory)theEObject;
+        T result = caseSignalCountHistory(signalCountHistory);
+        if (result == null) result = caseExpressionType(signalCountHistory);
         if (result == null) result = defaultCase(theEObject);
         return result;
       }
@@ -524,99 +598,6 @@ public class XScriptSwitch<T> extends Switch<T>
         if (result == null) result = defaultCase(theEObject);
         return result;
       }
-      case XScriptPackage.XTIME_RANGE:
-      {
-        XTimeRange xTimeRange = (XTimeRange)theEObject;
-        T result = caseXTimeRange(xTimeRange);
-        if (result == null) result = defaultCase(theEObject);
-        return result;
-      }
-      case XScriptPackage.XTIME_RANGE_RELATIVE:
-      {
-        XTimeRangeRelative xTimeRangeRelative = (XTimeRangeRelative)theEObject;
-        T result = caseXTimeRangeRelative(xTimeRangeRelative);
-        if (result == null) result = caseXTimeRange(xTimeRangeRelative);
-        if (result == null) result = defaultCase(theEObject);
-        return result;
-      }
-      case XScriptPackage.XVALUE_TYPE:
-      {
-        XValueType xValueType = (XValueType)theEObject;
-        T result = caseXValueType(xValueType);
-        if (result == null) result = defaultCase(theEObject);
-        return result;
-      }
-      case XScriptPackage.XVALUE_SESSION_VAR_VALUE_TYPE:
-      {
-        XValueSessionVarValueType xValueSessionVarValueType = (XValueSessionVarValueType)theEObject;
-        T result = caseXValueSessionVarValueType(xValueSessionVarValueType);
-        if (result == null) result = caseXValueType(xValueSessionVarValueType);
-        if (result == null) result = defaultCase(theEObject);
-        return result;
-      }
-      case XScriptPackage.XVALUE_SESSION_VAR_AGG_TYPE:
-      {
-        XValueSessionVarAggType xValueSessionVarAggType = (XValueSessionVarAggType)theEObject;
-        T result = caseXValueSessionVarAggType(xValueSessionVarAggType);
-        if (result == null) result = caseXValueType(xValueSessionVarAggType);
-        if (result == null) result = defaultCase(theEObject);
-        return result;
-      }
-      case XScriptPackage.XVALUE_SESSION_SIGNAL_COUNT_TYPE:
-      {
-        XValueSessionSignalCountType xValueSessionSignalCountType = (XValueSessionSignalCountType)theEObject;
-        T result = caseXValueSessionSignalCountType(xValueSessionSignalCountType);
-        if (result == null) result = caseXValueType(xValueSessionSignalCountType);
-        if (result == null) result = defaultCase(theEObject);
-        return result;
-      }
-      case XScriptPackage.XVALUE_HISTORICAL_VAR_AGG_TYPE:
-      {
-        XValueHistoricalVarAggType xValueHistoricalVarAggType = (XValueHistoricalVarAggType)theEObject;
-        T result = caseXValueHistoricalVarAggType(xValueHistoricalVarAggType);
-        if (result == null) result = defaultCase(theEObject);
-        return result;
-      }
-      case XScriptPackage.XVALUE_HISTORICAL_SIGNAL_COUNT_TYPE:
-      {
-        XValueHistoricalSignalCountType xValueHistoricalSignalCountType = (XValueHistoricalSignalCountType)theEObject;
-        T result = caseXValueHistoricalSignalCountType(xValueHistoricalSignalCountType);
-        if (result == null) result = caseXValueType(xValueHistoricalSignalCountType);
-        if (result == null) result = defaultCase(theEObject);
-        return result;
-      }
-      case XScriptPackage.XQUERY_TYPE:
-      {
-        XQueryType xQueryType = (XQueryType)theEObject;
-        T result = caseXQueryType(xQueryType);
-        if (result == null) result = caseCoreAbstractElement(xQueryType);
-        if (result == null) result = caseScriptElement(xQueryType);
-        if (result == null) result = defaultCase(theEObject);
-        return result;
-      }
-      case XScriptPackage.XQUERY_FILTER_TYPE:
-      {
-        XQueryFilterType xQueryFilterType = (XQueryFilterType)theEObject;
-        T result = caseXQueryFilterType(xQueryFilterType);
-        if (result == null) result = defaultCase(theEObject);
-        return result;
-      }
-      case XScriptPackage.XQUERY_FILTER_VALUE_TYPE:
-      {
-        XQueryFilterValueType xQueryFilterValueType = (XQueryFilterValueType)theEObject;
-        T result = caseXQueryFilterValueType(xQueryFilterValueType);
-        if (result == null) result = caseXQueryFilterType(xQueryFilterValueType);
-        if (result == null) result = defaultCase(theEObject);
-        return result;
-      }
-      case XScriptPackage.XQUERY_FILTER_VALUE_COMPARE_TYPE:
-      {
-        XQueryFilterValueCompareType xQueryFilterValueCompareType = (XQueryFilterValueCompareType)theEObject;
-        T result = caseXQueryFilterValueCompareType(xQueryFilterValueCompareType);
-        if (result == null) result = caseXQueryFilterType(xQueryFilterValueCompareType);
-        if (result == null) result = defaultCase(theEObject);
-        return result;
-      }
       case XScriptPackage.OR_TYPE:
       {
         OrType orType = (OrType)theEObject;
@@ -896,6 +877,38 @@ public class XScriptSwitch<T> extends Switch<T>
   }
 
   /**
+   * Returns the result of interpreting the object as an instance of '<em>Var Store Type</em>'.
+   * <!-- begin-user-doc -->
+   * This implementation returns null;
+   * returning a non-null result will terminate the switch.
+   * <!-- end-user-doc -->
+   * @param object the target of the switch.
+   * @return the result of interpreting the object as an instance of '<em>Var Store Type</em>'.
+   * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+   * @generated
+   */
+  public T caseVarStoreType(VarStoreType object)
+  {
+    return null;
+  }
+
+  /**
+   * Returns the result of interpreting the object as an instance of '<em>Var Trans Type</em>'.
+   * <!-- begin-user-doc -->
+   * This implementation returns null;
+   * returning a non-null result will terminate the switch.
+   * <!-- end-user-doc -->
+   * @param object the target of the switch.
+   * @return the result of interpreting the object as an instance of '<em>Var Trans Type</em>'.
+   * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+   * @generated
+   */
+  public T caseVarTransType(VarTransType object)
+  {
+    return null;
+  }
+
+  /**
    * Returns the result of interpreting the object as an instance of '<em>Expression Type</em>'.
    * <!-- begin-user-doc -->
    * This implementation returns null;
@@ -1040,17 +1053,129 @@ public class XScriptSwitch<T> extends Switch<T>
   }
 
   /**
-   * Returns the result of interpreting the object as an instance of '<em>Session Signal Expression Type</em>'.
+   * Returns the result of interpreting the object as an instance of '<em>History Time Range</em>'.
    * <!-- begin-user-doc -->
    * This implementation returns null;
    * returning a non-null result will terminate the switch.
    * <!-- end-user-doc -->
    * @param object the target of the switch.
-   * @return the result of interpreting the object as an instance of '<em>Session Signal Expression Type</em>'.
+   * @return the result of interpreting the object as an instance of '<em>History Time Range</em>'.
    * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
    * @generated
    */
-  public T caseSessionSignalExpressionType(SessionSignalExpressionType object)
+  public T caseHistoryTimeRange(HistoryTimeRange object)
+  {
+    return null;
+  }
+
+  /**
+   * Returns the result of interpreting the object as an instance of '<em>Session Time Range</em>'.
+   * <!-- begin-user-doc -->
+   * This implementation returns null;
+   * returning a non-null result will terminate the switch.
+   * <!-- end-user-doc -->
+   * @param object the target of the switch.
+   * @return the result of interpreting the object as an instance of '<em>Session Time Range</em>'.
+   * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+   * @generated
+   */
+  public T caseSessionTimeRange(SessionTimeRange object)
+  {
+    return null;
+  }
+
+  /**
+   * Returns the result of interpreting the object as an instance of '<em>Relative Session Time Range</em>'.
+   * <!-- begin-user-doc -->
+   * This implementation returns null;
+   * returning a non-null result will terminate the switch.
+   * <!-- end-user-doc -->
+   * @param object the target of the switch.
+   * @return the result of interpreting the object as an instance of '<em>Relative Session Time Range</em>'.
+   * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+   * @generated
+   */
+  public T caseRelativeSessionTimeRange(RelativeSessionTimeRange object)
+  {
+    return null;
+  }
+
+  /**
+   * Returns the result of interpreting the object as an instance of '<em>Today Session Time Range</em>'.
+   * <!-- begin-user-doc -->
+   * This implementation returns null;
+   * returning a non-null result will terminate the switch.
+   * <!-- end-user-doc -->
+   * @param object the target of the switch.
+   * @return the result of interpreting the object as an instance of '<em>Today Session Time Range</em>'.
+   * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+   * @generated
+   */
+  public T caseTodaySessionTimeRange(TodaySessionTimeRange object)
+  {
+    return null;
+  }
+
+  /**
+   * Returns the result of interpreting the object as an instance of '<em>Var Agg Session Type</em>'.
+   * <!-- begin-user-doc -->
+   * This implementation returns null;
+   * returning a non-null result will terminate the switch.
+   * <!-- end-user-doc -->
+   * @param object the target of the switch.
+   * @return the result of interpreting the object as an instance of '<em>Var Agg Session Type</em>'.
+   * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+   * @generated
+   */
+  public T caseVarAggSessionType(VarAggSessionType object)
+  {
+    return null;
+  }
+
+  /**
+   * Returns the result of interpreting the object as an instance of '<em>Var Agg History Type</em>'.
+   * <!-- begin-user-doc -->
+   * This implementation returns null;
+   * returning a non-null result will terminate the switch.
+   * <!-- end-user-doc -->
+   * @param object the target of the switch.
+   * @return the result of interpreting the object as an instance of '<em>Var Agg History Type</em>'.
+   * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+   * @generated
+   */
+  public T caseVarAggHistoryType(VarAggHistoryType object)
+  {
+    return null;
+  }
+
+  /**
+   * Returns the result of interpreting the object as an instance of '<em>Signal Count Session</em>'.
+   * <!-- begin-user-doc -->
+   * This implementation returns null;
+   * returning a non-null result will terminate the switch.
+   * <!-- end-user-doc -->
+   * @param object the target of the switch.
+   * @return the result of interpreting the object as an instance of '<em>Signal Count Session</em>'.
+   * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+   * @generated
+   */
+  public T caseSignalCountSession(SignalCountSession object)
+  {
+    return null;
+  }
+
+  /**
+   * Returns the result of interpreting the object as an instance of '<em>Signal Count History</em>'.
+   * <!-- begin-user-doc -->
+   * This implementation returns null;
+   * returning a non-null result will terminate the switch.
+   * <!-- end-user-doc -->
+   * @param object the target of the switch.
+   * @return the result of interpreting the object as an instance of '<em>Signal Count History</em>'.
+   * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+   * @generated
+   */
+  public T caseSignalCountHistory(SignalCountHistory object)
   {
     return null;
   }
@@ -1707,198 +1832,6 @@ public class XScriptSwitch<T> extends Switch<T>
    * @generated
    */
   public T caseXRocExpType(XRocExpType object)
-  {
-    return null;
-  }
-
-  /**
-   * Returns the result of interpreting the object as an instance of '<em>XTime Range</em>'.
-   * <!-- begin-user-doc -->
-   * This implementation returns null;
-   * returning a non-null result will terminate the switch.
-   * <!-- end-user-doc -->
-   * @param object the target of the switch.
-   * @return the result of interpreting the object as an instance of '<em>XTime Range</em>'.
-   * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
-   * @generated
-   */
-  public T caseXTimeRange(XTimeRange object)
-  {
-    return null;
-  }
-
-  /**
-   * Returns the result of interpreting the object as an instance of '<em>XTime Range Relative</em>'.
-   * <!-- begin-user-doc -->
-   * This implementation returns null;
-   * returning a non-null result will terminate the switch.
-   * <!-- end-user-doc -->
-   * @param object the target of the switch.
-   * @return the result of interpreting the object as an instance of '<em>XTime Range Relative</em>'.
-   * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
-   * @generated
-   */
-  public T caseXTimeRangeRelative(XTimeRangeRelative object)
-  {
-    return null;
-  }
-
-  /**
-   * Returns the result of interpreting the object as an instance of '<em>XValue Type</em>'.
-   * <!-- begin-user-doc -->
-   * This implementation returns null;
-   * returning a non-null result will terminate the switch.
-   * <!-- end-user-doc -->
-   * @param object the target of the switch.
-   * @return the result of interpreting the object as an instance of '<em>XValue Type</em>'.
-   * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
-   * @generated
-   */
-  public T caseXValueType(XValueType object)
-  {
-    return null;
-  }
-
-  /**
-   * Returns the result of interpreting the object as an instance of '<em>XValue Session Var Value Type</em>'.
-   * <!-- begin-user-doc -->
-   * This implementation returns null;
-   * returning a non-null result will terminate the switch.
-   * <!-- end-user-doc -->
-   * @param object the target of the switch.
-   * @return the result of interpreting the object as an instance of '<em>XValue Session Var Value Type</em>'.
-   * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
-   * @generated
-   */
-  public T caseXValueSessionVarValueType(XValueSessionVarValueType object)
-  {
-    return null;
-  }
-
-  /**
-   * Returns the result of interpreting the object as an instance of '<em>XValue Session Var Agg Type</em>'.
-   * <!-- begin-user-doc -->
-   * This implementation returns null;
-   * returning a non-null result will terminate the switch.
-   * <!-- end-user-doc -->
-   * @param object the target of the switch.
-   * @return the result of interpreting the object as an instance of '<em>XValue Session Var Agg Type</em>'.
-   * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
-   * @generated
-   */
-  public T caseXValueSessionVarAggType(XValueSessionVarAggType object)
-  {
-    return null;
-  }
-
-  /**
-   * Returns the result of interpreting the object as an instance of '<em>XValue Session Signal Count Type</em>'.
-   * <!-- begin-user-doc -->
-   * This implementation returns null;
-   * returning a non-null result will terminate the switch.
-   * <!-- end-user-doc -->
-   * @param object the target of the switch.
-   * @return the result of interpreting the object as an instance of '<em>XValue Session Signal Count Type</em>'.
-   * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
-   * @generated
-   */
-  public T caseXValueSessionSignalCountType(XValueSessionSignalCountType object)
-  {
-    return null;
-  }
-
-  /**
-   * Returns the result of interpreting the object as an instance of '<em>XValue Historical Var Agg Type</em>'.
-   * <!-- begin-user-doc -->
-   * This implementation returns null;
-   * returning a non-null result will terminate the switch.
-   * <!-- end-user-doc -->
-   * @param object the target of the switch.
-   * @return the result of interpreting the object as an instance of '<em>XValue Historical Var Agg Type</em>'.
-   * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
-   * @generated
-   */
-  public T caseXValueHistoricalVarAggType(XValueHistoricalVarAggType object)
-  {
-    return null;
-  }
-
-  /**
-   * Returns the result of interpreting the object as an instance of '<em>XValue Historical Signal Count Type</em>'.
-   * <!-- begin-user-doc -->
-   * This implementation returns null;
-   * returning a non-null result will terminate the switch.
-   * <!-- end-user-doc -->
-   * @param object the target of the switch.
-   * @return the result of interpreting the object as an instance of '<em>XValue Historical Signal Count Type</em>'.
-   * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
-   * @generated
-   */
-  public T caseXValueHistoricalSignalCountType(XValueHistoricalSignalCountType object)
-  {
-    return null;
-  }
-
-  /**
-   * Returns the result of interpreting the object as an instance of '<em>XQuery Type</em>'.
-   * <!-- begin-user-doc -->
-   * This implementation returns null;
-   * returning a non-null result will terminate the switch.
-   * <!-- end-user-doc -->
-   * @param object the target of the switch.
-   * @return the result of interpreting the object as an instance of '<em>XQuery Type</em>'.
-   * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
-   * @generated
-   */
-  public T caseXQueryType(XQueryType object)
-  {
-    return null;
-  }
-
-  /**
-   * Returns the result of interpreting the object as an instance of '<em>XQuery Filter Type</em>'.
-   * <!-- begin-user-doc -->
-   * This implementation returns null;
-   * returning a non-null result will terminate the switch.
-   * <!-- end-user-doc -->
-   * @param object the target of the switch.
-   * @return the result of interpreting the object as an instance of '<em>XQuery Filter Type</em>'.
-   * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
-   * @generated
-   */
-  public T caseXQueryFilterType(XQueryFilterType object)
-  {
-    return null;
-  }
-
-  /**
-   * Returns the result of interpreting the object as an instance of '<em>XQuery Filter Value Type</em>'.
-   * <!-- begin-user-doc -->
-   * This implementation returns null;
-   * returning a non-null result will terminate the switch.
-   * <!-- end-user-doc -->
-   * @param object the target of the switch.
-   * @return the result of interpreting the object as an instance of '<em>XQuery Filter Value Type</em>'.
-   * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
-   * @generated
-   */
-  public T caseXQueryFilterValueType(XQueryFilterValueType object)
-  {
-    return null;
-  }
-
-  /**
-   * Returns the result of interpreting the object as an instance of '<em>XQuery Filter Value Compare Type</em>'.
-   * <!-- begin-user-doc -->
-   * This implementation returns null;
-   * returning a non-null result will terminate the switch.
-   * <!-- end-user-doc -->
-   * @param object the target of the switch.
-   * @return the result of interpreting the object as an instance of '<em>XQuery Filter Value Compare Type</em>'.
-   * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
-   * @generated
-   */
-  public T caseXQueryFilterValueCompareType(XQueryFilterValueCompareType object)
   {
     return null;
   }

@@ -1,51 +1,35 @@
-       {
+{
   "name": "Test",
   "account": "Account 001",
-  "allocatedCapital": 90000,
+  "allocatedCapital": 424,
   "plays": [
     {
-      "name": "Play1",
-      "tradeSide": "Long",
-      "capital": 545454;
-      "activeTradeLimit": 9,
-      "activeSymbolLimit": 7,
-      "symbolThrottle": 9,
+      "name": "tET",
+      "tradeSide": "Short",
+      "capital": 24,
+      "activeTradeLimit": 0,
+      "activeSymbolLimit": 0,
+      "symbolThrottle": 0,
       "tradeThrottle": 0,
-      "scanner": "For Dad",
+      "scanner": null,
       "entryType": "Market",
-      "entryTimeout": 0,
+      "entryTimeout": 2,
       "entryLimitPercent": null,
       "entryLimitPriceType": null,
       "entryLimitChaseInterval": null,
-      "exitTriggers": [
-        {
-          "name": "Trigger 1",
-          "type": "Timer",
-          "stopPercent": null,
-          "stopPriceType": null,
-          "trailingPercent": null,
-          "trailingPriceType": null,
-          "timer": 30;
-          "timeTrigger": null,
-          "profitLossAmount": null,
-          "profitLossPercent": null,
-          "isComplete": true
-        }
-      ],
+      "exitTriggers": null,
       "isComplete": true
     }
   ],
-  "enabled": true,
+  "enabled": null,
   "schedule": {
-    "days": [
-      "Monday",
-      "Tuesday"
-    ],
+    "days": null,
     "startTime": null,
     "stopTime": null
   },
-  "activeTradeLimit": 9,
+  "activeTradeLimit": 0,
   "activeSymbolLimit": 0,
-  "tradeThrottle": 9,
+  "tradeThrottle": 0,
   "symbolThrottle": 0
 }
+      

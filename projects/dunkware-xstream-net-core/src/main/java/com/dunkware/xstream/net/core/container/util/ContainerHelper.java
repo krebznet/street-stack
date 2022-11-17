@@ -22,7 +22,6 @@ import com.dunkware.xstream.net.core.container.ContainerEntitySnapshot;
 import com.dunkware.xstream.net.core.container.ContainerException;
 import com.dunkware.xstream.net.core.container.ContainerValueSet;
 import com.dunkware.xstream.net.core.container.core.ContainerEntitySignalImpl;
-import com.dunkware.xstream.net.core.container.core.ContainerEntitySnapshotImpl;
 import com.dunkware.xstream.net.core.container.core.ContainerValueSetImpl;
 import com.google.protobuf.Timestamp;
 
@@ -32,7 +31,8 @@ public class ContainerHelper {
 	public static ContainerEntitySnapshot createSnapshot(GEntitySnapshot snapshot, Container container) throws ContainerException { 
 		LocalDateTime dt = convertTimestamp(snapshot.getTime(), container.getTimeZone());
 		ContainerValueSet vars = varsToValueSet(snapshot.getVarsList());
-		return new ContainerEntitySnapshotImpl(dt,vars,snapshot.getIdentifier(),snapshot.getId());
+	//	return new ContainerEntitySnapshotImpl(dt,vars,snapshot.getIdentifier(),snapshot.getId());
+		return null;
 	}
 	
 	public static ContainerEntitySignal createSignal(GEntitySignal signal, Container container) throws ContainerException {

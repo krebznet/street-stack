@@ -1,9 +1,7 @@
 grammar com.dunkware.xstream.XScript with org.eclipse.xtext.common.Terminals
 
 generate xScript "http://www.dunkware.com/xstream/XScript"
-
 import "http://www.eclipse.org/emf/2002/Ecore" as ecore
-
 
 XScript:
 	elements+=ScriptElement*;
@@ -12,10 +10,16 @@ ScriptElement:
 	CoreAbstractElement;
 
 CoreAbstractElement:
-	VarType | XClassType | SignalType | XQueryType;
+	VarType | XClassType | SignalType;
 
 VarType:
-	"svar" name=ID '('code=INT','type=DataType')' '=' expression=ExpressionType ';';
+	VarStoreType | VarTransType;
+
+VarStoreType:
+	"svar" name=ID '(' code=INT ',' type=DataType ')' '=' expression=ExpressionType ';';
+
+VarTransType:
+	"tvar" name=ID '(' code=INT ',' type=DataType ')' '=' expression=ExpressionType ';';
 
 ExpressionType:
 	OrType;
@@ -55,222 +59,244 @@ AtomicBaseType returns ExpressionType:
 	{IntConstantType} value=INT |
 	{StringConstantType} value=STRING |
 	{BoolConstantType} value=('true' | 'false')
-	| TickExpressionType | SnapshotExpressionType | SetExpressionType | RocExpressionType | AvgExpressionType | VariableValueExpType 
-	| VariableValueRangeType | VariableValueType | SubExpressionType | SessionSignalExpressionType;
-
+	| TickExpressionType | SnapshotExpressionType | SetExpressionType | RocExpressionType | AvgExpressionType |
+	VariableValueExpType
+	| VariableValueRangeType | VariableValueType | SubExpressionType | VarAggHistoryType | VarAggSessionType | SignalCountSession | SignalCountHistory;
 /****************************
  * Input Expression Types 
  ****************************/
 TickExpressionType returns ExpressionType:
-	{TickExpressionType}'tick' '('type=INT','field=INT','dataType=DataType')';
-	
+	{TickExpressionType} 'tick' '(' type=INT ',' field=INT ',' dataType=DataType ')';
+
 /****************************
  * Variable Value Expression Types 
  ****************************/
-VariableValueRangeType : 
-	{VariableValueRangeType} targetVar=[VarType]'['(startIndex=INT)','(endIndex=INT)']';
-VariableValueType: 
-{VariableValueType} variable=[VarType]('['(indexInt=INT | 'exp' '('expType=ExpressionType')')']');
+VariableValueRangeType:
+	{VariableValueRangeType} targetVar=[VarType] '[' (startIndex=INT) ',' (endIndex=INT) ']';
+
+VariableValueType:
+	{VariableValueType} variable=[VarType] ('[' (indexInt=INT | 'exp' '(' expType=ExpressionType ')') ']');
+
 VariableValueExpType:
-	{VariableValueExpType} 'exp' '('expType=ExpressionType')';
-SetExpressionType :
-	{SetExpressionType } '{' ( args+=ExpressionType (',' args+=ExpressionType)* )? '}';
-	
-	
-	
+	{VariableValueExpType} 'exp' '(' expType=ExpressionType ')';
+
+SetExpressionType:
+	{SetExpressionType} '{' (args+=ExpressionType (',' args+=ExpressionType)*)? '}';
+
 /**********************************
  * Scheduled Update Expression Types 
  *********************************/
-SnapshotExpressionType : 
-	{SnapshotExpressionType} "snapshot" '('target=ExpressionType')' interval=INT time=StreamTimeUnit;
+SnapshotExpressionType:
+	{SnapshotExpressionType} "snapshot" '(' target=ExpressionType ')' interval=INT time=StreamTimeUnit;
 
 /*******************************
  * Math Exrepssion Types 
  *******************************/
-RocExpressionType  : 
-	{RocExpressionType} "roc" '('target=ExpressionType ',' compare=ExpressionType')';	
-AvgExpressionType : 
-	{AvgExpressionType}"avg" '('target=SetExpressionType')';
+RocExpressionType:
+	{RocExpressionType} "roc" '(' target=ExpressionType ',' compare=ExpressionType ')';
+
+AvgExpressionType:
+	{AvgExpressionType} "avg" '(' target=SetExpressionType ')';
+
 SubExpressionType:
-	{SubExpressionType} "sub" '('target=VariableValueType ',' compare=VariableValueType')';	
+	{SubExpressionType} "sub" '(' target=VariableValueType ',' compare=VariableValueType ')';
 
-/** Signal Expression Types */
+/*********************************
+ * Aggregation Expressions 
+ **************************************/
+HistoryTimeRange:
+	{HistoryTimeRange} 'relativeDays''('value=INT')';
 
-SessionSignalExpressionType: 
-	{SessionSignalExpressionType} 'ssc' '('signal=[SignalType] op=(">"|"<"|"=") count=INT 'in last' time=INT unit=StreamTimeUnit')'
-;
+SessionTimeRange:
+	 RelativeSessionTimeRange | TodaySessionTimeRange;
+
+RelativeSessionTimeRange:
+	{RelativeSessionTimeRange} ('relativeTime' '(' relativeVale=INT',' timeUnit=SessionTimeUnit')');
+
+TodaySessionTimeRange:
+	{TodaySessionTimeRange} 'today';
+	
+
+	
+VarAggSessionType:
+	{VarAggSessionType}'varAggSession' '(' var=[VarType]','function=SessionAggFunc ',' timeRange=SessionTimeRange ')';
+	
+VarAggHistoryType:
+	{VarAggHistoryType}'varAggHistory' '(' var=[VarType]','function=HistoricalAggFunc ',' timeRange=HistoryTimeRange ')';
+	
+	
+SignalCountSession:
+	{SignalCountSession}'sigCountSession' '(' signal=[SignalType] ',' timeRange=SessionTimeRange')';
+	
+SignalCountHistory:
+	{SignalCountHistory} 'sigCountHistory' '('signal=[SignalType] ',' timeRange=HistoryTimeRange')'
+;	
+	
+enum HistoricalAggFunc:
+	high="HIGH" | low="LOW";
+
+enum SessionAggFunc:
+	high="HIGH" | low="LOW";
+	
+	
+enum SessionTimeUnit:
+	sec="SEC" | min="MIN";
+
+
 /*******************************
  * XScript Core Enums
  *******************************/
 enum StreamTimeUnit:
 	second="SEC" | minute="MIN" | hour="HOUR";
-	
+
 enum DataType:
 	STR | INT | BOOl | T | DT | DATE | DUB | LONG;
 
 terminal DOUBLE returns ecore::EDouble:
 	'-'? ('0'..'9')+ '.' ('0'..'9')+ (('e' | 'E') ('-')? ('0'..'9')+)?;
-
-
 	
+
 /*******************************
  * XScript Signals
  *******************************/
-
- SignalType:
-	{SignalType}'signal' name=ID '('id=INT')'';';
+SignalType:
+	{SignalType} 'signal' name=ID '(' id=INT ')' ';';
 
 /*******************************
  * XClass Start
  *******************************/
- XClassType returns AbstractElement:
- {XClassType}'class' name=ID ('('symbolFilter=STRING')')? '{'
+XClassType returns AbstractElement:
+	{XClassType} 'class' name=ID ('(' symbolFilter=STRING ')')? '{'
 	elements+=XClassElementType*
-'}';
+	'}';
 
 XClassElementType:
 	XClassCoreElementType;
 
 XClassCoreElementType:
-	XFunctionType | XVarType;		
-	
+	XFunctionType | XVarType;
 
 /****************************
  * Global Element Types 
  *************************/
 XVarType:
-	{XVarType}'var' name=ID ('=' exp=XExpressionType)?';';
-
+	{XVarType} 'var' name=ID ('=' exp=XExpressionType)?';';
 
 XFunctionType:
-	{XFunctionType}'function' name=ID '('(params+=[XVarType]*)?')' '{'
-		elements+=XClassFunctionElementType*
-	'}'
-;
-	
+	{XFunctionType} 'function' name=ID '(' (params+=[XVarType]*)? ')' '{'
+	elements+=XClassFunctionElementType*
+	'}';
+
 /***************************
  * Function Element Types
  *************************/
- XClassFunctionElementType returns XClassElementType:
- 	XFunctionCoreElementType;
- 
+XClassFunctionElementType returns XClassElementType:
+	XFunctionCoreElementType;
+
 XFunctionCoreElementType:
-	XFunctionReturnType | XVarType | XIfStatementType | XSignalListenerType | XStreamVarListenerType 
-	| XFunctionStartType | XFunctionCallType  |  XVarSetterType | XSignalTriggerType | XVarDecrementType 
+	XFunctionReturnType | XVarType | XIfStatementType | XSignalListenerType | XStreamVarListenerType
+	| XFunctionStartType | XFunctionCallType | XVarSetterType | XSignalTriggerType | XVarDecrementType
 	| XSetVarType | XVarIncrementType | XDebugType | XSleepType | XWhileType;
 
 XFunctionReturnType:
-	{XFunctionReturnType}'return' (returnValue=XExpressionType)?';';
+	{XFunctionReturnType} 'return' (returnValue=XExpressionType)? ';';
+
 XFunctionCallType:
-	{XFunctionCallType} function=[XFunctionType] '(' (params=STRING)? ')'';'
-;
-XSignalListenerType: 
-	{XSignalListenerType}'signalListener' '(' signalType=[SignalType] ',' function=[XFunctionType]')' ';';
-XStreamVarListenerType: 
-	{XStreamVarListenerType}'streamVarListener' '(' column=[VarType] ',' function=[XFunctionType]')'';';
+	{XFunctionCallType} function=[XFunctionType] '(' (params=STRING)? ')' ';';
 
+XSignalListenerType:
+	{XSignalListenerType} 'signalListener' '(' signalType=[SignalType] ',' function=[XFunctionType] ')' ';';
 
+XStreamVarListenerType:
+	{XStreamVarListenerType} 'streamVarListener' '(' column=[VarType] ',' function=[XFunctionType] ')' ';';
 
 XSignalTriggerType:
-	{XSignalTriggerType}'signal''('signal=[SignalType] ')' ';';
+	{XSignalTriggerType} 'signal' '(' signal=[SignalType] ')' ';';
+
 XFunctionStartType:
-	{XFunctionStartType} 'functionRunner' '(' function=[XFunctionType] ',' interval=INT time=StreamTimeUnit ')' ';'; 
+	{XFunctionStartType} 'functionRunner' '(' function=[XFunctionType] ',' interval=INT time=StreamTimeUnit ')' ';';
+
 XVarSetterType:
 	{XVarSetterType} var=[XVarType] '=' exp=XExpressionType ';';
+
 XVarIncrementType:
 	{XVarIncrementType} var=[XVarType] '++' ';';
+
 XVarDecrementType:
 	{XVarDecrementType} var=[XVarType] '--' ';';
+
 XSetVarType:
-	{XSetVarType}'setStreamVar' '('var=[VarType]','value=XExpressionType')' ';'
-;
+	{XSetVarType} 'setStreamVar' '(' var=[VarType] ',' value=XExpressionType ')' ';';
+
 XDebugType:
-	{XDebugType}'debug' '('( args+=XExpressionType (',' args+=XExpressionType)* )?')' ';'
-;	
+	{XDebugType} 'debug' '(' (args+=XExpressionType (',' args+=XExpressionType)*)? ')' ';';
+
 XIfStatementType:
-	{XIfStatementType}'if' '('expression=XExpressionType')' '{'
-		elements+=XClassFunctionElementType*
-	'}' 
+	{XIfStatementType} 'if' '(' expression=XExpressionType ')' '{'
+	elements+=XClassFunctionElementType*
+	'}'
 	(elseIfElements+=XElseIfStatementType*)
 	(elseElement=XElseStatementType)?;
-	
-XElseIfStatementType:	
-	{XElseIfStatementType}('elseif' '(' expression=XExpressionType ')' '{'
-		elements+=XClassFunctionElementType*
-	'}')
-; 
+
+XElseIfStatementType:
+	{XElseIfStatementType} ('elseif' '(' expression=XExpressionType ')' '{'
+	elements+=XClassFunctionElementType*
+	'}');
+
 XElseStatementType:
-	{XElseStatementType}'else' '{'
-		elements+=XClassFunctionElementType*	
+	{XElseStatementType} 'else' '{'
+	elements+=XClassFunctionElementType*
 	'}';
-	
+
 XWhileType:
-	{XWhileType}'whilst' '('expression=XExpressionType')' '{'
-			elements+=XWhileElementType*
-	'}'
-;
+	{XWhileType} 'whilst' '(' expression=XExpressionType ')' '{'
+	elements+=XWhileElementType*
+	'}';
+
 XWhileElementType returns XClassElementType:
 	XWhileBreakType | XClassFunctionElementType;
-	
+
 XWhileBreakType:
-	{XWhileBreakType}'break' ';'
-;
+	{XWhileBreakType} 'break' ';';
 
 XSleepType:
-	{XSleepType}'sleep' '('interval=INT unit=StreamTimeUnit ')'';'
-;
+	{XSleepType} 'sleep' '(' interval=INT unit=StreamTimeUnit ')' ';';
 
 /*******************
  * Core XExpression Types 
  ********************/
-XExpressionType: XOrType;
+XExpressionType:
+	XOrType;
 
 XOrType returns XExpressionType:
-	XAndType ({XOrType.left=current} "||" right=XAndType)*
-;
+	XAndType ({XOrType.left=current} "||" right=XAndType)*;
 
 XAndType returns XExpressionType:
-	XEqualityType({XAndType.left=current} "&&" right=XEqualityType)*
-;
+	XEqualityType ({XAndType.left=current} "&&" right=XEqualityType)*;
 
 XEqualityType returns XExpressionType:
-	XComparisonType (
-		{XEqualityType.left=current} op=("=="|"!=")
-		right=XComparisonType
-	)*
-;
+	XComparisonType ({XEqualityType.left=current} op=("==" | "!=")
+	right=XComparisonType)*;
 
 XComparisonType returns XExpressionType:
-	XPlusOrMinusType (
-		{XComparisonType.left=current} op=(">="|"<="|">"|"<")
-		right=XPlusOrMinusType
-	)*
-;
+	XPlusOrMinusType ({XComparisonType.left=current} op=(">=" | "<=" | ">" | "<")
+	right=XPlusOrMinusType)*;
 
 XPlusOrMinusType returns XExpressionType:
-	XMulOrDivType (
-		({XPlusType.left=current} '+' | {XMinusType.left=current} '-') 
-		right=XMulOrDivType
-	)*
-;
+	XMulOrDivType (({XPlusType.left=current} '+' | {XMinusType.left=current} '-')
+	right=XMulOrDivType)*;
 
 XMulOrDivType returns XExpressionType:
-	XPrimaryType (
-		{XMulOrDivType.left=current} op=('*'|'/') 
-		right=XPrimaryType
-	)*
-;
+	XPrimaryType ({XMulOrDivType.left=current} op=('*' | '/')
+	right=XPrimaryType)*;
 
 XPrimaryType returns XExpressionType:
 	'(' XExpressionType ')' |
 	{XNotType} "!" expression=XPrimaryType |
-	XAtomicType 
-;
+	XAtomicType;
 
 XAtomicType returns XExpressionType:
-	XAtomicBaseType ;
-
-
+	XAtomicBaseType;
 
 /********************************
  * XClass Expression Types -- added to XBooleanConstantType
@@ -279,138 +305,75 @@ XAtomicBaseType returns XExpressionType:
 	{XDoubleConstantType} value=DOUBLE |
 	{XIntConstantType} value=INT |
 	{XStringConstantType} value=STRING |
-	{XBoolConstantType} value=('true'|'false')  | XPercentChangeExpType | XSubExpType | XVarExpType | XStreamWrapperExpType | XStreamVarValueExpType | XFunctionCallExpType | XVarStreakType | XVarCompareStreakType | XSlrAvgExpType | XLastSignalTriggerType | XSignalTriggerCountType | XVarianceAverageType | XRocExpType | XVarianceMaxType;
-	
+	{XBoolConstantType} value=('true' | 'false') | XPercentChangeExpType | XSubExpType | XVarExpType |
+	XStreamWrapperExpType | XStreamVarValueExpType | XFunctionCallExpType | XVarStreakType | XVarCompareStreakType |
+	XSlrAvgExpType | XLastSignalTriggerType | XSignalTriggerCountType | XVarianceAverageType | XRocExpType |
+	XVarianceMaxType;
+
 XPercentChangeExpType:
-	{XPercentChangeExpType} 'percentChange' '('value1=XExpressionType "," value2=XExpressionType ')'
-;	
+	{XPercentChangeExpType} 'percentChange' '(' value1=XExpressionType "," value2=XExpressionType ')';
 
 XSubExpType:
-	{XSubExpType} 'sub' '('value1=XExpressionType "," value2=XExpressionType ')'
-;	
+	{XSubExpType} 'sub' '(' value1=XExpressionType "," value2=XExpressionType ')';
 
 // Returns the value of the referenced XVar
 XVarExpType:
-	{XVarExpType}  expVar=[XVarType] ;
+	{XVarExpType} expVar=[XVarType];
 
 // Element for using XStream Expression type
 XStreamWrapperExpType:
-	{XStreamWrapperExpType} 'exp' '('wrapperExp=ExpressionType')';
+	{XStreamWrapperExpType} 'exp' '(' wrapperExp=ExpressionType ')';
 
 // Element for using XClass expressions for setting the index of XStremVar to return
 XStreamVarValueExpType:
-	{XStreamVarValueExpType} var=[VarType]('['(expressionValue=XExpressionType)) ']'; 
-	
+	{XStreamVarValueExpType} var=[VarType] ('[' (expressionValue=XExpressionType)) ']';
+
 XFunctionCallExpType:
-	{XFunctionCallExpType}function=[XFunctionType] '(' (parms=STRING)? ')';
-	
+	{XFunctionCallExpType} function=[XFunctionType] '(' (parms=STRING)? ')';
+
 XVarStreakType:
-	{XVarStreakType} 'columnStrk' '('var=[VarType]',' direction=("bwd" | "fwd")',' startIndexExp=XExpressionType',' (compare=XVarStreakCompareType | value=XVarStreakValueType) ')';
+	{XVarStreakType} 'columnStrk' '(' var=[VarType] ',' direction=("bwd" | "fwd") ',' startIndexExp=XExpressionType ','
+	(compare=XVarStreakCompareType | value=XVarStreakValueType) ')';
+
 XVarStreakCompareType:
-	{XVarStreakCompareType} function=("sum" | "diff") '('offset=INT')' op=("<" | ">" | "=") test=DOUBLE ')';
+	{XVarStreakCompareType} function=("sum" | "diff") '(' offset=INT ')' op=("<" | ">" | "=") test=DOUBLE ')';
+
 XVarStreakValueType:
-{XVarStreakValueType}'value' op=("<" | ">" | "=") test=DOUBLE;
+	{XVarStreakValueType} 'value' op=("<" | ">" | "=") test=DOUBLE;
 
 XVarCompareStreakType:
-	{XVarCompareStreakType} 'columnPairStrk' '('targetVar=[VarType]","compareVar=[VarType]"," direction=("bwd" | "fwd")','startIndexExp=XExpressionType","function=("sum" | "diff" | "value" | "variance") op=("<" | ">" | "=") test=DOUBLE')';
-
+	{XVarCompareStreakType} 'columnPairStrk' '(' targetVar=[VarType] "," compareVar=[VarType] "," direction=("bwd" |
+	"fwd") ',' startIndexExp=XExpressionType "," function=("sum" | "diff" | "value" | "variance") op=("<" | ">" | "=")
+	test=DOUBLE ')';
 
 XSlrAvgExpType:
-	{XSlrAvgExpType} 'slrAvg' '('var=[VarType]',' startValue=XExpressionType "," endValue=XExpressionType')'
-;
+	{XSlrAvgExpType} 'slrAvg' '(' var=[VarType] ',' startValue=XExpressionType "," endValue=XExpressionType ')';
 
 XLastSignalTriggerType:
-	{XLastSignalTriggerType} 'lst' '('signal=[SignalType]')'
-;
+	{XLastSignalTriggerType} 'lst' '(' signal=[SignalType] ')';
 
 XSignalTriggerCountType:
- 	{XSignalTriggerCountType} 'stc' '('signal=[SignalType] "," lookback=INT ')'
-;
+	{XSignalTriggerCountType} 'stc' '(' signal=[SignalType] "," lookback=INT ')';
 
 XVarianceAverageType:
-	{XVarianceAverageType} 'varAvg' '('target=[VarType]',' compare=[VarType] ',' start=XExpressionType "," end=XExpressionType')';
-	
+	{XVarianceAverageType} 'varAvg' '(' target=[VarType] ',' compare=[VarType] ',' start=XExpressionType ","
+	end=XExpressionType ')';
+
 XVarianceMaxType:
-	{XVarianceMaxType} 'varMax' '('target=[VarType]','  compare=[VarType] ',' start=XExpressionType "," end=XExpressionType')';
+	{XVarianceMaxType} 'varMax' '(' target=[VarType] ',' compare=[VarType] ',' start=XExpressionType ","
+	end=XExpressionType ')';
 
 XRocExpType:
-	{XRocExpType} 'rox' '('value1=XExpressionType "," value2=XExpressionType ')'
-;	
-
-
-
+	{XRocExpType} 'rox' '(' value1=XExpressionType "," value2=XExpressionType ')';
 
 /*******************************
  * XClass End
  *******************************/
-
-
-/*******************************
- * XValue Start
- *******************************/
  
-XTimeRange:
-	XTimeRangeRelative;
-	
-XTimeRangeRelative:
-	{XTimeRangeRelative}'relative' '('unit=StreamTimeUnit',' value=INT')';
-	
-enum XValueVarHistoricalAggFunction:
-	high="HIGH" | low="LOW";
-
-enum XValueVarSessionAggFunction:
-	high="HIGH" | low="LOW";
-	
-enum XStreamOperator:
-	gt="GT" | lt="LT" | eq="EQ" | nq="NE";
-
-XValueType:
-	XValueSessionVarValueType | XValueSessionVarAggType | 
-	XValueSessionSignalCountType | XValueHistoricalSignalCountType;
-	
-XValueSessionVarValueType:
-	{XValueSessionVarValueType}'sessionVarValue' '('var=[VarType]','index=INT')';
-	
-	
-XValueSessionVarAggType:
-	{XValueSessionVarAggType}'sessionVarAgg' '('var=[VarType]',' function=XValueVarSessionAggFunction','range=XTimeRange')';
-	
-XValueSessionSignalCountType:
-	{XValueSessionSignalCountType}'sessionSignalCount' '('signal=[SignalType]','
-	timeRange=XTimeRange','
-	value=INT')';
-
-XValueHistoricalVarAggType: 'historicalVarAgg' '('var=[VarType]',' function=XValueVarHistoricalAggFunction ',' days=INT')';
-
-XValueHistoricalSignalCountType:
-{XValueHistoricalSignalCountType}	
-    'historicalSignalCount' '('signal=[SignalType]',' days=INT ')'
-	// value
-;
-
+ 
 /*******************************
- * XValue End
+ * Time Range Start
  *******************************/
 
-
-/*******************************
- * XQuery Start
- *******************************/
-
-enum XQueryValueCompareFunction:
-	roc="ROC" | diff="DIFF";
-	
-XQueryType:
-	'query' '('name=ID ')' '{'
-	   filters+=XQueryFilterType*
-	  '}';
-	
-XQueryFilterType:
-	XQueryFilterValueCompareType | XQueryFilterValueType;
-
-	
-XQueryFilterValueType:
-	{XQueryFilterValueType} 'valueFilter' '('value=XValueType',' operator=XStreamOperator',' criteria=STRING ')';
-	
-XQueryFilterValueCompareType:
-	'valueCompareFilter' '('value1=XValueType ',' value2=XValueType',' function=XQueryValueCompareFunction',' operator=XStreamOperator',' criteria=STRING')';
+//enum XStreamOperator:
+	//gt="GT" | lt="LT" | eq="EQ" | nq="NE";

@@ -95,6 +95,7 @@
       <module>projects/dunkware-trade-service-stream-server</module>
 			<module>projects/dunkware-trade-service-stream-worker</module>
 			<module>projects/dunkware-trade-service-stream-util</module>
+			<module>projects/dunkware-trade-service-data-server</module>
 
 
 			<module>projects/dunkware-trade-sdk-tws-runtime</module>

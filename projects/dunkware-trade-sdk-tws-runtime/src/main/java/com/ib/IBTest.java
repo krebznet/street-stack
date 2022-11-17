@@ -20,7 +20,7 @@ public class IBTest {
 		try {
 		    IBTestWrapper wrapper = new IBTestWrapper();
 			EClientSocket socket = new EClientSocket(wrapper);
-			socket.eConnect("localhost", 7495, 424);
+			socket.eConnect("192.168.23.160", 8123, 15);
 			
 			
 			// make the contract 

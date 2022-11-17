@@ -96,6 +96,16 @@ public class XScriptAdapterFactory extends AdapterFactoryImpl
         return createVarTypeAdapter();
       }
       @Override
+      public Adapter caseVarStoreType(VarStoreType object)
+      {
+        return createVarStoreTypeAdapter();
+      }
+      @Override
+      public Adapter caseVarTransType(VarTransType object)
+      {
+        return createVarTransTypeAdapter();
+      }
+      @Override
       public Adapter caseExpressionType(ExpressionType object)
       {
         return createExpressionTypeAdapter();
@@ -141,9 +151,44 @@ public class XScriptAdapterFactory extends AdapterFactoryImpl
         return createSubExpressionTypeAdapter();
       }
       @Override
-      public Adapter caseSessionSignalExpressionType(SessionSignalExpressionType object)
+      public Adapter caseHistoryTimeRange(HistoryTimeRange object)
       {
-        return createSessionSignalExpressionTypeAdapter();
+        return createHistoryTimeRangeAdapter();
+      }
+      @Override
+      public Adapter caseSessionTimeRange(SessionTimeRange object)
+      {
+        return createSessionTimeRangeAdapter();
+      }
+      @Override
+      public Adapter caseRelativeSessionTimeRange(RelativeSessionTimeRange object)
+      {
+        return createRelativeSessionTimeRangeAdapter();
+      }
+      @Override
+      public Adapter caseTodaySessionTimeRange(TodaySessionTimeRange object)
+      {
+        return createTodaySessionTimeRangeAdapter();
+      }
+      @Override
+      public Adapter caseVarAggSessionType(VarAggSessionType object)
+      {
+        return createVarAggSessionTypeAdapter();
+      }
+      @Override
+      public Adapter caseVarAggHistoryType(VarAggHistoryType object)
+      {
+        return createVarAggHistoryTypeAdapter();
+      }
+      @Override
+      public Adapter caseSignalCountSession(SignalCountSession object)
+      {
+        return createSignalCountSessionAdapter();
+      }
+      @Override
+      public Adapter caseSignalCountHistory(SignalCountHistory object)
+      {
+        return createSignalCountHistoryAdapter();
       }
       @Override
       public Adapter caseSignalType(SignalType object)
@@ -349,66 +394,6 @@ public class XScriptAdapterFactory extends AdapterFactoryImpl
       public Adapter caseXRocExpType(XRocExpType object)
       {
         return createXRocExpTypeAdapter();
-      }
-      @Override
-      public Adapter caseXTimeRange(XTimeRange object)
-      {
-        return createXTimeRangeAdapter();
-      }
-      @Override
-      public Adapter caseXTimeRangeRelative(XTimeRangeRelative object)
-      {
-        return createXTimeRangeRelativeAdapter();
-      }
-      @Override
-      public Adapter caseXValueType(XValueType object)
-      {
-        return createXValueTypeAdapter();
-      }
-      @Override
-      public Adapter caseXValueSessionVarValueType(XValueSessionVarValueType object)
-      {
-        return createXValueSessionVarValueTypeAdapter();
-      }
-      @Override
-      public Adapter caseXValueSessionVarAggType(XValueSessionVarAggType object)
-      {
-        return createXValueSessionVarAggTypeAdapter();
-      }
-      @Override
-      public Adapter caseXValueSessionSignalCountType(XValueSessionSignalCountType object)
-      {
-        return createXValueSessionSignalCountTypeAdapter();
-      }
-      @Override
-      public Adapter caseXValueHistoricalVarAggType(XValueHistoricalVarAggType object)
-      {
-        return createXValueHistoricalVarAggTypeAdapter();
-      }
-      @Override
-      public Adapter caseXValueHistoricalSignalCountType(XValueHistoricalSignalCountType object)
-      {
-        return createXValueHistoricalSignalCountTypeAdapter();
-      }
-      @Override
-      public Adapter caseXQueryType(XQueryType object)
-      {
-        return createXQueryTypeAdapter();
-      }
-      @Override
-      public Adapter caseXQueryFilterType(XQueryFilterType object)
-      {
-        return createXQueryFilterTypeAdapter();
-      }
-      @Override
-      public Adapter caseXQueryFilterValueType(XQueryFilterValueType object)
-      {
-        return createXQueryFilterValueTypeAdapter();
-      }
-      @Override
-      public Adapter caseXQueryFilterValueCompareType(XQueryFilterValueCompareType object)
-      {
-        return createXQueryFilterValueCompareTypeAdapter();
       }
       @Override
       public Adapter caseOrType(OrType object)
@@ -623,6 +608,36 @@ public class XScriptAdapterFactory extends AdapterFactoryImpl
   }
 
   /**
+   * Creates a new adapter for an object of class '{@link com.dunkware.xstream.xScript.VarStoreType <em>Var Store Type</em>}'.
+   * <!-- begin-user-doc -->
+   * This default implementation returns null so that we can easily ignore cases;
+   * it's useful to ignore a case when inheritance will catch all the cases anyway.
+   * <!-- end-user-doc -->
+   * @return the new adapter.
+   * @see com.dunkware.xstream.xScript.VarStoreType
+   * @generated
+   */
+  public Adapter createVarStoreTypeAdapter()
+  {
+    return null;
+  }
+
+  /**
+   * Creates a new adapter for an object of class '{@link com.dunkware.xstream.xScript.VarTransType <em>Var Trans Type</em>}'.
+   * <!-- begin-user-doc -->
+   * This default implementation returns null so that we can easily ignore cases;
+   * it's useful to ignore a case when inheritance will catch all the cases anyway.
+   * <!-- end-user-doc -->
+   * @return the new adapter.
+   * @see com.dunkware.xstream.xScript.VarTransType
+   * @generated
+   */
+  public Adapter createVarTransTypeAdapter()
+  {
+    return null;
+  }
+
+  /**
    * Creates a new adapter for an object of class '{@link com.dunkware.xstream.xScript.ExpressionType <em>Expression Type</em>}'.
    * <!-- begin-user-doc -->
    * This default implementation returns null so that we can easily ignore cases;
@@ -758,16 +773,121 @@ public class XScriptAdapterFactory extends AdapterFactoryImpl
   }
 
   /**
-   * Creates a new adapter for an object of class '{@link com.dunkware.xstream.xScript.SessionSignalExpressionType <em>Session Signal Expression Type</em>}'.
+   * Creates a new adapter for an object of class '{@link com.dunkware.xstream.xScript.HistoryTimeRange <em>History Time Range</em>}'.
    * <!-- begin-user-doc -->
    * This default implementation returns null so that we can easily ignore cases;
    * it's useful to ignore a case when inheritance will catch all the cases anyway.
    * <!-- end-user-doc -->
    * @return the new adapter.
-   * @see com.dunkware.xstream.xScript.SessionSignalExpressionType
+   * @see com.dunkware.xstream.xScript.HistoryTimeRange
    * @generated
    */
-  public Adapter createSessionSignalExpressionTypeAdapter()
+  public Adapter createHistoryTimeRangeAdapter()
+  {
+    return null;
+  }
+
+  /**
+   * Creates a new adapter for an object of class '{@link com.dunkware.xstream.xScript.SessionTimeRange <em>Session Time Range</em>}'.
+   * <!-- begin-user-doc -->
+   * This default implementation returns null so that we can easily ignore cases;
+   * it's useful to ignore a case when inheritance will catch all the cases anyway.
+   * <!-- end-user-doc -->
+   * @return the new adapter.
+   * @see com.dunkware.xstream.xScript.SessionTimeRange
+   * @generated
+   */
+  public Adapter createSessionTimeRangeAdapter()
+  {
+    return null;
+  }
+
+  /**
+   * Creates a new adapter for an object of class '{@link com.dunkware.xstream.xScript.RelativeSessionTimeRange <em>Relative Session Time Range</em>}'.
+   * <!-- begin-user-doc -->
+   * This default implementation returns null so that we can easily ignore cases;
+   * it's useful to ignore a case when inheritance will catch all the cases anyway.
+   * <!-- end-user-doc -->
+   * @return the new adapter.
+   * @see com.dunkware.xstream.xScript.RelativeSessionTimeRange
+   * @generated
+   */
+  public Adapter createRelativeSessionTimeRangeAdapter()
+  {
+    return null;
+  }
+
+  /**
+   * Creates a new adapter for an object of class '{@link com.dunkware.xstream.xScript.TodaySessionTimeRange <em>Today Session Time Range</em>}'.
+   * <!-- begin-user-doc -->
+   * This default implementation returns null so that we can easily ignore cases;
+   * it's useful to ignore a case when inheritance will catch all the cases anyway.
+   * <!-- end-user-doc -->
+   * @return the new adapter.
+   * @see com.dunkware.xstream.xScript.TodaySessionTimeRange
+   * @generated
+   */
+  public Adapter createTodaySessionTimeRangeAdapter()
+  {
+    return null;
+  }
+
+  /**
+   * Creates a new adapter for an object of class '{@link com.dunkware.xstream.xScript.VarAggSessionType <em>Var Agg Session Type</em>}'.
+   * <!-- begin-user-doc -->
+   * This default implementation returns null so that we can easily ignore cases;
+   * it's useful to ignore a case when inheritance will catch all the cases anyway.
+   * <!-- end-user-doc -->
+   * @return the new adapter.
+   * @see com.dunkware.xstream.xScript.VarAggSessionType
+   * @generated
+   */
+  public Adapter createVarAggSessionTypeAdapter()
+  {
+    return null;
+  }
+
+  /**
+   * Creates a new adapter for an object of class '{@link com.dunkware.xstream.xScript.VarAggHistoryType <em>Var Agg History Type</em>}'.
+   * <!-- begin-user-doc -->
+   * This default implementation returns null so that we can easily ignore cases;
+   * it's useful to ignore a case when inheritance will catch all the cases anyway.
+   * <!-- end-user-doc -->
+   * @return the new adapter.
+   * @see com.dunkware.xstream.xScript.VarAggHistoryType
+   * @generated
+   */
+  public Adapter createVarAggHistoryTypeAdapter()
+  {
+    return null;
+  }
+
+  /**
+   * Creates a new adapter for an object of class '{@link com.dunkware.xstream.xScript.SignalCountSession <em>Signal Count Session</em>}'.
+   * <!-- begin-user-doc -->
+   * This default implementation returns null so that we can easily ignore cases;
+   * it's useful to ignore a case when inheritance will catch all the cases anyway.
+   * <!-- end-user-doc -->
+   * @return the new adapter.
+   * @see com.dunkware.xstream.xScript.SignalCountSession
+   * @generated
+   */
+  public Adapter createSignalCountSessionAdapter()
+  {
+    return null;
+  }
+
+  /**
+   * Creates a new adapter for an object of class '{@link com.dunkware.xstream.xScript.SignalCountHistory <em>Signal Count History</em>}'.
+   * <!-- begin-user-doc -->
+   * This default implementation returns null so that we can easily ignore cases;
+   * it's useful to ignore a case when inheritance will catch all the cases anyway.
+   * <!-- end-user-doc -->
+   * @return the new adapter.
+   * @see com.dunkware.xstream.xScript.SignalCountHistory
+   * @generated
+   */
+  public Adapter createSignalCountHistoryAdapter()
   {
     return null;
   }
@@ -1383,186 +1503,6 @@ public class XScriptAdapterFactory extends AdapterFactoryImpl
    * @generated
    */
   public Adapter createXRocExpTypeAdapter()
-  {
-    return null;
-  }
-
-  /**
-   * Creates a new adapter for an object of class '{@link com.dunkware.xstream.xScript.XTimeRange <em>XTime Range</em>}'.
-   * <!-- begin-user-doc -->
-   * This default implementation returns null so that we can easily ignore cases;
-   * it's useful to ignore a case when inheritance will catch all the cases anyway.
-   * <!-- end-user-doc -->
-   * @return the new adapter.
-   * @see com.dunkware.xstream.xScript.XTimeRange
-   * @generated
-   */
-  public Adapter createXTimeRangeAdapter()
-  {
-    return null;
-  }
-
-  /**
-   * Creates a new adapter for an object of class '{@link com.dunkware.xstream.xScript.XTimeRangeRelative <em>XTime Range Relative</em>}'.
-   * <!-- begin-user-doc -->
-   * This default implementation returns null so that we can easily ignore cases;
-   * it's useful to ignore a case when inheritance will catch all the cases anyway.
-   * <!-- end-user-doc -->
-   * @return the new adapter.
-   * @see com.dunkware.xstream.xScript.XTimeRangeRelative
-   * @generated
-   */
-  public Adapter createXTimeRangeRelativeAdapter()
-  {
-    return null;
-  }
-
-  /**
-   * Creates a new adapter for an object of class '{@link com.dunkware.xstream.xScript.XValueType <em>XValue Type</em>}'.
-   * <!-- begin-user-doc -->
-   * This default implementation returns null so that we can easily ignore cases;
-   * it's useful to ignore a case when inheritance will catch all the cases anyway.
-   * <!-- end-user-doc -->
-   * @return the new adapter.
-   * @see com.dunkware.xstream.xScript.XValueType
-   * @generated
-   */
-  public Adapter createXValueTypeAdapter()
-  {
-    return null;
-  }
-
-  /**
-   * Creates a new adapter for an object of class '{@link com.dunkware.xstream.xScript.XValueSessionVarValueType <em>XValue Session Var Value Type</em>}'.
-   * <!-- begin-user-doc -->
-   * This default implementation returns null so that we can easily ignore cases;
-   * it's useful to ignore a case when inheritance will catch all the cases anyway.
-   * <!-- end-user-doc -->
-   * @return the new adapter.
-   * @see com.dunkware.xstream.xScript.XValueSessionVarValueType
-   * @generated
-   */
-  public Adapter createXValueSessionVarValueTypeAdapter()
-  {
-    return null;
-  }
-
-  /**
-   * Creates a new adapter for an object of class '{@link com.dunkware.xstream.xScript.XValueSessionVarAggType <em>XValue Session Var Agg Type</em>}'.
-   * <!-- begin-user-doc -->
-   * This default implementation returns null so that we can easily ignore cases;
-   * it's useful to ignore a case when inheritance will catch all the cases anyway.
-   * <!-- end-user-doc -->
-   * @return the new adapter.
-   * @see com.dunkware.xstream.xScript.XValueSessionVarAggType
-   * @generated
-   */
-  public Adapter createXValueSessionVarAggTypeAdapter()
-  {
-    return null;
-  }
-
-  /**
-   * Creates a new adapter for an object of class '{@link com.dunkware.xstream.xScript.XValueSessionSignalCountType <em>XValue Session Signal Count Type</em>}'.
-   * <!-- begin-user-doc -->
-   * This default implementation returns null so that we can easily ignore cases;
-   * it's useful to ignore a case when inheritance will catch all the cases anyway.
-   * <!-- end-user-doc -->
-   * @return the new adapter.
-   * @see com.dunkware.xstream.xScript.XValueSessionSignalCountType
-   * @generated
-   */
-  public Adapter createXValueSessionSignalCountTypeAdapter()
-  {
-    return null;
-  }
-
-  /**
-   * Creates a new adapter for an object of class '{@link com.dunkware.xstream.xScript.XValueHistoricalVarAggType <em>XValue Historical Var Agg Type</em>}'.
-   * <!-- begin-user-doc -->
-   * This default implementation returns null so that we can easily ignore cases;
-   * it's useful to ignore a case when inheritance will catch all the cases anyway.
-   * <!-- end-user-doc -->
-   * @return the new adapter.
-   * @see com.dunkware.xstream.xScript.XValueHistoricalVarAggType
-   * @generated
-   */
-  public Adapter createXValueHistoricalVarAggTypeAdapter()
-  {
-    return null;
-  }
-
-  /**
-   * Creates a new adapter for an object of class '{@link com.dunkware.xstream.xScript.XValueHistoricalSignalCountType <em>XValue Historical Signal Count Type</em>}'.
-   * <!-- begin-user-doc -->
-   * This default implementation returns null so that we can easily ignore cases;
-   * it's useful to ignore a case when inheritance will catch all the cases anyway.
-   * <!-- end-user-doc -->
-   * @return the new adapter.
-   * @see com.dunkware.xstream.xScript.XValueHistoricalSignalCountType
-   * @generated
-   */
-  public Adapter createXValueHistoricalSignalCountTypeAdapter()
-  {
-    return null;
-  }
-
-  /**
-   * Creates a new adapter for an object of class '{@link com.dunkware.xstream.xScript.XQueryType <em>XQuery Type</em>}'.
-   * <!-- begin-user-doc -->
-   * This default implementation returns null so that we can easily ignore cases;
-   * it's useful to ignore a case when inheritance will catch all the cases anyway.
-   * <!-- end-user-doc -->
-   * @return the new adapter.
-   * @see com.dunkware.xstream.xScript.XQueryType
-   * @generated
-   */
-  public Adapter createXQueryTypeAdapter()
-  {
-    return null;
-  }
-
-  /**
-   * Creates a new adapter for an object of class '{@link com.dunkware.xstream.xScript.XQueryFilterType <em>XQuery Filter Type</em>}'.
-   * <!-- begin-user-doc -->
-   * This default implementation returns null so that we can easily ignore cases;
-   * it's useful to ignore a case when inheritance will catch all the cases anyway.
-   * <!-- end-user-doc -->
-   * @return the new adapter.
-   * @see com.dunkware.xstream.xScript.XQueryFilterType
-   * @generated
-   */
-  public Adapter createXQueryFilterTypeAdapter()
-  {
-    return null;
-  }
-
-  /**
-   * Creates a new adapter for an object of class '{@link com.dunkware.xstream.xScript.XQueryFilterValueType <em>XQuery Filter Value Type</em>}'.
-   * <!-- begin-user-doc -->
-   * This default implementation returns null so that we can easily ignore cases;
-   * it's useful to ignore a case when inheritance will catch all the cases anyway.
-   * <!-- end-user-doc -->
-   * @return the new adapter.
-   * @see com.dunkware.xstream.xScript.XQueryFilterValueType
-   * @generated
-   */
-  public Adapter createXQueryFilterValueTypeAdapter()
-  {
-    return null;
-  }
-
-  /**
-   * Creates a new adapter for an object of class '{@link com.dunkware.xstream.xScript.XQueryFilterValueCompareType <em>XQuery Filter Value Compare Type</em>}'.
-   * <!-- begin-user-doc -->
-   * This default implementation returns null so that we can easily ignore cases;
-   * it's useful to ignore a case when inheritance will catch all the cases anyway.
-   * <!-- end-user-doc -->
-   * @return the new adapter.
-   * @see com.dunkware.xstream.xScript.XQueryFilterValueCompareType
-   * @generated
-   */
-  public Adapter createXQueryFilterValueCompareTypeAdapter()
   {
     return null;
   }

@@ -70,6 +70,8 @@ public class XScriptFactoryImpl extends EFactoryImpl implements XScriptFactory
       case XScriptPackage.SCRIPT_ELEMENT: return createScriptElement();
       case XScriptPackage.CORE_ABSTRACT_ELEMENT: return createCoreAbstractElement();
       case XScriptPackage.VAR_TYPE: return createVarType();
+      case XScriptPackage.VAR_STORE_TYPE: return createVarStoreType();
+      case XScriptPackage.VAR_TRANS_TYPE: return createVarTransType();
       case XScriptPackage.EXPRESSION_TYPE: return createExpressionType();
       case XScriptPackage.VARIABLE_VALUE_RANGE_TYPE: return createVariableValueRangeType();
       case XScriptPackage.VARIABLE_VALUE_TYPE: return createVariableValueType();
@@ -79,7 +81,14 @@ public class XScriptFactoryImpl extends EFactoryImpl implements XScriptFactory
       case XScriptPackage.ROC_EXPRESSION_TYPE: return createRocExpressionType();
       case XScriptPackage.AVG_EXPRESSION_TYPE: return createAvgExpressionType();
       case XScriptPackage.SUB_EXPRESSION_TYPE: return createSubExpressionType();
-      case XScriptPackage.SESSION_SIGNAL_EXPRESSION_TYPE: return createSessionSignalExpressionType();
+      case XScriptPackage.HISTORY_TIME_RANGE: return createHistoryTimeRange();
+      case XScriptPackage.SESSION_TIME_RANGE: return createSessionTimeRange();
+      case XScriptPackage.RELATIVE_SESSION_TIME_RANGE: return createRelativeSessionTimeRange();
+      case XScriptPackage.TODAY_SESSION_TIME_RANGE: return createTodaySessionTimeRange();
+      case XScriptPackage.VAR_AGG_SESSION_TYPE: return createVarAggSessionType();
+      case XScriptPackage.VAR_AGG_HISTORY_TYPE: return createVarAggHistoryType();
+      case XScriptPackage.SIGNAL_COUNT_SESSION: return createSignalCountSession();
+      case XScriptPackage.SIGNAL_COUNT_HISTORY: return createSignalCountHistory();
       case XScriptPackage.SIGNAL_TYPE: return createSignalType();
       case XScriptPackage.ABSTRACT_ELEMENT: return createAbstractElement();
       case XScriptPackage.XCLASS_ELEMENT_TYPE: return createXClassElementType();
@@ -121,18 +130,6 @@ public class XScriptFactoryImpl extends EFactoryImpl implements XScriptFactory
       case XScriptPackage.XVARIANCE_AVERAGE_TYPE: return createXVarianceAverageType();
       case XScriptPackage.XVARIANCE_MAX_TYPE: return createXVarianceMaxType();
       case XScriptPackage.XROC_EXP_TYPE: return createXRocExpType();
-      case XScriptPackage.XTIME_RANGE: return createXTimeRange();
-      case XScriptPackage.XTIME_RANGE_RELATIVE: return createXTimeRangeRelative();
-      case XScriptPackage.XVALUE_TYPE: return createXValueType();
-      case XScriptPackage.XVALUE_SESSION_VAR_VALUE_TYPE: return createXValueSessionVarValueType();
-      case XScriptPackage.XVALUE_SESSION_VAR_AGG_TYPE: return createXValueSessionVarAggType();
-      case XScriptPackage.XVALUE_SESSION_SIGNAL_COUNT_TYPE: return createXValueSessionSignalCountType();
-      case XScriptPackage.XVALUE_HISTORICAL_VAR_AGG_TYPE: return createXValueHistoricalVarAggType();
-      case XScriptPackage.XVALUE_HISTORICAL_SIGNAL_COUNT_TYPE: return createXValueHistoricalSignalCountType();
-      case XScriptPackage.XQUERY_TYPE: return createXQueryType();
-      case XScriptPackage.XQUERY_FILTER_TYPE: return createXQueryFilterType();
-      case XScriptPackage.XQUERY_FILTER_VALUE_TYPE: return createXQueryFilterValueType();
-      case XScriptPackage.XQUERY_FILTER_VALUE_COMPARE_TYPE: return createXQueryFilterValueCompareType();
       case XScriptPackage.OR_TYPE: return createOrType();
       case XScriptPackage.AND_TYPE: return createAndType();
       case XScriptPackage.EQUALITY_TYPE: return createEqualityType();
@@ -174,18 +171,16 @@ public class XScriptFactoryImpl extends EFactoryImpl implements XScriptFactory
   {
     switch (eDataType.getClassifierID())
     {
+      case XScriptPackage.HISTORICAL_AGG_FUNC:
+        return createHistoricalAggFuncFromString(eDataType, initialValue);
+      case XScriptPackage.SESSION_AGG_FUNC:
+        return createSessionAggFuncFromString(eDataType, initialValue);
+      case XScriptPackage.SESSION_TIME_UNIT:
+        return createSessionTimeUnitFromString(eDataType, initialValue);
       case XScriptPackage.STREAM_TIME_UNIT:
         return createStreamTimeUnitFromString(eDataType, initialValue);
       case XScriptPackage.DATA_TYPE:
         return createDataTypeFromString(eDataType, initialValue);
-      case XScriptPackage.XVALUE_VAR_HISTORICAL_AGG_FUNCTION:
-        return createXValueVarHistoricalAggFunctionFromString(eDataType, initialValue);
-      case XScriptPackage.XVALUE_VAR_SESSION_AGG_FUNCTION:
-        return createXValueVarSessionAggFunctionFromString(eDataType, initialValue);
-      case XScriptPackage.XSTREAM_OPERATOR:
-        return createXStreamOperatorFromString(eDataType, initialValue);
-      case XScriptPackage.XQUERY_VALUE_COMPARE_FUNCTION:
-        return createXQueryValueCompareFunctionFromString(eDataType, initialValue);
       default:
         throw new IllegalArgumentException("The datatype '" + eDataType.getName() + "' is not a valid classifier");
     }
@@ -201,18 +196,16 @@ public class XScriptFactoryImpl extends EFactoryImpl implements XScriptFactory
   {
     switch (eDataType.getClassifierID())
     {
+      case XScriptPackage.HISTORICAL_AGG_FUNC:
+        return convertHistoricalAggFuncToString(eDataType, instanceValue);
+      case XScriptPackage.SESSION_AGG_FUNC:
+        return convertSessionAggFuncToString(eDataType, instanceValue);
+      case XScriptPackage.SESSION_TIME_UNIT:
+        return convertSessionTimeUnitToString(eDataType, instanceValue);
       case XScriptPackage.STREAM_TIME_UNIT:
         return convertStreamTimeUnitToString(eDataType, instanceValue);
       case XScriptPackage.DATA_TYPE:
         return convertDataTypeToString(eDataType, instanceValue);
-      case XScriptPackage.XVALUE_VAR_HISTORICAL_AGG_FUNCTION:
-        return convertXValueVarHistoricalAggFunctionToString(eDataType, instanceValue);
-      case XScriptPackage.XVALUE_VAR_SESSION_AGG_FUNCTION:
-        return convertXValueVarSessionAggFunctionToString(eDataType, instanceValue);
-      case XScriptPackage.XSTREAM_OPERATOR:
-        return convertXStreamOperatorToString(eDataType, instanceValue);
-      case XScriptPackage.XQUERY_VALUE_COMPARE_FUNCTION:
-        return convertXQueryValueCompareFunctionToString(eDataType, instanceValue);
       default:
         throw new IllegalArgumentException("The datatype '" + eDataType.getName() + "' is not a valid classifier");
     }
@@ -264,6 +257,30 @@ public class XScriptFactoryImpl extends EFactoryImpl implements XScriptFactory
   {
     VarTypeImpl varType = new VarTypeImpl();
     return varType;
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  @Override
+  public VarStoreType createVarStoreType()
+  {
+    VarStoreTypeImpl varStoreType = new VarStoreTypeImpl();
+    return varStoreType;
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  @Override
+  public VarTransType createVarTransType()
+  {
+    VarTransTypeImpl varTransType = new VarTransTypeImpl();
+    return varTransType;
   }
 
   /**
@@ -380,10 +397,94 @@ public class XScriptFactoryImpl extends EFactoryImpl implements XScriptFactory
    * @generated
    */
   @Override
-  public SessionSignalExpressionType createSessionSignalExpressionType()
+  public HistoryTimeRange createHistoryTimeRange()
   {
-    SessionSignalExpressionTypeImpl sessionSignalExpressionType = new SessionSignalExpressionTypeImpl();
-    return sessionSignalExpressionType;
+    HistoryTimeRangeImpl historyTimeRange = new HistoryTimeRangeImpl();
+    return historyTimeRange;
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  @Override
+  public SessionTimeRange createSessionTimeRange()
+  {
+    SessionTimeRangeImpl sessionTimeRange = new SessionTimeRangeImpl();
+    return sessionTimeRange;
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  @Override
+  public RelativeSessionTimeRange createRelativeSessionTimeRange()
+  {
+    RelativeSessionTimeRangeImpl relativeSessionTimeRange = new RelativeSessionTimeRangeImpl();
+    return relativeSessionTimeRange;
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  @Override
+  public TodaySessionTimeRange createTodaySessionTimeRange()
+  {
+    TodaySessionTimeRangeImpl todaySessionTimeRange = new TodaySessionTimeRangeImpl();
+    return todaySessionTimeRange;
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  @Override
+  public VarAggSessionType createVarAggSessionType()
+  {
+    VarAggSessionTypeImpl varAggSessionType = new VarAggSessionTypeImpl();
+    return varAggSessionType;
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  @Override
+  public VarAggHistoryType createVarAggHistoryType()
+  {
+    VarAggHistoryTypeImpl varAggHistoryType = new VarAggHistoryTypeImpl();
+    return varAggHistoryType;
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  @Override
+  public SignalCountSession createSignalCountSession()
+  {
+    SignalCountSessionImpl signalCountSession = new SignalCountSessionImpl();
+    return signalCountSession;
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  @Override
+  public SignalCountHistory createSignalCountHistory()
+  {
+    SignalCountHistoryImpl signalCountHistory = new SignalCountHistoryImpl();
+    return signalCountHistory;
   }
 
   /**
@@ -884,150 +985,6 @@ public class XScriptFactoryImpl extends EFactoryImpl implements XScriptFactory
    * @generated
    */
   @Override
-  public XTimeRange createXTimeRange()
-  {
-    XTimeRangeImpl xTimeRange = new XTimeRangeImpl();
-    return xTimeRange;
-  }
-
-  /**
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   */
-  @Override
-  public XTimeRangeRelative createXTimeRangeRelative()
-  {
-    XTimeRangeRelativeImpl xTimeRangeRelative = new XTimeRangeRelativeImpl();
-    return xTimeRangeRelative;
-  }
-
-  /**
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   */
-  @Override
-  public XValueType createXValueType()
-  {
-    XValueTypeImpl xValueType = new XValueTypeImpl();
-    return xValueType;
-  }
-
-  /**
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   */
-  @Override
-  public XValueSessionVarValueType createXValueSessionVarValueType()
-  {
-    XValueSessionVarValueTypeImpl xValueSessionVarValueType = new XValueSessionVarValueTypeImpl();
-    return xValueSessionVarValueType;
-  }
-
-  /**
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   */
-  @Override
-  public XValueSessionVarAggType createXValueSessionVarAggType()
-  {
-    XValueSessionVarAggTypeImpl xValueSessionVarAggType = new XValueSessionVarAggTypeImpl();
-    return xValueSessionVarAggType;
-  }
-
-  /**
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   */
-  @Override
-  public XValueSessionSignalCountType createXValueSessionSignalCountType()
-  {
-    XValueSessionSignalCountTypeImpl xValueSessionSignalCountType = new XValueSessionSignalCountTypeImpl();
-    return xValueSessionSignalCountType;
-  }
-
-  /**
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   */
-  @Override
-  public XValueHistoricalVarAggType createXValueHistoricalVarAggType()
-  {
-    XValueHistoricalVarAggTypeImpl xValueHistoricalVarAggType = new XValueHistoricalVarAggTypeImpl();
-    return xValueHistoricalVarAggType;
-  }
-
-  /**
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   */
-  @Override
-  public XValueHistoricalSignalCountType createXValueHistoricalSignalCountType()
-  {
-    XValueHistoricalSignalCountTypeImpl xValueHistoricalSignalCountType = new XValueHistoricalSignalCountTypeImpl();
-    return xValueHistoricalSignalCountType;
-  }
-
-  /**
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   */
-  @Override
-  public XQueryType createXQueryType()
-  {
-    XQueryTypeImpl xQueryType = new XQueryTypeImpl();
-    return xQueryType;
-  }
-
-  /**
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   */
-  @Override
-  public XQueryFilterType createXQueryFilterType()
-  {
-    XQueryFilterTypeImpl xQueryFilterType = new XQueryFilterTypeImpl();
-    return xQueryFilterType;
-  }
-
-  /**
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   */
-  @Override
-  public XQueryFilterValueType createXQueryFilterValueType()
-  {
-    XQueryFilterValueTypeImpl xQueryFilterValueType = new XQueryFilterValueTypeImpl();
-    return xQueryFilterValueType;
-  }
-
-  /**
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   */
-  @Override
-  public XQueryFilterValueCompareType createXQueryFilterValueCompareType()
-  {
-    XQueryFilterValueCompareTypeImpl xQueryFilterValueCompareType = new XQueryFilterValueCompareTypeImpl();
-    return xQueryFilterValueCompareType;
-  }
-
-  /**
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   */
-  @Override
   public OrType createOrType()
   {
     OrTypeImpl orType = new OrTypeImpl();
@@ -1339,6 +1296,72 @@ public class XScriptFactoryImpl extends EFactoryImpl implements XScriptFactory
    * <!-- end-user-doc -->
    * @generated
    */
+  public HistoricalAggFunc createHistoricalAggFuncFromString(EDataType eDataType, String initialValue)
+  {
+    HistoricalAggFunc result = HistoricalAggFunc.get(initialValue);
+    if (result == null) throw new IllegalArgumentException("The value '" + initialValue + "' is not a valid enumerator of '" + eDataType.getName() + "'");
+    return result;
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  public String convertHistoricalAggFuncToString(EDataType eDataType, Object instanceValue)
+  {
+    return instanceValue == null ? null : instanceValue.toString();
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  public SessionAggFunc createSessionAggFuncFromString(EDataType eDataType, String initialValue)
+  {
+    SessionAggFunc result = SessionAggFunc.get(initialValue);
+    if (result == null) throw new IllegalArgumentException("The value '" + initialValue + "' is not a valid enumerator of '" + eDataType.getName() + "'");
+    return result;
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  public String convertSessionAggFuncToString(EDataType eDataType, Object instanceValue)
+  {
+    return instanceValue == null ? null : instanceValue.toString();
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  public SessionTimeUnit createSessionTimeUnitFromString(EDataType eDataType, String initialValue)
+  {
+    SessionTimeUnit result = SessionTimeUnit.get(initialValue);
+    if (result == null) throw new IllegalArgumentException("The value '" + initialValue + "' is not a valid enumerator of '" + eDataType.getName() + "'");
+    return result;
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  public String convertSessionTimeUnitToString(EDataType eDataType, Object instanceValue)
+  {
+    return instanceValue == null ? null : instanceValue.toString();
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
   public StreamTimeUnit createStreamTimeUnitFromString(EDataType eDataType, String initialValue)
   {
     StreamTimeUnit result = StreamTimeUnit.get(initialValue);
@@ -1374,94 +1397,6 @@ public class XScriptFactoryImpl extends EFactoryImpl implements XScriptFactory
    * @generated
    */
   public String convertDataTypeToString(EDataType eDataType, Object instanceValue)
-  {
-    return instanceValue == null ? null : instanceValue.toString();
-  }
-
-  /**
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   */
-  public XValueVarHistoricalAggFunction createXValueVarHistoricalAggFunctionFromString(EDataType eDataType, String initialValue)
-  {
-    XValueVarHistoricalAggFunction result = XValueVarHistoricalAggFunction.get(initialValue);
-    if (result == null) throw new IllegalArgumentException("The value '" + initialValue + "' is not a valid enumerator of '" + eDataType.getName() + "'");
-    return result;
-  }
-
-  /**
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   */
-  public String convertXValueVarHistoricalAggFunctionToString(EDataType eDataType, Object instanceValue)
-  {
-    return instanceValue == null ? null : instanceValue.toString();
-  }
-
-  /**
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   */
-  public XValueVarSessionAggFunction createXValueVarSessionAggFunctionFromString(EDataType eDataType, String initialValue)
-  {
-    XValueVarSessionAggFunction result = XValueVarSessionAggFunction.get(initialValue);
-    if (result == null) throw new IllegalArgumentException("The value '" + initialValue + "' is not a valid enumerator of '" + eDataType.getName() + "'");
-    return result;
-  }
-
-  /**
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   */
-  public String convertXValueVarSessionAggFunctionToString(EDataType eDataType, Object instanceValue)
-  {
-    return instanceValue == null ? null : instanceValue.toString();
-  }
-
-  /**
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   */
-  public XStreamOperator createXStreamOperatorFromString(EDataType eDataType, String initialValue)
-  {
-    XStreamOperator result = XStreamOperator.get(initialValue);
-    if (result == null) throw new IllegalArgumentException("The value '" + initialValue + "' is not a valid enumerator of '" + eDataType.getName() + "'");
-    return result;
-  }
-
-  /**
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   */
-  public String convertXStreamOperatorToString(EDataType eDataType, Object instanceValue)
-  {
-    return instanceValue == null ? null : instanceValue.toString();
-  }
-
-  /**
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   */
-  public XQueryValueCompareFunction createXQueryValueCompareFunctionFromString(EDataType eDataType, String initialValue)
-  {
-    XQueryValueCompareFunction result = XQueryValueCompareFunction.get(initialValue);
-    if (result == null) throw new IllegalArgumentException("The value '" + initialValue + "' is not a valid enumerator of '" + eDataType.getName() + "'");
-    return result;
-  }
-
-  /**
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   */
-  public String convertXQueryValueCompareFunctionToString(EDataType eDataType, Object instanceValue)
   {
     return instanceValue == null ? null : instanceValue.toString();
   }

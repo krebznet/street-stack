@@ -60,6 +60,24 @@ public interface XScriptFactory extends EFactory
   VarType createVarType();
 
   /**
+   * Returns a new object of class '<em>Var Store Type</em>'.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @return a new object of class '<em>Var Store Type</em>'.
+   * @generated
+   */
+  VarStoreType createVarStoreType();
+
+  /**
+   * Returns a new object of class '<em>Var Trans Type</em>'.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @return a new object of class '<em>Var Trans Type</em>'.
+   * @generated
+   */
+  VarTransType createVarTransType();
+
+  /**
    * Returns a new object of class '<em>Expression Type</em>'.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
@@ -141,13 +159,76 @@ public interface XScriptFactory extends EFactory
   SubExpressionType createSubExpressionType();
 
   /**
-   * Returns a new object of class '<em>Session Signal Expression Type</em>'.
+   * Returns a new object of class '<em>History Time Range</em>'.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
-   * @return a new object of class '<em>Session Signal Expression Type</em>'.
+   * @return a new object of class '<em>History Time Range</em>'.
    * @generated
    */
-  SessionSignalExpressionType createSessionSignalExpressionType();
+  HistoryTimeRange createHistoryTimeRange();
+
+  /**
+   * Returns a new object of class '<em>Session Time Range</em>'.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @return a new object of class '<em>Session Time Range</em>'.
+   * @generated
+   */
+  SessionTimeRange createSessionTimeRange();
+
+  /**
+   * Returns a new object of class '<em>Relative Session Time Range</em>'.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @return a new object of class '<em>Relative Session Time Range</em>'.
+   * @generated
+   */
+  RelativeSessionTimeRange createRelativeSessionTimeRange();
+
+  /**
+   * Returns a new object of class '<em>Today Session Time Range</em>'.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @return a new object of class '<em>Today Session Time Range</em>'.
+   * @generated
+   */
+  TodaySessionTimeRange createTodaySessionTimeRange();
+
+  /**
+   * Returns a new object of class '<em>Var Agg Session Type</em>'.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @return a new object of class '<em>Var Agg Session Type</em>'.
+   * @generated
+   */
+  VarAggSessionType createVarAggSessionType();
+
+  /**
+   * Returns a new object of class '<em>Var Agg History Type</em>'.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @return a new object of class '<em>Var Agg History Type</em>'.
+   * @generated
+   */
+  VarAggHistoryType createVarAggHistoryType();
+
+  /**
+   * Returns a new object of class '<em>Signal Count Session</em>'.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @return a new object of class '<em>Signal Count Session</em>'.
+   * @generated
+   */
+  SignalCountSession createSignalCountSession();
+
+  /**
+   * Returns a new object of class '<em>Signal Count History</em>'.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @return a new object of class '<em>Signal Count History</em>'.
+   * @generated
+   */
+  SignalCountHistory createSignalCountHistory();
 
   /**
    * Returns a new object of class '<em>Signal Type</em>'.
@@ -517,114 +598,6 @@ public interface XScriptFactory extends EFactory
    * @generated
    */
   XRocExpType createXRocExpType();
-
-  /**
-   * Returns a new object of class '<em>XTime Range</em>'.
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @return a new object of class '<em>XTime Range</em>'.
-   * @generated
-   */
-  XTimeRange createXTimeRange();
-
-  /**
-   * Returns a new object of class '<em>XTime Range Relative</em>'.
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @return a new object of class '<em>XTime Range Relative</em>'.
-   * @generated
-   */
-  XTimeRangeRelative createXTimeRangeRelative();
-
-  /**
-   * Returns a new object of class '<em>XValue Type</em>'.
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @return a new object of class '<em>XValue Type</em>'.
-   * @generated
-   */
-  XValueType createXValueType();
-
-  /**
-   * Returns a new object of class '<em>XValue Session Var Value Type</em>'.
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @return a new object of class '<em>XValue Session Var Value Type</em>'.
-   * @generated
-   */
-  XValueSessionVarValueType createXValueSessionVarValueType();
-
-  /**
-   * Returns a new object of class '<em>XValue Session Var Agg Type</em>'.
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @return a new object of class '<em>XValue Session Var Agg Type</em>'.
-   * @generated
-   */
-  XValueSessionVarAggType createXValueSessionVarAggType();
-
-  /**
-   * Returns a new object of class '<em>XValue Session Signal Count Type</em>'.
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @return a new object of class '<em>XValue Session Signal Count Type</em>'.
-   * @generated
-   */
-  XValueSessionSignalCountType createXValueSessionSignalCountType();
-
-  /**
-   * Returns a new object of class '<em>XValue Historical Var Agg Type</em>'.
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @return a new object of class '<em>XValue Historical Var Agg Type</em>'.
-   * @generated
-   */
-  XValueHistoricalVarAggType createXValueHistoricalVarAggType();
-
-  /**
-   * Returns a new object of class '<em>XValue Historical Signal Count Type</em>'.
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @return a new object of class '<em>XValue Historical Signal Count Type</em>'.
-   * @generated
-   */
-  XValueHistoricalSignalCountType createXValueHistoricalSignalCountType();
-
-  /**
-   * Returns a new object of class '<em>XQuery Type</em>'.
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @return a new object of class '<em>XQuery Type</em>'.
-   * @generated
-   */
-  XQueryType createXQueryType();
-
-  /**
-   * Returns a new object of class '<em>XQuery Filter Type</em>'.
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @return a new object of class '<em>XQuery Filter Type</em>'.
-   * @generated
-   */
-  XQueryFilterType createXQueryFilterType();
-
-  /**
-   * Returns a new object of class '<em>XQuery Filter Value Type</em>'.
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @return a new object of class '<em>XQuery Filter Value Type</em>'.
-   * @generated
-   */
-  XQueryFilterValueType createXQueryFilterValueType();
-
-  /**
-   * Returns a new object of class '<em>XQuery Filter Value Compare Type</em>'.
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @return a new object of class '<em>XQuery Filter Value Compare Type</em>'.
-   * @generated
-   */
-  XQueryFilterValueCompareType createXQueryFilterValueCompareType();
 
   /**
    * Returns a new object of class '<em>Or Type</em>'.

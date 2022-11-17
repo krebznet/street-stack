@@ -11,6 +11,7 @@ public class SessionEntityScanner {
 	private String name; 
 	private String streamIdentifier;
 	private Number id; 
+	// WE
 	
 	public SessionEntitySearch getSearch() {
 		return search;

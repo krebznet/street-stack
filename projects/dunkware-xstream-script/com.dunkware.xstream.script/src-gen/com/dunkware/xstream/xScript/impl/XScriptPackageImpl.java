@@ -13,22 +13,34 @@ import com.dunkware.xstream.xScript.DataType;
 import com.dunkware.xstream.xScript.DoubleConstantType;
 import com.dunkware.xstream.xScript.EqualityType;
 import com.dunkware.xstream.xScript.ExpressionType;
+import com.dunkware.xstream.xScript.HistoricalAggFunc;
+import com.dunkware.xstream.xScript.HistoryTimeRange;
 import com.dunkware.xstream.xScript.IntConstantType;
 import com.dunkware.xstream.xScript.MinusType;
 import com.dunkware.xstream.xScript.MulOrDivType;
 import com.dunkware.xstream.xScript.NotType;
 import com.dunkware.xstream.xScript.OrType;
 import com.dunkware.xstream.xScript.PlusType;
+import com.dunkware.xstream.xScript.RelativeSessionTimeRange;
 import com.dunkware.xstream.xScript.RocExpressionType;
 import com.dunkware.xstream.xScript.ScriptElement;
-import com.dunkware.xstream.xScript.SessionSignalExpressionType;
+import com.dunkware.xstream.xScript.SessionAggFunc;
+import com.dunkware.xstream.xScript.SessionTimeRange;
+import com.dunkware.xstream.xScript.SessionTimeUnit;
 import com.dunkware.xstream.xScript.SetExpressionType;
+import com.dunkware.xstream.xScript.SignalCountHistory;
+import com.dunkware.xstream.xScript.SignalCountSession;
 import com.dunkware.xstream.xScript.SignalType;
 import com.dunkware.xstream.xScript.SnapshotExpressionType;
 import com.dunkware.xstream.xScript.StreamTimeUnit;
 import com.dunkware.xstream.xScript.StringConstantType;
 import com.dunkware.xstream.xScript.SubExpressionType;
 import com.dunkware.xstream.xScript.TickExpressionType;
+import com.dunkware.xstream.xScript.TodaySessionTimeRange;
+import com.dunkware.xstream.xScript.VarAggHistoryType;
+import com.dunkware.xstream.xScript.VarAggSessionType;
+import com.dunkware.xstream.xScript.VarStoreType;
+import com.dunkware.xstream.xScript.VarTransType;
 import com.dunkware.xstream.xScript.VarType;
 import com.dunkware.xstream.xScript.VariableValueExpType;
 import com.dunkware.xstream.xScript.VariableValueRangeType;
@@ -60,11 +72,6 @@ import com.dunkware.xstream.xScript.XNotType;
 import com.dunkware.xstream.xScript.XOrType;
 import com.dunkware.xstream.xScript.XPercentChangeExpType;
 import com.dunkware.xstream.xScript.XPlusType;
-import com.dunkware.xstream.xScript.XQueryFilterType;
-import com.dunkware.xstream.xScript.XQueryFilterValueCompareType;
-import com.dunkware.xstream.xScript.XQueryFilterValueType;
-import com.dunkware.xstream.xScript.XQueryType;
-import com.dunkware.xstream.xScript.XQueryValueCompareFunction;
 import com.dunkware.xstream.xScript.XRocExpType;
 import com.dunkware.xstream.xScript.XScript;
 import com.dunkware.xstream.xScript.XScriptFactory;
@@ -75,22 +82,11 @@ import com.dunkware.xstream.xScript.XSignalTriggerCountType;
 import com.dunkware.xstream.xScript.XSignalTriggerType;
 import com.dunkware.xstream.xScript.XSleepType;
 import com.dunkware.xstream.xScript.XSlrAvgExpType;
-import com.dunkware.xstream.xScript.XStreamOperator;
 import com.dunkware.xstream.xScript.XStreamVarListenerType;
 import com.dunkware.xstream.xScript.XStreamVarValueExpType;
 import com.dunkware.xstream.xScript.XStreamWrapperExpType;
 import com.dunkware.xstream.xScript.XStringConstantType;
 import com.dunkware.xstream.xScript.XSubExpType;
-import com.dunkware.xstream.xScript.XTimeRange;
-import com.dunkware.xstream.xScript.XTimeRangeRelative;
-import com.dunkware.xstream.xScript.XValueHistoricalSignalCountType;
-import com.dunkware.xstream.xScript.XValueHistoricalVarAggType;
-import com.dunkware.xstream.xScript.XValueSessionSignalCountType;
-import com.dunkware.xstream.xScript.XValueSessionVarAggType;
-import com.dunkware.xstream.xScript.XValueSessionVarValueType;
-import com.dunkware.xstream.xScript.XValueType;
-import com.dunkware.xstream.xScript.XValueVarHistoricalAggFunction;
-import com.dunkware.xstream.xScript.XValueVarSessionAggFunction;
 import com.dunkware.xstream.xScript.XVarCompareStreakType;
 import com.dunkware.xstream.xScript.XVarDecrementType;
 import com.dunkware.xstream.xScript.XVarExpType;
@@ -148,6 +144,20 @@ public class XScriptPackageImpl extends EPackageImpl implements XScriptPackage
    * @generated
    */
   private EClass varTypeEClass = null;
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  private EClass varStoreTypeEClass = null;
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  private EClass varTransTypeEClass = null;
 
   /**
    * <!-- begin-user-doc -->
@@ -217,7 +227,56 @@ public class XScriptPackageImpl extends EPackageImpl implements XScriptPackage
    * <!-- end-user-doc -->
    * @generated
    */
-  private EClass sessionSignalExpressionTypeEClass = null;
+  private EClass historyTimeRangeEClass = null;
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  private EClass sessionTimeRangeEClass = null;
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  private EClass relativeSessionTimeRangeEClass = null;
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  private EClass todaySessionTimeRangeEClass = null;
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  private EClass varAggSessionTypeEClass = null;
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  private EClass varAggHistoryTypeEClass = null;
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  private EClass signalCountSessionEClass = null;
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  private EClass signalCountHistoryEClass = null;
 
   /**
    * <!-- begin-user-doc -->
@@ -511,90 +570,6 @@ public class XScriptPackageImpl extends EPackageImpl implements XScriptPackage
    * <!-- end-user-doc -->
    * @generated
    */
-  private EClass xTimeRangeEClass = null;
-
-  /**
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   */
-  private EClass xTimeRangeRelativeEClass = null;
-
-  /**
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   */
-  private EClass xValueTypeEClass = null;
-
-  /**
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   */
-  private EClass xValueSessionVarValueTypeEClass = null;
-
-  /**
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   */
-  private EClass xValueSessionVarAggTypeEClass = null;
-
-  /**
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   */
-  private EClass xValueSessionSignalCountTypeEClass = null;
-
-  /**
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   */
-  private EClass xValueHistoricalVarAggTypeEClass = null;
-
-  /**
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   */
-  private EClass xValueHistoricalSignalCountTypeEClass = null;
-
-  /**
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   */
-  private EClass xQueryTypeEClass = null;
-
-  /**
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   */
-  private EClass xQueryFilterTypeEClass = null;
-
-  /**
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   */
-  private EClass xQueryFilterValueTypeEClass = null;
-
-  /**
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   */
-  private EClass xQueryFilterValueCompareTypeEClass = null;
-
-  /**
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   */
   private EClass orTypeEClass = null;
 
   /**
@@ -777,6 +752,27 @@ public class XScriptPackageImpl extends EPackageImpl implements XScriptPackage
    * <!-- end-user-doc -->
    * @generated
    */
+  private EEnum historicalAggFuncEEnum = null;
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  private EEnum sessionAggFuncEEnum = null;
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  private EEnum sessionTimeUnitEEnum = null;
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
   private EEnum streamTimeUnitEEnum = null;
 
   /**
@@ -785,34 +781,6 @@ public class XScriptPackageImpl extends EPackageImpl implements XScriptPackage
    * @generated
    */
   private EEnum dataTypeEEnum = null;
-
-  /**
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   */
-  private EEnum xValueVarHistoricalAggFunctionEEnum = null;
-
-  /**
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   */
-  private EEnum xValueVarSessionAggFunctionEEnum = null;
-
-  /**
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   */
-  private EEnum xStreamOperatorEEnum = null;
-
-  /**
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   */
-  private EEnum xQueryValueCompareFunctionEEnum = null;
 
   /**
    * Creates an instance of the model <b>Package</b>, registered with
@@ -974,6 +942,28 @@ public class XScriptPackageImpl extends EPackageImpl implements XScriptPackage
   public EReference getVarType_Expression()
   {
     return (EReference)varTypeEClass.getEStructuralFeatures().get(3);
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  @Override
+  public EClass getVarStoreType()
+  {
+    return varStoreTypeEClass;
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  @Override
+  public EClass getVarTransType()
+  {
+    return varTransTypeEClass;
   }
 
   /**
@@ -1257,9 +1247,9 @@ public class XScriptPackageImpl extends EPackageImpl implements XScriptPackage
    * @generated
    */
   @Override
-  public EClass getSessionSignalExpressionType()
+  public EClass getHistoryTimeRange()
   {
-    return sessionSignalExpressionTypeEClass;
+    return historyTimeRangeEClass;
   }
 
   /**
@@ -1268,9 +1258,9 @@ public class XScriptPackageImpl extends EPackageImpl implements XScriptPackage
    * @generated
    */
   @Override
-  public EReference getSessionSignalExpressionType_Signal()
+  public EAttribute getHistoryTimeRange_Value()
   {
-    return (EReference)sessionSignalExpressionTypeEClass.getEStructuralFeatures().get(0);
+    return (EAttribute)historyTimeRangeEClass.getEStructuralFeatures().get(0);
   }
 
   /**
@@ -1279,9 +1269,9 @@ public class XScriptPackageImpl extends EPackageImpl implements XScriptPackage
    * @generated
    */
   @Override
-  public EAttribute getSessionSignalExpressionType_Op()
+  public EClass getSessionTimeRange()
   {
-    return (EAttribute)sessionSignalExpressionTypeEClass.getEStructuralFeatures().get(1);
+    return sessionTimeRangeEClass;
   }
 
   /**
@@ -1290,9 +1280,9 @@ public class XScriptPackageImpl extends EPackageImpl implements XScriptPackage
    * @generated
    */
   @Override
-  public EAttribute getSessionSignalExpressionType_Count()
+  public EClass getRelativeSessionTimeRange()
   {
-    return (EAttribute)sessionSignalExpressionTypeEClass.getEStructuralFeatures().get(2);
+    return relativeSessionTimeRangeEClass;
   }
 
   /**
@@ -1301,9 +1291,9 @@ public class XScriptPackageImpl extends EPackageImpl implements XScriptPackage
    * @generated
    */
   @Override
-  public EAttribute getSessionSignalExpressionType_Time()
+  public EAttribute getRelativeSessionTimeRange_RelativeVale()
   {
-    return (EAttribute)sessionSignalExpressionTypeEClass.getEStructuralFeatures().get(3);
+    return (EAttribute)relativeSessionTimeRangeEClass.getEStructuralFeatures().get(0);
   }
 
   /**
@@ -1312,9 +1302,174 @@ public class XScriptPackageImpl extends EPackageImpl implements XScriptPackage
    * @generated
    */
   @Override
-  public EAttribute getSessionSignalExpressionType_Unit()
+  public EAttribute getRelativeSessionTimeRange_TimeUnit()
   {
-    return (EAttribute)sessionSignalExpressionTypeEClass.getEStructuralFeatures().get(4);
+    return (EAttribute)relativeSessionTimeRangeEClass.getEStructuralFeatures().get(1);
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  @Override
+  public EClass getTodaySessionTimeRange()
+  {
+    return todaySessionTimeRangeEClass;
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  @Override
+  public EClass getVarAggSessionType()
+  {
+    return varAggSessionTypeEClass;
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  @Override
+  public EReference getVarAggSessionType_Var()
+  {
+    return (EReference)varAggSessionTypeEClass.getEStructuralFeatures().get(0);
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  @Override
+  public EAttribute getVarAggSessionType_Function()
+  {
+    return (EAttribute)varAggSessionTypeEClass.getEStructuralFeatures().get(1);
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  @Override
+  public EReference getVarAggSessionType_TimeRange()
+  {
+    return (EReference)varAggSessionTypeEClass.getEStructuralFeatures().get(2);
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  @Override
+  public EClass getVarAggHistoryType()
+  {
+    return varAggHistoryTypeEClass;
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  @Override
+  public EReference getVarAggHistoryType_Var()
+  {
+    return (EReference)varAggHistoryTypeEClass.getEStructuralFeatures().get(0);
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  @Override
+  public EAttribute getVarAggHistoryType_Function()
+  {
+    return (EAttribute)varAggHistoryTypeEClass.getEStructuralFeatures().get(1);
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  @Override
+  public EReference getVarAggHistoryType_TimeRange()
+  {
+    return (EReference)varAggHistoryTypeEClass.getEStructuralFeatures().get(2);
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  @Override
+  public EClass getSignalCountSession()
+  {
+    return signalCountSessionEClass;
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  @Override
+  public EReference getSignalCountSession_Signal()
+  {
+    return (EReference)signalCountSessionEClass.getEStructuralFeatures().get(0);
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  @Override
+  public EReference getSignalCountSession_TimeRange()
+  {
+    return (EReference)signalCountSessionEClass.getEStructuralFeatures().get(1);
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  @Override
+  public EClass getSignalCountHistory()
+  {
+    return signalCountHistoryEClass;
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  @Override
+  public EReference getSignalCountHistory_Signal()
+  {
+    return (EReference)signalCountHistoryEClass.getEStructuralFeatures().get(0);
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  @Override
+  public EReference getSignalCountHistory_TimeRange()
+  {
+    return (EReference)signalCountHistoryEClass.getEStructuralFeatures().get(1);
   }
 
   /**
@@ -2643,391 +2798,6 @@ public class XScriptPackageImpl extends EPackageImpl implements XScriptPackage
    * @generated
    */
   @Override
-  public EClass getXTimeRange()
-  {
-    return xTimeRangeEClass;
-  }
-
-  /**
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   */
-  @Override
-  public EClass getXTimeRangeRelative()
-  {
-    return xTimeRangeRelativeEClass;
-  }
-
-  /**
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   */
-  @Override
-  public EAttribute getXTimeRangeRelative_Unit()
-  {
-    return (EAttribute)xTimeRangeRelativeEClass.getEStructuralFeatures().get(0);
-  }
-
-  /**
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   */
-  @Override
-  public EAttribute getXTimeRangeRelative_Value()
-  {
-    return (EAttribute)xTimeRangeRelativeEClass.getEStructuralFeatures().get(1);
-  }
-
-  /**
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   */
-  @Override
-  public EClass getXValueType()
-  {
-    return xValueTypeEClass;
-  }
-
-  /**
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   */
-  @Override
-  public EClass getXValueSessionVarValueType()
-  {
-    return xValueSessionVarValueTypeEClass;
-  }
-
-  /**
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   */
-  @Override
-  public EReference getXValueSessionVarValueType_Var()
-  {
-    return (EReference)xValueSessionVarValueTypeEClass.getEStructuralFeatures().get(0);
-  }
-
-  /**
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   */
-  @Override
-  public EAttribute getXValueSessionVarValueType_Index()
-  {
-    return (EAttribute)xValueSessionVarValueTypeEClass.getEStructuralFeatures().get(1);
-  }
-
-  /**
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   */
-  @Override
-  public EClass getXValueSessionVarAggType()
-  {
-    return xValueSessionVarAggTypeEClass;
-  }
-
-  /**
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   */
-  @Override
-  public EReference getXValueSessionVarAggType_Var()
-  {
-    return (EReference)xValueSessionVarAggTypeEClass.getEStructuralFeatures().get(0);
-  }
-
-  /**
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   */
-  @Override
-  public EAttribute getXValueSessionVarAggType_Function()
-  {
-    return (EAttribute)xValueSessionVarAggTypeEClass.getEStructuralFeatures().get(1);
-  }
-
-  /**
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   */
-  @Override
-  public EReference getXValueSessionVarAggType_Range()
-  {
-    return (EReference)xValueSessionVarAggTypeEClass.getEStructuralFeatures().get(2);
-  }
-
-  /**
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   */
-  @Override
-  public EClass getXValueSessionSignalCountType()
-  {
-    return xValueSessionSignalCountTypeEClass;
-  }
-
-  /**
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   */
-  @Override
-  public EReference getXValueSessionSignalCountType_Signal()
-  {
-    return (EReference)xValueSessionSignalCountTypeEClass.getEStructuralFeatures().get(0);
-  }
-
-  /**
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   */
-  @Override
-  public EReference getXValueSessionSignalCountType_TimeRange()
-  {
-    return (EReference)xValueSessionSignalCountTypeEClass.getEStructuralFeatures().get(1);
-  }
-
-  /**
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   */
-  @Override
-  public EAttribute getXValueSessionSignalCountType_Value()
-  {
-    return (EAttribute)xValueSessionSignalCountTypeEClass.getEStructuralFeatures().get(2);
-  }
-
-  /**
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   */
-  @Override
-  public EClass getXValueHistoricalVarAggType()
-  {
-    return xValueHistoricalVarAggTypeEClass;
-  }
-
-  /**
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   */
-  @Override
-  public EReference getXValueHistoricalVarAggType_Var()
-  {
-    return (EReference)xValueHistoricalVarAggTypeEClass.getEStructuralFeatures().get(0);
-  }
-
-  /**
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   */
-  @Override
-  public EAttribute getXValueHistoricalVarAggType_Function()
-  {
-    return (EAttribute)xValueHistoricalVarAggTypeEClass.getEStructuralFeatures().get(1);
-  }
-
-  /**
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   */
-  @Override
-  public EAttribute getXValueHistoricalVarAggType_Days()
-  {
-    return (EAttribute)xValueHistoricalVarAggTypeEClass.getEStructuralFeatures().get(2);
-  }
-
-  /**
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   */
-  @Override
-  public EClass getXValueHistoricalSignalCountType()
-  {
-    return xValueHistoricalSignalCountTypeEClass;
-  }
-
-  /**
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   */
-  @Override
-  public EReference getXValueHistoricalSignalCountType_Signal()
-  {
-    return (EReference)xValueHistoricalSignalCountTypeEClass.getEStructuralFeatures().get(0);
-  }
-
-  /**
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   */
-  @Override
-  public EAttribute getXValueHistoricalSignalCountType_Days()
-  {
-    return (EAttribute)xValueHistoricalSignalCountTypeEClass.getEStructuralFeatures().get(1);
-  }
-
-  /**
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   */
-  @Override
-  public EClass getXQueryType()
-  {
-    return xQueryTypeEClass;
-  }
-
-  /**
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   */
-  @Override
-  public EAttribute getXQueryType_Name()
-  {
-    return (EAttribute)xQueryTypeEClass.getEStructuralFeatures().get(0);
-  }
-
-  /**
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   */
-  @Override
-  public EReference getXQueryType_Filters()
-  {
-    return (EReference)xQueryTypeEClass.getEStructuralFeatures().get(1);
-  }
-
-  /**
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   */
-  @Override
-  public EClass getXQueryFilterType()
-  {
-    return xQueryFilterTypeEClass;
-  }
-
-  /**
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   */
-  @Override
-  public EAttribute getXQueryFilterType_Operator()
-  {
-    return (EAttribute)xQueryFilterTypeEClass.getEStructuralFeatures().get(0);
-  }
-
-  /**
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   */
-  @Override
-  public EAttribute getXQueryFilterType_Criteria()
-  {
-    return (EAttribute)xQueryFilterTypeEClass.getEStructuralFeatures().get(1);
-  }
-
-  /**
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   */
-  @Override
-  public EClass getXQueryFilterValueType()
-  {
-    return xQueryFilterValueTypeEClass;
-  }
-
-  /**
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   */
-  @Override
-  public EReference getXQueryFilterValueType_Value()
-  {
-    return (EReference)xQueryFilterValueTypeEClass.getEStructuralFeatures().get(0);
-  }
-
-  /**
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   */
-  @Override
-  public EClass getXQueryFilterValueCompareType()
-  {
-    return xQueryFilterValueCompareTypeEClass;
-  }
-
-  /**
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   */
-  @Override
-  public EReference getXQueryFilterValueCompareType_Value1()
-  {
-    return (EReference)xQueryFilterValueCompareTypeEClass.getEStructuralFeatures().get(0);
-  }
-
-  /**
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   */
-  @Override
-  public EReference getXQueryFilterValueCompareType_Value2()
-  {
-    return (EReference)xQueryFilterValueCompareTypeEClass.getEStructuralFeatures().get(1);
-  }
-
-  /**
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   */
-  @Override
-  public EAttribute getXQueryFilterValueCompareType_Function()
-  {
-    return (EAttribute)xQueryFilterValueCompareTypeEClass.getEStructuralFeatures().get(2);
-  }
-
-  /**
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   */
-  @Override
   public EClass getOrType()
   {
     return orTypeEClass;
@@ -3864,6 +3634,39 @@ public class XScriptPackageImpl extends EPackageImpl implements XScriptPackage
    * @generated
    */
   @Override
+  public EEnum getHistoricalAggFunc()
+  {
+    return historicalAggFuncEEnum;
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  @Override
+  public EEnum getSessionAggFunc()
+  {
+    return sessionAggFuncEEnum;
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  @Override
+  public EEnum getSessionTimeUnit()
+  {
+    return sessionTimeUnitEEnum;
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  @Override
   public EEnum getStreamTimeUnit()
   {
     return streamTimeUnitEEnum;
@@ -3878,50 +3681,6 @@ public class XScriptPackageImpl extends EPackageImpl implements XScriptPackage
   public EEnum getDataType()
   {
     return dataTypeEEnum;
-  }
-
-  /**
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   */
-  @Override
-  public EEnum getXValueVarHistoricalAggFunction()
-  {
-    return xValueVarHistoricalAggFunctionEEnum;
-  }
-
-  /**
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   */
-  @Override
-  public EEnum getXValueVarSessionAggFunction()
-  {
-    return xValueVarSessionAggFunctionEEnum;
-  }
-
-  /**
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   */
-  @Override
-  public EEnum getXStreamOperator()
-  {
-    return xStreamOperatorEEnum;
-  }
-
-  /**
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   */
-  @Override
-  public EEnum getXQueryValueCompareFunction()
-  {
-    return xQueryValueCompareFunctionEEnum;
   }
 
   /**
@@ -3968,6 +3727,10 @@ public class XScriptPackageImpl extends EPackageImpl implements XScriptPackage
     createEAttribute(varTypeEClass, VAR_TYPE__TYPE);
     createEReference(varTypeEClass, VAR_TYPE__EXPRESSION);
 
+    varStoreTypeEClass = createEClass(VAR_STORE_TYPE);
+
+    varTransTypeEClass = createEClass(VAR_TRANS_TYPE);
+
     expressionTypeEClass = createEClass(EXPRESSION_TYPE);
 
     variableValueRangeTypeEClass = createEClass(VARIABLE_VALUE_RANGE_TYPE);
@@ -4002,12 +3765,34 @@ public class XScriptPackageImpl extends EPackageImpl implements XScriptPackage
     createEReference(subExpressionTypeEClass, SUB_EXPRESSION_TYPE__TARGET);
     createEReference(subExpressionTypeEClass, SUB_EXPRESSION_TYPE__COMPARE);
 
-    sessionSignalExpressionTypeEClass = createEClass(SESSION_SIGNAL_EXPRESSION_TYPE);
-    createEReference(sessionSignalExpressionTypeEClass, SESSION_SIGNAL_EXPRESSION_TYPE__SIGNAL);
-    createEAttribute(sessionSignalExpressionTypeEClass, SESSION_SIGNAL_EXPRESSION_TYPE__OP);
-    createEAttribute(sessionSignalExpressionTypeEClass, SESSION_SIGNAL_EXPRESSION_TYPE__COUNT);
-    createEAttribute(sessionSignalExpressionTypeEClass, SESSION_SIGNAL_EXPRESSION_TYPE__TIME);
-    createEAttribute(sessionSignalExpressionTypeEClass, SESSION_SIGNAL_EXPRESSION_TYPE__UNIT);
+    historyTimeRangeEClass = createEClass(HISTORY_TIME_RANGE);
+    createEAttribute(historyTimeRangeEClass, HISTORY_TIME_RANGE__VALUE);
+
+    sessionTimeRangeEClass = createEClass(SESSION_TIME_RANGE);
+
+    relativeSessionTimeRangeEClass = createEClass(RELATIVE_SESSION_TIME_RANGE);
+    createEAttribute(relativeSessionTimeRangeEClass, RELATIVE_SESSION_TIME_RANGE__RELATIVE_VALE);
+    createEAttribute(relativeSessionTimeRangeEClass, RELATIVE_SESSION_TIME_RANGE__TIME_UNIT);
+
+    todaySessionTimeRangeEClass = createEClass(TODAY_SESSION_TIME_RANGE);
+
+    varAggSessionTypeEClass = createEClass(VAR_AGG_SESSION_TYPE);
+    createEReference(varAggSessionTypeEClass, VAR_AGG_SESSION_TYPE__VAR);
+    createEAttribute(varAggSessionTypeEClass, VAR_AGG_SESSION_TYPE__FUNCTION);
+    createEReference(varAggSessionTypeEClass, VAR_AGG_SESSION_TYPE__TIME_RANGE);
+
+    varAggHistoryTypeEClass = createEClass(VAR_AGG_HISTORY_TYPE);
+    createEReference(varAggHistoryTypeEClass, VAR_AGG_HISTORY_TYPE__VAR);
+    createEAttribute(varAggHistoryTypeEClass, VAR_AGG_HISTORY_TYPE__FUNCTION);
+    createEReference(varAggHistoryTypeEClass, VAR_AGG_HISTORY_TYPE__TIME_RANGE);
+
+    signalCountSessionEClass = createEClass(SIGNAL_COUNT_SESSION);
+    createEReference(signalCountSessionEClass, SIGNAL_COUNT_SESSION__SIGNAL);
+    createEReference(signalCountSessionEClass, SIGNAL_COUNT_SESSION__TIME_RANGE);
+
+    signalCountHistoryEClass = createEClass(SIGNAL_COUNT_HISTORY);
+    createEReference(signalCountHistoryEClass, SIGNAL_COUNT_HISTORY__SIGNAL);
+    createEReference(signalCountHistoryEClass, SIGNAL_COUNT_HISTORY__TIME_RANGE);
 
     signalTypeEClass = createEClass(SIGNAL_TYPE);
     createEAttribute(signalTypeEClass, SIGNAL_TYPE__NAME);
@@ -4170,53 +3955,6 @@ public class XScriptPackageImpl extends EPackageImpl implements XScriptPackage
     createEReference(xRocExpTypeEClass, XROC_EXP_TYPE__VALUE1);
     createEReference(xRocExpTypeEClass, XROC_EXP_TYPE__VALUE2);
 
-    xTimeRangeEClass = createEClass(XTIME_RANGE);
-
-    xTimeRangeRelativeEClass = createEClass(XTIME_RANGE_RELATIVE);
-    createEAttribute(xTimeRangeRelativeEClass, XTIME_RANGE_RELATIVE__UNIT);
-    createEAttribute(xTimeRangeRelativeEClass, XTIME_RANGE_RELATIVE__VALUE);
-
-    xValueTypeEClass = createEClass(XVALUE_TYPE);
-
-    xValueSessionVarValueTypeEClass = createEClass(XVALUE_SESSION_VAR_VALUE_TYPE);
-    createEReference(xValueSessionVarValueTypeEClass, XVALUE_SESSION_VAR_VALUE_TYPE__VAR);
-    createEAttribute(xValueSessionVarValueTypeEClass, XVALUE_SESSION_VAR_VALUE_TYPE__INDEX);
-
-    xValueSessionVarAggTypeEClass = createEClass(XVALUE_SESSION_VAR_AGG_TYPE);
-    createEReference(xValueSessionVarAggTypeEClass, XVALUE_SESSION_VAR_AGG_TYPE__VAR);
-    createEAttribute(xValueSessionVarAggTypeEClass, XVALUE_SESSION_VAR_AGG_TYPE__FUNCTION);
-    createEReference(xValueSessionVarAggTypeEClass, XVALUE_SESSION_VAR_AGG_TYPE__RANGE);
-
-    xValueSessionSignalCountTypeEClass = createEClass(XVALUE_SESSION_SIGNAL_COUNT_TYPE);
-    createEReference(xValueSessionSignalCountTypeEClass, XVALUE_SESSION_SIGNAL_COUNT_TYPE__SIGNAL);
-    createEReference(xValueSessionSignalCountTypeEClass, XVALUE_SESSION_SIGNAL_COUNT_TYPE__TIME_RANGE);
-    createEAttribute(xValueSessionSignalCountTypeEClass, XVALUE_SESSION_SIGNAL_COUNT_TYPE__VALUE);
-
-    xValueHistoricalVarAggTypeEClass = createEClass(XVALUE_HISTORICAL_VAR_AGG_TYPE);
-    createEReference(xValueHistoricalVarAggTypeEClass, XVALUE_HISTORICAL_VAR_AGG_TYPE__VAR);
-    createEAttribute(xValueHistoricalVarAggTypeEClass, XVALUE_HISTORICAL_VAR_AGG_TYPE__FUNCTION);
-    createEAttribute(xValueHistoricalVarAggTypeEClass, XVALUE_HISTORICAL_VAR_AGG_TYPE__DAYS);
-
-    xValueHistoricalSignalCountTypeEClass = createEClass(XVALUE_HISTORICAL_SIGNAL_COUNT_TYPE);
-    createEReference(xValueHistoricalSignalCountTypeEClass, XVALUE_HISTORICAL_SIGNAL_COUNT_TYPE__SIGNAL);
-    createEAttribute(xValueHistoricalSignalCountTypeEClass, XVALUE_HISTORICAL_SIGNAL_COUNT_TYPE__DAYS);
-
-    xQueryTypeEClass = createEClass(XQUERY_TYPE);
-    createEAttribute(xQueryTypeEClass, XQUERY_TYPE__NAME);
-    createEReference(xQueryTypeEClass, XQUERY_TYPE__FILTERS);
-
-    xQueryFilterTypeEClass = createEClass(XQUERY_FILTER_TYPE);
-    createEAttribute(xQueryFilterTypeEClass, XQUERY_FILTER_TYPE__OPERATOR);
-    createEAttribute(xQueryFilterTypeEClass, XQUERY_FILTER_TYPE__CRITERIA);
-
-    xQueryFilterValueTypeEClass = createEClass(XQUERY_FILTER_VALUE_TYPE);
-    createEReference(xQueryFilterValueTypeEClass, XQUERY_FILTER_VALUE_TYPE__VALUE);
-
-    xQueryFilterValueCompareTypeEClass = createEClass(XQUERY_FILTER_VALUE_COMPARE_TYPE);
-    createEReference(xQueryFilterValueCompareTypeEClass, XQUERY_FILTER_VALUE_COMPARE_TYPE__VALUE1);
-    createEReference(xQueryFilterValueCompareTypeEClass, XQUERY_FILTER_VALUE_COMPARE_TYPE__VALUE2);
-    createEAttribute(xQueryFilterValueCompareTypeEClass, XQUERY_FILTER_VALUE_COMPARE_TYPE__FUNCTION);
-
     orTypeEClass = createEClass(OR_TYPE);
     createEReference(orTypeEClass, OR_TYPE__LEFT);
     createEReference(orTypeEClass, OR_TYPE__RIGHT);
@@ -4320,12 +4058,11 @@ public class XScriptPackageImpl extends EPackageImpl implements XScriptPackage
     createEAttribute(xBoolConstantTypeEClass, XBOOL_CONSTANT_TYPE__VALUE);
 
     // Create enums
+    historicalAggFuncEEnum = createEEnum(HISTORICAL_AGG_FUNC);
+    sessionAggFuncEEnum = createEEnum(SESSION_AGG_FUNC);
+    sessionTimeUnitEEnum = createEEnum(SESSION_TIME_UNIT);
     streamTimeUnitEEnum = createEEnum(STREAM_TIME_UNIT);
     dataTypeEEnum = createEEnum(DATA_TYPE);
-    xValueVarHistoricalAggFunctionEEnum = createEEnum(XVALUE_VAR_HISTORICAL_AGG_FUNCTION);
-    xValueVarSessionAggFunctionEEnum = createEEnum(XVALUE_VAR_SESSION_AGG_FUNCTION);
-    xStreamOperatorEEnum = createEEnum(XSTREAM_OPERATOR);
-    xQueryValueCompareFunctionEEnum = createEEnum(XQUERY_VALUE_COMPARE_FUNCTION);
   }
 
   /**
@@ -4359,6 +4096,8 @@ public class XScriptPackageImpl extends EPackageImpl implements XScriptPackage
     // Add supertypes to classes
     coreAbstractElementEClass.getESuperTypes().add(this.getScriptElement());
     varTypeEClass.getESuperTypes().add(this.getCoreAbstractElement());
+    varStoreTypeEClass.getESuperTypes().add(this.getVarType());
+    varTransTypeEClass.getESuperTypes().add(this.getVarType());
     variableValueRangeTypeEClass.getESuperTypes().add(this.getExpressionType());
     variableValueTypeEClass.getESuperTypes().add(this.getExpressionType());
     variableValueExpTypeEClass.getESuperTypes().add(this.getExpressionType());
@@ -4367,7 +4106,12 @@ public class XScriptPackageImpl extends EPackageImpl implements XScriptPackage
     rocExpressionTypeEClass.getESuperTypes().add(this.getExpressionType());
     avgExpressionTypeEClass.getESuperTypes().add(this.getExpressionType());
     subExpressionTypeEClass.getESuperTypes().add(this.getExpressionType());
-    sessionSignalExpressionTypeEClass.getESuperTypes().add(this.getExpressionType());
+    relativeSessionTimeRangeEClass.getESuperTypes().add(this.getSessionTimeRange());
+    todaySessionTimeRangeEClass.getESuperTypes().add(this.getSessionTimeRange());
+    varAggSessionTypeEClass.getESuperTypes().add(this.getExpressionType());
+    varAggHistoryTypeEClass.getESuperTypes().add(this.getExpressionType());
+    signalCountSessionEClass.getESuperTypes().add(this.getExpressionType());
+    signalCountHistoryEClass.getESuperTypes().add(this.getExpressionType());
     signalTypeEClass.getESuperTypes().add(this.getCoreAbstractElement());
     abstractElementEClass.getESuperTypes().add(this.getCoreAbstractElement());
     xClassCoreElementTypeEClass.getESuperTypes().add(this.getXClassElementType());
@@ -4404,14 +4148,6 @@ public class XScriptPackageImpl extends EPackageImpl implements XScriptPackage
     xVarianceAverageTypeEClass.getESuperTypes().add(this.getXExpressionType());
     xVarianceMaxTypeEClass.getESuperTypes().add(this.getXExpressionType());
     xRocExpTypeEClass.getESuperTypes().add(this.getXExpressionType());
-    xTimeRangeRelativeEClass.getESuperTypes().add(this.getXTimeRange());
-    xValueSessionVarValueTypeEClass.getESuperTypes().add(this.getXValueType());
-    xValueSessionVarAggTypeEClass.getESuperTypes().add(this.getXValueType());
-    xValueSessionSignalCountTypeEClass.getESuperTypes().add(this.getXValueType());
-    xValueHistoricalSignalCountTypeEClass.getESuperTypes().add(this.getXValueType());
-    xQueryTypeEClass.getESuperTypes().add(this.getCoreAbstractElement());
-    xQueryFilterValueTypeEClass.getESuperTypes().add(this.getXQueryFilterType());
-    xQueryFilterValueCompareTypeEClass.getESuperTypes().add(this.getXQueryFilterType());
     orTypeEClass.getESuperTypes().add(this.getExpressionType());
     andTypeEClass.getESuperTypes().add(this.getExpressionType());
     equalityTypeEClass.getESuperTypes().add(this.getExpressionType());
@@ -4453,6 +4189,10 @@ public class XScriptPackageImpl extends EPackageImpl implements XScriptPackage
     initEAttribute(getVarType_Type(), this.getDataType(), "type", null, 0, 1, VarType.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
     initEReference(getVarType_Expression(), this.getExpressionType(), null, "expression", null, 0, 1, VarType.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
+    initEClass(varStoreTypeEClass, VarStoreType.class, "VarStoreType", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+
+    initEClass(varTransTypeEClass, VarTransType.class, "VarTransType", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+
     initEClass(expressionTypeEClass, ExpressionType.class, "ExpressionType", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 
     initEClass(variableValueRangeTypeEClass, VariableValueRangeType.class, "VariableValueRangeType", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
@@ -4487,12 +4227,34 @@ public class XScriptPackageImpl extends EPackageImpl implements XScriptPackage
     initEReference(getSubExpressionType_Target(), this.getVariableValueType(), null, "target", null, 0, 1, SubExpressionType.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
     initEReference(getSubExpressionType_Compare(), this.getVariableValueType(), null, "compare", null, 0, 1, SubExpressionType.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
-    initEClass(sessionSignalExpressionTypeEClass, SessionSignalExpressionType.class, "SessionSignalExpressionType", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
-    initEReference(getSessionSignalExpressionType_Signal(), this.getSignalType(), null, "signal", null, 0, 1, SessionSignalExpressionType.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-    initEAttribute(getSessionSignalExpressionType_Op(), ecorePackage.getEString(), "op", null, 0, 1, SessionSignalExpressionType.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-    initEAttribute(getSessionSignalExpressionType_Count(), ecorePackage.getEInt(), "count", null, 0, 1, SessionSignalExpressionType.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-    initEAttribute(getSessionSignalExpressionType_Time(), ecorePackage.getEInt(), "time", null, 0, 1, SessionSignalExpressionType.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-    initEAttribute(getSessionSignalExpressionType_Unit(), this.getStreamTimeUnit(), "unit", null, 0, 1, SessionSignalExpressionType.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+    initEClass(historyTimeRangeEClass, HistoryTimeRange.class, "HistoryTimeRange", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+    initEAttribute(getHistoryTimeRange_Value(), ecorePackage.getEInt(), "value", null, 0, 1, HistoryTimeRange.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+
+    initEClass(sessionTimeRangeEClass, SessionTimeRange.class, "SessionTimeRange", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+
+    initEClass(relativeSessionTimeRangeEClass, RelativeSessionTimeRange.class, "RelativeSessionTimeRange", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+    initEAttribute(getRelativeSessionTimeRange_RelativeVale(), ecorePackage.getEInt(), "relativeVale", null, 0, 1, RelativeSessionTimeRange.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+    initEAttribute(getRelativeSessionTimeRange_TimeUnit(), this.getSessionTimeUnit(), "timeUnit", null, 0, 1, RelativeSessionTimeRange.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+
+    initEClass(todaySessionTimeRangeEClass, TodaySessionTimeRange.class, "TodaySessionTimeRange", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+
+    initEClass(varAggSessionTypeEClass, VarAggSessionType.class, "VarAggSessionType", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+    initEReference(getVarAggSessionType_Var(), this.getVarType(), null, "var", null, 0, 1, VarAggSessionType.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+    initEAttribute(getVarAggSessionType_Function(), this.getSessionAggFunc(), "function", null, 0, 1, VarAggSessionType.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+    initEReference(getVarAggSessionType_TimeRange(), this.getSessionTimeRange(), null, "timeRange", null, 0, 1, VarAggSessionType.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+
+    initEClass(varAggHistoryTypeEClass, VarAggHistoryType.class, "VarAggHistoryType", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+    initEReference(getVarAggHistoryType_Var(), this.getVarType(), null, "var", null, 0, 1, VarAggHistoryType.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+    initEAttribute(getVarAggHistoryType_Function(), this.getHistoricalAggFunc(), "function", null, 0, 1, VarAggHistoryType.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+    initEReference(getVarAggHistoryType_TimeRange(), this.getHistoryTimeRange(), null, "timeRange", null, 0, 1, VarAggHistoryType.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+
+    initEClass(signalCountSessionEClass, SignalCountSession.class, "SignalCountSession", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+    initEReference(getSignalCountSession_Signal(), this.getSignalType(), null, "signal", null, 0, 1, SignalCountSession.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+    initEReference(getSignalCountSession_TimeRange(), this.getSessionTimeRange(), null, "timeRange", null, 0, 1, SignalCountSession.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+
+    initEClass(signalCountHistoryEClass, SignalCountHistory.class, "SignalCountHistory", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+    initEReference(getSignalCountHistory_Signal(), this.getSignalType(), null, "signal", null, 0, 1, SignalCountHistory.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+    initEReference(getSignalCountHistory_TimeRange(), this.getHistoryTimeRange(), null, "timeRange", null, 0, 1, SignalCountHistory.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
     initEClass(signalTypeEClass, SignalType.class, "SignalType", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
     initEAttribute(getSignalType_Name(), ecorePackage.getEString(), "name", null, 0, 1, SignalType.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
@@ -4655,53 +4417,6 @@ public class XScriptPackageImpl extends EPackageImpl implements XScriptPackage
     initEReference(getXRocExpType_Value1(), this.getXExpressionType(), null, "value1", null, 0, 1, XRocExpType.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
     initEReference(getXRocExpType_Value2(), this.getXExpressionType(), null, "value2", null, 0, 1, XRocExpType.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
-    initEClass(xTimeRangeEClass, XTimeRange.class, "XTimeRange", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
-
-    initEClass(xTimeRangeRelativeEClass, XTimeRangeRelative.class, "XTimeRangeRelative", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
-    initEAttribute(getXTimeRangeRelative_Unit(), this.getStreamTimeUnit(), "unit", null, 0, 1, XTimeRangeRelative.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-    initEAttribute(getXTimeRangeRelative_Value(), ecorePackage.getEInt(), "value", null, 0, 1, XTimeRangeRelative.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-
-    initEClass(xValueTypeEClass, XValueType.class, "XValueType", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
-
-    initEClass(xValueSessionVarValueTypeEClass, XValueSessionVarValueType.class, "XValueSessionVarValueType", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
-    initEReference(getXValueSessionVarValueType_Var(), this.getVarType(), null, "var", null, 0, 1, XValueSessionVarValueType.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-    initEAttribute(getXValueSessionVarValueType_Index(), ecorePackage.getEInt(), "index", null, 0, 1, XValueSessionVarValueType.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-
-    initEClass(xValueSessionVarAggTypeEClass, XValueSessionVarAggType.class, "XValueSessionVarAggType", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
-    initEReference(getXValueSessionVarAggType_Var(), this.getVarType(), null, "var", null, 0, 1, XValueSessionVarAggType.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-    initEAttribute(getXValueSessionVarAggType_Function(), this.getXValueVarSessionAggFunction(), "function", null, 0, 1, XValueSessionVarAggType.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-    initEReference(getXValueSessionVarAggType_Range(), this.getXTimeRange(), null, "range", null, 0, 1, XValueSessionVarAggType.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-
-    initEClass(xValueSessionSignalCountTypeEClass, XValueSessionSignalCountType.class, "XValueSessionSignalCountType", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
-    initEReference(getXValueSessionSignalCountType_Signal(), this.getSignalType(), null, "signal", null, 0, 1, XValueSessionSignalCountType.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-    initEReference(getXValueSessionSignalCountType_TimeRange(), this.getXTimeRange(), null, "timeRange", null, 0, 1, XValueSessionSignalCountType.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-    initEAttribute(getXValueSessionSignalCountType_Value(), ecorePackage.getEInt(), "value", null, 0, 1, XValueSessionSignalCountType.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-
-    initEClass(xValueHistoricalVarAggTypeEClass, XValueHistoricalVarAggType.class, "XValueHistoricalVarAggType", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
-    initEReference(getXValueHistoricalVarAggType_Var(), this.getVarType(), null, "var", null, 0, 1, XValueHistoricalVarAggType.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-    initEAttribute(getXValueHistoricalVarAggType_Function(), this.getXValueVarHistoricalAggFunction(), "function", null, 0, 1, XValueHistoricalVarAggType.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-    initEAttribute(getXValueHistoricalVarAggType_Days(), ecorePackage.getEInt(), "days", null, 0, 1, XValueHistoricalVarAggType.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-
-    initEClass(xValueHistoricalSignalCountTypeEClass, XValueHistoricalSignalCountType.class, "XValueHistoricalSignalCountType", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
-    initEReference(getXValueHistoricalSignalCountType_Signal(), this.getSignalType(), null, "signal", null, 0, 1, XValueHistoricalSignalCountType.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-    initEAttribute(getXValueHistoricalSignalCountType_Days(), ecorePackage.getEInt(), "days", null, 0, 1, XValueHistoricalSignalCountType.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-
-    initEClass(xQueryTypeEClass, XQueryType.class, "XQueryType", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
-    initEAttribute(getXQueryType_Name(), ecorePackage.getEString(), "name", null, 0, 1, XQueryType.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-    initEReference(getXQueryType_Filters(), this.getXQueryFilterType(), null, "filters", null, 0, -1, XQueryType.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-
-    initEClass(xQueryFilterTypeEClass, XQueryFilterType.class, "XQueryFilterType", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
-    initEAttribute(getXQueryFilterType_Operator(), this.getXStreamOperator(), "operator", null, 0, 1, XQueryFilterType.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-    initEAttribute(getXQueryFilterType_Criteria(), ecorePackage.getEString(), "criteria", null, 0, 1, XQueryFilterType.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-
-    initEClass(xQueryFilterValueTypeEClass, XQueryFilterValueType.class, "XQueryFilterValueType", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
-    initEReference(getXQueryFilterValueType_Value(), this.getXValueType(), null, "value", null, 0, 1, XQueryFilterValueType.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-
-    initEClass(xQueryFilterValueCompareTypeEClass, XQueryFilterValueCompareType.class, "XQueryFilterValueCompareType", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
-    initEReference(getXQueryFilterValueCompareType_Value1(), this.getXValueType(), null, "value1", null, 0, 1, XQueryFilterValueCompareType.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-    initEReference(getXQueryFilterValueCompareType_Value2(), this.getXValueType(), null, "value2", null, 0, 1, XQueryFilterValueCompareType.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-    initEAttribute(getXQueryFilterValueCompareType_Function(), this.getXQueryValueCompareFunction(), "function", null, 0, 1, XQueryFilterValueCompareType.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-
     initEClass(orTypeEClass, OrType.class, "OrType", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
     initEReference(getOrType_Left(), this.getExpressionType(), null, "left", null, 0, 1, OrType.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
     initEReference(getOrType_Right(), this.getExpressionType(), null, "right", null, 0, 1, OrType.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
@@ -4805,6 +4520,18 @@ public class XScriptPackageImpl extends EPackageImpl implements XScriptPackage
     initEAttribute(getXBoolConstantType_Value(), ecorePackage.getEString(), "value", null, 0, 1, XBoolConstantType.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
     // Initialize enums and add enum literals
+    initEEnum(historicalAggFuncEEnum, HistoricalAggFunc.class, "HistoricalAggFunc");
+    addEEnumLiteral(historicalAggFuncEEnum, HistoricalAggFunc.HIGH);
+    addEEnumLiteral(historicalAggFuncEEnum, HistoricalAggFunc.LOW);
+
+    initEEnum(sessionAggFuncEEnum, SessionAggFunc.class, "SessionAggFunc");
+    addEEnumLiteral(sessionAggFuncEEnum, SessionAggFunc.HIGH);
+    addEEnumLiteral(sessionAggFuncEEnum, SessionAggFunc.LOW);
+
+    initEEnum(sessionTimeUnitEEnum, SessionTimeUnit.class, "SessionTimeUnit");
+    addEEnumLiteral(sessionTimeUnitEEnum, SessionTimeUnit.SEC);
+    addEEnumLiteral(sessionTimeUnitEEnum, SessionTimeUnit.MIN);
+
     initEEnum(streamTimeUnitEEnum, StreamTimeUnit.class, "StreamTimeUnit");
     addEEnumLiteral(streamTimeUnitEEnum, StreamTimeUnit.SECOND);
     addEEnumLiteral(streamTimeUnitEEnum, StreamTimeUnit.MINUTE);
@@ -4819,24 +4546,6 @@ public class XScriptPackageImpl extends EPackageImpl implements XScriptPackage
     addEEnumLiteral(dataTypeEEnum, DataType.DATE);
     addEEnumLiteral(dataTypeEEnum, DataType.DUB);
     addEEnumLiteral(dataTypeEEnum, DataType.LONG);
-
-    initEEnum(xValueVarHistoricalAggFunctionEEnum, XValueVarHistoricalAggFunction.class, "XValueVarHistoricalAggFunction");
-    addEEnumLiteral(xValueVarHistoricalAggFunctionEEnum, XValueVarHistoricalAggFunction.HIGH);
-    addEEnumLiteral(xValueVarHistoricalAggFunctionEEnum, XValueVarHistoricalAggFunction.LOW);
-
-    initEEnum(xValueVarSessionAggFunctionEEnum, XValueVarSessionAggFunction.class, "XValueVarSessionAggFunction");
-    addEEnumLiteral(xValueVarSessionAggFunctionEEnum, XValueVarSessionAggFunction.HIGH);
-    addEEnumLiteral(xValueVarSessionAggFunctionEEnum, XValueVarSessionAggFunction.LOW);
-
-    initEEnum(xStreamOperatorEEnum, XStreamOperator.class, "XStreamOperator");
-    addEEnumLiteral(xStreamOperatorEEnum, XStreamOperator.GT);
-    addEEnumLiteral(xStreamOperatorEEnum, XStreamOperator.LT);
-    addEEnumLiteral(xStreamOperatorEEnum, XStreamOperator.EQ);
-    addEEnumLiteral(xStreamOperatorEEnum, XStreamOperator.NQ);
-
-    initEEnum(xQueryValueCompareFunctionEEnum, XQueryValueCompareFunction.class, "XQueryValueCompareFunction");
-    addEEnumLiteral(xQueryValueCompareFunctionEEnum, XQueryValueCompareFunction.ROC);
-    addEEnumLiteral(xQueryValueCompareFunctionEEnum, XQueryValueCompareFunction.DIFF);
 
     // Create resource
     createResource(eNS_URI);

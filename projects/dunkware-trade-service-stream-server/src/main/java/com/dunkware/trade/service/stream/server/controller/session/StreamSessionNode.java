@@ -41,4 +41,7 @@ public interface StreamSessionNode {
 	
 	public StreamSessionNodeStatus getStatus();
 	
+	
+	// getChannel(); 
+	
 }

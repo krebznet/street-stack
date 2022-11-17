@@ -5,6 +5,7 @@ import java.util.List;
 
 import com.dunkware.common.tick.stream.TickStream;
 import com.dunkware.xstream.model.metrics.XStreamRowMetrics;
+import com.dunkware.xstream.model.value.SessionEntityValue;
 import com.dunkware.xstream.xScript.SignalType;
 
 public interface XStreamRow {
@@ -75,4 +76,17 @@ public interface XStreamRow {
 	 * @return
 	 */
 	public int getIdentifier();
+	
+	/**
+	 * adds a var listener 
+	 * @param listener
+	 */
+	void addVarListener(XStreamVarListener listener); 
+	
+	/**
+	 * removes a var listener 
+	 * @param listener
+	 */
+	void removeVarListener(XStreamVarListener listener);
+	
 }

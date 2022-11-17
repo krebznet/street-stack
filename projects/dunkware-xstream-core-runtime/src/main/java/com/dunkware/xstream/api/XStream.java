@@ -2,8 +2,9 @@ package com.dunkware.xstream.api;
 
 import java.util.List;
 
+import org.slf4j.Marker;
+
 import com.dunkware.xstream.model.metrics.XStreamMetrics;
-import com.dunkware.xstream.xScript.XQueryType;
 
 public interface XStream {
 	
@@ -102,6 +103,30 @@ public interface XStream {
 	 * @return
 	 * @throws XQueryException
 	 */
-	public XQuery createQuery(XQueryType type) throws XQueryException;
+	
+	
+	/**
+	 * Creates a unique session id so we can trace logging 
+	 * @return
+	 */
+	public String getSessionId(); 
+	
+	
+	public Marker getSessionMarker();
+	
+	
+	/***
+	 * adds a signal listener
+	 * @param list
+	 */
+	public void addSignalListener(XStreamSignalListener list);
+	
+	/**
+	 * removes a signal listener 
+	 * @param list
+	 */
+	public void removeSignalListener(XStreamSignalListener list);
+	
+	
 }
 

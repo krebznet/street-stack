@@ -67,10 +67,13 @@ public class XScriptSyntacticSequencer extends AbstractSyntacticSequencer {
 	 *     (rule start) (ambiguity) 'avg' '(' target=SetExpressionType
 	 *     (rule start) (ambiguity) 'exp' '(' expType=ExpressionType
 	 *     (rule start) (ambiguity) 'roc' '(' target=ExpressionType
+	 *     (rule start) (ambiguity) 'sigCountHistory' '(' signal=[SignalType|ID]
+	 *     (rule start) (ambiguity) 'sigCountSession' '(' signal=[SignalType|ID]
 	 *     (rule start) (ambiguity) 'snapshot' '(' target=ExpressionType
-	 *     (rule start) (ambiguity) 'ssc' '(' signal=[SignalType|ID]
 	 *     (rule start) (ambiguity) 'sub' '(' target=VariableValueType
 	 *     (rule start) (ambiguity) 'tick' '(' type=INT
+	 *     (rule start) (ambiguity) 'varAggHistory' '(' var=[VarType|ID]
+	 *     (rule start) (ambiguity) 'varAggSession' '(' var=[VarType|ID]
 	 *     (rule start) (ambiguity) '{' '}' (rule start)
 	 *     (rule start) (ambiguity) '{' args+=ExpressionType
 	 *     (rule start) (ambiguity) targetVar=[VarType|ID]

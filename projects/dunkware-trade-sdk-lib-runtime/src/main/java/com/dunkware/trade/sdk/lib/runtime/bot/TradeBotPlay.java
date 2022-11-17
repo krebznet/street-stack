@@ -6,5 +6,10 @@ public class TradeBotPlay {
 	
 	private TradeBotPlay type; 
 	
+	
+	public void init(Object obj) {
+		
+	}
+	
 
 }

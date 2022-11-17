@@ -8,10 +8,10 @@ import java.util.concurrent.Semaphore;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.slf4j.Marker;
 import org.slf4j.MarkerFactory;
 
-import com.dunkware.xstream.api.XQuery;
-import com.dunkware.xstream.api.XQueryException;
+import com.dunkware.common.util.uuid.DUUID;
 import com.dunkware.xstream.api.XStream;
 import com.dunkware.xstream.api.XStreamClock;
 import com.dunkware.xstream.api.XStreamException;
@@ -24,13 +24,11 @@ import com.dunkware.xstream.api.XStreamRowListener;
 import com.dunkware.xstream.api.XStreamRowSignal;
 import com.dunkware.xstream.api.XStreamRuntimeException;
 import com.dunkware.xstream.api.XStreamService;
+import com.dunkware.xstream.api.XStreamSignalListener;
 import com.dunkware.xstream.api.XStreamStatus;
 import com.dunkware.xstream.api.XStreamTickRouter;
-import com.dunkware.xstream.core.xquery.XQueryImpl;
 import com.dunkware.xstream.model.metrics.XStreamMetrics;
-import com.dunkware.xstream.model.signal.XStreamSignalSpec;
 import com.dunkware.xstream.util.XStreamStatsBuilder;
-import com.dunkware.xstream.xScript.XQueryType;
 import com.dunkware.xstream.xproject.model.XStreamExtensionType;
 
 public class XStreamImpl implements XStream {
@@ -41,12 +39,12 @@ public class XStreamImpl implements XStream {
 
 	private XStreamStatus status = XStreamStatus.Created;
 
-	// Components 
+	// Components
 	private XStreamClockImpl clock;
 	private XStreamTickRouterImpl tickRouter;
 	private XStreamInput input;
-	
-	// Stream Listeners 
+
+	// Stream Listeners
 	private List<XStreamListener> streamListeners = new ArrayList<XStreamListener>();
 	private Semaphore streamListenerLock = new Semaphore(1);
 
@@ -54,20 +52,26 @@ public class XStreamImpl implements XStream {
 	private List<XStreamRowListener> rowListeners = new ArrayList<XStreamRowListener>();
 	private Semaphore rowListenerLock = new Semaphore(1);
 	private RowListener rowListener = new RowListener();
-	
-	// Extensions & Services 
+
+	private List<XStreamSignalListener> signalListeners = new ArrayList<XStreamSignalListener>();
+	private Semaphore signalListenerLock = new Semaphore(1);
+
+	// Extensions & Services
 	private List<XStreamExtension> extensions = new ArrayList<XStreamExtension>();
 	private List<XStreamService> services = new ArrayList<XStreamService>();
-	
+
 	private XStreamExecutor executor;
-	
+
+	private String sessionId;
+
 	@Override
 	public void start(XStreamInput input) throws XStreamException {
 		if (logger.isDebugEnabled()) {
 			logger.debug("{} Starting", input.getIdentifier());
 		}
-	
+
 		this.input = input;
+		sessionId = input.getIdentifier() + DUUID.randomUUID(5);
 		executor = new XStreamExecutorImpl(input.getExecutor());
 		clock = new XStreamClockImpl(this);
 		tickRouter = new XStreamTickRouterImpl(this);
@@ -81,7 +85,7 @@ public class XStreamImpl implements XStream {
 			ext.init(this, extType);
 			extensions.add(ext);
 		}
-		
+
 		for (XStreamService service : services) {
 			service.preStart();
 		}
@@ -89,11 +93,10 @@ public class XStreamImpl implements XStream {
 		for (XStreamExtension ext : extensions) {
 			ext.preStart();
 		}
-		
+
 		for (XStreamService service : services) {
 			service.start();
 		}
-
 
 		for (XStreamExtension ext : extensions) {
 			ext.start();
@@ -107,11 +110,10 @@ public class XStreamImpl implements XStream {
 		for (XStreamExtension ext : extensions) {
 			ext.preDispose();
 		}
-		
+
 		for (XStreamService service : services) {
 			service.preDispose();
 		}
-
 
 		for (XStreamRow row : rows.values()) {
 			row.dispose();
@@ -124,7 +126,6 @@ public class XStreamImpl implements XStream {
 		status = XStreamStatus.Disposed;
 	}
 
-	
 	@Override
 	public XStreamRow getRow(String id) {
 		if (!rows.containsKey(id)) {
@@ -141,14 +142,15 @@ public class XStreamImpl implements XStream {
 		}
 		return list;
 	}
-	
+
 	@Override
 	public XStreamRow createRow(String rowId, int rowIdentifier) {
-		if(logger.isDebugEnabled()) { 
-			logger.debug(MarkerFactory.getMarker("EntityCreated"), "{} {} {}",rowId, rowIdentifier, input.getSessionId());
+		if (logger.isDebugEnabled()) {
+			logger.debug(MarkerFactory.getMarker("EntityCreated"), "{} {} {}", rowId, rowIdentifier,
+					input.getSessionId());
 		}
 		XStreamRowImpl row = new XStreamRowImpl();
-		row.start(rowId, rowIdentifier,this);
+		row.start(rowId, rowIdentifier, this);
 		row.addRowListener(rowListener);
 		rows.put(rowId, row);
 		try {
@@ -157,17 +159,17 @@ public class XStreamImpl implements XStream {
 				try {
 					listener.rowInsert(row);
 				} catch (Exception e) {
-					throw new XStreamRuntimeException("Stream Listnener exception " + e.toString() + " " + listener.getClass().getName());
+					throw new XStreamRuntimeException(
+							"Stream Listnener exception " + e.toString() + " " + listener.getClass().getName());
 				}
 			}
 		} catch (Exception e) {
 
-		} finally { 
+		} finally {
 			streamListenerLock.release();
 		}
 		return row;
 	}
-
 
 	@Override
 	public XStreamExecutor getExecutor() {
@@ -183,7 +185,6 @@ public class XStreamImpl implements XStream {
 	public XStreamStatus getStatus() {
 		return status;
 	}
-
 
 	@Override
 	public XStreamTickRouter getTickRouter() {
@@ -206,8 +207,8 @@ public class XStreamImpl implements XStream {
 			streamListenerLock.acquire();
 			streamListeners.add(listener);
 		} catch (Exception e) {
-			
-		} finally { 
+
+		} finally {
 			streamListenerLock.release();
 		}
 	}
@@ -218,20 +219,16 @@ public class XStreamImpl implements XStream {
 			streamListenerLock.acquire();
 			streamListeners.remove(listener);
 		} catch (Exception e) {
-			
-		} finally { 
+
+		} finally {
 			streamListenerLock.release();
 		}
 	}
-	
-	
 
 	@Override
 	public String[] getRowIds() {
 		return rows.keySet().toArray(new String[rows.keySet().size()]);
 	}
-
-	
 
 	@Override
 	public int getRowCount() {
@@ -241,24 +238,74 @@ public class XStreamImpl implements XStream {
 	@Override
 	public XStreamMetrics getStats(boolean rowStats, boolean varStats, String rows) throws XStreamException {
 		return XStreamStatsBuilder.build(this, rowStats, varStats, rows);
-		
+
 	}
 
-	
+	@Override
+	public void addSignalListener(final XStreamSignalListener list) {
+		Runnable me = new Runnable() {
+
+			@Override
+			public void run() {
+				try {
+					signalListenerLock.acquire();
+					signalListeners.add(list);
+				} catch (Exception e) {
+					logger.error("Exception adding signal listener " + e.toString());
+				} finally {
+					signalListenerLock.release();
+				}
+
+			}
+		};
+		getExecutor().execute(me);
+	}
+
+	@Override
+	public void removeSignalListener(final XStreamSignalListener list) {
+		Runnable me = new Runnable() {
+
+			@Override
+			public void run() {
+				try {
+					signalListenerLock.acquire();
+					signalListeners.remove(list);
+				} catch (Exception e) {
+					logger.error("Exception adding signal listener " + e.toString());
+				} finally {
+					signalListenerLock.release();
+				}
+
+			}
+		};
+		getExecutor().execute(me);
+
+	}
+
+	@Override
+	public Marker getSessionMarker() {
+		return MarkerFactory.getMarker(sessionId);
+	}
+
 	@Override
 	public <T> T getService(Class<T> clazz) throws XStreamException {
 		for (XStreamService service : services) {
-			if(clazz.isInstance(service)) { 
-				return (T)service;
+			if (clazz.isInstance(service)) {
+				return (T) service;
 			}
 		}
 		throw new XStreamException("Service Class " + clazz.getName() + " not found");
 	}
 
 	@Override
+	public String getSessionId() {
+		return sessionId;
+	}
+
+	@Override
 	public void addRowListener(XStreamRowListener listener) {
-	Runnable runner = new Runnable() {
-			
+		Runnable runner = new Runnable() {
+
 			@Override
 			public void run() {
 				try {
@@ -266,53 +313,38 @@ public class XStreamImpl implements XStream {
 					rowListeners.add(listener);
 				} catch (Exception e) {
 					// TODO: handle exception
-				} finally { 
+				} finally {
 					rowListenerLock.release();
 				}
 			}
 		};
-		
+
 		getExecutor().execute(runner);
 	}
 
 	@Override
 	public void removeRowListener(XStreamRowListener listener) {
-	Runnable runner = new Runnable() {
-			
+		Runnable runner = new Runnable() {
+
 			@Override
 			public void run() {
 				try {
 					rowListenerLock.acquire();
 					rowListeners.remove(listener);
 				} catch (Exception e) {
-					logger.error("Remove Row Listener Exception " + e.toString(),e);
-				} finally { 
+					logger.error("Remove Row Listener Exception " + e.toString(), e);
+				} finally {
 					rowListenerLock.release();
 				}
 			}
 		};
-		
+
 		getExecutor().execute(runner);
 	}
-	
-	
-	
-	
-	
-	@Override
-	public XQuery createQuery(XQueryType type) throws XQueryException {
-		XQueryImpl query = new XQueryImpl();
-		query.init(type);
-		return query;
-	}
-
-
-
-
 
 	/**
-	 * RowListener for routing stream row events to RowListeners
-	 * registered on the stream level. 
+	 * RowListener for routing stream row events to RowListeners registered on the
+	 * stream level.
 	 */
 	private class RowListener implements XStreamRowListener {
 
@@ -324,21 +356,13 @@ public class XStreamImpl implements XStream {
 					list.rowSignal(row, signal);
 				}
 			} catch (Exception e) {
-				logger.error("Exception Outer Row Listener " + e.toString(),e);
-				
-			} finally { 
+				logger.error("Exception Outer Row Listener " + e.toString(), e);
+
+			} finally {
 				rowListenerLock.release();
 			}
 		}
-		
-		
+
 	}
-	
-	
-	
-	
-	
-	
-	
 
 }

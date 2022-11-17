@@ -23,6 +23,7 @@ import com.dunkware.xstream.api.XStreamRowSignal;
 import com.dunkware.xstream.api.XStreamRowSnapshot;
 import com.dunkware.xstream.api.XStreamRuntimeException;
 import com.dunkware.xstream.api.XStreamVar;
+import com.dunkware.xstream.api.XStreamVarListener;
 import com.dunkware.xstream.model.metrics.XStreamRowMetrics;
 import com.dunkware.xstream.model.metrics.XStreamVarMetrics;
 import com.dunkware.xstream.xScript.SignalType;
@@ -46,6 +47,9 @@ public class XStreamRowImpl implements XStreamRow {
 
 	private List<XStreamRowListener> rowListeners = new ArrayList<XStreamRowListener>();
 	private Semaphore rowListenerLock = new Semaphore(1);
+	
+	private List<XStreamVarListener> varListeners = new ArrayList<XStreamVarListener>();
+	private Semaphore varListenerLock = new Semaphore(1);
 
 	private int identifier; 
 	@Override
@@ -223,6 +227,52 @@ public class XStreamRowImpl implements XStreamRow {
 	public int getIdentifier() {
 		return identifier;
 	}
+
+	@Override
+	public void addVarListener(XStreamVarListener listener) {
+		Runnable run = new Runnable() {
+			
+			@Override
+			public void run() {
+				try {
+					varListenerLock.acquire();
+					varListeners.add(listener);
+				} catch (Exception e) {
+
+				} finally {
+					varListenerLock.release();
+					
+				}
+		  	}
+		};
+		
+		stream.getExecutor().execute(run);
+		
+	}
+
+	@Override
+	public void removeVarListener(XStreamVarListener listener) {
+Runnable run = new Runnable() {
+			
+			@Override
+			public void run() {
+				try {
+					varListenerLock.acquire();
+					varListeners.remove(listener);
+				} catch (Exception e) {
+
+				} finally {
+					varListenerLock.release();
+					
+				}
+		  	}
+		};
+		
+		stream.getExecutor().execute(run);
+		
+	}
+
+	
 	
 	
 	

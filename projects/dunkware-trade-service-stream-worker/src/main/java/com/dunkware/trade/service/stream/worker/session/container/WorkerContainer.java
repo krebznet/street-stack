@@ -5,6 +5,11 @@ import com.dunkware.spring.channel.Channel;
 import com.dunkware.trade.service.stream.container.worker.WorkerContainerInput;
 import com.dunkware.xstream.net.core.container.Container;
 
+/**
+ * This maps to a SessionContainerNode on server
+ * @author duncankrebs
+ *
+ */
 public interface WorkerContainer {
 
 	/**
