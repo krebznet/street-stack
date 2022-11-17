@@ -28,19 +28,28 @@ public class StatsServiceImpl implements StatsService {
 			public void run() { 
 				
 				try {
-					sleep(4000);
-					EntityStatsDO ent = new EntityStatsDO();
-					ent.setDate(LocalDate.now());
-					ent.setEntId(39);
-					ent.setIdent("GOOG");
-					EntityVarStatsDO vstat = new EntityVarStatsDO();
-					vstat.setIdent("Sma10sec");
-					vstat.setHigh(new BigDecimal(232.3));
-					vstat.setHighTime(LocalTime.now());
-					vstat.setLow(new BigDecimal(93.3));
-					vstat.setLowTime(LocalTime.now().minusHours(3));
-					ent.getVars().add(vstat);
-					statsRepo.save(ent);
+					System.out.println(LocalTime.now().toString());
+					int i = 0;
+					sleep(2000);
+					while(i < 250000) { 
+						EntityStatsDO ent = new EntityStatsDO();
+						ent.setDate(LocalDate.now());
+						ent.setEntId(39);
+						ent.setIdent("HOLA");
+						EntityVarStatsDO vstat = new EntityVarStatsDO();
+						vstat.setIdent("Sma10sec");
+						vstat.setHigh(new BigDecimal(232.3));
+						vstat.setHighTime(LocalTime.now());
+						vstat.setLow(new BigDecimal(93.3));
+						vstat.setLowTime(LocalTime.now().minusHours(3));
+						ent.getVars().add(vstat);
+						statsRepo.save(ent);		
+						
+						i++;
+					}
+					System.out.println(LocalTime.now().toString());
+				
+				
 				} catch (Exception e) {
 					e.printStackTrace();
 					// TODO: handle exception

@@ -25,15 +25,15 @@ public class IBTest {
 			
 			int i = 0;
 			
-			while(i < 500) {
+			while(i < 100) {
 				
 				// make the contract 
 				Contract contract = new Contract();
-				contract.m_symbol = "GOOG";
+				contract.m_symbol = "SRAD";
 				contract.m_currency = "USD";
 				contract.m_exchange = "SMART";
-				contract.m_localSymbol = "GOOG";
-				contract.m_secId = "NFLX";
+				contract.m_localSymbol = "SRAD";
+				contract.m_secId = "SRAD";
 				contract.m_secType = "STK";
 				TwsOrder _twsOrder = null;
 				_twsOrder = new TwsOrder();
@@ -53,7 +53,7 @@ public class IBTest {
 				_twsOrder.m_totalQuantity = 15;
 				_twsOrder.m_lmtPrice = Double.MAX_VALUE;
 				_twsOrder.m_auxPrice = 101.0;
-				_twsOrder.m_orderId = 32346848 +i;
+				_twsOrder.m_orderId = 323468488 +i;
 				
 				socket.placeOrder(_twsOrder.m_orderId, contract, _twsOrder);
 				i++;
