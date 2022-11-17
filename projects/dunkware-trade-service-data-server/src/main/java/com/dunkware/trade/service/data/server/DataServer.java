@@ -1,14 +1,12 @@
 package com.dunkware.trade.service.data.server;
 
 import org.springframework.boot.SpringApplication;
-import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.boot.autoconfigure.data.mongo.MongoDataAutoConfiguration;
-import org.springframework.boot.autoconfigure.mongo.MongoAutoConfiguration;
+import org.springframework.data.mongodb.repository.config.EnableMongoRepositories;
 
 
 @SpringBootApplication(scanBasePackages = "com.dunkware")
-@EnableAutoConfiguration(exclude={MongoAutoConfiguration.class, MongoDataAutoConfiguration.class})
+@EnableMongoRepositories()
 public class DataServer {
 
 	public static void main(String[] args) {

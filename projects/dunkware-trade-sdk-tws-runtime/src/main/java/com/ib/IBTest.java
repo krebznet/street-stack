@@ -23,35 +23,43 @@ public class IBTest {
 			socket.eConnect("192.168.23.160", 8123, 45468);
 			
 			
-			// make the contract 
-			Contract contract = new Contract();
-			contract.m_symbol = "SPY";
-			contract.m_currency = "USD";
-			contract.m_exchange = "SMART";
-			contract.m_localSymbol = "SPY";
-			contract.m_secId = "NFLX";
-			contract.m_secType = "STK";
-			TwsOrder _twsOrder = null;
-			_twsOrder = new TwsOrder();
+			int i = 0;
 			
-			// new fields 
-			_twsOrder.m_allOrNone = false;
-			_twsOrder.m_tif = "DAY";
+			while(i < 500) {
+				
+				// make the contract 
+				Contract contract = new Contract();
+				contract.m_symbol = "GOOG";
+				contract.m_currency = "USD";
+				contract.m_exchange = "SMART";
+				contract.m_localSymbol = "GOOG";
+				contract.m_secId = "NFLX";
+				contract.m_secType = "STK";
+				TwsOrder _twsOrder = null;
+				_twsOrder = new TwsOrder();
+				
+				// new fields 
+				_twsOrder.m_allOrNone = false;
+				_twsOrder.m_tif = "DAY";
+				
+				_twsOrder.m_account = "DU222846";
+				_twsOrder.m_action = "SELL";
+				_twsOrder.m_orderType = "STP";
+				_twsOrder.m_outsideRth = false;
+				_twsOrder.m_orderId = wrapper.getNextOrderId();
+				
+				_twsOrder.m_transmit = true;
+				_twsOrder.m_whatIf = false;
+				_twsOrder.m_totalQuantity = 15;
+				_twsOrder.m_lmtPrice = Double.MAX_VALUE;
+				_twsOrder.m_auxPrice = 101.0;
+				_twsOrder.m_orderId = 32346848 +i;
+				
+				socket.placeOrder(_twsOrder.m_orderId, contract, _twsOrder);
+				i++;
+			}
 			
-			_twsOrder.m_account = "DU222846";
-			_twsOrder.m_action = "SELL";
-			_twsOrder.m_orderType = "STP";
-			_twsOrder.m_outsideRth = false;
-			_twsOrder.m_orderId = wrapper.getNextOrderId();
-			
-			_twsOrder.m_transmit = true;
-			_twsOrder.m_whatIf = false;
-			_twsOrder.m_totalQuantity = 15;
-			_twsOrder.m_lmtPrice = Double.MAX_VALUE;
-			_twsOrder.m_auxPrice = 101.0;
-			_twsOrder.m_orderId = 32348;
-			
-			socket.placeOrder(_twsOrder.m_orderId, contract, _twsOrder);
+		
 			
 			
 		} catch (Exception e) {

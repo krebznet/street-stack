@@ -44,7 +44,7 @@ public class SessionStatsService implements XStreamService, XStreamListener {
 
 	@Override
 	public void preDispose() {
-		// TODO Auto-generated method stub
+		
 		
 	}
 
