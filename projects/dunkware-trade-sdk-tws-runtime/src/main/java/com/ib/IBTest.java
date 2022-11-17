@@ -20,7 +20,7 @@ public class IBTest {
 		try {
 		    IBTestWrapper wrapper = new IBTestWrapper();
 			EClientSocket socket = new EClientSocket(wrapper);
-			socket.eConnect("192.168.23.160", 8123, 15);
+			socket.eConnect("192.168.23.160", 8123, 45468);
 			
 			
 			// make the contract 
@@ -49,7 +49,7 @@ public class IBTest {
 			_twsOrder.m_totalQuantity = 15;
 			_twsOrder.m_lmtPrice = Double.MAX_VALUE;
 			_twsOrder.m_auxPrice = 101.0;
-			_twsOrder.m_orderId = 32345;
+			_twsOrder.m_orderId = 32348;
 			
 			socket.placeOrder(_twsOrder.m_orderId, contract, _twsOrder);
 			
