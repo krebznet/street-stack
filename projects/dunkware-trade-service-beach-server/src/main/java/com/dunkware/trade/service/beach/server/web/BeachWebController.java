@@ -12,8 +12,8 @@ import org.springframework.web.servlet.mvc.method.annotation.StreamingResponseBo
 import com.dunkware.common.util.json.DJson;
 import com.dunkware.trade.sdk.core.model.broker.BrokerType;
 import com.dunkware.trade.sdk.core.model.system.SystemType;
-import com.dunkware.trade.sdk.lib.model.bot.model.TradeBotType;
-import com.dunkware.trade.sdk.lib.model.bot.web.WebTradeBot;
+import com.dunkware.trade.sdk.lib.model.streambot.model.StreamBotType;
+import com.dunkware.trade.sdk.lib.model.streambot.web.WebStreamBot;
 import com.dunkware.trade.service.beach.server.resources.BeachResourceService;
 import com.dunkware.trade.service.beach.server.trade.BeachService;
 import com.dunkware.trade.service.beach.server.web.util.BeachWebConverter;
@@ -93,15 +93,15 @@ public class BeachWebController {
 	
 	@PostMapping(path = "/trade/web/dash/systems/add")
 	public void addSystem(@RequestBody String json) throws Exception {
-		WebTradeBot bot = null;
+		WebStreamBot bot = null;
 				
 		try {
-			bot = DJson.getObjectMapper().readValue(json, WebTradeBot.class);
+			bot = DJson.getObjectMapper().readValue(json, WebStreamBot.class);
 			
 		} catch (Exception e) {
 			throw new Exception("Invalid JSON could not deserialize into server-side model " + e.toString());
 		}
-		TradeBotType nativeBotType = new TradeBotType(); 
+		StreamBotType nativeBotType = new StreamBotType(); 
 		nativeBotType.setWrapper(bot);
 		try {
 			resourceService.insertSystem(nativeBotType.getIdentifier(), nativeBotType);

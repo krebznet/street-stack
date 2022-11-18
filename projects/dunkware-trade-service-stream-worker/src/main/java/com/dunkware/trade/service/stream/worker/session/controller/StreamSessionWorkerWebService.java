@@ -60,35 +60,6 @@ public class StreamSessionWorkerWebService {
 
 	}
 	
-	
-
-	/*
-	 * @PostMapping(path = "/stream/worker/start") public @ResponseBody()
-	 * StreamSessionWorkerStartResp startWorker(@RequestBody() DBytes input) {
-	 * StreamSessionWorkerStartResp resp = new StreamSessionWorkerStartResp();
-	 * StreamSessionWorkerStartReq req = null; try { req =
-	 * DJson.getObjectMapper().readValue(input.getBytes(),
-	 * StreamSessionWorkerStartReq.class); } catch (Exception e) {
-	 * logger.error("Fuck bad parse stream start again " + e.toString(), e);
-	 * resp.setCode("ERROR");
-	 * resp.setError("Cannot deserialize bytes into session start req " +
-	 * e.toString()); // TODO: handle exception }
-	 * logger.debug("In /stream/worker/start with " + req.toString());
-	 * 
-	 * StreamSessionWorkerStartReq parsed = null; try {
-	 * logger.info("Parsed Stream Session Worker Start Req without problems"); }
-	 * catch (Exception e) {
-	 * logger.error("Fatal Cannot deserialize stream session worker start req " +
-	 * e.toString(), e); resp.setCode("ERROR"); resp.setError("Error Parsing shit "
-	 * + e.toString()); return resp; }
-	 * 
-	 * try { resp.setStartingTime(DTime.now()); workerService.startWorker(parsed);
-	 * resp.setStartTime(DTime.now()); resp.setCode("SUCCESS"); return resp; } catch
-	 * (Exception e) { resp.setCode("ERROR"); resp.setError(e.toString()); return
-	 * resp; }
-	 * 
-	 * }
-	 */
 
 	@RequestMapping(path = "/stream/worker/stop")
 	public @ResponseBody() String stopWorker(@RequestParam(name = "id") String workerId) {

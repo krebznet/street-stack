@@ -1,5 +1,6 @@
 package com.dunkware.trade.service.beach.server.trade.core;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.ConcurrentHashMap;
 
@@ -179,6 +180,21 @@ public class BeachServiceImpl implements BeachService  {
 		}
 		return false;
 	}
+	
+	@Override
+	public List<BeachAccount> getAccounts() {
+		List<BeachAccount> accounts = new ArrayList<BeachAccount>();
+		for (BeachBroker broker : brokers.values()) {
+			for (BrokerAccount beachAccount : broker.getAccounts()) {
+				accounts.add((BeachAccount)beachAccount);
+			}
+		}
+		return accounts;
+	}
+	
+	
+	
+	
 	
 	
 	

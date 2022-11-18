@@ -294,7 +294,7 @@ public class StreamSessionImpl implements StreamSession {
 			this.sessionSpec = start.getSpec();
 			try {
 
-				cluster.pojoEvent(start);
+			//	cluster.pojoEvent(start);
 				logger.info(MarkerFactory.getMarker(sessionId), "Published Stream Session Start Message");
 			} catch (Exception e) {
 				logger.error("Exception sending session start message " + e.toString());
@@ -319,7 +319,7 @@ public class StreamSessionImpl implements StreamSession {
 			stop.setSpec(StreamSessionSpecBuilder.build(this, configService.getKafkaBrokers()));
 			try {
 
-				cluster.pojoEvent(stop);
+				//cluster.pojoEvent(stop);
 				logger.info(MarkerFactory.getMarker(sessionId), "Published Stream Session Stop Message");
 			} catch (Exception e) {
 				logger.error("Exception sending session start message " + e.toString());

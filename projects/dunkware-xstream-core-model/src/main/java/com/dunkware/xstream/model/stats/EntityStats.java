@@ -13,6 +13,7 @@ public class EntityStats {
 	private String ident; 
 	
 	private List<EntityVarStats> varStats = new ArrayList<EntityVarStats>();
+	private List<EntitySignalStats> sigStats = new ArrayList<EntitySignalStats>();
 
 	
 	public DDate getDate() {
@@ -39,6 +40,14 @@ public class EntityStats {
 	public void setVarStats(List<EntityVarStats> varStats) {
 		this.varStats = varStats;
 	}
+	public List<EntitySignalStats> getSigStats() {
+		return sigStats;
+	}
+	public void setSigStats(List<EntitySignalStats> sigStats) {
+		this.sigStats = sigStats;
+	}
+	
+	
 	
 	
 	

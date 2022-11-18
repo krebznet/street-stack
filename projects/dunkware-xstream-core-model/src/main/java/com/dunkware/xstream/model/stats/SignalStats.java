@@ -1,29 +1,39 @@
 package com.dunkware.xstream.model.stats;
 
+import com.dunkware.common.util.dtime.DDate;
+
 public class SignalStats {
 
-	private int id; 
-	private String ident; 
+	private DDate date;
+	private int sidId;
+	private String sigIdent; 
 	private int count;
 	
-	public int getId() {
-		return id;
+	public DDate getDate() {
+		return date;
 	}
-	public void setId(int id) {
-		this.id = id;
+	public void setDate(DDate date) {
+		this.date = date;
 	}
-	public String getIdent() {
-		return ident;
+	public int getSidId() {
+		return sidId;
 	}
-	public void setIdent(String ident) {
-		this.ident = ident;
+	public void setSidId(int sidId) {
+		this.sidId = sidId;
+	}
+	public String getSigIdent() {
+		return sigIdent;
+	}
+	public void setSigIdent(String sigIdent) {
+		this.sigIdent = sigIdent;
 	}
 	public int getCount() {
 		return count;
 	}
 	public void setCount(int count) {
 		this.count = count;
-	} 
+	}
+	
 	
 	
 	

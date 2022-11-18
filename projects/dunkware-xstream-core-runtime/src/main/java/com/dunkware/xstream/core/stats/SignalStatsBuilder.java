@@ -1,16 +1,17 @@
 package com.dunkware.xstream.core.stats;
 
+import java.util.Collection;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
-import java.util.concurrent.atomic.AtomicInteger;
 
 import com.dunkware.xstream.api.XStream;
 import com.dunkware.xstream.api.XStreamRowSignal;
 import com.dunkware.xstream.api.XStreamSignalListener;
+import com.dunkware.xstream.model.stats.SignalStats;
 
 public class SignalStatsBuilder implements XStreamSignalListener  {
 	
-	private Map<Integer,AtomicInteger> counts = new ConcurrentHashMap<Integer,AtomicInteger>();
+	private Map<String,SignalStats> map = new ConcurrentHashMap<String, SignalStats>();
 	private XStream stream; 
 	private SessionStatsService service; 
 	
@@ -27,16 +28,23 @@ public class SignalStatsBuilder implements XStreamSignalListener  {
 	
 	@Override
 	public void onSignal(XStreamRowSignal signal) {
-		if(counts.get(signal.getSignalType().getId())== null) { 
-			counts.put(signal.getSignalType().getId(), new AtomicInteger(1));
+		SignalStats stats = map.get(signal.getSignalType().getName());
+		if(stats == null) { 
+			stats = new SignalStats();
+			stats.setDate(stream.getClock().getDate());
+			stats.setSidId(signal.getSignalType().getId());
+			stats.setSigIdent(signal.getSignalType().getName());
+			stats.setCount(1);
+			map.put(signal.getSignalType().getName(), stats);
 		} else { 
-			counts.get(signal.getSignalType().getId()).incrementAndGet();
+			stats.setCount(stats.getCount() + 1);
+			map.put(signal.getSignalType().getName(), stats);
 		}
 		
 	}
 	
-	public Map<Integer,AtomicInteger> getCounts() { 
-		return counts;
+	public Collection<SignalStats> getStats() { 
+		return map.values();
 	}
 
 	

@@ -9,8 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import com.dunkware.common.util.dtime.DTime;
 import com.dunkware.common.util.executor.DExecutor;
 import com.dunkware.net.cluster.node.Cluster;
-import com.dunkware.net.cluster.node.ClusterJob;
-import com.dunkware.net.cluster.node.ClusterJobRunner;
+import com.dunkware.spring.channel.Channel;
 import com.dunkware.trade.service.stream.json.worker.stream.StreamSessionWorkerStartReq;
 import com.dunkware.trade.service.stream.json.worker.stream.StreamSessionWorkerStats;
 import com.dunkware.xstream.api.XStream;
@@ -20,7 +19,7 @@ import com.dunkware.xstream.core.XStreamCore;
 import com.dunkware.xstream.xproject.model.XScriptBundle;
 import com.dunkware.xstream.xproject.model.XStreamBundle;
 
-public class StreamSessionWorkerImpl implements StreamSessionWorker, ClusterJobRunner {
+public class StreamSessionWorkerImpl implements StreamSessionWorker {
 	
 	public static final String METRIC_PENDING_TASK_COUNT = "stream.us_equity.stats.node.pendingtasks"; 
 	public static final String METRIC_ROW_COUNT = "stream.us_equity.stats.node.entities"; 
@@ -43,7 +42,7 @@ public class StreamSessionWorkerImpl implements StreamSessionWorker, ClusterJobR
 	
 	
 
-	private ClusterJob clusterJob; 
+	
 	
 	private StatusPublisher statusPublisher;
 	
@@ -59,8 +58,8 @@ public class StreamSessionWorkerImpl implements StreamSessionWorker, ClusterJobR
 	
 	
 
-	@Override
-	public void startJob(ClusterJob job) throws Exception {
+	
+	public void startWorker() throws Exception {
 
 		try {
 
@@ -87,18 +86,13 @@ public class StreamSessionWorkerImpl implements StreamSessionWorker, ClusterJobR
 	}
 
 
-	@Override
-	public void terminate() {
-		// TODO Auto-generated method stub
-		
-	}
-
+	
 
 	@Override
 	public void start(StreamSessionWorkerStartReq req) throws Exception {
 		this.bundle = req.getStreamBundle();
 		this.startReq = req;
-		cluster.startJob(this, "StreamWorker", req.getStream() + cluster.getNodeId());
+	//	cluster.startJob(this, "StreamWorker", req.getStream() + cluster.getNodeId());
 		
 	}
 
@@ -107,10 +101,28 @@ public class StreamSessionWorkerImpl implements StreamSessionWorker, ClusterJobR
 	@Override
 	public void stop() throws Exception {
 		this.stream.dispose();
-		clusterJob.jobComplete();
+		//clusterJob.jobComplete();
 		statusPublisher.interrupt();
 		
 	}
+	
+	
+	
+
+	@Override
+	public Channel getChannel() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+	
+	
+	// channel handlers 
+	
+	//@AMessageHandler()
+	//public StreamStats getSessionStats() {
+//		.bundle..stream.getService(Streamstat)
+//		return null;
+	//}
 
 
 	@Override
@@ -131,12 +143,10 @@ public class StreamSessionWorkerImpl implements StreamSessionWorker, ClusterJobR
 	}
 
 	private class StatusPublisher extends Thread { 
-		
 		public void run() { 
 			StreamSessionWorkerStats stats = getStats();
 			try {
-				cluster.pojoEvent(stats);
-				
+				//cluster.pojoEvent(stats);
 			} catch (Exception e) {
 				logger.error("Exceptin sending worker stream node status " + e.toString());
 			}
@@ -145,8 +155,7 @@ public class StreamSessionWorkerImpl implements StreamSessionWorker, ClusterJobR
 			} catch (Exception e) {
 				// TODO: handle exception
 			}
-		
-			
+
 		}
 	}
 	

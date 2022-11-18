@@ -55,7 +55,7 @@ public class StreamSessionNodeImpl implements StreamSessionNode {
 
 	@Override
 	public void startNode(StreamSessionNodeInput input) {
-		cluster.addComponent(this);
+	
 		this.input = input;
 		eventNode = input.getSession().getEventNode().createChild("/node/" + input.getClusterNode().getId());
 		

@@ -21,28 +21,7 @@ public class StreamStatsHelper {
 
 	}
 
-	public static void updateVarStats(EntityVarStats stats, XStreamVar var, Number value) {
-		
-		
-		
-		if (stats.getHigh() == null) {
-			stats.setHigh(value);
-			stats.setHighTime(var.getRow().getStream().getClock().getTime());
-		} else {
-			if (stats.getHigh().doubleValue() < value.doubleValue()) {
-				stats.setHigh(value);
-				stats.setHighTime(var.getRow().getStream().getClock().getTime());
-			}
-		}
-		if(stats.getLow() == null) { 
-			stats.setLow(value);
-			stats.setLowTime(var.getRow().getStream().getClock().getTime());
-		} else { 
-			if(stats.getLow().doubleValue() > value.doubleValue()) { 
-				stats.setLow(value);
-				stats.setLowTime(var.getRow().getStream().getClock().getTime());
-			}
-		}
+	public static void updateVarStats(EntityVarStats stats, XStreamVar var, Object value) {
 	}
 
 }

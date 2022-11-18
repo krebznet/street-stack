@@ -1,6 +1,8 @@
 
 package com.dunkware.trade.service.beach.server.trade;
 
+import java.util.List;
+
 import com.dunkware.common.util.events.DEventNode;
 import com.dunkware.trade.sdk.core.model.broker.BrokerType;
 import com.dunkware.trade.sdk.core.model.system.SystemType;
@@ -26,6 +28,7 @@ public interface BeachService {
 	
 	boolean systemExists(String identifier);
 	
+	List<BeachAccount> getAccounts();
 	
 	
 }

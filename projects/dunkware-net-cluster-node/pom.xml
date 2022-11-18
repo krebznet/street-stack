@@ -46,6 +46,11 @@
 	<dependencies>
 
 		<dependency>
+			<groupId>com.dunkware.spring</groupId>
+			<artifactId>dunkware-spring-messaging</artifactId>
+			<version>1.0.0-SNAPSHOT</version>
+		</dependency>
+		<dependency>
 			<groupId>com.dunkware.net.cluster</groupId>
 			<artifactId>dunkware-net-cluster-spring</artifactId>
 			<version>1.0.0-SNAPSHOT</version>
@@ -170,7 +175,7 @@
 		</dependency>
 
 
-		
+
 
 	</dependencies>
 

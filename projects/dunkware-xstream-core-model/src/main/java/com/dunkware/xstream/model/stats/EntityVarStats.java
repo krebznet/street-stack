@@ -7,8 +7,8 @@ public class EntityVarStats {
 	private int id; 
 	private String ident; 
 	
-	private Number high = null; 
-	private Number low = null; 
+	private Double high = null; 
+	private Double low = null; 
 	
 	private DTime highTime = null;
 	private DTime lowTime = null;
@@ -26,17 +26,18 @@ public class EntityVarStats {
 	public void setIdent(String ident) {
 		this.ident = ident;
 	}
-	public Number getHigh() {
+
+	public Double getHigh() {
 		return high;
 	}
-	public void setHigh(Number high) {
-		this.high = high;
-	}
-	public Number getLow() {
+	public Double getLow() {
 		return low;
 	}
-	public void setLow(Number low) {
+	public void setLow(Double low) {
 		this.low = low;
+	}
+	public void setHigh(Double high) {
+		this.high = high;
 	}
 	public DTime getHighTime() {
 		return highTime;

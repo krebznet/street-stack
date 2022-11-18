@@ -209,7 +209,10 @@ public class StreamEventPublisherExt implements XStreamExtension, XStreamRowList
 
 		@Override
 		public void timeUpdate(XStreamClock clock, LocalDateTime time) {
-				logger.debug(MarkerFactory.getMarker("TimeUpdate"), DunkTime.toStringTimeStamp(time));
+				if(logger.isTraceEnabled()) { 
+					logger.trace(MarkerFactory.getMarker("TimeUpdate"), DunkTime.toStringTimeStamp(time));	
+				}
+				
 				timeUpdateQueue.add(time);
 				// in the same thread iterating through rows
 				// can't be that long 
@@ -339,8 +342,8 @@ public class StreamEventPublisherExt implements XStreamExtension, XStreamRowList
 					lastSnapshots.put(snapshot.row.getId(), snapshot.time);
 					GStreamEvent event = XStreamEventHelper.buildEntitySnapshotEvent(snapshot.row,
 							DTimeZone.toZoneId(stream.getInput().getTimeZone()), snapshot.signals,snapshot.time);
-					if(logger.isDebugEnabled()) { 
-						logger.debug(MarkerFactory.getMarker("SnapshotPublish"), "{} {} {}",snapshot.row.getId(),DunkTime.toStringTimeStamp(snapshot.time),type.getNode());
+					if(logger.isTraceEnabled()) { 
+						logger.trace(MarkerFactory.getMarker("SnapshotPublish"), "{} {} {}",snapshot.row.getId(),DunkTime.toStringTimeStamp(snapshot.time),type.getNode());
 					}
 					eventQueue.add(event);
 					publishQueue.add(event);
@@ -376,8 +379,8 @@ public class StreamEventPublisherExt implements XStreamExtension, XStreamRowList
 				try {
 					if (event.getType() == GStreamEventType.EntitySnapshot) {
 						try {
-							if(logger.isDebugEnabled()) { 
-								logger.debug("GSnapshot Event Pulled " + event.getEntitySnapshot().getIdentifier());
+							if(logger.isTraceEnabled()) { 
+								logger.trace("GSnapshot Event Pulled " + event.getEntitySnapshot().getIdentifier());
 							}
 							if(snapshotProducer == null) { 
 								logger.error(MarkerFactory.getMarker("BUG"), "Fucking snapshot producer is null WTF");

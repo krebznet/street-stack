@@ -191,8 +191,8 @@ public class ChannelImpl implements Channel, DKafkaByteHandler2 {
 			String serialized = DJson.serialize(transport);
 			byte[] bytes = serialized.getBytes();
 			kafkaProducer.sendBytes(bytes);
-			if(logger.isDebugEnabled()) { 
-				logger.debug(marker, "Channel {} message sent {} ",channelType,payload.getClass().getName());
+			if(logger.isTraceEnabled()) { 
+				logger.trace(marker, "Channel {} message sent {} ",channelType,payload.getClass().getName());
 			}
 		} catch (Exception e) {
 			throw new ChannelException("Exception Sending Channel Message " + e.toString());

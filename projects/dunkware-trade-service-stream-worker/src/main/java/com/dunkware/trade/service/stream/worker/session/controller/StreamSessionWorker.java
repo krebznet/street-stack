@@ -1,5 +1,6 @@
 package com.dunkware.trade.service.stream.worker.session.controller;
 
+import com.dunkware.spring.channel.Channel;
 import com.dunkware.trade.service.stream.json.worker.stream.StreamSessionWorkerStartReq;
 import com.dunkware.trade.service.stream.json.worker.stream.StreamSessionWorkerStats;
 import com.dunkware.xstream.api.XStream;
@@ -13,4 +14,6 @@ public interface StreamSessionWorker {
 	void stop() throws Exception;
 	
 	StreamSessionWorkerStats getStats();
+	
+	Channel getChannel();
 }

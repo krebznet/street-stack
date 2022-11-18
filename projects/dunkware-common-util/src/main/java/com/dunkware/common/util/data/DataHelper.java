@@ -21,6 +21,17 @@ public class DataHelper {
 		throw new Exception("Object type " + input.getClass().getName() + " not valid data type");
 	}
 
+	public static void main(String[] args) {
+		try {
+			Integer five = new Integer(8);
+			Integer size = new Integer(6);
+		System.out.println(compareData(five, size));		
+		} catch (Exception e) {
+			e.printStackTrace();
+			// TODO: handle exception
+		}
+	
+	}
 	public static int compareData(Object v1, Object v2) throws Exception {
 		Double compare1 = convertToDouble(v1); 
 		Double compare2 = convertToDouble(v2);

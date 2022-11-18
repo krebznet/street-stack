@@ -29,13 +29,13 @@ import com.dunkware.xstream.model.metrics.XStreamVarMetrics;
 import com.dunkware.xstream.xScript.SignalType;
 import com.dunkware.xstream.xScript.VarType;
 
-public class XStreamRowImpl implements XStreamRow {
+public class XStreamRowImpl implements XStreamRow, XStreamVarListener {
 
 	private String id;
 	private XStream stream;
 
 	private Logger logger = LoggerFactory.getLogger(getClass());
-	
+
 	private ConcurrentHashMap<String, XStreamVar> vars = new ConcurrentHashMap<String, XStreamVar>();
 
 	private List<XStreamRowSignal> signals = new ArrayList<XStreamRowSignal>();
@@ -47,11 +47,12 @@ public class XStreamRowImpl implements XStreamRow {
 
 	private List<XStreamRowListener> rowListeners = new ArrayList<XStreamRowListener>();
 	private Semaphore rowListenerLock = new Semaphore(1);
-	
+
 	private List<XStreamVarListener> varListeners = new ArrayList<XStreamVarListener>();
 	private Semaphore varListenerLock = new Semaphore(1);
 
-	private int identifier; 
+	private int identifier;
+
 	@Override
 	public void start(String id, int identifier, XStream stream) {
 		tickStream = new TickStreamImpl();
@@ -68,6 +69,7 @@ public class XStreamRowImpl implements XStreamRow {
 		}
 		for (XStreamVar var : vars.values()) {
 			var.start();
+			var.addVarListener(this);
 		}
 	}
 
@@ -101,7 +103,6 @@ public class XStreamRowImpl implements XStreamRow {
 		return vars.get(name);
 	}
 
-	
 	@Override
 	public TickStream getTickStream() {
 		return tickStream;
@@ -118,7 +119,7 @@ public class XStreamRowImpl implements XStreamRow {
 				varMap.put(var.getVarType().getName(), var.getValue(0));
 			}
 		}
-		
+
 		DTime time = stream.getClock().getTime();
 		XStreamRowSnapshot snapshot = new XStreamRowSnapshot(getId(), time, varMap);
 		return snapshot;
@@ -144,29 +145,31 @@ public class XStreamRowImpl implements XStreamRow {
 
 	@Override
 	public void signal(SignalType type) {
-		
+
 		long timestamp = getStream().getClock().getTimestamp();
 		DTime time = getStream().getClock().getTime();
-		if(logger.isTraceEnabled()) { 
+		if (logger.isTraceEnabled()) {
 			String formmatedTime = DunkTime.formatDateTimeStamp(timestamp);
-			String clockDateTimeFormatted = DunkTime.format(stream.getClock().getLocalDateTime(), DunkTime.YYYY_MM_DD_HH_MM_SS);
+			String clockDateTimeFormatted = DunkTime.format(stream.getClock().getLocalDateTime(),
+					DunkTime.YYYY_MM_DD_HH_MM_SS);
 			logger.trace("Signal {} Entity {} Clock Time {} Formatted Timestamp {} Clock DateTime Formatted {}",
-					type.getName(),this.getId(),time.getHour() + ":" + 
-			time.getMinute() + ":" + time.getSecond(), formmatedTime, clockDateTimeFormatted);
+					type.getName(), this.getId(), time.getHour() + ":" + time.getMinute() + ":" + time.getSecond(),
+					formmatedTime, clockDateTimeFormatted);
 		}
-		
-		final XStreamSignalImpl signal = new XStreamSignalImpl(this, type, timestamp, time,stream.getClock().getLocalDateTime());
+
+		final XStreamSignalImpl signal = new XStreamSignalImpl(this, type, timestamp, time,
+				stream.getClock().getLocalDateTime());
 		this.signals.add(signal);
-	
+
 		signalCount.incrementAndGet();
-		
+
 		try {
 			rowListenerLock.acquire();
 			for (XStreamRowListener xStreamRowListener : rowListeners) {
 				xStreamRowListener.rowSignal(XStreamRowImpl.this, signal);
 			}
 		} catch (Exception e) {
-			logger.error("NASTY Row Listener Signal Outer Exception " + e.toString(),e);
+			logger.error("NASTY Row Listener Signal Outer Exception " + e.toString(), e);
 		} finally {
 			rowListenerLock.release();
 		}
@@ -227,11 +230,33 @@ public class XStreamRowImpl implements XStreamRow {
 	public int getIdentifier() {
 		return identifier;
 	}
+	
+	
+
+	@Override
+	public void varUpdate(XStreamVar var) {
+		Runnable run = new  Runnable() {
+			public void run() {
+				try {
+					varListenerLock.acquire();
+					for (XStreamVarListener varListener : varListeners) {
+						varListener.varUpdate(var);
+					}
+				} catch (Exception e) {
+					logger.error("Exception in var update dispatch" );
+				} finally { 
+					varListenerLock.release();
+				}
+				
+			}
+		};
+		getStream().getExecutor().execute(run);
+	}
 
 	@Override
 	public void addVarListener(XStreamVarListener listener) {
 		Runnable run = new Runnable() {
-			
+
 			@Override
 			public void run() {
 				try {
@@ -241,19 +266,19 @@ public class XStreamRowImpl implements XStreamRow {
 
 				} finally {
 					varListenerLock.release();
-					
+
 				}
-		  	}
+			}
 		};
-		
+
 		stream.getExecutor().execute(run);
-		
+
 	}
 
 	@Override
 	public void removeVarListener(XStreamVarListener listener) {
-Runnable run = new Runnable() {
-			
+		Runnable run = new Runnable() {
+
 			@Override
 			public void run() {
 				try {
@@ -263,20 +288,13 @@ Runnable run = new Runnable() {
 
 				} finally {
 					varListenerLock.release();
-					
-				}
-		  	}
-		};
-		
-		stream.getExecutor().execute(run);
-		
-	}
 
-	
-	
-	
-	
-	
-	
+				}
+			}
+		};
+
+		stream.getExecutor().execute(run);
+
+	}
 
 }

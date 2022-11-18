@@ -322,8 +322,6 @@ public class ActiveTickProvider implements TickProvider {
 		} else { 
 			TickFeedSubscription sub = feedSubscriptions.get(snapshot.getSymbol()); 
 			sub.setLastSnapshot(snapshot);
-				System.out.println("SNAP-CHECK " + sub.getSymbol()+  " SNAP-VOL=" + snapshot.getVolume() + " SUB-VOL=" + sub.getVolume() +  " SNAP-TC=" + snapshot.getTradeCount() + " SUB-TC=" + sub.getTrades());
-			
 		}
 	}
 	

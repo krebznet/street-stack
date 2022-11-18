@@ -122,6 +122,9 @@ public class XStreamImpl implements XStream {
 		for (XStreamExtension ext : extensions) {
 			ext.dispose();
 		}
+		for (XStreamService service : services) {
+			service.dispose();
+		}
 
 		status = XStreamStatus.Disposed;
 	}
@@ -351,9 +354,9 @@ public class XStreamImpl implements XStream {
 		@Override
 		public void rowSignal(XStreamRow row, XStreamRowSignal signal) {
 			try {
-				rowListenerLock.acquire();
-				for (XStreamRowListener list : rowListeners) {
-					list.rowSignal(row, signal);
+				signalListenerLock.acquire();
+				for (XStreamSignalListener list : signalListeners) {
+					list.onSignal(signal);
 				}
 			} catch (Exception e) {
 				logger.error("Exception Outer Row Listener " + e.toString(), e);
