@@ -96,8 +96,6 @@
 			<module>projects/dunkware-trade-service-stream-worker</module>
 			<module>projects/dunkware-trade-service-stream-util</module>
 			<module>projects/dunkware-trade-service-data-server</module>
-
-
 			<module>projects/dunkware-trade-sdk-tws-runtime</module>
       <module>projects/dunkware-trade-service-web-server</module>
 			<module>projects/dunkware-trade-service-web-mock</module>
