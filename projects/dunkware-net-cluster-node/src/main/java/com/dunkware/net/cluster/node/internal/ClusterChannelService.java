@@ -8,10 +8,16 @@ import org.slf4j.LoggerFactory;
 
 import com.dunkware.net.cluster.node.ClusterChannel;
 import com.dunkware.net.cluster.node.ClusterNode;
+import com.dunkware.net.cluster.node.anot.AClusterExtension;
 import com.dunkware.spring.message.MessageTransport;
 
 
+@AClusterExtension
 public class ClusterChannelService implements TransportHandler {
+	
+	// listen for a channel dispose request -> dispose the channel 
+	// listen for a channel create request - create the channel - send back response 
+	// listen for a channel message -> route to channel 
 	
 	public static final String CLUSTER_CHANNEL_MESSAGE = "CLUSTER_CHANNEL_MESSAGE";
 	

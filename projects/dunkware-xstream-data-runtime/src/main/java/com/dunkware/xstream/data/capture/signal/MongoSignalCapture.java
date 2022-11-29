@@ -163,7 +163,7 @@ public class MongoSignalCapture implements DKafkaByteHandler2 {
 					logger.debug("Signal Capture Queue Size {} Write Count {} Last Signal Time {} Error Count {}",
 							stats.getQueueSize(), stats.getWriteCount(), stats.getLastSignalTime(),
 							stats.getErrorCount());
-					System.out.println("Signals Consumed " + stats.getConsumeCount() + " Signals Write Count " + stats.getWriteCount());
+				//	System.out.println("Signals Consumed " + stats.getConsumeCount() + " Signals Write Count " + stats.getWriteCount());
 				} catch (Exception e) {
 					return;
 				}

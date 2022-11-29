@@ -43,7 +43,9 @@ public class ClusterNodeImpl implements ClusterNode {
 
 	private ClusterNodeUpdate lastUpdate;
 	
-	private DKafkaByteConsumer2 messageConsumer;
+	private DKafkaByteConsumer2 nodeMessageConsumer;
+	
+	private DKafkaByteConsumer2 clusterMessageConsumer;
 	
 	private DKafkaByteProducer messageProducer;
 
@@ -51,6 +53,11 @@ public class ClusterNodeImpl implements ClusterNode {
 	
 	private String exception;
 
+	// listen in on node specific topic
+	// listen in on cluster message topic 
+	// message can come from node specific topic or cluster message topic 
+	
+	
 	public void start(ClusterNodeUpdate update) {
 		logger.info("Starting Cluster Node {} " + update.getNode());;
 		lastUpdate = update;
@@ -276,6 +283,14 @@ public class ClusterNodeImpl implements ClusterNode {
 		// TODO Auto-generated method stub
 		return null;
 	}
+
+	@Override
+	public Message requestReply(Message message) throws ClusterNodeException {
+		// TODO Auto-generated method stub
+		return null;
+	}
+	
+	
 	
 	
 	

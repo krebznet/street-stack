@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.dunkware.common.util.executor.DExecutorStats;
-import com.dunkware.net.cluster.json.job.ClusterJobStats;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonInclude.Include;
 
@@ -14,7 +13,6 @@ public class ClusterNodeStats {
 	private ClusterNodeType type;
 	private String id; 
 	private String start; 
-	private List<ClusterJobStats> runningJobs = new ArrayList<ClusterJobStats>();
 	private String httpEndpoint; 
 	private String grpcEndpoint;
 	private int availableProcessors;
@@ -24,7 +22,7 @@ public class ClusterNodeStats {
 	private double totalMemory;
 	private DExecutorStats executorStats;
 	private int runningJobCount;
-	private List<ClusterNodeServiceDescriptor> services = new ArrayList<ClusterNodeServiceDescriptor>();
+	private List<String> services = new ArrayList<String>();
 
 	
 	public ClusterNodeType getType() {
@@ -77,12 +75,7 @@ public class ClusterNodeStats {
 	public void setTotalMemory(double totalMemory) {
 		this.totalMemory = totalMemory;
 	}
-	public List<ClusterJobStats> getRunningJobs() {
-		return runningJobs;
-	}
-	public void setRunningJobs(List<ClusterJobStats> runningJobs) {
-		this.runningJobs = runningJobs;
-	}
+
 	public String getHttpEndpoint() {
 		return httpEndpoint;
 	}
@@ -107,22 +100,12 @@ public class ClusterNodeStats {
 	public void setRunningJobCount(int runningJobCount) {
 		this.runningJobCount = runningJobCount;
 	}
-	public List<ClusterNodeServiceDescriptor> getServices() {
+	public List<String> getServices() {
 		return services;
 	}
-	public void setServices(List<ClusterNodeServiceDescriptor> services) {
+	public void setServices(List<String> services) {
 		this.services = services;
 	}
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
+
 	
 }

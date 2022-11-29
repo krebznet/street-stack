@@ -26,14 +26,12 @@ import com.dunkware.common.spec.kafka.DKafkaByteConsumer2Spec;
 import com.dunkware.common.spec.kafka.DKafkaByteConsumer2Spec.ConsumerType;
 import com.dunkware.common.spec.kafka.DKafkaByteConsumer2Spec.OffsetType;
 import com.dunkware.common.spec.kafka.DKafkaByteConsumer2SpecBuilder;
-import com.dunkware.common.util.bitch.BitchLogger;
 import com.dunkware.common.util.dtime.DDateTime;
 import com.dunkware.common.util.dtime.DTimeZone;
 import com.dunkware.common.util.events.DEventTree;
 import com.dunkware.common.util.executor.DExecutor;
 import com.dunkware.common.util.json.DJson;
 import com.dunkware.common.util.uuid.DUUID;
-import com.dunkware.net.cluster.json.node.ClusterNodeServiceDescriptor;
 import com.dunkware.net.cluster.json.node.ClusterNodeState;
 import com.dunkware.net.cluster.json.node.ClusterNodeStats;
 import com.dunkware.net.cluster.json.node.ClusterNodeType;
@@ -46,6 +44,7 @@ import com.dunkware.net.proto.cluster.GNodeUpdateRequest;
 import com.dunkware.net.proto.cluster.GNodeUpdateResponse;
 import com.dunkware.net.proto.cluster.service.GClustererviceGrpc;
 import com.dunkware.net.proto.cluster.service.GClustererviceGrpc.GClustererviceStub;
+import com.dunkware.spring.message.Message;
 import com.dunkware.spring.message.MessageTransport;
 
 import io.grpc.ConnectivityState;
@@ -72,13 +71,9 @@ public class ClusterImpl implements Cluster {
 
 	private DDateTime startTime;
 
-	private ClusterEventService eventService;
-
 	private Map<String, ClusterNode> nodes = new ConcurrentHashMap<String, ClusterNode>();
 
 	private ManagedChannel serverChannel;
-
-	private List<ClusterNodeServiceDescriptor> netServiceDescriptors = new ArrayList<ClusterNodeServiceDescriptor>();
 
 	private NodeUpdaterHandler updateHandler;
 
@@ -182,15 +177,7 @@ public class ClusterImpl implements Cluster {
 		executor = new DExecutor(15);
 
 		eventTree = DEventTree.newInstance(executor);
-		eventService = new ClusterEventService();
-		eventTree = DEventTree.newInstance(executor);
-		ac.getAutowireCapableBeanFactory().autowireBean(eventService);
-		try {
-			eventService.start(this);
-		} catch (Exception e) {
-			logger.error(MarkerFactory.getMarker("Crash"), "Event Service Failed to start " + e.toString());
-			System.exit(-1);
-		}
+		
 
 	}
 
@@ -239,12 +226,7 @@ public class ClusterImpl implements Cluster {
 		int activeJobs = 0;
 		stats.setRunningJobCount(activeJobs);
 		stats.setType(clusterConfig.getNodeType());
-		for (ClusterNodeServiceDescriptor desc : netServiceDescriptors) {
-			if (desc.getEndpoint() == null || desc.getType() == null || desc.getClassName() == null) {
-				logger.error("Stop Right Fucking Here null shit on your service descriptors");
-			}
-		}
-		stats.setServices(netServiceDescriptors);
+	    // need to creaate extension classes
 
 		// now we need the other stuff -
 		return stats;
@@ -443,6 +425,12 @@ public class ClusterImpl implements Cluster {
 			}
 
 		}
+	}
+
+	@Override
+	public Message clusterService(Object payload) throws ClusterNodeException {
+		// TODO Auto-generated method stub
+		return null;
 	}
 	
 	

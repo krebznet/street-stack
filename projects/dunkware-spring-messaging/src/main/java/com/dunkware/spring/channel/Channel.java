@@ -5,6 +5,8 @@ import com.dunkware.spring.message.MessageInterceptor;
 
 public interface Channel {
 	
+	void open()
+	
 	void dispose();
 	
 	void send(Object payload) throws ChannelException;

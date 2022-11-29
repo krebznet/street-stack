@@ -45,5 +45,7 @@ public interface ClusterNode {
 	
 	public void sendMessage(Message message) throws ClusterNodeException;
 	
+	public Message requestReply(Message message) throws ClusterNodeException;
+	
 
 }

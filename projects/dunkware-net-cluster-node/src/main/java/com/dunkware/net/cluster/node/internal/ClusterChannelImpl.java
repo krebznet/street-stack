@@ -25,6 +25,14 @@ public class ClusterChannelImpl extends ChannelImpl implements ClusterChannel {
 		this.targetNode = targetNode;
 		this.channelId = channelId; 
 		this.channelType = channelType;
+		
+		// yup it needs call back from the node to our request. 
+		// can we have a req/reply service for cluster 
+		
+		// @ClusterService 
+		
+		// 	@AClusterReploy 
+		//   this would say hey we need ot make this out 
 	}
 
 	@Override

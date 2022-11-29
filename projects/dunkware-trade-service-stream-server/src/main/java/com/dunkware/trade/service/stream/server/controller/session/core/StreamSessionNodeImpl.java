@@ -14,7 +14,6 @@ import com.dunkware.common.util.json.DJson;
 import com.dunkware.common.util.json.bytes.DBytes;
 import com.dunkware.net.cluster.node.Cluster;
 import com.dunkware.net.cluster.node.ClusterNode;
-import com.dunkware.net.cluster.node.anot.AClusterPojoEventHandler;
 import com.dunkware.trade.service.stream.json.controller.session.StreamSessionNodeState;
 import com.dunkware.trade.service.stream.json.controller.session.StreamSessionNodeStatus;
 import com.dunkware.trade.service.stream.json.worker.stream.StreamSessionWorkerStartReq;
@@ -203,12 +202,7 @@ public class StreamSessionNodeImpl implements StreamSessionNode {
 		return input.getStream();
 	}
 
-	@AClusterPojoEventHandler(pojoClass = StreamSessionWorkerStats.class)
-	public void streamWorkerStatus(StreamSessionWorkerStats workerStats) {
-		if (workerStats.getNodeId().equals(input.getClusterNode().getId())) {
-			this.workerStats = workerStats;
-		}
-	}
+	
 
 	@Override
 	public void stopNode() {
