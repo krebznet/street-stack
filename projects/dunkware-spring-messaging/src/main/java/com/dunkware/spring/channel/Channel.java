@@ -5,7 +5,7 @@ import com.dunkware.spring.message.MessageInterceptor;
 
 public interface Channel {
 	
-	void open()
+	void open();
 	
 	void dispose();
 	

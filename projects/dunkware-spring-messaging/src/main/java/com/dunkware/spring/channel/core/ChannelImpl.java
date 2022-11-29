@@ -542,5 +542,11 @@ public class ChannelImpl implements Channel, DKafkaByteHandler2 {
 		}
 	}
 
+	@Override
+	public void open() {
+		// TODO Auto-generated method stub
+		
+	}
+
 
 }
