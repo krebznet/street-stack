@@ -1,7 +1,0 @@
-1.1.0
- - Added Core Variable Value Expressions
- - Added Snapshot Expression
- - Added ROC and AVG Operator Expressions
- 1.2.0
-  - Added signal as xscript element
-  

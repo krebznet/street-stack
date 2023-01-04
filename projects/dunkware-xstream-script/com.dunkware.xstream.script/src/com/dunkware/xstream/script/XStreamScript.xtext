@@ -132,6 +132,7 @@ SignalCountHistory:
 	{SignalCountHistory} 'sigCountHistory' '('signal=[SignalType] ',' timeRange=HistoryTimeRange')'
 ;	
 	
+	
 enum HistoricalAggFunc:
 	high="HIGH" | low="LOW";
 
