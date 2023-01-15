@@ -41,6 +41,9 @@ public interface ClusterNode {
 	
 	public String getException();
 	
+	// wouldnt you want to have a input message to create a channel
+	// this will all work duncan krebs
+	// yes it will 
 	public Channel createChannel(String channelType) throws ClusterNodeException;
 	
 	public void sendMessage(Message message) throws ClusterNodeException;

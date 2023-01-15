@@ -173,7 +173,7 @@ public class ClusterImpl implements Cluster {
 		startNodeStatConsumer(this);
 		startTime = DDateTime.now(DTimeZone.NewYork);
 		registry = new ClusterRegistry();
-		registry.start(this);
+		registry.start();
 		executor = new DExecutor(15);
 
 		eventTree = DEventTree.newInstance(executor);

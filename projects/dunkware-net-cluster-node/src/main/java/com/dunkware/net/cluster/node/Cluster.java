@@ -37,6 +37,7 @@ public interface Cluster {
 	
 	/**
 	 * Okay Maybe this can round robin or load balance service calls 
+	 * This needs to include an end point if I am not mistaken here 
 	 * @param payload
 	 * @return
 	 * @throws ClusterNodeException

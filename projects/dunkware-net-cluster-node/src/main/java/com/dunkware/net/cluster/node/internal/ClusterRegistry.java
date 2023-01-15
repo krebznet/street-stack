@@ -7,6 +7,7 @@ import javax.annotation.PostConstruct;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -16,14 +17,15 @@ public class ClusterRegistry {
 	
 	private List<ClusterExtension> extensions  = new ArrayList<ClusterExtension>();
 	private List<String> serviceClasses = new ArrayList<String>();
+	@Autowired
 	private ClusterImpl cluster;
 	
 	// might need to change this
 	// so why did he hate technology, industrial society 
 	// great intellect just a little bit off. 
 	@PostConstruct
-	public void start(ClusterImpl cluster)   { 
-		this.cluster = cluster; 
+	public void start()   { 
+		//this.cluster = cluster; 
 			
 	}
 
