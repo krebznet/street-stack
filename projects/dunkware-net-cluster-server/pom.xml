@@ -15,7 +15,7 @@
 	<description>Dunkware Net ClusterServer </description>
 
 	<properties>
-		<java.version>17</java.version>
+		<java.version>11</java.version>
 		<org.mapstruct.version>1.4.2.Final</org.mapstruct.version>
 		<flyway.version>7.10.0</flyway.version>
 		<lombok.version>1.18.20</lombok.version>
@@ -217,7 +217,7 @@
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-compiler-plugin</artifactId>
-				<version>3.8.1</version>
+				
 				<configuration>
 					<annotationProcessorPaths>
 						<path>
