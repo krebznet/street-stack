@@ -26,7 +26,7 @@
 		<protobuf.plugin.version>0.6.1</protobuf.plugin.version>
 		<net-devh-grpc.version>2.0.1.RELEASE</net-devh-grpc.version>
 		<grpc.version>1.32.1</grpc.version>
-		<spring-cloud.version>Hoxton.SR6</spring-cloud.version>
+		
 	</properties>
 
 	<repositories>
@@ -330,8 +330,7 @@
 	</dependencies>
 
 
-
-	<build>
+<build>
 		<plugins>
 			<plugin>
 				<groupId>org.springframework.boot</groupId>
@@ -340,12 +339,27 @@
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-compiler-plugin</artifactId>
-
+				<version>3.8.1</version>
 				<configuration>
-
+					<annotationProcessorPaths>
+						<path>
+							<groupId>org.projectlombok</groupId>
+							<artifactId>lombok</artifactId>
+							<version>${lombok.version}</version>
+						</path>
+						<path>
+							<groupId>org.projectlombok</groupId>
+							<artifactId>lombok-mapstruct-binding</artifactId>
+							<version>0.2.0</version>
+						</path>
+						<path>
+							<groupId>org.mapstruct</groupId>
+							<artifactId>mapstruct-processor</artifactId>
+							<version>${org.mapstruct.version}</version>
+						</path>
+					</annotationProcessorPaths>
 				</configuration>
 			</plugin>
 		</plugins>
 	</build>
-
 </project>
