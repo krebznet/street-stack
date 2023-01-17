@@ -7,7 +7,6 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.dunkware.net.cluster.node.Cluster;
 import com.dunkware.trade.service.stream.container.worker.WorkerContainerInput;
 import com.dunkware.trade.service.stream.container.worker.WorkerContainerStartReq;
 import com.dunkware.trade.service.stream.container.worker.WorkerContainerStartResp;
@@ -15,9 +14,8 @@ import com.dunkware.trade.service.stream.container.worker.WorkerContainerStartRe
 @RestController
 public class WorkerContainerWebService {
 
-	@Autowired
-	private Cluster cluster;
 	
+
 	@Autowired
 	private ApplicationContext ac; 
 	
