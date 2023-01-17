@@ -1,0 +1,8 @@
+cd ..
+cd projects/dunkware-trade-service-stream-server
+aws ecr get-login-password --region us-east-1 | docker login --username AWS --password-stdin 505030817635.dkr.ecr.us-east-1.amazonaws.com
+docker build -t dunkware-trade-service-stream-server .
+docker tag dunkware-trade-service-stream-server:latest 505030817635.dkr.ecr.us-east-1.amazonaws.com/dunkware-trade-service-stream-server:latest
+docker push 505030817635.dkr.ecr.us-east-1.amazonaws.com/dunkware-trade-service-stream-server:latest
+sleep 1
+cd ../..

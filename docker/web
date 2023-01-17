@@ -1,0 +1,6 @@
+cd ..
+cd projects/dunkware-trade-service-web-server
+docker build -t dunkware-trade-service-web-server .
+docker tag dunkware-trade-service-web-server:latest 505030817635.dkr.ecr.us-east-1.amazonaws.com/dunkware-trade-service-web-server:latest
+docker push 505030817635.dkr.ecr.us-east-1.amazonaws.com/dunkware-trade-service-web-server:latest
+sleep 1

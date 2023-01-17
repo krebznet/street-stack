@@ -1,0 +1,36 @@
+cd projects/dunkware-net-cluster-server
+sleep 1
+docker build -t dunkware-net-cluster-server .
+docker tag dunkware-net-cluster-server:latest 505030817635.dkr.ecr.us-east-1.amazonaws.com/dunkware-net-cluster-server:latest
+docker push 505030817635.dkr.ecr.us-east-1.amazonaws.com/dunkware-net-cluster-server:latest
+sleep 1
+cd ..
+
+cd dunkware-trade-service-stream-server
+aws ecr get-login-password --region us-east-1 | docker login --username AWS --password-stdin 505030817635.dkr.ecr.us-east-1.amazonaws.com
+docker build -t dunkware-trade-service-stream-server .
+docker tag dunkware-trade-service-stream-server:latest 505030817635.dkr.ecr.us-east-1.amazonaws.com/dunkware-trade-service-stream-server:latest
+docker push 505030817635.dkr.ecr.us-east-1.amazonaws.com/dunkware-trade-service-stream-server:latest
+sleep 1
+cd ..
+sleep 1
+cd dunkware-trade-service-tick-server
+docker build -t dunkware-trade-service-tick-server .
+docker tag dunkware-trade-service-tick-server:latest 505030817635.dkr.ecr.us-east-1.amazonaws.com/dunkware-trade-service-tick-server:latest
+docker push 505030817635.dkr.ecr.us-east-1.amazonaws.com/dunkware-trade-service-tick-server:latest
+sleep 1
+cd ..
+cd dunkwrae-trade-service-web-server
+docker build -t dunkware-trade-service-web-server .
+docker tag dunkware-trade-service-web-server:latest 505030817635.dkr.ecr.us-east-1.amazonaws.com/dunkware-trade-service-web-server:latest
+docker push 505030817635.dkr.ecr.us-east-1.amazonaws.com/dunkware-trade-service-web-server:latest
+sleep 1
+cd ..
+sleep 1
+cd dunkware-trade-service-worker
+docker build -t dunkware-trade-service-worker-server .
+docker tag dunkware-trade-service-worker-server:latest 505030817635.dkr.ecr.us-east-1.amazonaws.com/dunkware-trade-service-worker-server:latest
+docker push 505030817635.dkr.ecr.us-east-1.amazonaws.com/dunkware-trade-service-worker-server:latest
+c.
+
+
