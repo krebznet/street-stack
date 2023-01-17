@@ -8,7 +8,6 @@ import org.springframework.boot.autoconfigure.mongo.MongoAutoConfiguration;
 
 
 @SpringBootApplication(scanBasePackages = "com.dunkware")
-@EnableAutoConfiguration(exclude={MongoAutoConfiguration.class, MongoDataAutoConfiguration.class})
 public class StreamServer {
 
 	public static void main(String[] args) {
