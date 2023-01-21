@@ -40,10 +40,6 @@ public class StreamSessionWorkerImpl implements StreamSessionWorker {
 	
 	private StreamSessionWorkerStartReq startReq;
 	
-	
-
-	
-	
 	private StatusPublisher statusPublisher;
 	
 	public StreamSessionWorkerImpl() {
