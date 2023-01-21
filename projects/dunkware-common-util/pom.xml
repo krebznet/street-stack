@@ -51,6 +51,14 @@
 			<scope>test</scope>
 		</dependency>
 
+		<!-- https://mvnrepository.com/artifact/com.github.steveash.commons/commons-convert -->
+		<dependency>
+			<groupId>com.github.steveash.commons</groupId>
+			<artifactId>commons-convert</artifactId>
+			<version>0.90.0</version>
+		</dependency>
+
+
 		<dependency>
 			<groupId>com.fasterxml.jackson.core</groupId>
 			<artifactId>jackson-core</artifactId>
@@ -90,7 +98,7 @@
 			<version>1.4</version>
 		</dependency>
 
-	
+
 
 		<!-- https://mvnrepository.com/artifact/org.mongodb/mongodb-driver-core -->
 		<dependency>
@@ -109,7 +117,7 @@
 	<build>
 		<testSourceDirectory>${project.basedir}/src/test/java</testSourceDirectory>
 
-		<pluginManagement><!-- lock down plugins versions to avoid using Maven
+		<pluginManagement><!-- lock down plugins versions to avoid using Maven 
 				defaults (may be moved to parent pom) -->
 			<plugins>
 				<plugin>

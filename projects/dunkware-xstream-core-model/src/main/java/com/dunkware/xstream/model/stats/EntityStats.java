@@ -1,38 +1,76 @@
 package com.dunkware.xstream.model.stats;
 
-import java.util.ArrayList;
+import java.time.LocalDateTime;
 import java.util.List;
 
-import com.dunkware.common.util.dtime.DDate;
-
 public class EntityStats {
+	
+	public static EntityStats newInstance(LocalDateTime fromTime) { 
+		EntityStats stats = new EntityStats();
+		stats.setFrom(fromTime);
+		return stats;
+	}
 
-	private DDate date;
+	private LocalDateTime from; 
+	private LocalDateTime to; 
+	private int streamId;
+	private String entityIdent; 
+	private int entityId; 
+	private String sessionId; 
+	private String streamIdent; 
+	private double streamVersion; 
+	private List<EntityVarStats> varStats;
 	
-	private int id; 
-	private String ident; 
 	
-	private List<EntityVarStats> varStats = new ArrayList<EntityVarStats>();
-	private List<EntitySignalStats> sigStats = new ArrayList<EntitySignalStats>();
-
+	public LocalDateTime getFrom() {
+		return from;
+	}
+	public void setFrom(LocalDateTime from) {
+		this.from = from;
+	}
+	public LocalDateTime getTo() {
+		return to;
+	}
+	public void setTo(LocalDateTime to) {
+		this.to = to;
+	}
+	public int getStreamId() {
+		return streamId;
+	}
+	public void setStreamId(int streamId) {
+		this.streamId = streamId;
+	}
+	public String getEntityIdent() {
+		return entityIdent;
+	}
+	public void setEntityIdent(String entityIdent) {
+		this.entityIdent = entityIdent;
+	}
+	public int getEntityId() {
+		return entityId;
+	}
+	public void setEntityId(int entityId) {
+		this.entityId = entityId;
+	}
 	
-	public DDate getDate() {
-		return date;
+	
+	public String getSessionId() {
+		return sessionId;
 	}
-	public void setDate(DDate date) {
-		this.date = date;
+	public void setSessionId(String sessionId) {
+		this.sessionId = sessionId;
 	}
-	public int getId() {
-		return id;
+	public String getStreamIdent() {
+		return streamIdent;
 	}
-	public void setId(int id) {
-		this.id = id;
+	public void setStreamIdent(String streamIdent) {
+		this.streamIdent = streamIdent;
 	}
-	public String getIdent() {
-		return ident;
+	public double getStreamVersion() {
+		return streamVersion;
 	}
-	public void setIdent(String ident) {
-		this.ident = ident;
+	public void setStreamVersion(double streamVersion) {
+		this.streamVersion = streamVersion;
 	}
 	public List<EntityVarStats> getVarStats() {
 		return varStats;
@@ -40,16 +78,8 @@ public class EntityStats {
 	public void setVarStats(List<EntityVarStats> varStats) {
 		this.varStats = varStats;
 	}
-	public List<EntitySignalStats> getSigStats() {
-		return sigStats;
-	}
-	public void setSigStats(List<EntitySignalStats> sigStats) {
-		this.sigStats = sigStats;
-	}
 	
 	
 	
-	
-	
-	
+
 }

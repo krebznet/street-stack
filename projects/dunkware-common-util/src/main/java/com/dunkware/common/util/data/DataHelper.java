@@ -4,6 +4,7 @@ public class DataHelper {
 
 	public static DataType getDataType(Object input) throws Exception {
 		if (input instanceof Double) {
+		
 			return DataType.DOUBLE;
 		}
 		if (input instanceof Long) {

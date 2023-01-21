@@ -3,6 +3,7 @@ package com.dunkware.xstream.core;
 import java.math.BigDecimal;
 import java.math.MathContext;
 import java.math.RoundingMode;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
@@ -98,6 +99,33 @@ public class XStreamVarImpl implements XStreamVar, XStreamExpressionListener, XS
 		}
 		expression.dispose();
 
+	}
+	
+	
+	
+
+	@Override
+	public LocalDateTime getLocalDateTime() throws XStreamRuntimeException {
+		return row.getStream().getClock().getLocalDateTime();
+	}
+
+	@Override
+	public Number getNumber(int index) {
+		Object value = getValue(index);
+		if (value instanceof Double) {
+			Double number = (Double) value;
+			return number;
+		}
+		if (value instanceof Integer) {
+			Integer integer = (Integer) value;
+			return integer;
+		}
+		if (value instanceof Long) {
+			Long integer = (Long) value;
+			return integer;
+		}
+		
+		throw new XStreamRuntimeException("Invalid getNumber input class type " + value.getClass().getName().toString());
 	}
 
 	@Override

@@ -2,7 +2,7 @@ package com.dunkware.trade.sdk.core.model.stats;
 
 import com.dunkware.common.util.dtime.DTime;
 
-public class EntitySessionVarStats {
+public class SessionEntityVarStats {
 
 	private int id; 
 	private String ident; 

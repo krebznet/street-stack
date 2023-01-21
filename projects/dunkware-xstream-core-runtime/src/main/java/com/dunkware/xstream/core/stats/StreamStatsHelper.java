@@ -1,5 +1,7 @@
 package com.dunkware.xstream.core.stats;
 
+import org.apache.commons.beanutils.converters.NumberConverter;
+
 import com.dunkware.xstream.api.XStreamVar;
 import com.dunkware.xstream.model.stats.EntityVarStats;
 import com.dunkware.xstream.xScript.DataType;
@@ -21,7 +23,6 @@ public class StreamStatsHelper {
 
 	}
 
-	public static void updateVarStats(EntityVarStats stats, XStreamVar var, Object value) {
-	}
+	
 
 }

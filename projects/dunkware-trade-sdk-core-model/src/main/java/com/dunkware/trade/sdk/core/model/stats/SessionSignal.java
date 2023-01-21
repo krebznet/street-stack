@@ -1,6 +1,6 @@
 package com.dunkware.trade.sdk.core.model.stats;
 
-public class SignalSesionStats {
+public class SessionSignal {
 
 	
 	

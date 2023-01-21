@@ -1,8 +1,10 @@
 package com.dunkware.common.util.dtime.json;
 
 import java.io.IOException;
+import java.time.LocalDate;
 
 import com.dunkware.common.util.dtime.DTime;
+import com.dunkware.common.util.json.DJson;
 import com.fasterxml.jackson.core.JsonGenerator;
 import com.fasterxml.jackson.databind.JsonSerializer;
 import com.fasterxml.jackson.databind.SerializerProvider;
@@ -21,5 +23,16 @@ public class DTimeSerializer  extends JsonSerializer<DTime> {
 		arg1.writeEndObject();
 	} 
 	
+	
+	public static void main(String[] args) {
+		LocalDate now = LocalDate.now();
+		try {
+			System.out.println(DJson.serializePretty(now));
+		} catch (Exception e) {
+			e.printStackTrace();
+			// TODO: handle exception
+		}
+		
+	}
 	
 }

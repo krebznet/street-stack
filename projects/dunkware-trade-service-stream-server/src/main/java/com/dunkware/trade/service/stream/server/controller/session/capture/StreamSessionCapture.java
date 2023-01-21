@@ -103,7 +103,7 @@ public class StreamSessionCapture {
 
 	public void init() {
 
-	}
+	} 
 
 	@Transactional
 	public void controllerStart(StreamSession session) throws Exception {

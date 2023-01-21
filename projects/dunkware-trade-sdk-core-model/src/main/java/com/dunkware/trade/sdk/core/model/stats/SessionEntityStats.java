@@ -4,15 +4,15 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
-public class EntitySessionStats {
+public class SessionEntityStats {
 
 	private LocalDate date;
 	
 	private int id; 
 	private String ident; 
 	
-	private List<EntitySessionVarStats> varStats = new ArrayList<EntitySessionVarStats>();
-	private List<SignalSesionStats> sigStats = new ArrayList<SignalSesionStats>();
+	private List<SessionEntityVarStats> varStats = new ArrayList<SessionEntityVarStats>();
+	private List<SessionSignal> sigStats = new ArrayList<SessionSignal>();
 	
 	public LocalDate getDate() {
 		return date;
@@ -32,16 +32,16 @@ public class EntitySessionStats {
 	public void setIdent(String ident) {
 		this.ident = ident;
 	}
-	public List<EntitySessionVarStats> getVarStats() {
+	public List<SessionEntityVarStats> getVarStats() {
 		return varStats;
 	}
-	public void setVarStats(List<EntitySessionVarStats> varStats) {
+	public void setVarStats(List<SessionEntityVarStats> varStats) {
 		this.varStats = varStats;
 	}
-	public List<SignalSesionStats> getSigStats() {
+	public List<SessionSignal> getSigStats() {
 		return sigStats;
 	}
-	public void setSigStats(List<SignalSesionStats> sigStats) {
+	public void setSigStats(List<SessionSignal> sigStats) {
 		this.sigStats = sigStats;
 	}
 	

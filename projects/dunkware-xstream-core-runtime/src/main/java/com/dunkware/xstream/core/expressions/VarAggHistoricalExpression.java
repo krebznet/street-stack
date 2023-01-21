@@ -11,6 +11,9 @@ public class VarAggHistoricalExpression extends XStreamExpressionImpl {
 	
 	private XStreamRow row; 
 	private VarAggHistoryType myType; 
+	
+	// we need an aggregation service implemented in here 
+	
 
 	@Override
 	public void init(XStreamRow row, ExpressionType type) {

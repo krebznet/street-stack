@@ -1,11 +1,11 @@
 package com.dunkware.xstream.api;
 
+import java.time.LocalDateTime;
 import java.util.Collection;
 import java.util.List;
 
 import com.dunkware.common.tick.stream.TickStream;
 import com.dunkware.xstream.model.metrics.XStreamRowMetrics;
-import com.dunkware.xstream.model.value.SessionEntityValue;
 import com.dunkware.xstream.xScript.SignalType;
 
 public interface XStreamRow {
@@ -23,6 +23,9 @@ public interface XStreamRow {
 	public XStreamVar getVar(String name);
 	
 	public TickStream getTickStream();
+	
+	public LocalDateTime getLocalDateTime();
+	
 	
 	/**
 	 * Takes a snapshot of all the variable values

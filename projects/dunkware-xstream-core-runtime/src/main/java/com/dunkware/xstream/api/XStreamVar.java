@@ -1,5 +1,6 @@
 package com.dunkware.xstream.api;
 
+import java.time.LocalDateTime;
 import java.util.Collection;
 
 import com.dunkware.xstream.model.metrics.XStreamVarMetrics;
@@ -15,8 +16,12 @@ public interface XStreamVar {
 	
 	public void setValue(Object value);
 	
+	public LocalDateTime getLocalDateTime();
+	
 	public Object getValue(int index);
 	
+	public Number getNumber(int index);
+		
 	public void getValues(Object[] data, int startIndex, int endIndex);
 	
 	public VarType getVarType();

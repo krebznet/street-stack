@@ -1,5 +1,6 @@
 package com.dunkware.xstream.core;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
@@ -274,6 +275,8 @@ public class XStreamRowImpl implements XStreamRow, XStreamVarListener {
 		stream.getExecutor().execute(run);
 
 	}
+	
+	
 
 	@Override
 	public void removeVarListener(XStreamVarListener listener) {
@@ -295,6 +298,11 @@ public class XStreamRowImpl implements XStreamRow, XStreamVarListener {
 
 		stream.getExecutor().execute(run);
 
+	}
+
+	@Override
+	public LocalDateTime getLocalDateTime() {
+		return stream.getClock().getLocalDateTime();
 	}
 
 }

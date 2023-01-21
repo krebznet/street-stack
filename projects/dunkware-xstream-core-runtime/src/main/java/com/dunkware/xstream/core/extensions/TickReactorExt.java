@@ -1,7 +1,5 @@
 package com.dunkware.xstream.core.extensions;
 
-import java.util.IllegalFormatWidthException;
-
 import com.dunkware.common.tick.TickHandler;
 import com.dunkware.common.tick.proto.TickProto.Tick;
 import com.dunkware.common.tick.reactor.TickReactorFactory;
@@ -9,7 +7,6 @@ import com.dunkware.common.tick.reactor.impl.TickReactor;
 import com.dunkware.xstream.api.XStream;
 import com.dunkware.xstream.api.XStreamException;
 import com.dunkware.xstream.api.XStreamExtension;
-import com.dunkware.xstream.core.XStreamRegistryImpl;
 import com.dunkware.xstream.core.annotations.AXStreamExtension;
 import com.dunkware.xstream.xproject.model.XStreamExtensionType;
 
