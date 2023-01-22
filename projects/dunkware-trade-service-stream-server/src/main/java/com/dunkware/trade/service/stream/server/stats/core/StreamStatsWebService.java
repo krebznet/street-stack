@@ -19,8 +19,8 @@ import com.dunkware.trade.service.stream.server.stats.repository.SessionEntityVa
 public class StreamStatsWebService {
 
 	
-	@Autowired
-	private StreamStatsService statsService; 
+	//@Autowired
+	//private StreamStatsService statsService; 
 	
 	
 	@Autowired

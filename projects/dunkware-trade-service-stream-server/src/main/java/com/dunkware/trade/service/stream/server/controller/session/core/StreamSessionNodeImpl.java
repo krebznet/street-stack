@@ -89,7 +89,7 @@ public class StreamSessionNodeImpl implements StreamSessionNode {
 				req.setSessionId(input.getSession().getSessionId());
 				req.setStreamBundle(xstreamBundle);
 
-				StreamSessionWorkerStartResp resp = null;
+			//	StreamSessionWorkerStartResp resp = null;
 				try {
 					String serialized = DJson.serialize(req);
 

@@ -55,7 +55,7 @@ public class StreamSessionWorkerImpl implements StreamSessionWorker {
 	
 
 	
-	public void startWorker() throws Exception {
+	public void startWoker() throws Exception {
 
 		try {
 
@@ -88,6 +88,7 @@ public class StreamSessionWorkerImpl implements StreamSessionWorker {
 	public void start(StreamSessionWorkerStartReq req) throws Exception {
 		this.bundle = req.getStreamBundle();
 		this.startReq = req;
+		startWoker();
 	//	cluster.startJob(this, "StreamWorker", req.getStream() + cluster.getNodeId());
 		
 	}
@@ -124,6 +125,9 @@ public class StreamSessionWorkerImpl implements StreamSessionWorker {
 	@Override
 	public StreamSessionWorkerStats getStats() {
 		StreamSessionWorkerStats spec = new StreamSessionWorkerStats();
+		if(stream == null) { 
+			return new StreamSessionWorkerStats();
+		}
 		DExecutor ex = stream.getExecutor().getDExecutor();
 		spec.setPendingTaskCount(ex.getPendingTaskCount());
 		spec.setCompletedTaskCount(ex.getCompletedTaskCount());

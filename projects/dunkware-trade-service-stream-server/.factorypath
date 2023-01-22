@@ -186,6 +186,7 @@
     <factorypathentry kind="VARJAR" id="M2_REPO/net/devh/grpc-server-spring-boot-starter/2.7.0.RELEASE/grpc-server-spring-boot-starter-2.7.0.RELEASE.jar" enabled="true" runInBatchMode="false"/>
     <factorypathentry kind="VARJAR" id="M2_REPO/net/devh/grpc-server-spring-boot-autoconfigure/2.7.0.RELEASE/grpc-server-spring-boot-autoconfigure-2.7.0.RELEASE.jar" enabled="true" runInBatchMode="false"/>
     <factorypathentry kind="VARJAR" id="M2_REPO/net/devh/grpc-common-spring-boot/2.7.0.RELEASE/grpc-common-spring-boot-2.7.0.RELEASE.jar" enabled="true" runInBatchMode="false"/>
+    <factorypathentry kind="VARJAR" id="M2_REPO/com/github/steveash/commons/commons-convert/0.90.0/commons-convert-0.90.0.jar" enabled="true" runInBatchMode="false"/>
     <factorypathentry kind="VARJAR" id="M2_REPO/com/googlecode/protobuf-java-format/protobuf-java-format/1.4/protobuf-java-format-1.4.jar" enabled="true" runInBatchMode="false"/>
     <factorypathentry kind="VARJAR" id="M2_REPO/org/mongodb/mongodb-driver-core/4.6.1/mongodb-driver-core-4.6.1.jar" enabled="true" runInBatchMode="false"/>
     <factorypathentry kind="VARJAR" id="M2_REPO/org/mongodb/bson-record-codec/4.6.1/bson-record-codec-4.6.1.jar" enabled="true" runInBatchMode="false"/>

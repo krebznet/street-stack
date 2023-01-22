@@ -52,6 +52,9 @@ public class SessionContainerServiceImpl implements SessionContainerService {
 	 */
 	@PostConstruct()
 	public void load() { 
+		if(1 == 1) { 
+			return;
+		}
 		if(loaded)return;
 		
 		Thread runner = new Thread() { 

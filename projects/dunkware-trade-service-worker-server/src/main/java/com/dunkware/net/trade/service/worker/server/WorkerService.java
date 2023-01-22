@@ -13,6 +13,8 @@ import org.springframework.boot.autoconfigure.mongo.MongoAutoConfiguration;
 //@EnableBinding(StreamProcessor.class)
 public class WorkerService {
 
+
+
 	public static void main(String[] args) {
 		SpringApplication.run(WorkerService.class, args);
 	}

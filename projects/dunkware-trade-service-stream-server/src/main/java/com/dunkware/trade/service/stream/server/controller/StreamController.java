@@ -270,7 +270,7 @@ public class StreamController {
 			input.setWorkerNodes(nodes);
 			logger.info("Stream {} Scheduler Starting Session",getName());
 			session.startSession(input);
-			stats.setSession(session.getStatus());
+		//	stats.setSession(session.getStatus());
 			// need to call this after start session annoying
 			session.getEventNode().addEventHandler(this);
 		} catch (StreamSessionException e) {
