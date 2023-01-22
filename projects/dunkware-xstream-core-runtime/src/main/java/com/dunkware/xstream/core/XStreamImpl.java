@@ -362,7 +362,7 @@ public class XStreamImpl implements XStream {
 				logger.error("Exception Outer Row Listener " + e.toString(), e);
 
 			} finally {
-				rowListenerLock.release();
+				signalListenerLock.release();
 			}
 		}
 
