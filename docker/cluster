@@ -1,8 +1,0 @@
-cd ..
-cd projects/dunkware-net-cluster-server
-sleep 1
-docker build -t dunkware-net-cluster-server .
-docker tag dunkware-net-cluster-server:latest 505030817635.dkr.ecr.us-east-1.amazonaws.com/dunkware-net-cluster-server:latest
-docker push 505030817635.dkr.ecr.us-east-1.amazonaws.com/dunkware-net-cluster-server:latest
-sleep 1
-cd ../..

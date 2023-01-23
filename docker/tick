@@ -1,6 +1,0 @@
-cd ..
-cd projects/dunkware-trade-service-tick-server
-docker build -t dunkware-trade-service-tick-server .
-docker tag dunkware-trade-service-tick-server:latest 505030817635.dkr.ecr.us-east-1.amazonaws.com/dunkware-trade-service-tick-server:latest
-docker push 505030817635.dkr.ecr.us-east-1.amazonaws.com/dunkware-trade-service-tick-server:latest
-sleep 1

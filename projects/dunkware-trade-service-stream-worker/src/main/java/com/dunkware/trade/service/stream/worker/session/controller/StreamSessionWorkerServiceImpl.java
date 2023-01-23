@@ -1,5 +1,6 @@
 package com.dunkware.trade.service.stream.worker.session.controller;
 
+import java.util.Collection;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
@@ -24,6 +25,13 @@ public class StreamSessionWorkerServiceImpl implements StreamSessionWorkerServic
 		
 	}
 	
+	
+	@Override
+	public Collection<StreamSessionWorker> getWorkers() throws Exception {
+		return workers.values();
+	}
+
+
 	@Override
 	public StreamSessionWorker getWorker(String workerId) throws Exception {
 		if(workers.containsKey(workerId) == false) { 

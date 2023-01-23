@@ -6,20 +6,17 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
-import com.dunkware.common.util.dtime.DTime;
 import com.dunkware.common.util.json.DJson;
-import com.dunkware.common.util.json.bytes.DBytes;
 import com.dunkware.trade.service.stream.json.worker.stream.StreamSessionWorkerStartReq;
-import com.dunkware.trade.service.stream.json.worker.stream.StreamSessionWorkerStartResp;
 import com.dunkware.trade.service.stream.json.worker.stream.StreamSessionWorkerStats;
 import com.dunkware.trade.service.stream.json.worker.stream.StreamSessionWorkerStatsResp;
+import com.dunkware.trade.service.stream.json.worker.stream.StreamSessionWorkersStats;
 
 @RestController
 public class StreamSessionWorkerWebService {
@@ -89,6 +86,15 @@ public class StreamSessionWorkerWebService {
 			resp.setError(e.toString());
 			return resp;
 		}
+	}
+	
+	@RequestMapping(path = "/stream/workers/stats")
+	public @ResponseBody() StreamSessionWorkersStats workersStats() throws Exception { 
+		StreamSessionWorkersStats workers = new StreamSessionWorkersStats(); 
+		for (StreamSessionWorker worker : workerService.getWorkers()) {
+			workers.getWorkers().add(worker.getStats());
+		}
+		return workers;
 	}
 	
 	 
