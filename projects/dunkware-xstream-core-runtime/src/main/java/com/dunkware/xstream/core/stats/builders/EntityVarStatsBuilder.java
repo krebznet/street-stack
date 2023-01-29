@@ -128,8 +128,6 @@ public class EntityVarStatsBuilder implements XStreamVarListener {
 	 */
 	public EntityVarStats getStats() {
 		EntityVarStats stats = new EntityVarStats();
-		stats.setEntityId(var.getRow().getIdentifier());
-		stats.setEntityIdent(var.getRow().getId());
 		stats.setVarId(var.getVarType().getCode());
 		stats.setVarIdent(var.getVarType().getName());
 		// set min if not null
@@ -142,7 +140,7 @@ public class EntityVarStatsBuilder implements XStreamVarListener {
 
 		stats.setFrom(fromTime);
 		stats.setTo(var.getLocalDateTime());
-		stats.setUpdateCount(this.updateCounter.get());
+		stats.setUpdates(this.updateCounter.get());
 		return stats;
 	}
 

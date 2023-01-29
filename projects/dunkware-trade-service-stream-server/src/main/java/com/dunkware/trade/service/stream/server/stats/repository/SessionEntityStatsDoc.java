@@ -1,17 +1,21 @@
-package com.dunkware.xstream.model.stats;
+package com.dunkware.trade.service.stream.server.stats.repository;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
-public class EntityStats {
-	
-	public static EntityStats newInstance(LocalDateTime fromTime) { 
-		EntityStats stats = new EntityStats();
-		stats.setFrom(fromTime);
-		return stats;
-	}
+import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.mapping.Document;
 
+import com.dunkware.xstream.model.stats.EntityVarStats;
+
+
+@Document(collection = "stream_session_stats_entity")
+public class SessionEntityStatsDoc {
+	
+	@Id
+	private long id; 
+	
 	private LocalDateTime from; 
 	private LocalDateTime to; 
 	private int streamId;
@@ -79,6 +83,15 @@ public class EntityStats {
 	public void setVarStats(List<EntityVarStats> varStats) {
 		this.varStats = varStats;
 	}
+	public long getId() {
+		return id;
+	}
+	public void setId(long id) {
+		this.id = id;
+	}
+	
+	
+	
 	
 	
 	

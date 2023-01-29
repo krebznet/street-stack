@@ -1,5 +1,6 @@
 package com.dunkware.xstream.core.stats;
 
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.ConcurrentHashMap;
@@ -10,7 +11,9 @@ import org.slf4j.Marker;
 import org.slf4j.MarkerFactory;
 
 import com.dunkware.common.util.helpers.DHttpHelper;
+import com.dunkware.common.util.helpers.DRandom;
 import com.dunkware.common.util.json.DJson;
+import com.dunkware.common.util.uuid.DUUID;
 import com.dunkware.xstream.api.XStream;
 import com.dunkware.xstream.api.XStreamException;
 import com.dunkware.xstream.api.XStreamExtension;
@@ -35,6 +38,10 @@ public class StreamStatsExt implements XStreamExtension, XStreamListener {
 	private ConcurrentHashMap<String,EntityStatsBuilder> entityStatBuilders = new ConcurrentHashMap<String, EntityStatsBuilder>(); 
 	
 	private Marker marker = MarkerFactory.getMarker("StreamStatsExt");
+	
+	private boolean disposed = false; 
+	
+	private String id = DUUID.randomUUID(5);
 	@Override
 	public void init(XStream stream, XStreamExtensionType type) throws XStreamException {
 		if(logger.isDebugEnabled()) { 
@@ -58,6 +65,12 @@ public class StreamStatsExt implements XStreamExtension, XStreamListener {
 
 	@Override
 	public void preDispose() {
+		if(disposed) { 
+			logger.error("Calling preDispose twice on StreamStatsExt");
+			return;
+		}
+		disposed = true;
+
 		if(logger.isDebugEnabled()) { 
 			logger.debug(marker, "Disposing StreamStatsExt");
 		}

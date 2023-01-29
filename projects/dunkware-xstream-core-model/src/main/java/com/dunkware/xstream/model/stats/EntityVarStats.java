@@ -1,41 +1,19 @@
 package com.dunkware.xstream.model.stats;
 
 import java.time.LocalDateTime;
-import java.util.List;
 
 public class EntityVarStats {
 	
-	private int entityId; 
-	private String entityIdent; 
 	private int varId; 
 	private String varIdent; 
-	private String streamIdent; 
-	private long streamId; 
 	private LocalDateTime from; 
 	private LocalDateTime to; 
 	private Number max;
 	private LocalDateTime maxTime; 
 	private LocalDateTime minTime; 
 	private Number min;
-	private int updateCount; 
+	private int updates; 
 
-	
-
-	public int getEntityId() {
-		return entityId;
-	}
-
-	public void setEntityId(int entityId) {
-		this.entityId = entityId;
-	}
-
-	public String getEntityIdent() {
-		return entityIdent;
-	}
-
-	public void setEntityIdent(String entityIdent) {
-		this.entityIdent = entityIdent;
-	}
 
 	public int getVarId() {
 		return varId;
@@ -43,22 +21,6 @@ public class EntityVarStats {
 
 	public void setVarId(int varId) {
 		this.varId = varId;
-	}
-
-	public String getStreamIdent() {
-		return streamIdent;
-	}
-
-	public void setStreamIdent(String streamIdent) {
-		this.streamIdent = streamIdent;
-	}
- 
-	public long getStreamId() {
-		return streamId;
-	}
-
-	public void setStreamId(long streamId) {
-		this.streamId = streamId;
 	}
 
 	public String getVarIdent() {
@@ -117,13 +79,15 @@ public class EntityVarStats {
 		this.minTime = minTime;
 	}
 
-	public int getUpdateCount() {
-		return updateCount;
+	public int getUpdates() {
+		return updates;
 	}
 
-	public void setUpdateCount(int updateCount) {
-		this.updateCount = updateCount;
+	public void setUpdates(int updates) {
+		this.updates = updates;
 	}
+
+	
 
 	
 	
