@@ -115,15 +115,15 @@ public class XStreamImpl implements XStream {
 			service.preDispose();
 		}
 
-		for (XStreamRow row : rows.values()) {
-			row.dispose();
-		}
-
 		for (XStreamExtension ext : extensions) {
 			ext.dispose();
 		}
 		for (XStreamService service : services) {
 			service.dispose();
+		}
+
+		for (XStreamRow row : rows.values()) {
+			row.dispose();
 		}
 
 		status = XStreamStatus.Disposed;

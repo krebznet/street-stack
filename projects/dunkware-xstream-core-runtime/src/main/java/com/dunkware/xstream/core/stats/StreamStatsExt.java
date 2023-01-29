@@ -9,18 +9,20 @@ import org.slf4j.LoggerFactory;
 import org.slf4j.Marker;
 import org.slf4j.MarkerFactory;
 
+import com.dunkware.common.util.helpers.DHttpHelper;
+import com.dunkware.common.util.json.DJson;
 import com.dunkware.xstream.api.XStream;
 import com.dunkware.xstream.api.XStreamException;
 import com.dunkware.xstream.api.XStreamExtension;
 import com.dunkware.xstream.api.XStreamListener;
 import com.dunkware.xstream.api.XStreamRow;
 import com.dunkware.xstream.core.annotations.AXStreamExtension;
-import com.dunkware.xstream.core.extensions.KafkaStreamExtType;
 import com.dunkware.xstream.core.stats.builders.EntityStatsBuilder;
 import com.dunkware.xstream.model.stats.EntityStats;
+import com.dunkware.xstream.model.stats.SessionStats;
 import com.dunkware.xstream.xproject.model.XStreamExtensionType;
 
-@AXStreamExtension(type = KafkaStreamExtType.class)
+@AXStreamExtension(type = StreamStatsExtType.class)
 public class StreamStatsExt implements XStreamExtension, XStreamListener {
 
 	private Logger logger = LoggerFactory.getLogger(getClass());
@@ -61,7 +63,30 @@ public class StreamStatsExt implements XStreamExtension, XStreamListener {
 		}
 		for (EntityStatsBuilder statBuilder : entityStatBuilders.values()) {
 			this.entityStats.add(statBuilder.dispose());
-		}		
+		}
+		try {
+			System.out.println(DJson.serializePretty(entityStats));
+		} catch (Exception e) {
+			logger.error("Exception serializing bullshit stats " + e.toString());
+
+		}
+		
+		try {
+			SessionStats stats = StreamStatsHelper.toSessionStats(entityStats, myType);
+			try {
+				String out = DJson.serialize(stats);
+				byte[] serialized = out.getBytes();
+				DHttpHelper.multipartRequest(myType.getPostURL(), "test=me", serialized, "file");
+				
+				
+
+			} catch (Exception e) {
+				logger.error("Exception pusting session entity stats to service " + e.toString());
+			}
+			
+		} catch (Exception e) {
+			// TODO: handle exception
+		}
 	}
 
 	@Override

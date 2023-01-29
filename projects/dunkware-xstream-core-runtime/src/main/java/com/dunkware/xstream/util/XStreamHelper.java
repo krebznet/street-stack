@@ -7,8 +7,23 @@ import java.util.List;
 import com.dunkware.xstream.api.XStreamRow;
 import com.dunkware.xstream.api.XStreamVar;
 import com.dunkware.xstream.core.comparator.VarNameComparator;
+import com.dunkware.xstream.xScript.DataType;
 
 public class XStreamHelper {
+	
+	public static boolean isVarNumeric(XStreamVar var) { 
+		DataType dt = var.getVarType().getType();
+		if(dt.getValue() == DataType.INT_VALUE) { 
+			return true; 
+		}
+		if(dt.getValue() == DataType.DUB_VALUE) { 
+			return true; 
+		}
+		if(dt.getValue() == DataType.LONG_VALUE) { 
+			return true; 
+		}
+		return false;
+	}
 
 	public static String varSnapshotString(XStreamRow row) {
 		List<XStreamVar> varList = new ArrayList<XStreamVar>();

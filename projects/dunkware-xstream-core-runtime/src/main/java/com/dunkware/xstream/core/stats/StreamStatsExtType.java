@@ -5,8 +5,8 @@ import com.dunkware.xstream.xproject.model.XStreamExtensionType;
 public class StreamStatsExtType extends XStreamExtensionType {
 	
 	private String streamIdent; 
-	private long sessionId; 
-	private String server;
+	private String sessionId; 
+	private String postURL;
 	
 	public String getStreamIdent() {
 		return streamIdent;
@@ -14,19 +14,23 @@ public class StreamStatsExtType extends XStreamExtensionType {
 	public void setStreamIdent(String streamIdent) {
 		this.streamIdent = streamIdent;
 	}
-	public long getSessionId() {
+	
+	public String getPostURL() {
+		return postURL;
+	}
+	public void setPostURL(String postURL) {
+		this.postURL = postURL;
+	}
+	public String getSessionId() {
 		return sessionId;
 	}
-	public void setSessionId(long sessionId) {
+	public void setSessionId(String sessionId) {
 		this.sessionId = sessionId;
 	}
-	public String getServer() {
-		return server;
-	}
-	public void setServer(String server) {
-		this.server = server;
-	} 
+
 	
+	
+
 	
 
 }
