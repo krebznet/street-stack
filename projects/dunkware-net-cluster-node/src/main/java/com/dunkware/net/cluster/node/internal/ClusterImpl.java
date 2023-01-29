@@ -426,6 +426,21 @@ public class ClusterImpl implements Cluster {
 
 		}
 	}
+	
+	
+
+	@Override
+	public String httpURL(String path) {
+		String endpoint = getConfig().getServerHttp();
+		if (endpoint.endsWith("/")) {
+			endpoint = endpoint.substring(0, endpoint.length() - 1);
+		}
+		if (path.startsWith("/") == false) {
+			path = "/" + path;
+		}
+		endpoint = endpoint + path;
+		return endpoint;
+	}
 
 	@Override
 	public Message clusterService(Object payload) throws ClusterNodeException {

@@ -39,6 +39,8 @@ public interface ClusterNode {
 	
 	public String httpPost(String path) throws ClusterNodeException;;
 	
+	public String buildHttpURL(String path);
+	
 	public String getException();
 	
 	// wouldnt you want to have a input message to create a channel

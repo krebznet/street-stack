@@ -263,6 +263,13 @@ public class ClusterNodeImpl implements ClusterNode {
 	public String httpPost(String path) throws ClusterNodeException {
 		return null;
 	}
+	
+	
+
+	@Override
+	public String buildHttpURL(String path) {
+		return getHttpPathEndPoint(path); 
+	}
 
 	public String getHttpPathEndPoint(String path) {
 		String endpoint = stats.getHttpEndpoint();

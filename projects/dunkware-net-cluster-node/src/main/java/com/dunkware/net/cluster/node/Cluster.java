@@ -35,6 +35,8 @@ public interface Cluster {
 
 	public Reflections getDunkwareReflections();
 	
+	public String httpURL(String path);
+	
 	/**
 	 * Okay Maybe this can round robin or load balance service calls 
 	 * This needs to include an end point if I am not mistaken here 
