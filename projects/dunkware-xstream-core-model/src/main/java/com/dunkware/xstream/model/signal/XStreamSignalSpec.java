@@ -15,6 +15,7 @@ public class XStreamSignalSpec {
 	private DTime realTime;
 	private Map<String,Object> vars;
 	private DDate date;
+	
 	public int getSignalId() {
 		return signalId;
 	}
