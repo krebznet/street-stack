@@ -32,7 +32,7 @@ public class TickServiceClientFeedImpl implements TickServiceClientFeed, DKafkaB
 	
 	private DKafkaByteConsumer kafkaConsumer;
 	
-	private Pinger pinger = new Pinger();
+	//private Pinger pinger = new Pinger();
 	
 	private AtomicLong tickCount = new AtomicLong(0);
 	
@@ -58,10 +58,18 @@ public class TickServiceClientFeedImpl implements TickServiceClientFeed, DKafkaB
 			throw new TickServiceClientException("Exception Creating Feed KafkaConsumer Borkers " + session.getKafkaBroker() + " Topic " + session.getKafkaTopic() + " Excepion " + e.toString(),e);
 		}
 		
-		this.pinger = new Pinger();
-		pinger.start();
+	//	this.pinger = new Pinger();
+	//	pinger.start();
 		
 		
+	}
+	
+	public static void main(String[] args) {
+		int x = 0; 
+		while(x < 1000) { 
+			x++;
+			System.out.println(x);
+		}
 	}
 	
 	public TickFeed getFeed() { 
