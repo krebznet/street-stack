@@ -1,34 +1,18 @@
-aws ecr get-login-password --region us-east-1 | docker login --username AWS --password-stdin 505030817635.dkr.ecr.us-east-1.amazonaws.com
+cd /Users/duncankrebs/dunkware/street/cloud/1.0.0/dunkware-street-cloud/projects/dunkware-trade-service-tick-server
 sleep 1
+docker buildx build --push  --platform linux/amd64  --tag testrock1.dunkware.net:31000/tickservice:latest .
+
 
 cd /Users/duncankrebs/dunkware/street/cloud/1.0.0/dunkware-street-cloud/projects/dunkware-net-cluster-server
 sleep 1
-docker build --platform=linux/amd64 -t dunkware-net-cluster-server .
-docker tag dunkware-net-cluster-server:latest 505030817635.dkr.ecr.us-east-1.amazonaws.com/dunkware-net-cluster-server:latest
-docker push 505030817635.dkr.ecr.us-east-1.amazonaws.com/dunkware-net-cluster-server:latest
-sleep 1
+docker buildx build --push  --platform linux/amd64  --tag testrock1.dunkware.net:31000/clusterservice:latest .
+
 
 cd /Users/duncankrebs/dunkware/street/cloud/1.0.0/dunkware-street-cloud/projects/dunkware-trade-service-stream-server
-aws ecr get-login-password --region us-east-1 | docker login --username AWS --password-stdin 505030817635.dkr.ecr.us-east-1.amazonaws.com
-docker build --platform=linux/amd64 -t dunkware-trade-service-stream-server .
-docker tag dunkware-trade-service-stream-server:latest 505030817635.dkr.ecr.us-east-1.amazonaws.com/dunkware-trade-service-stream-server:latest
-docker push 505030817635.dkr.ecr.us-east-1.amazonaws.com/dunkware-trade-service-stream-server:latest
 sleep 1
+docker buildx build --push  --platform linux/amd64  --tag testrock1.dunkware.net:31000/streamservice:latest .
 
-cd /Users/duncankrebs/dunkware/street/cloud/1.0.0/dunkware-street-cloud/projects/dunkware-trade-service-tick-server
-docker build --platform=linux/amd64 -t dunkware-trade-service-tick-server .
-docker tag dunkware-trade-service-tick-server:latest 505030817635.dkr.ecr.us-east-1.amazonaws.com/dunkware-trade-service-tick-server:latest
-docker push 505030817635.dkr.ecr.us-east-1.amazonaws.com/dunkware-trade-service-tick-server:latest
-sleep 1
-
-cd /Users/duncankrebs/dunkware/street/cloud/1.0.0/dunkware-street-cloud/projects/dunkware-trade-service-web-server
-docker build --platform=linux/amd64 -t dunkware-trade-service-web-server .
-docker tag dunkware-trade-service-web-server:latest 505030817635.dkr.ecr.us-east-1.amazonaws.com/dunkware-trade-service-web-server:latest
-docker push 505030817635.dkr.ecr.us-east-1.amazonaws.com/dunkware-trade-service-web-server:latest
-sleep 1
 
 cd /Users/duncankrebs/dunkware/street/cloud/1.0.0/dunkware-street-cloud/projects/dunkware-trade-service-worker-server
-docker build --platform=linux/amd64 -t dunkware-trade-service-worker-server .
-docker tag dunkware-trade-service-worker-server:latest 505030817635.dkr.ecr.us-east-1.amazonaws.com/dunkware-trade-service-worker-server:latest
-docker push 505030817635.dkr.ecr.us-east-1.amazonaws.com/dunkware-trade-service-worker-server:latest
-cd ..
+sleep 1
+docker buildx build --push  --platform linux/amd64  --tag testrock1.dunkware.net:31000/workerservice:latest .
