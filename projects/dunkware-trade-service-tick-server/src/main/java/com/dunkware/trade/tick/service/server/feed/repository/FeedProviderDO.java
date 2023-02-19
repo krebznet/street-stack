@@ -7,10 +7,10 @@ import javax.persistence.Id;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 
-@Entity(name = "feed_provider")
+@Entity(name = "ticker_feed_provider")
 @NamedQueries({
 @NamedQuery(name="FeedProviderDO.All",
-    query="SELECT e FROM feed_provider e")          
+    query="SELECT e FROM ticker_feed_provider e")          
 })
 public class FeedProviderDO {
 
@@ -23,7 +23,8 @@ public class FeedProviderDO {
 	
 	public Long getId() {
 		return id;
-	}
+	} 
+	
 	public void setId(Long id) {
 		this.id = id;
 	}
