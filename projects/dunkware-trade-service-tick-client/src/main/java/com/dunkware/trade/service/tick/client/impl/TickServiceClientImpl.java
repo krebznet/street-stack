@@ -10,24 +10,24 @@ import com.dunkware.trade.tick.service.protocol.ticker.TSTickerListGetReq;
 import com.dunkware.trade.tick.service.protocol.ticker.TickerListGetResp;
 import com.dunkware.trade.tick.service.protocol.ticker.spec.TradeTickerListSpec;
 
-public class TickServiceClientImpl implements TickServiceClient  {
+public class TickServiceClientImpl implements TickServiceClient {
 
-	private String endpoint; 
-	
+	private String endpoint;
+
 	@Override
 	public void connect(String endpoint) throws TickServiceClientException {
-		if(endpoint.endsWith("/")) { 
-			endpoint = endpoint.substring(0,endpoint.length() - 1);
+		if (endpoint.endsWith("/")) {
+			endpoint = endpoint.substring(0, endpoint.length() - 1);
 		}
 		this.endpoint = endpoint;
-		
+
 		try {
 			ping();
 		} catch (Exception e) {
-			int count = 0; 
-			while(true) { 
+			int count = 0;
+			while (true) {
 				try {
-					if(count > 5) { 
+					if (count > 5) {
 						throw new TickServiceClientException("Can not ping server after 5 seconds");
 					}
 					Thread.sleep(1000);
@@ -43,8 +43,6 @@ public class TickServiceClientImpl implements TickServiceClient  {
 			}
 		}
 	}
-	
-
 
 	@Override
 	public String getEndpoint() {
@@ -56,21 +54,20 @@ public class TickServiceClientImpl implements TickServiceClient  {
 		TickServiceClientFeedImpl feed = new TickServiceClientFeedImpl();
 		feed.start(spec, this);
 		return feed;
-		
+
 	}
 
-
 	@Override
-	public Object postResponseObject(String path, Object request, Class responseClass) throws TickServiceClientException {
+	public Object postResponseObject(String path, Object request, Class responseClass)
+			throws TickServiceClientException {
 		String endpoint = this.endpoint + path;
 		try {
 			return DHttpHelper.postJsonWithResponse(endpoint, request, responseClass);
 		} catch (Exception e) {
-			throw new TickServiceClientException("Exception posting with json response " + e.toString(),e);
+			throw new TickServiceClientException("Exception posting with json response " + e.toString(), e);
 		}
-		
+
 	}
-	
 
 	@Override
 	public void ping() throws Exception {
@@ -82,14 +79,12 @@ public class TickServiceClientImpl implements TickServiceClient  {
 		}
 	}
 
-
-
 	@Override
 	public void post(String path, Object request) throws TickServiceClientException {
 		// TODO Auto-generated method stub
-		
+
 	}
-	
+
 	public static void main(String[] args) {
 		TSTickerListGetReq req = new TSTickerListGetReq();
 		req.setName("Test500");
@@ -105,27 +100,15 @@ public class TickServiceClientImpl implements TickServiceClient  {
 		TSTickerListGetReq req = new TSTickerListGetReq();
 		req.setName(listId);
 		try {
-			TickerListGetResp resp = (TickerListGetResp)postResponseObject("/ticker/list/get", req, TickerListGetResp.class);
-			if(resp.getCode().equals("ERROR")) { 
+			TickerListGetResp resp = (TickerListGetResp) postResponseObject("/ticker/list/get", req,
+					TickerListGetResp.class);
+			if (resp.getCode().equals("ERROR")) {
 				throw new TickServiceClientException("Get ticker list returned ERROR code " + resp.getError());
 			}
 			return resp.getList();
 		} catch (Exception e) {
-			throw new TickServiceClientException("Exception Getting Ticker List "+ e.toString());
+			throw new TickServiceClientException("Exception Getting Ticker List " + e.toString());
 		}
 	}
-	
-	
-	
-	
-	
 
-
-	
-	
-	
-
-	
-
-	
 }
