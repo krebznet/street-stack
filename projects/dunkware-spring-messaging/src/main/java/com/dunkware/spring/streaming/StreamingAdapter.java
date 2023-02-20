@@ -17,63 +17,80 @@ import com.dunkware.common.util.json.DJson;
 public class StreamingAdapter implements StreamingResponseBody {
 
 	private BlockingQueue<Object> streamQueue = new LinkedBlockingQueue<Object>();
-	
-	private Status status; 
-	
-	private String identifier; 
-	
-	private List<StreamingListener> listeners = new ArrayList<StreamingListener>();
+
+	private Status status;
+
+	private String identifier;
+
+	private List<StreamingAdapterListener> listeners = new ArrayList<StreamingAdapterListener>();
 	private Semaphore listenerLock = new Semaphore(1);
-	
-	private boolean serverDisconnect = false; 
-	
-	public static enum Status { 
-		Connected,ClientDisconnect,ServerDisconnect
+
+	private boolean serverDisconnect = false;
+
+	public static enum Status {
+		Connected, ClientDisconnect, ServerDisconnect
 	}
-	
-	public StreamingAdapter(String identifer) { 
+
+	public StreamingAdapter(String identifer) {
 		status = Status.Connected;
 		this.identifier = identifer;
 	}
-	
-	public boolean isConnected() { 
-		if(status == Status.Connected) { 
-			return true; 
+
+	public boolean isConnected() {
+		if (status == Status.Connected) {
+			return true;
 		}
-		return false; 
+		return false;
 	}
-	
-	
-	public void disconnect() { 
+
+	public void disconnect() {
 		serverDisconnect = true;
 		notifyServerDisconnect();
 	}
-	
-	public void removeListener(StreamingListener listener) { 
-		try {
-			listenerLock.acquire();
-			listeners.remove(listener);
-		} catch (Exception e) {
-			// TODO: handle exception
-		} finally { 
-			listenerLock.release();
-		}
+
+	public void removeListener(StreamingAdapterListener listener) {
+		Thread runner = new Thread() {
+
+			public void run() {
+				try {
+					listenerLock.acquire();
+					listeners.remove(listener);
+				} catch (Exception e) {
+					// TODO: handle exception
+				} finally {
+					listenerLock.release();
+				}
+
+			}
+		};
+
+		runner.start();
+
 	}
-	
-	public void addListener(StreamingListener listener) { 
-		try {
-			listenerLock.acquire();
-			listeners.add(listener);
-		} catch (Exception e) {
-			// TODO: handle exception
-		} finally { 
-			listenerLock.release();
-		}
+
+	public void addListener(StreamingAdapterListener listener) {
+		Thread runner = new Thread() {
+
+			public void run() {
+				try {
+					listenerLock.acquire();
+					listeners.add(listener);
+				} catch (Exception e) {
+					// TODO: handle exception
+				} finally {
+					listenerLock.release();
+				}
+
+			}
+		};
+
+		runner.start();
 	}
+
 	/**
-	 * Okay so this is the method that has to stay in a look and not return 
-	 * otherwise the streaming response will close. we need to gracefully
-	 * handle a client close. 
+	 * Okay so this is the method that has to stay in a look and not return
+	 * otherwise the streaming response will close. we need to gracefully handle a
+	 * client close.
 	 */
 	@Override
 	public void writeTo(OutputStream outputStream) throws IOException {
@@ -83,10 +100,10 @@ public class StreamingAdapter implements StreamingResponseBody {
 			try {
 				String serialized = null;
 				try {
-					while(!isConnected()) { 
+					while (!isConnected()) {
 						try {
 							Thread.sleep(250);
-							if(serverDisconnect) { 
+							if (serverDisconnect) {
 								return;
 							}
 						} catch (Exception e) {
@@ -94,31 +111,27 @@ public class StreamingAdapter implements StreamingResponseBody {
 						}
 					}
 					Object object = streamQueue.poll(5, TimeUnit.SECONDS);
-					if(isConnected() == false) { 
+					if (isConnected() == false) {
 						continue;
 					}
-					// else if object not null send it 
-					if(object == null) { 
+					// else if object not null send it
+					if (object == null) {
 						continue;
 					}
-					
-	
+
 					serialized = DJson.serialize(object);
 					writer.println(serialized);
 					writer.flush();
 					outputStream.flush();
 				} catch (Exception e) {
-					// okay likely client connect problem 
+					// okay likely client connect problem
 					status = Status.ClientDisconnect;
 					notifyClientDisconnect();
-					//outputStream.close();
-					//writer.close();
-					
+					// outputStream.close();
+					// writer.close();
+
 					return;
 				}
-				
-				
-			
 
 				System.out.println("send messsage");
 			} catch (Exception e) {
@@ -128,54 +141,52 @@ public class StreamingAdapter implements StreamingResponseBody {
 		}
 
 	}
-	
-	public String getIdentifier() { 
-		return identifier; 
+
+	public String getIdentifier() {
+		return identifier;
 	}
 
 	public void send(Object jsonObject) {
 		streamQueue.add(jsonObject);
 	}
-	
-	
-	private void notifyServerDisconnect() { 
-		Thread runner = new Thread() { 
-			public void run() { 
+
+	private void notifyServerDisconnect() {
+		Thread runner = new Thread() {
+			public void run() {
 				try {
 					listenerLock.acquire();
-					for (StreamingListener streamingListener : listeners) {
+					for (StreamingAdapterListener streamingListener : listeners) {
 						streamingListener.serverDisconnect(StreamingAdapter.this);
 					}
 				} catch (Exception e) {
 					e.printStackTrace();
 					// TODO: handle exception
-				} finally { 
+				} finally {
 					listenerLock.release();
 				}
 			}
 		};
 		runner.start();
-		
+
 	}
-	
-	private void notifyClientDisconnect() { 
-		Thread runner = new Thread() { 
-			public void run() { 
+
+	private void notifyClientDisconnect() {
+		Thread runner = new Thread() {
+			public void run() {
 				try {
 					listenerLock.acquire();
-					for (StreamingListener streamingListener : listeners) {
+					for (StreamingAdapterListener streamingListener : listeners) {
 						streamingListener.clientDisconnect(StreamingAdapter.this);
 					}
 				} catch (Exception e) {
 					e.printStackTrace();
 					// TODO: handle exception
-				} finally { 
+				} finally {
 					listenerLock.release();
 				}
 			}
 		};
 		runner.start();
-		
-		
+
 	}
 }

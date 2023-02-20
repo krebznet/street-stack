@@ -1,6 +1,6 @@
 package com.dunkware.spring.streaming;
 
-public interface StreamingListener {
+public interface StreamingAdapterListener {
 
 	void clientDisconnect(StreamingAdapter adapter);
 	

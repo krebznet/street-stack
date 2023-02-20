@@ -30,6 +30,7 @@ import com.dunkware.common.util.dtime.DDateTime;
 import com.dunkware.common.util.dtime.DTimeZone;
 import com.dunkware.common.util.events.DEventTree;
 import com.dunkware.common.util.executor.DExecutor;
+import com.dunkware.common.util.executor.DExecutorStats;
 import com.dunkware.common.util.json.DJson;
 import com.dunkware.common.util.uuid.DUUID;
 import com.dunkware.net.cluster.json.node.ClusterNodeState;
@@ -223,9 +224,17 @@ public class ClusterImpl implements Cluster {
 		stats.setId(getNodeId());
 		stats.setStart(startTime.toString());
 		stats.setExecutorStats(executor.getStats());
+		DExecutorStats eStats = executor.getStats(); 
+		// okay make it flat for UI
+		stats.setTaskCompleted(eStats.getCompletedCount());
+		stats.setTaskPending(eStats.getPendingCount());
+		stats.setTaskPoolSize(eStats.getPoolSize());
+		stats.setTaskTimeout(eStats.getTimeoutCount());
+		
 		int activeJobs = 0;
 		stats.setRunningJobCount(activeJobs);
 		stats.setType(clusterConfig.getNodeType());
+		// executor 
 	    // need to creaate extension classes
 
 		// now we need the other stuff -

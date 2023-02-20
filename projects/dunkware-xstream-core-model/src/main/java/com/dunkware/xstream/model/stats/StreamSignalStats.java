@@ -2,13 +2,14 @@ package com.dunkware.xstream.model.stats;
 
 import java.time.LocalDateTime;
 
-public class EntitySignal {
+public class StreamSignalStats {
 	
 	private int signalId;
 	private String signalIdent;
 	private String varIDent;
 	private LocalDateTime signalTime; 
 	private String streamIdent;
+	
 	public int getSignalId() {
 		return signalId;
 	}

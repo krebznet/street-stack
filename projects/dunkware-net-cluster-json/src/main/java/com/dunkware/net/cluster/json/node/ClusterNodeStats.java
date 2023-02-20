@@ -24,6 +24,11 @@ public class ClusterNodeStats {
 	private int runningJobCount;
 	private List<String> services = new ArrayList<String>();
 
+	private int taskPoolSize; 
+	private long taskCompleted; 
+	private long taskPending; 
+	private long taskTimeout;
+
 	
 	public ClusterNodeType getType() {
 		return type;
@@ -106,6 +111,32 @@ public class ClusterNodeStats {
 	public void setServices(List<String> services) {
 		this.services = services;
 	}
+	public int getTaskPoolSize() {
+		return taskPoolSize;
+	}
+	public void setTaskPoolSize(int taskPoolSize) {
+		this.taskPoolSize = taskPoolSize;
+	}
+	public long getTaskCompleted() {
+		return taskCompleted;
+	}
+	public void setTaskCompleted(long taskCompleted) {
+		this.taskCompleted = taskCompleted;
+	}
+	public long getTaskPending() {
+		return taskPending;
+	}
+	public void setTaskPending(long taskPending) {
+		this.taskPending = taskPending;
+	}
+	public long getTaskTimeout() {
+		return taskTimeout;
+	}
+	public void setTaskTimeout(long taskTimeout) {
+		this.taskTimeout = taskTimeout;
+	}
+	
+	
 
 	
 }

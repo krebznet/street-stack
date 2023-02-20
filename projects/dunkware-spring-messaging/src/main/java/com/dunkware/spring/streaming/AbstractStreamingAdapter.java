@@ -22,7 +22,7 @@ public abstract class AbstractStreamingAdapter implements StreamingResponseBody 
 	
 	private String identifier; 
 	
-	private List<StreamingListener> listeners = new ArrayList<StreamingListener>();
+	private List<StreamingAdapterListener> listeners = new ArrayList<StreamingAdapterListener>();
 	private Semaphore listenerLock = new Semaphore(1);
 	
 	private boolean serverDisconnect = false; 
@@ -54,7 +54,7 @@ public abstract class AbstractStreamingAdapter implements StreamingResponseBody 
 	
 	public abstract void onClientDisconnect();
 	
-	public void removeListener(StreamingListener listener) { 
+	public void removeListener(StreamingAdapterListener listener) { 
 		try {
 			listenerLock.acquire();
 			listeners.remove(listener);
@@ -65,7 +65,7 @@ public abstract class AbstractStreamingAdapter implements StreamingResponseBody 
 		}
 	}
 	
-	public void addListener(StreamingListener listener) { 
+	public void addListener(StreamingAdapterListener listener) { 
 		try {
 			listenerLock.acquire();
 			listeners.add(listener);

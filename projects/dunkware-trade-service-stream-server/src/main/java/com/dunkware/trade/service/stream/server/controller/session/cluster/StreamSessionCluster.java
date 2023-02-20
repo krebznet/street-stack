@@ -8,7 +8,6 @@ import com.dunkware.xstream.model.search.SessionEntitySearchResp;
 @AClusterExtension()
 public class StreamSessionCluster {
 	
-	
 	@AClusterService
 	public SessionEntitySearchResp entityQuery(SessionEntitySearchReq req) { 
 		return null;

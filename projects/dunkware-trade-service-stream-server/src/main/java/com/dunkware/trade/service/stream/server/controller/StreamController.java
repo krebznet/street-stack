@@ -3,6 +3,7 @@ package com.dunkware.trade.service.stream.server.controller;
 import java.time.DayOfWeek;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.Semaphore;
 import java.util.concurrent.TimeUnit;
 
 import org.slf4j.Logger;
@@ -46,6 +47,8 @@ import com.dunkware.trade.service.stream.server.spring.RuntimeService;
 import com.dunkware.trade.service.stream.server.tick.StreamTickService;
 import com.dunkware.trade.tick.model.ticker.TradeTickerSpec;
 import com.dunkware.trade.tick.service.protocol.ticker.spec.TradeTickerListSpec;
+import com.dunkware.xstream.model.signal.StreamSignal;
+import com.dunkware.xstream.model.signal.StreamSignalListener;
 import com.dunkware.xstream.xproject.XScriptProject;
 import com.dunkware.xstream.xproject.bundle.XscriptBundleHelper;
 import com.dunkware.xstream.xproject.model.XScriptBundle;
@@ -107,6 +110,9 @@ public class StreamController {
 	private List<TradeTickerSpec> tickers;
 	
 	private Marker marker = MarkerFactory.getMarker("StreamController");
+	
+	private List<StreamSignalListener> signalListeners = new ArrayList<StreamSignalListener>();
+	private Semaphore signalListenerSemaphore = new Semaphore(1);
 
 	public StreamController() throws Exception {
 
@@ -573,6 +579,89 @@ public class StreamController {
 		if (event instanceof EStreamSessionStarted) { 
 			sessionStartedEvent((EStreamSessionStarted)event);
 		}
+	}
+	
+	public void addSignalListener(final StreamSignalListener listener) { 
+		Runnable adder = new Runnable() {
+			
+			@Override
+			public void run() {
+				boolean result = true;
+				try {
+					 result = signalListenerSemaphore.tryAcquire(5, TimeUnit.SECONDS);
+					if(!result) { 
+						logger.error("Code error getting semaphore in signal listener add ");
+						return;
+					}
+					signalListeners.add(listener);
+				} catch (Exception e) {
+					logger.error("Exception getting signal listener semaphore add exception " + e.toString());
+				} finally { 
+					if(result) { 
+						signalListenerSemaphore.release();
+					}
+				}
+			}
+		};
+		this.cluster.getExecutor().execute(adder);
+	}
+	
+	
+	public void removeSignalListener(final StreamSignalListener listener) { 
+	Runnable remover = new Runnable() {
+			
+			@Override
+			public void run() {
+				boolean result = true;
+				try {
+					 result = signalListenerSemaphore.tryAcquire(5, TimeUnit.SECONDS);
+					if(!result) { 
+						logger.error("Code error getting semaphore in signal listener remove ");
+						return;
+					}
+					signalListeners.remove(listener);
+				} catch (Exception e) {
+					logger.error("Exception getting signal listener semaphore remove exception " + e.toString());
+				} finally { 
+					if(result) { 
+						signalListenerSemaphore.release();
+					}
+				}
+			}
+		};
+		this.cluster.getExecutor().execute(remover);
+	}
+	
+	/**
+	 * Okay called by the stream session somehow
+	 * @param signal
+	 */
+	public void signal(final StreamSignal signal) { 
+		Runnable signalNotifier = new Runnable() {
+			
+			@Override
+			public void run() {
+				boolean result = true;
+				try {
+					 result = signalListenerSemaphore.tryAcquire(5, TimeUnit.SECONDS);
+					if(!result) { 
+						logger.error("Code error getting semaphore in signal notifier  ");
+						return;
+					}
+					for (StreamSignalListener streamSignalListener : signalListeners) {
+						streamSignalListener.onSignal(signal);
+					}
+				} catch (Exception e) {
+					logger.error("Exception getting signal listener semaphore notify exception " + e.toString());
+				} finally { 
+					if(result) { 
+						signalListenerSemaphore.release();
+					}
+				}
+			}
+		};
+		
+		cluster.getExecutor().execute(signalNotifier);
 	}
 
 }

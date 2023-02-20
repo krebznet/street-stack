@@ -1,6 +1,5 @@
 package com.dunkware.net.cluster.server.core;
 
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
@@ -22,10 +21,10 @@ import com.dunkware.common.spec.kafka.DKafkaByteConsumer2Spec.ConsumerType;
 import com.dunkware.common.spec.kafka.DKafkaByteConsumer2Spec.OffsetType;
 import com.dunkware.common.spec.kafka.DKafkaByteConsumer2SpecBuilder;
 import com.dunkware.common.util.json.DJson;
-import com.dunkware.common.util.time.DunkTime;
 import com.dunkware.common.util.uuid.DUUID;
 import com.dunkware.net.cluster.json.node.ClusterNodeState;
 import com.dunkware.net.cluster.json.node.ClusterNodeStats;
+import com.dunkware.net.cluster.json.node.ClusterNodeStatsList;
 import com.dunkware.net.cluster.json.node.ClusterNodeType;
 import com.dunkware.net.cluster.server.config.ClusterConfig;
 
@@ -96,6 +95,18 @@ public class ClusterNodeService implements DKafkaByteHandler2 {
 		if(hold.getNodes().size() > 0)
 			this.workerHolds.add(hold);
 		return hold;
+	}
+	
+	/**
+	 * Simply returns an array of node stats for streaming. 
+	 * @return
+	 */
+	public ClusterNodeStatsList getNodeStatsList() { 
+		ClusterNodeStatsList list = new ClusterNodeStatsList();
+		for (ClusterNode node : nodes.values()) {
+			list.getNodes().add(node.getStats());
+		}
+		return list;
 	}
 
 	public void releaseWorkerNodes(String reserver) { 

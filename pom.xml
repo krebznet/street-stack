@@ -127,6 +127,11 @@
 			<module>projects/dunkware-spring-messaging</module>
 
 			<module>projects/dunkware-trade-service-mock-server</module>
+
+			<module>projects/dunkware-cluster-proto</module>
+			<module>projects/dunkware-cluster-node</module>
+			<module>projects/dunkware-cluster-server</module>
+			
   </modules>
 	<build>
     <!-- To define the plugin version in your parent POM -->

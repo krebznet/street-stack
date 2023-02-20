@@ -10,7 +10,7 @@ import com.dunkware.common.util.data.DataHelper;
 import com.dunkware.xstream.api.XStreamVar;
 import com.dunkware.xstream.api.XStreamVarListener;
 import com.dunkware.xstream.core.stats.StreamStatsHelper;
-import com.dunkware.xstream.model.stats.EntityVarStats;
+import com.dunkware.xstream.model.stats.StreamVariableStats;
 
 public class EntityVarStatsBuilder implements XStreamVarListener {
 
@@ -114,9 +114,9 @@ public class EntityVarStatsBuilder implements XStreamVarListener {
 	/**
 	 * Dispose resources for computing var stats
 	 */
-	public EntityVarStats dispose() {
+	public StreamVariableStats dispose() {
 		this.var.removeVarListener(this);
-		EntityVarStats varStats = getStats();
+		StreamVariableStats varStats = getStats();
 		return varStats;
 	}
 
@@ -126,21 +126,15 @@ public class EntityVarStatsBuilder implements XStreamVarListener {
 	 * @param stopTime
 	 * @return
 	 */
-	public EntityVarStats getStats() {
-		EntityVarStats stats = new EntityVarStats();
+	public StreamVariableStats getStats() {
+		StreamVariableStats stats = new StreamVariableStats();
 		stats.setVarId(var.getVarType().getCode());
 		stats.setVarIdent(var.getVarType().getName());
-		// set min if not null
-
-		stats.setMin(minValue);
-		stats.setMinTime(this.minTime);
-
-		stats.setMax(maxValue);
-		stats.setMaxTime(maxTime);
-
-		stats.setFrom(fromTime);
-		stats.setTo(var.getLocalDateTime());
-		stats.setUpdates(this.updateCounter.get());
+		stats.setLow(minValue);
+		stats.setLowTime(this.minTime);
+		stats.setHigh(maxValue);
+		stats.setHighTime(maxTime);
+		stats.setValueCount(this.updateCounter.get());
 		return stats;
 	}
 

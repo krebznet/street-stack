@@ -15,12 +15,13 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
+import org.yaml.snakeyaml.tokens.StreamStartToken;
 
 import com.dunkware.common.util.json.DJson;
-import com.dunkware.trade.service.stream.server.stats.repository.SessionEntityStatsDoc;
-import com.dunkware.trade.service.stream.server.stats.repository.SessionEntityStatsRepo;
-import com.dunkware.xstream.model.stats.EntityStats;
-import com.dunkware.xstream.model.stats.SessionStats;
+import com.dunkware.trade.service.stream.server.stats.repository.StreamEntityDatStatsRepo;
+import com.dunkware.trade.service.stream.server.stats.repository.StreamEntityDayStatsDoc;
+import com.dunkware.xstream.core.stats.StreamStats;
+import com.dunkware.xstream.model.stats.StreamEntityDayStats;
 import com.mongodb.bulk.BulkWriteResult;
 
 @RestController
@@ -35,7 +36,7 @@ public class StreamStatsWebService {
 	// private StreamStatsService statsService;
 
 	@Autowired
-	private SessionEntityStatsRepo entityStats;
+	private StreamEntityDatStatsRepo entityStats;
 
 	@PostConstruct
 	private void testInsert() {
@@ -70,24 +71,22 @@ public class StreamStatsWebService {
 		} catch (Exception e) {
 			return e.toString();
 		}
-		SessionStats stats = null;
+		StreamStats stats = null;
 		try {
-			stats = DJson.getObjectMapper().readValue(bundleBytes, SessionStats.class);
+			stats = DJson.getObjectMapper().readValue(bundleBytes, StreamStats.class);
 		} catch (Exception e) {
 			logger.error("Exception deserializing stats from session submit " + e.toString(), e);
 			return e.toString();
 		}
 
 		BulkOperations bulkOps = mongoTemplate.bulkOps(BulkOperations.BulkMode.ORDERED,
-				SessionEntityStatsDoc.class);
+				StreamEntityDayStatsDoc.class);
 		
-		List<SessionEntityStatsDoc> docs = new ArrayList<SessionEntityStatsDoc>();
-		for (EntityStats entityStatus : stats.getEntityStats()) {
-			SessionEntityStatsDoc doc = StreamStatsHelper.toSessionEntityStatsDoc(entityStatus);
-			docs.add(doc);
-			bulkOps.insert(doc);
+		List<StreamEntityDayStatsDoc> docs = new ArrayList<StreamEntityDayStatsDoc>();
+		for (StreamEntityDayStats dayStats : stats.getEntities()) {
+			docs.add(StreamStatsHelper.toStreamEntityDayStatsDoc(dayStats));
 		}
-
+		bulkOps.insert(docs);
 		try {
 			System.out.println("wirting bulk ops" + LocalDateTime.now());
 			BulkWriteResult results = bulkOps.execute();

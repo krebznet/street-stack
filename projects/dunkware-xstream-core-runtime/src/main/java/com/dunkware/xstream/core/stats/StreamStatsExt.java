@@ -11,7 +11,6 @@ import org.slf4j.Marker;
 import org.slf4j.MarkerFactory;
 
 import com.dunkware.common.util.helpers.DHttpHelper;
-import com.dunkware.common.util.helpers.DRandom;
 import com.dunkware.common.util.json.DJson;
 import com.dunkware.common.util.uuid.DUUID;
 import com.dunkware.xstream.api.XStream;
@@ -21,8 +20,7 @@ import com.dunkware.xstream.api.XStreamListener;
 import com.dunkware.xstream.api.XStreamRow;
 import com.dunkware.xstream.core.annotations.AXStreamExtension;
 import com.dunkware.xstream.core.stats.builders.EntityStatsBuilder;
-import com.dunkware.xstream.model.stats.EntityStats;
-import com.dunkware.xstream.model.stats.SessionStats;
+import com.dunkware.xstream.model.stats.StreamEntityDayStats;
 import com.dunkware.xstream.xproject.model.XStreamExtensionType;
 
 @AXStreamExtension(type = StreamStatsExtType.class)
@@ -33,7 +31,7 @@ public class StreamStatsExt implements XStreamExtension, XStreamListener {
 	private StreamStatsExtType myType; 
 	private XStream stream; 
 	
-	private List<EntityStats> entityStats = new ArrayList<EntityStats>();
+	private List<StreamEntityDayStats> entityStats = new ArrayList<StreamEntityDayStats>();
 	
 	private ConcurrentHashMap<String,EntityStatsBuilder> entityStatBuilders = new ConcurrentHashMap<String, EntityStatsBuilder>(); 
 	
@@ -75,6 +73,7 @@ public class StreamStatsExt implements XStreamExtension, XStreamListener {
 			logger.debug(marker, "Disposing StreamStatsExt");
 		}
 		for (EntityStatsBuilder statBuilder : entityStatBuilders.values()) {
+			StreamEntityDayStats dayStats = statBuilder.dispose();
 			this.entityStats.add(statBuilder.dispose());
 		}
 		try {
@@ -85,14 +84,13 @@ public class StreamStatsExt implements XStreamExtension, XStreamListener {
 		}
 		
 		try {
-			SessionStats stats = StreamStatsHelper.toSessionStats(entityStats, myType);
+			StreamStats stats = new StreamStats();
+			stats.setEntities(entityStats);
 			try {
 				String out = DJson.serialize(stats);
 				byte[] serialized = out.getBytes();
 				DHttpHelper.multipartRequest(myType.getPostURL(), "test=me", serialized, "file");
 				
-				
-
 			} catch (Exception e) {
 				logger.error("Exception pusting session entity stats to service " + e.toString());
 			}
