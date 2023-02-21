@@ -35,7 +35,7 @@ public class StreamStatsExt implements XStreamExtension, XStreamListener {
 	
 	private ConcurrentHashMap<String,EntityStatsBuilder> entityStatBuilders = new ConcurrentHashMap<String, EntityStatsBuilder>(); 
 	
-	private Marker marker = MarkerFactory.getMarker("StreamStatsExt");
+	private Marker marker = MarkerFactory.getMarker("xstream.session.stats");
 	
 	private boolean disposed = false; 
 	
@@ -85,6 +85,7 @@ public class StreamStatsExt implements XStreamExtension, XStreamListener {
 		
 		try {
 			StreamStats stats = new StreamStats();
+			stats.setStreamIdent(myType.getStreamIdent());
 			stats.setEntities(entityStats);
 			try {
 				String out = DJson.serialize(stats);

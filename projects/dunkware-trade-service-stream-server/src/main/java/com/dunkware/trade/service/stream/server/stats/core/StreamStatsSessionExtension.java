@@ -29,6 +29,7 @@ public class StreamStatsSessionExtension implements StreamSessionExtension {
 		ext.setSessionId(session.getSessionId());
 		ext.setStreamIdent(session.getStream().getName()); 
 		ext.setPostURL(cluster.httpURL("/session/stats/submit"));
+		ext.setPostId(node.getNodeId());
 		node.getStreamBundle().getExtensions().add(ext);
 	}
 

@@ -12,7 +12,7 @@
 			</pattern>
 		</encoder>
 	</appender>
-	<!--  
+ 
 	  	<appender name="FLUENT"
 		class="ch.qos.logback.more.appenders.DataFluentAppender">
 		<tag>myrock</tag>
@@ -23,7 +23,7 @@
 			<key>node</key>
 			<value>tick</value>
 		</additionalField>
-	</appender>-->
+	</appender>
 	
 
 
@@ -34,7 +34,7 @@
 
 
 	<logger name="com.dunkware" level="DEBUG">
-		<!--  <appender-ref ref="FLUENT" /> --> 
+		  <appender-ref ref="FLUENT" />
 		<appender-ref ref="CONSOLE" additivity="false"/>
 	</logger>
 

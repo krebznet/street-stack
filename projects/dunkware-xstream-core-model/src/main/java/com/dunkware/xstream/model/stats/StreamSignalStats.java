@@ -1,44 +1,28 @@
 package com.dunkware.xstream.model.stats;
 
-import java.time.LocalDateTime;
-
 public class StreamSignalStats {
 	
-	private int signalId;
-	private String signalIdent;
-	private String varIDent;
-	private LocalDateTime signalTime; 
-	private String streamIdent;
+	private int id;
+	private String ident;
+	private int count;
 	
-	public int getSignalId() {
-		return signalId;
+	public int getId() {
+		return id;
 	}
-	public void setSignalId(int signalId) {
-		this.signalId = signalId;
+	public void setId(int id) {
+		this.id = id;
 	}
-	public String getSignalIdent() {
-		return signalIdent;
+	public String getIdent() {
+		return ident;
 	}
-	public void setSignalIdent(String signalIdent) {
-		this.signalIdent = signalIdent;
+	public void setIdent(String ident) {
+		this.ident = ident;
 	}
-	public String getVarIDent() {
-		return varIDent;
+	public int getCount() {
+		return count;
 	}
-	public void setVarIDent(String varIDent) {
-		this.varIDent = varIDent;
-	}
-	public LocalDateTime getSignalTime() {
-		return signalTime;
-	}
-	public void setSignalTime(LocalDateTime signalTime) {
-		this.signalTime = signalTime;
-	}
-	public String getStreamIdent() {
-		return streamIdent;
-	}
-	public void setStreamIdent(String streamIdent) {
-		this.streamIdent = streamIdent;
+	public void setCount(int count) {
+		this.count = count;
 	} 
 	
 	

@@ -17,6 +17,8 @@ public class ClusterServer {
 
 	public static void main(String[] args) {
 		SpringApplication.run(ClusterServer.class, args);
+		// okay interesting
+		//okay
 	}
 
 }

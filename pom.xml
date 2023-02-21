@@ -84,7 +84,7 @@
       <module>projects/dunkware-trade-tick-model</module>
       <module>projects/dunkware-trade-tick-api</module>
       <module>projects/dunkware-trade-tick-provider-atick</module>
-			<!--<module>projects/dunkware-xstream-script</module>-->
+		<!--	<module>projects/dunkware-xstream-script</module>-->
 			<module>projects/dunkware-xstream-core-model</module>
       <module>projects/dunkware-xstream-core-runtime</module>
       <module>projects/dunkware-xstream-data-runtime</module>
@@ -126,12 +126,9 @@
 			<module>projects/dunkware-xstream-net-server</module>
 			<module>projects/dunkware-spring-messaging</module>
 
-			<module>projects/dunkware-trade-service-mock-server</module>
 
-			<module>projects/dunkware-cluster-proto</module>
-			<module>projects/dunkware-cluster-node</module>
-			<module>projects/dunkware-cluster-server</module>
-			
+
+
   </modules>
 	<build>
     <!-- To define the plugin version in your parent POM -->

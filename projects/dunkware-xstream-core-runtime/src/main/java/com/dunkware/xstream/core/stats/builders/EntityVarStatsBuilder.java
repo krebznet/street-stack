@@ -128,13 +128,13 @@ public class EntityVarStatsBuilder implements XStreamVarListener {
 	 */
 	public StreamVariableStats getStats() {
 		StreamVariableStats stats = new StreamVariableStats();
-		stats.setVarId(var.getVarType().getCode());
-		stats.setVarIdent(var.getVarType().getName());
+		stats.setId(var.getVarType().getCode());
+		stats.setIdent(var.getVarType().getName());
 		stats.setLow(minValue);
 		stats.setLowTime(this.minTime);
 		stats.setHigh(maxValue);
 		stats.setHighTime(maxTime);
-		stats.setValueCount(this.updateCounter.get());
+		stats.setValues(this.updateCounter.get());
 		return stats;
 	}
 

@@ -4,20 +4,15 @@ import java.time.LocalDateTime;
 
 public class StreamVariableStats {
 	
-	private int varId; 
-	private String varIdent;
+	private int id; 
+	private String ident;
 	private Number high = null;
 	private LocalDateTime highTime; 
 	private LocalDateTime lowTime;
 	private Number low = null;
-	private int valueCount;
+	private int values;
 	
-	public int getVarId() {
-		return varId;
-	}
-	public void setVarId(int varId) {
-		this.varId = varId;
-	}
+	
 	public Number getHigh() {
 		return high;
 	}
@@ -43,17 +38,23 @@ public class StreamVariableStats {
 		this.low = low;
 	}
 	
-	public int getValueCount() {
-		return valueCount;
+	public int getValues() {
+		return values;
 	}
-	public void setValueCount(int valueCount) {
-		this.valueCount = valueCount;
+	public void setValues(int values) {
+		this.values = values;
 	}
-	public String getVarIdent() {
-		return varIdent;
+	public int getId() {
+		return id;
 	}
-	public void setVarIdent(String varIdent) {
-		this.varIdent = varIdent;
+	public void setId(int id) {
+		this.id = id;
+	}
+	public String getIdent() {
+		return ident;
+	}
+	public void setIdent(String ident) {
+		this.ident = ident;
 	}
 	
 	
