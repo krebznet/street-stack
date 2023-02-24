@@ -157,9 +157,9 @@ public class StreamEventPublisherExt implements XStreamExtension, XStreamRowList
 	@Override
 	public void dispose() {
 		int sleepCount = 0;
-		while (!publishQueue.isEmpty() == false) {
+		while (publishQueue.isEmpty() == false) {
 			try {
-				Thread.sleep(1000);
+				Thread.sleep(250);
 				sleepCount++;
 			} catch (Exception e) {
 				// TODO: handle exceptiond
@@ -372,6 +372,10 @@ public class StreamEventPublisherExt implements XStreamExtension, XStreamRowList
 					event = publishQueue.take();
 					
 				} catch (Exception e) {
+					if (e instanceof InterruptedException) {
+						return;
+						
+					}
 					logger.error("Exception taking event from  " + e.toString());
 					continue;
 				}
