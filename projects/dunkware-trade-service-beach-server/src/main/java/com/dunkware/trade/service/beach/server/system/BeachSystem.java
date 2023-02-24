@@ -17,7 +17,9 @@ public interface BeachSystem {
 	
 	// we need to connect a System implementatiuon to get a resume/start/liquidate
 	
-
+	// you can just start it and stop it. 
+	// log the times it started. 
+	
 	/**
 	 * Returns the beach broker account that trades are executed through
 	 * @return

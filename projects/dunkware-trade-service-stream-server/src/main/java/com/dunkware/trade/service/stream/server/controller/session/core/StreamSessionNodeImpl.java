@@ -61,10 +61,11 @@ public class StreamSessionNodeImpl implements StreamSessionNode {
 		this.input = input;
 		eventNode = input.getSession().getEventNode().createChild("/node/" + input.getClusterNode().getId());
 		
-		input.getSession().getStream().getSpec().getBundle();
+		
 		Thread starter = new Thread() {
 
 			public void run() {
+				setName("SessionNodeStarter_" + input.getClusterNode().getId());
 				xstreamBundle = new XStreamBundle();
 				xstreamBundle.setDate(DDate.now());
 				xstreamBundle.setTimeZone(DTimeZone.NewYork);
@@ -111,11 +112,22 @@ public class StreamSessionNodeImpl implements StreamSessionNode {
 						if (respString.equals("STARTED!") == false) {
 							startException = "Worker Service Returned Error String " + respString;
 							state = StreamSessionNodeState.StartException;
-							input.getCallBack().nodeStartException(StreamSessionNodeImpl.this);
+							try {
+								input.getCallBack().nodeStartException(StreamSessionNodeImpl.this);	
+							} catch (Exception e) {
+								logger.error("Exception calling nodeCallback nodeStartException on node " + input.getClusterNode().getId() + " " + e.toString());
+			
+							}
+							
 							return;
 						} else {
 							state = StreamSessionNodeState.Running;
-							input.getCallBack().nodeStarted(StreamSessionNodeImpl.this);
+							try {
+								input.getCallBack().nodeStarted(StreamSessionNodeImpl.this);	
+							} catch (Exception e) {
+								logger.error("Exception calling callbackNodeStarted on node " + input.getClusterNode().getId() + " " + e.toString());
+							}
+							
 							logger.info("Starting Stream Session {} Worker {}", input.getSession().getSessionId(),
 									input.getClusterNode().getId());
 							workerStatGetter = new WorkerStatGetter();

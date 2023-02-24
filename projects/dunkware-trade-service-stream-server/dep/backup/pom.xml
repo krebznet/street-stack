@@ -7,7 +7,7 @@
 		<groupId>org.springframework.boot</groupId>
 		<artifactId>spring-boot-starter-parent</artifactId>
 		<version>2.7.1</version>
-	
+
 	</parent>
 	<groupId>com.dunkware.trade.service</groupId>
 	<artifactId>dunkware-trade-service-stream-server</artifactId>
@@ -27,45 +27,12 @@
 		<protobuf.plugin.version>0.6.1</protobuf.plugin.version>
 		<net-devh-grpc.version>2.0.1.RELEASE</net-devh-grpc.version>
 		<grpc.version>1.32.1</grpc.version>
-		
+
 	</properties>
 
-	<repositories>
-		<repository>
-			<id>dunkware-internal-release</id>
-			<name>Dunkware Internal Release</name>
-			<url>https://nexus.dunkware.com/repository/dunkware-internal-release/</url>
-		</repository>
-		<repository>
-			<id>central</id>
-			<name>Maven Central</name>
-			<url>https://repo1.maven.org/maven2/</url>
-		</repository>
-		<repository>
-			<id>dunkware-internal-snapshot</id>
-			<name>Dunkware Internal Snapshot</name>
-			<url>https://nexus.dunkware.com/repository/dunkware-internal-snapshot/</url>
-		</repository>
-	</repositories>
 
 
-	<!-- Distribution Repos -->
-	<distributionManagement>
-		<snapshotRepository>
-			<uniqueVersion>false</uniqueVersion>
-			<id>dunkware-internal-snapshot</id>
-			<layout>default</layout>
-			<name>dunkware-internal-snapshot</name>
-			<url>https://nexus.dunkware.com/repository/dunkware-internal-snapshot/</url>
-		</snapshotRepository>
-		<repository>
-			<uniqueVersion>false</uniqueVersion>
-			<id>dunkware-internal-release</id>
-			<layout>default</layout>
-			<name>dunkware-internal-release</name>
-			<url>http://nexus.dunkware.com/repository/dunkware-internal-release/</url>
-		</repository>
-	</distributionManagement>
+
 
 	<dependencies>
 
@@ -105,9 +72,9 @@
 			<artifactId>spring-boot-devtools</artifactId>
 			<optional>true</optional>
 		</dependency>
-		<!-- <dependency> <groupId>org.springframework.boot</groupId> <artifactId>spring-boot-starter-data-jpa</artifactId> 
+		<!-- <dependency> <groupId>org.springframework.boot</groupId> <artifactId>spring-boot-starter-data-jpa</artifactId>
 			</dependency> -->
-		<!-- <dependency> <groupId>org.springframework.boot</groupId> <artifactId>spring-boot-starter-security</artifactId> 
+		<!-- <dependency> <groupId>org.springframework.boot</groupId> <artifactId>spring-boot-starter-security</artifactId>
 			</dependency> -->
 
 		<dependency>
@@ -168,7 +135,7 @@
 			<artifactId>mysql-connector-java</artifactId>
 			<scope>runtime</scope>
 		</dependency>
-		<!-- <dependency> <groupId>io.jsonwebtoken</groupId> <artifactId>jjwt</artifactId> 
+		<!-- <dependency> <groupId>io.jsonwebtoken</groupId> <artifactId>jjwt</artifactId>
 			<version>0.9.1</version> </dependency> -->
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
@@ -176,7 +143,7 @@
 			<scope>test</scope>
 		</dependency>
 
-		<!-- <dependency> <groupId>org.flywaydb</groupId> <artifactId>flyway-core</artifactId> 
+		<!-- <dependency> <groupId>org.flywaydb</groupId> <artifactId>flyway-core</artifactId>
 			<version>${flyway.version}</version> </dependency> -->
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
@@ -257,8 +224,8 @@
 			<artifactId>grpc-server-spring-boot-starter</artifactId>
 			<version>2.7.0.RELEASE</version>
 		</dependency>
-		<!-- - <dependency> <groupId>net.devh</groupId> <artifactId>grpc-client-spring-boot-starter</artifactId> 
-			<version>2.7.0.RELEASE</version> <exclusions> <exclusion> <groupId>io.grpc</groupId> 
+		<!-- - <dependency> <groupId>net.devh</groupId> <artifactId>grpc-client-spring-boot-starter</artifactId>
+			<version>2.7.0.RELEASE</version> <exclusions> <exclusion> <groupId>io.grpc</groupId>
 			<artifactId>grpc-core</artifactId> </exclusion> </exclusions> </dependency -->
 
 
@@ -337,7 +304,7 @@
 				<groupId>org.springframework.boot</groupId>
 				<artifactId>spring-boot-maven-plugin</artifactId>
 			</plugin>
-			
+
 		</plugins>
 	</build>
 </project>

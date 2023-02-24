@@ -130,9 +130,9 @@ public class EntityVarStatsBuilder implements XStreamVarListener {
 		StreamVariableStats stats = new StreamVariableStats();
 		stats.setVarId(var.getVarType().getCode());
 		stats.setLow(minValue);
-		stats.setLowt(this.minTime);
+		stats.setLowT(this.minTime);
 		stats.setHigh(maxValue);
-		stats.setHight(maxTime);
+		stats.setHighT(maxTime);
 		stats.setValues(this.updateCounter.get());
 		return stats;
 	}

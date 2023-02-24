@@ -80,12 +80,12 @@ public class ATProviderRequestor extends at.feedapi.ActiveTickServerRequester {
 			break;
 		case ATQuoteDbResponseType.QuoteDbResponseInvalidRequest:
 			strResponseType = "QuoteDbResponseInvalidRequest";
-			logger.error("QuoteFuckInvalidRequest {} ");
-			logger.error("QuoteDB Invalid Reequest, where is the error "+  responseType.toString());
+			logger.warn("QuoteFuckInvalidRequest {} ", responseType.toString());
+			logger.warn("QuoteDB Invalid Reequest, where is the error "+  responseType.toString());
 			break;
 		case ATQuoteDbResponseType.QuoteDbResponseDenied:
 			strResponseType = "QuoteDbResponseDenied";
-			logger.error("QuoteDbResponseDenied");
+			logger.warn("QuoteDbResponseDenied");
 			ActiveTickStatsLogger.get().incrementResponseError();
 			break;
 		}
@@ -102,15 +102,15 @@ public class ATProviderRequestor extends at.feedapi.ActiveTickServerRequester {
 				break;
 			case ATSymbolStatus.SymbolStatusInvalid:
 				strSymbolStatus = "SymbolStatusInvalid";
-				logger.error("SymbolStatusInvalid");
+				logger.warn("SymbolStatusInvalid");
 				break;
 			case ATSymbolStatus.SymbolStatusUnavailable:
 				strSymbolStatus = "SymbolStatusUnavailable";
-				logger.error("SymbolStatusUnavailable");
+				logger.warn("SymbolStatusUnavailable");
 				break;
 			case ATSymbolStatus.SymbolStatusNoPermission:
 				strSymbolStatus = "SymbolStatusNoPermission";
-				logger.error("SymbolStatusNoPermission");
+				logger.warn("SymbolStatusNoPermission");
 				break;
 			}
 			String strItemSymbol = new String(responseItem.m_atResponse.symbol.symbol);

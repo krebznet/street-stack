@@ -49,6 +49,7 @@ public class TickConsumer {
 			throws Exception {
 		session = new TickConsumerSession();
 		this.spec = spec;
+		this.kafkaBrokers = kafkaBrokers;
 		
 		for (TradeTickerSpec ticker : spec.getTickers()) {
 			if (feed.hasSubscription(ticker.getSymbol())) {
@@ -151,7 +152,10 @@ public class TickConsumer {
 				try {
 					Thread.sleep(1000);
 				} catch (Exception e) {
-					logger.error(e.toString());
+					if (e instanceof InterruptedException) { 
+						return;
+					}
+					logger.error("Tick Producer Exception " + e.toString());
 					continue;
 				}
 

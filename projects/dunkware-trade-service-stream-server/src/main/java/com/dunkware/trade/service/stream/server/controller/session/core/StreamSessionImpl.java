@@ -6,6 +6,8 @@ import java.time.LocalTime;
 import java.time.ZoneId;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.atomic.AtomicLong;
 
@@ -94,6 +96,8 @@ public class StreamSessionImpl implements StreamSession {
 	private AtomicInteger nodeStartFailures = new AtomicInteger(0);
 
 	private StreamSessionSpec sessionSpec;
+	
+	private int nodeCount = 0;
 
 	// put the stream session capture in here?
 
@@ -132,6 +136,8 @@ public class StreamSessionImpl implements StreamSession {
 			status.setException(e.toString());
 			throw new StreamSessionException("Exception creating Session Entity " + e.toString(), e);
 		}
+		
+		Map<StreamSessionNode,StreamSessionNodeInput> pendingStartNodes = new ConcurrentHashMap<StreamSessionNode,StreamSessionNodeInput>();
 
 		for (ClusterNode workerNode : input.getWorkerNodes()) {
 			StreamSessionNodeInput nodeInput = new StreamSessionNodeInput(nodeTickers.get(nodeIndex), workerNode,
@@ -141,12 +147,15 @@ public class StreamSessionImpl implements StreamSession {
 			ac.getAutowireCapableBeanFactory().autowireBean(sessionNode);
 			logger.info(MarkerFactory.getMarker(sessionId), "Starting session node on worker " + workerNode.getId());
 			nodes.add(sessionNode);
-			sessionNode.startNode(nodeInput);
+			pendingStartNodes.put(sessionNode, nodeInput);
 			nodeIndex++;
-
 		}
-		// don't want to call session started yet
-
+		
+		nodeCount = nodes.size();
+		for (StreamSessionNode node : pendingStartNodes.keySet()) {
+			node.startNode(pendingStartNodes.get(node));
+		}
+ 		
 	}
 
 	@Override
@@ -359,11 +368,11 @@ public class StreamSessionImpl implements StreamSession {
 	private class NodeCallback implements StreamSessionNodeCallback {
 
 		@Override
-		public void nodeStarted(StreamSessionNode node) {
+		public synchronized void nodeStarted(StreamSessionNode node) {
 			logger.info(MarkerFactory.getMarker(getSessionId()),
 					"Stream Session Node " + node.getNodeId() + "Started callback");
 			int count = callbackCountDown.incrementAndGet();
-			if (count == nodes.size()) {
+			if (count == nodeCount) {
 				if (status.getProblems().size() > 0) {
 					logger.warn(marker,
 							"Started Session with {} node start exceptions", nodeStartFailures.get());
@@ -383,7 +392,7 @@ public class StreamSessionImpl implements StreamSession {
 		}
 
 		@Override
-		public void nodeStartException(StreamSessionNode node) {
+		public synchronized void nodeStartException(StreamSessionNode node) {
 			logger.warn(MarkerFactory.getMarker(getSessionId()), "Session Node {} Failed To Sstart {} ", node.getNode(),
 					node.getEventNode());
 			nodeStartFailures.incrementAndGet();
@@ -411,13 +420,13 @@ public class StreamSessionImpl implements StreamSession {
 		}
 
 		@Override
-		public void nodeStopped(StreamSessionNode node) {
+		public synchronized void nodeStopped(StreamSessionNode node) {
 			if (logger.isDebugEnabled()) {
-				logger.debug(MarkerFactory.getMarker(getSessionId()), "Session Node {} stop Callback",
+				logger.debug(marker, "Session Node {} stop Callback",
 						node.getNodeId());
 			}
 			int count = stopCountDown.incrementAndGet();
-			if (count == nodes.size()) {
+			if (count == nodeCount) {
 				if (status.getProblems().size() > 0) {
 					status.setState(StreamSessionState.CompletedErrors);
 					logger.info(marker, "Stopped Session Completed with errors");

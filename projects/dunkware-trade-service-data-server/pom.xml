@@ -29,42 +29,6 @@
 		<spring-cloud.version>Hoxton.SR6</spring-cloud.version>
 	</properties>
 
-	<repositories>
-		<repository>
-			<id>dunkware-internal-release</id>
-			<name>Dunkware Internal Release</name>
-			<url>https://nexus.dunkware.com/repository/dunkware-internal-release/</url>
-		</repository>
-		<repository>
-			<id>central</id>
-			<name>Maven Central</name>
-			<url>https://repo1.maven.org/maven2/</url>
-		</repository>
-		<repository>
-			<id>dunkware-internal-snapshot</id>
-			<name>Dunkware Internal Snapshot</name>
-			<url>https://nexus.dunkware.com/repository/dunkware-internal-snapshot/</url>
-		</repository>
-	</repositories>
-
-
-	<!-- Distribution Repos -->
-	<distributionManagement>
-		<snapshotRepository>
-			<uniqueVersion>false</uniqueVersion>
-			<id>dunkware-internal-snapshot</id>
-			<layout>default</layout>
-			<name>dunkware-internal-snapshot</name>
-			<url>https://nexus.dunkware.com/repository/dunkware-internal-snapshot/</url>
-		</snapshotRepository>
-		<repository>
-			<uniqueVersion>false</uniqueVersion>
-			<id>dunkware-internal-release</id>
-			<layout>default</layout>
-			<name>dunkware-internal-release</name>
-			<url>http://nexus.dunkware.com/repository/dunkware-internal-release/</url>
-		</repository>
-	</distributionManagement>
 
 	<dependencies>
 
@@ -83,9 +47,9 @@
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-data-jpa</artifactId>
 		</dependency>
-		<!-- <dependency> <groupId>org.springframework.boot</groupId> <artifactId>spring-boot-starter-data-jpa</artifactId> 
+		<!-- <dependency> <groupId>org.springframework.boot</groupId> <artifactId>spring-boot-starter-data-jpa</artifactId>
 			</dependency> -->
-		<!-- <dependency> <groupId>org.springframework.boot</groupId> <artifactId>spring-boot-starter-security</artifactId> 
+		<!-- <dependency> <groupId>org.springframework.boot</groupId> <artifactId>spring-boot-starter-security</artifactId>
 			</dependency> -->
 
 		<dependency>
@@ -95,7 +59,7 @@
 
 		</dependency>
 
-	
+
 		<!-- Logging Dependencies -->
 		<dependency>
 			<groupId>ch.qos.logback</groupId>
@@ -142,7 +106,7 @@
 			<artifactId>mysql-connector-java</artifactId>
 			<scope>runtime</scope>
 		</dependency>
-		<!-- <dependency> <groupId>io.jsonwebtoken</groupId> <artifactId>jjwt</artifactId> 
+		<!-- <dependency> <groupId>io.jsonwebtoken</groupId> <artifactId>jjwt</artifactId>
 			<version>0.9.1</version> </dependency> -->
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
@@ -150,7 +114,7 @@
 			<scope>test</scope>
 		</dependency>
 
-		<!-- <dependency> <groupId>org.flywaydb</groupId> <artifactId>flyway-core</artifactId> 
+		<!-- <dependency> <groupId>org.flywaydb</groupId> <artifactId>flyway-core</artifactId>
 			<version>${flyway.version}</version> </dependency> -->
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
@@ -226,8 +190,8 @@
 		<!-- https://mvnrepository.com/artifact/org.springframework.metrics/spring-metrics -->
 
 
-		<!-- - <dependency> <groupId>net.devh</groupId> <artifactId>grpc-client-spring-boot-starter</artifactId> 
-			<version>2.7.0.RELEASE</version> <exclusions> <exclusion> <groupId>io.grpc</groupId> 
+		<!-- - <dependency> <groupId>net.devh</groupId> <artifactId>grpc-client-spring-boot-starter</artifactId>
+			<version>2.7.0.RELEASE</version> <exclusions> <exclusion> <groupId>io.grpc</groupId>
 			<artifactId>grpc-core</artifactId> </exclusion> </exclusions> </dependency -->
 
 
@@ -244,9 +208,9 @@
 			<artifactId>dunkware-net-core-runtime</artifactId>
 			<version>1.0.0-SNAPSHOT</version>
 		</dependency>
-		
 
-		
+
+
 		<dependency>
 			<groupId>com.dunkware.trade.tick</groupId>
 			<artifactId>dunkware-trade-tick-api</artifactId>
@@ -258,13 +222,13 @@
 			<artifactId>dunkware-trade-service-tick-client</artifactId>
 			<version>1.2.0-SNAPSHOT</version>
 		</dependency>
-		
+
 		<dependency>
 			<groupId>com.dunkware.trade.service</groupId>
 			<artifactId>dunkware-trade-service-stream-json</artifactId>
 			<version>1.2.0-SNAPSHOT</version>
 		</dependency>
-	
+
 		<!-- Metrics/Prometheus -->
 
 

@@ -32,43 +32,6 @@
 
 
 
-	<repositories>
-		<repository>
-			<id>dunkware-internal-release</id>
-			<name>Dunkware Internal Release</name>
-			<url>https://nexus.dunkware.com/repository/dunkware-internal-release/</url>
-		</repository>
-		<repository>
-			<id>central</id>
-			<name>Maven Central</name>
-			<url>https://repo1.maven.org/maven2/</url>
-		</repository>
-		<repository>
-			<id>dunkware-internal-snapshot</id>
-			<name>Dunkware Internal Snapshot</name>
-			<url>https://nexus.dunkware.com/repository/dunkware-internal-snapshot/</url>
-		</repository>
-	</repositories>
-
-
-	<!-- Distribution Repos -->
-	<distributionManagement>
-		<snapshotRepository>
-			<uniqueVersion>false</uniqueVersion>
-			<id>dunkware-internal-snapshot</id>
-			<layout>default</layout>
-			<name>dunkware-internal-snapshot</name>
-			<url>https://nexus.dunkware.com/repository/dunkware-internal-snapshot/</url>
-		</snapshotRepository>
-		<repository>
-			<uniqueVersion>false</uniqueVersion>
-			<id>dunkware-internal-release</id>
-			<layout>default</layout>
-			<name>dunkware-internal-release</name>
-			<url>http://nexus.dunkware.com/repository/dunkware-internal-release/</url>
-		</repository>
-	</distributionManagement>
-
 	<dependencies>
 
 

@@ -29,40 +29,8 @@
 		<url>https://github.com/krebznet/dunkware-trade-service-tick-server.git</url>
 		<tag>v1</tag>
 	</scm>
-
-	<repositories>
-	
-
-		<repository>
-			<id>dunkware-internal-snapshot</id>
-			<url>https://nexus.dunkware.com/repository/dunkware-internal-snapshot/</url>
-		</repository>
-
-		<repository>
-			<id>dunkware-internal-release</id>
-			<url>https://nexus.dunkware.com/repository/dunkware-internal-release/</url>
-		</repository>
-
-	</repositories>
-	<distributionManagement>
-		<snapshotRepository>
-			<uniqueVersion>false</uniqueVersion>
-			<id>dunkware-internal-snapshot</id>
-			<layout>default</layout>
-			<name>dunkware-internal-snapshot</name>
-			<url>https://nexus.dunkware.com/repository/dunkware-internal-snapshot/</url>
-		</snapshotRepository>
-		<repository>
-			<uniqueVersion>false</uniqueVersion>
-			<id>dunkware-internal-release</id>
-			<layout>default</layout>
-			<name>dunkware-internal-release</name>
-			<url>http://nexus.dunkware.com/repository/dunkware-internal-release/</url>
-		</repository>
-	</distributionManagement>
-
 	<dependencies>
-		<!-- <dependency> <groupId>org.springframework.boot</groupId> <artifactId>spring-boot-starter-data-jpa</artifactId> 
+		<!-- <dependency> <groupId>org.springframework.boot</groupId> <artifactId>spring-boot-starter-data-jpa</artifactId>
 			</dependency> -->
 
 
@@ -81,7 +49,7 @@
 		    <artifactId>spring-boot-starter-actuator</artifactId>
 		</dependency>
 		<!-- Spring Boot Dev Tool - High Performance Development-->
-		
+
 		<!-- https://mvnrepository.com/artifact/org.springframework.boot/spring-boot-starter-data-jpa -->
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
@@ -126,8 +94,8 @@
 		<!-- https://mvnrepository.com/artifact/io.hawt/hawtio-springboot -->
 
 		<!-- Metrics/Prometheus -->
-	
-	
+
+
 	<!--	<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-actuator</artifactId>
@@ -142,11 +110,7 @@
 
 		<!-- Dunkware Dependnecies -->
 
-		<dependency>
-			<groupId>com.dunkware.trade.tick</groupId>
-			<artifactId>dunkware-trade-tick-provider-polygon</artifactId>			
-			<version>1.0.0-SNAPSHOT</version>
-		</dependency>
+		
 		<dependency>
 			<groupId>com.dunkware.net.cluster</groupId>
 			<artifactId>dunkware-net-cluster-node</artifactId>
@@ -174,11 +138,12 @@
 			<artifactId>dunkware-trade-service-tick-protocol</artifactId>
 			<version>1.2.0-SNAPSHOT</version>
 		</dependency>
+		<!--  
 		<dependency>
 			<groupId>com.dunkware.trade.tools</groupId>
 			<artifactId>dunkware-trade-tools-scrape</artifactId>
 			<version>1.1.0</version>
-		</dependency>
+		</dependency>-->
 		<dependency>
 			<groupId>com.dunkware.common</groupId>
 			<artifactId>dunkware-common-util</artifactId>
@@ -200,8 +165,8 @@
 
 	<build>
 
-		<!-- <resources> <resource> <directory>src/main/resources</directory> <filtering>true</filtering> 
-			<excludes> <exclude>**/application.properties</exclude> <exclude>**/logback.xml</exclude> 
+		<!-- <resources> <resource> <directory>src/main/resources</directory> <filtering>true</filtering>
+			<excludes> <exclude>**/application.properties</exclude> <exclude>**/logback.xml</exclude>
 			</excludes> </resource> </resources> -->
 		<plugins>
 			<plugin>

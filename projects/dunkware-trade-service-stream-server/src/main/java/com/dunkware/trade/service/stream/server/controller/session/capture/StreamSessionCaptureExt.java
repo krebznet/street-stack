@@ -141,7 +141,7 @@ public class StreamSessionCaptureExt implements StreamSessionExtension {
 		return session;
 	}
 
-	@Transactional
+	
 	public void saveEntity(StreamSessionEntEntity ent) {
 		try {
 			entityRep.save(ent);
@@ -162,14 +162,19 @@ public class StreamSessionCaptureExt implements StreamSessionExtension {
 			webEnt.setSignalCount(1);
 			sessionEntities.put(signal.getEntityIdentifier(), webEnt);
 			session.getEntity().getEntities().add(webEnt);
-			saveSessionEntity();
+			try {
+				entityRep.save(webEnt);	
+			} catch (Exception e) {
+				logger.error(marker, "Exception saving session entity entity in snapshot new entity " + e.toString());
+			}
+			
 		} else {
 			webEnt.setSignalCount(webEnt.getSignalCount() + 1);
 			sessionEntities.put(signal.getEntityIdentifier(), webEnt);
 		}
 	}
 
-	@Transactional
+	
 	public void saveSessionEntity() { 
 		try {
 			sessionRepo.save(session.getEntity());
@@ -177,7 +182,7 @@ public class StreamSessionCaptureExt implements StreamSessionExtension {
 			logger.error(marker, "Exception saving session entity with new web entity " + e.toString());
 		}
 	}
-	@Transactional
+	
 	public void writeSessionEntities() {
 		try {
 			entityRep.saveAll(sessionEntities.values());
@@ -195,7 +200,12 @@ public class StreamSessionCaptureExt implements StreamSessionExtension {
 		snapshotWriter.closeWriter();
 		logger.info(marker, "Closed Snapshot/SignalWriters");
 		// now save all the session entities 
-		writeSessionEntities();
+		try {
+			writeSessionEntities();	
+		} catch (Exception e) {
+			logger.error(marker, "exception writing session entities in sessionStopped " + e.toString());
+		}
+		
 		// compute the snapshot and signal count sums
 		long snapshotcount = 0; 
 		long signalcount = 0; 
@@ -206,7 +216,7 @@ public class StreamSessionCaptureExt implements StreamSessionExtension {
 		
 		session.getEntity().setSnapshotCount(snapshotcount);
 		session.getEntity().setSignalCount(signalcount);
-		saveSessionEntity();
+		
 		
 	}
 

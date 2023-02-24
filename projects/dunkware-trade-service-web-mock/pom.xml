@@ -30,45 +30,10 @@
 		<lombok.version>1.18.20</lombok.version>
 	</properties>
 
-	<repositories>
-		<repository>
-			<id>dunkware-internal-release</id>
-			<name>Dunkware Internal Release</name>
-			<url>https://nexus.dunkware.com/repository/dunkware-internal-release/</url>
-		</repository>
-		<repository>
-			<id>central</id>
-			<name>Maven Central</name>
-			<url>https://repo1.maven.org/maven2/</url>
-		</repository>
-		<repository>
-			<id>dunkware-internal-snapshot</id>
-			<name>Dunkware Internal Snapshot</name>
-			<url>https://nexus.dunkware.com/repository/dunkware-internal-snapshot/</url>
-		</repository>
-	</repositories>
 
-
-	<!-- Distribution Repos -->
-	<distributionManagement>
-		<snapshotRepository>
-			<uniqueVersion>false</uniqueVersion>
-			<id>dunkware-internal-snapshot</id>
-			<layout>default</layout>
-			<name>dunkware-internal-snapshot</name>
-			<url>https://nexus.dunkware.com/repository/dunkware-internal-snapshot/</url>
-		</snapshotRepository>
-		<repository>
-			<uniqueVersion>false</uniqueVersion>
-			<id>dunkware-internal-release</id>
-			<layout>default</layout>
-			<name>dunkware-internal-release</name>
-			<url>http://nexus.dunkware.com/repository/dunkware-internal-release/</url>
-		</repository>
-	</distributionManagement>
 
 	<dependencies>
-		
+
 			<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-websocket</artifactId>
@@ -92,16 +57,16 @@
 
 
 		<!-- Metrics/Prometheus -->
-	
-	
+
+
 		<!-- <dependency> <groupId>io.jsonwebtoken</groupId> <artifactId>jjwt</artifactId>
 			<version>0.9.1</version> </dependency> -->
-	
-		
+
+
 		<!-- <dependency> <groupId>org.flywaydb</groupId> <artifactId>flyway-core</artifactId>
 			<version>${flyway.version}</version> </dependency> -->
-	
-		
+
+
 		<!-- GRPC Dependencies -->
 
 
@@ -111,10 +76,10 @@
 			<version>3.13.0</version>
 		</dependency>
 
-	
+
 		<!-- GRPC DEPS -->
-		
-	
+
+
 
 		<dependency>
 			<groupId>com.dunkware.common</groupId>
@@ -136,13 +101,13 @@
 			<groupId>ch.qos.logback</groupId>
 			<artifactId>logback-core</artifactId>
 		</dependency>
-	
-		
-		
+
+
+
 
 	</dependencies>
 
-	
+
 	<build>
 		<plugins>
 			<plugin>

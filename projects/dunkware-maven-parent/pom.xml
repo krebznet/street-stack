@@ -20,11 +20,12 @@
 		<tag>v1</tag>
 	</scm>
 
+
 	<repositories>
 		<repository>
 			<id>dunkware-internal-release</id>
 			<name>Dunkware Internal Release</name>
-			<url>https://nexus.dunkware.com/repository/dunkware-internal-release/</url>
+			<url>http://ec2-54-87-204-176.compute-1.amazonaws.com:8081/repository/dunkware-internal-release/</url>
 		</repository>
 		<repository>
 			<id>central</id>
@@ -34,29 +35,9 @@
 		<repository>
 			<id>dunkware-internal-snapshot</id>
 			<name>Dunkware Internal Snapshot</name>
-			<url>https://nexus.dunkware.com/repository/dunkware-internal-snapshot/</url>
+			<url>http://ec2-54-87-204-176.compute-1.amazonaws.com:8081/repository/dunkware-internal-snapshot/</url>
 		</repository>
 	</repositories>
-
-
-	<distributionManagement>
-		<snapshotRepository>
-			<uniqueVersion>false</uniqueVersion>
-			<id>dunkware-internal-snapshot</id>
-			<layout>default</layout>
-			<name>dunkware-internal-snapshot</name>
-			<url>https://nexus.dunkware.com/repository/dunkware-internal-snapshot/</url>
-		</snapshotRepository>
-		<repository>
-			<uniqueVersion>false</uniqueVersion>
-			<id>dunkware-internal-release</id>
-			<layout>default</layout>
-			<name>dunkware-internal-release</name>
-			<url>https://nexus.dunkware.com/repository/dunkware-internal-release/</url>
-		</repository>
-	</distributionManagement>
-
-
 
 	<properties>
 		<test.dir>src/test/java</test.dir>
@@ -66,7 +47,7 @@
 		<jdk.version>11</jdk.version>
 
 
-		
+
 		<maven.compiler.source>11</maven.compiler.source>
 		<maven.compiler.target>11</maven.compiler.target>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -80,7 +61,7 @@
 
 
 	<build>
-		<pluginManagement><!-- lock down plugins versions to avoid using Maven 
+		<pluginManagement><!-- lock down plugins versions to avoid using Maven
 				defaults (may be moved to parent pom) -->
 			<plugins>
 				<plugin>
