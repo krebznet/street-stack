@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import javax.persistence.CascadeType;
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
@@ -40,13 +41,24 @@ public class StreamSessionEntity {
 
 	private int problemCount;
 
-	@OneToMany(cascade = CascadeType.ALL, orphanRemoval =  true, fetch = FetchType.EAGER)
-	@JoinColumn(name = "session_id")
-	private List<StreamSessionEntEntity> tickers = new ArrayList<StreamSessionEntEntity>();
-	
 	@OneToMany(cascade = CascadeType.ALL, orphanRemoval =  true, fetch = FetchType.LAZY)
 	@JoinColumn(name = "session_id")
 	private List<StreamSessionProblemEntity> problems = new ArrayList<StreamSessionProblemEntity>();
+	
+	@OneToMany(cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
+	@JoinColumn(name = "session_id")
+	private List<StreamSessionEntEntity> entities = new ArrayList<StreamSessionEntEntity>();
+	
+	
+	@Column(name = "signal_count")
+	private long signalCount = 0;
+	
+	@Column(name = "snapshot_count")
+	private long snapshotCount = 0;
+	
+	@Column(name = "entity_count")
+	private long entityCount = 0;
+
 	
 	@Transient
 	private StreamSessionState state;
@@ -86,14 +98,7 @@ public class StreamSessionEntity {
 		this.date = date;
 	}
 
-	public List<StreamSessionEntEntity> getTickers() {
-		return tickers;
-	}
-
-	public void setTickers(List<StreamSessionEntEntity> tickers) {
-		this.tickers = tickers;
-	}
-
+	
 	public StreamEntity getStream() {
 		return stream;
 	}
@@ -181,6 +186,46 @@ public class StreamSessionEntity {
 	public void setNodeStartFailures(int nodeStartFailures) {
 		this.nodeStartFailures = nodeStartFailures;
 	}
+
+	public long getSignalCount() {
+		return signalCount;
+	}
+
+	public void setSignalCount(long signalCount) {
+		this.signalCount = signalCount;
+	}
+
+	public long getSnapshotCount() {
+		return snapshotCount;
+	}
+
+	public void setSnapshotCount(long snapshotCount) {
+		this.snapshotCount = snapshotCount;
+	}
+
+	public long getEntityCount() {
+		return entityCount;
+	}
+
+	public void setEntityCount(long entityCount) {
+		this.entityCount = entityCount;
+	}
+
+	public List<StreamSessionEntEntity> getEntities() {
+		return entities;
+	}
+
+	public void setEntities(List<StreamSessionEntEntity> entities) {
+		this.entities = entities;
+	}
+	
+	
+	
+	
+
+	
+	
+	
 	
 	
 	

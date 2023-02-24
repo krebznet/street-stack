@@ -4,6 +4,8 @@ import java.util.List;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.slf4j.Marker;
+import org.slf4j.MarkerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import com.dunkware.common.util.dtime.DDate;
@@ -17,7 +19,6 @@ import com.dunkware.net.cluster.node.ClusterNode;
 import com.dunkware.trade.service.stream.json.controller.session.StreamSessionNodeState;
 import com.dunkware.trade.service.stream.json.controller.session.StreamSessionNodeStatus;
 import com.dunkware.trade.service.stream.json.worker.stream.StreamSessionWorkerStartReq;
-import com.dunkware.trade.service.stream.json.worker.stream.StreamSessionWorkerStartResp;
 import com.dunkware.trade.service.stream.json.worker.stream.StreamSessionWorkerStats;
 import com.dunkware.trade.service.stream.json.worker.stream.StreamSessionWorkerStatsResp;
 import com.dunkware.trade.service.stream.json.worker.stream.StreamSessionWorkerStopReq;
@@ -51,6 +52,8 @@ public class StreamSessionNodeImpl implements StreamSessionNode {
 	private Cluster cluster;
 
 	private StreamSessionWorkerStats workerStats = null;
+	
+	private Marker marker = MarkerFactory.getMarker("stream.session.node");
 
 	@Override
 	public void startNode(StreamSessionNodeInput input) {
@@ -206,6 +209,7 @@ public class StreamSessionNodeImpl implements StreamSessionNode {
 
 	@Override
 	public void stopNode() {
+		logger.info(marker, "Stopping node " + workerId);
 		Thread stopper = new Thread() {
 
 			public void run() {
@@ -234,6 +238,7 @@ public class StreamSessionNodeImpl implements StreamSessionNode {
 					}
 					state = StreamSessionNodeState.Stopped;
 				}
+				logger.info(marker, "Stopped node " + workerId);
 				input.getCallBack().nodeStopped(StreamSessionNodeImpl.this);
 			}
 

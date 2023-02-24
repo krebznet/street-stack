@@ -37,7 +37,7 @@ import com.dunkware.net.proto.stream.GStreamEventType;
 import com.dunkware.net.proto.stream.GStreamSessionStop;
 import com.dunkware.trade.service.stream.data.DataStreamSnapshotWriterSessionStats2;
 import com.dunkware.trade.service.stream.server.controller.session.StreamSession;
-import com.dunkware.trade.service.stream.server.controller.session.capture.StreamSessionCapture;
+import com.dunkware.trade.service.stream.server.controller.session.capture.StreamSessionCaptureExt;
 import com.dunkware.trade.service.stream.server.spring.ConfigService;
 import com.mongodb.WriteConcern;
 import com.mongodb.client.MongoClient;
@@ -70,7 +70,7 @@ public class DataStreamSessionSnapshotWriter2 implements DKafkaByteHandler2 {
 	private SnapshotWriter snapshotWriter;
 	private QueueMonitor queueMonitor;
 
-	private StreamSessionCapture capture;
+	private StreamSessionCaptureExt capture;
 	private StreamSession session;
 
 	private Map<String, AtomicInteger> entities = new ConcurrentHashMap<String, AtomicInteger>();
@@ -98,24 +98,16 @@ public class DataStreamSessionSnapshotWriter2 implements DKafkaByteHandler2 {
 
 	private boolean writerClosed = false;
 
-	private Marker marker = MarkerFactory.getMarker("SnapshotWriter");
-	
+	private Marker marker = MarkerFactory.getMarker("stream.session.capture");
+
 	private boolean terminated = false;
 
 	public DataStreamSessionSnapshotWriter2() {
 
 	}
 
-	public void sessionStopped() {
-		logger.debug("Snapshot Writer handling session stopped, starting session stopper");
-		StreamSessionStopper stopper = new StreamSessionStopper();
-		if(terminated) { 
-			capture.snapshotWriterComplete();
-		}
-		stopper.start();
-	}
 
-	public void start(StreamSessionCapture capture) throws Exception {
+	public void start(StreamSessionCaptureExt capture) throws Exception {
 		logger.info("Starting Data Snapshot writer");
 		this.capture = capture;
 		this.session = capture.getSession();
@@ -125,32 +117,32 @@ public class DataStreamSessionSnapshotWriter2 implements DKafkaByteHandler2 {
 		logger.info(MarkerFactory.getMarker(session.getSessionId()), "Starting Snapshot Writer");
 		timeZone = DTimeZone.toZoneId(session.getStream().getTimeZone());
 		try {
-			
+
 			mongoClient = MongoClients.create(config.getMongoURL());
 			WriteConcern wc = new WriteConcern(0).withJournal(false);
 			mongoDatabase = mongoClient.getDatabase(config.getMongoDatabase());
-			
+
 			String ident = session.getSessionId();
 			System.out.println(ident);
 			// check if the database exists
 			LocalDateTime dt = LocalDateTime.now(DTimeZone.toZoneId(session.getStream().getTimeZone()));
 			String Timestamp = DunkTime.format(dt, DunkTime.YYMMDD);
 			mongoCollectionName = "snapshot_" + session.getStream().getName() + "_" + Timestamp;
-			boolean exists = false; 
+			boolean exists = false;
 			for (String colName : mongoDatabase.listCollectionNames()) {
-				if(colName.equals(mongoCollectionName)) {
+				if (colName.equals(mongoCollectionName)) {
 					exists = true;
 					break;
 				}
 			}
-			if(!exists) { 
+			if (!exists) {
 				logger.error("Creating Time Serries Snapshot Collection " + mongoCollectionName);
 				TimeSeriesOptions tsOptions = new TimeSeriesOptions("time");
 				tsOptions.granularity(TimeSeriesGranularity.SECONDS);
 				tsOptions.metaField("vars");
 				try {
 					CreateCollectionOptions colOptions = new CreateCollectionOptions().timeSeriesOptions(tsOptions);
-					mongoDatabase.createCollection(mongoCollectionName, colOptions);					
+					mongoDatabase.createCollection(mongoCollectionName, colOptions);
 				} catch (Exception e) {
 					logger.error("Collection Snapshot Creation Failed " + e.toString());
 					terminated = true;
@@ -169,9 +161,8 @@ public class DataStreamSessionSnapshotWriter2 implements DKafkaByteHandler2 {
 
 		} catch (Exception e) {
 
-			logger.error(
-					"Exception connecting stream {} session {} snapshot writer to mongo db ", session.getStream().getName(),
-					session.getSessionId());
+			logger.error("Exception connecting stream {} session {} snapshot writer to mongo db ",
+					session.getStream().getName(), session.getSessionId());
 			throw new Exception("Mongo Setup/Connection Exception " + e.getLocalizedMessage(), e);
 		}
 		String snapshotTopic = "stream_" + session.getStream().getName().toLowerCase() + "_event_snapshot";
@@ -280,7 +271,7 @@ public class DataStreamSessionSnapshotWriter2 implements DKafkaByteHandler2 {
 					if (e instanceof InterruptedException) {
 						return;
 					}
-					logger.error( "Exception monitoring queue size " + e.toString(), e);
+					logger.error("Exception monitoring queue size " + e.toString(), e);
 				}
 
 			}
@@ -288,88 +279,65 @@ public class DataStreamSessionSnapshotWriter2 implements DKafkaByteHandler2 {
 	}
 
 	public boolean isCompleted() {
-		if(terminated) { 
+		if (terminated) {
 			return true;
 		}
 		return completed;
 	}
 
-	private class StreamSessionStopper extends Thread {
-	
-		public void run() {
-			logger.debug("Starting SnapshotWrtier Stopper");
-			logger.debug("Invoking Finished Writing method");
-			int count = 1;
-			while (!finishedWriting()) {
-				try {
-					Thread.sleep(1000);
-					logger.debug("Not Finished Writing Count " + count);
-					count++;
-					if (count > 300) {
-						logger.error("Stream Session Stopper Not Finished Writing After 10 minutes "
-								+ "last snapshot write time is "
-								+ DDateTime.toSqlTimestamp(metrics.getStats().getLastWriteTime())
-								+ "force stopping writer");
-						closeWriter();
-						return;
-					}
+	public void closeWriter() {
+		logger.info(marker, "Closing Session Snapshot Writer");
+		int count = 0;
 
-				} catch (Exception e) {
-					logger.error("Exception in StremSessionStopper " + e.toString());
-					if (!writerClosed)
-						closeWriter();
-					return;
-				}
+		// while the consumer is paused because we are catching up
+		// lets wait up to 30 seconds. 
+		while (paused) {
+			try {
+				Thread.sleep(250);
+				count++;
+			} catch (Exception e) {
+				logger.error(marker, "Internal exception closing writer while paused " + e.toString());
 			}
-			closeWriter();
-
-		}
-
-		private void closeWriter() {
-			logger.debug("Closing Snapshot Writer");
-			mongoClient.close();
-			snapshotWriter.interrupt();
-			snapshotWriter.writePendingSnapshots();
-			queueMonitor.interrupt();
-			metrics.setStopTime(DDateTime.now(session.getStream().getTimeZone()));
-			kafkaConsumer.dispose();
-			logger.info("Snapshot Writer invoking complete method on session");
-			capture.snapshotWriterComplete();
-			writerClosed = true;
-		}
-
-		public boolean finishedWriting() {
-
-			while (true) {
-				int count = 0;
-				while (paused) {
-					if (count == 0)
-						logger.debug("SnapshotWriter Stopper Detected Consumer Paused");
-					try {
-						Thread.sleep(1000);
-						count++;
-					} catch (Exception e) {
-					}
-				}
-				logger.debug("SnapshotWriter Stopper Detected Consumer Unpaused");
-				count = 0;
-				while (writeQueue.size() > 0) {
-					try {
-						if (count == 0)
-							logger.debug("Snapshot Detector Detected Write Queue Size Not Empty");
-						count++;
-					} catch (Exception e) {
-						// TODO: handle exception
-					}
-				}
-				logger.debug("Snapshot Stopper Detected Write Queue is empty");
-				if (paused) {
-					return false;
-				}
-				return true;
+			// 30 seconds
+			if (count > 120) {
+				logger.error(marker, "Closing Writer waiting on consumer paus timed out after 30 seconds");
+				break;
 			}
 		}
+		
+		// lets wait up to 30 seconds for the consumer record write queue to clear up. 
+		count = 0;
+		while (writeQueue.size() > 0) {
+			try {
+				Thread.sleep(250);
+				count++;
+				if (count > 120) {
+					logger.error(marker, "Closing writer snapshot queue size not empty after 30 seconds");
+					break;
+				}
+			} catch (Exception e) {
+				logger.error(marker, "Closing Writer waiting on write queue size = 0 exception " + e.toString());
+			}
+		}
+		// lets write any pending snapshots   
+		snapshotWriter.writePendingSnapshots();
+		
+		// lets now clean up resources. 
+		disposeWriter();
+
 	}
+
+	private void disposeWriter() {
+		mongoClient.close();
+		snapshotWriter.interrupt();
+		snapshotWriter.writePendingSnapshots();
+		queueMonitor.interrupt();
+		metrics.setStopTime(DDateTime.now(session.getStream().getTimeZone()));
+		kafkaConsumer.dispose();
+		writerClosed = true;
+	}
+
+
 
 	private class SnapshotWriter extends Thread {
 

@@ -8,6 +8,7 @@ import org.apache.kafka.clients.consumer.ConsumerRecord;
 import org.bson.Document;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.slf4j.Marker;
 import org.slf4j.MarkerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -25,7 +26,7 @@ import com.dunkware.net.proto.stream.GStreamEvent;
 import com.dunkware.net.proto.stream.GStreamEventType;
 import com.dunkware.trade.service.data.json.stream.writer.DataStreamSignalWriterSessionStats;
 import com.dunkware.trade.service.stream.server.controller.StreamController;
-import com.dunkware.trade.service.stream.server.controller.session.capture.StreamSessionCapture;
+import com.dunkware.trade.service.stream.server.controller.session.capture.StreamSessionCaptureExt;
 import com.dunkware.trade.service.stream.server.spring.ConfigService;
 import com.mongodb.WriteConcern;
 import com.mongodb.client.MongoClient;
@@ -40,9 +41,6 @@ public class DataStreamSessionSignalWriter implements DKafkaByteHandler2 {
 
 	@Autowired
 	private ConfigService config;
-	
-
-	
 
 	private MongoClient mongoClient;
 	private MongoDatabase mongoDatabase;
@@ -58,15 +56,16 @@ public class DataStreamSessionSignalWriter implements DKafkaByteHandler2 {
 
 	private DataStreamSessionSignalWriterMetrics metrics;
 
-	private StreamSessionCapture capture;
+	private StreamSessionCaptureExt capture;
 	
 	private SignalWriter writer;
 	
 	private DKafkaByteConsumer2 kafkaConsumer;
 
+	private Marker marker = MarkerFactory.getMarker("stream.session.capture");
 	
-	public void startSession(StreamSessionCapture capture) throws Exception {
-		logger.info(MarkerFactory.getMarker(capture.getIdentifier()), "Starting Singal Writer Service");
+	public void startSession(StreamSessionCaptureExt capture) throws Exception {
+
 		this.stream = capture.getStream();
 		this.capture = capture;;
 		
@@ -108,10 +107,34 @@ public class DataStreamSessionSignalWriter implements DKafkaByteHandler2 {
 
 	}
 	
+	public void closeWriter() { 
+		// okay here we will block 
+		// for business to finish to a point. 
+		int count = 0;
+		kafkaConsumer.dispose();
+		while(writeQueue.isEmpty() == false) { 
+			try {
+				Thread.sleep(250);
+				count++;
+				if(count > 20) {
+					logger.error(marker, "Signal Writer Queue is not empty after 5 seconds, force closing");
+					disposeWriter();
+					return;
+				}
+			} catch (Exception e) {
+				logger.error(marker, "Outer exception in close writer " + e.toString());
+			}
+		}
+		disposeWriter();
+		
+	}
 	
-	public void sessionStopped() { 
-		DisposeRunner runner = new DisposeRunner();
-		runner.start();
+	public void disposeWriter() { 
+		writer.interrupt();
+		writer.writePendingSignals();
+		metrics.stop();
+		mongoClient.close();
+
 	}
 	
 	public DataStreamSignalWriterSessionStats getStats() { 
@@ -131,56 +154,15 @@ public class DataStreamSessionSignalWriter implements DKafkaByteHandler2 {
 			capture.entitySignal(signal);
 			writeQueue.add(signal);
 		}
-
-		if(event.getType() == GStreamEventType.SessionStop) {
-			
-		
-			
-			DisposeRunner runner = new  DisposeRunner();
-			runner.start();
-		}
 	}
 	
-	private class DisposeRunner extends Thread { 
-		
-		public void run() { 
-			logger.info("Starting Session writer dispose runner");
-			int count = 0;
-			kafkaConsumer.dispose();
-			while(writeQueue.isEmpty() == false) { 
-				try {
-					Thread.sleep(1000);
-					count++;
-					if(count > 20) {
-						logger.error( "Signal Writer Q Not Empty After 10 Seconds");
-						closeWirer();
-						return;
-					}
-				} catch (Exception e) {
-					// TODO: handle exception
-				}
-			}
-			closeWirer();
-			
-		}
-		
-		public void closeWirer() { 
-			logger.debug("Closing Signal Writer");
-			writer.interrupt();
-			writer.writePendingSignals();
-			metrics.stop();
-			mongoClient.close();
-			logger.debug("Calling singal writer complete on session");
-			capture.signalWriterComplete();
-			
-		}
-	}
+
 	
 	public int getWriteQueueSize() { 
 		return writeQueue.size();
 	}
 	
-	public StreamSessionCapture getCapture() { 
+	public StreamSessionCaptureExt getCapture() { 
 		return capture;
 	}
 

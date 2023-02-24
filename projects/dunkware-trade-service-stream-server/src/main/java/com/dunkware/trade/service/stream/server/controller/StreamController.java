@@ -111,6 +111,8 @@ public class StreamController {
 	
 	private Marker marker = MarkerFactory.getMarker("StreamController");
 	
+	
+	
 	private List<StreamSignalListener> signalListeners = new ArrayList<StreamSignalListener>();
 	private Semaphore signalListenerSemaphore = new Semaphore(1);
 
@@ -351,6 +353,8 @@ public class StreamController {
 		private DTime stopTime;
 		private DTime startTime;
 		// come on dude! last fuckin piece
+		
+		private Marker marker = MarkerFactory.getMarker("stream.controller.schedule");
 
 		private ReusableCountDownLatch latch = new ReusableCountDownLatch();
 
