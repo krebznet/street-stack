@@ -38,23 +38,7 @@
 			</properties>
 
 
-			<repositories>
-				<repository>
-					<id>dunkware-internal-release</id>
-					<name>Dunkware Internal Release</name>
-					<url>https://nexus.dunkware.com/repository/dunkware-internal-release/</url>
-				</repository>
-				<repository>
-					<id>central</id>
-					<name>Maven Central</name>
-					<url>https://repo1.maven.org/maven2/</url>
-				</repository>
-				<repository>
-					<id>dunkware-internal-snapshot</id>
-					<name>Dunkware Internal Snapshot</name>
-					<url>https://nexus.dunkware.com/repository/dunkware-internal-snapshot/</url>
-				</repository>
-			</repositories>
+
 
 
 			<distributionManagement>
@@ -63,14 +47,14 @@
 					<id>dunkware-internal-snapshot</id>
 					<layout>default</layout>
 					<name>dunkware-internal-snapshot</name>
-					<url>https://nexus.dunkware.com/repository/dunkware-internal-snapshot/</url>
+					<url>http://ec2-54-87-204-176.compute-1.amazonaws.com:8081/repository/dunkware-internal-snapshot/</url>
 				</snapshotRepository>
 				<repository>
 					<uniqueVersion>false</uniqueVersion>
 					<id>dunkware-internal-release</id>
 					<layout>default</layout>
 					<name>dunkware-internal-release</name>
-					<url>https://nexus.dunkware.com/repository/dunkware-internal-release/</url>
+					<url>http://ec2-54-87-204-176.compute-1.amazonaws.com:8081/repository/dunkware-internal-release/</url>
 				</repository>
 			</distributionManagement>
 
@@ -84,7 +68,7 @@
       <module>projects/dunkware-trade-tick-model</module>
       <module>projects/dunkware-trade-tick-api</module>
       <module>projects/dunkware-trade-tick-provider-atick</module>
-		<!--	<module>projects/dunkware-xstream-script</module>-->
+		<module>projects/dunkware-xstream-script</module>
 			<module>projects/dunkware-xstream-core-model</module>
       <module>projects/dunkware-xstream-core-runtime</module>
       <module>projects/dunkware-xstream-data-runtime</module>
