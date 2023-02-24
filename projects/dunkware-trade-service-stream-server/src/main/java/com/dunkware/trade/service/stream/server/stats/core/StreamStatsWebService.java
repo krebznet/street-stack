@@ -68,6 +68,7 @@ public class StreamStatsWebService {
 			
 			doc.setDate(dayStats.getDate());
 			doc.setEntId(dayStats.getEntityId());
+			doc.setEntIdent(dayStats.getEntityIdent());
 			doc.setSigs(dayStats.getSignals());
 			doc.setVars(dayStats.getVariables());
 			doc.setId(sequenceService.generateSequence(StreamEntityDayStatsDoc.SEQUENCE_NAME));

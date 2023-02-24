@@ -22,6 +22,7 @@ public class StreamEntityDayStatsDoc {
 	private long id;
 	private LocalDate date;
 	private int entId;
+	private String entIdent;
 	private String stream;
 
 	private List<StreamVariableStats> vars = new ArrayList<StreamVariableStats>();
@@ -74,6 +75,16 @@ public class StreamEntityDayStatsDoc {
 	public void setStream(String stream) {
 		this.stream = stream;
 	}
+
+	public String getEntIdent() {
+		return entIdent;
+	}
+
+	public void setEntIdent(String entIdent) {
+		this.entIdent = entIdent;
+	}
+	
+	
 	
 	
 

@@ -84,6 +84,7 @@ public class EntityStatsBuilder implements XStreamRowListener {
 		for (SignalType sigType : signalCounts.keySet()) {
 			StreamSignalStats sigStats = new StreamSignalStats();
 			sigStats.setSigId(sigType.getId());
+			sigStats.setSigIdent(sigType.getName());
 			sigStats.setCount(this.signalCounts.get(sigType).get());
 			sigStatsList.add(sigStats);
 		}

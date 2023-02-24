@@ -5,6 +5,7 @@ import java.time.LocalDateTime;
 public class StreamVariableStats {
 
 	private int varId;
+	private String varIdent;
 	private Number high = null;
 	private LocalDateTime highT;
 	private LocalDateTime lowT;
@@ -58,6 +59,16 @@ public class StreamVariableStats {
 	public void setLowT(LocalDateTime lowT) {
 		this.lowT = lowT;
 	}
+
+	public String getVarIdent() {
+		return varIdent;
+	}
+
+	public void setVarIdent(String varIdent) {
+		this.varIdent = varIdent;
+	}
+	
+	
 
 	
 
