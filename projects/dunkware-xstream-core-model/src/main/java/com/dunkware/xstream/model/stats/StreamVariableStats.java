@@ -4,14 +4,12 @@ import java.time.LocalDateTime;
 
 public class StreamVariableStats {
 	
-	private int id; 
-	private String ident;
+	private int varId; 
 	private Number high = null;
-	private LocalDateTime highTime; 
-	private LocalDateTime lowTime;
+	private LocalDateTime hight; 
+	private LocalDateTime lowt;
 	private Number low = null;
 	private int values;
-	
 	
 	public Number getHigh() {
 		return high;
@@ -19,17 +17,17 @@ public class StreamVariableStats {
 	public void setHigh(Number high) {
 		this.high = high;
 	}
-	public LocalDateTime getHighTime() {
-		return highTime;
+	public LocalDateTime getHight() {
+		return hight;
 	}
-	public void setHighTime(LocalDateTime highTime) {
-		this.highTime = highTime;
+	public void setHight(LocalDateTime hight) {
+		this.hight = hight;
 	}
-	public LocalDateTime getLowTime() {
-		return lowTime;
+	public LocalDateTime getLowt() {
+		return lowt;
 	}
-	public void setLowTime(LocalDateTime lowTime) {
-		this.lowTime = lowTime;
+	public void setLowt(LocalDateTime lowt) {
+		this.lowt = lowt;
 	}
 	public Number getLow() {
 		return low;
@@ -37,27 +35,18 @@ public class StreamVariableStats {
 	public void setLow(Number low) {
 		this.low = low;
 	}
-	
 	public int getValues() {
 		return values;
 	}
 	public void setValues(int values) {
 		this.values = values;
 	}
-	public int getId() {
-		return id;
+	public int getVarId() {
+		return varId;
 	}
-	public void setId(int id) {
-		this.id = id;
+	public void setVarId(int varId) {
+		this.varId = varId;
 	}
-	public String getIdent() {
-		return ident;
-	}
-	public void setIdent(String ident) {
-		this.ident = ident;
-	}
-	
-	
 	
 	
 	
