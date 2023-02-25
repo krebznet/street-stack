@@ -23,10 +23,10 @@ import com.dunkware.trade.sdk.core.runtime.trade.event.ETradeEntryCompleted;
 import com.dunkware.trade.sdk.core.runtime.trade.event.ETradeEntryException;
 import com.dunkware.trade.sdk.core.runtime.trade.event.ETradeEntryUpdate;
 import com.dunkware.trade.sdk.core.runtime.trade.impl.TradeEntryImpl;
-import com.dunkware.trade.sdk.lib.model.entry.LimitAskEntryType;
+import com.dunkware.trade.sdk.lib.model.entry.LimitEntryType;
 import com.dunkware.trade.sdk.lib.model.entry.MarketEntryType;
 
-@ATradeEntry(type = LimitAskEntryType.class)
+@ATradeEntry(type = LimitEntryType.class)
 public class LimitAskEntry  extends TradeEntryImpl  {
 	
 	private Logger logger = LoggerFactory.getLogger(getClass());
@@ -62,9 +62,8 @@ public class LimitAskEntry  extends TradeEntryImpl  {
 			}
 		}
 		OrderType orderType = builder.build();
-		
-	    // create orders right!? where the fuck lol 
-		order = trade.getSession().createOrder(orderType);
+		 
+		order = trade.getContext().createOrder(orderType);
 		try {
 			getSpec().setOpeningTime(DDateTime.now());
 			getSpec().setAllocatedSize(trade.getSpec().getAllocatedSize());

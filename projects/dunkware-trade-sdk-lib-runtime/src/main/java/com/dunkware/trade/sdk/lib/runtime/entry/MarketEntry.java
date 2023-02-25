@@ -61,7 +61,7 @@ public class MarketEntry extends TradeEntryImpl  {
 		OrderType orderType = builder.build();
 		
 	    // create orders right!? where the fuck lol 
-		order = trade.getSession().createOrder(orderType);
+		order = trade.getContext().createOrder(orderType);
 		try {
 			getSpec().setOpeningTime(DDateTime.now());
 			getSpec().setAllocatedSize(trade.getSpec().getAllocatedSize());

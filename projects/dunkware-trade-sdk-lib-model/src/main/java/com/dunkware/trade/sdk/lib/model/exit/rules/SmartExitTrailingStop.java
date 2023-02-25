@@ -1,11 +1,13 @@
 package com.dunkware.trade.sdk.lib.model.exit.rules;
 
+import com.dunkware.trade.sdk.lib.model.constants.PriceType;
 import com.dunkware.trade.sdk.lib.model.exit.SmartExitRuleType;
 
 public class SmartExitTrailingStop extends SmartExitRuleType {
 	
 	private double stop = Double.MIN_VALUE;
 	private double trail;
+	private PriceType target; 
 	
 	public double getStop() {
 		return stop;
@@ -18,6 +20,12 @@ public class SmartExitTrailingStop extends SmartExitRuleType {
 	}
 	public void setTrail(double trail) {
 		this.trail = trail;
+	}
+	public PriceType getTarget() {
+		return target;
+	}
+	public void setTarget(PriceType target) {
+		this.target = target;
 	}
 	
 	

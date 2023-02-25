@@ -1,0 +1,12 @@
+package com.dunkware.trade.service.beach.server.runtime;
+
+import com.dunkware.trade.sdk.core.runtime.trade.Trade;
+
+public interface BeachTrade extends Trade {
+
+	BeachAccount getAccount();
+	
+	
+	// beach trade spec -> open orders -, runtime, opentime, openingTime, closeTime, closingTime 
+	// comissions
+}

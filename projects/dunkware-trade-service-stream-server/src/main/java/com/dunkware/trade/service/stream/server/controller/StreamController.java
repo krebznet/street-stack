@@ -252,6 +252,12 @@ public class StreamController {
 			input.setController(this);
 			//cluster.getNodeSevice().getAvailableWorkerNodes();
 			List<ClusterNode> nodes = new ArrayList<ClusterNode>();
+			try {
+				Thread.sleep(2500);	
+			} catch (Exception e) {
+				// TODO: handle exception
+			}
+			
 			String[] configedNodes = confgiredWorkerNodes.split(",");
 			try {
 				for (String nodeId : configedNodes) {

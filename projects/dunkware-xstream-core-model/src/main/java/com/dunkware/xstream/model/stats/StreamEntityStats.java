@@ -1,7 +1,10 @@
 package com.dunkware.xstream.model.stats;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 public class StreamEntityStats {
 
@@ -32,6 +35,16 @@ public class StreamEntityStats {
 
 	public void setDays(List<StreamEntityDayStats> days) {
 		this.days = days;
+	}
+	
+	@JsonIgnore
+	public boolean hasDate(LocalDate date) { 
+		for (StreamEntityDayStats day : days) {
+			if(day.getDate().getDayOfYear() == date.getDayOfYear()) { 
+				return true; 
+			}
+		}
+		return false;
 	}
 	
 	

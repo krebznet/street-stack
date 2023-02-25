@@ -21,7 +21,6 @@ import com.dunkware.trade.sdk.core.model.broker.BrokerType;
 import com.dunkware.trade.sdk.core.runtime.broker.BrokerAccount;
 import com.dunkware.trade.sdk.core.runtime.broker.anot.ABroker;
 import com.dunkware.trade.sdk.core.runtime.broker.impl.BrokerImpl;
-import com.dunkware.trade.sdk.tws.model.TwsBrokerType;
 import com.dunkware.trade.tick.api.instrument.Instrument;
 import com.dunkware.trade.tick.model.ticker.TradeTickerSpec;
 

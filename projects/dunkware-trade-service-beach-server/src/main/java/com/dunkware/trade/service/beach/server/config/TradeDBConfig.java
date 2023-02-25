@@ -20,7 +20,7 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
 @Configuration
 @EnableTransactionManagement
 @EnableJpaRepositories(entityManagerFactoryRef = "tradeEntityManagerFactory", transactionManagerRef = "tradeTransactionManager", basePackages = {
-		"com.dunkware.trade.service.beach.server.trade.entity" })
+		"com.dunkware.trade.service.beach.server.repository" })
 public class TradeDBConfig {
 
 	@Primary
@@ -40,7 +40,7 @@ public class TradeDBConfig {
 		properties.put("hibernate.hbm2ddl.auto", "create");
 		properties.put("hibernate.dialect", "org.hibernate.dialect.MySQL8Dialect");
 		return builder.dataSource(dataSource).properties(properties)
-				.packages("com.dunkware.trade.service.beach.server.trade.entity").persistenceUnit("trade").build();
+				.packages("com.dunkware.trade.service.beach.server.repository").persistenceUnit("trade").build();
 	}
 
 	@Primary

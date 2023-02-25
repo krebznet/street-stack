@@ -31,7 +31,7 @@ public class AddStreamReqGen {
 			StringWriter writer = new StringWriter();
 			mapper.writeValue(writer, bundle);
 
-			XScriptProject project = XscriptBundleHelper.loadProject(bundle);
+			//XScriptProject project = XscriptBundleHelper.loadProject(bundle);
 			
 			AddStreamReq req = new AddStreamReq();
 			StreamControllerSpec spec = new StreamControllerSpec();

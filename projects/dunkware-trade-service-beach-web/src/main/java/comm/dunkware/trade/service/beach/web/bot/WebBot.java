@@ -5,27 +5,12 @@ import java.util.List;
 
 public class WebBot {
 	
-	private String name; 
-	private String account; 
 	private Number allocatedCapital; 
 	private List<WebBotPlay> plays = new ArrayList<WebBotPlay>();
 	private boolean enabled; 
 	private Number activeTradeLimit; 
 	private Number tradeThrottle;
 	
-	
-	public String getName() {
-		return name;
-	}
-	public void setName(String name) {
-		this.name = name;
-	}
-	public String getAccount() {
-		return account;
-	}
-	public void setAccount(String account) {
-		this.account = account;
-	}
 	public Number getAllocatedCapital() {
 		return allocatedCapital;
 	}

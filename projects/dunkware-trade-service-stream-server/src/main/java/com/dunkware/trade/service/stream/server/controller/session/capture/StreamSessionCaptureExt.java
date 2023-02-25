@@ -69,7 +69,7 @@ public class StreamSessionCaptureExt implements StreamSessionExtension {
 
 	// test commit
 
-	private DataStreamSessionSnapshotWriter2 snapshotWriter;
+//	private DataStreamSessionSnapshotWriter2 snapshotWriter;
 	private DataStreamSessionSignalWriter signalWriter;
 	
 	
@@ -93,9 +93,9 @@ public class StreamSessionCaptureExt implements StreamSessionExtension {
 		logger.info("Starting Data Stream Session {} Stream {}", spec.getSessionId(), session.getStream().getName());
 		
 		try {
-			snapshotWriter = new DataStreamSessionSnapshotWriter2();
-			ac.getAutowireCapableBeanFactory().autowireBean(snapshotWriter);
-			snapshotWriter.start(this);
+		//	snapshotWriter = new DataStreamSessionSnapshotWriter2();
+		//	ac.getAutowireCapableBeanFactory().autowireBean(snapshotWriter);
+		//	snapshotWriter.start(this);
 			logger.info(marker, "Started Snapshot Writer Session {}", spec.getSessionId());
 		} catch (Exception e) {
 			logger.error(marker, "Exception starting data stream session snapshot writer " + e.toString());
@@ -197,7 +197,7 @@ public class StreamSessionCaptureExt implements StreamSessionExtension {
 		logger.info(marker, "Closing Snapshot/Signal Writers");
 		// close signal and snapshot writers
 		signalWriter.closeWriter();
-		snapshotWriter.closeWriter();
+		//snapshotWriter.closeWriter();
 		logger.info(marker, "Closed Snapshot/SignalWriters");
 		// now save all the session entities 
 		try {

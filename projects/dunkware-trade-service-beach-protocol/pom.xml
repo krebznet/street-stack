@@ -30,7 +30,11 @@
 
 	<dependencies>
 		<!-- Dunkware Deps -->
-
+		<dependency>
+			<groupId>com.dunkware.trade.service</groupId>
+			<artifactId>dunkware-trade-service-beach-web</artifactId>
+			<version>1.0.0-SNAPSHOT</version>
+		</dependency>
 		<dependency>
 			<groupId>com.dunkware.common</groupId>
 			<artifactId>dunkware-common-util</artifactId>
@@ -62,7 +66,7 @@
 	</dependencies>
 
 	<build>
-		<pluginManagement><!-- lock down plugins versions to avoid using Maven
+		<pluginManagement><!-- lock down plugins versions to avoid using Maven 
 				defaults (may be moved to parent pom) -->
 			<plugins>
 				<plugin>

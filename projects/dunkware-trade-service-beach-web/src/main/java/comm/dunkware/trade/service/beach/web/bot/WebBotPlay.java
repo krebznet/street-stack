@@ -9,12 +9,12 @@ public class WebBotPlay {
 	private Number activeSymbolLimit; 
 	private Number symbolThrottle;
 	private Number tradeThrottle; 
-	private String scanner; 
+	private String signal;
+	private String stream; // us_equity
 	private WebBotEntryStrategy entryStrategy; 
 	private WebBotExitStrategy exitStrategy;
 	private Number rank; 
 	private boolean rankEnabled;
-	
 	
 	public String getName() {
 		return name;
@@ -58,12 +58,7 @@ public class WebBotPlay {
 	public void setTradeThrottle(Number tradeThrottle) {
 		this.tradeThrottle = tradeThrottle;
 	}
-	public String getScanner() {
-		return scanner;
-	}
-	public void setScanner(String scanner) {
-		this.scanner = scanner;
-	}
+	
 	public WebBotEntryStrategy getEntryStrategy() {
 		return entryStrategy;
 	}
@@ -87,7 +82,21 @@ public class WebBotPlay {
 	}
 	public void setRankEnabled(boolean rankEnabled) {
 		this.rankEnabled = rankEnabled;
+	}
+	public String getSignal() {
+		return signal;
+	}
+	public void setSignal(String signal) {
+		this.signal = signal;
+	}
+	public String getStream() {
+		return stream;
+	}
+	public void setStream(String stream) {
+		this.stream = stream;
 	} 
+	
+	
 	
 	
 	

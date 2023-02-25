@@ -1,7 +1,7 @@
 package com.dunkware.trade.broker.tws.tests;
 
 import com.dunkware.common.util.json.DJson;
-import com.dunkware.trade.sdk.tws.model.TwsBrokerType;
+import com.dunkware.trade.broker.tws.TwsBrokerType;
 
 public class TwsBrokerBeanPrint {
 

@@ -4,7 +4,7 @@ import com.dunkware.trade.sdk.core.model.system.SystemType;
 import com.dunkware.trade.sdk.core.runtime.system.System;
 import com.dunkware.trade.sdk.core.runtime.system.SystemException;
 import com.dunkware.trade.sdk.core.runtime.system.anot.ASystem;
-import com.dunkware.trade.sdk.core.runtime.trade.TradeSession;
+import com.dunkware.trade.sdk.core.runtime.trade.TradeContext;
 import com.dunkware.trade.sdk.lib.model.streambot.model.StreamBotType;
 import com.dunkware.trade.sdk.lib.model.streambot.web.WebStreamBot;
 
@@ -20,7 +20,7 @@ public class StreamBot implements System {
 	// inserts --> 
 	private StreamBotType myType;
 	@Override
-	public void init(SystemType type, TradeSession context) throws SystemException {
+	public void init(SystemType type, TradeContext context) throws SystemException {
 		myType = (StreamBotType)type;
 		
 		
