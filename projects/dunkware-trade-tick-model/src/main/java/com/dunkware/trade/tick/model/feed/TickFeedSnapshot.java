@@ -20,6 +20,8 @@ public class TickFeedSnapshot {
 	private int afterMarketTradeCount;
 	private long afterMarketVolume; 
 	private double extendedHoursLastPrice; 
+	private double openPrice; 
+	private double closePrice; 
 	
 	
 	private DDateTime time;
@@ -143,6 +145,24 @@ public class TickFeedSnapshot {
 	public void setExtendedHoursLastPrice(double extendedHoursLastPrice) {
 		this.extendedHoursLastPrice = extendedHoursLastPrice;
 	}
+
+	public double getOpenPrice() {
+		return openPrice;
+	}
+
+	public void setOpenPrice(double openPrice) {
+		this.openPrice = openPrice;
+	}
+
+	public double getClosePrice() {
+		return closePrice;
+	}
+
+	public void setClosePrice(double closePrice) {
+		this.closePrice = closePrice;
+	}
+	
+	
 	
 	
 	

@@ -445,6 +445,7 @@ public class StreamController {
 		 * Updates boolean flag isSessionDay
 		 */
 		private void newDay() {
+			isSessionDay = false;
 			DayOfWeek today = clockUpdater.getClock().getDayOfWeek();
 			if (days.contains(today)) {
 				if (logger.isDebugEnabled()) {
@@ -458,7 +459,8 @@ public class StreamController {
 				}
 			}
 		}
-
+		
+		
 		@Override
 		public void clockUpdate(DZonedClock clock) {
 			try {

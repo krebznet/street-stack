@@ -120,7 +120,7 @@ public class DataStreamWriterHelper {
 	public static Document buildEntitySignal(GEntitySignal signal, DTimeZone timeZone) throws Exception { 
 		Document container = new Document();
 		LocalDateTime dt = DProtoHelper.toLocalDateTime(signal.getTime(), timeZone);
-		container.append("time", dt);
+		container.append("timestamp", dt);
 		container.append("id", signal.getId());
 		container.append("ident", signal.getIdentifier());
 		container.append("eid", signal.getEntityIdentifier());

@@ -185,7 +185,7 @@ public class FeedService {
 		try {
 			try {
 				logger.info("Deleting Old Feed Topics");
-				admin = DKafkaAdmin.newInstance(zookeepers);
+				admin = DKafkaAdmin.newInstance(getKafkaBrokers());
 				try {
 					Collection<TopicListing> topics = admin.getTopics();
 					List<String> deletes = new ArrayList<String>();

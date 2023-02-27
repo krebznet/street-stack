@@ -33,6 +33,7 @@ import com.mongodb.client.MongoClient;
 import com.mongodb.client.MongoClients;
 import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoDatabase;
+import com.mongodb.client.model.Indexes;
 import com.mongodb.client.model.InsertOneModel;
 
 public class DataStreamSessionSignalWriter implements DKafkaByteHandler2 {
@@ -80,8 +81,24 @@ public class DataStreamSessionSignalWriter implements DKafkaByteHandler2 {
 			mongoClient = MongoClients.create(config.getMongoURL());
 			WriteConcern wc = new WriteConcern(0).withJournal(false);
 			mongoDatabase = mongoClient.getDatabase(config.getMongoDatabase());
-			signalCollection = mongoDatabase.getCollection("stream_" + stream.getName() + "_signals");
-
+			boolean collectionExists = false; 
+			String signalCollectionName = "stream_" + stream.getName() + "_signals";
+			for (String collection : mongoDatabase.listCollectionNames()) {
+				if(collection.equals(signalCollectionName)) { 
+					collectionExists = true; 
+					break;
+				}
+			}
+			if(!collectionExists) { 
+				 mongoDatabase.createCollection(signalCollectionName);
+				 signalCollection = mongoDatabase.getCollection(signalCollectionName);
+				 signalCollection.createIndex(Indexes.ascending("timestamp"));
+				 signalCollection.createIndex(Indexes.ascending("ident"));
+				 signalCollection.createIndex(Indexes.ascending("eident"));
+			} else { 
+				signalCollection = mongoDatabase.getCollection("stream_" + stream.getName() + "_signals");	
+			}
+			
 		} catch (Exception e) {
 		
 			logger.error("Exceptoon Init Mongo DB in Session Singal Writer  " + e.toString());

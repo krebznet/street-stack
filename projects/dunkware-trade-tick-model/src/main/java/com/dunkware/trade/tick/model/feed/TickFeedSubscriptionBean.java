@@ -1,11 +1,11 @@
 package com.dunkware.trade.tick.model.feed;
 
-import com.dunkware.trade.tick.model.ticker.TradeTickerSpec;
+import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonInclude.Include;
 
+@JsonInclude(Include.NON_NULL)
 public class TickFeedSubscriptionBean {
 	
-	private int tradeCount; 
-	private int quoteCount; 
 	private int snapshotCount;
 	
 	private String symbol; 
@@ -17,31 +17,17 @@ public class TickFeedSubscriptionBean {
 	private long trades;
 	private double bidPrice; 
 	
-	private String lastTradeUpdate; 
-	private String lastQuoteUpdate; 
-	private String lastSnapshotUpdate;
+	
+	private String lastUpdate;
+	
+	private double extendedLast;
+	
+	private double openPrice; 
+	private double closePrice; 
 	
 	private int id; 
 	
 	
-	private int tps; 
-	private int qps; 
-	
-	
-	private TradeTickerSpec tickerSpec;
-	
-	public int getTradeCount() {
-		return tradeCount;
-	}
-	public void setTradeCount(int tradeCount) {
-		this.tradeCount = tradeCount;
-	}
-	public int getQuoteCount() {
-		return quoteCount;
-	}
-	public void setQuoteCount(int quoteCount) {
-		this.quoteCount = quoteCount;
-	}
 	public int getSnapshotCount() {
 		return snapshotCount;
 	}
@@ -91,42 +77,7 @@ public class TickFeedSubscriptionBean {
 		this.trades = trades;
 	}
 	
-	public TradeTickerSpec getTickerSpec() {
-		return tickerSpec;
-	}
-	public void setTickerSpec(TradeTickerSpec tickerSpec) {
-		this.tickerSpec = tickerSpec;
-	}
-	public String getLastTradeUpdate() {
-		return lastTradeUpdate;
-	}
-	public void setLastTradeUpdate(String lastTradeUpdate) {
-		this.lastTradeUpdate = lastTradeUpdate;
-	}
-	public String getLastQuoteUpdate() {
-		return lastQuoteUpdate;
-	}
-	public void setLastQuoteUpdate(String lastQuoteUpdate) {
-		this.lastQuoteUpdate = lastQuoteUpdate;
-	}
-	public String getLastSnapshotUpdate() {
-		return lastSnapshotUpdate;
-	}
-	public void setLastSnapshotUpdate(String lastSnapshotUpdate) {
-		this.lastSnapshotUpdate = lastSnapshotUpdate;
-	}
-	public int getTps() {
-		return tps;
-	}
-	public void setTps(int tps) {
-		this.tps = tps;
-	}
-	public int getQps() {
-		return qps;
-	}
-	public void setQps(int qps) {
-		this.qps = qps;
-	}
+	
 	public double getBidPrice() {
 		return bidPrice;
 	}
@@ -138,7 +89,29 @@ public class TickFeedSubscriptionBean {
 	}
 	public void setId(int id) {
 		this.id = id;
+	}
+	
+	public double getExtendedLast() {
+		return extendedLast;
+	}
+	public void setExtendedLast(double extendedLast) {
+		this.extendedLast = extendedLast;
+	}
+	public double getOpenPrice() {
+		return openPrice;
+	}
+	public void setOpenPrice(double openPrice) {
+		this.openPrice = openPrice;
+	}
+	public double getClosePrice() {
+		return closePrice;
+	}
+	public void setClosePrice(double closePrice) {
+		this.closePrice = closePrice;
 	} 
+	
+	
+	
 	
 	
 	

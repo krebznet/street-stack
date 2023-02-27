@@ -45,6 +45,11 @@ public class TickFeedSubscription {
 	private AtomicInteger trades = new AtomicInteger(0);
 	private int bidSize; 
 	private int askSize; 
+	private double openPrice; 
+	private double closePrice; 
+	private long premarketVolume; 
+	private int premarketTrades; 
+	private double extendedHoursLastPrice;
 	
 	
 	TickFeedSubscriptionBean bean = new TickFeedSubscriptionBean();
@@ -67,7 +72,6 @@ public class TickFeedSubscription {
 		bean.setLastPrice(snapshot.getLast());
 		bean.setVolume(snapshot.getVolume());
 		bean.setTrades(snapshot.getTradeCount());
-		bean.setLastSnapshotUpdate(DunkTime.toStringTimeStamp(snapshot.getTime().get()));
 		bean.setId(tickerSpec.getId());
 	
 	}
@@ -85,6 +89,8 @@ public class TickFeedSubscription {
 	public TickFeedQuote getLastQuote() {
 		return lastQuote;
 	}
+	
+	
 	public void setLastQuote(TickFeedQuote lastQuote) {
 		this.lastQuoteTime = LocalTime.now(DTimeZone.toZoneId(DTimeZone.NewYork));
 		this.lastQuote = lastQuote;
@@ -127,9 +133,43 @@ public class TickFeedSubscription {
 		this.lastPrice = lastSnapshot.getLast();
 		this.volume.set(DConverter.longToInt(lastSnapshot.getVolume()));
 		this.trades.set(lastSnapshot.getTradeCount());
+		this.bidPrice = lastSnapshot.getBidPrice();
+		this.bidSize = lastSnapshot.getBidSize();
+		this.openPrice = lastSnapshot.getOpenPrice();
+		this.closePrice = lastSnapshot.getClosePrice();
+		this.extendedHoursLastPrice = lastSnapshot.getExtendedHoursLastPrice();
+		this.premarketTrades = lastSnapshot.getPremarketTradeCount();
+		this.premarketVolume = lastSnapshot.getPremarketVolume();
 		
 		
 	}
+	
+	
+
+	public long getPremarketVolume() {
+		return premarketVolume;
+	}
+
+	public void setPremarketVolume(long premarketVolume) {
+		this.premarketVolume = premarketVolume;
+	}
+
+	public int getPremarketTrades() {
+		return premarketTrades;
+	}
+
+	public void setPremarketTrades(int premarketTrades) {
+		this.premarketTrades = premarketTrades;
+	}
+
+	public double getExtendedHoursLastPrice() {
+		return extendedHoursLastPrice;
+	}
+
+	public void setExtendedHoursLastPrice(double extendedHoursLastPrice) {
+		this.extendedHoursLastPrice = extendedHoursLastPrice;
+	}
+
 	public double getLastPrice() {
 		return lastPrice;
 	}
@@ -176,31 +216,42 @@ public class TickFeedSubscription {
 	public void setAskSize(int askSize) {
 		this.askSize = askSize;
 	} 
-	
+	public double getOpenPrice() {
+		return openPrice;
+	}
+	public void setOpenPrice(double openPrice) {
+		this.openPrice = openPrice;
+	}
+	public double getClosePrice() {
+		return closePrice;
+	}
+	public void setClosePrice(double closePrice) {
+		this.closePrice = closePrice;
+	}
+
 	public TickFeedSubscriptionBean getBean() { 
-		bean.setQuoteCount(quoteCount.get());
-		bean.setTradeCount(tradeCount.get());
+	
 		bean.setSnapshotCount(snapshotCount.get());
 		bean.setSymbol(symbol);
-		if(lastSnapshotTime != null) { 
-			bean.setLastSnapshotUpdate(DunkTime.toStringTimeStamp(lastSnapshotTime));
-		}
-		if(lastTrade != null) { 
-			bean.setLastTradeUpdate(DunkTime.toStringTimeStamp(lastTrade.getTime().get()));	
-			bean.setLastTradeUpdate(DunkTime.toStringTimeStamp(lastTradeTime));
-			
-		}
+		
+		
+		
 		if(lastQuote != null) { 
-			bean.setLastQuoteUpdate(DunkTime.toStringTimeStamp(lastQuote.getTime().get()));
+			
 			bean.setAskPrice(lastQuote.getAskPrice());
 			bean.setBidSize(lastQuote.getBidSize());
 			bean.setAskSize(lastQuote.getAskSize());
 			bean.setBidPrice(lastQuote.getBidPrice());
-			bean.setLastQuoteUpdate(DunkTime.toStringTimeStamp(lastQuoteTime));
+			
 		}
 		bean.setTrades(getTrades());
 		bean.setVolume(getVolume());
 		bean.setLastPrice(getLastPrice());
+		bean.setAskPrice(askPrice);
+		bean.setExtendedLast(extendedHoursLastPrice);
+	
+		bean.setOpenPrice(openPrice);
+		bean.setClosePrice(closePrice);
 		
 		return bean;
 	}

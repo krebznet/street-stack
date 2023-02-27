@@ -360,6 +360,10 @@ public class ActiveTickProvider implements TickProvider {
 		lstFieldTypes.add(atServerAPIDefines.new ATQuoteFieldType(ATQuoteFieldType.PreMarketVolume));
 		lstFieldTypes.add(atServerAPIDefines.new ATQuoteFieldType(ATQuoteFieldType.PreMarketTradeCount));
 		lstFieldTypes.add(atServerAPIDefines.new ATQuoteFieldType(ATQuoteFieldType.TradeCount));
+		lstFieldTypes.add(atServerAPIDefines.new ATQuoteFieldType(ATQuoteFieldType.BidPrice));
+		lstFieldTypes.add(atServerAPIDefines.new ATQuoteFieldType(ATQuoteFieldType.BidSize));
+		lstFieldTypes.add(atServerAPIDefines.new ATQuoteFieldType(ATQuoteFieldType.AskPrice));
+		lstFieldTypes.add(atServerAPIDefines.new ATQuoteFieldType(ATQuoteFieldType.AskSize));
 		// So the issue here is we need to on FeedSubscription: we either add AfterMarketTradeCount as variabl
 		// add AfterMarketHoursLastPrice, PreMarketVolume,PreMarketTradeCount
 		// or you add the sum to the volume but then its off 
@@ -518,6 +522,10 @@ public class ActiveTickProvider implements TickProvider {
 					lstFieldTypes.add(atServerAPIDefines.new ATQuoteFieldType(ATQuoteFieldType.Symbol));
 					lstFieldTypes.add(atServerAPIDefines.new ATQuoteFieldType(ATQuoteFieldType.LastPrice));
 					lstFieldTypes.add(atServerAPIDefines.new ATQuoteFieldType(ATQuoteFieldType.Volume));
+					lstFieldTypes.add(atServerAPIDefines.new ATQuoteFieldType(ATQuoteFieldType.BidPrice));
+					lstFieldTypes.add(atServerAPIDefines.new ATQuoteFieldType(ATQuoteFieldType.BidSize));
+					lstFieldTypes.add(atServerAPIDefines.new ATQuoteFieldType(ATQuoteFieldType.AskPrice));
+					lstFieldTypes.add(atServerAPIDefines.new ATQuoteFieldType(ATQuoteFieldType.AskSize));
 					lstFieldTypes.add(atServerAPIDefines.new ATQuoteFieldType(ATQuoteFieldType.LastTradeDateTime));
 					lstFieldTypes.add(atServerAPIDefines.new ATQuoteFieldType(ATQuoteFieldType.OpenPrice));
 					lstFieldTypes.add(atServerAPIDefines.new ATQuoteFieldType(ATQuoteFieldType.ClosePrice));
@@ -528,11 +536,11 @@ public class ActiveTickProvider implements TickProvider {
 					lstFieldTypes.add(atServerAPIDefines.new ATQuoteFieldType(ATQuoteFieldType.PreMarketVolume));
 					lstFieldTypes.add(atServerAPIDefines.new ATQuoteFieldType(ATQuoteFieldType.PreMarketTradeCount));
 					lstFieldTypes.add(atServerAPIDefines.new ATQuoteFieldType(ATQuoteFieldType.TradeCount));
-
+					
 					long request = session.GetRequestor().SendATQuoteDbRequest(symbolList, lstFieldTypes,
 							ActiveTickServerAPI.DEFAULT_REQUEST_TIMEOUT); // this must only return 500
 					snapshotRequests.put(request, snapshotRequestCount.incrementAndGet());
-					Thread.sleep(1100);
+					Thread.sleep(1000);
 				} catch (Exception e) {
 					logger.error("Exception sending snapshot request in snapshot sender " + e.toString());
 					
@@ -607,6 +615,7 @@ public class ActiveTickProvider implements TickProvider {
 					lstFieldTypes.add(atServerAPIDefines.new ATQuoteFieldType(ATQuoteFieldType.HighPrice));
 					lstFieldTypes.add(atServerAPIDefines.new ATQuoteFieldType(ATQuoteFieldType.LowPrice));
 					lstFieldTypes.add(atServerAPIDefines.new ATQuoteFieldType(ATQuoteFieldType.AfterMarketTradeCount));
+					lstFieldTypes.add(atServerAPIDefines.new ATQuoteFieldType(ATQuoteFieldType.AfterMarketVolume));
 					lstFieldTypes.add(atServerAPIDefines.new ATQuoteFieldType(ATQuoteFieldType.ExtendedHoursLastPrice));
 					lstFieldTypes.add(atServerAPIDefines.new ATQuoteFieldType(ATQuoteFieldType.PreMarketVolume));
 					lstFieldTypes.add(atServerAPIDefines.new ATQuoteFieldType(ATQuoteFieldType.PreMarketTradeCount));

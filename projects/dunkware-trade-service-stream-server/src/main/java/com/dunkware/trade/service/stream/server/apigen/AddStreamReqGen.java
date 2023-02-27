@@ -12,15 +12,20 @@ import com.dunkware.common.util.dtime.DTimeZone;
 import com.dunkware.common.util.json.DJson;
 import com.dunkware.trade.service.stream.json.controller.AddStreamReq;
 import com.dunkware.trade.service.stream.json.controller.spec.StreamControllerSpec;
-import com.dunkware.xstream.xproject.XScriptProject;
 import com.dunkware.xstream.xproject.bundle.XscriptBundleHelper;
 import com.dunkware.xstream.xproject.model.XScriptBundle;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.google.type.DayOfWeek;
 
 @Service
 @Profile("AddStreamReqGen")
 public class AddStreamReqGen {
 
+	
+	public static void main(String[] args) {
+		System.out.println(DayOfWeek.valueOf(1).toString());
+		
+	}
 	public static final String DEV1 = "/Users/duncankrebs/dunkware/street/dunkware-stream-us-equity";
 
 	@PostConstruct

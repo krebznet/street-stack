@@ -156,7 +156,6 @@ public class ATProviderRequestor extends at.feedapi.ActiveTickServerRequester {
 						Long preMarketVolume = (Long)getItemValue(dataItem, LONG);
 						snapshot.setPremarketVolume(preMarketVolume);
 						break;
-										
 					case ATQuoteFieldType.TradeCount:
 						dataType = INT;
 						int tradeCount = (Integer)getItemValue(dataItem, dataType);
@@ -212,8 +211,9 @@ public class ATProviderRequestor extends at.feedapi.ActiveTickServerRequester {
 						snapshot.setBidSize(bs);
 						break;
 					case ATQuoteFieldType.ClosePrice:
-						dataType = DOUBLE;
-						//fields.add(Tick.TickField.newBuilder().setId(TradeTicks.FieldClosePrice).setType(TickFieldType.DOUBLE).setDoubleValue((Double)getItemValue(dataItem, dataType)).build());
+						dataType = DOUBLE;	
+						double cp = (Double)getItemValue(dataItem, dataType);
+						snapshot.setClosePrice(cp);
 						break;
 					case ATQuoteFieldType.HighPrice:
 						dataType = DOUBLE;
@@ -221,7 +221,8 @@ public class ATProviderRequestor extends at.feedapi.ActiveTickServerRequester {
 						break;
 					case ATQuoteFieldType.OpenPrice:
 						dataType = DOUBLE;
-						//fields.add(Tick.TickField.newBuilder().setId(TradeTicks.FieldOpenPrice).setType(TickFieldType.DOUBLE).setDoubleValue((Double)getItemValue(dataItem, dataType)).build());
+						double op = (Double)getItemValue(dataItem, dataType);
+						snapshot.setOpenPrice(op);
 						break;
 					case ATQuoteFieldType.DayHighDateTime:
 						dataType = INT;
@@ -242,6 +243,7 @@ public class ATProviderRequestor extends at.feedapi.ActiveTickServerRequester {
 						Double extendedLast = (Double)getItemValue(dataItem, dataType);
 						snapshot.setExtendedHoursLastPrice(extendedLast);
 						break;
+				
 					case ATQuoteFieldType.LastTradeDateTime:
 						//getItemValue(item, dataType)
 						//TODO: Handle LastTradeDateTime
