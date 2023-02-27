@@ -13,14 +13,16 @@ import com.dunkware.common.util.executor.DExecutor;
 @Component
 public class BeachRuntime {
 
-	@Value("${executor.timeout}")
+	@Value("${config.executor.timeout}")
 	private int executorTimeout;
-	@Value("${executor.size}")
+	@Value("${config.executor.size}")
 	private int executorSize; 
-	
 	
 	private DExecutor executor; 
 	private DEventTree eventTree; 
+	
+	@Value("${config.stream.server}")
+	private String streamServer; 
 	
 	@PostConstruct
 	private void start() { 
@@ -34,6 +36,10 @@ public class BeachRuntime {
 	
 	public DEventTree getEventTree() { 
 		return eventTree;
+	}
+	
+	public String getStreamServerURL() { 
+		return streamServer;
 	}
 }
 

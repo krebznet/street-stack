@@ -3,6 +3,7 @@ package com.dunkware.xstream.model.spec;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.dunkware.common.util.dtime.DTimeZone;
 import com.dunkware.xstream.model.entity.Entity;
 import com.dunkware.xstream.model.entity.EntityGroup;
 import com.dunkware.xstream.model.entity.EntityType;
@@ -18,6 +19,8 @@ public class StreamSpec {
 	private List<Entity> entities = new ArrayList<Entity>();
 	private List<StreamSpecEntityField> entityFields = new ArrayList<StreamSpecEntityField>();
 	private List<StreamSpecEntitySignal> entitySignals = new ArrayList<StreamSpecEntitySignal>();
+	private String eventBrokers; 
+	private DTimeZone timeZone; 
 	
 	public int getId() {
 		return id;
@@ -73,6 +76,22 @@ public class StreamSpec {
 	public void setEntitySignals(List<StreamSpecEntitySignal> entitySignals) {
 		this.entitySignals = entitySignals;
 	}
+	public String getEventBrokers() {
+		return eventBrokers;
+	}
+	public void setEventBrokers(String eventBrokers) {
+		this.eventBrokers = eventBrokers;
+	}
+	public DTimeZone getTimeZone() {
+		return timeZone;
+	}
+	public void setTimeZone(DTimeZone timeZone) {
+		this.timeZone = timeZone;
+	}
+	
+	
+	
+	
 
 	
 }

@@ -22,5 +22,6 @@ public interface BeachService {
 	
 	List<BeachAccount> getAccounts();
 	
+	BeachStream getStream(String identifier) throws Exception;
 	
 }

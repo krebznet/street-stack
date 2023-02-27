@@ -35,6 +35,24 @@ public class BeachOrderDO {
 	@ManyToOne()
 	private BeachBrokerDO broker;
 	
+	@ManyToOne()
+	private BeachEntryDO entry; 
+	
+	@ManyToOne()
+	private BeachExitDO exit; 
+	
+	@ManyToOne
+	private BeachBotDO bot; 
+	
+	@ManyToOne
+	private BeachTradeDO trade;
+	
+	private String entryExit; 
+	
+	// associated with a bot
+	
+	// associated with a trade? 
+	
 	private int orderId; 
 	
 	private TradeTickerType tickerType; 
@@ -64,6 +82,7 @@ public class BeachOrderDO {
 	private int filled;
 	
 	private double commission; 
+	
 	
 	@OneToMany(cascade = CascadeType.ALL)
 	@JoinColumn(name = "order_id")
@@ -236,7 +255,43 @@ public class BeachOrderDO {
 	}
 	public void setBroker(BeachBrokerDO broker) {
 		this.broker = broker;
+	}
+	public BeachEntryDO getEntry() {
+		return entry;
+	}
+	public void setEntry(BeachEntryDO entry) {
+		this.entry = entry;
+		this.entryExit = "entry";
+	}
+	public BeachExitDO getExit() {
+		return exit;
+	}
+	public void setExit(BeachExitDO exit) {
+		this.exit = exit;
+		this.entryExit = "exit";
+	}
+	public BeachBotDO getBot() {
+		return bot;
+	}
+	public void setBot(BeachBotDO bot) {
+		this.bot = bot;
+	}
+	public String getEntryExit() {
+		return entryExit;
+	}
+	public void setEntryExit(String entryExit) {
+		this.entryExit = entryExit;
+	}
+	public BeachTradeDO getTrade() {
+		return trade;
+	}
+	public void setTrade(BeachTradeDO trade) {
+		this.trade = trade;
 	} 
+	
+	
+	
+	
 
 	
 	

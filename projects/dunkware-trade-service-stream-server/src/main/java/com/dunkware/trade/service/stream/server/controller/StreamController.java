@@ -86,6 +86,7 @@ public class StreamController {
 
 	private TradeTickerListSpec tickerList;
 
+	@Value("${net.cluster.server.brokers}")
 	private String kafkaBrokers;
 
 	@Autowired

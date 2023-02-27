@@ -53,12 +53,13 @@ public class TimerRule extends SmartExitRule {
 	@Override
 	public void lockAcquired() {
 		// here we go
+		// Market
 		try {
 			if(logger.isDebugEnabled()) { 
 				logger.debug("Timer Lock Acquired Initiating Market Exit Order");
 			}
 			OrderType exitType = createExitOrder();			
-			exitOrder = exit.getTrade().getContext().createOrder(exitType);
+			exitOrder = exit.getTrade().createExitOrder(exitType);
 			exitOrder.getEventNode().addEventHandler(this);
 			exitOrder.send();
 		} catch (Exception e) {

@@ -10,6 +10,10 @@ public interface TradeExit {
 
 	void start(Trade trade);
 
+	/**
+	 * Okay this should be like umm--LOL
+	 * @throws Exception
+	 */
 	void cancel() throws Exception;
 
 	ExitSpec getSpec();
@@ -17,4 +21,6 @@ public interface TradeExit {
 	Trade getTrade();
 
 	DEventNode getEventNode();
+	
+	//
 }

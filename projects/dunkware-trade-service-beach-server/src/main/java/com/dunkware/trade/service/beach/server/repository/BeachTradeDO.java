@@ -26,6 +26,8 @@ public class BeachTradeDO  {
 	@ManyToOne()
 	private BeachBotDO bot;
 	
+	private String play; 
+	
 	private LocalDateTime openingTime;
 	private LocalDateTime openTime; 
 	
@@ -197,7 +199,15 @@ public class BeachTradeDO  {
 	}
 	public void setBot(BeachBotDO bot) {
 		this.bot = bot;
+	}
+	public String getPlay() {
+		return play;
+	}
+	public void setPlay(String play) {
+		this.play = play;
 	} 
+	
+	
 	
 	
 	

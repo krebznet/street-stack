@@ -29,6 +29,7 @@ import com.dunkware.trade.service.stream.json.controller.spec.StreamControllerSp
 import com.dunkware.trade.service.stream.json.controller.spec.StreamControllerState;
 import com.dunkware.trade.service.stream.server.controller.util.StreamSpecBuilder;
 import com.dunkware.xstream.model.spec.StreamSpec;
+import com.dunkware.xstream.model.spec.StreamSpecList;
 
 
 @RestController
@@ -197,6 +198,22 @@ public class StreamControllerWebService {
 		
 	}
 	
+	@GetMapping(path = "/stream/core/speclist")
+	public @ResponseBody StreamSpecList getSpecList() throws Exception { 
+		List<StreamSpec> specs = new ArrayList<StreamSpec>();
+		try {
+			for (StreamController stream : service.getStreams()) {
+				specs.add(StreamSpecBuilder.build(stream));
+			}	
+		} catch (Exception e) {
+			logger.error("Exception building stream specs " + e.toString());;
+			throw e;
+		}
+		StreamSpecList list = new StreamSpecList();
+		list.setSpecs(specs);
+		return list;
+		
+	}
 	
 
 

@@ -21,6 +21,7 @@ import com.dunkware.trade.sdk.core.model.order.OrderType;
 import com.dunkware.trade.sdk.core.runtime.broker.BrokerAccount;
 import com.dunkware.trade.sdk.core.runtime.order.Order;
 import com.dunkware.trade.sdk.core.runtime.order.OrderException;
+import com.dunkware.trade.sdk.core.runtime.order.OrderPreview;
 import com.dunkware.trade.sdk.core.runtime.order.event.EOrderCreated;
 import com.dunkware.trade.service.beach.protocol.spec.BeachAccountSpec;
 import com.dunkware.trade.service.beach.server.repository.BeachAccountDO;
@@ -29,6 +30,8 @@ import com.dunkware.trade.service.beach.server.repository.BeachTradeRepo;
 import com.dunkware.trade.service.beach.server.runtime.BeachAccount;
 import com.dunkware.trade.service.beach.server.runtime.BeachBot;
 import com.dunkware.trade.service.beach.server.runtime.BeachBroker;
+import com.dunkware.trade.service.beach.server.runtime.BeachEntry;
+import com.dunkware.trade.service.beach.server.runtime.BeachExit;
 import com.dunkware.trade.service.beach.server.runtime.BeachOrder;
 import com.dunkware.trade.service.beach.server.runtime.BeachTrade;
 
@@ -98,6 +101,99 @@ public class BeachAccountImpl implements BeachAccount {
 	public DEventNode getEventNode() {
 		return eventNode;
 	}
+	
+	
+
+	@Override
+	public BeachOrder createBeacEntryOrder(BeachBot bot, BeachEntry entry, BeachTrade trade, OrderType orderType) throws Exception {
+		// try to create the order
+		Order order = account.createOrder(orderType);
+		// at this point it should create the entity
+		BeachOrderDO ent = new BeachOrderDO();
+		ent.setEntry(entry.getEntity());
+		ent.setBot(bot.getEntity());
+		ent.setTrade(trade.getEntity());
+		ent.setOrderId(order.getSpec().getId());
+		ent.setFilled(0);
+		ent.setLastStatus(order.getStatus());
+		ent.setLastUpdate(DDateTime.now(DTimeZone.NewYork).get());
+		ent.setAction(order.getSpec().getAction());
+		ent.setKind(order.getSpec().getKind());
+		ent.setSize(order.getSpec().getSize());
+
+		ent.setAccount(getEntity());
+		ent.setBroker(getBroker().getEntity());
+		EntityManager em = tradeRepo.createEntityManager();
+		try {
+			em.getTransaction().begin();
+			em.persist(ent);
+			em.getTransaction().commit();
+		} catch (Exception e) {
+			logger.error("Fatal Problem Persist Order Failed " + e.toString(), e);
+			throw new OrderException("Internal Error Persist Order Failed " + e.toString(), e);
+		} finally {
+			em.close();
+		}
+		BeachOrderImpl beachOrder = new BeachOrderImpl();
+		try {
+			ac.getAutowireCapableBeanFactory().autowireBean(beachOrder);
+			beachOrder.init(this, order, ent);
+			// notify created event
+			eventNode.event(new EOrderCreated(beachOrder));
+			orders.put(order.getSpec().getId(), beachOrder);
+		} catch (Exception e) {
+			// figure out what type of exception
+			throw new OrderException("Internal Beach Order Init Exeption Catch " + e.toString(), e);
+		}
+		
+		return beachOrder;
+		
+	}
+
+	@Override
+	public BeachOrder createBeacExitOrder(BeachBot bot, BeachExit exit, BeachTrade trade, OrderType orderType) throws Exception {
+		// try to create the order
+		Order order = account.createOrder(orderType);
+		// at this point it should create the entity
+		BeachOrderDO ent = new BeachOrderDO();
+		ent.setExit(exit.getEntity());
+		ent.setBot(bot.getEntity());
+		ent.setTrade(trade.getEntity());
+		ent.setOrderId(order.getSpec().getId());
+		ent.setFilled(0);
+		ent.setLastStatus(order.getStatus());
+		ent.setLastUpdate(DDateTime.now(DTimeZone.NewYork).get());
+		ent.setAction(order.getSpec().getAction());
+		ent.setKind(order.getSpec().getKind());
+		ent.setSize(order.getSpec().getSize());
+
+		ent.setAccount(getEntity());
+		ent.setBroker(getBroker().getEntity());
+		EntityManager em = tradeRepo.createEntityManager();
+		try {
+			em.getTransaction().begin();
+			em.persist(ent);
+			em.getTransaction().commit();
+		} catch (Exception e) {
+			logger.error("Fatal Problem Persist Order Failed " + e.toString(), e);
+			throw new OrderException("Internal Error Persist Order Failed " + e.toString(), e);
+		} finally {
+			em.close();
+		}
+		BeachOrderImpl beachOrder = new BeachOrderImpl();
+		try {
+			ac.getAutowireCapableBeanFactory().autowireBean(beachOrder);
+			beachOrder.init(this, order, ent);
+			// notify created event
+			eventNode.event(new EOrderCreated(beachOrder));
+			orders.put(order.getSpec().getId(), beachOrder);
+		} catch (Exception e) {
+			// figure out what type of exception
+			throw new OrderException("Internal Beach Order Init Exeption Catch " + e.toString(), e);
+		}
+		
+		return beachOrder;
+	}
 
 	@Override
 	public Order createOrder(OrderType orderType) throws OrderException {
@@ -148,6 +244,11 @@ public class BeachAccountImpl implements BeachAccount {
 		// right duncan?
 		// TODO: Code this!
 		return null;
+	}
+
+	@Override
+	public OrderPreview createOrderPreview(OrderType type) throws Exception {
+		return account.createOrderPreview(type);
 	}
 
 }

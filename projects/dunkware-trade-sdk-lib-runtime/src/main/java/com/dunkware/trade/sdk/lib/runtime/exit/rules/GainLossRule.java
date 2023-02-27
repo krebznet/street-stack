@@ -56,7 +56,7 @@ public class GainLossRule extends SmartExitRule {
 	public void lockAcquired() {
 		try {
 			OrderType orderType = createExitOrder();
-			this.exitOrder = getTrade().getContext().createOrder(orderType);
+			this.exitOrder = getTrade().createExitOrder(orderType);
 			exitOrder.getEventNode().addEventHandler(this);
 			exitOrder.send();
 		} catch (Exception e) {

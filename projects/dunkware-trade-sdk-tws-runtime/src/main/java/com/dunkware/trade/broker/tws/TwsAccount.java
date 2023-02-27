@@ -15,33 +15,32 @@ import com.dunkware.trade.sdk.core.runtime.broker.Broker;
 import com.dunkware.trade.sdk.core.runtime.broker.BrokerAccount;
 import com.dunkware.trade.sdk.core.runtime.order.Order;
 import com.dunkware.trade.sdk.core.runtime.order.OrderException;
+import com.dunkware.trade.sdk.core.runtime.order.OrderPreview;
 
 public class TwsAccount implements BrokerAccount {
-	
+
 	private Logger logger = LoggerFactory.getLogger(getClass());
 
 	private List<TwsAccountOrder> orders = new ArrayList<TwsAccountOrder>();
 	private Semaphore orderLock = new Semaphore(1);
-	
+
 	private TwsBroker broker;
-	private String id; 
-	
-	private DEventNode eventNode; 
-	
-	public TwsAccount(TwsBroker broker, String id) { 
-		this.id = id; 
-		this.broker = broker;	
+	private String id;
+
+	private DEventNode eventNode;
+
+	public TwsAccount(TwsBroker broker, String id) {
+		this.id = id;
+		this.broker = broker;
 		eventNode = broker.getEventNode().createChild("accounts/" + id);
 	}
 
 	@Override
 	public BrokerAccountSpec getSpec() {
-		//TODO: Figure me out 
-		// here 
+		// TODO: Figure me out
+		// here
 		return new BrokerAccountSpec();
 	}
-	
-	
 
 	@Override
 	public Broker getBroker() {
@@ -55,7 +54,7 @@ public class TwsAccount implements BrokerAccount {
 			orderLock.acquire();
 			orders.add(order);
 		} catch (Exception e) {
-		} finally { 
+		} finally {
 			orderLock.release();
 		}
 		return order;
@@ -70,8 +69,11 @@ public class TwsAccount implements BrokerAccount {
 	public DEventNode getEventNode() {
 		return eventNode;
 	}
-	
-	
-	
+
+	@Override
+	public OrderPreview createOrderPreview(OrderType type) throws Exception {
+		TwsAccountOrder order = new TwsAccountOrder(this, type);
+		return order.preview();
+	}
 
 }

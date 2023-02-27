@@ -4,6 +4,7 @@ package com.dunkware.trade.service.stream.server.controller.util;
 import com.dunkware.trade.service.stream.server.controller.StreamController;
 import com.dunkware.trade.tick.model.ticker.TradeTickerSpec;
 import com.dunkware.xstream.model.entity.Entity;
+import com.dunkware.xstream.model.spec.NetStreamSpec;
 import com.dunkware.xstream.model.spec.StreamSpec;
 import com.dunkware.xstream.model.spec.StreamSpecEntityField;
 import com.dunkware.xstream.model.spec.StreamSpecEntitySignal;
@@ -17,6 +18,8 @@ public class StreamSpecBuilder {
 		StreamSpec spec = new StreamSpec();
 		spec.setVersion(stream.getCurrentVersion().getVersion());
 		spec.setIdentifier(stream.getEntity().getName());
+		spec.setEventBrokers(stream.getKafkaBrokers());
+		spec.setTimeZone(stream.getTimeZone());
 		for (TradeTickerSpec ticker : stream.getTickers()) {
 			Entity entity = new Entity();
 			entity.setId(ticker.getId());

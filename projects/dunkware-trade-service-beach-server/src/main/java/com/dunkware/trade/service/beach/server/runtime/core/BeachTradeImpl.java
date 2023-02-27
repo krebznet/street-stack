@@ -7,13 +7,15 @@ import com.dunkware.common.util.calc.DCalc;
 import com.dunkware.common.util.events.DEventNode;
 import com.dunkware.common.util.events.anot.ADEventMethod;
 import com.dunkware.common.util.json.DJson;
+import com.dunkware.trade.sdk.core.model.order.OrderType;
 import com.dunkware.trade.sdk.core.model.trade.TradeSpec;
 import com.dunkware.trade.sdk.core.model.trade.TradeStatus;
 import com.dunkware.trade.sdk.core.model.trade.TradeType;
+import com.dunkware.trade.sdk.core.runtime.order.Order;
 import com.dunkware.trade.sdk.core.runtime.registry.TradeRegistry;
+import com.dunkware.trade.sdk.core.runtime.trade.TradeContext;
 import com.dunkware.trade.sdk.core.runtime.trade.TradeEntry;
 import com.dunkware.trade.sdk.core.runtime.trade.TradeExit;
-import com.dunkware.trade.sdk.core.runtime.trade.TradeContext;
 import com.dunkware.trade.sdk.core.runtime.trade.event.ETradeEntryCompleted;
 import com.dunkware.trade.sdk.core.runtime.trade.event.ETradeEntryException;
 import com.dunkware.trade.sdk.core.runtime.trade.event.ETradeExitCompleted;
@@ -24,6 +26,7 @@ import com.dunkware.trade.service.beach.server.repository.BeachExitDO;
 import com.dunkware.trade.service.beach.server.repository.BeachTradeDO;
 import com.dunkware.trade.service.beach.server.repository.BeachTradeRepo;
 import com.dunkware.trade.service.beach.server.runtime.BeachAccount;
+import com.dunkware.trade.service.beach.server.runtime.BeachBot;
 import com.dunkware.trade.service.beach.server.runtime.BeachTrade;
 import com.dunkware.trade.tick.api.instrument.Instrument;
 import com.dunkware.trade.tick.api.instrument.InstrumentListener;
@@ -50,17 +53,30 @@ public class BeachTradeImpl implements BeachTrade, InstrumentListener {
 	
 	private DEventNode eventNode; 
 	
+	private BeachBot bot; 
+	
 	/**
 	 * Have to keep in mind we could init a trade that is already open
 	 * hence the difference between this method and create() setup is
 	 * @param entity
 	 * @throws Exception
 	 */
-	public void init(BeachTradeDO entity, boolean created) throws Exception { 
-		
+	public void init(BeachBot bot, BeachTradeDO entity, boolean created) throws Exception { 
+		this.bot = bot; 
 	}
 	
 	
+	
+	
+
+	@Override
+	public BeachTradeDO getEntity() {
+		return entity;
+	}
+
+
+
+
 
 	@Override
 	public void create(TradeType type, TradeContext context) throws Exception {
@@ -248,8 +264,48 @@ public class BeachTradeImpl implements BeachTrade, InstrumentListener {
 			getEventNode().event(update);
 		}
 	}
+
+
+
+
+	@Override
+	public BeachBot getBot() {
+		return bot;
+	}
+
+
+
+	@Override
+	public Order createEntryOrder(OrderType type) throws Exception {
+		account.createBeacEntryOrder(getBot(), entry, null, type);
+		
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+
+	@Override
+	public Order createExitOrder(OrderType type) throws Exception {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+
+
 	
+
+	@Override
+	public String getSymbol() {
+		return entity.getTickerSymbol();
+	}
+
 	
+// orderCommissionEstimate(Instrument, Size); 
+	// create an order, transmit 
+
+	
+
+
 	
 	
 	

@@ -100,7 +100,7 @@ public class TrailingStopRule extends SmartExitRule {
 			return;
 		}
 		try {
-			trailingOrder = exit.getTrade().getContext().createOrder(orderType);
+			trailingOrder = exit.getTrade().createExitOrder(orderType);
 		} catch (Exception e) {
 			exit.exception("Trailing Stop Order Create Exception " + e.toString());
 			return;

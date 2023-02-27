@@ -94,7 +94,9 @@ public class WebBotPlay {
 	}
 	public void setStream(String stream) {
 		this.stream = stream;
-	} 
+	}
+	
+	
 	
 	
 	

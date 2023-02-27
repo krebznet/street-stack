@@ -63,7 +63,7 @@ public class LimitAskEntry  extends TradeEntryImpl  {
 		}
 		OrderType orderType = builder.build();
 		 
-		order = trade.getContext().createOrder(orderType);
+		order = trade.createEntryOrder(orderType);
 		try {
 			getSpec().setOpeningTime(DDateTime.now());
 			getSpec().setAllocatedSize(trade.getSpec().getAllocatedSize());

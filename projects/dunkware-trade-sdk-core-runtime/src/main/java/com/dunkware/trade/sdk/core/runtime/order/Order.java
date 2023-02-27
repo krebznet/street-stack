@@ -7,7 +7,7 @@ import com.dunkware.trade.sdk.core.model.order.OrderStatus;
 public interface Order {
 	
 	OrderStatus getStatus();
-	
+		
 	public void send() throws OrderException;
 	
 	public void cancel() throws OrderException;

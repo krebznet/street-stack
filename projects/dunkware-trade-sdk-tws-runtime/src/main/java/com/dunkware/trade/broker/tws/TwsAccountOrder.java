@@ -1,5 +1,10 @@
 package com.dunkware.trade.broker.tws;
 
+import java.util.concurrent.BlockingQueue;
+import java.util.concurrent.LinkedBlockingDeque;
+import java.util.concurrent.LinkedBlockingQueue;
+import java.util.concurrent.TimeUnit;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -12,9 +17,9 @@ import com.dunkware.trade.sdk.core.model.order.OrderKind;
 import com.dunkware.trade.sdk.core.model.order.OrderSpec;
 import com.dunkware.trade.sdk.core.model.order.OrderStatus;
 import com.dunkware.trade.sdk.core.model.order.OrderType;
-import com.dunkware.trade.sdk.core.runtime.broker.BrokerAccount;
 import com.dunkware.trade.sdk.core.runtime.order.Order;
 import com.dunkware.trade.sdk.core.runtime.order.OrderException;
+import com.dunkware.trade.sdk.core.runtime.order.OrderPreview;
 import com.dunkware.trade.sdk.core.runtime.order.event.EOrderCancelled;
 import com.dunkware.trade.sdk.core.runtime.order.event.EOrderException;
 import com.dunkware.trade.sdk.core.runtime.order.event.EOrderFilled;
@@ -52,6 +57,8 @@ public class TwsAccountOrder implements Order {
 	private DEventNode eventNode;
 
 	private OrderSpec spec;
+	
+	private BlockingQueue<OrderPreview> orderPreviewQueue = new LinkedBlockingQueue<OrderPreview>();
 
 	public TwsAccountOrder(TwsAccount account, OrderType type) throws OrderException {
 
@@ -77,6 +84,21 @@ public class TwsAccountOrder implements Order {
 		spec.setId(twsOrder.m_orderId);
 
 	}
+	
+	public OrderPreview preview() throws OrderException { 
+		this.twsOrder.m_whatIf = true; 
+		send();
+		try {
+			OrderPreview preview = orderPreviewQueue.poll(10, TimeUnit.SECONDS);
+			if(preview == null) { 
+				throw new OrderException("Order Preview on TWS callback not received after 10 seconds" );
+			}
+			return preview; 
+		} catch (Exception e) {
+			throw new OrderException("Exception polling order preview q " + e.toString());
+		}
+		
+	}
 
 	@Override
 	public void send() throws OrderException {
@@ -95,6 +117,7 @@ public class TwsAccountOrder implements Order {
 		try {
 			broker.getConnector().getConnectorSocket().getClientSocket().placeOrder(twsOrder.m_orderId,
 					twsOrder.m_contract, twsOrder);
+			
 			if (logger.isTraceEnabled()) {
 				logger.trace("{} TwsOrder Submitted", twsOrder.m_orderId);
 			}
@@ -103,8 +126,12 @@ public class TwsAccountOrder implements Order {
 				logger.trace("TwsOrder Sent {} ", spec.getId());
 			}
 			spec.setStatus(OrderStatus.Sent);
-			EOrderSent sent = new EOrderSent(this);
-			eventNode.event(sent);
+			if(twsOrder.m_whatIf == false) {
+				// only send a send notification if its a real order. 
+				EOrderSent sent = new EOrderSent(this);
+				eventNode.event(sent);	
+			}
+			
 		} catch (Exception e) {
 			logger.error("{} Order Submit Exception " + e.toString(), twsOrder.m_orderId);
 			throw new OrderException("Internal TwsSocket OpenOrder Exception " + e.toString());
@@ -308,17 +335,25 @@ public class TwsAccountOrder implements Order {
 
 		}
 
+		/**
+		 * this is only invoked when the what_iff flag is = true
+		 */
 		@Override
 		public void openOrder(int orderId, Contract contract, TwsOrder order, TwsOrderState orderState) {
 			if (order.m_orderId != twsOrder.m_orderId) {
 				return;
 			}
+			OrderPreview preview = new OrderPreview(orderState.m_maxCommission, orderState.m_minCommission, orderState.m_warningText);
+			orderPreviewQueue.add(preview);
+			
+			
 			if (logger.isTraceEnabled()) {
 				logger.trace("{} openOrder() method ", getSpec().getId());
 			}
 			getSpec().setStatus(OrderStatus.valueOf(orderState.m_status));
 			getSpec().setCommision(orderState.m_commission);
-
+			// yes call it because we got it. 
+			detachReader();
 		}
 
 		@Override
