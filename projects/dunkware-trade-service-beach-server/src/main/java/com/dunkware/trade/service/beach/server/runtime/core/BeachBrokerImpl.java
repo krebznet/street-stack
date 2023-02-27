@@ -86,6 +86,7 @@ public class BeachBrokerImpl implements BeachBroker {
 		// give the broker a chance to connect
 		Thread.sleep(1000);
 		// check if we are connected to do account sync
+		
 		if (broker.getStatus() == BrokerStatus.Connected) {
 			logger.info("Broker {} Connected During Broker Load ", brokerType.getIdentifier());
 			loadAndSyncAccounts();

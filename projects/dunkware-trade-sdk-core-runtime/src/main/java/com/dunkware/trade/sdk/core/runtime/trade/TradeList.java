@@ -1,4 +1,4 @@
-package com.dunkware.trade.sdk.lib.runtime.compute;
+package com.dunkware.trade.sdk.core.runtime.trade;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -7,9 +7,9 @@ import java.util.concurrent.Semaphore;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.dunkware.trade.sdk.core.runtime.trade.Trade;
+import com.dunkware.trade.sdk.core.model.trade.TradeStatus;
 
-public class TradeContainer {
+public class TradeList {
 	
 	private List<Trade> trades = new ArrayList<Trade>();
 	private Semaphore tradeLock = new Semaphore(1);
@@ -39,10 +39,45 @@ public class TradeContainer {
 		}
 	}
 	
+	public double getActiveCapital() { 
+		return 3;
+		
+	}
+	
+	public double getTradedCapital() { 
+		return 5;
+	}
+	
+	public int getActiveTradeCount() { 
+		try {
+			tradeLock.acquire();
+			int count = 0; 
+			for (Trade trade : trades) {
+				if(trade.getSpec().getStatus() == TradeStatus.Open || trade.getSpec().getStatus() == TradeStatus.Opening
+						|| trade.getSpec().getStatus() == TradeStatus.Closing) { 
+					count++;
+				}
+			}
+			return count;
+		} catch (Exception e) {
+			logger.error("Exception getting trade count " + e.toString());
+			return -1;
+		} finally { 
+			tradeLock.release();
+			
+		}
+	}
+	
 	public int getOpenTradeCount() { 
 		try {
 			tradeLock.acquire();
-			return trades.size();
+			int count = 0; 
+			for (Trade trade : trades) {
+				if(trade.getSpec().getStatus() == TradeStatus.Open) { 
+					count++;
+				}
+			}
+			return count;
 		} catch (Exception e) {
 			logger.error("Exception getting trade count " + e.toString());
 			return -1;

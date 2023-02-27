@@ -9,6 +9,7 @@ import com.dunkware.trade.sdk.core.runtime.order.Order;
 import com.dunkware.trade.sdk.core.runtime.order.event.EOrderException;
 import com.dunkware.trade.sdk.core.runtime.order.event.EOrderFilled;
 import com.dunkware.trade.sdk.core.runtime.trade.Trade;
+import com.dunkware.trade.sdk.core.runtime.trade.event.ETradeClosing;
 import com.dunkware.trade.sdk.lib.model.exit.SmartExitRuleType;
 import com.dunkware.trade.sdk.lib.model.exit.rules.SmartExitTimer;
 import com.dunkware.trade.sdk.lib.runtime.exit.SmartExit;
@@ -52,12 +53,12 @@ public class TimerRule extends SmartExitRule {
 
 	@Override
 	public void lockAcquired() {
-		// here we go
-		// Market
 		try {
 			if(logger.isDebugEnabled()) { 
 				logger.debug("Timer Lock Acquired Initiating Market Exit Order");
 			}
+			ETradeClosing closing = new ETradeClosing(exit.getTrade());
+			exit.getTrade().getEventNode().event(closing);
 			OrderType exitType = createExitOrder();			
 			exitOrder = exit.getTrade().createExitOrder(exitType);
 			exitOrder.getEventNode().addEventHandler(this);

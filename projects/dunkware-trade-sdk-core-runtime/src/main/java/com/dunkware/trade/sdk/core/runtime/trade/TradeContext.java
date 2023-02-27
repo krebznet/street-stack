@@ -1,24 +1,17 @@
 package com.dunkware.trade.sdk.core.runtime.trade;
 
-import java.util.Collection;
-import java.util.stream.Stream;
-
 import com.dunkware.common.util.events.DEventNode;
-import com.dunkware.trade.sdk.core.model.trade.TradeType;
+import com.dunkware.trade.tick.api.instrument.Instrument;
+import com.dunkware.trade.tick.model.ticker.TradeTickerSpec;
 
 public interface TradeContext {
 	
 	DEventNode getEventNode();
 	
-	Collection<Trade> getTrades(); 
-	
-	Trade createTrade(TradeType type) throws Exception;
+	TradeList getTrades();
 
 	void execute(Runnable runnable);
-	
-	Stream getStream(String ident) throws Exception;
-	
-	void event(String source, String type, String message) throws Exception;
-	
+		
+	Instrument getInstrument(TradeTickerSpec tickerSpec) throws Exception;
 	
 }

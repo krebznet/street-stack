@@ -29,7 +29,7 @@ public class BeachExitImpl implements BeachExit {
 	
 	@Override
 	public void init(ExitType type) throws Exception {
-		exit.init(type);
+		// do nothing
 	}
 
 	@Override

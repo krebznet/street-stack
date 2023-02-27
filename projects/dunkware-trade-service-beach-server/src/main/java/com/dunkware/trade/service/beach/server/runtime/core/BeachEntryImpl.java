@@ -1,5 +1,7 @@
 package com.dunkware.trade.service.beach.server.runtime.core;
 
+import java.time.LocalDateTime;
+
 import javax.persistence.EntityManager;
 
 import org.slf4j.Logger;
@@ -42,7 +44,7 @@ public class BeachEntryImpl implements BeachEntry {
 
 	@Override
 	public void init(EntryType type) throws Exception {
-		entry.init(type);
+		// do nothing it is already initialized to validate 
 	}
 
 	@Override
@@ -82,6 +84,8 @@ public class BeachEntryImpl implements BeachEntry {
 			@Override
 			public void run() {
 				entity.setStatus(completed.getEntry().getStatus());
+				entity.setOpenTime(LocalDateTime.now());
+				
 				EntityManager em = tradeRepo.createEntityManager();
 				try {
 					em.getTransaction().begin();
@@ -97,6 +101,7 @@ public class BeachEntryImpl implements BeachEntry {
 		getTrade().getContext().execute(runnable);
 	}
 
+	// so this will add it to the entry entity
 	@ADEventMethod()
 	public void entryOrderCreated(ETradeEntryOrderCreated created) {
 		final BeachOrder order = (BeachOrder) created.getOrder();

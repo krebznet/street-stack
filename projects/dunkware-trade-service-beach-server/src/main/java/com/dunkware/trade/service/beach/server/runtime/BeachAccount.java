@@ -6,6 +6,8 @@ import com.dunkware.trade.sdk.core.model.order.OrderType;
 import com.dunkware.trade.sdk.core.runtime.broker.BrokerAccount;
 import com.dunkware.trade.service.beach.server.repository.BeachAccountDO;
 
+import comm.dunkware.trade.service.beach.web.bot.WebBot;
+
 public interface BeachAccount extends BrokerAccount {
 	
 	String getIdentifier();
@@ -18,6 +20,9 @@ public interface BeachAccount extends BrokerAccount {
 	
 	BeachOrder createBeacEntryOrder(BeachBot bot, BeachEntry entry, BeachTrade trade, OrderType type) throws Exception;
 	
-	BeachOrder createBeacExitOrder(BeachBot bot, BeachExit exit, BeachTrade trade, OrderType type) throws Exception; 
+	BeachOrder createBeachExitOrder(BeachBot bot, BeachExit exit, BeachTrade trade, OrderType type) throws Exception; 
 	
+	BeachBot createBot(WebBot model, String identifier) throws Exception; 
+	
+	void deleteBot(String identifier);
 }

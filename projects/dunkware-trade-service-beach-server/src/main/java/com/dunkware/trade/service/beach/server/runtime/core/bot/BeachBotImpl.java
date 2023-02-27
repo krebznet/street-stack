@@ -4,20 +4,28 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import java.util.concurrent.Semaphore;
-import java.util.stream.Stream;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 
 import com.dunkware.common.util.events.DEventNode;
+import com.dunkware.common.util.json.DJson;
 import com.dunkware.trade.sdk.core.model.trade.TradeType;
 import com.dunkware.trade.sdk.core.runtime.trade.Trade;
+import com.dunkware.trade.sdk.core.runtime.trade.TradeList;
 import com.dunkware.trade.service.beach.protocol.spec.BeachBotState;
+import com.dunkware.trade.service.beach.server.common.BeachRuntime;
 import com.dunkware.trade.service.beach.server.repository.BeachBotDO;
+import com.dunkware.trade.service.beach.server.repository.BeachEntryDO;
+import com.dunkware.trade.service.beach.server.repository.BeachExitDO;
+import com.dunkware.trade.service.beach.server.repository.BeachTradeDO;
 import com.dunkware.trade.service.beach.server.runtime.BeachAccount;
 import com.dunkware.trade.service.beach.server.runtime.BeachBot;
 import com.dunkware.trade.service.beach.server.runtime.BeachTrade;
+import com.dunkware.trade.service.beach.server.runtime.core.BeachEntryImpl;
 import com.dunkware.trade.service.beach.server.runtime.core.BeachTradeImpl;
+import com.dunkware.trade.tick.api.instrument.Instrument;
+import com.dunkware.trade.tick.model.ticker.TradeTickerSpec;
 
 import comm.dunkware.trade.service.beach.web.bot.WebBot;
 import comm.dunkware.trade.service.beach.web.bot.WebBotPlay;
@@ -26,6 +34,9 @@ public class BeachBotImpl implements BeachBot {
 
 	@Autowired
 	private ApplicationContext ac;
+	
+	@Autowired
+	private BeachRuntime beachRuntime; 
 	
 	private BeachBotDO entity; 
 	
@@ -40,27 +51,36 @@ public class BeachBotImpl implements BeachBot {
 	private List<BeachBotPlay> plays = new ArrayList<BeachBotPlay>();
 	private Semaphore playLock = new Semaphore(1);
 	
-	// make a wrapper; 
-	private List<BeachTrade> trades = new ArrayList<BeachTrade>();
-	private Semaphore tradeLock = new Semaphore(1);
+	private TradeList trades = new TradeList();
 	
-	public void init(BeachAccount account, BeachBotDO entity) { 
+	public void init(BeachAccount account, BeachBotDO entity) throws Exception { 
 		this.account = account; 
 		this.entity = entity;
+		eventNode = account.getEventNode().createChild("/bots/" + entity.getName());
+		try {
+			webBot = DJson.getObjectMapper().readValue(entity.getModel(), WebBot.class);
+		} catch (Exception e) {
+			throw new Exception("Bot deserizlie exception " + e.toString());
+		}
 	}
 	
 	@Override
 	public void start() throws Exception {
-		for (WebBotPlay webPlay : webBot.getPlays()) {
-			BeachBotPlay tradePlay = new BeachBotPlay();
-			ac.getAutowireCapableBeanFactory().autowireBean(tradePlay);
-			try {
-				tradePlay.init(webPlay, this);;
-			} catch (Exception e) {
-				throw e;
+		Thread starter = new Thread() { 
+			public void run() { 
+				for (WebBotPlay webPlay : webBot.getPlays()) {
+					BeachBotPlay tradePlay = new BeachBotPlay();
+					ac.getAutowireCapableBeanFactory().autowireBean(tradePlay);
+					try {
+						tradePlay.init(webPlay, BeachBotImpl.this);;
+					} catch (Exception e) {
+						state = BeachBotState.Exception;
+					}
+					
+				}		
 			}
-			
-		}
+		}; 
+		starter.run();
 	}
 
 
@@ -77,10 +97,6 @@ public class BeachBotImpl implements BeachBot {
 		return entity;
 	}
 	
-	public BeachTrade createTrade(BeachBotPlay play) throws Exception { 
-		return null;
-	}
-
 	@Override
 	public BeachBotState getState() {
 		return state;
@@ -97,48 +113,34 @@ public class BeachBotImpl implements BeachBot {
 	}
 
 	@Override
-	public Collection<Trade> getTrades() {
-		List<Trade> fuck = new ArrayList<Trade>();
-		for (BeachTrade beachTrade : trades) {
-			fuck.add(beachTrade);
-		}
-		return fuck;
+	public TradeList getTrades() {
+		return trades;
 	}
 
-	
 	@Override
 	public Trade createPlayTrade(BeachBotPlay play, TradeType type) throws Exception {
 		BeachTradeImpl trade = new BeachTradeImpl();
-		// persist the trade
+		ac.getAutowireCapableBeanFactory().autowireBean(trade);
+		trade.create(this, play.getModel().getName(), type);
+		trades.insert(trade);
 		return trade;
 	}
 
 	@Override
-	public Trade createTrade(TradeType type) throws Exception {
-		// TODO Auto-generated method stub
-		
-		// autowire the trade 
-		
-		return null;
-	}
-
-	@Override
 	public void execute(Runnable runnable) {
-		// TODO Auto-generated method stub
+		 beachRuntime.getExecutor().execute(runnable);
 		
 	}
 
 	@Override
-	public Stream getStream(String ident) throws Exception {
-		// TODO Auto-generated method stub
-		return null;
+	public Instrument getInstrument(TradeTickerSpec tickerSpec) throws Exception {
+		return account.getBroker().acquireInstrument(tickerSpec);
 	}
+	
+	
 
-	@Override
-	public void event(String source, String type, String message) throws Exception {
-		// TODO Auto-generated method stub
-		
-	}
+	
+
 	
 	
 	

@@ -24,6 +24,9 @@ public class BeachRuntime {
 	@Value("${config.stream.server}")
 	private String streamServer; 
 	
+	@Value("${config.stream.mock}")
+	private boolean streamMock; 
+	
 	@PostConstruct
 	private void start() { 
 		executor = new DExecutor(executorSize, executorTimeout, TimeUnit.SECONDS);
@@ -40,6 +43,10 @@ public class BeachRuntime {
 	
 	public String getStreamServerURL() { 
 		return streamServer;
+	}
+	
+	public boolean getStreamMock() { 
+		return streamMock;
 	}
 }
 

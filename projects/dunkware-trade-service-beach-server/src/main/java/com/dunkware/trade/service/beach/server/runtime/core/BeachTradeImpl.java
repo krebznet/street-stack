@@ -1,13 +1,24 @@
 package com.dunkware.trade.service.beach.server.runtime.core;
 
+import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.concurrent.Semaphore;
+
+import javax.persistence.EntityManager;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 
 import com.dunkware.common.util.calc.DCalc;
+import com.dunkware.common.util.dtime.DTimeZone;
 import com.dunkware.common.util.events.DEventNode;
 import com.dunkware.common.util.events.anot.ADEventMethod;
 import com.dunkware.common.util.json.DJson;
 import com.dunkware.trade.sdk.core.model.order.OrderType;
+import com.dunkware.trade.sdk.core.model.trade.EntryStatus;
 import com.dunkware.trade.sdk.core.model.trade.TradeSpec;
 import com.dunkware.trade.sdk.core.model.trade.TradeStatus;
 import com.dunkware.trade.sdk.core.model.trade.TradeType;
@@ -16,6 +27,7 @@ import com.dunkware.trade.sdk.core.runtime.registry.TradeRegistry;
 import com.dunkware.trade.sdk.core.runtime.trade.TradeContext;
 import com.dunkware.trade.sdk.core.runtime.trade.TradeEntry;
 import com.dunkware.trade.sdk.core.runtime.trade.TradeExit;
+import com.dunkware.trade.sdk.core.runtime.trade.event.ETradeClosing;
 import com.dunkware.trade.sdk.core.runtime.trade.event.ETradeEntryCompleted;
 import com.dunkware.trade.sdk.core.runtime.trade.event.ETradeEntryException;
 import com.dunkware.trade.sdk.core.runtime.trade.event.ETradeExitCompleted;
@@ -27,145 +39,160 @@ import com.dunkware.trade.service.beach.server.repository.BeachTradeDO;
 import com.dunkware.trade.service.beach.server.repository.BeachTradeRepo;
 import com.dunkware.trade.service.beach.server.runtime.BeachAccount;
 import com.dunkware.trade.service.beach.server.runtime.BeachBot;
+import com.dunkware.trade.service.beach.server.runtime.BeachOrder;
 import com.dunkware.trade.service.beach.server.runtime.BeachTrade;
 import com.dunkware.trade.tick.api.instrument.Instrument;
 import com.dunkware.trade.tick.api.instrument.InstrumentListener;
 
+
+
 public class BeachTradeImpl implements BeachTrade, InstrumentListener {
 
 	@Autowired
-	private ApplicationContext ac; 
-	
+	private ApplicationContext ac;
+
 	@Autowired
-	private BeachTradeRepo tradeRepo; 
+	private BeachTradeRepo tradeRepo;
+
 	
-	private BeachAccount account; 
+
+	private BeachTradeDO entity;
+
+	private BeachEntryImpl entry;
+	private BeachExitImpl exit;
+
+	private BeachTradeSpec spec;
+
+	private Instrument instrument;
+
+	private DEventNode eventNode;
+
+	private BeachBot bot;
+
+	private List<BeachOrder> orders = new ArrayList<BeachOrder>();
+	private Semaphore orderLock = new Semaphore(1);
 	
-	private BeachTradeDO entity; 
+	private Logger logger = LoggerFactory.getLogger(getClass());
 	
-	
-	private BeachEntryImpl entry; 
-	private BeachExitImpl exit; 
-	
-	private BeachTradeSpec spec; 
-	
-	private Instrument instrument; 
-	
-	private DEventNode eventNode; 
-	
-	private BeachBot bot; 
-	
-	/**
-	 * Have to keep in mind we could init a trade that is already open
-	 * hence the difference between this method and create() setup is
-	 * @param entity
-	 * @throws Exception
-	 */
-	public void init(BeachBot bot, BeachTradeDO entity, boolean created) throws Exception { 
-		this.bot = bot; 
-	}
-	
-	
-	
-	
+
+
 
 	@Override
 	public BeachTradeDO getEntity() {
 		return entity;
 	}
 
-
-
-
-
 	@Override
-	public void create(TradeType type, TradeContext context) throws Exception {
-		// try to get the instrument
+	public void create(BeachBot bot, String play, TradeType type) throws Exception {
+		this.bot = bot; 
 		try {
-			//instrument = pool.getAccount().getBroker().acquireInstrument(type.getTicker());
+			instrument = bot.getInstrument(type.getTicker());
 		} catch (Exception e) {
-			throw new Exception("Could not get trading instrument for " + type.getTicker().toString() + " exception " + e.toString());
+			throw new Exception("Exception creating trade, Could not get trading instrument for " + type.getTicker().toString() + " exception "
+					+ e.toString());
 		}
-		// set trade type 
-		spec.setType(type);
+		TradeEntry tradeEntry = null;
+		try {
+			tradeEntry = TradeRegistry.get().createTradeEntry(type.getEntry());
+		} catch (Exception e) {
+			throw new Exception("Trade create exception trade entry create failed " + e.toString());
+		}
+		try {
+			tradeEntry.init(type.getEntry());
+		} catch (Exception e) {
+			throw new Exception("Trade Entry init exception " + e.toString());
+		}
+		TradeExit tradeExit = null;
+		try {
+			tradeExit = TradeRegistry.get().createTradeExit(type.getExit());
+		} catch (Exception e) {
+			throw new Exception("Trade create exception exit create fiald " + e.toString());
+		}
+		try {
+			tradeExit.init(type.getExit());
+		} catch (Exception e) {
+			throw new Exception("Trade exit init exception " + e.toString());
+		}
 		
-		// compute allocated size 
+	
+		// compute allocated size
 		double capital = type.getCapital();
 		double lastPrice = instrument.getLast();
-		double doubleSize = capital/lastPrice;
-		int intSize = (int)doubleSize;
-		//spec.setCapitalAllocated(intSize);
-	//	spec.setAllocatedSize(intSize);
-		spec.setStatus(TradeStatus.Allocated);
+		double doubleSize = capital / lastPrice;
+		int intSize = (int) doubleSize;
 		
-		this.entity.setAllocatedCapital(type.getCapital());
-		this.entity.setAllocatedSize(intSize);
+		// now create entities 
 		
-		// need to create a entity
-		try {
-			TradeEntry entry = TradeRegistry.get().createTradeEntry(type.getEntry());
-			this.entry = new BeachEntryImpl();
-			ac.getAutowireCapableBeanFactory().autowireBean(this.entry);
-			
-			BeachEntryDO entryEnt = new BeachEntryDO();
-			entryEnt.setTrade(entity);
-			entryEnt.setType(DJson.serialize(type.getEntry()));
-			entity.setEntry(entryEnt);
-			this.entry.init(entryEnt, entry); 
-			getSpec().setEntry(entry.getSpec());
+		entity = new BeachTradeDO(); 
+		entity.setAllocatedCapital(type.getCapital());
+		entity.setAllocatedSize(intSize);
+		entity.setTickerSymbol(type.getTicker().getSymbol());
+		entity.setBot(bot.getEntity());
+		entity.setPlay(play);
 		
-		} catch (Exception e) {
-			throw new Exception("Trade Entry Create Failed " + e.toString());
-		}
-		try {
-			TradeExit exit  = TradeRegistry.get().createTradeExit(type.getExit());
-			BeachExitDO exitEnt = new BeachExitDO();
-			exitEnt.setTrade(entity);
-			exitEnt.setType(DJson.serialize(type.getExit()));
-			entity.setExit(exitEnt);
-			this.exit = new BeachExitImpl();
-			ac.getAutowireCapableBeanFactory().autowireBean(exitEnt);
-			this.exit.init(exitEnt, exit);
-			getSpec().setExit(exit.getSpec());
-			this.exit.init(type.getExit());
-		} catch (Exception e) {
-			throw new Exception("Trade Exit Create Failed " + e.toString());
-		}
+		BeachEntryDO entryEnt = new BeachEntryDO();
+		entryEnt.setTrade(entity);
+		entryEnt.setType(DJson.serialize(type.getEntry()));
+		entryEnt.setStatus(EntryStatus.Initialized);
+		entity.setEntry(entryEnt);
 		
 		
+		entry = new BeachEntryImpl();
+		ac.getAutowireCapableBeanFactory().autowireBean(entry);
+		entry.init(entryEnt, tradeEntry);
+		
+		BeachExitDO exitEnt = new BeachExitDO();
+		exitEnt.setTrade(entity);
+		exitEnt.setType(DJson.serialize(type.getExit()));
+		exitEnt.setType(DJson.serialize(type.getExit()));
+		entity.setExit(exitEnt);
+		
+		exit = new BeachExitImpl(); 
+		ac.getAutowireCapableBeanFactory().autowireBean(exit);
+		exit.init(exitEnt, tradeExit);
+
+	
 		try {
 			tradeRepo.persist(entity);
 		} catch (Exception e) {
 			throw new Exception("Internal Exception Persisting Trade Entity " + e.toString());
-		} finally { 
-		
+		} finally {
+
 		}
+		
+		eventNode = bot.getEventNode().createChild("/trades/" + entity.getId());
+		
+		spec = new BeachTradeSpec();
+		spec.setStatus(TradeStatus.Allocated);
+		spec.setType(type);
+		spec.setAllocatedSize(intSize);
+		
 	}
-	
+
 	@Override
 	public BeachAccount getAccount() {
-		return account;
+		return bot.getAccount();
 	}
 
 	@Override
 	public void open() throws Exception {
-		if(spec.getStatus() != TradeStatus.Allocated) { 
+		if (spec.getStatus() != TradeStatus.Allocated) {
 			throw new Exception("Cannot Open Trade When Status Is " + getStatus());
 		}
 		entry.start(this);
 		this.entry.getEventNode().addEventHandler(this);
-		
+
 	}
-	
+
 	@Override
 	public void discard() throws Exception {
 		// TODO: discard shit
-		
+
 	}
 
 	@Override
 	public void close() throws Exception {
-		if(getSpec().getStatus() != TradeStatus.Open) { 
+		if (getSpec().getStatus() != TradeStatus.Open) {
 			throw new Exception("Cannot Close Trade When Status Is " + getStatus());
 		}
 	}
@@ -177,14 +204,14 @@ public class BeachTradeImpl implements BeachTrade, InstrumentListener {
 
 	@Override
 	public TradeSpec getSpec() {
-		return getSpec(); 
+		return spec;
 	}
 
 	@Override
 	public DEventNode getEventNode() {
 		return eventNode;
 	}
-	
+
 	@Override
 	public TradeType getType() {
 		return spec.getType();
@@ -192,7 +219,7 @@ public class BeachTradeImpl implements BeachTrade, InstrumentListener {
 
 	@Override
 	public TradeEntry getEntry() {
-		return entry; 
+		return entry;
 	}
 
 	@Override
@@ -206,114 +233,140 @@ public class BeachTradeImpl implements BeachTrade, InstrumentListener {
 	}
 
 	/**
-	 * Events Handler Methods 
+	 * Events Handler Methods
+	 * 
 	 * @param completed
 	 */
-	
+
 	@ADEventMethod()
-	public void entryCompleted(ETradeEntryCompleted completed) { 
+	public void entryCompleted(ETradeEntryCompleted completed) {
 		// start the exit right?
 		getSpec().setStatus(TradeStatus.Open);
-	//	getSpec().set
+		// getSpec().set
 		instrument.addListener(this);
 		exit.start(this);
 		exit.getEventNode().addEventHandler(this);
+		entity.setOpenTime(LocalDateTime.now(DTimeZone.toZoneId(DTimeZone.NewYork)));
+		entity.setAvgEntryPrice(entry.getSpec().getAvgFillPrice());
+		entity.setFilledSize(entry.getSpec().getFilledSize());
+		saveEntity();
 	}
-	
 
 	@ADEventMethod()
-	public void entryException(ETradeEntryException exception) { 
-		// todo: 
+	public void entryException(ETradeEntryException exception) {
+		// -- okay here what? 
+		entity.setException("Entry Exception " + exception.getEntry().getSpec().getException());
+		// then what? 
+		saveEntity();
 		System.err.println("Handle entry exception in beach trade impl ");
 	}
 	
-	public void exitCompleted(ETradeExitCompleted completed) { 
-		// close trade; 
-		// kinda hard to get this right here
-		// 
+	
+	@ADEventMethod()
+	public void exitCompleted(ETradeExitCompleted completed) {
+		entity.setClosedTime(LocalDateTime.now(DTimeZone.toZoneId(DTimeZone.NewYork)));
+		entity.setTotalCommission(entry.getSpec().getCommission() + exit.getSpec().getCommission());
+		saveEntity();
 		instrument.removeListener(this);
 	}
 	
-	
+	@ADEventMethod()
+	public void tradeClosing(ETradeClosing closing) { 
+		entity.setClosingTime(LocalDateTime.now(DTimeZone.toZoneId(DTimeZone.NewYork)));
+		saveEntity();
+	}
+
 	/**
-	 * Instrument Listener & TradeUpdater 
+	 * Instrument Listener & TradeUpdater
 	 */
 	@Override
 	public void instrumentUpdate(Instrument instrument) {
-		getContext().execute(new TradeUpdater());		
+		getContext().execute(new TradeUpdater());
 	}
-	
-	
+
 	@Override
 	public TradeContext getContext() {
-		// TODO Auto-generated method stub
-		return null;
+		return bot;
 	}
 
+	private class TradeUpdater implements Runnable {
 
-
-
-	private class TradeUpdater implements Runnable { 
-		
-		public void run() { 
+		public void run() {
 			double fillPrice = getSpec().getEntry().getAvgFillPrice();
 			double lastPrice = instrument.getLast();
-			double upl = DCalc.getPercentageChange(lastPrice, fillPrice);	
+			double upl = DCalc.getPercentageChange(lastPrice, fillPrice);
 			getSpec().setUnrealizedPL(upl);
 			ETradeSpecUpdate update = new ETradeSpecUpdate(BeachTradeImpl.this);
 			getEventNode().event(update);
 		}
 	}
 
-
-
-
 	@Override
 	public BeachBot getBot() {
 		return bot;
 	}
 
-
-
 	@Override
 	public Order createEntryOrder(OrderType type) throws Exception {
-		account.createBeacEntryOrder(getBot(), entry, null, type);
-		
-		// TODO Auto-generated method stub
-		return null;
-	}
+		BeachOrder order = getAccount().createBeacEntryOrder(getBot(), entry, this, type);
+		try {
+			orderLock.acquire();
+			orders.add(order);
+		} catch (Exception e) {
+			// TODO: handle exception
+		} finally {
+			orderLock.release();
 
+		}
+		return order;
+	}
 
 	@Override
 	public Order createExitOrder(OrderType type) throws Exception {
-		// TODO Auto-generated method stub
-		return null;
+		BeachOrder order = getAccount().createBeachExitOrder(bot, exit, this, type);
+		try {
+			orderLock.acquire();
+			orders.add(order);
+		} catch (Exception e) {
+			// TODO: handle exception
+		} finally {
+			orderLock.release();
+
+		}
+		return order;
 	}
-
-
-
-	
 
 	@Override
 	public String getSymbol() {
 		return entity.getTickerSymbol();
 	}
-
-	
-// orderCommissionEstimate(Instrument, Size); 
-	// create an order, transmit 
-
-	
-
-
 	
 	
-	
-
-
-	
-	
-	
-
+	private void saveEntity() { 
+		
+		Thread saver = new Thread() { 
+			
+			public void run() { 
+				try {
+					EntityManager em = tradeRepo.createEntityManager();
+					try {
+						em.getTransaction().begin();
+						em.merge(entity);
+						
+						em.getTransaction().commit();
+					} catch (Exception e) {
+						throw new Exception("Exception Persisting Entity " + e.toString());
+					} finally { 
+						em.close();
+					}
+				} catch (Exception e) {
+					logger.error("Exception saving beach trade entity " + e.toString());
+					
+				}
+			}
+		};
+		saver.start();
+		
+	}
 
 }

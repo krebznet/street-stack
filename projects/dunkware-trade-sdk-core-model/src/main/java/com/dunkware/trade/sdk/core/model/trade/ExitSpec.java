@@ -10,6 +10,8 @@ public class ExitSpec {
 	private double avgFillPrice; 
 	private int sharesFilled;
 	
+	private double commission; 
+	
 	private ExitStatus status; 
 	
 	private String exception;
@@ -60,7 +62,17 @@ public class ExitSpec {
 
 	public void setException(String exception) {
 		this.exception = exception;
+	}
+
+	public double getCommission() {
+		return commission;
+	}
+
+	public void setCommission(double commission) {
+		this.commission = commission;
 	} 
+	
+	
 	
 	
 	

@@ -4,11 +4,17 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.dunkware.trade.service.beach.protocol.controller.BeachBotAddReq;
 import com.dunkware.trade.service.beach.protocol.controller.BeachBrokerAddReq;
 import com.dunkware.trade.service.beach.protocol.controller.BeachBrokerAddResp;
+import com.dunkware.trade.service.beach.protocol.spec.BeachBotState;
+import com.dunkware.trade.service.beach.server.runtime.BeachAccount;
+import com.dunkware.trade.service.beach.server.runtime.BeachBot;
+import com.dunkware.trade.service.beach.server.runtime.BeachBroker;
 import com.dunkware.trade.service.beach.server.runtime.BeachService;
 
 @RestController()
@@ -17,7 +23,7 @@ public class BeachWebService {
 	@Autowired
 	private BeachService service;
 	
-	@PostMapping(path = "/beach/controller/broker/add")
+	@PostMapping(path = "/beach/controller/add/broker")
 	public @ResponseBody() BeachBrokerAddResp addBroker(@RequestBody() BeachBrokerAddReq req) { 
 		BeachBrokerAddResp resp = new BeachBrokerAddResp();
 		try {
@@ -31,20 +37,44 @@ public class BeachWebService {
 		}
 	}
 	
-	@PostMapping(path = "/beach/controller/bot/add") 
-	public void addBot() { 
-		// # 2 -- get the account and then see it insert bot 
-		// 	   -- then get it to create a runtime bot with status stopped
+	@PostMapping(path = "/beach/controller/add/bot") 
+	public void addBot(@RequestBody() BeachBotAddReq req) throws Exception { 
+		BeachBroker broker = null;
+		try {
+			broker = service.getBroker(req.getBroker());			
+		} catch (Exception e) {
+			throw e;
+		}
+		BeachAccount account = null;
+		try {
+			account = (BeachAccount)broker.getAccount(req.getAccount());
+		} catch (Exception e) {
+			throw e;
+		}
+		try {
+			account.createBot(req.getModel(), req.getName());
+		} catch (Exception e) {
+			throw e;
+		}
 	}
 	
-	@GetMapping(path = "beach/controller/bot/start")
-	public void startBot() { 
-		// get the bot and start it 
-		// that is where the magic will need to take place 
+	@GetMapping(path = "beach/controller/start/bot")
+	public void startBot(@RequestParam() String bot, @RequestParam() String broker, @RequestParam() String account) throws Exception { 
+		try {
+			BeachAccount beachAccount = service.getAccount(broker,account);
+			BeachBot beachBot = beachAccount.getBot(bot);
+			if(beachBot.getState() != BeachBotState.Stopped && beachBot.getState() != BeachBotState.Exception) { 
+				throw new Exception("beach bot invalid state to start " + beachBot.getState());
+			}
+			beachBot.start();
+		} catch (Exception e) {
+			throw e;
+		}
+		
 	}
 	
 	@GetMapping(path = "beach/controller/bot/stop")
-	public void stopBot() { 
+	public void stopBot(@RequestParam() String bot) throws Exception { 
 		
 	}
 	

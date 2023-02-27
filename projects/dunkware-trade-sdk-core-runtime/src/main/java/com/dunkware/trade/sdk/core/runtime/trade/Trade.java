@@ -10,8 +10,6 @@ import com.dunkware.trade.tick.api.instrument.Instrument;
 
 public interface Trade {
 	
-	void create(TradeType type, TradeContext context) throws Exception; 
-	
 	void open() throws Exception;
 	
 	void discard() throws Exception;

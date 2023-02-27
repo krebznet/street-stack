@@ -67,37 +67,52 @@ public class BeachServiceImpl implements BeachService {
 		logger.info(markerStartup, "Starting Beach Service");
 		eventNode = runtime.getEventTree().getRoot().createChild("/trade");
 		// lets get the stream specs and create beach sterams. 
-		StreamSpecList specList = new StreamSpecList();
-		String specURL = runtime.getStreamServerURL();
-			if(runtime.getStreamServerURL().endsWith("/")) { 
-				specURL = specURL + "stream/core/specs";
-			} else { 
-				specURL = specURL + "/stream/core/specs";
-			}
-			String json = null;
+		
+		if(!runtime.getStreamMock()) { 
+			StreamSpecList specList = new StreamSpecList();
+			String specURL = runtime.getStreamServerURL();
+				if(runtime.getStreamServerURL().endsWith("/")) { 
+					specURL = specURL + "stream/core/specs";
+				} else { 
+					specURL = specURL + "/stream/core/specs";
+				}
+				String json = null;
+				
+				try {
+					json = DHttpHelper.getJson(specURL);
+					specList = DJson.getObjectMapper().readValue(json, StreamSpecList.class);
+				} catch (Exception e) {
+					logger.error(markerStartup, "SpecList Request Exception Server " + runtime.getStreamServerURL() +  " " + e.toString());
+					System.exit(-1);
+				}
+				
+				
+			for (StreamSpec spec : specList.getSpecs()) {
+				BeachStreamImpl stream = new BeachStreamImpl();
+				ac.getAutowireCapableBeanFactory().autowireBean(stream);
+				try {
+					stream.init(spec);	
+					streams.put(spec.getIdentifier(), stream);
+				} catch (Exception e) {
+					logger.error(markerStartup, "Exception Initializing Beach Stream " + spec.getIdentifier() + " " + e.toString());
+					System.exit(-1);
+				}
+				
+			}	
 			
+		} else { 
+			
+			BeachStreamMock mock = new BeachStreamMock();
 			try {
-				json = DHttpHelper.getJson(specURL);
-				specList = DJson.getObjectMapper().readValue(json, StreamSpecList.class);
+				mock.init(null);
 			} catch (Exception e) {
-				logger.error(markerStartup, "SpecList Request Exception Server " + runtime.getStreamServerURL() +  " " + e.toString());
-				System.exit(-1);
+				logger.error("exception mock stream init " + e.toString());
+				System.exit(1);
 			}
-			
-			
-		for (StreamSpec spec : specList.getSpecs()) {
-			BeachStreamImpl stream = new BeachStreamImpl();
-			ac.getAutowireCapableBeanFactory().autowireBean(stream);
-			try {
-				stream.init(spec);	
-				streams.put(spec.getIdentifier(), stream);
-			} catch (Exception e) {
-				logger.error(markerStartup, "Exception Initializing Beach Stream " + spec.getIdentifier() + " " + e.toString());
-				System.exit(-1);
-			}
-			
-			
+
+			streams.put("mock", mock);
 		}
+		
 		List<BeachBrokerDO> brokers = tradeRepo.getBrokers();
 		for (BeachBrokerDO beachBrokerDO : brokers) {
 			BeachBrokerImpl broker = new BeachBrokerImpl();
