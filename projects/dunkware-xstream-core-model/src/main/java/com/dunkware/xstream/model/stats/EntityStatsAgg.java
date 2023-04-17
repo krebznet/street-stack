@@ -10,7 +10,7 @@ public class EntityStatsAgg {
 	private LocalDate end; 
 	private int id; 
 	private String ident; 
-	private String streaµ; 
+	private String stream; 
 	private int sessions;
 	private int days;
 	
@@ -48,12 +48,12 @@ public class EntityStatsAgg {
 		this.ident = ident;
 	}
 
-	public String getStreaµ() {
-		return streaµ;
+	public String getStream() {
+		return stream;
 	}
 
-	public void setStreaµ(String streaµ) {
-		this.streaµ = streaµ;
+	public void setStream(String stream) {
+		this.stream = stream;
 	}
 
 	public int getSessions() {

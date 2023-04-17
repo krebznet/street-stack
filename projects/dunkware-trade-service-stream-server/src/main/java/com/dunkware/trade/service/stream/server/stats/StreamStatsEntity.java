@@ -1,9 +1,10 @@
 package com.dunkware.trade.service.stream.server.stats;
 
 import com.dunkware.xstream.model.stats.EntityStatsAgg;
+import com.dunkware.xstream.model.stats.EntityStatsSession;
 import com.dunkware.xstream.model.stats.EntityStatsSessions;
 
-public interface StreamEntityStats {
+public interface StreamStatsEntity {
 	
 	/**
 	 * returns the entity id. 
@@ -34,6 +35,13 @@ public interface StreamEntityStats {
 	 * @return
 	 */
 	EntityStatsSessions getSessions(); 
+	
+	/**
+	 * Adds a new EntityStatsSession to the session list done
+	 * when new session stats are inserted into the database. 
+	 * @param session
+	 */
+	void addSession(EntityStatsSession session); 
 
 
 }

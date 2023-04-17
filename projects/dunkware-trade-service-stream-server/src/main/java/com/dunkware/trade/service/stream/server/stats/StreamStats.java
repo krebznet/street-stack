@@ -3,6 +3,7 @@ package com.dunkware.trade.service.stream.server.stats;
 import java.util.Collection;
 
 import com.dunkware.trade.service.stream.server.controller.StreamController;
+import com.dunkware.xstream.core.stats.StreamStatsPayload;
 
 /**
  * Stats Cache for a stream 
@@ -21,11 +22,21 @@ public interface StreamStats {
 	 * Returns the aggregation of 
 	 * @return
 	 */
-	StreamEntityStats getEntity(String ident) throws Exception;
+	StreamStatsEntity getEntity(String ident) throws Exception;
 	
 	/**
 	 * Returns all the stream entity stats. 
 	 * @return
 	 */
-	Collection<StreamEntityStats> getEntities();
+	Collection<StreamStatsEntity> getEntities();
+	
+	/**
+	 * This comes from a running stream worker node that has the
+	 * stream session statistics, here we need to persist and update our 
+	 * cache
+	 * @param payload
+	 */
+	void payload(StreamStatsPayload payload); 
+	
+	
 }

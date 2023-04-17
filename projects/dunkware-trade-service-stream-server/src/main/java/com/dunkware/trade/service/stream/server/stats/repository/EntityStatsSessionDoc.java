@@ -4,6 +4,8 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.persistence.Transient;
+
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
@@ -16,6 +18,9 @@ public class EntityStatsSessionDoc {
 	private String stream;  
 	private int id; 
 	private String ident; 
+	
+	@Transient
+	public static final String SEQUENCE_NAME = "stream_stats_entity_session";
 	
 	private List<EntityStatsSessionDocVar> vars = new ArrayList<EntityStatsSessionDocVar>();
 

@@ -5,7 +5,7 @@ import java.util.List;
 
 import com.dunkware.xstream.model.stats.EntityStatsSession;
 
-public class StreamStats {
+public class StreamStatsPayload {
 	
 	private List<EntityStatsSession> entities = new ArrayList<EntityStatsSession>();
 	private String streamIdent;

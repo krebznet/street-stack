@@ -84,7 +84,7 @@ public class StreamStatsExt implements XStreamExtension, XStreamListener {
 		}
 		
 		try {
-			StreamStats stats = new StreamStats();
+			StreamStatsPayload stats = new StreamStatsPayload();
 			stats.setStreamIdent(myType.getStreamIdent());
 			stats.setEntities(entityStats);
 			try {

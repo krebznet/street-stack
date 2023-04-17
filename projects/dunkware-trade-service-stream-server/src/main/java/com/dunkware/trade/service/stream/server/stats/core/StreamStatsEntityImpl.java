@@ -8,22 +8,80 @@ import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
-import com.dunkware.trade.service.stream.server.stats.repository.StreamEntityDayStatsDoc;
+import com.dunkware.trade.service.stream.server.stats.StreamStats;
+import com.dunkware.trade.service.stream.server.stats.StreamStatsEntity;
 import com.dunkware.xstream.model.stats.EntityStatsAgg;
 import com.dunkware.xstream.model.stats.EntityStatsAggVar;
 import com.dunkware.xstream.model.stats.EntityStatsSession;
 import com.dunkware.xstream.model.stats.EntityStatsSessionVar;
+import com.dunkware.xstream.model.stats.EntityStatsSessions;
 
-public class StreamStatsUtils {
+/**
+ * This will just work off of stat model objects nothing mongo db related
+ * @author Duncan Krebs 
+ *
+ */
+public class StreamStatsEntityImpl implements StreamStatsEntity {
+
+	private int id; 
+	private String ident; 
+	
+	private EntityStatsAgg statsAgg = null; 
+	
+	private List<EntityStatsSession> sessions = new ArrayList<EntityStatsSession>();
+	
+	private StreamStats streamStats; 
+	
+	public void init(StreamStats streamStats, int entityId, String entityIdent, List<EntityStatsSession> sessions) {
+		this.id = entityId;
+		this.streamStats = streamStats;
+		this.ident = entityIdent;
+		this.sessions = sessions;
+		// build the agg 
+		buildAgg();
+	}
+	
+	@Override
+	public int getId() {
+		return id; 
+	}
+
+	@Override
+	public String getIdent() {
+		return ident; 
+	}
+
+	@Override
+	public int getSessionCount() {
+		return sessions.size();
+	}
+
+	@Override
+	public EntityStatsAgg getAgg() {
+		return statsAgg;
+	}
+
+	@Override
+	public EntityStatsSessions getSessions() {
+		EntityStatsSessions sessionsWrapper = new EntityStatsSessions();
+		sessionsWrapper.setSessions(sessions);
+		return sessionsWrapper;
+	}
+
+	@Override
+	public void addSession(EntityStatsSession session) {
+		this.sessions.add(session);
+	}
 	
 	
-	public static EntityStatsAgg buildEntityStatsAgg(List<StreamEntityDayStatsDoc> input, String entityIdent, int entityId) {
+	private void buildAgg() { 
 		EntityStatsAgg agg = new EntityStatsAgg();
+		agg.setStream(streamStats.getStream().getName());
 		LocalDate startDate = null; 
 		LocalDate endDate = null;
 		agg.setSessions(0);
 		Map<String,EntityStatsAggVar> vars = new ConcurrentHashMap<String,EntityStatsAggVar>();
-		for (StreamEntityDayStatsDoc doc : input) {
+		for (EntityStatsSession doc : sessions) {
 			agg.setSessions(agg.getSessions() + 1);
 			if(startDate == null && endDate == null) { 
 				startDate = doc.getDate();
@@ -64,8 +122,8 @@ public class StreamStatsUtils {
 		
 		agg.setEnd(endDate);
 		agg.setStart(startDate);
-		agg.setId(entityId);
-		agg.setIdent(entityIdent);
+		agg.setId(id);
+		agg.setIdent(ident);
 		ArrayList<EntityStatsAggVar> newList = new ArrayList<EntityStatsAggVar>(vars.values());
 		Collections.sort(newList, new Comparator<EntityStatsAggVar>() {
 
@@ -77,9 +135,9 @@ public class StreamStatsUtils {
 		}	);
 		
 		agg.setVars(newList);
-		return agg;
-		
-		
+		this.statsAgg = agg; 
 	}
+	
 
+	
 }

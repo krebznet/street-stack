@@ -13,7 +13,9 @@ import java.util.Date;
 import java.util.TimeZone;
 import java.util.concurrent.TimeUnit;
 
+import com.dunkware.common.util.dtime.DDateTime;
 import com.dunkware.common.util.dtime.DTimeZone;
+import com.dunkware.common.util.json.DJson;
 import com.google.protobuf.Timestamp;
 
 public class DunkTime {
@@ -23,11 +25,16 @@ public class DunkTime {
 	public final static String HH_MMM_SS = "HH:mm:ss";
 	public static final String YYMMDD = "yyMMdd";
     public static final String ISO_FORMAT = "yyyy-MM-dd'T'HH:mm:ssZ";
-    public static final String YYYY_MM_DD_HH_mm_ss = "YYYY-MM-DD HH:mm:ss";
-	public static void main(String[] args) {
+    
+    public static void main(String[] args) {
 		LocalDateTime dt = LocalDateTime.now(DTimeZone.toZoneId(DTimeZone.NewYork));
-		System.out.println(format(dt, YYMMDD));
 		
+		
+
+		System.out.println(DunkTime.format(dt, DunkTime.YYYY_MM_DD_HH_MM_SS));
+		String out = DunkTime.format(dt, DunkTime.YYYY_MM_DD_HH_MM_SS);
+		LocalDateTime des = LocalDateTime.parse(out,DateTimeFormatter.ofPattern(DunkTime.YYYY_MM_DD_HH_MM_SS));
+		System.out.println(DunkTime.format(des, DunkTime.YYYY_MM_DD_HH_MM_SS));
 	// YYMMDD
 		
 	}
@@ -76,7 +83,7 @@ public class DunkTime {
 	
 	public static String formatDateTimeStamp(long time) { 
 		LocalDateTime dt = toLocalDateTime(new Date(time));
-		return DunkTime.format(dt, DunkTime.YYYY_MM_DD_HH_mm_ss);
+		return DunkTime.format(dt, DunkTime.YYYY_MM_DD_HH_MM_SS);
 	}
 	
 	public static LocalDateTime toLocalDateTime(Date dateToConvert) {

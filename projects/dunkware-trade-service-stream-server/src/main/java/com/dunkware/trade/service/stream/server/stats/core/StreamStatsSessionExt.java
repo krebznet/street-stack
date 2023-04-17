@@ -11,7 +11,7 @@ import com.dunkware.xstream.core.stats.StreamStatsExtType;
 
 
 @AStreamSessionExt()
-public class StreamStatsSessionExtension implements StreamSessionExtension {
+public class StreamStatsSessionExt implements StreamSessionExtension {
 
 	private StreamSession session;
 	
@@ -28,7 +28,7 @@ public class StreamStatsSessionExtension implements StreamSessionExtension {
 		StreamStatsExtType ext = new StreamStatsExtType();
 		ext.setSessionId(session.getSessionId());
 		ext.setStreamIdent(session.getStream().getName()); 
-		ext.setPostURL(cluster.httpURL("/session/stats/submit"));
+		ext.setPostURL(cluster.httpURL("/stats/payload/session"));
 		ext.setPostId(node.getNodeId());
 		node.getStreamBundle().getExtensions().add(ext);
 	}

@@ -1,4 +1,4 @@
-package com.dunkware.trade.service.stream.server.stats.core;
+package com.dunkware.trade.service.stream.server.stats.web;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -23,9 +23,13 @@ import com.dunkware.common.util.helpers.DRandom;
 import com.dunkware.common.util.json.DJson;
 import com.dunkware.common.util.stopwatch.DStopWatch;
 import com.dunkware.trade.service.stream.server.sequence.MongoSequenceService;
+import com.dunkware.trade.service.stream.server.stats.StreamStats;
+import com.dunkware.trade.service.stream.server.stats.StreamStatsEntity;
+import com.dunkware.trade.service.stream.server.stats.StreamStatsService;
+import com.dunkware.trade.service.stream.server.stats.core.StreamStatsHelper;
 import com.dunkware.trade.service.stream.server.stats.repository.StreamEntityDayStatsDoc;
 import com.dunkware.trade.service.stream.server.stats.repository.StreamEntityDayStatsRepo;
-import com.dunkware.xstream.core.stats.StreamStats;
+import com.dunkware.xstream.core.stats.StreamStatsPayload;
 import com.dunkware.xstream.model.stats.EntityStatsAgg;
 import com.dunkware.xstream.model.stats.EntityStatsSession;
 import com.mongodb.bulk.BulkWriteResult;
@@ -46,9 +50,12 @@ public class StreamStatsWebService {
 	@Autowired
 	private MongoSequenceService sequenceService;
 	
+	@Autowired
+	private StreamStatsService statsService; 
+	
 	
 
-	@PostMapping("/session/stats/submit")
+	@PostMapping("/stats/payload/session")
 	public String sessionStatsSubmit(@RequestParam("file") MultipartFile file) {
 		byte[] bundleBytes = null;
 		try {
@@ -57,48 +64,32 @@ public class StreamStatsWebService {
 			logger.error(sessionstats, "Exception getting file bytes on submit from node " + e.toString());
 			return e.toString();
 		}
-		StreamStats stats = null;
+		StreamStatsPayload payload = null;
 		try {
-			stats = DJson.getObjectMapper().readValue(bundleBytes, StreamStats.class);
+			payload = DJson.getObjectMapper().readValue(bundleBytes, StreamStatsPayload.class);
 		} catch (Exception e) {
 			logger.error("Exception deserializing stats from session submit " + e.toString(), e);
 			return e.toString();
 		}
-
-		BulkOperations bulkOps = mongoTemplate.bulkOps(BulkOperations.BulkMode.UNORDERED,
-				StreamEntityDayStatsDoc.class);
-		
-		List<StreamEntityDayStatsDoc> docs = new ArrayList<StreamEntityDayStatsDoc>();
-		for (EntityStatsSession dayStats : stats.getEntities()) {
-			StreamEntityDayStatsDoc doc = new StreamEntityDayStatsDoc();
-			doc.setDate(dayStats.getDate());
-			doc.setEntId(dayStats.getId());
-			doc.setEntIdent(dayStats.getIdent());
-			doc.setVars(dayStats.getVars());
-			doc.setId(DRandom.getRandom(4, 489383948));
-			doc.setId(sequenceService.generateSequence(StreamEntityDayStatsDoc.SEQUENCE_NAME));
-			doc.setStream(dayStats.getStream());
-			docs.add(doc);
-		}
-		DStopWatch watch = DStopWatch.create();
-		watch.start();
-		bulkOps.insert(docs);
 		try {
-			BulkWriteResult results = bulkOps.execute();
-			if(results.getInsertedCount() < docs.size()) { 
-				logger.error(sessionstats, "Stats Bulk insert result count is " + results.getInsertedCount() + " doc list size is " + docs.size());
-			}
+			StreamStats streamStats = statsService.getStreamStats(payload.getStreamIdent());
+			streamStats.payload(payload);
 		} catch (Exception e) {
-			logger.error(sessionstats, "Stats push Exception inserting node stats " + e.toString(),e);
+			logger.error(sessionstats, "Did not find stream stats for payload stream ident " + payload.getStreamIdent());
 			return e.toString();
 		}
-		watch.stop();
-		if(logger.isDebugEnabled()) { 
-			StringBuilder builder = new StringBuilder();
-			builder.append("Stats pushed for " + stats.getStreamIdent() + ", "  + docs.size() + " entities inserted into db " + watch.getCompletedSeconds() + "secs");
-			logger.debug(sessionstats,builder.toString());
-		}
 		return "POSTED!";
+	}
+	
+	@GetMapping(path = "/stats/entity/agg")
+	public @ResponseBody EntityStatsAgg statsEntityAgg(@RequestParam String stream, @RequestParam String ident) throws Exception { 
+		try {
+			StreamStats stats = statsService.getStreamStats(stream);
+			StreamStatsEntity entity = stats.getEntity(ident);
+			return entity.getAgg();
+		} catch (Exception e) {
+			throw new Exception("Exception getting stream entity agg " + e.toString());
+		}
 	}
 
 	
@@ -111,19 +102,14 @@ public class StreamStatsWebService {
 			
 			List<StreamEntityDayStatsDoc> results = mongoTemplate.find(query, StreamEntityDayStatsDoc.class);
 			System.out.println(results.size());
-			EntityStatsAgg agg = StreamStatsUtils.buildEntityStatsAgg(results, ident, 1);
+			EntityStatsAgg agg = StreamStatsHelper.buildEntityStatsAgg(results, ident, 1);
 			
 			return agg; 
 		} catch (Exception e) {
 			logger.error("/debug/entity/stats error " + e.toString());
 			throw e;
 		}
-
-		
 	}
 	
-	// lets see that happen. 
-	
-	// then a screen 
 
 }

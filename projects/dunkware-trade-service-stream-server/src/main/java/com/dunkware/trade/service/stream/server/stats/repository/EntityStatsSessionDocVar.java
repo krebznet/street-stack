@@ -1,6 +1,6 @@
 package com.dunkware.trade.service.stream.server.stats.repository;
 
-import java.time.LocalTime;
+import java.time.LocalDateTime;
 
 public class EntityStatsSessionDocVar {
 	
@@ -8,10 +8,10 @@ public class EntityStatsSessionDocVar {
 	private String ident;
 	private Number high = null;
 	private Number low = null;
-	private LocalTime highTime;
-	private LocalTime lowTime;
-	private String highStamp;
-	private String lowStamp;
+	private LocalDateTime highTime;
+	private LocalDateTime lowTime;
+	private String highTimeString;
+	private String lowTimeString;
 	private int valueCount;
 	
 	public int getId() {
@@ -38,29 +38,31 @@ public class EntityStatsSessionDocVar {
 	public void setLow(Number low) {
 		this.low = low;
 	}
-	public LocalTime getHighTime() {
+
+	public LocalDateTime getHighTime() {
 		return highTime;
 	}
-	public void setHighTime(LocalTime highTime) {
+	public void setHighTime(LocalDateTime highTime) {
 		this.highTime = highTime;
 	}
-	public LocalTime getLowTime() {
+	public LocalDateTime getLowTime() {
 		return lowTime;
 	}
-	public void setLowTime(LocalTime lowTime) {
+	public void setLowTime(LocalDateTime lowTime) {
 		this.lowTime = lowTime;
 	}
-	public String getHighStamp() {
-		return highStamp;
+	
+	public String getHighTimeString() {
+		return highTimeString;
 	}
-	public void setHighStamp(String highStamp) {
-		this.highStamp = highStamp;
+	public void setHighTimeString(String highTimeString) {
+		this.highTimeString = highTimeString;
 	}
-	public String getLowStamp() {
-		return lowStamp;
+	public String getLowTimeString() {
+		return lowTimeString;
 	}
-	public void setLowStamp(String lowStamp) {
-		this.lowStamp = lowStamp;
+	public void setLowTimeString(String lowTimeString) {
+		this.lowTimeString = lowTimeString;
 	}
 	public int getValueCount() {
 		return valueCount;

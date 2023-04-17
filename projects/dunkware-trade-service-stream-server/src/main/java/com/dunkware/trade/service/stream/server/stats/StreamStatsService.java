@@ -1,7 +1,5 @@
 package com.dunkware.trade.service.stream.server.stats;
 
-import com.dunkware.xstream.core.stats.StreamStats;
-
 public interface StreamStatsService {
 
 	/**
