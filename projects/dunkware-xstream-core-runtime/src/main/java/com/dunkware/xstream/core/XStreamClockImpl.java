@@ -3,6 +3,7 @@ package com.dunkware.xstream.core;
 import java.time.Instant;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
 import java.util.ArrayList;
@@ -58,6 +59,16 @@ public class XStreamClockImpl implements XStreamClock {
 	public LocalDateTime getLocalDateTime() {
 		return  LocalDateTime.of(date.get(), time.get());
 		
+	}
+
+
+
+	
+	
+
+	@Override
+	public LocalTime getLocalTime() {
+		return time.get();
 	}
 
 

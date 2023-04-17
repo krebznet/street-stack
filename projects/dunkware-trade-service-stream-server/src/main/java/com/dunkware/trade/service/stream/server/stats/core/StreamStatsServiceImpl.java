@@ -1,38 +1,39 @@
 package com.dunkware.trade.service.stream.server.stats.core;
 
-import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
+
+import javax.annotation.PostConstruct;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.dunkware.trade.service.stream.server.stats.StreamStatsService;
 import com.dunkware.trade.service.stream.server.stats.repository.StreamEntityDayStatsRepo;
+import com.dunkware.xstream.core.stats.StreamStats;
 
 @Service
-public class StreamStatsServiceImpl   {
+public class StreamStatsServiceImpl implements StreamStatsService   {
 	
 	@Autowired
 	private StreamEntityDayStatsRepo statsRepo;
 	
-	private Map<String,StreamStatsCache> streamCache;
-	
-	
-	
-	// listens for a session complete
-	// loads the entity stats at startup cache 
+	private ConcurrentHashMap<String,StreamStats> streamStats = new ConcurrentHashMap<String,StreamStats>();
 
-	// getStats(AAPL) 
-	//	sessionCount
 	
-	// PUT 
-	// varAggHistorical(HIGH,5); 
-	
-	private class EntityStats { 
+	@PostConstruct
+	private void init() { 
 		
-		// day stats 
-		// 
-		// get all 
-		
-		// 
 	}
+	
+	
+	@Override
+	public StreamStats getStreamStats(String streamIdent) throws Exception {
+		if(streamStats.get(streamIdent) == null) 
+			throw new Exception("Stream Stats not found for " + streamIdent);
+		return streamStats.get(streamIdent);
+	}
+	
+	
+	
 
 }

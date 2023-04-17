@@ -3,17 +3,17 @@ package com.dunkware.xstream.core.stats;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.dunkware.xstream.model.stats.StreamEntityDayStats;
+import com.dunkware.xstream.model.stats.EntityStatsSession;
 
 public class StreamStats {
 	
-	private List<StreamEntityDayStats> entities = new ArrayList<StreamEntityDayStats>();
+	private List<EntityStatsSession> entities = new ArrayList<EntityStatsSession>();
 	private String streamIdent;
 	
-	public List<StreamEntityDayStats> getEntities() {
+	public List<EntityStatsSession> getEntities() {
 		return entities;
 	}
-	public void setEntities(List<StreamEntityDayStats> entities) {
+	public void setEntities(List<EntityStatsSession> entities) {
 		this.entities = entities;
 	}
 	public String getStreamIdent() {

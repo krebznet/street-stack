@@ -1,7 +1,5 @@
 package com.dunkware.xstream.core.stats.builders;
 
-import java.util.ArrayList;
-import java.util.List;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.atomic.AtomicInteger;
 
@@ -15,9 +13,8 @@ import com.dunkware.xstream.api.XStreamRowListener;
 import com.dunkware.xstream.api.XStreamRowSignal;
 import com.dunkware.xstream.api.XStreamVar;
 import com.dunkware.xstream.core.stats.StreamStatsExt;
-import com.dunkware.xstream.model.stats.StreamEntityDayStats;
-import com.dunkware.xstream.model.stats.StreamSignalStats;
-import com.dunkware.xstream.model.stats.StreamVariableStats;
+import com.dunkware.xstream.model.stats.EntityStatsSession;
+import com.dunkware.xstream.model.stats.EntityStatsSessionVar;
 import com.dunkware.xstream.util.XStreamHelper;
 import com.dunkware.xstream.xScript.SignalType;
 
@@ -30,7 +27,7 @@ public class EntityStatsBuilder implements XStreamRowListener {
 	}
 
 	private ConcurrentHashMap<String, EntityVarStatsBuilder> varStats = new ConcurrentHashMap<String, EntityVarStatsBuilder>();
-	private StreamEntityDayStats stats = new StreamEntityDayStats();
+	private EntityStatsSession stats = new EntityStatsSession();
 	private XStream stream;
 	private XStreamRow row;
 	
@@ -40,9 +37,9 @@ public class EntityStatsBuilder implements XStreamRowListener {
 		this.stream = row.getStream();
 		this.row = row;
 		stats.setDate(row.getStream().getClock().getLocalDateTime().toLocalDate());
-		stats.setEntityId(row.getIdentifier());
-		stats.setEntityIdent(row.getId());
-		stats.setStreamIdent(stream.getInput().getIdentifier());
+		stats.setId(row.getIdentifier());
+		stats.setIdent(row.getId());
+		stats.setStream(stream.getInput().getIdentifier());
 		// for each variable build a EntityVarStats builder
 		for (XStreamVar var : row.getVars()) {
 			if (XStreamHelper.isVarNumeric(var)) {
@@ -70,25 +67,17 @@ public class EntityStatsBuilder implements XStreamRowListener {
 	 * This will call dispose on all the var stat builders and also remove its
 	 * listener resources
 	 */
-	public StreamEntityDayStats dispose() {
+	public EntityStatsSession dispose() {
 		
 		for (EntityVarStatsBuilder builder : varStats.values()) {
-			StreamVariableStats varStats = builder.dispose();
-			if(varStats.getValues() > 0) { 
-				stats.getVariables().add(varStats);	
+			EntityStatsSessionVar varStats = builder.dispose();
+			if(varStats.getValueCount() > 0) { 
+				stats.getVars().add(varStats);	
 			}
 			
 		}
-		// build the signal stats 
-		List<StreamSignalStats> sigStatsList = new ArrayList<StreamSignalStats>();
-		for (SignalType sigType : signalCounts.keySet()) {
-			StreamSignalStats sigStats = new StreamSignalStats();
-			sigStats.setSigId(sigType.getId());
-			sigStats.setSigIdent(sigType.getName());
-			sigStats.setCount(this.signalCounts.get(sigType).get());
-			sigStatsList.add(sigStats);
-		}
-		stats.setSignals(sigStatsList);
+		
+		
 		
 		try {
 			System.out.println(DJson.serializePretty(stats));	

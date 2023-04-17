@@ -4,6 +4,8 @@ import java.time.Instant;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
+import java.time.OffsetDateTime;
+import java.time.OffsetTime;
 import java.time.ZoneId;
 import java.time.ZoneOffset;
 import java.time.format.DateTimeFormatter;
@@ -42,6 +44,20 @@ public class DunkTime {
 		return format(dt,HH_MMM_SS);
 	}
 
+	public static String formatHHMMSS(LocalTime dt) { 
+		return format(dt,HH_MMM_SS);
+	}
+
+	public static String format(OffsetDateTime dt, String format) {
+		DateTimeFormatter formatter = DateTimeFormatter.ofPattern(format);
+		return dt.format(formatter).toString();
+	}
+	
+	public static String format(OffsetTime dt, String format) {
+		DateTimeFormatter formatter = DateTimeFormatter.ofPattern(format);
+		return dt.format(formatter).toString();
+	}
+	
 	public static String format(LocalDateTime dt, String format) {
 		DateTimeFormatter formatter = DateTimeFormatter.ofPattern(format);
 		return dt.format(formatter).toString();

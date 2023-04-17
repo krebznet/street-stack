@@ -309,7 +309,6 @@ public class ATProviderRequestor extends at.feedapi.ActiveTickServerRequester {
 				case ATDataType.Price: {
 					ATServerAPIDefines.ATPRICE price = Helpers.BytesToPrice(item.GetItemData());
 					return price.price;
-					
 				}
 
 				case ATDataType.String: {

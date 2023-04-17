@@ -269,7 +269,7 @@ public class StreamSessionImpl implements StreamSession {
 		sessionEntity.setProblemCount(0);
 		sessionEntity.setDate(LocalDate.now(DTimeZone.toZoneId(input.getController().getTimeZone())));
 		sessionEntity.setState(getStatus().getState());
-		sessionEntity.setStartingTime(LocalDateTime.now());
+		sessionEntity.setStartingTime(LocalDateTime.now(DTimeZone.toZoneId(input.getController().getTimeZone())));
 		sessionEntity.setStream(getStream().getEntity());
 		sessionEntity.setStreamName(getStream().getName());
 		sessionEntity.setVersion(getStream().getCurrentVersion());

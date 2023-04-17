@@ -10,18 +10,24 @@ import org.slf4j.MarkerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.mongodb.core.BulkOperations;
 import org.springframework.data.mongodb.core.MongoOperations;
+import org.springframework.data.mongodb.core.query.Criteria;
+import org.springframework.data.mongodb.core.query.Query;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
+import com.dunkware.common.util.helpers.DRandom;
 import com.dunkware.common.util.json.DJson;
 import com.dunkware.common.util.stopwatch.DStopWatch;
 import com.dunkware.trade.service.stream.server.sequence.MongoSequenceService;
 import com.dunkware.trade.service.stream.server.stats.repository.StreamEntityDayStatsDoc;
 import com.dunkware.trade.service.stream.server.stats.repository.StreamEntityDayStatsRepo;
 import com.dunkware.xstream.core.stats.StreamStats;
-import com.dunkware.xstream.model.stats.StreamEntityDayStats;
+import com.dunkware.xstream.model.stats.EntityStatsAgg;
+import com.dunkware.xstream.model.stats.EntityStatsSession;
 import com.mongodb.bulk.BulkWriteResult;
 
 @RestController
@@ -63,22 +69,19 @@ public class StreamStatsWebService {
 				StreamEntityDayStatsDoc.class);
 		
 		List<StreamEntityDayStatsDoc> docs = new ArrayList<StreamEntityDayStatsDoc>();
-		for (StreamEntityDayStats dayStats : stats.getEntities()) {
+		for (EntityStatsSession dayStats : stats.getEntities()) {
 			StreamEntityDayStatsDoc doc = new StreamEntityDayStatsDoc();
-			
 			doc.setDate(dayStats.getDate());
-			doc.setEntId(dayStats.getEntityId());
-			doc.setEntIdent(dayStats.getEntityIdent());
-			doc.setSigs(dayStats.getSignals());
-			doc.setVars(dayStats.getVariables());
+			doc.setEntId(dayStats.getId());
+			doc.setEntIdent(dayStats.getIdent());
+			doc.setVars(dayStats.getVars());
+			doc.setId(DRandom.getRandom(4, 489383948));
 			doc.setId(sequenceService.generateSequence(StreamEntityDayStatsDoc.SEQUENCE_NAME));
-			doc.setStream(dayStats.getStreamIdent());
+			doc.setStream(dayStats.getStream());
 			docs.add(doc);
-			
 		}
 		DStopWatch watch = DStopWatch.create();
 		watch.start();
-		
 		bulkOps.insert(docs);
 		try {
 			BulkWriteResult results = bulkOps.execute();
@@ -98,6 +101,29 @@ public class StreamStatsWebService {
 		return "POSTED!";
 	}
 
-	// it would be a list of stats. for a session
+	
+	@GetMapping(path = "/stats/debug/entity")
+	public @ResponseBody EntityStatsAgg debugEntityStats(@RequestParam String ident) throws Exception { 
+		// Find
+		try {
+			Query query = new Query();
+			query.addCriteria(Criteria.where("entIdent").is(ident));
+			
+			List<StreamEntityDayStatsDoc> results = mongoTemplate.find(query, StreamEntityDayStatsDoc.class);
+			System.out.println(results.size());
+			EntityStatsAgg agg = StreamStatsUtils.buildEntityStatsAgg(results, ident, 1);
+			
+			return agg; 
+		} catch (Exception e) {
+			logger.error("/debug/entity/stats error " + e.toString());
+			throw e;
+		}
+
+		
+	}
+	
+	// lets see that happen. 
+	
+	// then a screen 
 
 }

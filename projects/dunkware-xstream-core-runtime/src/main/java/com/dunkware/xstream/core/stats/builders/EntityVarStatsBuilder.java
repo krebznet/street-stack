@@ -1,16 +1,19 @@
 package com.dunkware.xstream.core.stats.builders;
 
 import java.time.LocalDateTime;
+import java.time.LocalTime;
+import java.time.ZonedDateTime;
 import java.util.concurrent.atomic.AtomicInteger;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.dunkware.common.util.data.DataHelper;
+import com.dunkware.common.util.dtime.DTimeZone;
 import com.dunkware.xstream.api.XStreamVar;
 import com.dunkware.xstream.api.XStreamVarListener;
 import com.dunkware.xstream.core.stats.StreamStatsHelper;
-import com.dunkware.xstream.model.stats.StreamVariableStats;
+import com.dunkware.xstream.model.stats.EntityStatsSessionVar;
 
 public class EntityVarStatsBuilder implements XStreamVarListener {
 
@@ -18,13 +21,13 @@ public class EntityVarStatsBuilder implements XStreamVarListener {
 
 	// Low
 	private Number minValue = null;
-	private LocalDateTime minTime = null;
+	private LocalTime minTime = null;
 
 	// High
 	private Number maxValue = null;
-	private LocalDateTime maxTime = null;
+	private LocalTime maxTime = null;
 
-	private AtomicInteger updateCounter = new AtomicInteger();
+	private AtomicInteger valueCounter = new AtomicInteger();
 
 	private XStreamVar var;
 	
@@ -68,7 +71,7 @@ public class EntityVarStatsBuilder implements XStreamVarListener {
 		if (minValue == null) {
 			try {
 				minValue = var.getNumber(0);
-				minTime = var.getRow().getStream().getClock().getLocalDateTime();
+				minTime = var.getRow().getStream().getClock().getLocalTime();
 			} catch (Exception e) {
 				logger.error("Exception handling min value stat when initial min value is null " + e.toString());
 			}
@@ -80,7 +83,7 @@ public class EntityVarStatsBuilder implements XStreamVarListener {
 				if (testMe < 0) {
 					// then currentValue is less than minValue
 					minValue = currentValue;
-					minTime = var.getRow().getStream().getClock().getLocalDateTime();
+					minTime = var.getRow().getStream().getClock().getLocalTime();
 				}
 			} catch (Exception e) {
 				logger.error("Exception converting min in var stat builder " + e.toString());
@@ -92,7 +95,7 @@ public class EntityVarStatsBuilder implements XStreamVarListener {
 		if (maxValue == null) {
 			try {
 				maxValue = currentValue;
-				maxTime = var.getRow().getStream().getClock().getLocalDateTime();
+				maxTime = var.getRow().getStream().getClock().getLocalTime();
 			} catch (Exception e) {
 				logger.error("Exception testing max null val;ue " + e.toString());
 				;
@@ -100,7 +103,7 @@ public class EntityVarStatsBuilder implements XStreamVarListener {
 		} else {
 			try {
 				if (DataHelper.compareData(currentValue, maxValue) > 0) {
-					maxTime = var.getRow().getStream().getClock().getLocalDateTime();
+					maxTime = var.getRow().getStream().getClock().getLocalTime();
 					maxValue = currentValue;
 				}
 			} catch (Exception e) {
@@ -108,15 +111,15 @@ public class EntityVarStatsBuilder implements XStreamVarListener {
 				;
 			}
 		}
-		updateCounter.incrementAndGet();
+		valueCounter.incrementAndGet();
 	}
 
 	/**
 	 * Dispose resources for computing var stats
 	 */
-	public StreamVariableStats dispose() {
+	public EntityStatsSessionVar dispose() {
 		this.var.removeVarListener(this);
-		StreamVariableStats varStats = getStats();
+		EntityStatsSessionVar varStats = getStats();
 		return varStats;
 	}
 
@@ -126,15 +129,18 @@ public class EntityVarStatsBuilder implements XStreamVarListener {
 	 * @param stopTime
 	 * @return
 	 */
-	public StreamVariableStats getStats() {
-		StreamVariableStats stats = new StreamVariableStats();
-		stats.setVarId(var.getVarType().getCode());
-		stats.setVarIdent(var.getVarType().getName());
+	public EntityStatsSessionVar getStats() {
+		EntityStatsSessionVar stats = new EntityStatsSessionVar();
+		stats.setId(var.getVarType().getCode());
+		stats.setIdent(var.getVarType().getName());
 		stats.setLow(minValue);
-		stats.setLowT(this.minTime);
+		if(minTime!= null)
+			stats.setLowDateTime(LocalDateTime.of(var.getRow().getStream().getInput().getDate().get(), minTime));
+			stats.setLow(minValue);
 		stats.setHigh(maxValue);
-		stats.setHighT(maxTime);
-		stats.setValues(this.updateCounter.get());
+		if(maxTime!=null)
+			stats.setHighDateTime(LocalDateTime.of(var.getRow().getStream().getInput().getDate().get(), maxTime));
+		stats.setValueCount(this.valueCounter.get());
 		return stats;
 	}
 

@@ -127,7 +127,7 @@ public class FeedService {
 		}
 		if(serviceProviders.size() == 0) { 
 			logger.error(MarkerFactory.getMarker("crash"), "Not Data Providers Configured on Tick Server");
-			System.exit(-1);
+			//System.exit(-1);
 		}
 		activeProvider = serviceProviders.get(0).getProvider();
 		if(serviceProviders.size() > 0) { 
@@ -136,7 +136,7 @@ public class FeedService {
 				tickFeed.start(activeProvider, new DExecutor(5),propKafkaBrokes);		
 			} catch (Exception e) {
 				logger.error(MarkerFactory.getMarker("Crash"), "Exception starting tick feed " + e.toString());
-				System.exit(-1);
+			//	System.exit(-1);
 			}
 		
 			

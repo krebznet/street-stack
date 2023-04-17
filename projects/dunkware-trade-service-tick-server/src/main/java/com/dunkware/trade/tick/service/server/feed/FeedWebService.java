@@ -1,6 +1,5 @@
 package com.dunkware.trade.tick.service.server.feed;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import javax.annotation.PostConstruct;
@@ -18,7 +17,6 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.server.ResponseStatusException;
 
 import com.dunkware.trade.tick.api.consumer.TickConsumer;
-import com.dunkware.trade.tick.api.feed.TickFeedSubscription;
 import com.dunkware.trade.tick.model.consumer.TickConsumerSession;
 import com.dunkware.trade.tick.model.feed.TickFeedStats;
 import com.dunkware.trade.tick.model.feed.TickFeedSubscriptionBean;

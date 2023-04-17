@@ -1,6 +1,7 @@
 package com.dunkware.xstream.api;
 
 import java.time.LocalDateTime;
+import java.time.LocalTime;
 
 import com.dunkware.common.util.dtime.DDate;
 import com.dunkware.common.util.dtime.DTime;
@@ -18,6 +19,8 @@ public interface XStreamClock {
 	public long getTimestamp();
 	
 	public LocalDateTime getLocalDateTime();
+	
+	public LocalTime getLocalTime();
 	
 	public long getSystemTimestamp();
 	

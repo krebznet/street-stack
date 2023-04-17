@@ -1,6 +1,7 @@
 package com.dunkware.trade.service.stream.server.stats.repository;
 
 import java.time.LocalDate;
+import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -9,14 +10,23 @@ import javax.persistence.Transient;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
-import com.dunkware.xstream.model.stats.StreamSignalStats;
-import com.dunkware.xstream.model.stats.StreamVariableStats;
+import com.dunkware.common.util.time.DunkTime;
+import com.dunkware.xstream.model.stats.EntityStatsSessionVar;
 
-@Document(collection = "stream_stats_entity_day")
+@Document(collection = "stream_stats_entity_day_test")
 public class StreamEntityDayStatsDoc {
 
+	public static void main(String[] args) {
+		LocalTime time = LocalTime.now();
+		String serialized = DunkTime.formatHHMMSS(time);
+		System.out.println(serialized);
+		LocalTime deser = LocalTime.parse(serialized);
+		System.out.println(DunkTime.formatHHMMSS(deser));
+	}
+	
 	@Transient
-	public static final String SEQUENCE_NAME = "entity_day_stats";
+	public static final String SEQUENCE_NAME = "wow_duncan";
+	
 
 	@Id
 	private long id;
@@ -25,8 +35,7 @@ public class StreamEntityDayStatsDoc {
 	private String entIdent;
 	private String stream;
 
-	private List<StreamVariableStats> vars = new ArrayList<StreamVariableStats>();
-	private List<StreamSignalStats> sigs = new ArrayList<StreamSignalStats>();
+	private List<EntityStatsSessionVar> vars = new ArrayList<EntityStatsSessionVar>();
 
 	public long getId() {
 		return id;
@@ -44,20 +53,12 @@ public class StreamEntityDayStatsDoc {
 		this.date = date;
 	}
 
-	public List<StreamVariableStats> getVars() {
+	public List<EntityStatsSessionVar> getVars() {
 		return vars;
 	}
 
-	public void setVars(List<StreamVariableStats> vars) {
+	public void setVars(List<EntityStatsSessionVar> vars) {
 		this.vars = vars;
-	}
-
-	public List<StreamSignalStats> getSigs() {
-		return sigs;
-	}
-
-	public void setSigs(List<StreamSignalStats> sigs) {
-		this.sigs = sigs;
 	}
 
 	public int getEntId() {

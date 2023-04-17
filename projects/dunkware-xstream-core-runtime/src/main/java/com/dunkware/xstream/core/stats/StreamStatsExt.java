@@ -20,7 +20,7 @@ import com.dunkware.xstream.api.XStreamListener;
 import com.dunkware.xstream.api.XStreamRow;
 import com.dunkware.xstream.core.annotations.AXStreamExtension;
 import com.dunkware.xstream.core.stats.builders.EntityStatsBuilder;
-import com.dunkware.xstream.model.stats.StreamEntityDayStats;
+import com.dunkware.xstream.model.stats.EntityStatsSession;
 import com.dunkware.xstream.xproject.model.XStreamExtensionType;
 
 @AXStreamExtension(type = StreamStatsExtType.class)
@@ -31,7 +31,7 @@ public class StreamStatsExt implements XStreamExtension, XStreamListener {
 	private StreamStatsExtType myType; 
 	private XStream stream; 
 	
-	private List<StreamEntityDayStats> entityStats = new ArrayList<StreamEntityDayStats>();
+	private List<EntityStatsSession> entityStats = new ArrayList<EntityStatsSession>();
 	
 	private ConcurrentHashMap<String,EntityStatsBuilder> entityStatBuilders = new ConcurrentHashMap<String, EntityStatsBuilder>(); 
 	
@@ -73,7 +73,7 @@ public class StreamStatsExt implements XStreamExtension, XStreamListener {
 			logger.debug(marker, "Disposing StreamStatsExt");
 		}
 		for (EntityStatsBuilder statBuilder : entityStatBuilders.values()) {
-			StreamEntityDayStats dayStats = statBuilder.dispose();
+			EntityStatsSession dayStats = statBuilder.dispose();
 			this.entityStats.add(statBuilder.dispose());
 		}
 		try {

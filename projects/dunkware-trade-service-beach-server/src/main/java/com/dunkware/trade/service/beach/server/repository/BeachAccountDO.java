@@ -4,10 +4,12 @@ import java.util.ArrayList;
 import java.util.List;
 
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 
@@ -26,7 +28,9 @@ public class BeachAccountDO {
 	
 
 	
-	//@OneToMany(fetch = FetchType.LAZY, orphanRemoval = true)
+	@OneToMany(fetch = FetchType.LAZY, orphanRemoval = true)
+	private List<BeachBotDO> bots = new ArrayList<BeachBotDO>();
+	
 	@Transient
 	private List<BeachOrderDO> orders = new ArrayList<BeachOrderDO>();
 	
