@@ -8,6 +8,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
+import com.dunkware.common.util.time.DunkTime;
 import com.dunkware.trade.service.stream.server.stats.StreamStats;
 import com.dunkware.trade.service.stream.server.stats.StreamStatsEntity;
 import com.dunkware.xstream.model.stats.EntityStatsAgg;
@@ -79,10 +80,10 @@ public class StreamStatsEntityImpl implements StreamStatsEntity {
 		agg.setStream(streamStats.getStream().getName());
 		LocalDate startDate = null; 
 		LocalDate endDate = null;
-		agg.setSessions(0);
+		agg.setSessions(sessions.size());
+		
 		Map<String,EntityStatsAggVar> vars = new ConcurrentHashMap<String,EntityStatsAggVar>();
 		for (EntityStatsSession doc : sessions) {
-			agg.setSessions(agg.getSessions() + 1);
 			if(startDate == null && endDate == null) { 
 				startDate = doc.getDate();
 				endDate = doc.getDate();
@@ -102,11 +103,12 @@ public class StreamStatsEntityImpl implements StreamStatsEntity {
 					aggVar.setHigh(var.getHigh());
 					aggVar.setLow(var.getLow());
 					aggVar.setHighDateTime(var.getHighDateTime());
-					aggVar.setLowDateTime(var.getLowDateTime());		
+					aggVar.setLowDateTime(var.getLowDateTime());
+					aggVar.setValueCount(var.getValueCount());
 					vars.put(var.getIdent(), aggVar);
 				} else { 
 					aggVar.setSessionCount(aggVar.getSessionCount() + 1);
-					
+					aggVar.setValueCount(aggVar.getValueCount() + var.getValueCount());
 					if(var.getHigh().doubleValue() > aggVar.getHigh().doubleValue()) { 
 						aggVar.setHigh(var.getHigh());
 						aggVar.setHighDateTime(var.getHighDateTime());
@@ -124,6 +126,7 @@ public class StreamStatsEntityImpl implements StreamStatsEntity {
 		agg.setStart(startDate);
 		agg.setId(id);
 		agg.setIdent(ident);
+		agg.setDays((int)DunkTime.daysBetween(startDate, endDate));
 		ArrayList<EntityStatsAggVar> newList = new ArrayList<EntityStatsAggVar>(vars.values());
 		Collections.sort(newList, new Comparator<EntityStatsAggVar>() {
 
@@ -137,6 +140,28 @@ public class StreamStatsEntityImpl implements StreamStatsEntity {
 		agg.setVars(newList);
 		this.statsAgg = agg; 
 	}
+
+	@Override
+	public boolean sessionExists(LocalDate date) {
+		for (EntityStatsSession session : sessions) {
+			if(session.getDate().isEqual(date)) { 
+				return true; 
+			}
+		}
+		return false;
+	}
+
+	@Override
+	public EntityStatsSession getSession(LocalDate date) throws Exception {
+		for (EntityStatsSession session : sessions) {
+			if(session.getDate().isEqual(date)) { 
+				return session;
+			}
+		}
+		throw new Exception("Entity Stats Session not found for " + DunkTime.format(date, DunkTime.YYYY_MM_DD));
+	}
+	
+	
 	
 
 	

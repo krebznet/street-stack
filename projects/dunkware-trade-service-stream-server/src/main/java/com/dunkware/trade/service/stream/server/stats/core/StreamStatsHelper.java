@@ -19,6 +19,7 @@ import com.dunkware.xstream.model.stats.EntityStatsAgg;
 import com.dunkware.xstream.model.stats.EntityStatsAggVar;
 import com.dunkware.xstream.model.stats.EntityStatsSession;
 import com.dunkware.xstream.model.stats.EntityStatsSessionVar;
+import com.dunkware.xstream.model.stats.EntityStatsSessionVarDep;
 
 public class StreamStatsHelper {
 	
@@ -98,29 +99,29 @@ public class StreamStatsHelper {
 			if(doc.getDate().isBefore(startDate)) { 
 				startDate = doc.getDate();
 			}
-			for (EntityStatsSessionVar var : doc.getVars()) {
-				EntityStatsAggVar aggVar = vars.get(var.getIdent());
+			for (EntityStatsSessionVarDep var : doc.getVars()) {
+				EntityStatsAggVar aggVar = vars.get(var.getVarIdent());
 				if(aggVar == null) { 
 					aggVar = new EntityStatsAggVar();
 					aggVar.setSessionCount(1);
-					aggVar.setIdent(var.getIdent());
+					aggVar.setIdent(var.getVarIdent());
 					aggVar.setHigh(var.getHigh());
 					aggVar.setLow(var.getLow());
-					aggVar.setHighDateTime(var.getHighDateTime());
-					aggVar.setLowDateTime(var.getLowDateTime());		
-					vars.put(var.getIdent(), aggVar);
+					aggVar.setHighDateTime(var.getHighT());
+					aggVar.setLowDateTime(var.getLowT());		
+					vars.put(var.getVarIdent(), aggVar);
 				} else { 
 					aggVar.setSessionCount(aggVar.getSessionCount() + 1);
 					
 					if(var.getHigh().doubleValue() > aggVar.getHigh().doubleValue()) { 
 						aggVar.setHigh(var.getHigh());
-						aggVar.setHighDateTime(var.getHighDateTime());
+						aggVar.setHighDateTime(var.getHighT());
 					}
 					if(var.getLow().doubleValue() < aggVar.getLow().doubleValue()) {
 						aggVar.setLow(var.getLow());
-						aggVar.setLowDateTime(var.getLowDateTime());
+						aggVar.setLowDateTime(var.getLowT());
 					}
-					vars.put(var.getIdent(), aggVar);
+					vars.put(var.getVarIdent(), aggVar);
 				}
 			}
 		}

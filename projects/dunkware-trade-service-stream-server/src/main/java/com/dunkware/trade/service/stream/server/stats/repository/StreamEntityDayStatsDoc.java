@@ -12,6 +12,7 @@ import org.springframework.data.mongodb.core.mapping.Document;
 
 import com.dunkware.common.util.time.DunkTime;
 import com.dunkware.xstream.model.stats.EntityStatsSessionVar;
+import com.dunkware.xstream.model.stats.EntityStatsSessionVarDep;
 
 @Document(collection = "stream_stats_entity_day_test")
 public class StreamEntityDayStatsDoc {
@@ -35,7 +36,7 @@ public class StreamEntityDayStatsDoc {
 	private String entIdent;
 	private String stream;
 
-	private List<EntityStatsSessionVar> vars = new ArrayList<EntityStatsSessionVar>();
+	private List<EntityStatsSessionVarDep> vars = new ArrayList<EntityStatsSessionVarDep>();
 
 	public long getId() {
 		return id;
@@ -53,12 +54,17 @@ public class StreamEntityDayStatsDoc {
 		this.date = date;
 	}
 
-	public List<EntityStatsSessionVar> getVars() {
+	
+	public List<EntityStatsSessionVarDep> getVars() {
 		return vars;
 	}
 
-	public void setVars(List<EntityStatsSessionVar> vars) {
+	public void setVars(List<EntityStatsSessionVarDep> vars) {
 		this.vars = vars;
+	}
+
+	public static String getSequenceName() {
+		return SEQUENCE_NAME;
 	}
 
 	public int getEntId() {

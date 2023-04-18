@@ -157,6 +157,16 @@ public class StreamStatsImpl implements StreamStats {
 	public Collection<StreamStatsEntity> getEntities() {
 		return entities.values();
 	}
+
+	@Override
+	public boolean entityExists(String ident) {
+		if(entities.containsKey(ident)) { 
+			return true; 
+		}
+		return false; 
+	}
+	
+	
 	
 	
 	

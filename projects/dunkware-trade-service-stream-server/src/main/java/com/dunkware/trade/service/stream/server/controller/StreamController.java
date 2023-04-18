@@ -1,6 +1,7 @@
 package com.dunkware.trade.service.stream.server.controller;
 
 import java.time.DayOfWeek;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.Semaphore;
@@ -120,6 +121,7 @@ public class StreamController {
 	public StreamController() throws Exception {
 
 	}
+	
 
 	public void start(StreamEntity ent) throws Exception {
 		logger.info(":Starting Stream Controller " + ent.getName());
@@ -447,9 +449,13 @@ public class StreamController {
 		private void newDay() {
 			isSessionDay = false;
 			DayOfWeek today = clockUpdater.getClock().getDayOfWeek();
+			
 			if (days.contains(today)) {
 				if (logger.isDebugEnabled()) {
 					logger.debug(marker,"{} Scheduler New Day Set Session Day True", ent.getName());
+				}
+				if(today == DayOfWeek.SATURDAY || today == DayOfWeek.SUNDAY) { 
+					logger.error("In Session Day But Today is Saturday Or Sunday WTF");
 				}
 				isSessionDay = true;
 			} else {
@@ -459,7 +465,6 @@ public class StreamController {
 				}
 			}
 		}
-		
 		
 		@Override
 		public void clockUpdate(DZonedClock clock) {
@@ -483,10 +488,14 @@ public class StreamController {
 						logger.error(marker,"Stream Schedule Stopping {} Exception {}", ent.getName(), e.toString(), e);
 					}
 				}
-			} else {
+			} else { // else not in session
+				if(!isSessionDay) {
+					// DUMB FUCK HERE IS BUG 
+					return;
+				}
 				// not in session look for start if its after start time and before stop time
 				if (clock.isAfterLocalTime(startTime) && clock.isBeforeLocalTime(stopTime)) {
-
+					
 					try {
 						if (getStats().getState() != StreamControllerState.Starting || getStats().getState()!= StreamControllerState.Running) {
 							logger.info(

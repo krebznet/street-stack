@@ -25,6 +25,13 @@ public interface StreamStats {
 	StreamStatsEntity getEntity(String ident) throws Exception;
 	
 	/**
+	 * Returns true or false if there is a stats entity 
+	 * @param ident
+	 * @return
+	 */
+	boolean entityExists(String ident);
+	
+	/**
 	 * Returns all the stream entity stats. 
 	 * @return
 	 */

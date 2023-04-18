@@ -9,13 +9,12 @@ import java.time.OffsetTime;
 import java.time.ZoneId;
 import java.time.ZoneOffset;
 import java.time.format.DateTimeFormatter;
+import java.time.temporal.ChronoUnit;
 import java.util.Date;
 import java.util.TimeZone;
 import java.util.concurrent.TimeUnit;
 
-import com.dunkware.common.util.dtime.DDateTime;
 import com.dunkware.common.util.dtime.DTimeZone;
-import com.dunkware.common.util.json.DJson;
 import com.google.protobuf.Timestamp;
 
 public class DunkTime {
@@ -27,15 +26,10 @@ public class DunkTime {
     public static final String ISO_FORMAT = "yyyy-MM-dd'T'HH:mm:ssZ";
     
     public static void main(String[] args) {
-		LocalDateTime dt = LocalDateTime.now(DTimeZone.toZoneId(DTimeZone.NewYork));
+		LocalDate dt = LocalDate.now(DTimeZone.toZoneId(DTimeZone.NewYork));
+		LocalDate dt30 = dt.plusDays(30);
+		System.out.println("Days Between " + DunkTime.daysBetween(dt, dt30));
 		
-		
-
-		System.out.println(DunkTime.format(dt, DunkTime.YYYY_MM_DD_HH_MM_SS));
-		String out = DunkTime.format(dt, DunkTime.YYYY_MM_DD_HH_MM_SS);
-		LocalDateTime des = LocalDateTime.parse(out,DateTimeFormatter.ofPattern(DunkTime.YYYY_MM_DD_HH_MM_SS));
-		System.out.println(DunkTime.format(des, DunkTime.YYYY_MM_DD_HH_MM_SS));
-	// YYMMDD
 		
 	}
 	
@@ -114,6 +108,11 @@ public class DunkTime {
 	        TimeUnit.MILLISECONDS.toSeconds(
 	            TimeZone.getTimeZone(id).getRawOffset()        // Returns offset in milliseconds 
 			));
+	}
+	
+	public static long daysBetween(LocalDate from, LocalDate to) { 
+		 long result = ChronoUnit.DAYS.between(from, to);
+		 return result;
 	}
 
 }

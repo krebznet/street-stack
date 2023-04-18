@@ -1,6 +1,7 @@
 package com.dunkware.trade.service.stream.server.stats.web;
 
-import java.util.ArrayList;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 
 import org.slf4j.Logger;
@@ -8,7 +9,6 @@ import org.slf4j.LoggerFactory;
 import org.slf4j.Marker;
 import org.slf4j.MarkerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.mongodb.core.BulkOperations;
 import org.springframework.data.mongodb.core.MongoOperations;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
@@ -19,9 +19,9 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
-import com.dunkware.common.util.helpers.DRandom;
 import com.dunkware.common.util.json.DJson;
-import com.dunkware.common.util.stopwatch.DStopWatch;
+import com.dunkware.common.util.time.DunkTime;
+import com.dunkware.trade.service.stream.json.stats.EntityStatsSessionResp;
 import com.dunkware.trade.service.stream.server.sequence.MongoSequenceService;
 import com.dunkware.trade.service.stream.server.stats.StreamStats;
 import com.dunkware.trade.service.stream.server.stats.StreamStatsEntity;
@@ -31,8 +31,7 @@ import com.dunkware.trade.service.stream.server.stats.repository.StreamEntityDay
 import com.dunkware.trade.service.stream.server.stats.repository.StreamEntityDayStatsRepo;
 import com.dunkware.xstream.core.stats.StreamStatsPayload;
 import com.dunkware.xstream.model.stats.EntityStatsAgg;
-import com.dunkware.xstream.model.stats.EntityStatsSession;
-import com.mongodb.bulk.BulkWriteResult;
+import com.dunkware.xstream.model.stats.EntityStatsSessions;
 
 @RestController
 public class StreamStatsWebService {
@@ -43,17 +42,15 @@ public class StreamStatsWebService {
 	private MongoOperations mongoTemplate;
 
 	private Marker sessionstats = MarkerFactory.getMarker("stream.session.stats");
-	
+
 	@Autowired
-	private StreamEntityDayStatsRepo repo; 
-	
+	private StreamEntityDayStatsRepo repo;
+
 	@Autowired
 	private MongoSequenceService sequenceService;
-	
+
 	@Autowired
-	private StreamStatsService statsService; 
-	
-	
+	private StreamStatsService statsService;
 
 	@PostMapping("/stats/payload/session")
 	public String sessionStatsSubmit(@RequestParam("file") MultipartFile file) {
@@ -75,14 +72,16 @@ public class StreamStatsWebService {
 			StreamStats streamStats = statsService.getStreamStats(payload.getStreamIdent());
 			streamStats.payload(payload);
 		} catch (Exception e) {
-			logger.error(sessionstats, "Did not find stream stats for payload stream ident " + payload.getStreamIdent());
+			logger.error(sessionstats,
+					"Did not find stream stats for payload stream ident " + payload.getStreamIdent());
 			return e.toString();
 		}
 		return "POSTED!";
 	}
-	
+
 	@GetMapping(path = "/stats/entity/agg")
-	public @ResponseBody EntityStatsAgg statsEntityAgg(@RequestParam String stream, @RequestParam String ident) throws Exception { 
+	public @ResponseBody EntityStatsAgg statsEntityAgg(@RequestParam String stream, @RequestParam String ident)
+			throws Exception {
 		try {
 			StreamStats stats = statsService.getStreamStats(stream);
 			StreamStatsEntity entity = stats.getEntity(ident);
@@ -92,24 +91,78 @@ public class StreamStatsWebService {
 		}
 	}
 
-	
+	@GetMapping(path = "/stats/entity/sessions")
+	public @ResponseBody EntityStatsSessions statsEntitySessions(@RequestParam String stream,
+			@RequestParam String ident) {
+		try {
+			return statsService.getStreamStats(stream).getEntity(ident).getSessions();
+		} catch (Exception e) {
+			EntityStatsSessions sessions = new EntityStatsSessions();
+			sessions.setResolved(false);
+			return sessions;
+		}
+	}
+
+	@GetMapping(path = "/stats/entity/session")
+	public @ResponseBody EntityStatsSessionResp statsEntitySession(@RequestParam String stream, @RequestParam String ident,
+			@RequestParam String date) {
+		LocalDate ld = null;
+		EntityStatsSessionResp resp = new EntityStatsSessionResp();
+		try {
+			LocalDate.parse(date,DateTimeFormatter.ofPattern(DunkTime.YYYY_MM_DD));
+		} catch (Exception e) {
+			resp.setResolved(false);
+			resp.setResolveError("Invalid Date Format " + e.toString());
+			return resp;
+		}
+		StreamStats stats = null;
+		try {
+			 stats = statsService.getStreamStats(stream);
+		} catch (Exception e) {
+			resp.setResolved(false);
+			resp.setResolveError("Stream Stats" + stream + " not found");
+		}
+		StreamStatsEntity entity = null;
+		try {
+			entity = stats.getEntity(ident);
+		} catch (Exception e) {
+			resp.setResolved(false);
+			resp.setResolveError("Entity " + ident + " stats does not exist");
+			return resp;
+		}
+		if(entity.sessionExists(ld) == false) { 
+			resp.setResolved(false);
+			resp.setResolveError("Entity Session for Date " + date + " does not exist");
+			return resp;
+		}
+		try {
+			resp.setSession(entity.getSession(ld));
+			resp.setResolved(true);
+		} catch (Exception e) {
+			resp.setResolved(false);
+			resp.setResolveError("Not sure get session on entity failed but checked " + e.toString());
+			return resp;
+		}
+		
+		
+		return null;
+	}
+
 	@GetMapping(path = "/stats/debug/entity")
-	public @ResponseBody EntityStatsAgg debugEntityStats(@RequestParam String ident) throws Exception { 
+	public @ResponseBody EntityStatsAgg debugEntityStats(@RequestParam String ident) throws Exception {
 		// Find
 		try {
 			Query query = new Query();
 			query.addCriteria(Criteria.where("entIdent").is(ident));
-			
+
 			List<StreamEntityDayStatsDoc> results = mongoTemplate.find(query, StreamEntityDayStatsDoc.class);
 			System.out.println(results.size());
 			EntityStatsAgg agg = StreamStatsHelper.buildEntityStatsAgg(results, ident, 1);
-			
-			return agg; 
+
+			return agg;
 		} catch (Exception e) {
 			logger.error("/debug/entity/stats error " + e.toString());
 			throw e;
 		}
 	}
-	
-
 }

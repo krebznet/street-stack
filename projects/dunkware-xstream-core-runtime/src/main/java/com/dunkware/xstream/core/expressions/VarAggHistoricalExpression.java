@@ -12,6 +12,8 @@ public class VarAggHistoricalExpression extends XStreamExpressionImpl {
 	private XStreamRow row; 
 	private VarAggHistoryType myType; 
 	
+	private Number aggValue = null; 
+	private boolean resolved = false; 
 	// we need an aggregation service implemented in here 
 	
 
@@ -20,13 +22,13 @@ public class VarAggHistoricalExpression extends XStreamExpressionImpl {
 		this.row = row; 
 		this.myType = (VarAggHistoryType)type;
 		
-		
+		// get the # of days; 
 	}
 
 	@Override
 	public void start() {
 		// TODO Auto-generated method stub
-		
+		//SignalQuery(SmaRoc1x2min(0) > varAggSession(SmaRoc1x2min,HIGH,realtiveDays(5)), throttle 4 SEC, limit -1, execute 1 SEC)
 	}
 
 	@Override
@@ -42,14 +44,14 @@ public class VarAggHistoricalExpression extends XStreamExpressionImpl {
 
 	@Override
 	public boolean execute() {
-		// TODO Auto-generated method stub
 		return false;
 	}
 
 	@Override
 	public boolean canExecute() {
-		// TODO Auto-generated method stub
-		return false;
+		return resolved;
 	}
+	
+	
 
 }
