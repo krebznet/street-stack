@@ -289,6 +289,18 @@ public class XStreamImpl implements XStream {
 	public Marker getSessionMarker() {
 		return MarkerFactory.getMarker(sessionId);
 	}
+	
+	
+
+	@Override
+	public XStreamExtension getExtension(Class clazz) throws XStreamException {
+		for (XStreamExtension extension : extensions) {
+			if(clazz.isInstance(extension)) { 
+				return extension; 
+			}
+		}
+		throw new XStreamException("Extension Class " + clazz.getName() + " not found");
+	}
 
 	@Override
 	public <T> T getService(Class<T> clazz) throws XStreamException {

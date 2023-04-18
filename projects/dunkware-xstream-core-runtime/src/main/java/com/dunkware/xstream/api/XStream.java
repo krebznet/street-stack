@@ -128,5 +128,7 @@ public interface XStream {
 	public void removeSignalListener(XStreamSignalListener list);
 	
 	
+	public XStreamExtension getExtension(Class clazz) throws XStreamException;
+	
 }
 

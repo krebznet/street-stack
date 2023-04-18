@@ -8,6 +8,7 @@ public class StreamStatsExtType extends XStreamExtensionType {
 	private String sessionId; 
 	private String postURL;
 	private String postId; 
+	private String baseURL;
 	
 	public String getStreamIdent() {
 		return streamIdent;
@@ -34,6 +35,14 @@ public class StreamStatsExtType extends XStreamExtensionType {
 	public void setPostId(String postId) {
 		this.postId = postId;
 	}
+	public String getBaseURL() {
+		return baseURL;
+	}
+	public void setBaseURL(String baseURL) {
+		this.baseURL = baseURL;
+	}
+	
+	
 	
 	
 
