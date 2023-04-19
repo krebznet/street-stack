@@ -135,7 +135,7 @@ public class TickConsumer {
 					fields.add(TickField.newBuilder().setId(TradeTicks.FieldSymbol).setStringValue(sub.getSymbol())
 							.setType(TickFieldType.STRING).build());
 					fields.add(TickField.newBuilder().setId(TradeTicks.FieldVolume)
-							.setIntValue(DConverter.longToInt(sub.getVolume())).setType(TickFieldType.INT).build());
+							.setLongValue(sub.getVolume()).setType(TickFieldType.LONG).build());
 					fields.add(TickField.newBuilder().setId(TradeTicks.FieldTradeCount).setIntValue(sub.getTrades())
 							.setType(TickFieldType.INT).build());
 					fields.add(TickField.newBuilder().setId(TradeTicks.FieldAskPrice).setDoubleValue(sub.getAskPrice())

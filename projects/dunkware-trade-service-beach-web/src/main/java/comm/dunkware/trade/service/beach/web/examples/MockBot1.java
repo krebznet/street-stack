@@ -11,7 +11,7 @@ import comm.dunkware.trade.service.beach.web.bot.WebBotExitTriggerType;
 import comm.dunkware.trade.service.beach.web.bot.WebBotPlay;
 import comm.dunkware.trade.service.beach.web.bot.WebBotTradeSide;
 
-public class PaperBot1 {
+public class MockBot1 {
 	
 	public static WebBot get() { 
 		
@@ -72,6 +72,7 @@ public class PaperBot1 {
 		bot.setActiveTradeLimit(5);
 		bot.setAllocatedCapital(50000.0);
 		bot.setEnabled(true);
+		bot.setStream("mock");
 		
 		
 		// create some plays 

@@ -37,7 +37,7 @@ public class BeachStreamMock implements BeachStream  {
 	
 	private Marker signalMarker = MarkerFactory.getMarker("beach.stream.signals");
 
-	private String[] mock5secSymbols = new String[] {"AAPL","BUB", "POOP","SHEEP"};
+	private String[] mock5secSymbols = new String[] {"AAPL","JPM", "GE","ATT"};
 	
 	private Mock5SecSignals signals;
 	

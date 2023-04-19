@@ -3,6 +3,10 @@ package com.dunkware.xstream.core.expressions;
 import java.math.BigDecimal;
 import java.math.MathContext;
 import java.math.RoundingMode;
+import java.util.concurrent.atomic.AtomicInteger;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import com.dunkware.common.tick.TickHandler;
 import com.dunkware.common.tick.TickHelper;
@@ -24,6 +28,7 @@ public class TickExpression extends XStreamExpressionImpl implements TickHandler
 	private XStreamRow row;
 	private TickExpressionType type;
 
+	private Logger logger = LoggerFactory.getLogger(getClass());
 	private int tickType;
 	private int tickField;
 	private int tickFieldDataType;
@@ -73,8 +78,10 @@ public class TickExpression extends XStreamExpressionImpl implements TickHandler
 	@Override
 	public void onTick(Tick tick) {
 		TickField field = null;
+		TickFieldType fieldType = null;
 		try {
 			field = TickHelper.getField(tick, tickField);
+			fieldType = field.getType();
 		} catch (RuntimeException e) {
 			throw new XStreamRuntimeException("Tick Expression onTick() TichHelper.getField(" + tick.getType() + ","
 					+ tickField + ")" + e.toString(), e);
@@ -97,11 +104,27 @@ public class TickExpression extends XStreamExpressionImpl implements TickHandler
 			return;
 		}
 		if (tickFieldDataType == DataType.INT_VALUE) {
-			setValue(field.getIntValue());
+			if(fieldType != TickFieldType.INT) { 
+				logger.warn("Tick Expression Field  " + type.getField() + " is not INT Data type but is " + fieldType.name());
+				if(fieldType == TickFieldType.LONG) { 
+					setValue(field.getLongValue());
+				}
+			} else { 
+				setValue(field.getIntValue());	
+			}
+			
 			return;
 		}
 		if (tickFieldDataType == DataType.LONG_VALUE) {
-			setValue(field.getLongValue());
+			if(fieldType != TickFieldType.LONG) { 
+				logger.warn("Tick Expression Field " + type.getField() + " defined as long but tick field type is " + fieldType.name());;
+				if(fieldType == TickFieldType.INT) { 
+					setValue(field.getIntValue());
+				}
+			} else { 
+				setValue(field.getLongValue());	
+			}
+			
 			return;
 
 		}

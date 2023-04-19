@@ -104,7 +104,7 @@ public class BeachServiceImpl implements BeachService {
 			
 			BeachStreamMock mock = new BeachStreamMock();
 			try {
-				mock.init(null);
+				//mock.init(null)
 			} catch (Exception e) {
 				logger.error("exception mock stream init " + e.toString());
 				System.exit(1);

@@ -1,10 +1,11 @@
 package com.dunkware.trade.service.beach.server.runtime.core.bot;
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.List;
 import java.util.concurrent.Semaphore;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 
@@ -16,13 +17,8 @@ import com.dunkware.trade.sdk.core.runtime.trade.TradeList;
 import com.dunkware.trade.service.beach.protocol.spec.BeachBotState;
 import com.dunkware.trade.service.beach.server.common.BeachRuntime;
 import com.dunkware.trade.service.beach.server.repository.BeachBotDO;
-import com.dunkware.trade.service.beach.server.repository.BeachEntryDO;
-import com.dunkware.trade.service.beach.server.repository.BeachExitDO;
-import com.dunkware.trade.service.beach.server.repository.BeachTradeDO;
 import com.dunkware.trade.service.beach.server.runtime.BeachAccount;
 import com.dunkware.trade.service.beach.server.runtime.BeachBot;
-import com.dunkware.trade.service.beach.server.runtime.BeachTrade;
-import com.dunkware.trade.service.beach.server.runtime.core.BeachEntryImpl;
 import com.dunkware.trade.service.beach.server.runtime.core.BeachTradeImpl;
 import com.dunkware.trade.tick.api.instrument.Instrument;
 import com.dunkware.trade.tick.model.ticker.TradeTickerSpec;
@@ -37,6 +33,9 @@ public class BeachBotImpl implements BeachBot {
 	
 	@Autowired
 	private BeachRuntime beachRuntime; 
+	
+	private Logger logger = LoggerFactory.getLogger(getClass());
+	
 	
 	private BeachBotDO entity; 
 	

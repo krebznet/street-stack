@@ -10,3 +10,6 @@ public interface BeachOrder extends Order {
 	BeachOrderDO getEntity();
 
 }
+
+// what do you need a signal subscriber. 
+// SignalListener()

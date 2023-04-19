@@ -23,7 +23,7 @@ public class BeachWebService {
 	@Autowired
 	private BeachService service;
 	
-	@PostMapping(path = "/beach/controller/add/broker")
+	@PostMapping(path = "/beach/broker/add")
 	public @ResponseBody() BeachBrokerAddResp addBroker(@RequestBody() BeachBrokerAddReq req) { 
 		BeachBrokerAddResp resp = new BeachBrokerAddResp();
 		try {
@@ -37,7 +37,7 @@ public class BeachWebService {
 		}
 	}
 	
-	@PostMapping(path = "/beach/controller/add/bot") 
+	@PostMapping(path = "/beach/bot/add") 
 	public void addBot(@RequestBody() BeachBotAddReq req) throws Exception { 
 		BeachBroker broker = null;
 		try {
@@ -58,7 +58,7 @@ public class BeachWebService {
 		}
 	}
 	
-	@GetMapping(path = "beach/controller/start/bot")
+	@GetMapping(path = "beach/bot/start")
 	public void startBot(@RequestParam() String bot, @RequestParam() String broker, @RequestParam() String account) throws Exception { 
 		try {
 			BeachAccount beachAccount = service.getAccount(broker,account);
@@ -73,7 +73,7 @@ public class BeachWebService {
 		
 	}
 	
-	@GetMapping(path = "beach/controller/bot/stop")
+	@GetMapping(path = "beach/bot/stop")
 	public void stopBot(@RequestParam() String bot) throws Exception { 
 		
 	}

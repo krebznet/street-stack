@@ -11,5 +11,5 @@ public interface BeachStream {
 	
 	public boolean signalExists(String signal); 
 	
-	public StreamSpec getSpec();
+	public StreamSpec getSpec(); // for what? 
 }

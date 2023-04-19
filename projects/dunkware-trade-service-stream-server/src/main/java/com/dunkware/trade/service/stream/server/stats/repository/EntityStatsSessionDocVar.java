@@ -6,8 +6,9 @@ public class EntityStatsSessionDocVar {
 	
 	private int id;
 	private String ident;
-	private Number high = null;
-	private Number low = null;
+	private int dataType; 
+	private String high = null;
+	private String low = null;
 	private LocalDateTime highTime;
 	private LocalDateTime lowTime;
 	private String highTimeString;
@@ -26,19 +27,25 @@ public class EntityStatsSessionDocVar {
 	public void setIdent(String ident) {
 		this.ident = ident;
 	}
-	public Number getHigh() {
+	
+	public int getDataType() {
+		return dataType;
+	}
+	public void setDataType(int dataType) {
+		this.dataType = dataType;
+	}
+	public String getHigh() {
 		return high;
 	}
-	public void setHigh(Number high) {
+	public void setHigh(String high) {
 		this.high = high;
 	}
-	public Number getLow() {
+	public String getLow() {
 		return low;
 	}
-	public void setLow(Number low) {
+	public void setLow(String low) {
 		this.low = low;
 	}
-
 	public LocalDateTime getHighTime() {
 		return highTime;
 	}

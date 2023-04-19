@@ -114,8 +114,8 @@ public interface XStream {
 	
 	public Marker getSessionMarker();
 	
-	
-	/***
+		
+	/***			
 	 * adds a signal listener
 	 * @param list
 	 */

@@ -10,6 +10,7 @@ public class WebBot {
 	private boolean enabled; 
 	private Number activeTradeLimit; 
 	private Number tradeThrottle;
+	private String stream; 
 	
 	public Number getAllocatedCapital() {
 		return allocatedCapital;
@@ -40,7 +41,15 @@ public class WebBot {
 	}
 	public void setTradeThrottle(Number tradeThrottle) {
 		this.tradeThrottle = tradeThrottle;
+	}
+	public String getStream() {
+		return stream;
+	}
+	public void setStream(String stream) {
+		this.stream = stream;
 	} 
+	
+	
 	
 	
 	
