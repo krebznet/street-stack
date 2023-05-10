@@ -368,6 +368,7 @@ public class ActiveTickProvider implements TickProvider {
 		// add AfterMarketHoursLastPrice, PreMarketVolume,PreMarketTradeCount
 		// or you add the sum to the volume but then its off 
 		
+		// EXTENDED HOURS LAST PRICE -> 
 		long request = session.GetRequestor().SendATQuoteDbRequest(symbolList, lstFieldTypes,
 				ActiveTickServerAPI.DEFAULT_REQUEST_TIMEOUT); // this must only return 500
 		snapshotRequests.put(request, snapshotRequestCount.incrementAndGet());

@@ -243,6 +243,7 @@ public class ATProviderRequestor extends at.feedapi.ActiveTickServerRequester {
 						Double extendedLast = (Double)getItemValue(dataItem, dataType);
 						snapshot.setExtendedHoursLastPrice(extendedLast);
 						break;
+					
 				
 					case ATQuoteFieldType.LastTradeDateTime:
 						//getItemValue(item, dataType)
@@ -262,6 +263,11 @@ public class ATProviderRequestor extends at.feedapi.ActiveTickServerRequester {
 				}
 			
 				
+			}
+			
+			// HACKY? DUNKY? IF EXTENDED HOURS UPDATE LAST PRICE WITH EXTENDED LAST PRICE SO WE GET OUR FIELDS UPDATED
+			if(extendedHours.get() == true) { 
+				snapshot.setLast(snapshot.getExtendedHoursLastPrice());
 			}
 			provider.onSnapshot(snapshot);	
 		}
