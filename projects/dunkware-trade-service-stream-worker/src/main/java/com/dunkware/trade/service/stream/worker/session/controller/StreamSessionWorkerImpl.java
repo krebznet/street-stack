@@ -4,6 +4,8 @@ import java.util.UUID;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.slf4j.Marker;
+import org.slf4j.MarkerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import com.dunkware.common.util.dtime.DTime;
@@ -24,6 +26,7 @@ public class StreamSessionWorkerImpl implements StreamSessionWorker {
 	public static final String METRIC_PENDING_TASK_COUNT = "stream.us_equity.stats.node.pendingtasks"; 
 	public static final String METRIC_ROW_COUNT = "stream.us_equity.stats.node.entities"; 
 	
+	private Marker marker = MarkerFactory.getMarker("stream.session.worker");
 
 	private Logger logger = LoggerFactory.getLogger(getClass());
 
@@ -86,9 +89,11 @@ public class StreamSessionWorkerImpl implements StreamSessionWorker {
 
 	@Override
 	public void start(StreamSessionWorkerStartReq req) throws Exception {
+		logger.info(marker, "Stopping worker " + req.getWorkerId());
 		this.bundle = req.getStreamBundle();
 		this.startReq = req;
 		startWoker();
+		logger.info(marker, "Stopped worker " + req.getWorkerId());
 	//	cluster.startJob(this, "StreamWorker", req.getStream() + cluster.getNodeId());
 		
 	}
