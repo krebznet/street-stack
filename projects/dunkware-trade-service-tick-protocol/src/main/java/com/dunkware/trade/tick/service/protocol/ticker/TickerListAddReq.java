@@ -1,6 +1,22 @@
 package com.dunkware.trade.tick.service.protocol.ticker;
 
+import com.dunkware.common.util.json.DJson;
+
 public class TickerListAddReq {
+	
+	public static final String poop = "SELECT * FROM dunkstreet.ticker_ticker where update_error is null";
+	
+	public static void main(String[] args) {
+		TickerListAddReq req = new  TickerListAddReq();
+		req.setQuery(poop);
+		req.setOverride(false);
+		req.setName("onward");
+		try {
+			System.out.println(DJson.serializePretty(req));
+		} catch (Exception e) {
+			// TODO: handle exception
+		}
+	}
 	
 	private String name; 
 	private String query;

@@ -29,8 +29,10 @@ import com.dunkware.trade.service.stream.json.controller.UpdateStreamReq;
 import com.dunkware.trade.service.stream.json.controller.UpdateStreamResp;
 import com.dunkware.trade.service.stream.json.controller.session.StreamDashNode;
 import com.dunkware.trade.service.stream.json.controller.session.StreamDashStats;
+import com.dunkware.trade.service.stream.json.controller.session.StreamSessionStatus;
 import com.dunkware.trade.service.stream.json.controller.spec.StreamControllerSpec;
 import com.dunkware.trade.service.stream.json.controller.spec.StreamControllerState;
+import com.dunkware.trade.service.stream.json.controller.spec.StreamControllerStreamStats;
 import com.dunkware.trade.service.stream.json.worker.stream.StreamSessionWorkerStats;
 import com.dunkware.trade.service.stream.server.controller.util.StreamSpecBuilder;
 import com.dunkware.xstream.model.spec.StreamSpec;
@@ -224,37 +226,55 @@ public class StreamControllerWebService {
 	}
 	
 	@GetMapping(path = "/stream/dash/stats")
-	public @ResponseBody StreamDashStats streamFuckMe(@RequestParam String ident) { 
+	public @ResponseBody StreamDashStats streamFuckMe(@RequestParam String ident) throws Exception { 
+		StreamController controller = service.getStreamByName("us_equity");
+		StreamControllerStreamStats stats = controller.getStats();
 		StreamDashStats resp = new StreamDashStats();
-		resp.setEntityCount(DRandom.getRandom(1, 32));
-		resp.setNodes(DRandom.getRandom(4, 23));
-		resp.setStatus("Running");
-		resp.setTasksCompleted(DRandom.getRandom(3, 23323));
-		resp.setTasksExpired(DRandom.getRandom(1, 3));
-		resp.setTasksPending(DRandom.getRandom(1, 232));
-		resp.setTickCount(DRandom.getRandom(342, 23232323));
+		resp.setStatus(stats.getState().name());
+		
+		StreamSessionStatus session = stats.getSession();
+		if(session != null) { 
+			resp.setEntityCount(session.getTickerCount());
+			resp.setNodes(session.getNodeCount());
+			resp.setTasksCompleted((int)session.getCompletedTasks());
+			resp.setTasksExpired((int)session.getTimeoutTasks());
+			resp.setTasksPending((int)session.getPendingTasks());
+			resp.setTickCount(session.getTickCount());
+			
+		} else { 
+			resp.setEntityCount(0);
+			resp.setNodes(0);
+			resp.setTasksCompleted(0);
+			resp.setTasksExpired(0);
+			resp.setTasksPending(0);
+			resp.setTickCount(0);
+		}
 		return resp;
 	}
 
 	@GetMapping(path = "/stream/dash/nodes")
-	public @ResponseBody List<StreamDashNode> streamDashNodes(@RequestParam String ident) { 
-		int size = DRandom.getRandom(3,29);
+	public @ResponseBody List<StreamDashNode> streamDashNodes(@RequestParam String ident) throws Exception  { 
+		StreamController controller = service.getStreamByName("us_equity");
+		StreamControllerStreamStats stats = controller.getStats();
+		StreamDashStats resp = new StreamDashStats();
+		resp.setStatus(stats.getState().name());
 		List<StreamDashNode> results = new ArrayList<StreamDashNode>();
-		int i = 0; 
-		while(i < size) { 
-			StreamDashNode node = new StreamDashNode();
-			node.setNode("Node-" + i);
-			node.setEntityCount(DRandom.getRandom(1, 4));
-			node.setStreamTime("09:23:23");
-			node.setSystemTime("09:32:23");
-			node.setTasksCompleted(DRandom.getRandom(45, 909099));
-			node.setTasksExpired(DRandom.getRandom(5, 23));
-			node.setTickCount(DRandom.getRandom(3, 20323));
-			results.add(node);
-			i++;
-			
+		StreamSessionStatus session = stats.getSession();
+		if(session != null) { 
+			for (StreamSessionWorkerStats worker : session.getNodes()) {
+				StreamDashNode node = new StreamDashNode();
+				node.setNode(worker.getNodeId());
+				node.setEntityCount(worker.getRowCount());
+				node.setStreamTime(worker.getStreamTime().toHHmmSS());
+				node.setSystemTime(worker.getSystemTime().toHHmmSS());
+				node.setTasksPending(worker.getPendingTaskCount());
+				node.setTasksCompleted(worker.getCompletedTaskCount());
+				node.setTasksExpired(worker.getTimeoutTaskCount());
+				node.setTickCount(worker.getTickCount());
+				results.add(node);
+			}
 		}
-	
+		
 		return results;
 	}
 	

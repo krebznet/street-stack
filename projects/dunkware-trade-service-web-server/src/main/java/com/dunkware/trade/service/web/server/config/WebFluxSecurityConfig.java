@@ -44,7 +44,8 @@ public class WebFluxSecurityConfig {
     @Bean
     CorsConfigurationSource corsConfigurationSource() {
     	CorsConfiguration configuration = new CorsConfiguration();
-    	configuration.setAllowedOrigins(Arrays.asList("http://localhost:4200","http://localhost:3000", "https://api.dunkstreet.com","https://gateway.dunkstreet.com", "http://testrock1.dunkware.net:32369"));
+    	//configuration.setAllowedOrigins(Arrays.asList("http://localhost:4200","http://localhost:3000", "https://dunkstreet.com", "https://api.dunkstreet.com","https://gateway.dunkstreet.com", "http://testrock1.dunkware.net:32369"));
+    	configuration.setAllowedOrigins(Arrays.asList("*"));
     	configuration.setAllowedMethods(Arrays.asList("GET","POST","HEAD","OPTIONS"));
     	configuration.setAllowedHeaders(Arrays.asList("*"));
     	UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
