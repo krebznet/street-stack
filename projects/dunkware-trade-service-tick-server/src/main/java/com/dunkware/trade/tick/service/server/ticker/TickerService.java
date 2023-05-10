@@ -98,6 +98,7 @@ public class TickerService  {
 				}
 			}
 			list.setSize(list.getTickers().size());
+			
 			tickerListRepo.save(list);
 			// TODO: ticker:service-list id not set on insert
 			rs.close();
