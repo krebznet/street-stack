@@ -23,7 +23,10 @@ public class SpringCloudGatewayRoutingTest {
 	  @Bean public RouteLocator configureRoute(RouteLocatorBuilder builder) {
 	  
 	  return builder.routes().route("stream", r -> r.path("/stream/**").uri("http://172.16.16.55:32100")) // static
-				.route("trade", r -> r.path("/trade/**").uri("http://172.16.16.55:32100")).route("mock", r-> r.path("/mock/**").uri("http://localhost:8071")).build();
+				.route("trade", r -> r.path("/trade/**").uri("http://172.16.16.55:32100"))
+				.route("tick", r -> r.path("/tick/**").uri("http://172.16.16.55:31890"))
+				.route("feed", r -> r.path("/feed/**").uri("http://172.16.16.55:31890"))
+				.route("mock", r-> r.path("/mock/**").uri("http://localhost:8071")).build();
 	  }
 	 
 }

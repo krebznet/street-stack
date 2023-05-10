@@ -140,13 +140,12 @@ public class TickConsumer {
 							.setType(TickFieldType.INT).build());
 					fields.add(TickField.newBuilder().setId(TradeTicks.FieldAskPrice).setDoubleValue(sub.getAskPrice())
 							.setType(TickFieldType.DOUBLE).build());
+			
 					fields.add(TickField.newBuilder().setId(TradeTicks.FieldLastPrice)
 							.setDoubleValue(sub.getLastPrice()).setType(TickFieldType.DOUBLE).build());
 
 					Tick tick = Tick.newBuilder().setType(TradeTicks.TickSnapshot).addAllTickFields(fields).build();
-					if(sub.getSymbol().equals("AAPL")) { 
-						System.out.println("AAPL: Last " + sub.getLastPrice() + " Volume " + sub.getVolume());
-					}
+					
 					tickQueue.add(tick);
 				}
 				try {
