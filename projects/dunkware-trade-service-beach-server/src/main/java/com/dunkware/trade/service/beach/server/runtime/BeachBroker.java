@@ -1,15 +1,25 @@
 package com.dunkware.trade.service.beach.server.runtime;
 
-import com.dunkware.trade.sdk.core.runtime.broker.Broker;
-import com.dunkware.trade.service.beach.server.repository.BeachBrokerDO;
+import java.util.Collection;
+import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 
-public interface BeachBroker extends Broker {
-	
-	Broker getBroker();
+import com.dunkware.trade.service.beach.server.entities.BeachBrokerEnt;
 
-	String getIdentifier();
+public class BeachBroker {
 	
-	BeachBrokerDO getEntity();
-	
+	private BeachBrokerEnt entity;
+	private Map<Long,BeachAccount> accounts = new ConcurrentHashMap<Long,BeachAccount>();
 
+	public void load(BeachBrokerEnt entity) { 
+		this.entity = entity; 
+		// LOAD CONNECT TO BROKER RIGHT? 
+		
+	}
+	
+	public Collection<BeachAccount> getAccounts() { 
+		return accounts.values();
+	}
+	
+	
 }

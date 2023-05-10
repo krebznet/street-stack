@@ -1,18 +1,43 @@
 package com.dunkware.trade.service.beach.server.runtime;
 
-import com.dunkware.trade.sdk.core.model.trade.TradeType;
-import com.dunkware.trade.sdk.core.runtime.trade.Trade;
-import com.dunkware.trade.service.beach.server.repository.BeachTradeDO;
+import com.dunkware.trade.sdk.core.runtime.play.Play;
+import com.dunkware.trade.service.beach.server.trade.exit.BeachTradeEntry;
 
-public interface BeachTrade extends Trade {
-
-	BeachAccount getAccount();
+public class BeachTrade {
 	
-	BeachBot getBot();
-
-	BeachTradeDO getEntity();
+	private BeachTradeEntry entity; 
 	
-	void create(BeachBot bot, String play, TradeType tradeType) throws Exception; 
+	void load() { 
+		// ? right then what the fuck do we do? 
+	}
 	
+	void acquireExitLock() { 
+		
+	}
+	
+	void releaseExitLock() { 
+		
+	}
+	
+	void init(Play play, Object PlayController) { 
+		
+	}
+	
+	void open() { 
+		// BeachTradeEntry
+		// okay it might be algorithmic to chase it fast - 
+		// so we should get a quote from the IBK API not your shit
+		// My Brothers In Arms - THIS IS LAST CODING
+		
+	}
+	
+	void close() { 
+		
+	}
+	
+	Object bean() { 
+		return null;
+	}
 
+	// EventNode 
 }

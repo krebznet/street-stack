@@ -11,10 +11,10 @@ import org.springframework.context.annotation.Configuration;
 @ComponentScan
 @EnableAutoConfiguration (exclude = {  DataSourceAutoConfiguration.class })
 @SpringBootApplication
-public class TradeBeach {
+public class BeachApp {
 
 	public static void main(String[] args) {
-		SpringApplication.run(TradeBeach.class, args);
+		SpringApplication.run(BeachApp.class, args);
 	}
 
 }

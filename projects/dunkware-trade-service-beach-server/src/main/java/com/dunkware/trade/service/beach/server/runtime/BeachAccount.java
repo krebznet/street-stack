@@ -1,28 +1,30 @@
 package com.dunkware.trade.service.beach.server.runtime;
 
-import java.util.Collection;
+import java.util.concurrent.ConcurrentHashMap;
 
-import com.dunkware.trade.sdk.core.model.order.OrderType;
-import com.dunkware.trade.sdk.core.runtime.broker.BrokerAccount;
-import com.dunkware.trade.service.beach.server.repository.BeachAccountDO;
+import com.dunkware.trade.service.beach.server.entities.BeachAccountEnt;
 
-import comm.dunkware.trade.service.beach.web.bot.WebBot;
+public class BeachAccount {
 
-public interface BeachAccount extends BrokerAccount {
+	private BeachAccountEnt entity;
+	private BeachBroker broker; 
 	
-	String getIdentifier();
+	private ConcurrentHashMap<Long,BeachPlay> plays = new ConcurrentHashMap<Long, BeachPlay>();
 	
-	BeachAccountDO getEntity();	
+	public void load(BeachBroker broker, BeachAccountEnt ent) { 
+		this.entity = ent; 
+		this.broker = broker;
+	}
 	
-	Collection<BeachBot> getBots();
+	// activeTrades 
 	
-	BeachBot getBot(String identifier) throws Exception;
+	// plays 
 	
-	BeachOrder createBeacEntryOrder(BeachBot bot, BeachEntry entry, BeachTrade trade, OrderType type) throws Exception;
 	
-	BeachOrder createBeachExitOrder(BeachBot bot, BeachExit exit, BeachTrade trade, OrderType type) throws Exception; 
+	// lookup all trades so far and compute 
+		// capital traded
+		// trade count 
+		// realizedGainLoss
 	
-	BeachBot createBot(WebBot model, String identifier) throws Exception; 
-	
-	void deleteBot(String identifier);
+	// 
 }

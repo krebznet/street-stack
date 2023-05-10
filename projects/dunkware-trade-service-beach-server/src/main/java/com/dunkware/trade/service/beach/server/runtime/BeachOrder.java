@@ -1,15 +1,10 @@
 package com.dunkware.trade.service.beach.server.runtime;
 
-import com.dunkware.trade.sdk.core.runtime.order.Order;
-import com.dunkware.trade.service.beach.server.repository.BeachOrderDO;
+import com.dunkware.trade.service.beach.server.entities.BeachOrderEnt;
 
-public interface BeachOrder extends Order {
-
-	BeachAccount getAccount();
+public class BeachOrder {
 	
-	BeachOrderDO getEntity();
+	private BeachOrderEnt entity; 
+	
 
 }
-
-// what do you need a signal subscriber. 
-// SignalListener()
