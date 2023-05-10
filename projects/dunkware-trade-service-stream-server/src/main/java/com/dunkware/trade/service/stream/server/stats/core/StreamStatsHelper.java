@@ -28,15 +28,6 @@ public class StreamStatsHelper {
 	public static final int DATA_TYPE_INT = 3; 
 	
 	
-	public static void main(String[] args) {
-		Number number;
-		double fuck = 232323232;
-		number = fuck;
-		
-		
-		System.out.println(number.getClass().getName());
-		System.out.println(number.intValue());
-	}
 	public static int getDataType(Number number)  { 
 	
 		if (number instanceof Long) {

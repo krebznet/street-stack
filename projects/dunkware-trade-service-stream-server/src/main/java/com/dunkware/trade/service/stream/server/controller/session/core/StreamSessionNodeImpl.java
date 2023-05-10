@@ -1,6 +1,7 @@
 package com.dunkware.trade.service.stream.server.controller.session.core;
 
 import java.util.List;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -52,6 +53,8 @@ public class StreamSessionNodeImpl implements StreamSessionNode {
 	private Cluster cluster;
 
 	private StreamSessionWorkerStats workerStats = null;
+	
+	private AtomicBoolean stopped = new AtomicBoolean(false);
 	
 	private Marker marker = MarkerFactory.getMarker("stream.session.node");
 

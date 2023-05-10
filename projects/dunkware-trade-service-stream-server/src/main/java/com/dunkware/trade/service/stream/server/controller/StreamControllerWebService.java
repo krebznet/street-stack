@@ -16,6 +16,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.dunkware.common.util.helpers.DRandom;
+import com.dunkware.common.util.json.DJson;
 import com.dunkware.trade.service.stream.json.controller.AddStreamReq;
 import com.dunkware.trade.service.stream.json.controller.AddStreamResp;
 import com.dunkware.trade.service.stream.json.controller.GetStreamSpecResp;
@@ -25,8 +27,11 @@ import com.dunkware.trade.service.stream.json.controller.StopStreamResp;
 import com.dunkware.trade.service.stream.json.controller.StreamStatsResp;
 import com.dunkware.trade.service.stream.json.controller.UpdateStreamReq;
 import com.dunkware.trade.service.stream.json.controller.UpdateStreamResp;
+import com.dunkware.trade.service.stream.json.controller.session.StreamDashNode;
+import com.dunkware.trade.service.stream.json.controller.session.StreamDashStats;
 import com.dunkware.trade.service.stream.json.controller.spec.StreamControllerSpec;
 import com.dunkware.trade.service.stream.json.controller.spec.StreamControllerState;
+import com.dunkware.trade.service.stream.json.worker.stream.StreamSessionWorkerStats;
 import com.dunkware.trade.service.stream.server.controller.util.StreamSpecBuilder;
 import com.dunkware.xstream.model.spec.StreamSpec;
 import com.dunkware.xstream.model.spec.StreamSpecList;
@@ -75,6 +80,7 @@ public class StreamControllerWebService {
 			resp.setError(e.toString());
 			return resp;
 		}
+		
 		
 	}
 	
@@ -128,6 +134,8 @@ public class StreamControllerWebService {
 		}
 		
 	}
+	
+	
 	
 	@RequestMapping(path = "/stream/core/stats") 
 	public @ResponseBody()StreamStatsResp streamStatus(@RequestParam(name = "stream")String stream) {
@@ -215,6 +223,64 @@ public class StreamControllerWebService {
 		
 	}
 	
+	@GetMapping(path = "/stream/dash/stats")
+	public @ResponseBody StreamDashStats streamFuckMe(@RequestParam String ident) { 
+		StreamDashStats resp = new StreamDashStats();
+		resp.setEntityCount(DRandom.getRandom(1, 32));
+		resp.setNodes(DRandom.getRandom(4, 23));
+		resp.setStatus("Running");
+		resp.setTasksCompleted(DRandom.getRandom(3, 23323));
+		resp.setTasksExpired(DRandom.getRandom(1, 3));
+		resp.setTasksPending(DRandom.getRandom(1, 232));
+		resp.setTickCount(DRandom.getRandom(342, 23232323));
+		return resp;
+	}
+
+	@GetMapping(path = "/stream/dash/nodes")
+	public @ResponseBody List<StreamDashNode> streamDashNodes(@RequestParam String ident) { 
+		int size = DRandom.getRandom(3,29);
+		List<StreamDashNode> results = new ArrayList<StreamDashNode>();
+		int i = 0; 
+		while(i < size) { 
+			StreamDashNode node = new StreamDashNode();
+			node.setNode("Node-" + i);
+			node.setEntityCount(DRandom.getRandom(1, 4));
+			node.setStreamTime("09:23:23");
+			node.setSystemTime("09:32:23");
+			node.setTasksCompleted(DRandom.getRandom(45, 909099));
+			node.setTasksExpired(DRandom.getRandom(5, 23));
+			node.setTickCount(DRandom.getRandom(3, 20323));
+			results.add(node);
+			i++;
+			
+		}
+	
+		return results;
+	}
+	
+	public static void main(String[] args) {
+		List<StreamDashNode> results = new ArrayList<StreamDashNode>();
+		int i = 0; 
+		while(i < 3) { 
+			StreamDashNode node = new StreamDashNode();
+			node.setNode("Node-" + i);
+			node.setEntityCount(DRandom.getRandom(1, 4));
+			node.setStreamTime("09:23:23");
+			node.setSystemTime("09:32:23");
+			node.setTasksCompleted(DRandom.getRandom(32323, 909099));
+			node.setTasksExpired(DRandom.getRandom(5,2332));
+			node.setTickCount(DRandom.getRandom(3, 20323));
+			i++;
+			results.add(node);
+		}
+		
+		try {
+			System.out.println(DJson.serializePretty(results));
+		} catch (Exception e) {
+			// TODO: handle exception
+		}
+	}
+
 
 
 	

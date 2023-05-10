@@ -8,6 +8,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.atomic.AtomicLong;
 
@@ -98,11 +99,16 @@ public class StreamSessionImpl implements StreamSession {
 	private StreamSessionSpec sessionSpec;
 	
 	private int nodeCount = 0;
+	
+	private List<String> stoppedNodes = new ArrayList<String>(); 
+	private AtomicBoolean stoppedSessionInvoked = new AtomicBoolean(false);
 
 	// put the stream session capture in here?
 
 	@Override
 	public void startSession(StreamSessionInput input) throws StreamSessionException {
+		stoppedNodes.clear();
+		stoppedSessionInvoked.set(false);
 		this.input = input;
 		nodeStartFailures = new AtomicInteger(0);
 		eventNode = cluster.getEventTree().getRoot();
@@ -160,6 +166,8 @@ public class StreamSessionImpl implements StreamSession {
 
 	@Override
 	public void stopSession() throws StreamSessionException {
+		StopMonitor stopMonitor = new StopMonitor();
+		stopMonitor.start();
 		logger.info(MarkerFactory.getMarker(getSessionId()), "Stopping Session");
 		EStreamSessionStopping stopping = new EStreamSessionStopping(this);
 		eventNode.event(stopping);
@@ -325,6 +333,7 @@ public class StreamSessionImpl implements StreamSession {
 	}
 
 	private void handleSessionStopped() {
+		this.stoppedSessionInvoked.set(true);
 		StreamSessionStop stop = new StreamSessionStop();
 		try {
 			stop.setSpec(StreamSessionSpecBuilder.build(this, configService.getKafkaBrokers()));
@@ -421,6 +430,7 @@ public class StreamSessionImpl implements StreamSession {
 
 		@Override
 		public synchronized void nodeStopped(StreamSessionNode node) {
+			stoppedNodes.add(node.getNodeId());
 			if (logger.isDebugEnabled()) {
 				logger.debug(marker, "Session Node {} stop Callback",
 						node.getNodeId());
@@ -438,6 +448,29 @@ public class StreamSessionImpl implements StreamSession {
 			}
 		}
 
+	}
+	
+	private class StopMonitor extends Thread { 
+		
+		public void run() { 
+			try {
+				Thread.sleep(20000);
+				if(!stoppedSessionInvoked.get()) { 
+					logger.error("Session Stopped Not invoked after 20 seconds, callback count " + stoppedNodes.size() + " node count is " + nodeCount);
+					StringBuilder nodeBuilder = new StringBuilder();
+					for (String node : stoppedNodes) {
+						nodeBuilder.append(":" + node);
+					}
+					logger.error("Session Stopped Nodes are " + nodeBuilder.toString());
+					handleSessionStopped();
+				} else { 
+					logger.info("Session Monitor Correct");
+				}
+				
+			} catch (Exception e) {
+				// TODO: handle exception
+			}
+		}
 	}
 
 }

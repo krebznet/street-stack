@@ -9,7 +9,7 @@ import javax.persistence.Transient;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
-@Document(collection = "stream_stats_entity_session_hope")
+@Document(collection = "stream_stats_entity_session")
 public class EntityStatsSessionDoc {
 	
 	@Id
