@@ -4,6 +4,7 @@ import java.math.BigDecimal;
 import java.math.MathContext;
 import java.math.RoundingMode;
 import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
@@ -56,6 +57,8 @@ public class XStreamVarImpl implements XStreamVar, XStreamExpressionListener, XS
 	private AtomicLong updateCounter = new AtomicLong(0);
 	
 	private AtomicLong getCounter  = new AtomicLong(0);
+	
+	private volatile LocalTime lastUpdate = null;
 
 	@Override
 	public void init(XStreamRow row, VarType varType) {
@@ -161,6 +164,7 @@ public class XStreamVarImpl implements XStreamVar, XStreamExpressionListener, XS
 
 			}
 		}
+		lastUpdate = row.getStream().getClock().getLocalTime();
 		updateCounter.incrementAndGet();
 		row.getStream().getExecutor().execute(new VarListenerRunnable());
 	}
@@ -297,7 +301,12 @@ public class XStreamVarImpl implements XStreamVar, XStreamExpressionListener, XS
 		}
 	}
 	
-	
+
+	@Override
+	public LocalTime getLastUpdate() {
+		// TODO Auto-generated method stub
+		return null;
+	}
 
 	@Override
 	public XStreamVarMetrics getStats() {
