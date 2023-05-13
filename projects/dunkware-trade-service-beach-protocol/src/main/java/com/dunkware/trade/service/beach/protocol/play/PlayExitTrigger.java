@@ -1,6 +1,6 @@
 package com.dunkware.trade.service.beach.protocol.play;
 
-public class PlayExit {
+public class PlayExitTrigger {
 	
 	private double trailingPercent;
 	private String signal; 
