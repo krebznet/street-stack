@@ -79,7 +79,7 @@ public class StreamStatsWebService {
 		return "POSTED!";
 	}
 
-	@GetMapping(path = "/stats/entity/agg")
+	@GetMapping(path = "/stream/stats/entity/agg")
 	public @ResponseBody EntityStatsAgg statsEntityAgg(@RequestParam String stream, @RequestParam String ident)
 			throws Exception {
 		try {
@@ -87,11 +87,12 @@ public class StreamStatsWebService {
 			StreamStatsEntity entity = stats.getEntity(ident);
 			return entity.getAgg();
 		} catch (Exception e) {
+			
 			throw new Exception("Exception getting stream entity agg " + e.toString());
 		}
 	}
 
-	@GetMapping(path = "/stats/entity/sessions")
+	@GetMapping(path = "/stream/stats/entity/sessions")
 	public @ResponseBody EntityStatsSessions statsEntitySessions(@RequestParam String stream,
 			@RequestParam String ident) {
 		try {
@@ -103,7 +104,7 @@ public class StreamStatsWebService {
 		}
 	}
 
-	@GetMapping(path = "/stats/entity/session")
+	@GetMapping(path = "/stream/stats/entity/session")
 	public @ResponseBody EntityStatsSessionResp statsEntitySession(@RequestParam String stream, @RequestParam String ident,
 			@RequestParam String date) {
 		LocalDate ld = null;
@@ -148,21 +149,5 @@ public class StreamStatsWebService {
 		return null;
 	}
 
-	@GetMapping(path = "/stats/debug/entity")
-	public @ResponseBody EntityStatsAgg debugEntityStats(@RequestParam String ident) throws Exception {
-		// Find
-		try {
-			Query query = new Query();
-			query.addCriteria(Criteria.where("entIdent").is(ident));
-
-			List<StreamEntityDayStatsDoc> results = mongoTemplate.find(query, StreamEntityDayStatsDoc.class);
-			System.out.println(results.size());
-			EntityStatsAgg agg = StreamStatsHelper.buildEntityStatsAgg(results, ident, 1);
-
-			return agg;
-		} catch (Exception e) {
-			logger.error("/debug/entity/stats error " + e.toString());
-			throw e;
-		}
-	}
+	
 }

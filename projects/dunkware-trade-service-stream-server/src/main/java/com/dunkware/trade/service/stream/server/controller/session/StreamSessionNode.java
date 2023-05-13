@@ -9,6 +9,7 @@ import com.dunkware.trade.service.stream.json.controller.session.StreamSessionNo
 import com.dunkware.trade.service.stream.json.worker.stream.StreamSessionWorkerStats;
 import com.dunkware.trade.service.stream.server.controller.StreamController;
 import com.dunkware.trade.tick.model.ticker.TradeTickerSpec;
+import com.dunkware.xstream.model.snapshot.EntitySnapshot;
 import com.dunkware.xstream.xproject.model.XStreamBundle;
 
 public interface StreamSessionNode {
@@ -22,6 +23,8 @@ public interface StreamSessionNode {
 	String getNodeId();
 	
 	List<TradeTickerSpec> getTickers();
+	
+	boolean hasTicker(String symbol);
 	
 	void stopNode();
 	
@@ -41,7 +44,7 @@ public interface StreamSessionNode {
 	
 	public StreamSessionNodeStatus getStatus();
 	
-	
+	public EntitySnapshot getEntitySnapshot(String ident) throws Exception;
 	
 	
 	// getChannel(); 

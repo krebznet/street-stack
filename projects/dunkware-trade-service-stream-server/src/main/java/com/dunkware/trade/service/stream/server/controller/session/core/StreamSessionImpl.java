@@ -12,6 +12,7 @@ import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.atomic.AtomicLong;
 
+import javax.swing.tree.ExpandVetoException;
 import javax.transaction.Transactional;
 
 import org.slf4j.Logger;
@@ -28,6 +29,7 @@ import com.dunkware.common.util.time.DunkTime;
 import com.dunkware.net.cluster.node.Cluster;
 import com.dunkware.net.cluster.node.ClusterNode;
 import com.dunkware.trade.service.stream.json.controller.model.StreamSessionSpec;
+import com.dunkware.trade.service.stream.json.controller.session.StreamSessionNodeStatus;
 import com.dunkware.trade.service.stream.json.controller.session.StreamSessionState;
 import com.dunkware.trade.service.stream.json.controller.session.StreamSessionStatus;
 import com.dunkware.trade.service.stream.json.message.StreamSessionStart;
@@ -52,6 +54,7 @@ import com.dunkware.trade.service.stream.server.spring.ConfigService;
 import com.dunkware.trade.tick.model.ticker.TradeTickerSpec;
 import com.dunkware.xstream.api.XStreamRuntimeException;
 import com.dunkware.xstream.model.scanner.SessionEntityScanner;
+import com.dunkware.xstream.model.snapshot.EntitySnapshot;
 import com.dunkware.xstream.xproject.XScriptProject;
 
 public class StreamSessionImpl implements StreamSession {
@@ -373,6 +376,31 @@ public class StreamSessionImpl implements StreamSession {
 		// okay fun ->
 		return null;
 	}
+	
+	
+	
+
+	@Override
+	public StreamSessionNode getEntityNode(String ident) throws Exception {
+		for (StreamSessionNode node : this.nodes) {
+			if(node.hasTicker(ident)) { 
+				return node; 
+			}
+		}
+		throw new Exception("Unresolved entity does not have node " + ident);
+	}
+
+	@Override
+	public EntitySnapshot getEntitySnapshot(String ident) throws Exception {
+		if(status.getState() != StreamSessionState.Running) { 
+			throw new Exception("Cannot get entity snapshot when stream is not running");
+		}
+		StreamSessionNode node = getEntityNode(ident);
+		return node.getEntitySnapshot(ident);
+		
+	}
+
+
 
 	private class NodeCallback implements StreamSessionNodeCallback {
 
@@ -454,14 +482,29 @@ public class StreamSessionImpl implements StreamSession {
 		
 		public void run() { 
 			try {
-				Thread.sleep(20000);
+				Thread.sleep(30000);
 				if(!stoppedSessionInvoked.get()) { 
-					logger.error("Session Stopped Not invoked after 20 seconds, callback count " + stoppedNodes.size() + " node count is " + nodeCount);
-					StringBuilder nodeBuilder = new StringBuilder();
-					for (String node : stoppedNodes) {
-						nodeBuilder.append(":" + node);
+					logger.error("Session Stopped Not invoked after 30 seconds, callback count " + stoppedNodes.size() + " node count is " + nodeCount);
+					List<String> missingStops = new ArrayList<String>();
+					for (StreamSessionNode node : nodes) {
+						String id = node.getNodeId();
+						boolean found = false; 
+						for (String string : stoppedNodes) {
+							if(string.equalsIgnoreCase(id)) {
+								found = true; 
+								break;
+							}
+						}
+						if(!found) { 
+							missingStops.add(id);
+						}
 					}
-					logger.error("Session Stopped Nodes are " + nodeBuilder.toString());
+					StringBuilder nodeBuilder = new StringBuilder();
+					for (String node : missingStops) {
+						nodeBuilder.append(node + ":");
+					}
+					
+					logger.error("Session Missing Stop Nodes are " + nodeBuilder.toString());
 					handleSessionStopped();
 				} else { 
 					logger.info("Session Monitor Correct");

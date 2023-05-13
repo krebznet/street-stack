@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.dunkware.common.util.helpers.DRandom;
 import com.dunkware.common.util.json.DJson;
+import com.dunkware.common.util.time.DunkTime;
 import com.dunkware.trade.service.stream.json.controller.AddStreamReq;
 import com.dunkware.trade.service.stream.json.controller.AddStreamResp;
 import com.dunkware.trade.service.stream.json.controller.GetStreamSpecResp;
@@ -27,6 +28,7 @@ import com.dunkware.trade.service.stream.json.controller.StopStreamResp;
 import com.dunkware.trade.service.stream.json.controller.StreamStatsResp;
 import com.dunkware.trade.service.stream.json.controller.UpdateStreamReq;
 import com.dunkware.trade.service.stream.json.controller.UpdateStreamResp;
+import com.dunkware.trade.service.stream.json.controller.session.StreamDashEntity;
 import com.dunkware.trade.service.stream.json.controller.session.StreamDashNode;
 import com.dunkware.trade.service.stream.json.controller.session.StreamDashStats;
 import com.dunkware.trade.service.stream.json.controller.session.StreamSessionStatus;
@@ -35,8 +37,15 @@ import com.dunkware.trade.service.stream.json.controller.spec.StreamControllerSt
 import com.dunkware.trade.service.stream.json.controller.spec.StreamControllerStreamStats;
 import com.dunkware.trade.service.stream.json.worker.stream.StreamSessionWorkerStats;
 import com.dunkware.trade.service.stream.server.controller.util.StreamSpecBuilder;
+import com.dunkware.trade.service.stream.server.stats.StreamStatsEntity;
+import com.dunkware.trade.service.stream.server.stats.StreamStatsService;
+import com.dunkware.trade.service.stream.server.tick.StreamTickService;
+import com.dunkware.trade.tick.model.ticker.TradeTickerSpec;
+import com.dunkware.xstream.model.snapshot.EntitySnapshot;
+import com.dunkware.xstream.model.snapshot.EntitySnapshotVar;
 import com.dunkware.xstream.model.spec.StreamSpec;
 import com.dunkware.xstream.model.spec.StreamSpecList;
+import com.dunkware.xstream.model.stats.EntityStatsAggVar;
 
 
 @RestController
@@ -44,6 +53,12 @@ public class StreamControllerWebService {
 
 	@Autowired
 	private StreamControllerService service; 
+	
+	@Autowired
+	private StreamTickService tickService; 
+	
+	@Autowired
+	private StreamStatsService statsService; 
 	
 	private Logger logger = LoggerFactory.getLogger(getClass());
 	
@@ -277,6 +292,77 @@ public class StreamControllerWebService {
 		
 		return results;
 	}
+	
+	
+	@GetMapping(path = "/stream/dash/entities")
+	public @ResponseBody List<StreamDashEntity> streamDashEntities(@RequestParam String stream) throws Exception  { 
+		List<StreamDashEntity> entities = new ArrayList<StreamDashEntity>();
+		for (TradeTickerSpec spec : service.getStreamByName("us_equity").getTickers()) {
+			StreamDashEntity entity = new StreamDashEntity();
+			entity.setSymbol(spec.getSymbol());
+			entity.setName(spec.getName());
+			entities.add(entity);
+		}
+		return entities;
+	}
+	
+
+	@GetMapping(path = "/stream/dash/entity")
+	public @ResponseBody StreamDashEntity streamDashEntity(@RequestParam String stream, @RequestParam String ident) throws Exception  { 
+		for (TradeTickerSpec spec : service.getStreamByName("us_equity").getTickers()) {
+			if(spec.getSymbol().equalsIgnoreCase(ident)) { 
+				StreamDashEntity entity = new StreamDashEntity();
+				entity.setSymbol(spec.getSymbol());
+				entity.setName(spec.getName());
+				return entity;	
+			}
+			
+		}
+		logger.error("Entity Not found in /stream/dash/entity " + ident);
+		throw new Exception("Entity Not Found " + ident);
+	}
+	
+	
+	@GetMapping(path = "/stream/session/snapshot")
+	public @ResponseBody() EntitySnapshot streamEntitySnapshot(@RequestParam() String stream, @RequestParam() String ident) throws Exception { 
+		EntitySnapshot snapshot = null;
+		try {
+			StreamController controller =  service.getStreamByName(stream);
+			
+			if(controller.getSession() == null) { 
+				snapshot = new EntitySnapshot();
+				snapshot.setError("Stream Session Null");
+				return snapshot; 
+			}
+			snapshot = controller.getSession().getEntitySnapshot(ident);
+			try {
+				StreamStatsEntity entity = statsService.getStreamStats(stream).getEntity(ident);
+				if(entity != null) { 
+					for (EntitySnapshotVar var : snapshot.getVars()) {
+						for (EntityStatsAggVar aggV : entity.getAgg().getVars()) {
+							if(aggV.getIdent().equalsIgnoreCase(ident)) { 
+								var.setHigh(aggV.getHigh());
+								var.setHighTimeString(DunkTime.format(aggV.getHighDateTime(), DunkTime.YYYY_MM_DD_HH_MM_SS));
+								var.setLow(aggV.getLow());
+								var.setLowTimeString(DunkTime.format(aggV.getLowDateTime(), DunkTime.YYYY_MM_DD_HH_MM_SS));
+								break;
+							}
+						}
+					}
+				}
+			} catch (Exception e) {
+				// TODO: handle exception
+			}
+			
+			return snapshot;
+		} catch (Exception e) {
+			snapshot = new EntitySnapshot();
+			snapshot.setError(e.toString());
+			return snapshot;
+		}
+	}
+	
+	
 	
 	public static void main(String[] args) {
 		List<StreamDashNode> results = new ArrayList<StreamDashNode>();

@@ -12,6 +12,7 @@ import com.dunkware.trade.service.stream.server.repository.StreamSessionEntity;
 import com.dunkware.trade.tick.model.ticker.TradeTickerSpec;
 import com.dunkware.xstream.api.XStreamRuntimeException;
 import com.dunkware.xstream.model.scanner.SessionEntityScanner;
+import com.dunkware.xstream.model.snapshot.EntitySnapshot;
 import com.dunkware.xstream.xproject.XScriptProject;
 
 public interface StreamSession {
@@ -44,5 +45,7 @@ public interface StreamSession {
 	
 	public NetScanner entityScanner(SessionEntityScanner model) throws XStreamRuntimeException;
 	
-	
+	public EntitySnapshot getEntitySnapshot(String ident) throws Exception;
+
+	public StreamSessionNode getEntityNode(String ident) throws Exception;
 }

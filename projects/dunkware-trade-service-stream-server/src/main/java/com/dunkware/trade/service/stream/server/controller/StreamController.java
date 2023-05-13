@@ -1,7 +1,7 @@
 package com.dunkware.trade.service.stream.server.controller;
 
 import java.time.DayOfWeek;
-import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.Semaphore;
@@ -113,7 +113,8 @@ public class StreamController {
 	
 	private Marker marker = MarkerFactory.getMarker("StreamController");
 	
-	
+	private StreamControllerStreamStats statsCache = null; 
+	private LocalTime statsCacheTimestamp = null;
 	
 	private List<StreamSignalListener> signalListeners = new ArrayList<StreamSignalListener>();
 	private Semaphore signalListenerSemaphore = new Semaphore(1);
@@ -301,6 +302,7 @@ public class StreamController {
 		return session;
 	}
 
+	
 	public StreamControllerStreamStats getStats() {
 		if(session != null) { 
 			stats.setSession(session.getStatus());

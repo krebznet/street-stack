@@ -1,6 +1,7 @@
 package com.dunkware.trade.service.stream.server.controller.session.core;
 
 import java.util.List;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 import org.slf4j.Logger;
@@ -29,6 +30,7 @@ import com.dunkware.trade.service.stream.server.controller.session.StreamSession
 import com.dunkware.trade.service.stream.server.controller.session.StreamSessionNode;
 import com.dunkware.trade.service.stream.server.controller.session.StreamSessionNodeInput;
 import com.dunkware.trade.tick.model.ticker.TradeTickerSpec;
+import com.dunkware.xstream.model.snapshot.EntitySnapshot;
 import com.dunkware.xstream.xproject.model.XStreamBundle;
 
 public class StreamSessionNodeImpl implements StreamSessionNode {
@@ -39,6 +41,8 @@ public class StreamSessionNodeImpl implements StreamSessionNode {
 
 	private StreamSessionNodeInput input;
 
+	private ConcurrentHashMap<String, String> tickerMap = new ConcurrentHashMap<String, String>();
+
 	private StreamSessionNodeState state = StreamSessionNodeState.Starting;
 
 	private String startException = null;
@@ -46,25 +50,28 @@ public class StreamSessionNodeImpl implements StreamSessionNode {
 	private String workerId;
 
 	private DEventNode eventNode;
-	
+
 	private WorkerStatGetter workerStatGetter = null;
 
 	@Autowired
 	private Cluster cluster;
 
 	private StreamSessionWorkerStats workerStats = null;
-	
+
 	private AtomicBoolean stopped = new AtomicBoolean(false);
-	
+
 	private Marker marker = MarkerFactory.getMarker("stream.session.node");
 
 	@Override
 	public void startNode(StreamSessionNodeInput input) {
-	
+
 		this.input = input;
 		eventNode = input.getSession().getEventNode().createChild("/node/" + input.getClusterNode().getId());
-		
-		
+
+		for (TradeTickerSpec tickerSpec : input.getTickers()) {
+			tickerMap.put(tickerSpec.getSymbol().toUpperCase(), tickerSpec.getName());
+		}
+
 		Thread starter = new Thread() {
 
 			public void run() {
@@ -96,7 +103,7 @@ public class StreamSessionNodeImpl implements StreamSessionNode {
 				req.setSessionId(input.getSession().getSessionId());
 				req.setStreamBundle(xstreamBundle);
 
-			//	StreamSessionWorkerStartResp resp = null;
+				// StreamSessionWorkerStartResp resp = null;
 				try {
 					String serialized = DJson.serialize(req);
 
@@ -116,21 +123,23 @@ public class StreamSessionNodeImpl implements StreamSessionNode {
 							startException = "Worker Service Returned Error String " + respString;
 							state = StreamSessionNodeState.StartException;
 							try {
-								input.getCallBack().nodeStartException(StreamSessionNodeImpl.this);	
+								input.getCallBack().nodeStartException(StreamSessionNodeImpl.this);
 							} catch (Exception e) {
-								logger.error("Exception calling nodeCallback nodeStartException on node " + input.getClusterNode().getId() + " " + e.toString());
-			
+								logger.error("Exception calling nodeCallback nodeStartException on node "
+										+ input.getClusterNode().getId() + " " + e.toString());
+
 							}
-							
+
 							return;
 						} else {
 							state = StreamSessionNodeState.Running;
 							try {
-								input.getCallBack().nodeStarted(StreamSessionNodeImpl.this);	
+								input.getCallBack().nodeStarted(StreamSessionNodeImpl.this);
 							} catch (Exception e) {
-								logger.error("Exception calling callbackNodeStarted on node " + input.getClusterNode().getId() + " " + e.toString());
+								logger.error("Exception calling callbackNodeStarted on node "
+										+ input.getClusterNode().getId() + " " + e.toString());
 							}
-							
+
 							logger.info("Starting Stream Session {} Worker {}", input.getSession().getSessionId(),
 									input.getClusterNode().getId());
 							workerStatGetter = new WorkerStatGetter();
@@ -220,7 +229,13 @@ public class StreamSessionNodeImpl implements StreamSessionNode {
 		return input.getStream();
 	}
 
-	
+	@Override
+	public boolean hasTicker(String symbol) {
+		if (tickerMap.containsKey(symbol.toUpperCase())) {
+			return true;
+		}
+		return false;
+	}
 
 	@Override
 	public void stopNode() {
@@ -238,7 +253,7 @@ public class StreamSessionNodeImpl implements StreamSessionNode {
 					StreamSessionWorkerStopReq req = new StreamSessionWorkerStopReq();
 					req.setWorkerId(workerId);
 					try {
-						if(workerStatGetter != null) { 
+						if (workerStatGetter != null) {
 							workerStatGetter.interrupt();
 						}
 						String resp = input.getClusterNode().httpGet("/stream/worker/stop?id=" + workerId);
@@ -277,6 +292,20 @@ public class StreamSessionNodeImpl implements StreamSessionNode {
 		return input;
 	}
 
+	@Override
+	public EntitySnapshot getEntitySnapshot(String ident) throws Exception {
+		if (!hasTicker(ident)) {
+			throw new Exception("stream session node controller does not have ident " + ident);
+		}
+		try {
+				
+			EntitySnapshot snapshot  = (EntitySnapshot)getNode().jsonGet("/stream/worker/snapshot?ident=" + ident + "&workerId=" + workerId,EntitySnapshot.class);
+			return snapshot; 
+		} catch (Exception e) {
+			throw e;
+		}
+	}
+
 	private class WorkerStatGetter extends Thread {
 
 		public void run() {
@@ -286,10 +315,10 @@ public class StreamSessionNodeImpl implements StreamSessionNode {
 					try {
 						StreamSessionWorkerStatsResp statResp = (StreamSessionWorkerStatsResp) getNode()
 								.jsonGet("/stream/worker/stats?id=" + workerId, StreamSessionWorkerStatsResp.class);
-						if(statResp.getCode().equalsIgnoreCase("ERROR")) { 
+						if (statResp.getCode().equalsIgnoreCase("ERROR")) {
 							logger.error("Exception getting worker node stats " + workerId + " " + statResp.getError());
 							Thread.sleep(5000);
-						} else { 
+						} else {
 							workerStats = statResp.getSpec();
 						}
 					} catch (Exception e) {
@@ -298,7 +327,7 @@ public class StreamSessionNodeImpl implements StreamSessionNode {
 						}
 						workerStats = new StreamSessionWorkerStats();
 						workerStats.setRequestError(e.toString());
-						
+
 						logger.error("Exception getting stream session " + workerId + " not stats " + e.toString(), e);
 					}
 				} catch (Exception e) {
