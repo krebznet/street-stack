@@ -1,6 +1,9 @@
 package com.dunkware.trade.service.tick.client;
 
+import java.util.List;
+
 import com.dunkware.trade.tick.model.consumer.TickConsumerSpec;
+import com.dunkware.trade.tick.model.feed.TickFeedSubscriptionBean;
 import com.dunkware.trade.tick.service.protocol.ticker.spec.TradeTickerListSpec;
 
 public interface TickServiceClient {
@@ -16,6 +19,8 @@ public interface TickServiceClient {
 	public void post(String path, Object request) throws TickServiceClientException;
 
 	public TradeTickerListSpec getTickerList(String listId) throws TickServiceClientException;
+	
+	public List<TickFeedSubscriptionBean> getSubscriptions() throws TickServiceClientException;
 
 	public void ping() throws Exception;
 }

@@ -1,14 +1,18 @@
 package com.dunkware.trade.service.tick.client.impl;
 
+import java.util.List;
+
 import com.dunkware.common.util.helpers.DHttpHelper;
 import com.dunkware.common.util.json.DJson;
 import com.dunkware.trade.service.tick.client.TickServiceClient;
 import com.dunkware.trade.service.tick.client.TickServiceClientException;
 import com.dunkware.trade.service.tick.client.TickServiceClientFeed;
 import com.dunkware.trade.tick.model.consumer.TickConsumerSpec;
+import com.dunkware.trade.tick.model.feed.TickFeedSubscriptionBean;
 import com.dunkware.trade.tick.service.protocol.ticker.TSTickerListGetReq;
 import com.dunkware.trade.tick.service.protocol.ticker.TickerListGetResp;
 import com.dunkware.trade.tick.service.protocol.ticker.spec.TradeTickerListSpec;
+import com.fasterxml.jackson.core.type.TypeReference;
 
 public class TickServiceClientImpl implements TickServiceClient {
 
@@ -92,6 +96,19 @@ public class TickServiceClientImpl implements TickServiceClient {
 			System.out.println(DJson.serializePretty(req));
 		} catch (Exception e) {
 			// TODO: handle exception
+		}
+	}
+
+	
+	@Override
+	public List<TickFeedSubscriptionBean> getSubscriptions() throws TickServiceClientException {
+		try {
+			List<TickFeedSubscriptionBean> beans = null;
+			String resp = DHttpHelper.getJson(getEndpoint() + "/feed/subscriptions");
+			beans = DJson.getObjectMapper().readValue(resp,new TypeReference<List<TickFeedSubscriptionBean>>(){});
+	        return beans;
+		} catch (Exception e) {
+			throw new TickServiceClientException("Sorry no bueno " + e.toString());
 		}
 	}
 
