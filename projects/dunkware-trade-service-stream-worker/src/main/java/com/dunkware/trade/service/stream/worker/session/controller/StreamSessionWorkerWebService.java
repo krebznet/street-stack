@@ -17,6 +17,7 @@ import com.dunkware.trade.service.stream.json.worker.stream.StreamSessionWorkerS
 import com.dunkware.trade.service.stream.json.worker.stream.StreamSessionWorkerStats;
 import com.dunkware.trade.service.stream.json.worker.stream.StreamSessionWorkerStatsResp;
 import com.dunkware.trade.service.stream.json.worker.stream.StreamSessionWorkersStats;
+import com.dunkware.xstream.model.snapshot.EntitySnapshot;
 
 @RestController
 public class StreamSessionWorkerWebService {
@@ -97,6 +98,11 @@ public class StreamSessionWorkerWebService {
 		return workers;
 	}
 	
+	@RequestMapping(path = "/stream/worker/snapshot")
+	public @ResponseBody() EntitySnapshot workerSessionEntitySnapshot(@RequestParam() String ident, @RequestParam() String workerId) throws Exception { 
+		StreamSessionWorker worker = workerService.getWorker(workerId);
+		return worker.getEntitySnapshot(ident);	
+	}
 	 
 
 }

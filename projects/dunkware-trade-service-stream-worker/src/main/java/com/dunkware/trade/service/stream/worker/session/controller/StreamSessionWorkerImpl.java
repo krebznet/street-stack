@@ -10,14 +10,21 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import com.dunkware.common.util.dtime.DTime;
 import com.dunkware.common.util.executor.DExecutor;
+import com.dunkware.common.util.helpers.DDateTimeHelper;
+import com.dunkware.common.util.time.DunkTime;
 import com.dunkware.net.cluster.node.Cluster;
 import com.dunkware.spring.channel.Channel;
 import com.dunkware.trade.service.stream.json.worker.stream.StreamSessionWorkerStartReq;
 import com.dunkware.trade.service.stream.json.worker.stream.StreamSessionWorkerStats;
 import com.dunkware.xstream.api.XStream;
 import com.dunkware.xstream.api.XStreamInput;
+import com.dunkware.xstream.api.XStreamRow;
 import com.dunkware.xstream.api.XStreamSignalService;
+import com.dunkware.xstream.api.XStreamVar;
 import com.dunkware.xstream.core.XStreamCore;
+import com.dunkware.xstream.core.extensions.StreamEventPublisherExt.EntitySnapshotBuilder;
+import com.dunkware.xstream.model.snapshot.EntitySnapshot;
+import com.dunkware.xstream.model.snapshot.EntitySnapshotVar;
 import com.dunkware.xstream.xproject.model.XScriptBundle;
 import com.dunkware.xstream.xproject.model.XStreamBundle;
 
@@ -146,6 +153,39 @@ public class StreamSessionWorkerImpl implements StreamSessionWorker {
 		spec.setNodeId(cluster.getNodeId());
 		return spec;
 	}
+	
+	
+
+	@Override
+	public EntitySnapshot getEntitySnapshot(String ident) throws Exception {
+		XStreamRow row = stream.getRow(ident);
+		if(row == null) { 
+			throw new Exception("Entity ident not found " + ident);
+		}
+		EntitySnapshot snap = new EntitySnapshot();
+		snap.setIdent(row.getId());
+		snap.setId(row.getIdentifier());
+		snap.setTime(row.getStream().getClock().getLocalTime());
+		snap.setTimeString(DunkTime.formatHHMMSS(snap.getTime()));
+		
+		for (XStreamVar var : row.getVars()) {
+			EntitySnapshotVar sVar = new EntitySnapshotVar();
+			sVar.setIdent(var.getVarType().getName());
+			if(var.getSize() == 0) { 
+				sVar.setResolved(false);
+				continue;
+			}
+			sVar.setResolved(true);
+			sVar.setValue(var.getValue(0));
+			sVar.setTime(var.getLastUpdate());
+			sVar.setTimeString(DunkTime.formatHHMMSS(var.getLastUpdate()));
+			sVar.setValueCount(var.getValueCount());
+			snap.getVars().add(sVar);
+		}
+		return snap;
+	}
+
+
 
 	private class StatusPublisher extends Thread { 
 		public void run() { 

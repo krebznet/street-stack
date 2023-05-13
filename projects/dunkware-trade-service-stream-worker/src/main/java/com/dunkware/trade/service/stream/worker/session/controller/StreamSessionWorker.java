@@ -4,6 +4,7 @@ import com.dunkware.spring.channel.Channel;
 import com.dunkware.trade.service.stream.json.worker.stream.StreamSessionWorkerStartReq;
 import com.dunkware.trade.service.stream.json.worker.stream.StreamSessionWorkerStats;
 import com.dunkware.xstream.api.XStream;
+import com.dunkware.xstream.model.snapshot.EntitySnapshot;
 
 public interface StreamSessionWorker {
 
@@ -16,4 +17,6 @@ public interface StreamSessionWorker {
 	StreamSessionWorkerStats getStats();
 	
 	Channel getChannel();
+	
+	EntitySnapshot getEntitySnapshot(String ident) throws Exception;
 }
