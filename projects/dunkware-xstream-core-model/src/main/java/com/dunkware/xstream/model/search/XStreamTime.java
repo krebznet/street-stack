@@ -1,6 +1,6 @@
-package com.dunkware.xstream.model.util;
+package com.dunkware.xstream.model.search;
 
-public class Time {
+public class XStreamTime {
 	
 	private int second; 
 	private int hour; 

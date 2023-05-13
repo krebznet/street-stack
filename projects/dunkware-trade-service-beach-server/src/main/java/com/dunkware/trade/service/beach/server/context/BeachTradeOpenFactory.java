@@ -9,7 +9,7 @@ import com.dunkware.trade.service.beach.server.context.open.BeachTradeMarketEntr
 public class BeachTradeOpenFactory {
 
 	public static BeachTradeOpen create(Play play) throws Exception {
-		if (play.getEntryType() == PlayOrderType.LIMIT_CHASE) {
+		if (play.getEntryType() == PlayOrderType.CHASE) {
 			BeachTradeLimitChaseEntry limitChase = new BeachTradeLimitChaseEntry();
 			return limitChase;
 		}

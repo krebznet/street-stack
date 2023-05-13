@@ -12,7 +12,7 @@ public class BeachTradeCloseFactory {
 		if (play.getExitType() == PlayOrderType.LIMIT) {
 			return new BeachTradeLimitExit();
 		}
-		if (play.getExitType() == PlayOrderType.LIMIT_CHASE) {
+		if (play.getExitType() == PlayOrderType.CHASE) {
 			return new BeachTadeLimitChaseExit();
 					
 		}

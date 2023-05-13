@@ -22,8 +22,8 @@ import com.dunkware.trade.service.beach.server.context.BeachTradeOpen;
 import com.dunkware.trade.service.beach.server.context.BeachTradeOpenFactory;
 import com.dunkware.trade.service.beach.server.context.BeachTradeSpec;
 import com.dunkware.trade.service.beach.server.context.stop.BeachTradeStop;
-import com.dunkware.trade.service.beach.server.entities.BeachRepo;
-import com.dunkware.trade.service.beach.server.entities.BeachTradeEnt;
+import com.dunkware.trade.service.beach.server.entity.BeachRepo;
+import com.dunkware.trade.service.beach.server.entity.BeachTradeEnt;
 import com.dunkware.trade.tick.api.instrument.Instrument;
 
 public class BeachTrade {

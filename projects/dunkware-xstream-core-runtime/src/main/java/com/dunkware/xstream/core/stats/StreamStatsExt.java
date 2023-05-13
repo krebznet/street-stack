@@ -185,7 +185,7 @@ public class StreamStatsExt implements XStreamExtension, XStreamListener {
 		public boolean canResolveVarStat(String entityIdent, String varIdent, int days, int stat ) throws Exception { 
 			if(statsContainers.get(entityIdent) == null) { 
 				// make a web service call. 
-				String url = myType.getBaseURL() + "/stats/entity/sessions?stream=" + myType.getStreamIdent() + "&ident=" + entityIdent;
+				String url = myType.getBaseURL() + "/stream/stats/entity/sessions?stream=" + myType.getStreamIdent() + "&ident=" + entityIdent;
 				String responseString = null;
 				try {
 					responseString = DHttpHelper.getURLContent(url);	

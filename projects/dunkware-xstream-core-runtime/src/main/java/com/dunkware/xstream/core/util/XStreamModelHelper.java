@@ -8,12 +8,12 @@ import org.slf4j.LoggerFactory;
 import com.dunkware.xstream.api.XDataType;
 import com.dunkware.xstream.api.XStreamRuntimeException;
 import com.dunkware.xstream.api.XStreamVar;
+import com.dunkware.xstream.model.search.XStreamTime;
+import com.dunkware.xstream.model.search.XStreamTimeUnit;
 import com.dunkware.xstream.model.util.Condition;
 import com.dunkware.xstream.model.util.ConditionNumeric;
 import com.dunkware.xstream.model.util.ConditionNumericOperator;
 import com.dunkware.xstream.model.util.ConditionType;
-import com.dunkware.xstream.model.util.Time;
-import com.dunkware.xstream.model.util.TimeUnit;
 import com.dunkware.xstream.xScript.DataType;
 
 public class XStreamModelHelper {
@@ -27,17 +27,17 @@ public class XStreamModelHelper {
 	 * @param unit
 	 * @return
 	 */
-	public static int getTimeRangeSeconds(int value, TimeUnit unit) {
-		if (unit == TimeUnit.Seconds) {
+	public static int getTimeRangeSeconds(int value, XStreamTimeUnit unit) {
+		if (unit == XStreamTimeUnit.Seconds) {
 			return value;
 		}
-		if (unit == TimeUnit.Minutes) {
+		if (unit == XStreamTimeUnit.Minutes) {
 			return value * 60;
 		}
-		if (unit == TimeUnit.Hours) {
+		if (unit == XStreamTimeUnit.Hours) {
 			return 3600 * value;
 		}
-		if (unit == TimeUnit.Days) {
+		if (unit == XStreamTimeUnit.Days) {
 			return 86400 * value;
 		}
 		// log me maybe?
@@ -45,7 +45,7 @@ public class XStreamModelHelper {
 		return value;
 	}
 
-	public static LocalTime toLocalTime(Time time) {
+	public static LocalTime toLocalTime(XStreamTime time) {
 		return LocalTime.of(time.getHour(), time.getMinute(), time.getSecond());
 	}
 

@@ -1,11 +1,11 @@
-package com.dunkware.xstream.core.search;
+package com.dunkware.xstream.core.query;
 
 import java.util.Collection;
 
-import com.dunkware.xstream.api.XQueryResults;
+import com.dunkware.xstream.api.XStreamQueryResults;
 import com.dunkware.xstream.api.XStreamRow;
 
-public class XQueryResultsImpl implements XQueryResults {
+public class XQueryResultsImpl implements XStreamQueryResults {
 
 	@Override
 	public double getMilliseconds() {

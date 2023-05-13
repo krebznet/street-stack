@@ -22,8 +22,8 @@ import com.dunkware.trade.sdk.core.runtime.order.event.EOrderRejected;
 import com.dunkware.trade.sdk.core.runtime.order.event.EOrderSubmitted;
 import com.dunkware.trade.sdk.core.runtime.util.TradeHelper;
 import com.dunkware.trade.service.beach.server.common.BeachRuntime;
-import com.dunkware.trade.service.beach.server.entities.BeachOrderEnt;
-import com.dunkware.trade.service.beach.server.entities.BeachRepo;
+import com.dunkware.trade.service.beach.server.entity.BeachOrderEnt;
+import com.dunkware.trade.service.beach.server.entity.BeachRepo;
 
 public class BeachOrder implements Order {
 

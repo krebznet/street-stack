@@ -1,21 +1,54 @@
-package com.dunkware.xstream.core.search;
+package com.dunkware.xstream.core.query;
 
-import com.dunkware.xstream.api.XQuery;
-import com.dunkware.xstream.api.XQueryException;
-import com.dunkware.xstream.api.XQueryResults;
+import java.util.List;
 
-public class XQueryImpl implements XQuery {
+import com.dunkware.xstream.api.XStream;
+import com.dunkware.xstream.api.XStreamQueryException;
+import com.dunkware.xstream.api.XStreamQueryRunner;
+import com.dunkware.xstream.api.XStreamRow;
+import com.dunkware.xstream.model.search.XStreamCriterias;
 
+public class XStreamQueryRunnerImpl implements XStreamQueryRunner {
+
+	private XStream stream; 
+	private XStreamCriterias query; 
 	
+	public void init(XStream stream, XStreamCriterias query) throws XStreamQueryException { 
+		
+	}
 	
 	@Override
-	public XQueryResults execute() throws XQueryException {
+	public void execute() throws XStreamQueryException {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public boolean didExecute() {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	@Override
+	public String getError() {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
-	
-	
+	@Override
+	public List<XStreamRow> getResults() {
+		// TODO Auto-generated method stub
+		return null;
+	}
 
+	@Override
+	public boolean canExecute() {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	
+	
+	
 
 }

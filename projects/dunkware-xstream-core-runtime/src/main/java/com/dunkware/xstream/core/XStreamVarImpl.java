@@ -10,6 +10,7 @@ import java.util.Collection;
 import java.util.List;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.Semaphore;
+import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.atomic.AtomicLong;
 
 import org.slf4j.Logger;
@@ -23,6 +24,7 @@ import com.dunkware.xstream.api.XStreamRuntimeException;
 import com.dunkware.xstream.api.XStreamVar;
 import com.dunkware.xstream.api.XStreamVarListener;
 import com.dunkware.xstream.model.metrics.XStreamVarMetrics;
+import com.dunkware.xstream.model.stats.EntityStatsSessionVar;
 import com.dunkware.xstream.xScript.DataType;
 import com.dunkware.xstream.xScript.VarType;
 
@@ -45,7 +47,7 @@ public class XStreamVarImpl implements XStreamVar, XStreamExpressionListener, XS
 	private volatile Integer currentIndex = -1;
 //	private volatile Integer updateCount = 0;
 	private volatile Integer currentOffset = -1;
-
+	
 	private List<XStreamVar> downstreamVars = new ArrayList<XStreamVar>();
 	private Semaphore downstreamVarLock = new Semaphore(1);
 
@@ -60,9 +62,12 @@ public class XStreamVarImpl implements XStreamVar, XStreamExpressionListener, XS
 	
 	private volatile LocalTime lastUpdate = null;
 
+	private List<EntityStatsSessionVar> statsSessions;
+	
 	@Override
-	public void init(XStreamRow row, VarType varType) {
+	public void init(XStreamRow row, VarType varType, List<EntityStatsSessionVar> varStats) {
 		this.row = row;
+		this.statsSessions = varStats;
 		this.varType = varType;
 		this.dataType = varType.getType();
 		expression = row.getStream().getInput().getRegistry().createVarExpression(varType.getExpression());
@@ -85,6 +90,13 @@ public class XStreamVarImpl implements XStreamVar, XStreamExpressionListener, XS
 			}
 		}
 
+	}
+	
+	
+
+	@Override
+	public int getValueCount() {
+		return (int)updateCounter.get();
 	}
 
 	@Override
@@ -165,6 +177,7 @@ public class XStreamVarImpl implements XStreamVar, XStreamExpressionListener, XS
 			}
 		}
 		lastUpdate = row.getStream().getClock().getLocalTime();
+		
 		updateCounter.incrementAndGet();
 		row.getStream().getExecutor().execute(new VarListenerRunnable());
 	}
@@ -303,9 +316,13 @@ public class XStreamVarImpl implements XStreamVar, XStreamExpressionListener, XS
 	
 
 	@Override
+	public List<EntityStatsSessionVar> getStatSessions() {
+		return statsSessions;
+	}
+
+	@Override
 	public LocalTime getLastUpdate() {
-		// TODO Auto-generated method stub
-		return null;
+		return lastUpdate;
 	}
 
 	@Override

@@ -18,15 +18,19 @@ import com.dunkware.common.tick.stream.impl.TickStreamImpl;
 import com.dunkware.common.util.dtime.DTime;
 import com.dunkware.common.util.time.DunkTime;
 import com.dunkware.xstream.api.XStream;
+import com.dunkware.xstream.api.XStreamException;
 import com.dunkware.xstream.api.XStreamRow;
 import com.dunkware.xstream.api.XStreamRowListener;
 import com.dunkware.xstream.api.XStreamRowSignal;
 import com.dunkware.xstream.api.XStreamRowSnapshot;
+import com.dunkware.xstream.api.XStreamRowValue;
 import com.dunkware.xstream.api.XStreamRuntimeException;
 import com.dunkware.xstream.api.XStreamVar;
 import com.dunkware.xstream.api.XStreamVarListener;
 import com.dunkware.xstream.model.metrics.XStreamRowMetrics;
 import com.dunkware.xstream.model.metrics.XStreamVarMetrics;
+import com.dunkware.xstream.model.stats.EntityStatsSession;
+import com.dunkware.xstream.model.stats.EntityStatsSessionVar;
 import com.dunkware.xstream.xScript.SignalType;
 import com.dunkware.xstream.xScript.VarType;
 
@@ -51,12 +55,17 @@ public class XStreamRowImpl implements XStreamRow, XStreamVarListener {
 
 	private List<XStreamVarListener> varListeners = new ArrayList<XStreamVarListener>();
 	private Semaphore varListenerLock = new Semaphore(1);
+	
+	private List<EntityStatsSession> statsSessions = new ArrayList<EntityStatsSession>();
 
 	private int identifier;
 
 	@Override
 	public void start(String id, int identifier, XStream stream) {
 		tickStream = new TickStreamImpl();
+		if(stream.getInput().getEntityStatsSessions().containsKey(id)) { 
+			statsSessions = stream.getInput().getEntityStatsSessions().get(id).getSessions();
+		}
 		this.identifier = identifier;
 		this.id = id;
 		this.stream = stream;
@@ -65,7 +74,7 @@ public class XStreamRowImpl implements XStreamRow, XStreamVarListener {
 		List<VarType> varTypes = stream.getInput().getScript().getStreamVars();
 		for (VarType varType : varTypes) {
 			XStreamVarImpl var = new XStreamVarImpl();
-			var.init(this, varType);
+			var.init(this, varType,getVarStats(varType.getName()));
 			vars.put(varType.getName(), var);
 		}
 		for (XStreamVar var : vars.values()) {
@@ -235,6 +244,11 @@ public class XStreamRowImpl implements XStreamRow, XStreamVarListener {
 	
 
 	@Override
+	public List<EntityStatsSession> getStatsSessions() {
+		return statsSessions;
+	}
+
+	@Override
 	public void varUpdate(XStreamVar var) {
 		Runnable run = new  Runnable() {
 			public void run() {
@@ -304,5 +318,30 @@ public class XStreamRowImpl implements XStreamRow, XStreamVarListener {
 	public LocalDateTime getLocalDateTime() {
 		return stream.getClock().getLocalDateTime();
 	}
+	
+	
 
+	
+	@Override
+	public XStreamRowValue resolveValue(XStreamRowValue value) throws XStreamException {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	/**
+	 * Retuns the list of EntityStatsSessionVars
+	 * @param ident
+	 * @return
+	 */
+	private List<EntityStatsSessionVar> getVarStats(String ident) { 
+		List<EntityStatsSessionVar> results = new ArrayList<EntityStatsSessionVar>(); 
+		for (EntityStatsSession session : statsSessions) {
+			for (EntityStatsSessionVar entityStatsSessionVar : session.getVars()) {
+				if(entityStatsSessionVar.getIdent().equalsIgnoreCase(ident)) { 
+					results.add(entityStatsSessionVar);
+				}
+			}
+		}
+		return results;
+	}
 }

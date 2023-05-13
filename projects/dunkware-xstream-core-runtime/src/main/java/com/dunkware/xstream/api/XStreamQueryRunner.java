@@ -1,6 +1,17 @@
 package com.dunkware.xstream.api;
 
-public interface XQuery {
+import java.util.List;
+
+public interface XStreamQueryRunner {
 	
-	public XQueryResults execute() throws XQueryException;
+	public void execute() throws XStreamQueryException;
+	
+	public boolean didExecute(); 
+	
+	public String getError(); 
+	
+	public List<XStreamRow> getResults();
+	
+	public boolean canExecute();
 }
+

@@ -3,13 +3,15 @@ package com.dunkware.xstream.api;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.Collection;
+import java.util.List;
 
 import com.dunkware.xstream.model.metrics.XStreamVarMetrics;
+import com.dunkware.xstream.model.stats.EntityStatsSessionVar;
 import com.dunkware.xstream.xScript.VarType;
 
 public interface XStreamVar {
 	
-	public void init(XStreamRow row, VarType varType);
+	public void init(XStreamRow row, VarType varType, List<EntityStatsSessionVar> sessionStats);
 	
 	public void start();
 	
@@ -54,5 +56,13 @@ public interface XStreamVar {
 	public void update();
 	
 	public XStreamVarMetrics getStats();
+	
+	public int getValueCount();
+	
+	/**
+	 * Returns the available stats for the variable. 
+	 * @return
+	 */
+	public List<EntityStatsSessionVar> getStatSessions(); 
 
 }

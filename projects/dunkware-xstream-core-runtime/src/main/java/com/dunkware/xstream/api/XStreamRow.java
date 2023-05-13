@@ -6,6 +6,7 @@ import java.util.List;
 
 import com.dunkware.common.tick.stream.TickStream;
 import com.dunkware.xstream.model.metrics.XStreamRowMetrics;
+import com.dunkware.xstream.model.stats.EntityStatsSession;
 import com.dunkware.xstream.xScript.SignalType;
 
 public interface XStreamRow {
@@ -91,5 +92,19 @@ public interface XStreamRow {
 	 * @param listener
 	 */
 	void removeVarListener(XStreamVarListener listener);
+	
+	/**
+	 * Returns the avialable entity stats sessions. 
+	 * @return
+	 */
+	List<EntityStatsSession> getStatsSessions(); 
+	
+	/**
+	 * Tries to resolve an abstract value. 
+	 * @param value
+	 * @return
+	 * @throws XStreamException
+	 */
+	XStreamRowValue resolveValue(XStreamRowValue value) throws XStreamException;
 	
 }

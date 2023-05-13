@@ -7,6 +7,7 @@ import java.util.concurrent.ConcurrentHashMap;
 import javax.annotation.PostConstruct;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import javax.transaction.Transactional;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -20,9 +21,9 @@ import com.dunkware.common.util.events.DEventNode;
 import com.dunkware.common.util.json.DJson;
 import com.dunkware.trade.broker.tws.TwsBrokerType;
 import com.dunkware.trade.sdk.core.runtime.registry.TradeRegistry;
-import com.dunkware.trade.service.beach.protocol.broker.BeachBrokerAdd;
-import com.dunkware.trade.service.beach.server.entities.BeachBrokerEnt;
-import com.dunkware.trade.service.beach.server.entities.BeachRepo;
+import com.dunkware.trade.service.beach.protocol.broker.AddBrokerReq;
+import com.dunkware.trade.service.beach.server.entity.BeachBrokerEnt;
+import com.dunkware.trade.service.beach.server.entity.BeachRepo;
 
 @Service
 public class BeachService {
@@ -35,11 +36,9 @@ public class BeachService {
 
 	private DEventNode eventNode;
 
-	@PersistenceContext(unitName = "trade")
-	private EntityManager em;
 
 	@Autowired
-	private BeachRepo beachRepo;
+	private BeachRepo repo;
 	
 
 	@Autowired
@@ -50,12 +49,11 @@ public class BeachService {
 	private void load() { 
 		Thread runner = new Thread() { 
 			public void run() { 
-				List<BeachBrokerEnt> brokers = beachRepo.getBrokers();
+				List<BeachBrokerEnt> brokers = repo.getBrokers();
 				for (BeachBrokerEnt beachBrokerEnt : brokers) {
 					BeachBroker broker = new BeachBroker();
 					ac.getAutowireCapableBeanFactory().autowireBean(broker);
 					try {
-						logger.debug(runtimeMarker, "Loading Broker " + broker.getIdentifier());
 						broker.init(beachBrokerEnt);				
 						BeachService.this.brokers.put(broker.getIdentifier(),broker);
 					} catch (Exception e) {
@@ -68,8 +66,8 @@ public class BeachService {
 		runner.start();
 	}
 	
-	
-	public BeachBroker addBroker(BeachBrokerAdd brokerAdd) throws Exception  { 
+	@Transactional
+	public BeachBroker addBroker(AddBrokerReq brokerAdd) throws Exception  { 
 		if (brokerExists(brokerAdd.getName())) {
 			throw new Exception("Broker " + brokerAdd.getName() + " already exists, cannot add");
 		}
@@ -90,7 +88,13 @@ public class BeachService {
 		entity.setType(DJson.serialize(type));
 
 		try {
+			EntityManager em = repo.createEntityManager();
+			em.getTransaction().begin();
+			
+			
 			em.persist(entity);
+			em.getTransaction().commit();
+			
 		} catch (Exception e) {
 			throw new Exception("Broker Entity Persist Failed Internal Fatal " + e.toString());
 		} finally {
@@ -126,6 +130,16 @@ public class BeachService {
 		return brokers.get(identifier);
 	}
 
+	public BeachAccount getAccount(long accountId) throws Exception { 
+		for (BeachBroker beachBroker : brokers.values()) {
+			for (BeachAccount beachAccount : beachBroker.getAccounts()) {
+				if (beachAccount.getId() == accountId) {
+					return (BeachAccount) beachAccount;
+				}
+			}
+		}
+		throw new Exception("Beach Account ID " + accountId + " not found");
+	}
 	
 	public BeachAccount getAccount(String broker, String account) throws Exception {
 		for (BeachBroker beachBroker : brokers.values()) {

@@ -6,17 +6,13 @@ import java.util.List;
 
 public class EntitySnapshot {
 	
-	private String id; 
+	private int id; 
 	private String ident; 
 	private List<EntitySnapshotVar> vars = new ArrayList<EntitySnapshotVar>();
 	private LocalTime time;
+	private String timeString; 
+	private String error = null;
 	
-	public String getId() {
-		return id;
-	}
-	public void setId(String id) {
-		this.id = id;
-	}
 	public String getIdent() {
 		return ident;
 	}
@@ -34,7 +30,30 @@ public class EntitySnapshot {
 	}
 	public void setTime(LocalTime time) {
 		this.time = time;
+	}
+	public int getId() {
+		return id;
+	}
+	public void setId(int id) {
+		this.id = id;
+	}
+	public String getError() {
+		return error;
+	}
+	public void setError(String error) {
+		this.error = error;
+	}
+	public String getTimeString() {
+		return timeString;
+	}
+	public void setTimeString(String timeString) {
+		this.timeString = timeString;
 	} 
+	
+	
+	
+	
+	
 	
 	
 	

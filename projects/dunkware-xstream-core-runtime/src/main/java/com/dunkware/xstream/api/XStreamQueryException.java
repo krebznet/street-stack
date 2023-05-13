@@ -1,14 +1,14 @@
 package com.dunkware.xstream.api;
 
-public class XQueryException extends Exception {
+public class XStreamQueryException extends Exception {
 
 	private static final long serialVersionUID = 1L;
 
-	public XQueryException(String s) { 
+	public XStreamQueryException(String s) { 
 		super(s);
 	}
 	
-	public XQueryException(String s, Throwable t) { 
+	public XStreamQueryException(String s, Throwable t) { 
 		super(s,t);
 	}
 }

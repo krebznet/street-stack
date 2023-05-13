@@ -1,10 +1,15 @@
 package com.dunkware.xstream.api;
 
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import com.dunkware.common.util.dtime.DDate;
 import com.dunkware.common.util.dtime.DTimeZone;
 import com.dunkware.common.util.executor.DExecutor;
+import com.dunkware.xstream.model.meta.SignalModel;
+import com.dunkware.xstream.model.stats.EntityStatsSessions;
 import com.dunkware.xstream.xproject.XScriptProject;
 import com.dunkware.xstream.xproject.model.XStreamExtensionType;
 
@@ -18,6 +23,9 @@ public class XStreamInput {
 	private String identifier;
 	private String sessionId;
 	private DTimeZone timeZone;
+	// to do is have a 
+	private Map<String,EntityStatsSessions> entityStatsSessions = new HashMap<String,EntityStatsSessions>();
+	private List<SignalModel> signalTypes = new ArrayList<SignalModel>();
 	
 	public List<XStreamExtensionType> getExtensions() {
 		return extensions;
@@ -71,6 +79,21 @@ public class XStreamInput {
 	public void setSessionId(String sessionId) {
 		this.sessionId = sessionId;
 	}
+	public Map<String, EntityStatsSessions> getEntityStatsSessions() {
+		return entityStatsSessions;
+	}
+	public void setEntityStatsSessions(Map<String, EntityStatsSessions> entityStatsSessions) {
+		this.entityStatsSessions = entityStatsSessions;
+	}
+	public List<SignalModel> getSignalTypes() {
+		return signalTypes;
+	}
+	public void setSignalTypes(List<SignalModel> signalTypes) {
+		this.signalTypes = signalTypes;
+	}
+
+	
+	
 	
 	
 	

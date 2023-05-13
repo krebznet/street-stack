@@ -16,7 +16,7 @@ import com.dunkware.common.util.json.DJson;
 import com.dunkware.trade.service.beach.protocol.play.Play;
 import com.dunkware.trade.service.beach.server.common.BeachRuntime;
 import com.dunkware.trade.service.beach.server.context.BeachTradeSpec;
-import com.dunkware.trade.service.beach.server.entities.BeachPlayEnt;
+import com.dunkware.trade.service.beach.server.entity.BeachPlayEnt;
 import com.dunkware.trade.tick.api.instrument.Instrument;
 import com.dunkware.trade.tick.model.ticker.TradeTickerSpec;
 import com.dunkware.xstream.model.signal.StreamSignal;
@@ -50,7 +50,7 @@ public class BeachPlay implements StreamSignalListener {
 	
 	private SignalHandler signalHandler; 
 
-	void load(BeachAccount account, BeachPlayEnt ent) {
+	void init(BeachAccount account, BeachPlayEnt ent) {
 		this.account = account;
 		this.entity = ent;
 		account.getEventNode().createChild("/plays/" + ent.getId());
@@ -80,6 +80,9 @@ public class BeachPlay implements StreamSignalListener {
 		return model;
 	}
 
+	public long getId() { 
+		return entity.getId();
+	}
 	void stop() throws Exception {
 		if(status != BeachPlayStatus.Running) { 
 			throw new Exception("Beach Play cannot be stopped in status " + status);
@@ -136,7 +139,7 @@ public class BeachPlay implements StreamSignalListener {
 
 	public BeachTradeSpec createTradeSpec(StreamSignal signal) throws Exception{
 		BeachTradeSpec spec = new BeachTradeSpec();
-		spec.setCapital(getModel().getTradeCapital());
+		spec.setCapital(getModel().getTradeAllocation());
 		spec.setSide(getModel().getSide());
 		TradeTickerSpec ticker = new TradeTickerSpec();
 		Instrument instrument = null;

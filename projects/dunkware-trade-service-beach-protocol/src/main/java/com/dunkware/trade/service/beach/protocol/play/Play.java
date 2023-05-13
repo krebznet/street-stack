@@ -8,22 +8,34 @@ public class Play {
 	private String side; 
 	
 	private String signal; 
-	private String playName; 
-	private double maxCapital;
-	private double tradeCapital; 
+	private String name; 
+	private double allocatedCapital;
+	private double tradeAllocation; 
 	
 	// Entry Strategy 
 	private PlayOrderType entryType; 
-	private double entryChaseInterval;
+	private int entryInterval;
+	private int entryOffsetActivation; 
+	private double entryOffset;
+	private boolean enableEntryTimeout = false; 
 	private int entryTimeout; 
+	private String entryTargetPrice;
 	
+	private boolean enableActiveTradeLimit = false; 
 	private int activeTradeLimit = -1;
+	private boolean enableActiveSymbolLimit = false; 
 	private int activeSymbolLimit = -1; 
-	private int symbolThrottle = -1; 
+	private boolean enableStopLoss = false; 
+	private double stopLoss = -1;
+	
 	
 	// Exit Order Type 
 	private PlayOrderType exitType; 
-	private int exitChaseInterval; 
+	private int exitTargetPrice;
+	private int exitInterval; 
+	private double exitOffset;
+	private int exitOffsetInterval;
+	
 	private List<PlayExitTrigger> exitTriggers = new ArrayList<PlayExitTrigger>();
 	
 	public String getSignal() {
@@ -32,36 +44,7 @@ public class Play {
 	public void setSignal(String signal) {
 		this.signal = signal;
 	}
-	public String getPlayName() {
-		return playName;
-	}
-	public void setPlayName(String playName) {
-		this.playName = playName;
-	}
-	public double getMaxCapital() {
-		return maxCapital;
-	}
-	public void setMaxCapital(double maxCapital) {
-		this.maxCapital = maxCapital;
-	}
-	public double getTradeCapital() {
-		return tradeCapital;
-	}
-	public void setTradeCapital(double tradeCapital) {
-		this.tradeCapital = tradeCapital;
-	}
-	public PlayOrderType getEntryType() {
-		return entryType;
-	}
-	public void setEntryType(PlayOrderType entryType) {
-		this.entryType = entryType;
-	}
-	public double getEntryChaseInterval() {
-		return entryChaseInterval;
-	}
-	public void setEntryChaseInterval(double entryChaseInterval) {
-		this.entryChaseInterval = entryChaseInterval;
-	}
+	
 	public int getEntryTimeout() {
 		return entryTimeout;
 	}
@@ -80,11 +63,83 @@ public class Play {
 	public void setActiveSymbolLimit(int activeSymbolLimit) {
 		this.activeSymbolLimit = activeSymbolLimit;
 	}
-	public int getSymbolThrottle() {
-		return symbolThrottle;
+	public String getSide() {
+		return side;
 	}
-	public void setSymbolThrottle(int symbolThrottle) {
-		this.symbolThrottle = symbolThrottle;
+	public void setSide(String side) {
+		this.side = side;
+	}
+	public String getName() {
+		return name;
+	}
+	public void setName(String name) {
+		this.name = name;
+	}
+	public double getAllocatedCapital() {
+		return allocatedCapital;
+	}
+	public void setAllocatedCapital(double allocatedCapital) {
+		this.allocatedCapital = allocatedCapital;
+	}
+	public double getTradeAllocation() {
+		return tradeAllocation;
+	}
+	public void setTradeAllocation(double tradeAllocation) {
+		this.tradeAllocation = tradeAllocation;
+	}
+	public PlayOrderType getEntryType() {
+		return entryType;
+	}
+	public void setEntryType(PlayOrderType entryType) {
+		this.entryType = entryType;
+	}
+	public int getEntryInterval() {
+		return entryInterval;
+	}
+	public void setEntryInterval(int entryInterval) {
+		this.entryInterval = entryInterval;
+	}
+	public int getEntryOffsetActivation() {
+		return entryOffsetActivation;
+	}
+	public void setEntryOffsetActivation(int entryOffsetActivation) {
+		this.entryOffsetActivation = entryOffsetActivation;
+	}
+	public double getEntryOffset() {
+		return entryOffset;
+	}
+	public void setEntryOffset(double entryOffset) {
+		this.entryOffset = entryOffset;
+	}
+	public String getEntryTargetPrice() {
+		return entryTargetPrice;
+	}
+	public void setEntryTargetPrice(String entryTargetPrice) {
+		this.entryTargetPrice = entryTargetPrice;
+	}
+	public boolean isEnableActiveTradeLimit() {
+		return enableActiveTradeLimit;
+	}
+	public void setEnableActiveTradeLimit(boolean enableActiveTradeLimit) {
+		this.enableActiveTradeLimit = enableActiveTradeLimit;
+	}
+	public boolean isEnableActiveSymbolLimit() {
+		return enableActiveSymbolLimit;
+	}
+	public void setEnableActiveSymbolLimit(boolean enableActiveSymbolLimit) {
+		this.enableActiveSymbolLimit = enableActiveSymbolLimit;
+	}
+	public boolean isEnableStopLoss() {
+		return enableStopLoss;
+	}
+	public void setEnableStopLoss(boolean enableStopLoss) {
+		this.enableStopLoss = enableStopLoss;
+	}
+	public double getStopLoss() {
+		return stopLoss;
+	}
+	public void setStopLoss(double stopLoss) {
+		this.stopLoss = stopLoss;
 	}
 	public PlayOrderType getExitType() {
 		return exitType;
@@ -92,11 +147,29 @@ public class Play {
 	public void setExitType(PlayOrderType exitType) {
 		this.exitType = exitType;
 	}
-	public int getExitChaseInterval() {
-		return exitChaseInterval;
+	public int getExitTargetPrice() {
+		return exitTargetPrice;
 	}
-	public void setExitChaseInterval(int exitChaseInterval) {
-		this.exitChaseInterval = exitChaseInterval;
+	public void setExitTargetPrice(int exitTargetPrice) {
+		this.exitTargetPrice = exitTargetPrice;
+	}
+	public int getExitInterval() {
+		return exitInterval;
+	}
+	public void setExitInterval(int exitInterval) {
+		this.exitInterval = exitInterval;
+	}
+	public double getExitOffset() {
+		return exitOffset;
+	}
+	public void setExitOffset(double exitOffset) {
+		this.exitOffset = exitOffset;
+	}
+	public int getExitOffsetInterval() {
+		return exitOffsetInterval;
+	}
+	public void setExitOffsetInterval(int exitOffsetInterval) {
+		this.exitOffsetInterval = exitOffsetInterval;
 	}
 	public List<PlayExitTrigger> getExitTriggers() {
 		return exitTriggers;
@@ -104,12 +177,14 @@ public class Play {
 	public void setExitTriggers(List<PlayExitTrigger> exitTriggers) {
 		this.exitTriggers = exitTriggers;
 	}
-	public String getSide() {
-		return side;
+	public boolean isEnableEntryTimeout() {
+		return enableEntryTimeout;
 	}
-	public void setSide(String side) {
-		this.side = side;
+	public void setEnableEntryTimeout(boolean enableEntryTimeout) {
+		this.enableEntryTimeout = enableEntryTimeout;
 	}
+	
+	
 	
 	
 	

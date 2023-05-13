@@ -5,6 +5,7 @@ import java.util.List;
 import org.slf4j.Marker;
 
 import com.dunkware.xstream.model.metrics.XStreamMetrics;
+import com.dunkware.xstream.model.search.XStreamCriterias;
 
 public interface XStream {
 	
@@ -130,5 +131,7 @@ public interface XStream {
 	
 	public XStreamExtension getExtension(Class clazz) throws XStreamException;
 	
+	
+	public XStreamQueryRunner queryRunner(XStreamCriterias query) throws XStreamQueryException;
 }
 
