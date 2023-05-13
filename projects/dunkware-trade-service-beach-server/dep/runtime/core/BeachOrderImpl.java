@@ -28,7 +28,7 @@ import com.dunkware.trade.service.beach.server.runtime.BeachAccount;
 import com.dunkware.trade.service.beach.server.runtime.BeachOrder;
 
 @Transactional
-public class BeachOrderImpl implements BeachOrder {
+public class beachorderimpl implements BeachOrder {
 
 
 	private Logger logger = LoggerFactory.getLogger(getClass());
@@ -88,7 +88,6 @@ public class BeachOrderImpl implements BeachOrder {
 	}
 	
 	
-	
 	@Override
 	public BeachOrderDO getEntity() {
 		return entity;
@@ -118,7 +117,7 @@ public class BeachOrderImpl implements BeachOrder {
 	
 	@ADEventMethod()
 	public void orderRejected(EOrderRejected event) { 
-		
+		entity
 	}
 	
 	@ADEventMethod()

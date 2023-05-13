@@ -19,6 +19,7 @@ import com.dunkware.common.util.dtime.DTimeZone;
 import com.dunkware.common.util.events.DEventNode;
 import com.dunkware.common.util.json.DJson;
 import com.dunkware.trade.sdk.core.model.broker.BrokerAccountSpec;
+import com.dunkware.trade.sdk.core.model.order.OrderStatus;
 import com.dunkware.trade.sdk.core.model.order.OrderType;
 import com.dunkware.trade.sdk.core.runtime.broker.BrokerAccount;
 import com.dunkware.trade.sdk.core.runtime.order.Order;
@@ -169,6 +170,7 @@ public class BeachAccountImpl implements BeachAccount {
 		ent.setTrade(trade.getEntity());
 		ent.setOrderId(order.getSpec().getId());
 		ent.setFilled(0);
+		
 		ent.setLastStatus(order.getStatus());
 		ent.setLastUpdate(DDateTime.now(DTimeZone.NewYork).get());
 		ent.setAction(order.getSpec().getAction());

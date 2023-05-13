@@ -1,10 +1,14 @@
 package com.dunkware.trade.service.beach.server.entities;
 
+import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
+import javax.persistence.Table;
 
+@Entity(name = "BeachOrderExecEnt")
+@Table(name = "beach_orderexec")
 public class BeachOrderExecEnt {
 
 	@Id

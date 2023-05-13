@@ -2,20 +2,21 @@ package com.dunkware.trade.service.beach.server.entities;
 
 import java.time.LocalDateTime;
 
-import javax.persistence.CascadeType;
+import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
-import javax.persistence.OneToOne;
+import javax.persistence.Table;
 
 import com.dunkware.trade.sdk.core.model.trade.TradeStatus;
 import com.dunkware.trade.tick.model.ticker.TradeTickerType;
 
+@Entity(name = "BeachTradeEnt")
+@Table(name = "beach_trade")
 public class BeachTradeEnt {
-
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -23,6 +24,12 @@ public class BeachTradeEnt {
 	
 	@ManyToOne()
 	private BeachPlayEnt play;
+	
+	@ManyToOne()
+	private BeachAccountEnt account; 
+	
+	@ManyToOne()
+	private BeachBrokerEnt broker; 
 	
 	private LocalDateTime openingTime;
 	private LocalDateTime openTime; 
@@ -42,6 +49,9 @@ public class BeachTradeEnt {
 	
 	private int filledSize; 
 	
+	private double entryCommission; 
+	private double exitCommission; 
+	private double commission; 
 	
 	private String exception; 
 	
@@ -52,11 +62,9 @@ public class BeachTradeEnt {
 	
 	private String tickerSymbol;
 	
+	
 	@Enumerated(EnumType.STRING)
 	private TradeTickerType tickerType; 
-	
-	private String entryType; 
-	private String exitType;
 	
 	
 	public long getId() {
@@ -145,18 +153,6 @@ public class BeachTradeEnt {
 	public void setTickerType(TradeTickerType tickerType) {
 		this.tickerType = tickerType;
 	}
-	public String getEntryType() {
-		return entryType;
-	}
-	public void setEntryType(String entryType) {
-		this.entryType = entryType;
-	}
-	public String getExitType() {
-		return exitType;
-	}
-	public void setExitType(String exitType) {
-		this.exitType = exitType;
-	}
 	
 	public int getAllocatedSize() {
 		return allocatedSize;
@@ -182,6 +178,39 @@ public class BeachTradeEnt {
 	public void setPlay(BeachPlayEnt play) {
 		this.play = play;
 	}
+	public double getEntryCommission() {
+		return entryCommission;
+	}
+	public void setEntryCommission(double entryCommission) {
+		this.entryCommission = entryCommission;
+	}
+	public double getExitCommission() {
+		return exitCommission;
+	}
+	public void setExitCommission(double exitCommission) {
+		this.exitCommission = exitCommission;
+	}
+	public double getCommission() {
+		return commission;
+	}
+	public void setCommission(double commission) {
+		this.commission = commission;
+	}
+	public BeachAccountEnt getAccount() {
+		return account;
+	}
+	public void setAccount(BeachAccountEnt account) {
+		this.account = account;
+	}
+	public BeachBrokerEnt getBroker() {
+		return broker;
+	}
+	public void setBroker(BeachBrokerEnt broker) {
+		this.broker = broker;
+	}
+	
+	
+	
 	
 	
 	

@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import javax.persistence.CascadeType;
+import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
@@ -13,12 +14,15 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
+import javax.persistence.Table;
 
 import com.dunkware.trade.sdk.core.model.order.OrderAction;
 import com.dunkware.trade.sdk.core.model.order.OrderKind;
 import com.dunkware.trade.sdk.core.model.order.OrderStatus;
 import com.dunkware.trade.tick.model.ticker.TradeTickerType;
 
+@Entity(name = "BeachOrderEnt")
+@Table(name = "beach_order")
 public class BeachOrderEnt {
 	
 	
@@ -33,11 +37,13 @@ public class BeachOrderEnt {
 	private BeachBrokerEnt broker;
 	
 	@ManyToOne
-	private BeachPlayEnt bot; 
-	
-	@ManyToOne
 	private BeachTradeEnt trade;
 	
+	@ManyToOne
+	private BeachPlayEnt play; 
+	
+	private String source; 
+
 	private int orderId; 
 	
 	private TradeTickerType tickerType; 
@@ -67,7 +73,8 @@ public class BeachOrderEnt {
 	private int filled;
 	
 	private double commission; 
-	
+
+	private String log; 
 	
 	@OneToMany(cascade = CascadeType.ALL)
 	@JoinColumn(name = "order_id")
@@ -235,12 +242,7 @@ public class BeachOrderEnt {
 	public void setBroker(BeachBrokerEnt broker) {
 		this.broker = broker;
 	}
-	public BeachPlayEnt getBot() {
-		return bot;
-	}
-	public void setBot(BeachPlayEnt bot) {
-		this.bot = bot;
-	}
+	
 	public BeachTradeEnt getTrade() {
 		return trade;
 	}
@@ -253,6 +255,27 @@ public class BeachOrderEnt {
 	public void setExecs(List<BeachOrderExecEnt> execs) {
 		this.execs = execs;
 	}
+	public BeachPlayEnt getPlay() {
+		return play;
+	}
+	public void setPlay(BeachPlayEnt play) {
+		this.play = play;
+	}
+	public String getLog() {
+		return log;
+	}
+	public void setLog(String log) {
+		this.log = log;
+	}
+	public String getSource() {
+		return source;
+	}
+	public void setSource(String source) {
+		this.source = source;
+	}
+	
+	
+
 	
 	
 	
