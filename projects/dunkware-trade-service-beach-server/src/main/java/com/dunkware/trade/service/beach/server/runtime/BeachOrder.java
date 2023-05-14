@@ -40,6 +40,8 @@ public class BeachOrder implements Order {
 	private BeachTrade trade;
 
 	private Order order;
+	
+	private BeachOrderBean bean;
 
 	public void create(BeachTrade trade, String source, String log, OrderType orderType) throws Exception {
 		order = trade.getPlay().getAccount().getConnection().createOrder(orderType);
@@ -65,7 +67,20 @@ public class BeachOrder implements Order {
 		} finally {
 			em.close();
 		}
+		
+		
+		bean = new BeachOrderBean();
+		bean.setAccount(trade.getAccount().getIdentifier());
+		bean.setTrade(trade.getIdentifier());
+		bean.setPlay(trade.getPlay().getName());
+		bean.setFilled(order.getSpec().getFilled());
+		bean.setRemaining(order.getSpec().getRemaining());
+		
 
+	}
+	
+	public BeachOrderBean getBean() { 
+		return bean;
 	}
 
 	@Override

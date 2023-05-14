@@ -15,10 +15,10 @@ import com.dunkware.common.util.json.DJson;
 import com.dunkware.trade.sdk.core.runtime.broker.BrokerAccount;
 import com.dunkware.trade.service.beach.protocol.play.Play;
 import com.dunkware.trade.service.beach.server.common.BeachRuntime;
-import com.dunkware.trade.service.beach.server.context.BeachTradeSpec;
 import com.dunkware.trade.service.beach.server.entity.BeachAccountEnt;
 import com.dunkware.trade.service.beach.server.entity.BeachPlayEnt;
 import com.dunkware.trade.service.beach.server.entity.BeachRepo;
+import com.dunkware.trade.service.beach.server.runtime.core.BeachTradeSpec;
 
 public class BeachAccount {
 	
@@ -40,11 +40,16 @@ public class BeachAccount {
 	private BrokerAccount brokerAccount; 
 	private DEventNode eventNode; 
 	
+	private BeachAccountBean bean;
 	
 	public void init(BeachBroker broker, BeachAccountEnt ent, BrokerAccount brokerAccount) { 
 		this.entity = ent; 
 		this.broker = broker;
 		this.brokerAccount = brokerAccount;
+		bean = new BeachAccountBean();
+		bean.setBroker(broker.getIdentifier());
+		bean.setName(ent.getIdentifier());
+		bean.setId(ent.getId());
 		eventNode = broker.getEventNode().createChild("/accounts/" + ent.getId());
 		try {
 			for (BeachPlayEnt playEnt : entity.getPlays()) {
@@ -57,6 +62,10 @@ public class BeachAccount {
 			// okay. 
 		}
 		
+	}
+	
+	public BeachAccountBean getBean() { 
+		return bean;
 	}
 	
 	public BeachPlay createPlay(Play model, String name) throws Exception { 

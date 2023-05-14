@@ -14,16 +14,21 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 
 import com.dunkware.common.util.events.DEventNode;
+import com.dunkware.common.util.events.anot.ADEventMethod;
 import com.dunkware.common.util.json.DJson;
 import com.dunkware.trade.sdk.core.model.broker.BrokerStatus;
 import com.dunkware.trade.sdk.core.model.broker.BrokerType;
 import com.dunkware.trade.sdk.core.runtime.broker.Broker;
 import com.dunkware.trade.sdk.core.runtime.broker.BrokerAccount;
+import com.dunkware.trade.sdk.core.runtime.broker.event.EBrokerConnected;
+import com.dunkware.trade.sdk.core.runtime.broker.event.EBrokerConnecting;
+import com.dunkware.trade.sdk.core.runtime.broker.event.EBrokerDisconnected;
 import com.dunkware.trade.sdk.core.runtime.registry.TradeRegistry;
 import com.dunkware.trade.service.beach.server.common.BeachRuntime;
 import com.dunkware.trade.service.beach.server.entity.BeachAccountEnt;
 import com.dunkware.trade.service.beach.server.entity.BeachBrokerEnt;
 import com.dunkware.trade.service.beach.server.entity.BeachRepo;
+import com.dunkware.trade.service.beach.server.runtime.core.events.EBeachBrokerUpdate;
 
 public class BeachBroker {
 	
@@ -50,9 +55,14 @@ public class BeachBroker {
 	
 	private DEventNode eventNode; 
 	
+	private BeachBrokerBean bean;
+	
 	
 	public void init(BeachBrokerEnt entity) throws Exception  { 
 		this.entity = entity; 
+		bean = new BeachBrokerBean();
+		bean.setName(entity.getIdentifier());
+		bean.setId(entity.getId());
 		eventNode = runtime.getEventTree().getRoot().createChild("/brokers/" + entity.getIdentifier()); 
 		try {
 			brokerType = DJson.getObjectMapper().readValue(entity.getType(), BrokerType.class);
@@ -68,11 +78,19 @@ public class BeachBroker {
 		}
 		try {
 			broker.connect(brokerType,eventNode,runtime.getExecutor());
+			broker.getEventNode().addEventHandler(this);
+			bean.setStatus("Connected");
+			
 			Thread.sleep(2500);
 		} catch (Exception e) {
+			bean.setStatus("Disconnected");
 			logger.error("FIX ME: Broker connect exception " + e.toString()); 
 		}
 		loadAndSyncAccounts();
+	}
+	
+	public BeachBrokerBean getBean() { 
+		return bean;
 	}
 	
 	public boolean isConnected() { 
@@ -136,6 +154,24 @@ public class BeachBroker {
 		}
 		// now what we are not doing yet is what if we have a beach account that exists for this
 		// broker but that account is no longer on the broker? Fuck IT! 
+	}
+	
+	@ADEventMethod()
+	public void brokerDisconnected(EBrokerDisconnected event) { 
+		bean.setStatus("Disconnected");
+		eventNode.event(new EBeachBrokerUpdate(this));
+	}
+	
+	@ADEventMethod
+	public void brokerConnected(EBrokerConnected event) {
+		bean.setStatus("Connected");
+		eventNode.event(new EBeachBrokerUpdate(this));
+	}
+	
+	@ADEventMethod
+	public void brokerConnecting(EBrokerConnecting event) {
+		bean.setStatus("Connecting");
+		eventNode.event(new EBeachBrokerUpdate(this));
 	}
 	
 	

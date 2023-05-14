@@ -1,12 +1,12 @@
 package com.dunkware.trade.service.beach.server.runtime;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 import java.util.concurrent.ConcurrentHashMap;
 
 import javax.annotation.PostConstruct;
 import javax.persistence.EntityManager;
-import javax.persistence.PersistenceContext;
 import javax.transaction.Transactional;
 
 import org.slf4j.Logger;
@@ -17,11 +17,14 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.springframework.stereotype.Service;
 
+import com.dunkware.common.util.events.DEvent;
 import com.dunkware.common.util.events.DEventNode;
+import com.dunkware.common.util.events.anot.ADEventMethod;
 import com.dunkware.common.util.json.DJson;
 import com.dunkware.trade.broker.tws.TwsBrokerType;
 import com.dunkware.trade.sdk.core.runtime.registry.TradeRegistry;
 import com.dunkware.trade.service.beach.protocol.broker.AddBrokerReq;
+import com.dunkware.trade.service.beach.server.common.BeachRuntime;
 import com.dunkware.trade.service.beach.server.entity.BeachBrokerEnt;
 import com.dunkware.trade.service.beach.server.entity.BeachRepo;
 
@@ -40,6 +43,8 @@ public class BeachService {
 	@Autowired
 	private BeachRepo repo;
 	
+	@Autowired
+	private BeachRuntime runtime;
 
 	@Autowired
 	private ApplicationContext ac;
@@ -47,6 +52,7 @@ public class BeachService {
 	
 	@PostConstruct()
 	private void load() { 
+		eventNode = runtime.getEventTree().getRoot().createChild("/service");
 		Thread runner = new Thread() { 
 			public void run() { 
 				List<BeachBrokerEnt> brokers = repo.getBrokers();
@@ -56,6 +62,7 @@ public class BeachService {
 					try {
 						broker.init(beachBrokerEnt);				
 						BeachService.this.brokers.put(broker.getIdentifier(),broker);
+						broker.getEventNode().addEventHandler(this);
 					} catch (Exception e) {
 						logger.error("Broker {} Initialize Exception On Service Start {}",beachBrokerEnt.getIdentifier(),e.toString() );
 					}
@@ -111,8 +118,9 @@ public class BeachService {
 	}
 	
 	
-	public BeachBroker[] getBrokers() throws Exception {
-		return brokers.values().toArray(new BeachBroker[brokers.size()]);
+	
+	public Collection<BeachBroker> getBrokers()  {
+		return brokers.values();
 	}
 
 	
@@ -139,6 +147,19 @@ public class BeachService {
 			}
 		}
 		throw new Exception("Beach Account ID " + accountId + " not found");
+	}
+	
+	public BeachPlay getPlay(long id) throws Exception { 
+		for (BeachBroker broker : brokers.values()) {
+			for (BeachAccount account : broker.getAccounts()) {
+				for (BeachPlay play : account.getPlays()) {
+					if(play.getId() == id) { 
+						return play;
+					}
+				}
+			}
+		}
+		throw new Exception("Beach Play ID " + id + " not found");
 	}
 	
 	public BeachAccount getAccount(String broker, String account) throws Exception {
@@ -171,6 +192,15 @@ public class BeachService {
 	
 	public BeachStream getStream(String stream) throws Exception { 
 		return null;
+	}
+	
+	/**
+	 * Any child objects we attach ourselves to we route the events. 
+	 * @param event
+	 */
+	@ADEventMethod
+	public void eventDispatch(DEvent event) { 
+		eventNode.event(event);
 	}
 	
 	

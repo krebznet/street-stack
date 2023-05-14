@@ -12,6 +12,7 @@ import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 import com.dunkware.trade.sdk.core.model.trade.TradeStatus;
+import com.dunkware.trade.service.beach.server.runtime.BeachTradeStatus;
 import com.dunkware.trade.tick.model.ticker.TradeTickerType;
 
 @Entity(name = "BeachTradeEnt")
@@ -53,14 +54,16 @@ public class BeachTradeEnt {
 	private double exitCommission; 
 	private double commission; 
 	
-	private String exception; 
+	private String entryException; 
+	private String exitException;
 	
 	@Enumerated(EnumType.STRING)
-	private TradeStatus status;
+	private BeachTradeStatus status;
 	
 	private LocalDateTime lastUpdate;
 	
 	private String tickerSymbol;
+	private String exitTrigger;
 	
 	
 	@Enumerated(EnumType.STRING)
@@ -123,16 +126,23 @@ public class BeachTradeEnt {
 		this.avgExitPrice = avgExitPrice;
 	}
 	
-	public String getException() {
-		return exception;
+	public String getEntryException() {
+		return entryException;
 	}
-	public void setException(String exception) {
-		this.exception = exception;
+	public void setEntryException(String entryException) {
+		this.entryException = entryException;
 	}
-	public TradeStatus getStatus() {
+	public String getExitException() {
+		return exitException;
+	}
+	public void setExitException(String exitException) {
+		this.exitException = exitException;
+	}
+	
+	public BeachTradeStatus getStatus() {
 		return status;
 	}
-	public void setStatus(TradeStatus status) {
+	public void setStatus(BeachTradeStatus status) {
 		this.status = status;
 	}
 	public LocalDateTime getLastUpdate() {
@@ -208,6 +218,13 @@ public class BeachTradeEnt {
 	public void setBroker(BeachBrokerEnt broker) {
 		this.broker = broker;
 	}
+	public String getExitTrigger() {
+		return exitTrigger;
+	}
+	public void setExitTrigger(String exitTrigger) {
+		this.exitTrigger = exitTrigger;
+	}
+	
 	
 	
 	

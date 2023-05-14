@@ -23,6 +23,7 @@ import com.dunkware.common.spec.kafka.DKafkaByteConsumer2SpecBuilder;
 import com.dunkware.common.util.helpers.DProtoHelper;
 import com.dunkware.common.util.uuid.DUUID;
 import com.dunkware.net.proto.stream.GEntitySignal;
+import com.dunkware.net.proto.stream.GEntityVarSnapshot;
 import com.dunkware.net.proto.stream.GStreamEvent;
 import com.dunkware.net.proto.stream.GStreamEventType;
 import com.dunkware.trade.service.beach.server.common.BeachRuntime;
@@ -33,11 +34,10 @@ import com.dunkware.xstream.model.spec.StreamSpecEntitySignal;
 
 public class BeachStream {
 
-
 	@Autowired
 	private BeachRuntime runtime;
 
-	private List<StreamSignalListenerWrapper> signalListeners = new ArrayList<StreamSignalListenerWrapper>();
+	private List<BeachSignalListenerWrapper> signalListeners = new ArrayList<BeachSignalListenerWrapper>();
 	private Semaphore signalListenerLock = new Semaphore(1);
 
 	private ConcurrentHashMap<String, AtomicInteger> signalSubscriptions = new ConcurrentHashMap<String, AtomicInteger>();
@@ -45,11 +45,11 @@ public class BeachStream {
 	private StreamSpec streamSpec;
 
 	private Logger logger = org.slf4j.LoggerFactory.getLogger(getClass());
-	
+
 	private Marker signalMarker = MarkerFactory.getMarker("beach.stream.signals");
 
-	private SignalConsumer signalConsumer; 
-	
+	private SignalConsumer signalConsumer;
+
 	public void init(StreamSpec streamSpec) throws Exception {
 		this.streamSpec = streamSpec;
 		this.signalConsumer = new SignalConsumer();
@@ -57,7 +57,6 @@ public class BeachStream {
 
 	}
 
-	
 	public boolean signalExists(String signal) {
 		for (StreamSpecEntitySignal specSignal : streamSpec.getEntitySignals()) {
 			if (specSignal.getIdentifier().equalsIgnoreCase(signal)) {
@@ -67,13 +66,11 @@ public class BeachStream {
 		return false;
 	}
 
-	
 	public StreamSpec getSpec() {
 		return streamSpec;
 	}
 
-	
-	public void addSignalListener(StreamSignalListener listener, String... signals) throws Exception {
+	public void addSignalListener(BeachSignalListener listener, String... signals) throws Exception {
 		for (String signal : signals) {
 			if (!signalExists(signal)) {
 				throw new Exception(
@@ -87,7 +84,7 @@ public class BeachStream {
 			}
 			signalSubscriptions.put(signal, count);
 		}
-		StreamSignalListenerWrapper wrapper = new StreamSignalListenerWrapper(listener, signals);
+		BeachSignalListenerWrapper wrapper = new BeachSignalListenerWrapper(listener, signals);
 		try {
 			signalListenerLock.acquire();
 			signalListeners.add(wrapper);
@@ -99,12 +96,11 @@ public class BeachStream {
 
 	}
 
-	
-	public void removeSignalListener(StreamSignalListener listener) {
+	public void removeSignalListener(BeachSignalListener listener) {
 		try {
 			signalListenerLock.acquire();
-			StreamSignalListenerWrapper wrapper = null;
-			for (StreamSignalListenerWrapper StreamSignalListenerWrapper : signalListeners) {
+			BeachSignalListenerWrapper wrapper = null;
+			for (BeachSignalListenerWrapper StreamSignalListenerWrapper : signalListeners) {
 				if (StreamSignalListenerWrapper.getListener().equals(listener)) {
 					wrapper = StreamSignalListenerWrapper;
 					break;
@@ -137,12 +133,12 @@ public class BeachStream {
 
 	}
 
-	private class StreamSignalListenerWrapper {
+	private class BeachSignalListenerWrapper {
 
-		private StreamSignalListener listener;
+		private BeachSignalListener listener;
 		private Map<String, String> subscriptions = new ConcurrentHashMap<String, String>();
 
-		public StreamSignalListenerWrapper(StreamSignalListener listener, String[] subs) {
+		public BeachSignalListenerWrapper(BeachSignalListener listener, String[] subs) {
 			this.listener = listener;
 			for (String string : subs) {
 				subscriptions.put(string, string);
@@ -156,7 +152,7 @@ public class BeachStream {
 			return false;
 		}
 
-		public StreamSignalListener getListener() {
+		public BeachSignalListener getListener() {
 			return listener;
 		}
 
@@ -196,27 +192,51 @@ public class BeachStream {
 			}
 			if (event.getType() == GStreamEventType.EntitySignal) {
 				GEntitySignal signal = event.getEntitySignal();
-				if(signalSubscriptions.containsKey(signal.getIdentifier())) {
+				if (signalSubscriptions.containsKey(signal.getIdentifier())) {
 					StreamSignal streamSignal = new StreamSignal();
 					streamSignal.setEntId(signal.getEntityId());
 					streamSignal.setEntIdent(signal.getEntityIdentifier());
 					streamSignal.setTime(DProtoHelper.toLocalDateTime(signal.getTime(), streamSpec.getTimeZone()));
 					streamSignal.setId(signal.getId());
 					streamSignal.setIdent(signal.getIdentifier());
-					
+					BeachSignal beachSignal = new BeachSignal();
+					beachSignal.setSignal(signal.getIdentifier());
+					beachSignal.setStream(streamSpec.getIdentifier());
+
+					try {
+						for (GEntityVarSnapshot varSnapshot : signal.getVarsList()) {
+							if (varSnapshot.getIdentifier().equalsIgnoreCase("TickLast")) {
+								beachSignal.setLast(varSnapshot.getDoubleValue());
+							}
+							if (varSnapshot.getIdentifier().equalsIgnoreCase("TickVolume")) {
+								beachSignal.setVolume(varSnapshot.getLongValue());
+							}
+							if (varSnapshot.getIdentifier().equalsIgnoreCase("TickSymbol")) {
+								beachSignal.setSymbol(varSnapshot.getStringValue());
+							}
+							
+						}
+					}
+
+					catch (Exception e) {
+						// TODO: handle exception
+					}
 					try {
 						signalListenerLock.acquire();
-						for (StreamSignalListenerWrapper wrapper : signalListeners) {
-							if(wrapper.subscribed(signal.getIdentifier())) { 
-								if(logger.isTraceEnabled()) { 
-									logger.trace(signalMarker, "Signal Listener " + wrapper.getListener().getClass().getName() + " signal " + streamSignal.getIdent() + " ticker " + streamSignal.getEntIdent());
+						for (BeachSignalListenerWrapper wrapper : signalListeners) {
+							if (wrapper.subscribed(signal.getIdentifier())) {
+								if (logger.isTraceEnabled()) {
+									logger.trace(signalMarker,
+											"Signal Listener " + wrapper.getListener().getClass().getName() + " signal "
+													+ streamSignal.getIdent() + " ticker "
+													+ streamSignal.getEntIdent());
 								}
-								wrapper.getListener().onSignal(streamSignal);
+								wrapper.getListener().onSignal(beachSignal);
 							}
 						}
 					} catch (Exception e) {
 						logger.error("Exception processing stream signal " + e.toString());
-					} finally { 
+					} finally {
 						signalListenerLock.release();
 					}
 				}

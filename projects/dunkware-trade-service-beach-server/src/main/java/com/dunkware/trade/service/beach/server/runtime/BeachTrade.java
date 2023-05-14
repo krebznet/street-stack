@@ -12,19 +12,29 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 
 import com.dunkware.common.util.events.DEventNode;
+import com.dunkware.common.util.events.anot.ADEventMethod;
 import com.dunkware.trade.sdk.core.model.order.OrderType;
 import com.dunkware.trade.sdk.core.runtime.order.OrderException;
+import com.dunkware.trade.service.beach.protocol.play.PlayExitTrigger;
 import com.dunkware.trade.service.beach.server.common.BeachRuntime;
-import com.dunkware.trade.service.beach.server.context.BeachTradeClose;
-import com.dunkware.trade.service.beach.server.context.BeachTradeCloseFactory;
-import com.dunkware.trade.service.beach.server.context.BeachTradeExitTrigger;
-import com.dunkware.trade.service.beach.server.context.BeachTradeOpen;
-import com.dunkware.trade.service.beach.server.context.BeachTradeOpenFactory;
-import com.dunkware.trade.service.beach.server.context.BeachTradeSpec;
-import com.dunkware.trade.service.beach.server.context.stop.BeachTradeStop;
 import com.dunkware.trade.service.beach.server.entity.BeachRepo;
 import com.dunkware.trade.service.beach.server.entity.BeachTradeEnt;
+import com.dunkware.trade.service.beach.server.runtime.core.BeachTradeEntry;
+import com.dunkware.trade.service.beach.server.runtime.core.BeachTradeEntryFactory;
+import com.dunkware.trade.service.beach.server.runtime.core.BeachTradeExit;
+import com.dunkware.trade.service.beach.server.runtime.core.BeachTradeExitFactory;
+import com.dunkware.trade.service.beach.server.runtime.core.BeachTradeExitTrigger;
+import com.dunkware.trade.service.beach.server.runtime.core.BeachTradeExitTriggerFactory;
+import com.dunkware.trade.service.beach.server.runtime.core.BeachTradeSpec;
+import com.dunkware.trade.service.beach.server.runtime.core.events.EBeachTradeClose;
+import com.dunkware.trade.service.beach.server.runtime.core.events.EBeachTradeEntryComplete;
+import com.dunkware.trade.service.beach.server.runtime.core.events.EBeachTradeEntryException;
+import com.dunkware.trade.service.beach.server.runtime.core.events.EBeachTradeExitComplete;
+import com.dunkware.trade.service.beach.server.runtime.core.events.EBeachTradeExitException;
+import com.dunkware.trade.service.beach.server.runtime.core.events.EBeachTradeOpen;
+import com.dunkware.trade.service.beach.server.runtime.core.events.EBeachTradeUpdate;
 import com.dunkware.trade.tick.api.instrument.Instrument;
+import com.dunkware.trade.tick.model.ticker.TradeTickerSpec;
 
 public class BeachTrade {
 
@@ -32,16 +42,16 @@ public class BeachTrade {
 
 	@Autowired
 	private BeachRuntime runtime;
-	
-	@Autowired
-	private BeachRepo repo; 
 
 	@Autowired
-	private ApplicationContext ac; 
-	
-	private BeachTradeOpen entry; 
-	private BeachTradeClose exit; 
-	
+	private BeachRepo repo;
+
+	@Autowired
+	private ApplicationContext ac;
+
+	private BeachTradeEntry entry;
+	private BeachTradeExit exit;
+
 	private BeachPlay play;
 
 	private BeachTradeEnt entity;
@@ -53,22 +63,37 @@ public class BeachTrade {
 	private DEventNode eventNode;
 
 	private String identifier;
-	
+
 	private List<BeachTradeExitTrigger> exitTriggers = new ArrayList<BeachTradeExitTrigger>();
 	private Semaphore exitTriggerLock = new Semaphore(1);
-	
-	private BeachTradeStop tradeStop; 
-	
 
-	public void init(BeachTradeSpec spec, BeachPlay play) throws Exception{
+	private BeachTradeBean bean;
+
+	private TradeTickerSpec tickerSpec;
+
+	public void init(BeachTradeSpec spec, BeachPlay play) throws Exception {
 		this.play = play;
 		this.spec = spec;
 		eventNode = play.getEventNode().createChild("/trades/idhere");
-		
-		entry = BeachTradeOpenFactory.create(play.getModel());
+		bean = new BeachTradeBean();
+		bean.setAccount(play.getAccount().getIdentifier());
+		bean.setPlay(play.getEntity().getName());
+
+		entry = BeachTradeEntryFactory.create(play.getModel());
 		ac.getAutowireCapableBeanFactory().autowireBean(entry);
-		exit = BeachTradeCloseFactory.create(play.getModel());
+		exit = BeachTradeExitFactory.create(play.getModel());
 		ac.getAutowireCapableBeanFactory().autowireBean(exit);
+		
+		for (PlayExitTrigger exitTriggerModel : play.getModel().getExitTriggers()) {
+			try {
+				BeachTradeExitTrigger exitTrigger = BeachTradeExitTriggerFactory.create(exitTriggerModel);
+				ac.getAutowireCapableBeanFactory().autowireBean(exitTrigger);
+				exitTrigger.init(this, exitTriggerModel);
+				exitTriggers.add(exitTrigger);
+			} catch (Exception e) {
+				throw new Exception("Trade Init Exit Trigger Exception " + e.toString());
+			}
+		}
 		
 		entity = new BeachTradeEnt();
 		entity.setPlay(play.getEntity());
@@ -77,8 +102,21 @@ public class BeachTrade {
 		entity.setAllocatedCapital(spec.getCapital());
 		entity.setAllocatedSize(spec.getSize());
 		entity.setTickerSymbol(spec.getInstrument().getTicker().getSymbol());
-		entity.setTickerType(spec.getInstrument().getTicker().getType());;
+		entity.setTickerType(spec.getInstrument().getTicker().getType());
+		;
 		
+		// validate and create exit triggers
+		for (PlayExitTrigger model : play.getModel().getExitTriggers()) {
+			try {
+				BeachTradeExitTrigger trigger = BeachTradeExitTriggerFactory.create(model);
+				ac.getAutowireCapableBeanFactory().autowireBean(trigger);
+				trigger.init(this, model);
+				exitTriggers.add(trigger);
+			} catch (Exception e) {
+				throw new Exception("Beach Exit Trigger creation failed " + e.toString());
+			}
+		}
+
 		EntityManager em = repo.createEntityManager();
 		try {
 			em.getTransaction().begin();
@@ -93,7 +131,42 @@ public class BeachTrade {
 
 	}
 	
-	public BeachTradeEnt getEntity() { 
+	
+	public boolean isActive() { 
+		if(status == BeachTradeStatus.Closing || status == BeachTradeStatus.Open || status == BeachTradeStatus.Opening) { 
+			return true;
+		}
+		return false;
+	}
+	
+	public void open() { 
+		status = BeachTradeStatus.Opening;
+		entity.setOpeningTime(BeachRuntime.dateTime());
+		entity.setStatus(status);
+		entry.getEventNode().addEventHandler(this);
+		entry.start(this);
+		persistAsync();
+		eventNode.event(new EBeachTradeUpdate(this));
+		
+	}
+
+	public BeachTradeSpec getTradeSpec() {
+		return spec;
+	}
+
+	public TradeTickerSpec getTickerSpec() {
+		return tickerSpec;
+	}
+
+	public BeachAccount getAccount() {
+		return play.getAccount();
+	}
+
+	public BeachTradeBean getBean() {
+		return bean;
+	}
+
+	public BeachTradeEnt getEntity() {
 		return entity;
 	}
 
@@ -122,79 +195,120 @@ public class BeachTrade {
 		BeachOrder order = new BeachOrder();
 		ac.getAutowireCapableBeanFactory().autowireBean(order);
 		order.create(this, "entry", log, type);
-		// okay then what here? 
+		// okay then what here?
 		return order;
 	}
 
-	BeachOrder createExitOrder(OrderType type, String log)throws Exception {
+	BeachOrder createExitOrder(OrderType type, String log) throws Exception {
 		BeachOrder order = new BeachOrder();
 		ac.getAutowireCapableBeanFactory().autowireBean(order);
 		order.create(this, "exit", log, type);
-		// okay then what here? 
+		// okay then what here?
 		return order;
 	}
 
-	public void open() {
-		// check status 
-		// okay need to listen here for even 
-		// set openingTime time 
-		entry.start(this);
-	}
-
-	void close() {
-		// closing status? 
-		// exitTriggers.stop();
-		// tradeStop().cancel();
-		// check status
-		// setClosingTime
+	
+	public void close(String trigger) {
+		status = BeachTradeStatus.Closing;
+		entity.setExitTrigger(trigger);
+		entity.setClosingTime(BeachRuntime.dateTime());
+		persistAsync();
 		exit.start(this);
 	}
+
 	
-	public BeachTradeStop getStop() { 
-		return null;
+	
+	/**
+	 * Async Persist In Another Thread it will persist the trade entity
+	 */
+	private void persistAsync() {
+		PersistRunnable runnable = new PersistRunnable();
+		runtime.getExecutor().execute(runnable);
+	}
+
+	private class PersistRunnable implements Runnable {
+
+		public PersistRunnable() {
+
+		}
+
+		public void run() {
+			EntityManager em = null;
+			try {
+				// entity.setLastUpdate(entity.getCancelTime());
+				// entity.setLastStatus(getSpec().getStatus());
+				// entity.setFilled(getSpec().getFilled());
+
+				em = repo.createEntityManager();
+				em.getTransaction().begin();
+				em.merge(entity);
+				// em.persist(entity);
+				em.getTransaction().commit();
+			} catch (Exception e) {
+				logger.error("Broker Order Persist Runnable Exception " + e.toString(), e);
+			} finally {
+				em.close();
+			}
+		}
+	}
+
+	// Event Handlers
+
+	/**
+	 * Okay handle the fact that it could not create entry
+	 * 
+	 * @param event
+	 */
+	@ADEventMethod
+	public void entryException(EBeachTradeEntryException event) {
+		this.status = BeachTradeStatus.EntryException;
+		entity.setEntryException(event.getException());
+		entity.setStatus(this.status);
+		// now what?
 	}
 	
 	/**
-	 * This is called by an exit trigger when a exit trigger is activated. 
-	 * @param trigger
+	 * Okay the trade entry is completed 
+	 * @param event
 	 */
-	public void exitTrigger(String trigger) { 
-		// okay trigger, lets log the event 
-		// start the exit and put trade in closing status 
-	}
-	
-	
-	
-	// Event Handlers 
-	
-	public void entryException(Object event) { 
+	@ADEventMethod
+	public void entryComplete(EBeachTradeEntryComplete event) {
+		status = BeachTradeStatus.Open;
+		entity.setOpenTime(BeachRuntime.dateTime());
+		entity.setStatus(status);
+		entity.setFilledSize(event.getEntry().getFilledSize());
+		entity.setEntryCommission(event.getEntry().getCommission());
+		persistAsync();
+		eventNode.event(new EBeachTradeOpen(this));
+		for (BeachTradeExitTrigger beachTradeExitTrigger : exitTriggers) {
+			beachTradeExitTrigger.start();
+		}
 		
+		// now we need to do the exit triggers 
 	}
-	
-	public void exitException(Object event) { 
-		
+
+	@ADEventMethod
+	public void exitException(EBeachTradeExitException event) {
+		status = BeachTradeStatus.ExitException;
+		entity.setStatus(status);
+		entity.setExitException(event.getError());
+		// EBeachException - the real alert - can't exit a trade that is no good. 
+		// notify problem; ExitException - Error - 
 	}
-	
-	public void exitCompleted(Object event) { 
-		// this will be sent by the TradeExit or the TradeStop
+
+	@ADEventMethod
+	public void exitComplete(EBeachTradeExitComplete event) {
+		status = BeachTradeStatus.Closed;
+		entity.setClosedTime(BeachRuntime.dateTime());
+		entity.setExitCommission(event.getExit().getCommission());
+		entity.setCommission(entity.getExitCommission() + entity.getEntryCommission());
+		entity.setStatus(status);
+		persistAsync();
+		eventNode.event(new EBeachTradeClose(this));
+		// now unsubsribe the Insturment
+		this.play.getAccount().getConnection().getBroker().releaseInstrument(spec.getInstrument());
 	}
-	
-	public void entryCompleted(Object event) { 
-		// now lets start the TradeExitManager
-		// 
-	}
-	
-	public void stopSubmitted(Object event) { 
-		
-	}
-	
-	public void stopCancelled(Object event) { 
-		
-	}
-	
-	
-	
-	
-	
+
+
 
 }

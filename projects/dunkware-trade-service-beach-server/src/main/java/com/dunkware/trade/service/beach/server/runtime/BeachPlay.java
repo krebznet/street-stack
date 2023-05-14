@@ -15,14 +15,13 @@ import com.dunkware.common.util.events.DEventNode;
 import com.dunkware.common.util.json.DJson;
 import com.dunkware.trade.service.beach.protocol.play.Play;
 import com.dunkware.trade.service.beach.server.common.BeachRuntime;
-import com.dunkware.trade.service.beach.server.context.BeachTradeSpec;
 import com.dunkware.trade.service.beach.server.entity.BeachPlayEnt;
+import com.dunkware.trade.service.beach.server.runtime.core.BeachTradeSpec;
 import com.dunkware.trade.tick.api.instrument.Instrument;
 import com.dunkware.trade.tick.model.ticker.TradeTickerSpec;
-import com.dunkware.xstream.model.signal.StreamSignal;
-import com.dunkware.xstream.model.signal.StreamSignalListener;
+import com.dunkware.trade.tick.model.ticker.TradeTickerType;
 
-public class BeachPlay implements StreamSignalListener {
+public class BeachPlay implements BeachSignalListener {
 
 	private Logger logger = LoggerFactory.getLogger(getClass());
 
@@ -30,8 +29,8 @@ public class BeachPlay implements StreamSignalListener {
 	private BeachRuntime runtime;
 
 	@Autowired
-	private BeachService beachService; 
-	
+	private BeachService beachService;
+
 	@Autowired
 	private ApplicationContext ac;
 
@@ -45,14 +44,20 @@ public class BeachPlay implements StreamSignalListener {
 	private Semaphore tradeLock = new Semaphore(1);
 
 	private BeachPlayStatus status = BeachPlayStatus.Stopped;
+
+	private BlockingQueue<BeachSignal> signalQueue = new LinkedBlockingQueue<BeachSignal>();
+
+	private SignalHandler signalHandler;
 	
-	private BlockingQueue<StreamSignal> signalQueue = new LinkedBlockingQueue<StreamSignal>();
-	
-	private SignalHandler signalHandler; 
+	private BeachPlayBean bean; 
 
 	void init(BeachAccount account, BeachPlayEnt ent) {
 		this.account = account;
 		this.entity = ent;
+		bean = new BeachPlayBean();
+		bean.setName(ent.getName());
+		bean.setAccount(account.getIdentifier());
+		
 		account.getEventNode().createChild("/plays/" + ent.getId());
 		try {
 			model = DJson.getObjectMapper().readValue(ent.getModel(), Play.class);
@@ -69,7 +74,11 @@ public class BeachPlay implements StreamSignalListener {
 		status = BeachPlayStatus.Running;
 		signalHandler = new SignalHandler();
 		signalHandler.start();
-		
+
+	}
+	
+	public String getName() { 
+		return entity.getName();
 	}
 
 	public BeachPlayEnt getEntity() {
@@ -80,45 +89,41 @@ public class BeachPlay implements StreamSignalListener {
 		return model;
 	}
 
-	public long getId() { 
+	public long getId() {
 		return entity.getId();
 	}
+	
+	public List<BeachTrade> getTrades() { 
+		try {
+			tradeLock.acquire();
+			return trades;
+		} catch (Exception e) {
+			return new ArrayList<BeachTrade>();
+		} finally { 
+			tradeLock.release();
+		}
+	}
+
 	void stop() throws Exception {
-		if(status != BeachPlayStatus.Running) { 
+		if (status != BeachPlayStatus.Running) {
 			throw new Exception("Beach Play cannot be stopped in status " + status);
 		}
 		signalHandler.interrupt();
 		beachService.getStream("us_equity").removeSignalListener(this);
-		
+
 		try {
-			// summer 
+			// summer
 		} catch (Exception e) {
 			// TODO: handle exception
 		}
-		
-		
-		// okay so how do we close it here then right? 
+
+		// okay so how do we close it here then right?
 	}
 
-	public boolean canTrade(BeachTradeSpec spec) {
-		if (!account.canTrade(spec)) {
-			return false;
-		}
-		return true;
-	}
-
-	public void trade(BeachTradeSpec spec)  {
-		BeachTrade trade = new BeachTrade();
-		ac.getAutowireCapableBeanFactory().autowireBean(trade);
-		try {
-			trade.init(spec, this);	
-			this.trades.add(trade);
-			trade.open();
-		} catch (Exception e) {
-			// logger
-			// TODO: handle exception
-		}
+	
+	public void trade(BeachTradeSpec spec) {
 		
+
 	}
 
 	public BeachPlayStatus getStatus() {
@@ -137,59 +142,172 @@ public class BeachPlay implements StreamSignalListener {
 		return account.getBroker();
 	}
 
-	public BeachTradeSpec createTradeSpec(StreamSignal signal) throws Exception{
+	/**
+	 * Initiate Trade 
+	 * @param signal
+	 * @throws Exception
+	 */
+	public void trade(BeachSignal signal) throws Exception {
 		BeachTradeSpec spec = new BeachTradeSpec();
 		spec.setCapital(getModel().getTradeAllocation());
 		spec.setSide(getModel().getSide());
+		int size = (int) Math.floor((double)model.getTradeAllocation() / signal.getLast());
+		spec.setSize(size);
 		TradeTickerSpec ticker = new TradeTickerSpec();
+		ticker.setSymbol(signal.getSymbol());
+		ticker.setType(TradeTickerType.Equity);
+		spec.setTickerSpec(ticker);
 		Instrument instrument = null;
-		
 		try {
 			instrument = getAccount().getConnection().getBroker().acquireInstrument(ticker);
-			
 		} catch (Exception e) {
+			// okay issue here now with that. 
 			throw e;
 		}
 		spec.setInstrument(instrument);
-		return spec;
+		// now that we are trading. 
+		BeachTrade trade = new BeachTrade();
+		ac.getAutowireCapableBeanFactory().autowireBean(trade);
+		try {
+			trade.init(spec, this);
+			try {
+				tradeLock.acquire();
+				this.trades.add(trade);
+			} catch (Exception e) {
+			} finally { 
+				tradeLock.release();
+			}
+			trade.open();
+			trade.getEventNode().addEventHandler(this);
+		} catch (Exception e) {
+			// okay this would be a system or play configuration problem here. 
+			// open trade exception 
+		}
 	}
+	
+	
+	public BeachPlayBean getBean() { 
+		return bean; 
+	}
+	
 
 	@Override
-	public void onSignal(StreamSignal signal) {
+	public void onSignal(BeachSignal signal) {
 		signalQueue.add(signal);
 	}
 	
 	/**
-	 * This is where we'll process a signal, and if we can trade it 
-	 * we open the trade here. 
-	 *
+	 * before we get an instrument from a signal lets see if we can 
+	 * trade in the first place. 
+	 * @param symbol
+	 * @return
 	 */
-	private class SignalHandler extends Thread  {
+	public boolean canTrade(BeachSignal signal) { 
+		// trade allocation + allocated capital > deny 
+		if(bean.getActiveCapital() + model.getTradeAllocation() > model.getAllocatedCapital()) { 
+			// log me
+			return false; 
+		}
 		
-		public void run() { 
-			while(!interrupted()) { 
-				try {
-					StreamSignal signal = signalQueue.take();
-					// first check if we have reached active capital or trade limit
-					// if so don't bother subscribing on tws. 
-					try {
-						
-					} catch (Exception e) {
-						// TODO: handle exception
-					}
-					BeachTradeSpec spec = createTradeSpec(signal);
-					if(!canTrade(spec)) { 
-						continue; 
-						// log
-					}
-					trade(spec);
-				} catch (Exception e) {
-					// TODO: handle exception
-				}
+		// active trade limit reach deny 
+		if(model.isEnableActiveTradeLimit()) { 
+			if(bean.getActiveTrades() == model.getActiveTradeLimit() || bean.getActiveTrades() > model.getActiveTradeLimit()) { 
+				return false; 
 			}
 		}
 		
+		// active symbol limit reached deny 
+		if(model.isEnableActiveSymbolLimit()) { 
+			int active = activeSymbolTradeCount(signal.getSymbol());
+			if(model.getActiveSymbolLimit() == active || model.getActiveSymbolLimit() > active) { 
+				return false;
+			}
+		}
+		
+		return true;
+		
 	}
+	
+	public int activeSymbolTradeCount(String symbol) { 
+		int count = 0;
+		try {
+			tradeLock.acquire();
+			for (BeachTrade trade : trades) {
+				if(trade.getBean().getSymbol().equalsIgnoreCase(symbol)) { 
+					count++;
+				}
+			}
+		} catch (Exception e) {
+			// TODO: handle exception
+		} finally { 
+			tradeLock.release();
+		}
+		return count;
+	}
+	
+	/*****************************************************
+	 * ------ Trade Event Handler Methods --------------- 
+	 *****************************************************/
+	
+	
+	/**
+	 * Trade Update makes us want to update our bean 
+	 * @param updateEvent
+	 */
+	public void tradeUpdate(Object updateEvent) { 
+		
+	}
+	
+	/**
+	 * Trade is closed - do we care? 
+	 * @param updateEvent
+	 */
+	public void tradeClosed(Object updateEvent) { 
+		
+	}
+	
+	/**
+	 * Not sure
+	 * @param exceptionEvent
+	 */
+	public void tradeException(Object exceptionEvent) { 
+		
+	}
+
+	/**
+	 * This is where we'll process a signal, and if we can trade it we open the
+	 * trade here.
+	 *
+	 */
+	private class SignalHandler extends Thread {
+
+		public void run() {
+			while (!interrupted()) {
+				try {
+					BeachSignal signal = signalQueue.take();
+					if(canTrade(signal)) { 
+						trade(signal);
+					}
+				} catch (Exception e) {
+					// logger here? 
+				}
+			}
+		}
+
+	}
+	
+	
+	private class BeanUpdater extends Thread { 
+		
+		public void run() {
 			
+			// unrealizedPL
+			// realizedPL 
+			// activeCapital
+			// tradedCapital
+			// active
+		}
+		
+	}
 
 }
