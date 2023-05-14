@@ -32,7 +32,6 @@ public class TwsInstruments implements TwsSocketReader {
 	private ConcurrentHashMap<Integer, TradeTickerSpec> instrumentIds = new ConcurrentHashMap<Integer, TradeTickerSpec>();
 	private ConcurrentHashMap<TradeTickerSpec, Integer> instrumentInverseIds = new ConcurrentHashMap<TradeTickerSpec, Integer>();
 	private AtomicInteger instrumentIdFactory = new AtomicInteger(0); 
-	
 
 	private TwsBroker broker;
 	
