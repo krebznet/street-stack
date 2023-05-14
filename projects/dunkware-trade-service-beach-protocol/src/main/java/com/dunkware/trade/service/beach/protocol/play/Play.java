@@ -7,6 +7,7 @@ public class Play {
 
 	private String side; 
 	
+	private String stream = "us_equity";
 	private String signal; 
 	private String name; 
 	private double allocatedCapital;
@@ -183,6 +184,13 @@ public class Play {
 	public void setEnableEntryTimeout(boolean enableEntryTimeout) {
 		this.enableEntryTimeout = enableEntryTimeout;
 	}
+	public String getStream() {
+		return stream;
+	}
+	public void setStream(String stream) {
+		this.stream = stream;
+	}
+	
 	
 	
 	
