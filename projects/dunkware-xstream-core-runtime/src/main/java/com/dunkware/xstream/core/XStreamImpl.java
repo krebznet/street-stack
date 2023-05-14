@@ -391,6 +391,17 @@ public class XStreamImpl implements XStream {
 			} finally {
 				signalListenerLock.release();
 			}
+			try {
+				rowListenerLock.acquire();
+				for (XStreamRowListener list : rowListeners) {
+					list.rowSignal(row, signal);
+				}
+			} catch (Exception e) {
+				logger.error("Exception Outer Row Listener " + e.toString(), e);
+
+			} finally {
+				rowListenerLock.release();
+			}
 		}
 
 	}

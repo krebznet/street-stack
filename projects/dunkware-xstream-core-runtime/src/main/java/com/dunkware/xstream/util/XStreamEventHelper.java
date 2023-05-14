@@ -101,6 +101,7 @@ public class XStreamEventHelper {
 		
 		GEntitySignal.Builder builder = GEntitySignal.newBuilder();
 		builder.setId(signal.getSignalType().getId());
+		builder.setIdentifier(signal.getSignalType().getName());
 		builder.setEntityId(row.getIdentifier());
 		builder.setEntityIdentifier(row.getId());
 		builder.setSessionId(row.getStream().getInput().getSessionId());
