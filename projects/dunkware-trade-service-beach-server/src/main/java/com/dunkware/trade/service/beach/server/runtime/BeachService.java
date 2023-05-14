@@ -20,6 +20,7 @@ import org.springframework.stereotype.Service;
 import com.dunkware.common.util.events.DEvent;
 import com.dunkware.common.util.events.DEventNode;
 import com.dunkware.common.util.events.anot.ADEventMethod;
+import com.dunkware.common.util.helpers.DHttpHelper;
 import com.dunkware.common.util.json.DJson;
 import com.dunkware.trade.broker.tws.TwsBrokerType;
 import com.dunkware.trade.sdk.core.runtime.registry.TradeRegistry;
@@ -27,58 +28,77 @@ import com.dunkware.trade.service.beach.protocol.broker.AddBrokerReq;
 import com.dunkware.trade.service.beach.server.common.BeachRuntime;
 import com.dunkware.trade.service.beach.server.entity.BeachBrokerEnt;
 import com.dunkware.trade.service.beach.server.entity.BeachRepo;
+import com.dunkware.xstream.model.spec.StreamSpec;
+import com.dunkware.xstream.model.spec.StreamSpecList;
+import com.google.api.client.util.Value;
 
 @Service
 public class BeachService {
-	
-	private Logger logger = LoggerFactory.getLogger(getClass());
-	
-	private Marker runtimeMarker = MarkerFactory.getMarker("beach.runtime");
 
+	private Logger logger = LoggerFactory.getLogger(getClass());
+
+	private ConcurrentHashMap<String, BeachStream> streams = new ConcurrentHashMap<String, BeachStream>();
+	
 	private ConcurrentHashMap<String, BeachBroker> brokers = new ConcurrentHashMap<String, BeachBroker>();
 
 	private DEventNode eventNode;
 
-
 	@Autowired
 	private BeachRepo repo;
 	
+
 	@Autowired
 	private BeachRuntime runtime;
 
 	@Autowired
 	private ApplicationContext ac;
-	
-	
+
 	@PostConstruct()
-	private void load() { 
+	private void load() {
 		eventNode = runtime.getEventTree().getRoot().createChild("/service");
-		Thread runner = new Thread() { 
-			public void run() { 
+		
+	
+		Thread runner = new Thread() {
+			public void run() {
+				String[] streamIdents = runtime.getStreamIdentifiers().split(",");
+				for (String ident : streamIdents) {
+					BeachStream stream = new BeachStream();
+					ac.getAutowireCapableBeanFactory().autowireBean(stream);
+					try {
+						stream.init(ident);	
+						streams.put(stream.getIdentifier(), stream);
+					} catch (Exception e) {
+						logger.error("Exception Initializing Beach Stream " + ident + " " + e.toString());
+						System.exit(-1);
+					}
+					
+				}	
+				
 				List<BeachBrokerEnt> brokers = repo.getBrokers();
 				for (BeachBrokerEnt beachBrokerEnt : brokers) {
 					BeachBroker broker = new BeachBroker();
 					ac.getAutowireCapableBeanFactory().autowireBean(broker);
 					try {
-						broker.init(beachBrokerEnt);				
-						BeachService.this.brokers.put(broker.getIdentifier(),broker);
+						broker.init(beachBrokerEnt);
+						BeachService.this.brokers.put(broker.getIdentifier(), broker);
 						broker.getEventNode().addEventHandler(this);
 					} catch (Exception e) {
-						logger.error("Broker {} Initialize Exception On Service Start {}",beachBrokerEnt.getIdentifier(),e.toString() );
+						logger.error("Broker {} Initialize Exception On Service Start {}",
+								beachBrokerEnt.getIdentifier(), e.toString());
 					}
 				}
-				
+
 			}
 		};
 		runner.start();
 	}
-	
+
 	@Transactional
-	public BeachBroker addBroker(AddBrokerReq brokerAdd) throws Exception  { 
+	public BeachBroker addBroker(AddBrokerReq brokerAdd) throws Exception {
 		if (brokerExists(brokerAdd.getName())) {
 			throw new Exception("Broker " + brokerAdd.getName() + " already exists, cannot add");
 		}
-		//create the type from brokerAdd
+		// create the type from brokerAdd
 		TwsBrokerType type = new TwsBrokerType();
 		type.setConnectionId(1);
 		type.setHost(brokerAdd.getHost());
@@ -97,11 +117,10 @@ public class BeachService {
 		try {
 			EntityManager em = repo.createEntityManager();
 			em.getTransaction().begin();
-			
-			
+
 			em.persist(entity);
 			em.getTransaction().commit();
-			
+
 		} catch (Exception e) {
 			throw new Exception("Broker Entity Persist Failed Internal Fatal " + e.toString());
 		} finally {
@@ -116,21 +135,30 @@ public class BeachService {
 		brokers.put(entity.getIdentifier(), broker);
 		return broker;
 	}
-	
-	
-	
-	public Collection<BeachBroker> getBrokers()  {
+
+	public Collection<BeachBroker> getBrokers() {
 		return brokers.values();
 	}
 
-	
 	public boolean brokerExists(String identifier) {
 		if (brokers.containsKey(identifier))
 			return true;
 		return false;
 	}
 
-	
+	public BeachPlay getPlay(long playId) throws Exception {
+		for (BeachBroker beachBroker : brokers.values()) {
+			for (BeachAccount beachAccount : beachBroker.getAccounts()) {
+				for (BeachPlay play : beachAccount.getPlays()) {
+					if (play.getId() == playId) {
+						return play;
+					}
+				}
+			}
+		}
+		throw new Exception("Trade Play ID " + playId + " Not found");
+	}
+
 	public BeachBroker getBroker(String identifier) throws Exception {
 		if (brokerExists(identifier) == false) {
 			throw new Exception("Beach Broker " + identifier + " Does Not Exist");
@@ -138,7 +166,7 @@ public class BeachService {
 		return brokers.get(identifier);
 	}
 
-	public BeachAccount getAccount(long accountId) throws Exception { 
+	public BeachAccount getAccount(long accountId) throws Exception {
 		for (BeachBroker beachBroker : brokers.values()) {
 			for (BeachAccount beachAccount : beachBroker.getAccounts()) {
 				if (beachAccount.getId() == accountId) {
@@ -148,19 +176,7 @@ public class BeachService {
 		}
 		throw new Exception("Beach Account ID " + accountId + " not found");
 	}
-	
-	public BeachPlay getPlay(long id) throws Exception { 
-		for (BeachBroker broker : brokers.values()) {
-			for (BeachAccount account : broker.getAccounts()) {
-				for (BeachPlay play : account.getPlays()) {
-					if(play.getId() == id) { 
-						return play;
-					}
-				}
-			}
-		}
-		throw new Exception("Beach Play ID " + id + " not found");
-	}
+
 	
 	public BeachAccount getAccount(String broker, String account) throws Exception {
 		for (BeachBroker beachBroker : brokers.values()) {
@@ -173,11 +189,9 @@ public class BeachService {
 		throw new Exception("Beach Broker " + broker + " account " + account + " not found");
 	}
 
-	
 	public DEventNode getEventNode() {
 		return eventNode;
 	}
-
 
 	public List<BeachAccount> getAccounts() {
 		List<BeachAccount> accounts = new ArrayList<BeachAccount>();
@@ -188,20 +202,23 @@ public class BeachService {
 		}
 		return accounts;
 	}
-	
-	
-	public BeachStream getStream(String stream) throws Exception { 
-		return null;
+
+	public BeachStream getStream(String stream) throws Exception {
+		BeachStream results = streams.get(stream);
+		if(results == null) { 
+			throw new Exception("Cannot find stream " + stream); 
+		}
+		return results;
 	}
-	
+
 	/**
-	 * Any child objects we attach ourselves to we route the events. 
+	 * Any child objects we attach ourselves to we route the events.
+	 * 
 	 * @param event
 	 */
 	@ADEventMethod
-	public void eventDispatch(DEvent event) { 
+	public void eventDispatch(DEvent event) {
 		eventNode.event(event);
 	}
-	
-	
+
 }

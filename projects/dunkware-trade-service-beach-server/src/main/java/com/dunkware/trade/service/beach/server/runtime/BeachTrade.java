@@ -70,7 +70,8 @@ public class BeachTrade {
 	private BeachTradeBean bean;
 
 	private TradeTickerSpec tickerSpec;
-
+	
+	
 	public void init(BeachTradeSpec spec, BeachPlay play) throws Exception {
 		this.play = play;
 		this.spec = spec;
@@ -95,7 +96,10 @@ public class BeachTrade {
 			}
 		}
 		
+		int tradeSequence = play.nextTradeSequence(spec.getTickerSpec().getSymbol());
+		identifier = spec.getTickerSpec().getSymbol().toUpperCase() + "-" + tradeSequence;
 		entity = new BeachTradeEnt();
+		entity.setIdentifier(identifier);
 		entity.setPlay(play.getEntity());
 		entity.setBroker(play.getAccount().getBroker().getEntity());
 		entity.setAccount(play.getAccount().getEntity());
@@ -216,7 +220,17 @@ public class BeachTrade {
 		exit.start(this);
 	}
 
+	public void logInfo(String message) {
+		
+	}
 	
+	public void logError(String message) { 
+		
+	}
+	
+	public void logTrace(String message) { 
+		
+	}
 	
 	/**
 	 * Async Persist In Another Thread it will persist the trade entity

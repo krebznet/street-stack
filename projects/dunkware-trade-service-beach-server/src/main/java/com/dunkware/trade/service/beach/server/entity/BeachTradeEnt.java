@@ -1,17 +1,21 @@
 package com.dunkware.trade.service.beach.server.entity;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
-import com.dunkware.trade.sdk.core.model.trade.TradeStatus;
 import com.dunkware.trade.service.beach.server.runtime.BeachTradeStatus;
 import com.dunkware.trade.tick.model.ticker.TradeTickerType;
 
@@ -28,6 +32,10 @@ public class BeachTradeEnt {
 	
 	@ManyToOne()
 	private BeachAccountEnt account; 
+	
+	@OneToMany(fetch = FetchType.LAZY)
+	@JoinColumn(name = "trade_id")
+	private List<BeachTradeLogEnt> logs = new ArrayList<BeachTradeLogEnt>();
 	
 	@ManyToOne()
 	private BeachBrokerEnt broker; 
@@ -64,6 +72,8 @@ public class BeachTradeEnt {
 	
 	private String tickerSymbol;
 	private String exitTrigger;
+	
+	private String identifier; 
 	
 	
 	@Enumerated(EnumType.STRING)
@@ -224,6 +234,14 @@ public class BeachTradeEnt {
 	public void setExitTrigger(String exitTrigger) {
 		this.exitTrigger = exitTrigger;
 	}
+	public String getIdentifier() {
+		return identifier;
+	}
+	public void setIdentifier(String identifier) {
+		this.identifier = identifier;
+	}
+	
+	
 	
 	
 	

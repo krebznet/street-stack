@@ -59,7 +59,7 @@ public class BeachAccount {
 				plays.put(playEnt.getId(), play);
 			}
 		} catch (Exception e) {
-			// okay. 
+			logger.error("Exception Init Beach Play " + e.toString());
 		}
 		
 	}
@@ -78,10 +78,14 @@ public class BeachAccount {
 		ent.setAccount(entity);
 		ent.setModel(DJson.serialize(model));
 		ent.setName(name);
+		entity.getPlays().add(ent);
 		try {
 			EntityManager em = repo.createEntityManager();
 			em.getTransaction().begin();
 			em.persist(ent);
+			em.getTransaction().commit();
+			em.getTransaction().begin();
+			em.merge(entity);
 			em.getTransaction().commit();
 		} catch (Exception e) {
 			logger.error("Exception persisting Play Entity " + e.toString());

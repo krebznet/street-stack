@@ -1,11 +1,17 @@
 package com.dunkware.trade.service.beach.server.entity;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 @Entity(name = "BeachPlayEnt")
@@ -19,6 +25,9 @@ public class BeachPlayEnt {
 	@ManyToOne()
 	private BeachAccountEnt account;
 	
+	@OneToMany()
+	private List<BeachTradeSeqEnt> tradeSequences = new ArrayList<BeachTradeSeqEnt>();
+	
 	@Column(columnDefinition = "text")
 	private String model; 
 	
@@ -31,6 +40,15 @@ public class BeachPlayEnt {
 
 	public void setId(long id) {
 		this.id = id;
+	}
+	
+	
+	public List<BeachTradeSeqEnt> getTradeSequences() {
+		return tradeSequences;
+	}
+
+	public void setTradeSequences(List<BeachTradeSeqEnt> tradeSequences) {
+		this.tradeSequences = tradeSequences;
 	}
 
 	public BeachAccountEnt getAccount() {

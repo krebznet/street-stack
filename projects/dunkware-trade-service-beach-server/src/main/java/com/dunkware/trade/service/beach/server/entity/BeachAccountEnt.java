@@ -26,7 +26,7 @@ public class BeachAccountEnt {
 	private String identifier;
 	
 
-	@OneToMany(fetch = FetchType.LAZY, orphanRemoval = true)
+	@OneToMany(fetch = FetchType.EAGER, orphanRemoval = true)
 	private List<BeachPlayEnt> plays = new ArrayList<BeachPlayEnt>();
 	
 	@Transient

@@ -6,6 +6,8 @@ import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.LinkedBlockingQueue;
 import java.util.concurrent.Semaphore;
 
+import javax.persistence.EntityManager;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,6 +18,8 @@ import com.dunkware.common.util.json.DJson;
 import com.dunkware.trade.service.beach.protocol.play.Play;
 import com.dunkware.trade.service.beach.server.common.BeachRuntime;
 import com.dunkware.trade.service.beach.server.entity.BeachPlayEnt;
+import com.dunkware.trade.service.beach.server.entity.BeachRepo;
+import com.dunkware.trade.service.beach.server.entity.BeachTradeSeqEnt;
 import com.dunkware.trade.service.beach.server.runtime.core.BeachTradeSpec;
 import com.dunkware.trade.tick.api.instrument.Instrument;
 import com.dunkware.trade.tick.model.ticker.TradeTickerSpec;
@@ -27,6 +31,9 @@ public class BeachPlay implements BeachSignalListener {
 
 	@Autowired
 	private BeachRuntime runtime;
+	
+	@Autowired
+	private BeachRepo repo; 
 
 	@Autowired
 	private BeachService beachService;
@@ -44,6 +51,8 @@ public class BeachPlay implements BeachSignalListener {
 	private Semaphore tradeLock = new Semaphore(1);
 
 	private BeachPlayStatus status = BeachPlayStatus.Stopped;
+	
+	private String exception = null;
 
 	private BlockingQueue<BeachSignal> signalQueue = new LinkedBlockingQueue<BeachSignal>();
 
@@ -51,26 +60,44 @@ public class BeachPlay implements BeachSignalListener {
 	
 	private BeachPlayBean bean; 
 
+	private BeachStream stream; 
+	
 	void init(BeachAccount account, BeachPlayEnt ent) {
 		this.account = account;
 		this.entity = ent;
 		bean = new BeachPlayBean();
 		bean.setName(ent.getName());
 		bean.setAccount(account.getIdentifier());
-		
-		account.getEventNode().createChild("/plays/" + ent.getId());
 		try {
 			model = DJson.getObjectMapper().readValue(ent.getModel(), Play.class);
 		} catch (Exception e) {
-			// log : set status;
-			// it needs to reset open trades.
-			//
+			status = BeachPlayStatus.Exception;
+			exception = "Error deserializing play model " + e.toString();
 		}
+		try {
+			this.stream = beachService.getStream(model.getStream());
+		} catch (Exception e) {
+			status = BeachPlayStatus.Exception;
+			this.exception = e.toString();
+		}
+		bean.setStatus(status.name());
+		bean.setException(exception);
+		account.getEventNode().createChild("/plays/" + ent.getId());
+		
 		// start a session
 	}
 
-	void start() throws Exception {
-		beachService.getStream("us_equity").addSignalListener(this, getModel().getSignal());
+	public void start() throws Exception {
+		if(status != BeachPlayStatus.Stopped) { 
+			throw new Exception("Play cannot be started in status " + status.name());
+		}
+		try {
+			BeachStream stream = beachService.getStream("us_equity");
+			beachService.getStream("us_equity").addSignalListener(this, getModel().getSignal());
+			
+		} catch (Exception e) {
+			throw new Exception("Exception adding signal listener to stream " + e.toString());
+		}
 		status = BeachPlayStatus.Running;
 		signalHandler = new SignalHandler();
 		signalHandler.start();
@@ -121,10 +148,6 @@ public class BeachPlay implements BeachSignalListener {
 	}
 
 	
-	public void trade(BeachTradeSpec spec) {
-		
-
-	}
 
 	public BeachPlayStatus getStatus() {
 		return status;
@@ -219,12 +242,54 @@ public class BeachPlay implements BeachSignalListener {
 		// active symbol limit reached deny 
 		if(model.isEnableActiveSymbolLimit()) { 
 			int active = activeSymbolTradeCount(signal.getSymbol());
-			if(model.getActiveSymbolLimit() == active || model.getActiveSymbolLimit() > active) { 
+			if(model.getActiveSymbolLimit() == active ||active > model.getActiveSymbolLimit()) { 
 				return false;
 			}
 		}
 		
 		return true;
+		
+	}
+	
+	/**
+	 * Returns the next sequence for a symbol trade within the scope of this trade play
+	 * @param symbol
+	 * @return
+	 */
+	public int nextTradeSequence(String symbol) { 
+		BeachTradeSeqEnt seqEnt = null;
+		for (BeachTradeSeqEnt seq : entity.getTradeSequences()) {
+			if(seq.getSymbol().equalsIgnoreCase(symbol)) { 
+				seqEnt = seq;
+				break;
+			}
+		}
+		if(seqEnt == null) { 
+			seqEnt = new BeachTradeSeqEnt();
+			seqEnt.setPlay(entity);
+			seqEnt.setSequence(1);
+			seqEnt.setSymbol(symbol.toUpperCase());
+			entity.getTradeSequences().add(seqEnt);
+		} else { 
+			seqEnt.setSequence(seqEnt.getSequence() + 1);
+		}
+		// either way need to persist the SequenceEntity. 
+		EntityManager em = null;
+		try {
+		
+			em = repo.createEntityManager();
+			em.getTransaction().begin();
+			em.merge(seqEnt);
+			// em.persist(entity);
+			em.getTransaction().commit();
+		} catch (Exception e) {
+			logger.error("Exception persisting Trade Sequence" + e.toString(), e);
+		} finally {
+			em.close();
+		}
+		
+		return seqEnt.getSequence();
+		
 		
 	}
 	

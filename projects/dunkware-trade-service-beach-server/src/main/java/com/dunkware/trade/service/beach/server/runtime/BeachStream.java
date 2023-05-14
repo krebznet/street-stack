@@ -20,6 +20,7 @@ import com.dunkware.common.spec.kafka.DKafkaByteConsumer2Spec;
 import com.dunkware.common.spec.kafka.DKafkaByteConsumer2Spec.ConsumerType;
 import com.dunkware.common.spec.kafka.DKafkaByteConsumer2Spec.OffsetType;
 import com.dunkware.common.spec.kafka.DKafkaByteConsumer2SpecBuilder;
+import com.dunkware.common.util.dtime.DTimeZone;
 import com.dunkware.common.util.helpers.DProtoHelper;
 import com.dunkware.common.util.uuid.DUUID;
 import com.dunkware.net.proto.stream.GEntitySignal;
@@ -28,21 +29,19 @@ import com.dunkware.net.proto.stream.GStreamEvent;
 import com.dunkware.net.proto.stream.GStreamEventType;
 import com.dunkware.trade.service.beach.server.common.BeachRuntime;
 import com.dunkware.xstream.model.signal.StreamSignal;
-import com.dunkware.xstream.model.signal.StreamSignalListener;
-import com.dunkware.xstream.model.spec.StreamSpec;
-import com.dunkware.xstream.model.spec.StreamSpecEntitySignal;
+import com.google.api.client.util.Value;
 
 public class BeachStream {
 
 	@Autowired
 	private BeachRuntime runtime;
+	
+	
 
 	private List<BeachSignalListenerWrapper> signalListeners = new ArrayList<BeachSignalListenerWrapper>();
 	private Semaphore signalListenerLock = new Semaphore(1);
 
 	private ConcurrentHashMap<String, AtomicInteger> signalSubscriptions = new ConcurrentHashMap<String, AtomicInteger>();
-
-	private StreamSpec streamSpec;
 
 	private Logger logger = org.slf4j.LoggerFactory.getLogger(getClass());
 
@@ -50,33 +49,20 @@ public class BeachStream {
 
 	private SignalConsumer signalConsumer;
 
-	public void init(StreamSpec streamSpec) throws Exception {
-		this.streamSpec = streamSpec;
+	private String identifier; 
+	public void init(String identifier) throws Exception {
+		this.identifier = identifier;
 		this.signalConsumer = new SignalConsumer();
 		signalConsumer.init();
 
 	}
 
-	public boolean signalExists(String signal) {
-		for (StreamSpecEntitySignal specSignal : streamSpec.getEntitySignals()) {
-			if (specSignal.getIdentifier().equalsIgnoreCase(signal)) {
-				return true;
-			}
-		}
-		return false;
+	public String getIdentifier() {
+		return identifier;
 	}
-
-	public StreamSpec getSpec() {
-		return streamSpec;
-	}
-
+	
 	public void addSignalListener(BeachSignalListener listener, String... signals) throws Exception {
-		for (String signal : signals) {
-			if (!signalExists(signal)) {
-				throw new Exception(
-						"Signal Listener Invalid Signal Subscription " + signal + " does not exist in stream spec");
-			}
-		}
+	
 		for (String signal : signals) {
 			AtomicInteger count = signalSubscriptions.get(signal);
 			if (count == null) {
@@ -169,8 +155,8 @@ public class BeachStream {
 		public void init() throws Exception {
 			DKafkaByteConsumer2Spec spec = DKafkaByteConsumer2SpecBuilder
 					.newBuilder(ConsumerType.AllPartitions, OffsetType.Latest)
-					.setBrokerString(streamSpec.getEventBrokers())
-					.addTopic("stream_" + streamSpec.getIdentifier() + "_event_signal")
+					.setBrokerString(runtime.getStreamBrokers())
+					.addTopic("stream_" + identifier + "_event_signal")
 					.setClientAndGroup("d" + DUUID.randomUUID(5), "d" + DUUID.randomUUID(6)).build();
 			try {
 				consumer = DKafkaByteConsumer2.newInstance(spec);
@@ -196,12 +182,12 @@ public class BeachStream {
 					StreamSignal streamSignal = new StreamSignal();
 					streamSignal.setEntId(signal.getEntityId());
 					streamSignal.setEntIdent(signal.getEntityIdentifier());
-					streamSignal.setTime(DProtoHelper.toLocalDateTime(signal.getTime(), streamSpec.getTimeZone()));
+					streamSignal.setTime(DProtoHelper.toLocalDateTime(signal.getTime(), DTimeZone.NewYork));
 					streamSignal.setId(signal.getId());
 					streamSignal.setIdent(signal.getIdentifier());
 					BeachSignal beachSignal = new BeachSignal();
 					beachSignal.setSignal(signal.getIdentifier());
-					beachSignal.setStream(streamSpec.getIdentifier());
+					beachSignal.setStream(identifier);
 
 					try {
 						for (GEntityVarSnapshot varSnapshot : signal.getVarsList()) {

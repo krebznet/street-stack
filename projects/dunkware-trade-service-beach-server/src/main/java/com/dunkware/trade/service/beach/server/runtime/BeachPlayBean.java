@@ -4,9 +4,11 @@ public class BeachPlayBean {
 
 	private String name; 
 	private String account; 
+	private String status;
 	private double activeCapital; 
 	private int activeTrades; 
 	private int closedTrades; 
+	private String exception; 
 	private double upl;
 	
 	
@@ -45,7 +47,23 @@ public class BeachPlayBean {
 	}
 	public void setUpl(double upl) {
 		this.upl = upl;
+	}
+	public String getStatus() {
+		return status;
+	}
+	public void setStatus(String status) {
+		this.status = status;
+	}
+	public String getException() {
+		return exception;
+	}
+	public void setException(String exception) {
+		this.exception = exception;
 	} 
+	
+	
+	
+	
 	
 	
 }

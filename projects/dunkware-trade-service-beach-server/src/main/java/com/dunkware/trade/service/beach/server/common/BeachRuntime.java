@@ -21,11 +21,16 @@ public class BeachRuntime {
 	@Value("${config.executor.size}")
 	private int executorSize; 
 	
+	@Value("${config.stream.brokers}")
+	private String streamBrokers;
+
+	@Value("${config.stream.identifiers}")
+	private String streamIdentifiers;
+	
 	private DExecutor executor; 
 	private DEventTree eventTree; 
 	
-	@Value("${config.stream.server}")
-	private String streamServer; 
+	
 	
 	@PostConstruct
 	private void start() { 
@@ -41,10 +46,15 @@ public class BeachRuntime {
 		return eventTree;
 	}
 	
-	public String getStreamServerURL() { 
-		return streamServer;
+
+	public String getStreamBrokers() {
+		return streamBrokers;
 	}
-	
+
+	public String getStreamIdentifiers() {
+		return streamIdentifiers;
+	}
+
 	public static LocalDateTime dateTime() { 
 		return LocalDateTime.now(DTimeZone.toZoneId(DTimeZone.NewYork));
 	}
@@ -52,5 +62,7 @@ public class BeachRuntime {
 	public static LocalTime time() { 
 		return LocalTime.now(DTimeZone.toZoneId(DTimeZone.NewYork));
 	}
+	
+	
 }
 
