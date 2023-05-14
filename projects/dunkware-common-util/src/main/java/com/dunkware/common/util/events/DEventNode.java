@@ -108,7 +108,10 @@ public class DEventNode {
 							if(logger.isTraceEnabled()) { 
 								logger.trace("{} Event Handler Method {} on {} Invoke",event.getClass().getName(),method.method.getName(),method.source.getClass().getName());
 							}
-							method.method.invoke(method.source,event);	
+							// should invoke this in its own thread I am thinking. 
+							EventMethodInvocation invocation = new EventMethodInvocation(method.method, method.source, event);
+							geteventTree().getExecutor().execute(invocation);
+							//method.method.invoke(method.source,event);	
 						} catch (Exception e) {
 							logger.error("Exception invoking event handler method {} on class {} exception {}",method.method.getName(),method.source.getClass().getName(),e.toString());
 						}
@@ -273,5 +276,31 @@ public class DEventNode {
 		public Method method;
 		public String expression;
 		public Object source;
+	}
+	
+	private class EventMethodInvocation implements Runnable { 
+		
+		private Method method; 
+		private Object source; 
+		private DEvent event; 
+		
+		public EventMethodInvocation(Method method, Object source, DEvent event) { 
+			this.method = method;
+			this.source = source;
+			this.event = event; 
+		}
+
+		@Override
+		public void run() {
+			try {
+				method.invoke(source, event);
+			} catch (Exception e) {
+				logger.error("DEvent Method Exception " + method.getDeclaringClass().getName() + " " + method.getName() + " " + e.toString());
+			}
+
+		}
+		
+		
+		
 	}
 }
