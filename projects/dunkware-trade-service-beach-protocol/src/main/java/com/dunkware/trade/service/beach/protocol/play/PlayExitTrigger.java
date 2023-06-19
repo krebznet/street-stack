@@ -1,4 +1,4 @@
-package com.dunkware.trade.service.beach.protocol.play;
+	package com.dunkware.trade.service.beach.protocol.play;
 
 public class PlayExitTrigger {
 	

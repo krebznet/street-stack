@@ -26,7 +26,7 @@ public class Play {
 	private int activeTradeLimit = -1;
 	private boolean enableActiveSymbolLimit = false; 
 	private int activeSymbolLimit = -1; 
-	private boolean enableStopLoss = false; 
+	private boolean enableStopLoss = false;
 	private double stopLoss = -1;
 	
 	
