@@ -1,31 +1,25 @@
 package com.dunkware.common.util.datagrid;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.concurrent.BlockingQueue;
-import java.util.concurrent.LinkedBlockingQueue;
-
-import com.dunkware.common.util.json.DJson;
-
 public class DataGridUpdate {
 	
 	
-	private String data; 
-	private Number rowId; 
+	private String json; 
+	private Number id; 
 	private String type;
 	
-	public String getData() {
-		return data;
-	}
-	public void setData(String data) {
-		this.data = data;
-	}
 	
-	public Number getRowId() {
-		return rowId;
+	
+	public String getJson() {
+		return json;
 	}
-	public void setRowId(Number rowId) {
-		this.rowId = rowId;
+	public void setJson(String json) {
+		this.json = json;
+	}
+	public Number getId() {
+		return id;
+	}
+	public void setId(Number id) {
+		this.id = id;
 	}
 	public String getType() {
 		return type;

@@ -6,11 +6,11 @@ import java.util.List;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.LinkedBlockingQueue;
 import java.util.concurrent.Semaphore;
-import java.util.concurrent.TimeUnit;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.dunkware.common.util.executor.DExecutor;
 import com.dunkware.common.util.json.DJson;
 
 public class DataGrid {
@@ -25,14 +25,16 @@ public class DataGrid {
 
 	private BlockingQueue<DataGridUpdate> updates = new LinkedBlockingQueue<DataGridUpdate>();
 	private boolean disposed = false;
+	private DExecutor executor;
 
-	public static DataGrid newInstance(String idMethod) {
-		return new DataGrid(idMethod);
+	public static DataGrid newInstance(DExecutor executor, String idMethod) {
+		return new DataGrid(executor, idMethod);
 
 	}
 
-	private DataGrid(String idMethod) {
+	private DataGrid(DExecutor executor, String idMethod) {
 		this.idMethod = idMethod;
+		this.executor = executor;
 		updaateRunner = new UpdateRouter();
 		updaateRunner.start();
 	}
@@ -44,43 +46,90 @@ public class DataGrid {
 		}
 	}
 
-	public void insert(Object object) throws DataGridException {
-		DataGridUpdate update = new DataGridUpdate();
-		update.setRowId(getObjectId(object));
-		update.setType(DataGridUpdateType.INSERT.name());
-		;
-		try {
-			update.setData(DJson.serialize(object));
-			updates.put(update);
-		} catch (Exception e) {
-			throw new DataGridException("Exception serializing new row object " + e.toString());
-		}
+	public void insert(Object object) {
+		Runnable runnable = new Runnable() {
+
+			@Override
+			public void run() {
+				try {
+					DataGridUpdate update = new DataGridUpdate();
+					update.setId(getObjectId(object));
+					update.setType(DataGridUpdateType.ADD.name());
+					;
+					try {
+						update.setJson(DJson.serialize(object));
+						updates.put(update);
+					} catch (Exception e) {
+						logger.error("Exception serializing new row object class " + object.getClass().getName() + " "
+								+ e.toString());
+
+					}
+
+				} catch (Exception e) {
+					logger.error("Exception getting object id " + e.toString());
+
+				}
+			}
+		};
+		executor.execute(runnable);
 
 	}
 
-	public void update(Object object) throws DataGridException {
-		DataGridUpdate update = new DataGridUpdate();
-		update.setRowId(getObjectId(object));
-		update.setType(DataGridUpdateType.UPDATE.name());
-		;
-		try {
-			update.setData(DJson.serialize(object));
-			updates.put(update);
-		} catch (Exception e) {
-			throw new DataGridException("Exception serializing new row object " + e.toString());
-		}
+	public void update(Object object) {
+		Runnable runnable = new Runnable() {
+
+			@Override
+			public void run() {
+				DataGridUpdate update = new DataGridUpdate();
+				try {
+					update.setId(getObjectId(object));
+				} catch (Exception e) {
+					logger.error(
+							"exception getting id on object type " + object.getClass().getName() + " " + e.toString());
+					return;
+				}
+
+				update.setType(DataGridUpdateType.UPDATE.name());
+				;
+				try {
+					update.setJson(DJson.serialize(object));
+					updates.put(update);
+				} catch (Exception e) {
+					logger.error("Exception serializing new row object " + e.toString());
+				}
+			}
+		};
+		executor.execute(runnable);
+
 	}
 
-	public void delete(Object object) throws DataGridException {
-		DataGridUpdate update = new DataGridUpdate();
-		update.setRowId(getObjectId(object));
-		update.setType(DataGridUpdateType.DELETE.name());
-		;
-		try {
-			updates.put(update);
-		} catch (Exception e) {
-			throw new DataGridException("Exception putting delete object on queue " + e.toString());
-		}
+	public void delete(final Object object) {
+		
+		Runnable runnable = new Runnable() {
+
+			@Override
+			public void run() {
+
+				DataGridUpdate update = new DataGridUpdate();
+				try {
+					update.setId(getObjectId(object));
+					//update.setJson(DJson.serialize(object));
+					update.setType("DELETE");
+				} catch (Exception e) {
+					logger.error("error getting id on method " + idMethod + " " + e.toString());
+					return;
+				}
+				
+				
+				;
+				try {
+					updates.put(update);
+				} catch (Exception e) {
+					logger.error("Exception putting delete object on queue " + e.toString());
+				}
+			}
+		};
+		executor.execute(runnable);
 
 	}
 
@@ -119,42 +168,33 @@ public class DataGrid {
 
 	private class UpdateRouter extends Thread {
 
-		
-
 		public void run() {
 			while (!interrupted()) {
 				try {
 
-				
 					DataGridUpdate update = updates.take();
-					
-					if(update == null) { 
+
+					if (update == null) {
 						continue;
 					}
-					
 
-				
+					try {
+						consumerLock.acquire();
+						for (DataGridConsumer consumer : consumers) {
 							try {
-								consumerLock.acquire();
-								for (DataGridConsumer consumer : consumers) {
-									try {
-										consumer.consumeUpdate(update);
-									} catch (Exception e) {
-										logger.error("Exception invoking data grid consumer updates " + e.toString());
-										;
-									}
-
-								}
+								consumer.consumeUpdate(update);
 							} catch (Exception e) {
-								logger.error("outer router consumer dispatch exception " + e.toString());
+								logger.error("Exception invoking data grid consumer updates " + e.toString());
 								;
-							} finally {
-								consumerLock.release();
 							}
-					
-						
-					
-			
+
+						}
+					} catch (Exception e) {
+						logger.error("outer router consumer dispatch exception " + e.toString());
+						;
+					} finally {
+						consumerLock.release();
+					}
 
 				} catch (Exception e) {
 					if (e instanceof InterruptedException) {

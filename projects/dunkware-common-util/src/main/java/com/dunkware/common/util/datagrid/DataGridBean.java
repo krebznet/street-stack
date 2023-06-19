@@ -1,6 +1,8 @@
 package com.dunkware.common.util.datagrid;
 
-public class DataGridBean {
+import com.dunkware.common.util.databean.DataBean;
+
+public class DataGridBean extends DataBean {
 	
 	private int id; 
 	private String status; 

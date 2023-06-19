@@ -2,6 +2,7 @@ package com.dunkware.common.util.datagrid;
 
 import java.util.List;
 
+import com.dunkware.common.util.executor.DExecutor;
 import com.dunkware.common.util.helpers.DRandom;
 import com.dunkware.common.util.json.DJson;
 import com.dunkware.common.util.uuid.DUUID;
@@ -18,7 +19,7 @@ public class DataGridTest implements DataGridConsumer  {
 	private Updater updater = new Updater();
 	
 	public DataGridTest() { 
-		grid = DataGrid.newInstance("getId");
+		grid = DataGrid.newInstance(new DExecutor(4),"getId");
 		grid.addConsumer(this);
 		updater.start();
 	}
