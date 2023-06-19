@@ -28,6 +28,7 @@ import com.dunkware.trade.service.beach.server.common.BeachRuntime;
 import com.dunkware.trade.service.beach.server.entity.BeachAccountEnt;
 import com.dunkware.trade.service.beach.server.entity.BeachBrokerEnt;
 import com.dunkware.trade.service.beach.server.entity.BeachRepo;
+import com.dunkware.trade.service.beach.server.runtime.core.events.EBeachAccountLoaded;
 import com.dunkware.trade.service.beach.server.runtime.core.events.EBeachBrokerUpdate;
 
 public class BeachBroker {
@@ -150,6 +151,8 @@ public class BeachBroker {
 			BeachAccount act = new BeachAccount();
 			ac.getAutowireCapableBeanFactory().autowireBean(act);
 			act.init(this,actEnt,brokerAccount);
+			act.getEventNode().addEventHandler(this);
+			getEventNode().event(new EBeachAccountLoaded(act));
 			accounts.put(actEnt.getIdentifier(), act);
 		}
 		// now what we are not doing yet is what if we have a beach account that exists for this

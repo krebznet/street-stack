@@ -1,9 +1,16 @@
 package com.dunkware.trade.service.beach.server.runtime;
 
-public class BeachTradeBean {
+import com.dunkware.common.util.databean.DataBean;
+
+public class BeachTradeBean extends DataBean {
 	
 	private String account; 
+	private int accountId; 
+	private int allocatedSize;
 	private String play; 
+	private int filledSize;
+	private int playId; 
+	private int id;
 	private String symbol;
 	private double upl; 
 	private double rpl;
@@ -21,6 +28,7 @@ public class BeachTradeBean {
 	private double exitCommission; 
 	private double tradeComission; 
 	private String status;
+	
 	
 	public String getAccount() {
 		return account;
@@ -135,7 +143,41 @@ public class BeachTradeBean {
 	}
 	public void setStatus(String status) {
 		this.status = status;
+	}
+	public int getAccountId() {
+		return accountId;
+	}
+	public void setAccountId(int accountId) {
+		this.accountId = accountId;
+	}
+	public int getAllocatedSize() {
+		return allocatedSize;
+	}
+	public void setAllocatedSize(int allocatedSize) {
+		this.allocatedSize = allocatedSize;
+	}
+	public int getPlayId() {
+		return playId;
+	}
+	public void setPlayId(int playId) {
+		this.playId = playId;
+	}
+
+	
+	public int getId() {
+		return id;
+	}
+	public void setId(int id) {
+		this.id = id;
+	}
+	public int getFilledSize() {
+		return filledSize;
+	}
+	public void setFilledSize(int filledSize) {
+		this.filledSize = filledSize;
 	} 
+	
+	
 	
 	
 

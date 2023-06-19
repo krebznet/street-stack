@@ -4,12 +4,19 @@ public class BeachOrderBean {
 	
 	private String play; 
 	private String account; 
+	private int accountId;
 	private String trade; 
 	private String status; 
 	private int filled; 
 	private int remaining; 
 	private int size; 
 	private double commission;
+	private int id; 
+	private String symbol;
+	private String kind; 
+	private double avgFillPrice;
+	private String openTimeStamp;
+	private String fillTimeStamp;
 	
 	public String getPlay() {
 		return play;
@@ -58,7 +65,51 @@ public class BeachOrderBean {
 	}
 	public void setCommission(double commission) {
 		this.commission = commission;
+	}
+	public int getId() {
+		return id;
+	}
+	public void setId(int id) {
+		this.id = id;
+	}
+	public String getSymbol() {
+		return symbol;
+	}
+	public void setSymbol(String symbol) {
+		this.symbol = symbol;
+	}
+	public int getAccountId() {
+		return accountId;
+	}
+	public void setAccountId(int accountId) {
+		this.accountId = accountId;
+	}
+	public String getKind() {
+		return kind;
+	}
+	public void setKind(String kind) {
+		this.kind = kind;
+	}
+	public double getAvgFillPrice() {
+		return avgFillPrice;
+	}
+	public void setAvgFillPrice(double avgFillPrice) {
+		this.avgFillPrice = avgFillPrice;
+	}
+	public String getOpenTimeStamp() {
+		return openTimeStamp;
+	}
+	public void setOpenTimeStamp(String openTimeStamp) {
+		this.openTimeStamp = openTimeStamp;
+	}
+	public String getFillTimeStamp() {
+		return fillTimeStamp;
+	}
+	public void setFillTimeStamp(String fillTimeStamp) {
+		this.fillTimeStamp = fillTimeStamp;
 	} 
+	
+	
 	
 	
 

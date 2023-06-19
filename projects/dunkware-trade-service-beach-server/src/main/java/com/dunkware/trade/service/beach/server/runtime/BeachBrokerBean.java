@@ -1,6 +1,8 @@
 package com.dunkware.trade.service.beach.server.runtime;
 
-public class BeachBrokerBean {
+import com.dunkware.common.util.databean.DataBean;
+
+public class BeachBrokerBean extends DataBean {
 
 	private String status; 
 	private String name;

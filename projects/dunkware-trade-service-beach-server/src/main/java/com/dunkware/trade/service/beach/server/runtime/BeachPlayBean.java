@@ -4,12 +4,16 @@ public class BeachPlayBean {
 
 	private String name; 
 	private String account; 
+	private int accountId; 
+	private int tradeCount;
+	
 	private String status;
 	private double activeCapital; 
 	private int activeTrades; 
 	private int closedTrades; 
 	private String exception; 
 	private double upl;
+	private double rpl;
 	
 	
 	public String getName() {
@@ -59,7 +63,27 @@ public class BeachPlayBean {
 	}
 	public void setException(String exception) {
 		this.exception = exception;
+	}
+	public int getAccountId() {
+		return accountId;
+	}
+	public void setAccountId(int accountId) {
+		this.accountId = accountId;
+	}
+	public int getTradeCount() {
+		return tradeCount;
+	}
+	public void setTradeCount(int tradeCount) {
+		this.tradeCount = tradeCount;
+	}
+	public double getRpl() {
+		return rpl;
+	}
+	public void setRpl(double rpl) {
+		this.rpl = rpl;
 	} 
+	
+	
 	
 	
 	

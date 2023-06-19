@@ -27,6 +27,9 @@ public class BeachAccount {
 	@Autowired()
 	private BeachRuntime runtime; 
 	
+	@Autowired()
+	private BeachService beachService;
+	
 	@Autowired
 	private BeachRepo repo; 
 	
@@ -63,6 +66,7 @@ public class BeachAccount {
 		}
 		
 	}
+	
 	
 	public BeachAccountBean getBean() { 
 		return bean;

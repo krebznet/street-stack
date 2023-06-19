@@ -21,6 +21,6 @@ public class ControllerAdvice {
                 ex.getMessage(),
                 ex.getMessage());
 
-        return new ResponseEntity<ErrorMessage>(message, HttpStatus.INTERNAL_SERVER_ERROR);
+        return new ResponseEntity<ErrorMessage>(message, HttpStatus.BAD_RE);
     }
 }

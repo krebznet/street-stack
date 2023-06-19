@@ -1,7 +1,12 @@
 package com.dunkware.trade.service.beach.server.controller;
 
+import java.io.IOException;
+import java.io.OutputStream;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -9,10 +14,14 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.server.ResponseStatusException;
+import org.springframework.web.servlet.mvc.method.annotation.StreamingResponseBody;
 
+import com.dunkware.common.util.datagrid.DataGridUpdate;
+import com.dunkware.common.util.datagrid.GlazedDataGrid;
+import com.dunkware.common.util.helpers.DRandom;
+import com.dunkware.common.util.json.DJson;
+import com.dunkware.common.util.uuid.DUUID;
 import com.dunkware.trade.service.beach.protocol.broker.AddBrokerReq;
-import com.dunkware.trade.service.beach.protocol.broker.AddBrokerResp;
-import com.dunkware.trade.service.beach.protocol.play.AddPlayResp;
 import com.dunkware.trade.service.beach.protocol.play.Play;
 import com.dunkware.trade.service.beach.server.runtime.BeachAccount;
 import com.dunkware.trade.service.beach.server.runtime.BeachPlay;
@@ -25,20 +34,67 @@ public class BeachApiController {
 	@Autowired()
 	private BeachService beachService; 
 	
-	@PostMapping(path = "/trade/controller/broker/add")
-	public @ResponseBody() AddBrokerResp addBroker(@RequestBody() AddBrokerReq input) throws Exception { 
-		AddBrokerResp resp = new AddBrokerResp();
+	public static void main(String[] args) {
+		AddBrokerReq req = new AddBrokerReq();
+		req.setClientId(9);
+		req.setHost("localhost");
+		req.setPort(908);
+		req.setName("Dunkstreet Paper");
 		try {
-			beachService.addBroker(input);
-			resp.setOk(true);
-			return resp;
+			System.out.println(DJson.serializePretty(req));
 		} catch (Exception e) {
-			resp.setOk(false);
-			resp.setError(e.toString());
-			return resp;
+			// TODO: handle exception
+		}
+	}
+	
+	
+	@GetMapping(path = "/trade/stream/test")
+	public ResponseEntity<StreamingResponseBody> test() throws IOException{
+	    StreamingResponseBody body = new  StreamingResponseBody() {
+	        @Override
+	        public void writeTo(final OutputStream outputStream) throws IOException{
+	            try {
+	            	while(true) { 
+	            		//GlazedDataGrid grid = new GlazedDataGrid();
+	            		//grid.start(beachService.getBrokerBeans());
+	            		// add a blocking queeu on DataGrid. 
+	            		// and then send 
+	            		DataGridUpdate update = new DataGridUpdate();
+	            		update.setType("INSERT");
+	            		update.setJson(DUUID.randomUUID(30));
+	            		update.setId(DRandom.getRandom(2, 44));
+	            		outputStream.write(DJson.serialize(update).getBytes());
+	            		outputStream.flush();
+	            		Thread.sleep(2);
+	            	}
+	                // Some operations..
+	            } catch (Exception e ) {
+	            	outputStream.flush();
+	            	outputStream.close();
+	               e.printStackTrace();
+	               return;
+	            }
+	        }
+	        
+	    };
+	    return ResponseEntity.ok().contentType(MediaType.APPLICATION_JSON).body(body);
+	}
+	
+	@PostMapping(path = "/trade/v1/broker/add")
+	public void addBroker(AddBrokerReq req)   { 
+			
+		try {
+			
+			beachService.addBroker(req);
+			
+		} catch (Exception e) {
+			throw new ResponseStatusException(
+			           HttpStatus.BAD_REQUEST, "Exception adding broker " + e.getMessage(), e);
 		}
 		
 	}
+	
+
 	
 	@GetMapping(path = "/trade/controller/play/start")
 	public void startPlay(@RequestParam() long playId) throws Exception {
