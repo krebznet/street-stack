@@ -55,10 +55,11 @@ public class DataGrid {
 					DataGridUpdate update = new DataGridUpdate();
 					update.setId(getObjectId(object));
 					update.setType(DataGridUpdateType.ADD.name());
-					;
+					update.setJson(object);
 					try {
-						update.setJson(DJson.serialize(object));
-						updates.put(update);
+						
+						updates.add(update);
+						
 					} catch (Exception e) {
 						logger.error("Exception serializing new row object class " + object.getClass().getName() + " "
 								+ e.toString());
@@ -92,7 +93,7 @@ public class DataGrid {
 				update.setType(DataGridUpdateType.UPDATE.name());
 				;
 				try {
-					update.setJson(DJson.serialize(object));
+					update.setJson(object);
 					updates.put(update);
 				} catch (Exception e) {
 					logger.error("Exception serializing new row object " + e.toString());
@@ -173,13 +174,14 @@ public class DataGrid {
 				try {
 
 					DataGridUpdate update = updates.take();
-
+					
 					if (update == null) {
 						continue;
 					}
-
+					
 					try {
 						consumerLock.acquire();
+						
 						for (DataGridConsumer consumer : consumers) {
 							try {
 								consumer.consumeUpdate(update);

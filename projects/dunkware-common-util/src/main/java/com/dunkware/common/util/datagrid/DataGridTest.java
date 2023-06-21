@@ -55,7 +55,7 @@ public class DataGridTest implements DataGridConsumer  {
 	@Override
 	public void consumeUpdate(DataGridUpdate update) {
 		try {
-			System.out.println(DJson.serializePretty(update));
+		
 		} catch (Exception e) {
 			e.printStackTrace();
 			// TODO: handle exception

@@ -1,6 +1,6 @@
 package com.dunkware.common.util.datagrid;
 
-import java.util.ArrayList;
+import java.util.List;
 
 import com.dunkware.common.util.databean.DataBeanConnector;
 import com.dunkware.common.util.executor.DExecutor;
@@ -8,7 +8,6 @@ import com.dunkware.common.util.helpers.DRandom;
 import com.dunkware.common.util.json.DJson;
 
 import ca.odell.glazedlists.BasicEventList;
-import ca.odell.glazedlists.EventList;
 import ca.odell.glazedlists.GlazedLists;
 import ca.odell.glazedlists.ObservableElementList;
 
@@ -32,9 +31,9 @@ public class GlazedDataGridTest2 implements DataGridConsumer {
 	
 
 	@Override
-	public void consumeUpdate(DataGridUpdate update) {
+	public void consumeUpdate(DataGridUpdate updates) {
 		try {
-			System.out.println(DJson.serialize(update));
+			//System.out.println(DJson.serialize(updates));
 		} catch (Exception e) {
 			e.printStackTrace();
 			// TODO: handle exception
@@ -61,12 +60,14 @@ public class GlazedDataGridTest2 implements DataGridConsumer {
 					try {
 						list.getReadWriteLock().writeLock().lock();
 						list.add(b);
+						list.getReadWriteLock().writeLock().unlock();
+
 					} catch (Exception e) {
 						e.printStackTrace();
 						// TODO: handle exception
 					}
 					finally { 
-						list.getReadWriteLock().writeLock().unlock();
+					
 					}
 					b.setSize(DRandom.getRandom(2, 322));
 					b.notifyUpdate();

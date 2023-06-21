@@ -32,7 +32,7 @@ public class GlazedDataGridTest implements ListEventListener<DataGridBean> {
 		while(listChanges.hasNext()) { 
 			boolean results = listChanges.next();
 			if(results) {
-				System.out.println(listChanges.getType());
+			//	System.out.println(listChanges.getType());
 				
 			}
 		}

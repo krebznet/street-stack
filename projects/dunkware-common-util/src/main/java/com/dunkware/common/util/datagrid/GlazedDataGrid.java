@@ -1,10 +1,12 @@
 package com.dunkware.common.util.datagrid;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import com.dunkware.common.util.executor.DExecutor;
 
-import ca.odell.glazedlists.EventList;
-import ca.odell.glazedlists.GlazedLists;
 import ca.odell.glazedlists.ObservableElementList;
+import ca.odell.glazedlists.TransformedList;
 import ca.odell.glazedlists.event.ListEvent;
 import ca.odell.glazedlists.event.ListEventListener;
 
@@ -12,12 +14,15 @@ public class GlazedDataGrid implements ListEventListener<Object>  {
 	
 	private ObservableElementList<?> list;
 	private DataGrid dataGrid; 
+	private Logger logger = LoggerFactory.getLogger(getClass());
 	
 	
 	public GlazedDataGrid(ObservableElementList<?> list, DExecutor executor, String idMethod) { 
 		this.list = list; 
 		
+		
 		this.dataGrid = DataGrid.newInstance(executor, idMethod);
+		list.addListEventListener(this);
 	}
 	
 	public void addConsumer(DataGridConsumer consumer) { 
@@ -30,6 +35,7 @@ public class GlazedDataGrid implements ListEventListener<Object>  {
 
 	public void start() { 
 		try {
+			
 			list.getReadWriteLock().readLock().lock();
 			for (Object object : list) {
 				// okay good it run in its own thread
@@ -42,7 +48,7 @@ public class GlazedDataGrid implements ListEventListener<Object>  {
 		} finally {
 			list.getReadWriteLock().readLock().unlock();
 		}
-		list.addListEventListener(this);
+		
 	}
 	
 	public void dispose() { 
@@ -71,7 +77,10 @@ public class GlazedDataGrid implements ListEventListener<Object>  {
 		    		listChanges.getSourceList().getReadWriteLock().readLock().lock();
 		    	 if(newme.equals("UNKNOWN VALUE") && old.equals("UNKNOWN VALUE" )) { 
 		    		 object = listChanges.getSourceList().get(index);
+		    		 
 		    	 }
+		    	 
+		    	
 				
 			} catch (Exception e) {
 				e.printStackTrace();
@@ -82,9 +91,11 @@ public class GlazedDataGrid implements ListEventListener<Object>  {
 		  
 			if(type == ListEvent.DELETE) { 
 				try {
-					if(old.equals("UNKNOWN VALUE")) { 
-						System.out.println("fuck");
+					if(old.equals("UNKNOWN VALUE")) {
+						
+						dataGrid.delete(object);
 					} else { 
+						
 						dataGrid.delete(old);
 					}
 				
@@ -98,8 +109,14 @@ public class GlazedDataGrid implements ListEventListener<Object>  {
 			if(type == ListEvent.INSERT) { 
 				try {
 					if(newme.equals("UNKNOWN VALUE")) { 
-						dataGrid.insert(object);
+						if(object == null) { 
+						
+							continue;
+						}
+						
+						dataGrid.insert(object);;
 					} else { 
+						System.out.println("insert on object type "+ newme.getClass().getName());;
 						dataGrid.insert(newme);
 					}
 				
@@ -111,7 +128,16 @@ public class GlazedDataGrid implements ListEventListener<Object>  {
 			}
 			if(type == ListEvent.UPDATE) { 
 				try {
-					dataGrid.update(old);
+					if(old.equals("UNKNOWN VALUE")) { 
+						if(object != null) { 
+							System.out.println("update on object type "+ object.getClass().getName());;
+							dataGrid.update(object);
+						}
+					} else { 
+						System.out.println("update on object type "+ old.getClass().getName());;
+						dataGrid.update(old);
+					}
+					
 				} catch (Exception e) {
 					e.printStackTrace();
 					// TODO: handle exception
