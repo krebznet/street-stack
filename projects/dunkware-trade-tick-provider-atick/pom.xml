@@ -18,6 +18,13 @@
 	<description>Dunkware Trade Active Tick Provider</description>
 
 
+  <repositories>
+        <repository>
+            <id>dunkware-internal-release</id>
+            <url>https://nexus.dunkware.com/dunkware-internal-release</url>
+        </repository>
+  </repositories>
+
 	<scm>
 		<connection>scm:git:ssh://git@github.com:krebznet/dunkware-trade-tick-provider-atick.git</connection>
 		<developerConnection>scm:git:ssh://git@github.com/krebznet/dunkware-trade-tick-provider-atick.git</developerConnection>
