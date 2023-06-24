@@ -3,8 +3,6 @@ package com.dunkware.xstream.xproject;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.eclipse.jdt.internal.core.util.SignatureAttribute;
-
 import com.dunkware.xstream.xScript.ScriptElement;
 import com.dunkware.xstream.xScript.SignalType;
 import com.dunkware.xstream.xScript.VarType;
