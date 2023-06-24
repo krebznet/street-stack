@@ -21,7 +21,7 @@
   <repositories>
         <repository>
             <id>dunkware-internal-release</id>
-            <url>https://nexus.dunkware.com/dunkware-internal-release</url>
+            <url>https://nexus.dunkware.com/repository/dunkware-internal-release/</url>
         </repository>
   </repositories>
 
