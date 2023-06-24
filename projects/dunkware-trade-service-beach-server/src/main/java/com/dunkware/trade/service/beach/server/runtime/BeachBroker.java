@@ -32,44 +32,42 @@ import com.dunkware.trade.service.beach.server.runtime.core.events.EBeachAccount
 import com.dunkware.trade.service.beach.server.runtime.core.events.EBeachBrokerUpdate;
 
 public class BeachBroker {
-	
+
 	@Autowired
 	private BeachRuntime runtime;
-	
+
 	@Autowired
-	private BeachRepo repo; 
-	
+	private BeachRepo repo;
+
 	@PersistenceContext(unitName = "trade")
 	private EntityManager em;
-	
-	
+
 	@Autowired
-	private ApplicationContext ac; 
-	
+	private ApplicationContext ac;
+
 	private Logger logger = LoggerFactory.getLogger(getClass());
 	private BeachBrokerEnt entity;
-	private Map<String,BeachAccount> accounts = new ConcurrentHashMap<String,BeachAccount>();
+	private Map<String, BeachAccount> accounts = new ConcurrentHashMap<String, BeachAccount>();
 
-	
-	private BrokerType brokerType; 
-	private Broker broker; 
-	
-	private DEventNode eventNode; 
-	
+	private BrokerType brokerType;
+	private Broker broker;
+
+	private DEventNode eventNode;
+
 	private BeachBrokerBean bean;
-	
-	
-	public void init(BeachBrokerEnt entity) throws Exception  { 
-		this.entity = entity; 
+
+	public void init(BeachBrokerEnt entity) throws Exception {
+		this.entity = entity;
 		bean = new BeachBrokerBean();
 		bean.setName(entity.getIdentifier());
 		bean.setId(entity.getId());
-		eventNode = runtime.getEventTree().getRoot().createChild("/brokers/" + entity.getIdentifier()); 
+		bean.setStatus("Connecting");
+		eventNode = runtime.getEventTree().getRoot().createChild("/brokers/" + entity.getIdentifier());
 		try {
 			brokerType = DJson.getObjectMapper().readValue(entity.getType(), BrokerType.class);
 		} catch (Exception e) {
 			logger.error("Exception deserializing broker type model in broker init " + e.toString());
-			throw e; 
+			throw e;
 		}
 		try {
 			broker = TradeRegistry.get().createBroker(brokerType);
@@ -78,50 +76,50 @@ public class BeachBroker {
 			throw e;
 		}
 		try {
-			broker.connect(brokerType,eventNode,runtime.getExecutor());
 			broker.getEventNode().addEventHandler(this);
+			broker.connect(brokerType, eventNode, runtime.getExecutor());
+
 			bean.setStatus("Connected");
-			
+
 			Thread.sleep(2500);
 		} catch (Exception e) {
 			bean.setStatus("Disconnected");
-			logger.error("FIX ME: Broker connect exception " + e.toString()); 
+			logger.error("FIX ME: Broker connect exception " + e.toString());
 		}
 		loadAndSyncAccounts();
 	}
-	
-	public BeachBrokerBean getBean() { 
+
+	public BeachBrokerBean getBean() {
 		return bean;
 	}
-	
-	public boolean isConnected() { 
-		if(broker.getStatus() == BrokerStatus.Connected) {
-			return true; 
-		}
-		return false; 
-	}
-	
 
-	public Collection<BeachAccount> getAccounts() { 
+	public boolean isConnected() {
+		if (broker.getStatus() == BrokerStatus.Connected) {
+			return true;
+		}
+		return false;
+	}
+
+	public Collection<BeachAccount> getAccounts() {
 		return accounts.values();
 	}
-	
-	public Broker getConnector() { 
-		return broker; 
+
+	public Broker getConnector() {
+		return broker;
 	}
-	
-	public DEventNode getEventNode() { 
+
+	public DEventNode getEventNode() {
 		return eventNode;
 	}
-	
-	public String getIdentifier() { 
+
+	public String getIdentifier() {
 		return entity.getIdentifier();
 	}
-	
-	public BeachBrokerEnt getEntity() { 
+
+	public BeachBrokerEnt getEntity() {
 		return entity;
 	}
-	
+
 	/**
 	 * Here we will create new BeachAccounts for any broker accounts that does not
 	 * have a matching beach account Invoked upon broker connection established
@@ -133,8 +131,8 @@ public class BeachBroker {
 			// query an account
 			BeachAccountEnt actEnt = repo.getAccount(brokerAccount.getIdentifier());
 			if (actEnt == null) {
-				logger.info("Broker {} Creating New Account {}", getEntity().getIdentifier(),brokerAccount.getIdentifier(),
-						brokerType.getIdentifier());
+				logger.info("Broker {} Creating New Account {}", getEntity().getIdentifier(),
+						brokerAccount.getIdentifier(), brokerType.getIdentifier());
 				actEnt = new BeachAccountEnt();
 				actEnt.setIdentifier(brokerAccount.getIdentifier());
 				actEnt.setBroker(getEntity());
@@ -150,32 +148,35 @@ public class BeachBroker {
 			}
 			BeachAccount act = new BeachAccount();
 			ac.getAutowireCapableBeanFactory().autowireBean(act);
-			act.init(this,actEnt,brokerAccount);
+			act.init(this, actEnt, brokerAccount);
 			act.getEventNode().addEventHandler(this);
 			getEventNode().event(new EBeachAccountLoaded(act));
 			accounts.put(actEnt.getIdentifier(), act);
 		}
-		// now what we are not doing yet is what if we have a beach account that exists for this
-		// broker but that account is no longer on the broker? Fuck IT! 
+		// now what we are not doing yet is what if we have a beach account that exists
+		// for this
+		// broker but that account is no longer on the broker? Fuck IT!
 	}
-	
+
 	@ADEventMethod()
-	public void brokerDisconnected(EBrokerDisconnected event) { 
+	public void brokerDisconnected(EBrokerDisconnected event) {
 		bean.setStatus("Disconnected");
+		bean.notifyUpdate(); // this should work as is.
 		eventNode.event(new EBeachBrokerUpdate(this));
 	}
-	
+
 	@ADEventMethod
 	public void brokerConnected(EBrokerConnected event) {
 		bean.setStatus("Connected");
+		bean.notifyUpdate();
 		eventNode.event(new EBeachBrokerUpdate(this));
 	}
-	
+
 	@ADEventMethod
 	public void brokerConnecting(EBrokerConnecting event) {
 		bean.setStatus("Connecting");
+		bean.notifyUpdate();
 		eventNode.event(new EBeachBrokerUpdate(this));
 	}
-	
-	
+
 }

@@ -10,6 +10,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 
+import com.dunkware.common.util.databean.DataBeanConnector;
 import com.dunkware.common.util.events.DEventNode;
 import com.dunkware.common.util.json.DJson;
 import com.dunkware.trade.sdk.core.runtime.broker.BrokerAccount;
@@ -19,6 +20,10 @@ import com.dunkware.trade.service.beach.server.entity.BeachAccountEnt;
 import com.dunkware.trade.service.beach.server.entity.BeachPlayEnt;
 import com.dunkware.trade.service.beach.server.entity.BeachRepo;
 import com.dunkware.trade.service.beach.server.runtime.core.BeachTradeSpec;
+
+import ca.odell.glazedlists.BasicEventList;
+import ca.odell.glazedlists.GlazedLists;
+import ca.odell.glazedlists.ObservableElementList;
 
 public class BeachAccount {
 	
@@ -45,7 +50,14 @@ public class BeachAccount {
 	
 	private BeachAccountBean bean;
 	
+	private ObservableElementList<BeachTradeBean> tradeBeans;
+	private ObservableElementList<BeachOrderBean> orderBeans;
+	private ObservableElementList<BeachPlayBean> playBeans;
+	
 	public void init(BeachBroker broker, BeachAccountEnt ent, BrokerAccount brokerAccount) { 
+		tradeBeans = new ObservableElementList<BeachTradeBean>(GlazedLists.threadSafeList(new BasicEventList<BeachTradeBean>()), new DataBeanConnector<BeachTradeBean>());
+		orderBeans = new ObservableElementList<BeachOrderBean>(GlazedLists.threadSafeList(new BasicEventList<BeachOrderBean>()), new DataBeanConnector<BeachOrderBean>());
+		playBeans = new ObservableElementList<BeachPlayBean>(GlazedLists.threadSafeList(new BasicEventList<BeachPlayBean>()), new DataBeanConnector<BeachPlayBean>());
 		this.entity = ent; 
 		this.broker = broker;
 		this.brokerAccount = brokerAccount;
@@ -141,8 +153,26 @@ public class BeachAccount {
 		return plays.values();
 	}
 	
-
 	
+	
+	public ObservableElementList<BeachTradeBean> getTradeBeans() {
+		return tradeBeans;
+	}
+
+
+	public ObservableElementList<BeachOrderBean> getOrderBeans() {
+		return orderBeans;
+	}
+
+
+	public ObservableElementList<BeachPlayBean> getPlayBeans() {
+		return playBeans;
+	}
+
+
+
+
+
 	private class BeanUpdater extends Thread { 
 		
 		public void run() { 

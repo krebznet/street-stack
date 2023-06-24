@@ -1,6 +1,8 @@
 package com.dunkware.trade.service.beach.server.runtime;
 
-public class BeachPlayBean {
+import com.dunkware.common.util.databean.DataBean;
+
+public class BeachPlayBean extends DataBean  {
 
 	private String name; 
 	private String account; 
@@ -82,6 +84,8 @@ public class BeachPlayBean {
 	public void setRpl(double rpl) {
 		this.rpl = rpl;
 	} 
+	
+	
 	
 	
 	

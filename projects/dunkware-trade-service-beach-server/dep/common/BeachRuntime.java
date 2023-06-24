@@ -10,7 +10,7 @@ import org.springframework.stereotype.Component;
 import com.dunkware.common.util.events.DEventTree;
 import com.dunkware.common.util.executor.DExecutor;
 
-@Component
+ooooo
 public class BeachRuntime {
 
 	@Value("${config.executor.timeout}")
@@ -19,7 +19,7 @@ public class BeachRuntime {
 	private int executorSize; 
 	
 	private DExecutor executor; 
-	private DEventTree eventTree; 
+	private DEve ntTree eventTree; 
 	
 	@Value("${config.stream.server}")
 	private String streamServer; 

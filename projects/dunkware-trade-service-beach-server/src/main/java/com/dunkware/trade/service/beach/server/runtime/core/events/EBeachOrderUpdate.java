@@ -1,4 +1,4 @@
-package com.dunkware.trade.service.beach.server.runtime.core.events;
+ package com.dunkware.trade.service.beach.server.runtime.core.events;
 
 import com.dunkware.common.util.events.DEvent;
 import com.dunkware.trade.service.beach.server.runtime.BeachOrder;

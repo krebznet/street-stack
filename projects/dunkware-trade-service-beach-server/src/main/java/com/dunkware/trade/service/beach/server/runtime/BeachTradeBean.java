@@ -28,6 +28,7 @@ public class BeachTradeBean extends DataBean {
 	private double exitCommission; 
 	private double tradeComission; 
 	private String status;
+	private int activeOrders;
 	
 	
 	public String getAccount() {
@@ -175,7 +176,15 @@ public class BeachTradeBean extends DataBean {
 	}
 	public void setFilledSize(int filledSize) {
 		this.filledSize = filledSize;
+	}
+	public int getActiveOrders() {
+		return activeOrders;
+	}
+	public void setActiveOrders(int activeOrders) {
+		this.activeOrders = activeOrders;
 	} 
+	
+	
 	
 	
 	

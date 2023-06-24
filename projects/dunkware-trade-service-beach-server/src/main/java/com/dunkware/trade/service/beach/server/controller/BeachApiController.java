@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -29,6 +30,7 @@ import com.dunkware.trade.service.beach.server.runtime.BeachPlayStatus;
 import com.dunkware.trade.service.beach.server.runtime.BeachService;
 
 @RestController
+@CrossOrigin("*")
 public class BeachApiController {
 
 	@Autowired()
@@ -47,39 +49,7 @@ public class BeachApiController {
 		}
 	}
 	
-	
-	@GetMapping(path = "/trade/stream/test")
-	public ResponseEntity<StreamingResponseBody> test() throws IOException{
-	    StreamingResponseBody body = new  StreamingResponseBody() {
-	        @Override
-	        public void writeTo(final OutputStream outputStream) throws IOException{
-	            try {
-	            	while(true) { 
-	            		//GlazedDataGrid grid = new GlazedDataGrid();
-	            		//grid.start(beachService.getBrokerBeans());
-	            		// add a blocking queeu on DataGrid. 
-	            		// and then send 
-	            		DataGridUpdate update = new DataGridUpdate();
-	            		update.setType("INSERT");
-	            		update.setJson(DUUID.randomUUID(30));
-	            		update.setId(DRandom.getRandom(2, 44));
-	            		outputStream.write(DJson.serialize(update).getBytes());
-	            		outputStream.flush();
-	            		Thread.sleep(2);
-	            	}
-	                // Some operations..
-	            } catch (Exception e ) {
-	            	outputStream.flush();
-	            	outputStream.close();
-	               e.printStackTrace();
-	               return;
-	            }
-	        }
-	        
-	    };
-	    return ResponseEntity.ok().contentType(MediaType.APPLICATION_JSON).body(body);
-	}
-	
+
 	@PostMapping(path = "/trade/v1/broker/add")
 	public void addBroker(AddBrokerReq req)   { 
 			

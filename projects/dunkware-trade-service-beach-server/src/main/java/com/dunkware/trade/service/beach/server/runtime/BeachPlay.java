@@ -13,6 +13,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 
+import com.dunkware.common.util.databean.DataBeanConnector;
 import com.dunkware.common.util.events.DEventNode;
 import com.dunkware.common.util.json.DJson;
 import com.dunkware.trade.service.beach.protocol.play.Play;
@@ -24,6 +25,10 @@ import com.dunkware.trade.service.beach.server.runtime.core.BeachTradeSpec;
 import com.dunkware.trade.tick.api.instrument.Instrument;
 import com.dunkware.trade.tick.model.ticker.TradeTickerSpec;
 import com.dunkware.trade.tick.model.ticker.TradeTickerType;
+
+import ca.odell.glazedlists.BasicEventList;
+import ca.odell.glazedlists.GlazedLists;
+import ca.odell.glazedlists.ObservableElementList;
 
 public class BeachPlay implements BeachSignalListener {
 
@@ -62,7 +67,12 @@ public class BeachPlay implements BeachSignalListener {
 
 	private BeachStream stream; 
 	
+	private ObservableElementList<BeachTradeBean> tradeBeans;
+	private ObservableElementList<BeachOrderBean> orderBeans;
+	
 	void init(BeachAccount account, BeachPlayEnt ent) {
+		tradeBeans = new ObservableElementList<BeachTradeBean>(GlazedLists.threadSafeList(new BasicEventList<BeachTradeBean>()), new DataBeanConnector<BeachTradeBean>());
+		orderBeans = new ObservableElementList<BeachOrderBean>(GlazedLists.threadSafeList(new BasicEventList<BeachOrderBean>()), new DataBeanConnector<BeachOrderBean>());
 		this.account = account;
 		this.entity = ent;
 		bean = new BeachPlayBean();
@@ -96,6 +106,11 @@ public class BeachPlay implements BeachSignalListener {
 			beachService.getStream("us_equity").addSignalListener(this, getModel().getSignal());
 			
 		} catch (Exception e) {
+			bean.setStatus(BeachPlayStatus.Exception.name());
+			bean.setException(e.getMessage());
+			bean.notifyUpdate();
+			status = BeachPlayStatus.Exception;
+			
 			throw new Exception("Exception adding signal listener to stream " + e.toString());
 		}
 		status = BeachPlayStatus.Running;
@@ -104,6 +119,16 @@ public class BeachPlay implements BeachSignalListener {
 
 	}
 	
+	
+	
+	public ObservableElementList<BeachTradeBean> getTradeBeans() {
+		return tradeBeans;
+	}
+
+	public ObservableElementList<BeachOrderBean> getOrderBeans() {
+		return orderBeans;
+	}
+
 	public String getName() { 
 		return entity.getName();
 	}

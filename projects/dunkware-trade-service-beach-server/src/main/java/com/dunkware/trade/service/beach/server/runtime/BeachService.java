@@ -21,6 +21,7 @@ import com.dunkware.common.util.events.DEventNode;
 import com.dunkware.common.util.events.anot.ADEventMethod;
 import com.dunkware.common.util.json.DJson;
 import com.dunkware.trade.broker.tws.TwsBrokerType;
+import com.dunkware.trade.sdk.core.runtime.broker.event.EBrokerEvent;
 import com.dunkware.trade.sdk.core.runtime.registry.TradeRegistry;
 import com.dunkware.trade.service.beach.protocol.broker.AddBrokerReq;
 import com.dunkware.trade.service.beach.server.common.BeachRuntime;
@@ -55,7 +56,9 @@ public class BeachService {
 	
 	private ObservableElementList<BeachBrokerBean> brokerBeans;
 
-	private ObservableElementList<BeachAccountBean> accountBeans;
+	private ObservableElementList<BeachAccountBean> accountBeans
+	
+	;
 	
 	@PostConstruct()
 	private void load() {
@@ -68,18 +71,15 @@ public class BeachService {
 		Thread runner = new Thread() {
 			public void run() {
 				String[] streamIdents = runtime.getStreamIdentifiers().split(",");
-				for (String ident : streamIdents) {
-					BeachStream stream = new BeachStream();
-					ac.getAutowireCapableBeanFactory().autowireBean(stream);
-					try {
-						stream.init(ident);	
-						streams.put(stream.getIdentifier(), stream);
-					} catch (Exception e) {
-						logger.error("Exception Initializing Beach Stream " + ident + " " + e.toString());
-						//System.exit(-1);
-					}
-					
-				}	
+				/*
+				 * for (String ident : streamIdents) { BeachStream stream = new BeachStream();
+				 * ac.getAutowireCapableBeanFactory().autowireBean(stream); try {
+				 * stream.init(ident); streams.put(stream.getIdentifier(), stream); } catch
+				 * (Exception e) { logger.error("Exception Initializing Beach Stream " + ident +
+				 * " " + e.toString()); //System.exit(-1); }
+				 * 
+				 * }
+				 */	
 				
 				List<BeachBrokerEnt> brokers = repo.getBrokers();
 				for (BeachBrokerEnt beachBrokerEnt : brokers) {
@@ -243,6 +243,13 @@ public class BeachService {
 		eventNode.event(event);
 	}
 	
+	@ADEventMethod
+	public void brokerEvent(EBrokerEvent event) { 
+		// fuck man that sucks; 
+		
+	}
+	
+	@ADEventMethod
 	public void beachAccountLoaded(EBeachAccountLoaded event) {
 		accountBeans.getReadWriteLock().writeLock().lock();
 		accountBeans.add(event.getAcccount().getBean());
