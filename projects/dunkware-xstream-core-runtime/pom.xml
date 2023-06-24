@@ -24,7 +24,7 @@
 	</scm>
 
 	<properties>
-		<java.version>11</java.version>
+		<java.version>17</java.version>
 		<xtextVersion>2.21.0</xtextVersion>
 		<mwe2Version>2.11.2</mwe2Version>
 	</properties>
