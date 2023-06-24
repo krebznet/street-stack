@@ -44,6 +44,7 @@ public class ClusterWebService {
 	
 		
 		StreamingAdapter adapter = new StreamingAdapter("NodeStream");
+		
 		ClusterNodeStream nodeStream = new ClusterNodeStream();
 		ac.getAutowireCapableBeanFactory().autowireBean(nodeStream);
 		nodeStream.start(adapter);

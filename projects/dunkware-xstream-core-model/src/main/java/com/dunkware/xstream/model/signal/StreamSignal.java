@@ -14,6 +14,7 @@ public class StreamSignal {
 	private int entId; 
 	private LocalDateTime time;
 	private Map<String,Object> vars;
+	
 	private String streamIdent;
 	public int getId() {
 		return id;
