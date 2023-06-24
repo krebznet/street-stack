@@ -44,12 +44,12 @@
 		<testSourceDirectory>/src/test/java</testSourceDirectory>
 
 		<src.dir>src/main/java</src.dir>
-		<jdk.version>11</jdk.version>
+		<jdk.version>17</jdk.version>
 
 
 
-		<maven.compiler.source>11</maven.compiler.source>
-		<maven.compiler.target>11</maven.compiler.target>
+		<maven.compiler.source>17</maven.compiler.source>
+		<maven.compiler.target>17</maven.compiler.target>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 
 		<!-- Dependency Versions -->
