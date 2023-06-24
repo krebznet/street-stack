@@ -20,6 +20,7 @@ import com.dunkware.trade.sdk.core.model.broker.BrokerStatus;
 import com.dunkware.trade.sdk.core.model.broker.BrokerType;
 import com.dunkware.trade.sdk.core.runtime.broker.BrokerAccount;
 import com.dunkware.trade.sdk.core.runtime.broker.anot.ABroker;
+import com.dunkware.trade.sdk.core.runtime.broker.event.EBrokerDisconnected;
 import com.dunkware.trade.sdk.core.runtime.broker.impl.BrokerImpl;
 import com.dunkware.trade.tick.api.instrument.Instrument;
 import com.dunkware.trade.tick.model.ticker.TradeTickerSpec;
@@ -102,7 +103,8 @@ public class TwsBroker extends BrokerImpl implements TwsSocketReader  {
 
 	@Override
 	public void disconnect() throws Exception {
-		
+		EBrokerDisconnected event = new EBrokerDisconnected(this);
+		getEventNode().event(event);
 	}
 	
 
