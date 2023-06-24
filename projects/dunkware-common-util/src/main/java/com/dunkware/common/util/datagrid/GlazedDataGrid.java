@@ -44,7 +44,8 @@ public class GlazedDataGrid implements ListEventListener<Object>  {
 			
 			
 		} catch (Exception e) {
-			e.printStackTrace();
+			logger.error("Exception strarting glazed lists " + e.toString());
+			
 		} finally {
 			list.getReadWriteLock().readLock().unlock();
 		}
@@ -69,8 +70,8 @@ public class GlazedDataGrid implements ListEventListener<Object>  {
 				 old = listChanges.getOldValue();
 				 newme = listChanges.getNewValue();
 			} catch (Exception e) {
-				e.printStackTrace();
-				// TODO: handle exception
+				logger.error("Exception getting old new value " + e.toString());
+	
 			}
 		    Object object = null;
 		     try {
@@ -83,8 +84,11 @@ public class GlazedDataGrid implements ListEventListener<Object>  {
 		    	
 				
 			} catch (Exception e) {
-				e.printStackTrace();
-				// TODO: handle exception
+				if (e instanceof InterruptedException) { 
+					return;
+				}
+				logger.error("Exception taking list change " + e.toString());
+		
 			} finally { 
 				listChanges.getSourceList().getReadWriteLock().readLock().unlock();
 			}
@@ -101,8 +105,11 @@ public class GlazedDataGrid implements ListEventListener<Object>  {
 				
 					
 				} catch (Exception e) {
-					e.printStackTrace();
-					// TODO: handle exception
+					if (e instanceof InterruptedException) { 
+						return;
+					}
+					logger.error("exceptin delete " + e.toString());
+				
 				}
 				
 			}
@@ -116,13 +123,15 @@ public class GlazedDataGrid implements ListEventListener<Object>  {
 						
 						dataGrid.insert(object);;
 					} else { 
-						System.out.println("insert on object type "+ newme.getClass().getName());;
+					
 						dataGrid.insert(newme);
 					}
 				
 				} catch (Exception e) {
-					e.printStackTrace();
-					// TODO: handle exception
+					if (e instanceof InterruptedException) { 
+						return;
+					}
+					logger.error("Exception inserting " + e.toString());
 				}
 				
 			}
@@ -130,17 +139,20 @@ public class GlazedDataGrid implements ListEventListener<Object>  {
 				try {
 					if(old.equals("UNKNOWN VALUE")) { 
 						if(object != null) { 
-							System.out.println("update on object type "+ object.getClass().getName());;
+						
 							dataGrid.update(object);
 						}
 					} else { 
-						System.out.println("update on object type "+ old.getClass().getName());;
+						
 						dataGrid.update(old);
 					}
 					
 				} catch (Exception e) {
-					e.printStackTrace();
-					// TODO: handle exception
+					if (e instanceof InterruptedException) { 
+						return;
+					}
+					logger.error("Exception update " + e.toString());
+
 				}
 				
 			}

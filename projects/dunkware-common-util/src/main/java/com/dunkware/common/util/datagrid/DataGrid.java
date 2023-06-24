@@ -26,6 +26,8 @@ public class DataGrid {
 	private BlockingQueue<DataGridUpdate> updates = new LinkedBlockingQueue<DataGridUpdate>();
 	private boolean disposed = false;
 	private DExecutor executor;
+	private List<Number> rowIds = new ArrayList<Number>();
+	private Semaphore rowIdLock = new Semaphore(1);
 
 	public static DataGrid newInstance(DExecutor executor, String idMethod) {
 		return new DataGrid(executor, idMethod);
@@ -46,19 +48,29 @@ public class DataGrid {
 		}
 	}
 
-	public void insert(Object object) {
+	public void insert(final Object object) {
 		Runnable runnable = new Runnable() {
 
 			@Override
 			public void run() {
 				try {
 					DataGridUpdate update = new DataGridUpdate();
-					update.setId(getObjectId(object));
+					Number id = getObjectId(object);
+					rowIdLock.acquire();
+					if(rowIds.contains(id)) { 
+						logger.error("DUP MOTHER FUCKER " + id);
+						rowIdLock.release();
+						return;
+					}
+					rowIds.add(id);
+					rowIdLock.release();
+					
+					update.setId(id);
 					update.setType(DataGridUpdateType.ADD.name());
 					update.setJson(object);
 					try {
 						
-						updates.add(update);
+						updates.put(update);
 						
 					} catch (Exception e) {
 						logger.error("Exception serializing new row object class " + object.getClass().getName() + " "
