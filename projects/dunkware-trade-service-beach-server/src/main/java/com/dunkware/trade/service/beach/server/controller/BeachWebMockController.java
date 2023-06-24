@@ -29,7 +29,7 @@ import com.dunkware.trade.service.beach.server.controller.mock.MockBrokerEventLi
 import com.dunkware.trade.service.beach.server.controller.mock.MockTradeEventList;
 import com.dunkware.trade.service.beach.server.runtime.BeachService;
 
-@CrossOrigin()
+
 @RestController
 public class BeachWebMockController {
 	
@@ -48,11 +48,10 @@ public class BeachWebMockController {
 	private Logger logger = LoggerFactory.getLogger(getClass());
 
 	
-	@CrossOrigin()
+	
 	@GetMapping(value = "/trade/v1/mock/dash/brokers", produces = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<StreamingResponseBody> brokersStream(final HttpServletResponse response) {
-		response.setContentType(MediaType.APPLICATION_JSON_VALUE);
-
+	public ResponseEntity<StreamingResponseBody> brokersStream() {
+		
 		final MockBrokerEventList list = MockBrokerEventList.newInstance(runtime.getExecutor(), 5);
 		list.start();
 		StreamingResponseBody stream = out -> {
@@ -83,14 +82,16 @@ public class BeachWebMockController {
 
 		};
 		logger.info("steaming response {} ", stream);
-		return new ResponseEntity(stream, HttpStatus.OK);
+		  return ResponseEntity.ok()
+			        .contentType(MediaType.APPLICATION_JSON)
+			        .body(stream);
 	}
 	
 
-	@CrossOrigin()
+	
 	@GetMapping(value = "/trade/v1/mock/dash/trades", produces = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<StreamingResponseBody> download(final HttpServletResponse response) {
-		response.setContentType(MediaType.APPLICATION_JSON_VALUE);
+	public ResponseEntity<StreamingResponseBody> download() {
+
 
 		final MockTradeEventList list = MockTradeEventList.newInstance(runtime.getExecutor(), 5);
 		list.start();
@@ -127,7 +128,9 @@ public class BeachWebMockController {
 
 		};
 		logger.info("steaming response {} ", stream);
-		return new ResponseEntity(stream, HttpStatus.OK);
+		  return ResponseEntity.ok()
+			        .contentType(MediaType.APPLICATION_JSON)
+			        .body(stream);
 	}
 
 	
