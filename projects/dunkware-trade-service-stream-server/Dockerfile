@@ -1,4 +1,4 @@
-FROM openjdk:11
+FROM openjdk:17
 VOLUME /tmp
 ADD target/dunkware-trade-service-stream-server-1.3.0-SNAPSHOT.jar application.jar
 ENV JAVA_OPTS="-Xmx28g -Djava.security.egd=file:/dev/./streamservice"
