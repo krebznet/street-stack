@@ -1,5 +1,5 @@
 echo "Executing Maven Build"
-cd /Users/duncankrebs/dunkware/street/cloud/1.0.0/dunkware-street-cloud
+cd $STREET_CLOUD_HOME
 
 mvn clean install  -DskipTests
 
