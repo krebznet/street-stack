@@ -1,0 +1,30 @@
+{
+  "side" : "LONG",
+  "stream" : "us_equity",
+  "signal" : "SPY1",
+  "name" : "Acid Test 1",
+  "allocatedCapital" : 25000.0,
+  "tradeAllocation" : 5000.0,
+  "entryType" : "MARKET",
+  "entryInterval" : 0,
+  "entryOffsetActivation" : 0,
+  "entryOffset" : 0.0,
+  "enableEntryTimeout" : false,
+  "entryTimeout" : -1,
+  "enableActiveTradeLimit" : false,
+  "activeTradeLimit" : -1,
+  "enableActiveSymbolLimit" : true,
+  "activeSymbolLimit" : 1,
+  "enableStopLoss" : false,
+  "stopLoss" : -1.0,
+  "exitType" : "MARKET",
+  "exitTargetPrice" : 0,
+  "exitInterval" : 0,
+  "exitOffset" : 0.0,
+  "exitOffsetInterval" : 0,
+  "exitTriggers" : [ {
+    "type": "TIMER",
+    "timer": 30,
+    "unrealizedPL": 0.0
+  } ]
+}	

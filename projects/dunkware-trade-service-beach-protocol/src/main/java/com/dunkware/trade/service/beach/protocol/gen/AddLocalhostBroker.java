@@ -9,7 +9,6 @@ public class AddLocalhostBroker {
 		AddBrokerReq add = new AddBrokerReq();
 		add.setHost("localhost");
 		add.setPort(7495);
-		add.setClientId(4);
 		add.setName("Tws Paper");
 		try {
 			System.out.println(DJson.serializePretty(add));

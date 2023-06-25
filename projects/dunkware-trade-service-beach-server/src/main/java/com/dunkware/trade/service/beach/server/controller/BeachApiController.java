@@ -35,34 +35,20 @@ public class BeachApiController {
 
 	@Autowired()
 	private BeachService beachService; 
-	
-	public static void main(String[] args) {
-		AddBrokerReq req = new AddBrokerReq();
-		req.setClientId(9);
-		req.setHost("localhost");
-		req.setPort(908);
-		req.setName("Dunkstreet Paper");
-		try {
-			System.out.println(DJson.serializePretty(req));
-		} catch (Exception e) {
-			// TODO: handle exception
-		}
-	}
-	
+
 
 	@PostMapping(path = "/trade/v1/broker/add")
 	public void addBroker(AddBrokerReq req)   { 
-			
 		try {
-			
 			beachService.addBroker(req);
 			
 		} catch (Exception e) {
 			throw new ResponseStatusException(
 			           HttpStatus.BAD_REQUEST, "Exception adding broker " + e.getMessage(), e);
 		}
-		
 	}
+	
+	
 	
 
 	

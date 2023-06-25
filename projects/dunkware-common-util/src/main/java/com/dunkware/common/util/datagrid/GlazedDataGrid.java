@@ -1,20 +1,25 @@
 package com.dunkware.common.util.datagrid;
 
+import java.util.List;
+import java.util.concurrent.BlockingQueue;
+import java.util.concurrent.LinkedBlockingQueue;
+import java.util.concurrent.TimeUnit;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.dunkware.common.util.executor.DExecutor;
 
 import ca.odell.glazedlists.ObservableElementList;
-import ca.odell.glazedlists.TransformedList;
 import ca.odell.glazedlists.event.ListEvent;
 import ca.odell.glazedlists.event.ListEventListener;
 
-public class GlazedDataGrid implements ListEventListener<Object>  {
+public class GlazedDataGrid implements ListEventListener<Object>, DataGridConsumer {
 	
 	private ObservableElementList<?> list;
 	private DataGrid dataGrid; 
 	private Logger logger = LoggerFactory.getLogger(getClass());
+	private BlockingQueue<DataGridUpdate> updateQueue = new LinkedBlockingQueue<DataGridUpdate>();
 	
 	
 	public GlazedDataGrid(ObservableElementList<?> list, DExecutor executor, String idMethod) { 
@@ -24,6 +29,12 @@ public class GlazedDataGrid implements ListEventListener<Object>  {
 		this.dataGrid = DataGrid.newInstance(executor, idMethod);
 		list.addListEventListener(this);
 	}
+	
+	public DataGridUpdate pollUpdate(int timeout, TimeUnit timeoutUnit) throws InterruptedException { 
+		return updateQueue.poll(timeout, timeoutUnit);
+	}
+	
+	
 	
 	public void addConsumer(DataGridConsumer consumer) { 
 		dataGrid.addConsumer(consumer);
@@ -161,6 +172,11 @@ public class GlazedDataGrid implements ListEventListener<Object>  {
 			}
 		}
 		
+	}
+
+	@Override
+	public void consumeUpdate(DataGridUpdate updates) {
+		updateQueue.add(updates);
 	}
 	
 	

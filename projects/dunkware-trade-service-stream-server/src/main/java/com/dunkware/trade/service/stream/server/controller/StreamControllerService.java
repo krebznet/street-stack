@@ -126,6 +126,17 @@ public class StreamControllerService {
 	}
 
 
+	public StreamController getStreamById(long id) throws Exception {
+		for (StreamController con : controllers) {
+			if (con.getEntity().getId() == id) {
+				return con;
+			}
+		}
+		throw new Exception("Stream Controller id " + id + " not found");
+	}
+
+	
+
 	public void updateStream(StreamControllerSpec spec) throws Exception {
 		StreamController stream = getStreamByName(spec.getName());
 		Double newVersion = spec.getVersion();

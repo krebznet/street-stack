@@ -1,11 +1,13 @@
 package com.dunkware.trade.service.beach.protocol.broker;
 
+import com.dunkware.common.util.json.DJson;
+
 public class AddBrokerReq {
 	
 	private String name; 
 	private String host; 
-	private int port;
-	private int clientId; 
+	private int port; 
+	private String type;
 	
 	public String getName() {
 		return name;
@@ -25,12 +27,28 @@ public class AddBrokerReq {
 	public void setPort(int port) {
 		this.port = port;
 	}
-	public int getClientId() {
-		return clientId;
+	
+	
+	
+	public String getType() {
+		return type;
 	}
-	public void setClientId(int clientId) {
-		this.clientId = clientId;
-	} 
+	public void setType(String type) {
+		this.type = type;
+	}
+	public static void main(String[] args) {
+		AddBrokerReq req = new AddBrokerReq();
+		req.setHost("127.0.0.1");
+		req.setType("Interactive Brokers");
+		req.setPort(3);
+		req.setName("Paper Broker 1");
+		try {
+			System.out.println(DJson.serializePretty(req));
+		} catch (Exception e) {
+			// TODO: handle exception
+		}
+	}
+	
 	
 	
 

@@ -8,6 +8,7 @@ import javax.annotation.PostConstruct;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -15,10 +16,13 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.server.ResponseStatusException;
 
 import com.dunkware.common.util.helpers.DRandom;
 import com.dunkware.common.util.json.DJson;
 import com.dunkware.common.util.time.DunkTime;
+import com.dunkware.net.proto.stream.GEntitySignalSpec;
+import com.dunkware.net.proto.stream.GStreamSpec;
 import com.dunkware.trade.service.stream.json.controller.AddStreamReq;
 import com.dunkware.trade.service.stream.json.controller.AddStreamResp;
 import com.dunkware.trade.service.stream.json.controller.GetStreamSpecResp;
@@ -36,6 +40,8 @@ import com.dunkware.trade.service.stream.json.controller.spec.StreamControllerSp
 import com.dunkware.trade.service.stream.json.controller.spec.StreamControllerState;
 import com.dunkware.trade.service.stream.json.controller.spec.StreamControllerStreamStats;
 import com.dunkware.trade.service.stream.json.worker.stream.StreamSessionWorkerStats;
+import com.dunkware.trade.service.stream.resources.SignalResource;
+import com.dunkware.trade.service.stream.resources.StreamResource;
 import com.dunkware.trade.service.stream.server.controller.util.StreamSpecBuilder;
 import com.dunkware.trade.service.stream.server.stats.StreamStatsEntity;
 import com.dunkware.trade.service.stream.server.stats.StreamStatsService;
@@ -361,6 +367,50 @@ public class StreamControllerWebService {
 			return snapshot;
 		}
 	}
+	
+	@GetMapping(path = "/stream/core/resource/streams")
+	public @ResponseBody() List<StreamResource> getStreamIdentifiers() { 
+		List<StreamResource> mock = new ArrayList<StreamResource>();
+		try {
+			for (StreamController sc : service.getStreams()) {
+				StreamResource re = new StreamResource();
+				re.setId(sc.getEntity().getId());
+				re.setIdentifier(sc.getName());
+				re.setName(sc.getName());
+				mock.add(re);
+			}
+		} catch (Exception e) {
+			throw new ResponseStatusException(
+			           HttpStatus.BAD_REQUEST, "Exception getting streams " + e.toString(),e);
+		}
+		return mock;
+		
+	}
+	
+	@GetMapping(path = "/stream/type/resource/signals")
+	public @ResponseBody() List<SignalResource> getSignalNames(@RequestParam() long streamId) { 
+		List<SignalResource> mock = new ArrayList<SignalResource>();
+		StreamController stream = null;
+		try {
+			stream = service.getStreamById(streamId);
+		} catch (Exception e) {
+			throw new ResponseStatusException(
+			           HttpStatus.BAD_REQUEST, "Stream " + streamId + " not found " 	+ e.toString());
+			
+		}
+		GStreamSpec spec = stream.getGStreamSpec();
+		for (GEntitySignalSpec sig : spec.getScript().getSignalTypesList()) {
+			SignalResource re = new SignalResource();
+			re.setId(sig.getId());
+			re.setIdentifier(sig.getIdentifier());
+			re.setName(sig.getIdentifier());
+			mock.add(re);
+		}
+		
+		return mock; 
+	}
+	
+	
 	
 	
 	

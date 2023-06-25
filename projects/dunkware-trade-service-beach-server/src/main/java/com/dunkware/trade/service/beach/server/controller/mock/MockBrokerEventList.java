@@ -98,6 +98,8 @@ public class MockBrokerEventList implements DataGridConsumer {
 				BeachBrokerBean b = new BeachBrokerBean();
 				b.setId(counter);
 				b.setName("Broker" + counter);
+				b.setAccounts(3);
+				b.setSummary("Healthy");
 				b.setStatus(randomStatus());
 
 				list.getReadWriteLock().writeLock().lock();
