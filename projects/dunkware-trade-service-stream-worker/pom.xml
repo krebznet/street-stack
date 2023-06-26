@@ -20,10 +20,10 @@
 
 	<properties>
 	
-    <maven.compiler.target>17</maven.compiler.target>
-    <maven.compiler.source>17</maven.compiler.source>
+   <!--   <maven.compiler.target>17</maven.compiler.target>
+    <maven.compiler.source>17</maven.compiler.source> -->
 
-		<java.version>17</java.version>
+		
 		<org.mapstruct.version>1.4.2.Final</org.mapstruct.version>
 		<flyway.version>7.10.0</flyway.version>
 		<lombok.version>1.18.20</lombok.version>
