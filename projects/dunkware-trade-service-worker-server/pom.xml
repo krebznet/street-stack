@@ -14,7 +14,7 @@
 	<description>Trade Service Worker </description>
 
 	<properties>
-		
+		<java.version>11</java.version>
 		<xtextVersion>2.21.0</xtextVersion>
 		<spring-cloud.version>Hoxton.SR6</spring-cloud.version>
 		<mwe2Version>2.11.2</mwe2Version>
