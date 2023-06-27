@@ -1,23 +1,28 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<feature id="com.dunkware.xstream.script.feature"
-	label="XScript Feature "
-	version="1.3.0.qualifier">
-	<plugin
-			id="com.dunkware.xstream.script"
-			download-size="0"
-			install-size="0"
-			version="0.0.0"
-			unpack="false"/>
-	<plugin
-			id="com.dunkware.xstream.script.ide"
-			download-size="0"
-			install-size="0"
-			version="0.0.0"
-			unpack="false"/>
-	<plugin
-			id="com.dunkware.xstream.script.ui"
-			download-size="0"
-			install-size="0"
-			version="0.0.0"
-			unpack="false"/>
+<feature
+      id="com.dunkware.xstream.script.feature"
+      label="XScript Feature "
+      version="1.4.0.qualifier">
+
+   <plugin
+         id="com.dunkware.xstream.script"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>
+
+   <plugin
+         id="com.dunkware.xstream.script.ide"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>
+
+   <plugin
+         id="com.dunkware.xstream.script.ui"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>
+
 </feature>

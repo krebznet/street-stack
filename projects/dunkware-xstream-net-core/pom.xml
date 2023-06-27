@@ -42,7 +42,7 @@
 		<dependency>
 			<artifactId>com.dunkware.xstream.script</artifactId>
 			<groupId>com.dunkware.xstream.script</groupId>
-			<version>1.3.0-SNAPSHOT</version>
+			<version>1.4.0-SNAPSHOT</version>
 		</dependency>
 	
 		<dependency>

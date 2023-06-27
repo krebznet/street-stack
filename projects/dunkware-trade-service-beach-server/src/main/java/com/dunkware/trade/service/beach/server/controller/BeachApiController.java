@@ -1,4 +1,4 @@
-package com.dunkware.trade.service.beach.server.controller;
+	package com.dunkware.trade.service.beach.server.controller;
 
 import java.io.IOException;
 import java.io.OutputStream;
@@ -30,7 +30,6 @@ import com.dunkware.trade.service.beach.server.runtime.BeachPlayStatus;
 import com.dunkware.trade.service.beach.server.runtime.BeachService;
 
 @RestController
-@CrossOrigin("*")
 public class BeachApiController {
 
 	@Autowired()

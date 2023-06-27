@@ -1,4 +1,4 @@
-FROM openjdk:17
+FROM amazoncorretto:17.0.7-alpine
 VOLUME /tmp
 ADD target/dunkware-trade-service-tick-server-1.2.0-SNAPSHOT.jar application.jar
 ENV JAVA_OPTS="-Xmx168g -Djava.security.egd=file:/dev/./urandom"
