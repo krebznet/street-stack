@@ -48,7 +48,7 @@ public class WebFluxSecurityConfig {
     CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration configuration = new CorsConfiguration();
         configuration.addAllowedOriginPattern("*");
-        configuration.setAllowedOrigins(Arrays.asList("http://localhost:3000,http://localhost:4000"));
+        configuration.setAllowedOrigins(Arrays.asList("*"));
         configuration.setAllowedHeaders(Arrays.asList("*"));
         configuration.setAllowedMethods(Arrays.asList("*"));
         configuration.setAllowCredentials(false);

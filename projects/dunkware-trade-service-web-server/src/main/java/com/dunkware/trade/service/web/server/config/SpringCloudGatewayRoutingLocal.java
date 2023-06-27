@@ -23,5 +23,7 @@ public class SpringCloudGatewayRoutingLocal {
 		return builder.routes().route("stream", r -> r.path("/stream/**").uri("http://localhost:8086")) // static
 				.route("trade", r -> r.path("/trade/**").uri("http://localhost:8032")).route("mock", r-> r.path("/mock/**").uri("http://localhost:8071")).build();
 	}
+	
+	
 
 }
