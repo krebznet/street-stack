@@ -17,7 +17,7 @@
 	<description>Dunkware Trade Tick Service Server</description>
 
 	<properties>
-		<java.version>11</java.version>
+		<java.version>17</java.version>
 		<dockerfile-maven-plugin.version>1.3.3</dockerfile-maven-plugin.version>
 		<private.registry.url>505030817635.dkr.ecr.us-east-1.amazonaws.com</private.registry.url>
 	</properties>

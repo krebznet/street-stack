@@ -54,7 +54,8 @@ import com.dunkware.xstream.xproject.XScriptProject;
 import com.dunkware.xstream.xproject.bundle.XscriptBundleHelper;
 import com.dunkware.xstream.xproject.model.XScriptBundle;
 
-public class StreamController {
+public class StreamController
+ {
 
 	private Logger logger = org.slf4j.LoggerFactory.getLogger(getClass());
 

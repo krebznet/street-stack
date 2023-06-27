@@ -63,13 +63,13 @@ AtomicBaseType returns ExpressionType:
 	VariableValueExpType
 	| VariableValueRangeType | VariableValueType | SubExpressionType | VarAggHistoryType | VarAggSessionType | SignalCountSession | SignalCountHistory;
 /****************************
- * Input Expression Types 
+ * Input Expression Types
  ****************************/
 TickExpressionType returns ExpressionType:
 	{TickExpressionType} 'tick' '(' type=INT ',' field=INT ',' dataType=DataType ')';
 
 /****************************
- * Variable Value Expression Types 
+ * Variable Value Expression Types
  ****************************/
 VariableValueRangeType:
 	{VariableValueRangeType} targetVar=[VarType] '[' (startIndex=INT) ',' (endIndex=INT) ']';
@@ -84,13 +84,13 @@ SetExpressionType:
 	{SetExpressionType} '{' (args+=ExpressionType (',' args+=ExpressionType)*)? '}';
 
 /**********************************
- * Scheduled Update Expression Types 
+ * Scheduled Update Expression Types
  *********************************/
 SnapshotExpressionType:
 	{SnapshotExpressionType} "snapshot" '(' target=ExpressionType ')' interval=INT time=StreamTimeUnit;
 
 /*******************************
- * Math Exrepssion Types 
+ * Math Exrepssion Types
  *******************************/
 RocExpressionType:
 	{RocExpressionType} "roc" '(' target=ExpressionType ',' compare=ExpressionType ')';
@@ -102,7 +102,7 @@ SubExpressionType:
 	{SubExpressionType} "sub" '(' target=VariableValueType ',' compare=VariableValueType ')';
 
 /*********************************
- * Aggregation Expressions 
+ * Aggregation Expressions
  **************************************/
 HistoryTimeRange:
 	{HistoryTimeRange} 'relativeDays''('value=INT')';
@@ -115,31 +115,31 @@ RelativeSessionTimeRange:
 
 TodaySessionTimeRange:
 	{TodaySessionTimeRange} 'today';
-	
 
-	
+
+
 VarAggSessionType:
 	{VarAggSessionType}'varAggSession' '(' var=[VarType]','function=SessionAggFunc ',' timeRange=SessionTimeRange ')';
-	
+
 VarAggHistoryType:
 	{VarAggHistoryType}'varAggHistory' '(' var=[VarType]','function=HistoricalAggFunc ',' timeRange=HistoryTimeRange ')';
-	
-	
+
+
 SignalCountSession:
 	{SignalCountSession}'sigCountSession' '(' signal=[SignalType] ',' timeRange=SessionTimeRange')';
-	
+
 SignalCountHistory:
 	{SignalCountHistory} 'sigCountHistory' '('signal=[SignalType] ',' timeRange=HistoryTimeRange')'
-;	
-	
-	
+;
+
+
 enum HistoricalAggFunc:
 	high="HIGH" | low="LOW";
 
 enum SessionAggFunc:
 	high="HIGH" | low="LOW";
-	
-	
+
+
 enum SessionTimeUnit:
 	sec="SEC" | min="MIN";
 
@@ -155,7 +155,7 @@ enum DataType:
 
 terminal DOUBLE returns ecore::EDouble:
 	'-'? ('0'..'9')+ '.' ('0'..'9')+ (('e' | 'E') ('-')? ('0'..'9')+)?;
-	
+
 
 /*******************************
  * XScript Signals
@@ -178,7 +178,7 @@ XClassCoreElementType:
 	XFunctionType | XVarType;
 
 /****************************
- * Global Element Types 
+ * Global Element Types
  *************************/
 XVarType:
 	{XVarType} 'var' name=ID ('=' exp=XExpressionType)?';';
@@ -264,7 +264,7 @@ XSleepType:
 	{XSleepType} 'sleep' '(' interval=INT unit=StreamTimeUnit ')' ';';
 
 /*******************
- * Core XExpression Types 
+ * Core XExpression Types
  ********************/
 XExpressionType:
 	XOrType;
@@ -370,8 +370,8 @@ XRocExpType:
 /*******************************
  * XClass End
  *******************************/
- 
- 
+
+
 /*******************************
  * Time Range Start
  *******************************/

@@ -68,7 +68,7 @@
       <module>projects/dunkware-trade-tick-model</module>
       <module>projects/dunkware-trade-tick-api</module>
       <module>projects/dunkware-trade-tick-provider-atick</module>
-	<!--	<module>projects/dunkware-xstream-script</module>-->
+		<module>projects/dunkware-xstream-script</module>
 			<module>projects/dunkware-xstream-core-model</module>
       <module>projects/dunkware-xstream-core-runtime</module>
       <module>projects/dunkware-xstream-data-runtime</module>

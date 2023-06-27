@@ -6,6 +6,6 @@
 	<feature id="com.dunkware.xstream.script.feature.source" version="0.0.0">
 		<category name="main.source"/>
 	</feature>
-	<category-def name="main" label="XStreamScript"/>
-	<category-def name="main.source" label="XStreamScript (Sources)"/>
+	<category-def name="main" label="XScript"/>
+	<category-def name="main.source" label="XScript (Sources)"/>
 </site>

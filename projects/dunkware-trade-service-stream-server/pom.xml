@@ -17,7 +17,7 @@
 
 
 	<properties>
-		<java.version>11</java.version>
+		<java.version>17</java.version>
 		<org.mapstruct.version>1.4.2.Final</org.mapstruct.version>
 		<flyway.version>7.10.0</flyway.version>
 		<lombok.version>1.18.20</lombok.version>
@@ -35,7 +35,7 @@
 	<dependencies>
 
 		<!-- https://mvnrepository.com/artifact/org.springframework.boot/spring-boot-starter-data-mongodb -->
-		  <dependency>
+		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-data-mongodb</artifactId>
 		</dependency>
@@ -52,15 +52,15 @@
 		</dependency>
 
 		<dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-data-mongodb</artifactId>
-        </dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-data-mongodb</artifactId>
+		</dependency>
 
-        <dependency>
-            <groupId>org.projectlombok</groupId>
-            <artifactId>lombok</artifactId>
-            <optional>true</optional>
-        </dependency>
+		<dependency>
+			<groupId>org.projectlombok</groupId>
+			<artifactId>lombok</artifactId>
+			<optional>true</optional>
+		</dependency>
 
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
@@ -82,9 +82,9 @@
 			<artifactId>spring-boot-devtools</artifactId>
 			<optional>true</optional>
 		</dependency>
-		<!-- <dependency> <groupId>org.springframework.boot</groupId> <artifactId>spring-boot-starter-data-jpa</artifactId>
+		<!-- <dependency> <groupId>org.springframework.boot</groupId> <artifactId>spring-boot-starter-data-jpa</artifactId> 
 			</dependency> -->
-		<!-- <dependency> <groupId>org.springframework.boot</groupId> <artifactId>spring-boot-starter-security</artifactId>
+		<!-- <dependency> <groupId>org.springframework.boot</groupId> <artifactId>spring-boot-starter-security</artifactId> 
 			</dependency> -->
 
 		<dependency>
@@ -145,7 +145,7 @@
 			<artifactId>mysql-connector-java</artifactId>
 			<scope>runtime</scope>
 		</dependency>
-		<!-- <dependency> <groupId>io.jsonwebtoken</groupId> <artifactId>jjwt</artifactId>
+		<!-- <dependency> <groupId>io.jsonwebtoken</groupId> <artifactId>jjwt</artifactId> 
 			<version>0.9.1</version> </dependency> -->
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
@@ -153,7 +153,7 @@
 			<scope>test</scope>
 		</dependency>
 
-		<!-- <dependency> <groupId>org.flywaydb</groupId> <artifactId>flyway-core</artifactId>
+		<!-- <dependency> <groupId>org.flywaydb</groupId> <artifactId>flyway-core</artifactId> 
 			<version>${flyway.version}</version> </dependency> -->
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
@@ -191,11 +191,14 @@
 		</dependency>
 
 		<!-- https://mvnrepository.com/artifact/com.google.inject/guice -->
+
+		<!-- https://mvnrepository.com/artifact/com.google.inject/guice -->
 		<dependency>
 			<groupId>com.google.inject</groupId>
 			<artifactId>guice</artifactId>
-			<version>4.2.3</version>
+			<version>5.1.0</version>
 		</dependency>
+
 
 
 		<dependency>
@@ -234,8 +237,8 @@
 			<artifactId>grpc-server-spring-boot-starter</artifactId>
 			<version>2.7.0.RELEASE</version>
 		</dependency>
-		<!-- - <dependency> <groupId>net.devh</groupId> <artifactId>grpc-client-spring-boot-starter</artifactId>
-			<version>2.7.0.RELEASE</version> <exclusions> <exclusion> <groupId>io.grpc</groupId>
+		<!-- - <dependency> <groupId>net.devh</groupId> <artifactId>grpc-client-spring-boot-starter</artifactId> 
+			<version>2.7.0.RELEASE</version> <exclusions> <exclusion> <groupId>io.grpc</groupId> 
 			<artifactId>grpc-core</artifactId> </exclusion> </exclusions> </dependency -->
 
 
@@ -295,7 +298,7 @@
 			<artifactId>dunkware-xstream-data-runtime</artifactId>
 			<version>1.0.0-SNAPSHOT</version>
 		</dependency>
-		
+
 		<!-- Metrics/Prometheus -->
 
 
@@ -303,7 +306,7 @@
 	</dependencies>
 
 
-<build>
+	<build>
 		<plugins>
 			<plugin>
 				<groupId>org.springframework.boot</groupId>
