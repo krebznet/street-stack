@@ -12,6 +12,7 @@ import org.springframework.boot.autoconfigure.mongo.MongoAutoConfiguration;
 public class WebService {
 
     public static void main(String[] args) {
+    	System.out.println("FUCK YOU");
         SpringApplication.run(WebService.class, args);
     }
 
