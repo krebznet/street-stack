@@ -23,7 +23,7 @@
 		<project.build.sourceDirectory>src/mainjava</project.build.sourceDirectory>
 		<!-- Considering all your junit tests are in src/test/unit -->
 		<project.build.testSourceDirectory>src/test/java</project.build.testSourceDirectory>
-
+<java.version>11</java.version>
 	</properties>
 
 	<dependencies>

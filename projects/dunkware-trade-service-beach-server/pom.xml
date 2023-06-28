@@ -16,10 +16,10 @@
 	<description>Dunkware Trade Broker Service Server</description>
 
 	<properties>
-	  <maven.compiler.target>17</maven.compiler.target>
-    <maven.compiler.source>17</maven.compiler.source>
+	  <maven.compiler.target>11</maven.compiler.target>
+    <maven.compiler.source>11</maven.compiler.source>
 
-		<java.version>17</java.version>
+		<java.version>11</java.version>
 		<xtextVersion>2.31.0</xtextVersion>
 		<mwe2Version>2.14.0</mwe2Version>
 	</properties>
@@ -168,40 +168,6 @@
 			<version>0.3.4</version>
 		</dependency>
 
-
-		<!-- Third Party Dependencies -->
-		<dependency>
-			<groupId>org.eclipse.emf</groupId>
-			<artifactId>org.eclipse.emf.mwe2.launch</artifactId>
-			<version>${mwe2Version}</version>
-		</dependency>
-		<dependency>
-			<groupId>org.eclipse.xtext</groupId>
-			<artifactId>org.eclipse.xtext.common.types</artifactId>
-			<version>${xtextVersion}</version>
-		</dependency>
-		<dependency>
-			<groupId>org.eclipse.xtext</groupId>
-			<artifactId>org.eclipse.xtext.xtext.generator</artifactId>
-			<version>${xtextVersion}</version>
-		</dependency>
-		<dependency>
-			<groupId>org.eclipse.xtext</groupId>
-			<artifactId>org.eclipse.xtext.xbase</artifactId>
-			<version>${xtextVersion}</version>
-		</dependency>
-		<dependency>
-			<groupId>org.eclipse.xtext</groupId>
-			<artifactId>xtext-antlr-generator</artifactId>
-			<version>2.1.1</version>
-		</dependency>
-
-		<!-- https://mvnrepository.com/artifact/com.google.inject/guice -->
-		<dependency>
-			<groupId>com.google.inject</groupId>
-			<artifactId>guice</artifactId>
-			<version>4.2.3</version>
-		</dependency>
 
 
 	</dependencies>

@@ -801,6 +801,7 @@ public class XScriptPackageImpl extends EPackageImpl implements XScriptPackage
   {
     super(eNS_URI, XScriptFactory.eINSTANCE);
   }
+
   /**
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->

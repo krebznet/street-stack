@@ -1,4 +1,5 @@
-FROM amazoncorretto:17.0.7-alpine
+FROM openjdk:11
+
 VOLUME /tmp
 ADD target/dunkware-trade-service-beach-server-1.0.0-SNAPSHOT.jar application.jar
 ENV JAVA_OPTS="-Xmx16g -Djava.security.egd=file:/dev/./urandom"

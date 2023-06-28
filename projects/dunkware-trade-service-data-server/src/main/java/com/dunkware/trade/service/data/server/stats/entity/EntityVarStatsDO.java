@@ -1,8 +1,7 @@
 package com.dunkware.trade.service.data.server.stats.entity;
 
+import java.math.BigDecimal;
 import java.time.LocalTime;
-
-import com.ibm.icu.math.BigDecimal;
 
 public class EntityVarStatsDO {
 	
