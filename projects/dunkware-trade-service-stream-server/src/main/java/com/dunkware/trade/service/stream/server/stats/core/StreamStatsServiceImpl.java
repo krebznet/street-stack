@@ -16,13 +16,12 @@ import com.dunkware.trade.service.stream.server.controller.StreamController;
 import com.dunkware.trade.service.stream.server.controller.StreamControllerService;
 import com.dunkware.trade.service.stream.server.stats.StreamStats;
 import com.dunkware.trade.service.stream.server.stats.StreamStatsService;
-import com.dunkware.trade.service.stream.server.stats.repository.StreamEntityDayStatsRepo;
 
 @Service
 public class StreamStatsServiceImpl implements StreamStatsService   {
 	
-	@Autowired
-	private StreamEntityDayStatsRepo statsRepo;
+	//@Autowired
+	//private StreamEntityDayStatsRepo statsRepo;
 	
 	@Autowired
 	private StreamControllerService streamService; 

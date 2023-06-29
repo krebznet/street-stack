@@ -5,13 +5,16 @@ import com.dunkware.common.util.json.DJson;
 public class SignalResource {
 	
 	private long id; 
-	private String identifier;
+	private String ident;
 	private String name;
+	private String group; 
+	private String created; 
+	
 	
 	public static void main(String[] args) {
 		SignalResource re = new SignalResource();
 		re.setId(1);
-		re.setIdentifier("BREAKOUT30DAY1");
+		re.setIdent("BREAKOUT30DAY1");
 		re.setName("Breakout 30 Day 1");
 		try {
 			System.out.println(DJson.serializePretty(re));
@@ -33,13 +36,30 @@ public class SignalResource {
 		this.name = name;
 	}
 
-	public String getIdentifier() {
-		return identifier;
+	public String getIdent() {
+		return ident;
 	}
 
-	public void setIdentifier(String identifier) {
-		this.identifier = identifier;
-	} 
+	public void setIdent(String ident) {
+		this.ident = ident;
+	}
+
+	public String getGroup() {
+		return group;
+	}
+
+	public void setGroup(String group) {
+		this.group = group;
+	}
+
+	public String getCreated() {
+		return created;
+	}
+
+	public void setCreated(String created) {
+		this.created = created;
+	}
+
 	
 	
 	

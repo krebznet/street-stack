@@ -110,7 +110,7 @@ public class BeachWebMockController {
 		return results;
 	}
 
-	
+	@CrossOrigin("*")
 	@GetMapping(value = "/trade/v1/mock/dash/trades", produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<StreamingResponseBody> download() {
 

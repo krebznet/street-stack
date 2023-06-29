@@ -59,7 +59,7 @@ public class BeachWebController {
 					}
 				} catch (Exception e) {
 					grid.dispose();
-					logger.error("closing download test");
+					logger.error("closing broker stream");
 					return;
 				}
 

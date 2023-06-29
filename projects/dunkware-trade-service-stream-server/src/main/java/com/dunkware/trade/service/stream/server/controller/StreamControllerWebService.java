@@ -8,6 +8,7 @@ import javax.annotation.PostConstruct;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.expression.spel.ast.VariableReference;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -23,6 +24,7 @@ import com.dunkware.common.util.json.DJson;
 import com.dunkware.common.util.time.DunkTime;
 import com.dunkware.net.proto.stream.GEntitySignalSpec;
 import com.dunkware.net.proto.stream.GStreamSpec;
+import com.dunkware.net.proto.stream.GStreamVarSpec;
 import com.dunkware.trade.service.stream.json.controller.AddStreamReq;
 import com.dunkware.trade.service.stream.json.controller.AddStreamResp;
 import com.dunkware.trade.service.stream.json.controller.GetStreamSpecResp;
@@ -42,6 +44,7 @@ import com.dunkware.trade.service.stream.json.controller.spec.StreamControllerSt
 import com.dunkware.trade.service.stream.json.worker.stream.StreamSessionWorkerStats;
 import com.dunkware.trade.service.stream.resources.SignalResource;
 import com.dunkware.trade.service.stream.resources.StreamResource;
+import com.dunkware.trade.service.stream.resources.VariableResource;
 import com.dunkware.trade.service.stream.server.controller.util.StreamSpecBuilder;
 import com.dunkware.trade.service.stream.server.stats.StreamStatsEntity;
 import com.dunkware.trade.service.stream.server.stats.StreamStatsService;
@@ -368,7 +371,7 @@ public class StreamControllerWebService {
 		}
 	}
 	
-	@GetMapping(path = "/stream/core/resource/streams")
+	@GetMapping(path = "/stream/resource/streams")
 	public @ResponseBody() List<StreamResource> getStreamIdentifiers() { 
 		List<StreamResource> mock = new ArrayList<StreamResource>();
 		try {
@@ -387,24 +390,47 @@ public class StreamControllerWebService {
 		
 	}
 	
-	@GetMapping(path = "/stream/type/resource/signals")
-	public @ResponseBody() List<SignalResource> getSignalNames(@RequestParam() long streamId) { 
+	@GetMapping(path = "/stream/spec/signals")
+	public @ResponseBody() List<SignalResource> getSignalNames(@RequestParam() String streamIdent) { 
 		List<SignalResource> mock = new ArrayList<SignalResource>();
 		StreamController stream = null;
 		try {
-			stream = service.getStreamById(streamId);
+			stream = service.getStreamByName(streamIdent);
 		} catch (Exception e) {
 			throw new ResponseStatusException(
-			           HttpStatus.BAD_REQUEST, "Stream " + streamId + " not found " 	+ e.toString());
+			           HttpStatus.BAD_REQUEST, "Stream " + streamIdent + " not found " 	+ e.toString());
 			
 		}
 		GStreamSpec spec = stream.getGStreamSpec();
 		for (GEntitySignalSpec sig : spec.getScript().getSignalTypesList()) {
 			SignalResource re = new SignalResource();
 			re.setId(sig.getId());
-			re.setIdentifier(sig.getIdentifier());
+			re.setIdent(sig.getIdentifier());
 			re.setName(sig.getIdentifier());
 			mock.add(re);
+		}
+		
+		return mock; 
+	}
+	
+	@GetMapping(path = "/stream/spec/vars")
+	public @ResponseBody() List<VariableResource> getVarResources(@RequestParam() String streamIdent) { 
+		List<VariableResource> mock = new ArrayList<VariableResource>();
+		StreamController stream = null;
+		try {
+			stream = service.getStreamByName(streamIdent);
+		} catch (Exception e) {
+			throw new ResponseStatusException(
+			           HttpStatus.BAD_REQUEST, "Stream " + streamIdent + " not found " 	+ e.toString());
+			
+		}
+		GStreamSpec spec = stream.getGStreamSpec();
+		for (GStreamVarSpec sig : spec.getScript().getVariablesList()) {
+			VariableResource var = new VariableResource(); 
+			var.setId(sig.getId());
+			var.setIdent(sig.getIdentifier());
+			var.setName(sig.getIdentifier());
+			mock.add(var);
 		}
 		
 		return mock; 
