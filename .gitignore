@@ -1,6 +1,9 @@
 # Compiled class file
 *.class
 
+xtend-gen
+xtext-gen
+
 # Log file
 *.log
 
