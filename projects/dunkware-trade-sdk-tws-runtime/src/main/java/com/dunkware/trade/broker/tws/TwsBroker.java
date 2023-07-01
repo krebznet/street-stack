@@ -52,7 +52,7 @@ public class TwsBroker extends BrokerImpl implements TwsSocketReader  {
 		try {
 			this.exector = executor;
 			this.eventNode = eventNode;
-			connectLatch.increment();
+			 connectLatch.increment();
 			connectLatch.increment();
 			this.type = (TwsBrokerType)type;	
 		} catch (Exception e) {

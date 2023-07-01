@@ -13,6 +13,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 
+import com.dunkware.common.util.events.DEvent;
 import com.dunkware.common.util.events.DEventNode;
 import com.dunkware.common.util.events.anot.ADEventMethod;
 import com.dunkware.common.util.json.DJson;
@@ -28,12 +29,12 @@ import com.dunkware.trade.service.beach.server.common.BeachRuntime;
 import com.dunkware.trade.service.beach.server.entity.BeachAccountEnt;
 import com.dunkware.trade.service.beach.server.entity.BeachBrokerEnt;
 import com.dunkware.trade.service.beach.server.entity.BeachRepo;
-import com.dunkware.trade.service.beach.server.runtime.core.events.EBeachAccountLoaded;
+import com.dunkware.trade.service.beach.server.runtime.core.events.EBeachAccountAdded;
 import com.dunkware.trade.service.beach.server.runtime.core.events.EBeachBrokerUpdate;
 
 public class BeachBroker {
 
-	@Autowired
+	
 	private BeachRuntime runtime;
 
 	@Autowired
@@ -55,35 +56,49 @@ public class BeachBroker {
 	private DEventNode eventNode;
 
 	private BeachBrokerBean bean;
-
-	public void init(BeachBrokerEnt entity) throws Exception {
-		this.entity = entity;
-		bean = new BeachBrokerBean();
-		bean.setName(entity.getIdentifier());
+	
+	public BeachBroker(BeachRuntime runime, BeachBrokerEnt ent) { 
+		this.entity = ent;
+		this.runtime = runime;
+		bean = new BeachBrokerBean(); 
 		bean.setId(entity.getId());
-		bean.setStatus("Connecting");
+		bean.setName(ent.getIdentifier());
+		bean.setStatus("Pending");;
+		eventNode = runtime.getEventTree().getRoot().createChild("/brokers/" + entity.getIdentifier());
+	}
+
+	public void init() throws Exception {
+	
 		eventNode = runtime.getEventTree().getRoot().createChild("/brokers/" + entity.getIdentifier());
 		try {
 			brokerType = DJson.getObjectMapper().readValue(entity.getType(), BrokerType.class);
 		} catch (Exception e) {
+			bean.setStatus("Broker Type Deserialize Exception " + e.toString());
+			bean.setStatus("Exception");
+			bean.notifyUpdate();
 			logger.error("Exception deserializing broker type model in broker init " + e.toString());
 			throw e;
 		}
 		try {
 			broker = TradeRegistry.get().createBroker(brokerType);
 		} catch (Exception e) {
-			logger.error("Exception creating broker type " + e.toString());
-			throw e;
+			bean.setStatus("Exception");
+			bean.setSummary("Exception creating broker type ");
+			bean.notifyUpdate();
+			logger.error("Exception creating broker type ");
+			return;
 		}
 		try {
-			broker.getEventNode().addEventHandler(this);
 			broker.connect(brokerType, eventNode, runtime.getExecutor());
-
+			broker.getEventNode().addEventHandler(this);
+			
 			bean.setStatus("Connected");
-
+			bean.notifyUpdate();
 			Thread.sleep(2500);
 		} catch (Exception e) {
 			bean.setStatus("Disconnected");
+			bean.setSummary(e.toString());
+			bean.notifyUpdate();
 			logger.error("FIX ME: Broker connect exception " + e.toString());
 		}
 		loadAndSyncAccounts();
@@ -146,12 +161,14 @@ public class BeachBroker {
 				logger.info("Loading Broker Account {} On Broker {}", brokerAccount.getIdentifier(),
 						brokerType.getIdentifier());
 			}
-			BeachAccount act = new BeachAccount();
-			ac.getAutowireCapableBeanFactory().autowireBean(act);
-			act.init(this, actEnt, brokerAccount);
-			act.getEventNode().addEventHandler(this);
-			getEventNode().event(new EBeachAccountLoaded(act));
+			BeachAccount act = new BeachAccount(actEnt,this,brokerAccount);
 			accounts.put(actEnt.getIdentifier(), act);
+			act.getEventNode().addEventHandler(this);;
+			ac.getAutowireCapableBeanFactory().autowireBean(act);
+			
+			getEventNode().event(new EBeachAccountAdded(act));
+			act.init();
+	
 		}
 		// now what we are not doing yet is what if we have a beach account that exists
 		// for this
@@ -177,6 +194,11 @@ public class BeachBroker {
 		bean.setStatus("Connecting");
 		bean.notifyUpdate();
 		eventNode.event(new EBeachBrokerUpdate(this));
+	}
+	
+	@ADEventMethod
+	public void eventRouter(DEvent event) {
+		this.eventNode.event(event);
 	}
 
 }

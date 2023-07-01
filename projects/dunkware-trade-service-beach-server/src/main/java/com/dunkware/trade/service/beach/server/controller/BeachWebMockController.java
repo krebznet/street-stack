@@ -1,9 +1,12 @@
 package com.dunkware.trade.service.beach.server.controller;
 
+import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
+
+import javax.servlet.http.HttpServletResponse;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -22,17 +25,15 @@ import com.dunkware.common.util.helpers.DRandom;
 import com.dunkware.common.util.json.DJson;
 import com.dunkware.common.util.uuid.DUUID;
 import com.dunkware.trade.service.beach.server.common.BeachRuntime;
-import com.dunkware.trade.service.beach.server.controller.mock.MockBrokerEventList;
+import com.dunkware.trade.service.beach.server.controller.mock.MockBrokerEventList2;
 import com.dunkware.trade.service.beach.server.controller.mock.MockTradeEventList;
 import com.dunkware.trade.service.beach.server.runtime.BeachService;
 import com.dunkware.trade.service.beach.server.runtime.BeachTradeBean;
 
-
 @RestController
 public class BeachWebMockController {
-	
+
 	// /trade/mock/stream/brokers
- 
 
 	@Autowired
 	private ApplicationContext ac;
@@ -45,33 +46,40 @@ public class BeachWebMockController {
 
 	private Logger logger = LoggerFactory.getLogger(getClass());
 
-	
-	
-	@GetMapping(path = "/trade/v1/mock/dash/brokers", produces = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<StreamingResponseBody> brokersStream() {
+	@GetMapping(path = "/trade/v1/mock/dash/brokers")
+	public ResponseEntity<StreamingResponseBody> brokersStream(HttpServletResponse resp) {
 		
-		final MockBrokerEventList list = MockBrokerEventList.newInstance(runtime.getExecutor(), 5);
-		list.start();
-		StreamingResponseBody stream = out -> {
 
+		
+		
+		StreamingResponseBody stream = out -> {
+			final MockBrokerEventList2 list = MockBrokerEventList2.newInstance(runtime.getExecutor(), 5);
+			PrintWriter p = new PrintWriter(out);
+			list.start();
 			while (true) {
 				try {
 					DataGridUpdate update = list.nextUpdate(4, TimeUnit.SECONDS);
+					
 					if (update == null) {
+						p.flush();
+						out.flush();
 						continue;
 					}
-
+					
 					logger.info("send " + DJson.serialize(update));
 					if (update != null) {
 						
-							out.write(DJson.serialize(Arrays.asList(update)).getBytes());
-							out.flush();
-						
+							p.print(Arrays.asList(DJson.serialize(update)));
+							p.flush();
+							
+			//out.write(DJson.serialize(Arrays.asList(update)).getBytes());
+			//			out.flush();
 
 					}
 				} catch (Exception e) {
 					list.dispose();
 					out.close();
+					p.close();
 					logger.error("closing download test");
 					return;
 				}
@@ -80,15 +88,13 @@ public class BeachWebMockController {
 
 		};
 		logger.info("steaming response {} ", stream);
-		  return ResponseEntity.ok()
-			        .contentType(MediaType.APPLICATION_JSON)
-			        .body(stream);
+
+		return ResponseEntity.ok().contentType(MediaType.APPLICATION_STREAM_JSON).body(stream);
 	}
-	
-	
+
 	@GetMapping(path = "/trade/v1/mock/dash/static/trades")
-	public @ResponseBody() List<DataGridUpdate>  staticTrades() { 
-		List<DataGridUpdate> results = new ArrayList<DataGridUpdate>(); 
+	public @ResponseBody() List<DataGridUpdate> staticTrades() {
+		List<DataGridUpdate> results = new ArrayList<DataGridUpdate>();
 		BeachTradeBean b = new BeachTradeBean();
 		b.setId(1);
 		b.setSymbol(DUUID.randomUUID(4));
@@ -114,14 +120,13 @@ public class BeachWebMockController {
 	@GetMapping(value = "/trade/v1/mock/dash/trades", produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<StreamingResponseBody> download() {
 
-
 		final MockTradeEventList list = MockTradeEventList.newInstance(runtime.getExecutor(), 5);
 		list.start();
 		StreamingResponseBody stream = out -> {
 
 			while (true) {
 				try {
-					
+
 					DataGridUpdate update = list.nextUpdate(4, TimeUnit.SECONDS);
 					if (update == null) {
 						continue;
@@ -129,15 +134,14 @@ public class BeachWebMockController {
 
 					logger.info("send " + DJson.serialize(update));
 					if (update != null) {
-							try {
-								out.write(DJson.serialize(Arrays.asList(update)).getBytes());
-								
-								out.flush();
-							} catch (RuntimeException e) {
-								System.out.println("beak here mother fucke");
-							}
-							
-					
+						try {
+							out.write(DJson.serialize(Arrays.asList(update)).getBytes());
+
+							out.flush();
+						} catch (RuntimeException e) {
+							System.out.println("beak here mother fucke");
+						}
+
 					}
 				} catch (Exception e) {
 					list.dispose();
@@ -150,12 +154,7 @@ public class BeachWebMockController {
 
 		};
 		logger.info("steaming response {} ", stream);
-		  return ResponseEntity.ok()
-			        .contentType(MediaType.APPLICATION_JSON)
-			        .body(stream);
+		return ResponseEntity.ok().contentType(MediaType.APPLICATION_JSON).body(stream);
 	}
-
-	
-	
 
 }

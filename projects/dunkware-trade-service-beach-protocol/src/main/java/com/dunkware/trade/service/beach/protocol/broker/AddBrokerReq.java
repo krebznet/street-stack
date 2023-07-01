@@ -9,6 +9,19 @@ public class AddBrokerReq {
 	private int port; 
 	private String type;
 	
+	public static void main(String[] args) {
+		AddBrokerReq req = new AddBrokerReq();
+		req.setName("name");;
+		req.setPort(3);
+		req.setHost("hostme");
+		req.setType("type me");
+		try {
+			System.out.println(DJson.serialize(req));
+		} catch (Exception e) {
+			// TODO: handle exception
+		}
+	}
+	
 	public String getName() {
 		return name;
 	}
@@ -36,18 +49,8 @@ public class AddBrokerReq {
 	public void setType(String type) {
 		this.type = type;
 	}
-	public static void main(String[] args) {
-		AddBrokerReq req = new AddBrokerReq();
-		req.setHost("127.0.0.1");
-		req.setType("Interactive Brokers");
-		req.setPort(3);
-		req.setName("Paper Broker 1");
-		try {
-			System.out.println(DJson.serializePretty(req));
-		} catch (Exception e) {
-			// TODO: handle exception
-		}
-	}
+	
+	
 	
 	
 	

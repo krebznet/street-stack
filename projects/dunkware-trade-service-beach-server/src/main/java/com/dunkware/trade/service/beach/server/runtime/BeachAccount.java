@@ -5,6 +5,7 @@ import java.util.concurrent.ConcurrentHashMap;
 
 import javax.persistence.EntityManager;
 
+import org.apache.commons.beanutils.BeanPropertyValueChangeClosure;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -54,18 +55,25 @@ public class BeachAccount {
 	private ObservableElementList<BeachOrderBean> orderBeans;
 	private ObservableElementList<BeachPlayBean> playBeans;
 	
-	public void init(BeachBroker broker, BeachAccountEnt ent, BrokerAccount brokerAccount) { 
+	public BeachAccount(BeachAccountEnt ent, BeachBroker broker,  BrokerAccount brokerAccount) { 
+		this.entity = ent; 
+		this.broker = broker;
+		this.brokerAccount =  brokerAccount;
+		bean = new BeachAccountBean();
+		bean.setBroker(broker.getIdentifier());
+		bean.setBrokerId((int)broker.getEntity().getId());
+		bean.setId(ent.getId());
+		bean.setName(ent.getIdentifier());
+		bean.setId(ent.getId());
+		bean.notifyUpdate();
+		this.eventNode = broker.getEventNode().createChild("/accounts/" + ent.getId());
 		tradeBeans = new ObservableElementList<BeachTradeBean>(GlazedLists.threadSafeList(new BasicEventList<BeachTradeBean>()), new DataBeanConnector<BeachTradeBean>());
 		orderBeans = new ObservableElementList<BeachOrderBean>(GlazedLists.threadSafeList(new BasicEventList<BeachOrderBean>()), new DataBeanConnector<BeachOrderBean>());
 		playBeans = new ObservableElementList<BeachPlayBean>(GlazedLists.threadSafeList(new BasicEventList<BeachPlayBean>()), new DataBeanConnector<BeachPlayBean>());
-		this.entity = ent; 
-		this.broker = broker;
-		this.brokerAccount = brokerAccount;
-		bean = new BeachAccountBean();
-		bean.setBroker(broker.getIdentifier());
-		bean.setName(ent.getIdentifier());
-		bean.setId(ent.getId());
-		eventNode = broker.getEventNode().createChild("/accounts/" + ent.getId());
+		
+	}
+	
+	public void init() { 
 		try {
 			for (BeachPlayEnt playEnt : entity.getPlays()) {
 				BeachPlay play = new BeachPlay();
@@ -152,8 +160,6 @@ public class BeachAccount {
 	public Collection<BeachPlay> getPlays() { 
 		return plays.values();
 	}
-	
-	
 	
 	public ObservableElementList<BeachTradeBean> getTradeBeans() {
 		return tradeBeans;

@@ -1,5 +1,6 @@
 package com.dunkware.trade.service.beach.server.controller;
 
+
 import java.util.Arrays;
 import java.util.concurrent.TimeUnit;
 
@@ -10,7 +11,6 @@ import org.springframework.context.ApplicationContext;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -24,7 +24,8 @@ import com.dunkware.trade.service.beach.server.common.BeachRuntime;
 import com.dunkware.trade.service.beach.server.runtime.BeachAccount;
 import com.dunkware.trade.service.beach.server.runtime.BeachService;
 
-@CrossOrigin()
+
+
 @RestController
 public class BeachWebController {
 
@@ -39,26 +40,35 @@ public class BeachWebController {
 
 	private Logger logger = LoggerFactory.getLogger(getClass());
 
-	@GetMapping(path = "/trade/v1/dash/core/brokers", produces = MediaType.APPLICATION_JSON_VALUE)
+
+	@GetMapping(path = "/trade/v1/dash/core/brokers",  produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<StreamingResponseBody> brokersStream() {
-
-		GlazedDataGrid grid = new GlazedDataGrid(beachService.getBrokerBeans(), runtime.getExecutor(), "getId");
-
+		
 		StreamingResponseBody stream = out -> {
-			grid.start();
+
+			GlazedGridWrapper wrapper = new GlazedGridWrapper(beachService.getBrokerBeans(), runtime.getExecutor(), "getId");
+			wrapper.start();
 			while (true) {
 				try {
-					DataGridUpdate update = grid.pollUpdate(1, TimeUnit.SECONDS);
+					
+					
+					DataGridUpdate update = wrapper.updateQueue().poll(1, TimeUnit.SECONDS);
 					if (update == null) {
+						out.flush();
 						continue;
 					}
+					
 					logger.info("send " + DJson.serialize(update));
 					if (update != null) {
 						out.write(DJson.serialize(Arrays.asList(update)).getBytes());
 						out.flush();
+						
+						
 					}
 				} catch (Exception e) {
-					grid.dispose();
+					
+					out.close();
+					wrapper.dispose();
 					logger.error("closing broker stream");
 					return;
 				}

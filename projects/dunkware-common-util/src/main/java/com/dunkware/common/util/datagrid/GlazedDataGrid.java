@@ -27,6 +27,7 @@ public class GlazedDataGrid implements ListEventListener<Object>, DataGridConsum
 		
 		
 		this.dataGrid = DataGrid.newInstance(executor, idMethod);
+		this.dataGrid.addConsumer(this);
 		list.addListEventListener(this);
 	}
 	
@@ -65,6 +66,7 @@ public class GlazedDataGrid implements ListEventListener<Object>, DataGridConsum
 	
 	public void dispose() { 
 		list.removeListEventListener(this);
+		dataGrid.removeConsumer(this);
 		dataGrid.dispose();
 		
 	}

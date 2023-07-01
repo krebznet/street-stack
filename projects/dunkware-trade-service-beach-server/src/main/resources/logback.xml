@@ -4,54 +4,27 @@
 	<property name="PATTERN"
 		value="%d{HH:mm:ss.SSS} %-5level %logger{0} - %msg%n" />
 
-	<appender name="CONSOLE" class="ch.qos.logback.core.ConsoleAppender"> <encoder><pattern>%d{HH:mm:ss.SSS} [%thread] %-5level %logger{36} - %msg%n</pattern></encoder></appender>
+	<appender name="CONSOLE"
+		class="ch.qos.logback.core.ConsoleAppender">
 
-
-
-	
-
-	<logger name="com.dunkware.trade.broker.tws" level="INFO"/>
-	<logger name="com.dunkware.trade.broker.tws.TwsAccountOrder" level="TRACE"/>
-	
-	// okay cool match should work
-	// we should setup the match element
-	// ge th elastic shearh IP's and set it up
-	// then validate we can connect to elastic searhx
-	
-	<appender name="FLUENT"
-		class="ch.qos.logback.more.appenders.DataFluentAppender">
-		<tag>beach</tag>
-		<label>dev</label>
-		<remoteHost>192.168.5.8</remoteHost>
-		<port>30001</port>
-		<!--  <additionalField>
-			<key>instance</key>
-			<value>tradestream1</value>
-		</additionalField>-->
+		<encoder>
+			<pattern>%d{HH:mm:ss.SSS} [%thread] %-5level %logger{36} - %msg%n
+			</pattern>
+		</encoder>
 	</appender>
+ 
+	  	
 
 
-	
+	<root level="INFO">
 
-
-
-	<root level="ERROR">
 		<appender-ref ref="CONSOLE" additivity="false" />
 	</root>
 
 
-	<logger name="com.dunkware" level="DEBUG" additivity="false">
-		
-		<appender-ref ref="CONSOLE" additivity="false" />
-	
+	<logger name="com.dunkware" level="DEBUG">
+		 
+		<appender-ref ref="CONSOLE" additivity="false"/>
 	</logger>
-	
-	<logger name="com.dunkware.trade.sdk.lib.runtime.smart.rules.GainLossRule" level="TRACE" additivity="false">
-		<appender-ref ref="CONSOLE"> </appender-ref>
-	</logger>
-
-
-
-
 
 </configuration>

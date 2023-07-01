@@ -27,7 +27,7 @@ import com.dunkware.trade.service.beach.protocol.broker.AddBrokerReq;
 import com.dunkware.trade.service.beach.server.common.BeachRuntime;
 import com.dunkware.trade.service.beach.server.entity.BeachBrokerEnt;
 import com.dunkware.trade.service.beach.server.entity.BeachRepo;
-import com.dunkware.trade.service.beach.server.runtime.core.events.EBeachAccountLoaded;
+import com.dunkware.trade.service.beach.server.runtime.core.events.EBeachAccountAdded;
 
 import ca.odell.glazedlists.BasicEventList;
 import ca.odell.glazedlists.GlazedLists;
@@ -47,6 +47,7 @@ public class BeachService {
 	@Autowired
 	private BeachRepo repo;
 	
+	
 
 	@Autowired
 	private BeachRuntime runtime;
@@ -54,19 +55,26 @@ public class BeachService {
 	@Autowired
 	private ApplicationContext ac;
 	
-	private ObservableElementList<BeachBrokerBean> brokerBeans;
+	public static ObservableElementList<BeachBrokerBean> brokerBeans = new ObservableElementList<BeachBrokerBean>(GlazedLists.threadSafeList(new BasicEventList<BeachBrokerBean>()), new DataBeanConnector<BeachBrokerBean>());
 
-	private ObservableElementList<BeachAccountBean> accountBeans
+	private ObservableElementList<BeachAccountBean> accountBeans = new ObservableElementList<BeachAccountBean>(GlazedLists.threadSafeList(new BasicEventList<BeachAccountBean>()), new DataBeanConnector<BeachAccountBean>());
 	
-	;
+	
+	
 	
 	@PostConstruct()
 	private void load() {
 		eventNode = runtime.getEventTree().getRoot().createChild("/service");
 		
-		brokerBeans = new ObservableElementList<BeachBrokerBean>(GlazedLists.threadSafeList(new BasicEventList<BeachBrokerBean>()), new DataBeanConnector<BeachBrokerBean>());
-		
-		accountBeans = new ObservableElementList<BeachAccountBean>(GlazedLists.threadSafeList(new BasicEventList<BeachAccountBean>()), new DataBeanConnector<BeachAccountBean>());
+		BeachBrokerBean b = new BeachBrokerBean();
+		b.setAccounts(3);
+		b.setId(3);
+		b.setName("fuck");
+		b.setStatus("sa");
+		b.setSummary("msdfsd");
+		brokerBeans.getReadWriteLock().writeLock().lock();
+		brokerBeans.add(b);
+		brokerBeans.getReadWriteLock().writeLock().unlock();
 		
 		Thread runner = new Thread() {
 			public void run() {
@@ -83,13 +91,15 @@ public class BeachService {
 				
 				List<BeachBrokerEnt> brokers = repo.getBrokers();
 				for (BeachBrokerEnt beachBrokerEnt : brokers) {
-					BeachBroker broker = new BeachBroker();
+					BeachBroker broker = new BeachBroker(runtime,beachBrokerEnt);
 					ac.getAutowireCapableBeanFactory().autowireBean(broker);
+					broker.getEventNode().addEventHandler(this);
+					brokerBeans.getReadWriteLock().writeLock().lock();
+					brokerBeans.add(broker.getBean());
+					brokerBeans.getReadWriteLock().writeLock().unlock();
 					try {
-						broker.init(beachBrokerEnt);
-						BeachService.this.brokers.put(broker.getIdentifier(), broker);
-						brokerBeans.add(broker.getBean());
-						broker.getEventNode().addEventHandler(this);
+						broker.init();
+						
 					} catch (Exception e) {
 						logger.error("Broker {} Initialize Exception On Service Start {}",
 								beachBrokerEnt.getIdentifier(), e.toString());
@@ -134,18 +144,21 @@ public class BeachService {
 			throw new Exception("Broker Entity Persist Failed Internal Fatal " + e.toString());
 		} finally {
 		}
-		BeachBroker broker = new BeachBroker();
+		BeachBroker broker = new BeachBroker(runtime,entity);
 		ac.getAutowireCapableBeanFactory().autowireBean(broker);
+		brokers.put(entity.getIdentifier(), broker);
+		broker.getEventNode().addEventHandler(this);;
+		brokerBeans.getReadWriteLock().writeLock().lock();
+		brokerBeans.add(broker.getBean());
+		brokerBeans.getReadWriteLock().writeLock().unlock();
+	
 		try {
-			broker.init(entity);
-			brokerBeans.getReadWriteLock().writeLock().lock();
-			brokerBeans.add(broker.getBean());
-			brokerBeans.getReadWriteLock().writeLock().unlock();
-			broker.getEventNode().addEventHandler(this);
+			broker.init();
+					
 		} catch (Exception e) {
 			logger.error("Internal Add Broker Init Exception " + e.toString(), e);
 		}
-		brokers.put(entity.getIdentifier(), broker);
+	
 		return broker;
 	}
 
@@ -245,12 +258,11 @@ public class BeachService {
 	
 	@ADEventMethod
 	public void brokerEvent(EBrokerEvent event) { 
-		// fuck man that sucks; 
 		
 	}
 	
 	@ADEventMethod
-	public void beachAccountLoaded(EBeachAccountLoaded event) {
+	public void beachAccountAdded(EBeachAccountAdded event) {
 		accountBeans.getReadWriteLock().writeLock().lock();
 		accountBeans.add(event.getAcccount().getBean());
 		accountBeans.getReadWriteLock().writeLock().unlock();

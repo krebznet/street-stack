@@ -32,9 +32,10 @@ public class WebFluxSecurityConfig {
   //  antMatchers(HttpMethod.OPTIONS, "/your-url").permitAll()
     @Bean
     public SecurityWebFilterChain springSecurityFilterChain(ServerHttpSecurity http) {
-    http.csrf().disable();
-    	// http.csrf(ServerHttpSecurity.CsrfSpec::disable);
-        http.cors().disable();
+   //http.csrf().disable();
+    
+    http.csrf(ServerHttpSecurity.CsrfSpec::disable);
+        http.cors();
         http
             .authorizeExchange(exchanges -> exchanges
                 .anyExchange().authenticated()
@@ -44,23 +45,17 @@ public class WebFluxSecurityConfig {
     }
     
   
-    @Bean
-    public CorsWebFilter corsWebFilter() {
-        return new CorsWebFilter(corsConfigurationSource());
-    }
-
+ 
     @Bean
     CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration configuration = new CorsConfiguration();
-        configuration.addAllowedOriginPattern("*");
-        configuration.addAllowedHeader("*");
-        configuration.addExposedHeader("*");
-        configuration.addAllowedOriginPattern("*");;
+       
+        configuration.setExposedHeaders(Arrays.asList("*"));
         configuration.setAllowedOrigins(Arrays.asList("*"));
         configuration.setAllowedHeaders(Arrays.asList("*"));
         configuration.setAllowedMethods(Arrays.asList("*"));
-      
-     
+        configuration.setAllowedOriginPatterns(Arrays.asList("*"));
+        	configuration.setMaxAge((long)23);
         configuration.setAllowCredentials(false);
         //the below three lines will add the relevant CORS response headers
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();

@@ -32,12 +32,12 @@ import com.dunkware.trade.service.beach.server.runtime.BeachService;
 @RestController
 public class BeachApiController {
 
-	@Autowired()
+	@Autowired()	
 	private BeachService beachService; 
 
 
 	@PostMapping(path = "/trade/v1/broker/add")
-	public void addBroker(AddBrokerReq req)   { 
+	public void addBroker(@RequestBody() AddBrokerReq req)   { 
 		try {
 			beachService.addBroker(req);
 			
