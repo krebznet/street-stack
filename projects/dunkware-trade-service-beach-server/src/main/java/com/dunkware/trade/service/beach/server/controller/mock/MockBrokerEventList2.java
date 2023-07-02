@@ -63,9 +63,9 @@ public class MockBrokerEventList2 implements DataGridConsumer {
 	}
 
 	public void dispose() {
-		inserter.interrupt();
+		//inserter.interrupt();
 		// deleter.interrupt();
-		updater.interrupt();
+		//updater.interrupt();
 		dataGrid.removeConsumer(this);
 		dataGrid.dispose();
 	}

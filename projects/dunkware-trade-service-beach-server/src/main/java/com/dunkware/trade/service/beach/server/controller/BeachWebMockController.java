@@ -1,6 +1,5 @@
 package com.dunkware.trade.service.beach.server.controller;
 
-import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -14,7 +13,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
@@ -26,7 +24,6 @@ import com.dunkware.common.util.json.DJson;
 import com.dunkware.common.util.uuid.DUUID;
 import com.dunkware.trade.service.beach.server.common.BeachRuntime;
 import com.dunkware.trade.service.beach.server.controller.mock.MockBrokerEventList2;
-import com.dunkware.trade.service.beach.server.controller.mock.MockTradeEventList;
 import com.dunkware.trade.service.beach.server.runtime.BeachService;
 import com.dunkware.trade.service.beach.server.runtime.BeachTradeBean;
 
@@ -48,38 +45,37 @@ public class BeachWebMockController {
 
 	@GetMapping(path = "/trade/v1/mock/dash/brokers")
 	public ResponseEntity<StreamingResponseBody> brokersStream(HttpServletResponse resp) {
-		
 
-		
-		
 		StreamingResponseBody stream = out -> {
 			final MockBrokerEventList2 list = MockBrokerEventList2.newInstance(runtime.getExecutor(), 5);
-			PrintWriter p = new PrintWriter(out);
+			// PrintWriter p = new PrintWriter(out);
 			list.start();
 			while (true) {
 				try {
 					DataGridUpdate update = list.nextUpdate(4, TimeUnit.SECONDS);
-					
+
 					if (update == null) {
-						p.flush();
-						out.flush();
+						// p.flush();
+						// .out.flush();
 						continue;
 					}
-					
+
 					logger.info("send " + DJson.serialize(update));
 					if (update != null) {
-						
-							p.print(Arrays.asList(DJson.serialize(update)));
-							p.flush();
-							
-			//out.write(DJson.serialize(Arrays.asList(update)).getBytes());
-			//			out.flush();
+
+						// p.println(Arrays.asList(DJson.serialize(update).getBytes()));
+						// resp.getOutputStream().write(DJson.serialize(Arrays.asList(update)).getBytes());
+						resp.getWriter().write(DJson.serialize(Arrays.asList(DJson.serialize(update))));
+						resp.getWriter().flush();
+						// p.print(DJson.serialize(Arrays.asList(update)).getBytes());
+						// p.flush();
+//						out.flush();
 
 					}
 				} catch (Exception e) {
 					list.dispose();
 					out.close();
-					p.close();
+					// p.close();
 					logger.error("closing download test");
 					return;
 				}
@@ -116,14 +112,12 @@ public class BeachWebMockController {
 		return results;
 	}
 
-	@CrossOrigin("*")
-	@GetMapping(value = "/trade/v1/mock/dash/trades", produces = MediaType.APPLICATION_JSON_VALUE)
+	@GetMapping(value = "/trade/v1/mock/dash/trades")
 	public ResponseEntity<StreamingResponseBody> download() {
 
-		final MockTradeEventList list = MockTradeEventList.newInstance(runtime.getExecutor(), 5);
-		list.start();
 		StreamingResponseBody stream = out -> {
-
+			final MockBrokerEventList2 list = MockBrokerEventList2.newInstance(runtime.getExecutor(), 5);
+			list.start();
 			while (true) {
 				try {
 
@@ -154,7 +148,7 @@ public class BeachWebMockController {
 
 		};
 		logger.info("steaming response {} ", stream);
-		return ResponseEntity.ok().contentType(MediaType.APPLICATION_JSON).body(stream);
+		return ResponseEntity.ok().contentType(MediaType.APPLICATION_STREAM_JSON).body(stream);
 	}
 
 }

@@ -23,7 +23,12 @@
 		
 	</root>
 
+
 	
+	<logger name="org.springframework.cloud" level="debug" additivity="false">
+		<appender-ref ref="CONSOLE" additivity="false" />
+		
+	</logger>
 
 	<logger name="com.dunkware" level="debug" additivity="false">
 		<appender-ref ref="CONSOLE" additivity="false" />

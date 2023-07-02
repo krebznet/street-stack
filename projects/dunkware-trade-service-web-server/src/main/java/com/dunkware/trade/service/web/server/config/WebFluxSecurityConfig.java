@@ -32,7 +32,7 @@ public class WebFluxSecurityConfig {
   //  antMatchers(HttpMethod.OPTIONS, "/your-url").permitAll()
     @Bean
     public SecurityWebFilterChain springSecurityFilterChain(ServerHttpSecurity http) {
-   //http.csrf().disable();
+   http.csrf().disable();
     
     http.csrf(ServerHttpSecurity.CsrfSpec::disable);
         http.cors();

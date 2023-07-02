@@ -50,7 +50,7 @@ public class AsyncConfig implements AsyncConfigurer {
 	        log.debug("Creating Async Task Executor");
 	        ThreadPoolTaskExecutor executor = new ThreadPoolTaskExecutor();
 	        executor.setCorePoolSize(5);
-	        executor.setMaxPoolSize(10);
+	        executor.setMaxPoolSize(300);
 	        executor.setQueueCapacity(25);
 	        return executor;
 	    }
@@ -66,7 +66,7 @@ public class AsyncConfig implements AsyncConfigurer {
 	        return new WebMvcConfigurer() {
 	            @Override
 	            public void configureAsyncSupport(AsyncSupportConfigurer configurer) {
-	                configurer.setDefaultTimeout(360000).setTaskExecutor(taskExecutor);
+	                configurer.setDefaultTimeout(50000000).setTaskExecutor(taskExecutor);
 	                configurer.registerCallableInterceptors(callableProcessingInterceptor);
 	                WebMvcConfigurer.super.configureAsyncSupport(configurer);
 	            }
