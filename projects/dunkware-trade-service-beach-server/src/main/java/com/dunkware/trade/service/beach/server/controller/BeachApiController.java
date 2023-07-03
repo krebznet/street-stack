@@ -35,6 +35,11 @@ public class BeachApiController {
 	@Autowired()	
 	private BeachService beachService; 
 
+	
+	@GetMapping(path = "/trade/v1/echo")
+	public @ResponseBody() String echo(@RequestParam String echo) { 
+		return echo;
+	}
 
 	@PostMapping(path = "/trade/v1/broker/add")
 	public void addBroker(@RequestBody() AddBrokerReq req)   { 
