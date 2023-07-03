@@ -39,6 +39,7 @@ public class BeachApiController {
 	@PostMapping(path = "/trade/v1/broker/add")
 	public void addBroker(@RequestBody() AddBrokerReq req)   { 
 		try {
+		//	beachService.getbr
 			beachService.addBroker(req);
 			
 		} catch (Exception e) {

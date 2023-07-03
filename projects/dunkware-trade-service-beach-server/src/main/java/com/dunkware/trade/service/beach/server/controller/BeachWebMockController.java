@@ -116,7 +116,7 @@ public class BeachWebMockController {
 	public ResponseEntity<StreamingResponseBody> download() {
 
 		StreamingResponseBody stream = out -> {
-			final MockBrokerEventList2 list = MockBrokerEventList2.newInstance(runtime.getExecutor(), 5);
+			final MockBrokerEventList2 list = MockBrokerEventList2.newInstance(runtime.getExecutor(), 4);
 			list.start();
 			while (true) {
 				try {
