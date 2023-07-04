@@ -57,8 +57,8 @@ public class MockBrokerEventList implements DataGridConsumer {
 		inserter = new Inserter();
 		inserter.start();
 
-		updater = new Updater();
-		updater.start();
+//	updater = new Updater();
+	//s	updater.start();
 		// deleter = new Deleter();
 		// deleter.start();
 	}
