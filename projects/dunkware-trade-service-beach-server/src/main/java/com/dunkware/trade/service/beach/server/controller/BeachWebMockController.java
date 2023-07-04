@@ -15,6 +15,7 @@ import org.springframework.context.ApplicationContext;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.mvc.method.annotation.StreamingResponseBody;
@@ -90,6 +91,9 @@ public class BeachWebMockController {
 		return ResponseEntity.ok().contentType(MediaType.APPLICATION_STREAM_JSON).body(stream);
 	}
 
+	public @ResponseBody() String echo(@RequestParam() String echo) { 
+		return echo;
+	}
 	@GetMapping(path = "/trade/v1/mock/dash/static/trades")
 	public @ResponseBody() List<DataGridUpdate> staticTrades() {
 		List<DataGridUpdate> results = new ArrayList<DataGridUpdate>();
