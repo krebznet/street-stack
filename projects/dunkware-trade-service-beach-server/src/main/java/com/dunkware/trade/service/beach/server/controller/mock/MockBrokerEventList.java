@@ -1,17 +1,11 @@
 package com.dunkware.trade.service.beach.server.controller.mock;
 
-import java.util.concurrent.BlockingQueue;
-import java.util.concurrent.LinkedBlockingQueue;
-import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicInteger;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.dunkware.common.util.databean.DataBeanConnector;
-import com.dunkware.common.util.datagrid.DataGridConsumer;
-import com.dunkware.common.util.datagrid.DataGridUpdate;
-import com.dunkware.common.util.datagrid.GlazedDataGrid;
 import com.dunkware.common.util.executor.DExecutor;
 import com.dunkware.common.util.helpers.DRandom;
 import com.dunkware.trade.service.beach.server.runtime.BeachBrokerBean;
@@ -20,14 +14,12 @@ import ca.odell.glazedlists.BasicEventList;
 import ca.odell.glazedlists.GlazedLists;
 import ca.odell.glazedlists.ObservableElementList;
 
-public class MockBrokerEventList implements DataGridConsumer {
+public class MockBrokerEventList   {
 
+	
 	public volatile int counter = 1;
 	public static volatile int insertThreads = 1;
 
-	public static MockBrokerEventList newInstance(DExecutor executor, int size) {
-		return new MockBrokerEventList(executor, size);
-	}
 
 	private Logger logger = LoggerFactory.getLogger(getClass());
 
@@ -37,53 +29,48 @@ public class MockBrokerEventList implements DataGridConsumer {
 	private Inserter inserter;
 	private Deleter deleter;
 	private Updater updater;
-	private GlazedDataGrid dataGrid;
-
+	
 	private int size;
-	private BlockingQueue<DataGridUpdate> updateQueue = new LinkedBlockingQueue<DataGridUpdate>();
+	private int updateInterval;
+	
+	public static MockBrokerEventList newInstance(DExecutor executor, int size, int updateInterval) { 
+		return new MockBrokerEventList(executor, size, updateInterval);
+	}
 
-	private MockBrokerEventList(DExecutor executor, int size) {
-
-		this.size = 5;
+	private MockBrokerEventList(DExecutor executor, int size, int updatInterval) {
+		this.size = size;
+		this.updateInterval = updatInterval;
 		list = new ObservableElementList<BeachBrokerBean>(
 				GlazedLists.threadSafeList(new BasicEventList<BeachBrokerBean>()),
 				new DataBeanConnector<BeachBrokerBean>());
-		dataGrid = new GlazedDataGrid(list, executor, "getId");
-		dataGrid.addConsumer(this);
+		
+	}
+	
+	public ObservableElementList<?> getList() { 
+		return list;
 	}
 
 	public void start() {
-		dataGrid.start();
 		inserter = new Inserter();
-		inserter.start();
-
-//	updater = new Updater();
-	//s	updater.start();
+		inserter.start();	
+		updater = new Updater();
+		updater.start();
 		// deleter = new Deleter();
 		// deleter.start();
 	}
 
 	public void dispose() {
+		
 		inserter.interrupt();
 		// deleter.interrupt();
 		updater.interrupt();
-		dataGrid.removeConsumer(this);
-		dataGrid.dispose();
+		
+	//	dataGrid.dispose();
 	}
 
-	public DataGridUpdate nextUpdate(int timeout, TimeUnit unit) {
-		try {
-			return updateQueue.poll(timeout, unit);
-		} catch (Exception e) {
-			return null;
-		}
+	
 
-	}
 
-	@Override
-	public void consumeUpdate(DataGridUpdate update) {
-		updateQueue.add(update);
-	}
 
 	private class Inserter extends Thread {
 
@@ -93,7 +80,7 @@ public class MockBrokerEventList implements DataGridConsumer {
 			// create the intial ones from size
 			int i = 0;
 
-			while (i < 6) {
+			while (i < size) {
 				counter = counter + 1;
 				BeachBrokerBean b = new BeachBrokerBean();
 				b.setId(counter);
@@ -139,10 +126,11 @@ public class MockBrokerEventList implements DataGridConsumer {
 					Thread.sleep(1500);
 
 					try {
+						list.getReadWriteLock().writeLock().lock();
 						if (list.size() == 0) {
 							continue;
 						}
-						list.getReadWriteLock().writeLock().lock();
+						
 						int deleteIndex = DRandom.getRandom(0, list.size() - 1);
 						list.remove(deleteIndex);
 						list.getReadWriteLock().writeLock().unlock();
@@ -153,6 +141,8 @@ public class MockBrokerEventList implements DataGridConsumer {
 						}
 
 						logger.error("deleter " + e.toString());
+					} finally { 
+						list.getReadWriteLock().writeLock().unlock();
 					}
 				}
 			} catch (Exception e) {
@@ -171,12 +161,13 @@ public class MockBrokerEventList implements DataGridConsumer {
 			int count = 0;
 			while (!interrupted()) {
 				try {
-					Thread.sleep(500);
+					Thread.sleep(updateInterval);
 					count++;
 
 					list.getReadWriteLock().readLock().lock();
 					for (BeachBrokerBean beachBrokerBean : list) {
 						beachBrokerBean.setStatus(randomStatus());
+						beachBrokerBean.setName(beachBrokerBean.getName() + 1);
 
 					}
 					list.getReadWriteLock().readLock().unlock();
@@ -190,6 +181,9 @@ public class MockBrokerEventList implements DataGridConsumer {
 						return;
 					}
 					logger.error("deleter " + e.toString());
+				} finally { 
+					
+
 				}
 
 			}

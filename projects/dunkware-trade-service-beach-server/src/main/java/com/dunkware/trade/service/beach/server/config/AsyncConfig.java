@@ -23,47 +23,48 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 @EnableAsync
 @EnableScheduling
 public class AsyncConfig implements AsyncConfigurer {
-	 private final Logger log = LoggerFactory.getLogger(AsyncConfig.class);
+	private final Logger log = LoggerFactory.getLogger(AsyncConfig.class);
 
-	    @Override
-	    @Bean (name = "taskExecutor")
-	    public AsyncTaskExecutor getAsyncExecutor() {
-	        log.debug("Creating Async Task Executor");
-	        ThreadPoolTaskExecutor executor = new ThreadPoolTaskExecutor();
-	        executor.setCorePoolSize(5);
-	        executor.setMaxPoolSize(300);
-	        executor.setQueueCapacity(50);
-	        return executor;
-	    }
+	@Override
+	@Bean(name = "taskExecutor")
+	public AsyncTaskExecutor getAsyncExecutor() {
+		log.debug("Creating Async Task Executor");
+		ThreadPoolTaskExecutor executor = new ThreadPoolTaskExecutor();
+		executor.setCorePoolSize(5);
+		executor.setMaxPoolSize(300);
+		executor.setQueueCapacity(50);
+		return executor;
+	}
 
-	    @Override
-	    public AsyncUncaughtExceptionHandler getAsyncUncaughtExceptionHandler() {
-	        return new SimpleAsyncUncaughtExceptionHandler();
-	    }
+	@Override
+	public AsyncUncaughtExceptionHandler getAsyncUncaughtExceptionHandler() {
+		return new SimpleAsyncUncaughtExceptionHandler();
+	}
 
-	    /** Configure async support for Spring MVC. */
-	    @Bean
-	    public WebMvcConfigurer webMvcConfigurerConfigurer(AsyncTaskExecutor taskExecutor, CallableProcessingInterceptor callableProcessingInterceptor) {
-	        return new WebMvcConfigurer() {
-	            @Override
-	            public void configureAsyncSupport(AsyncSupportConfigurer configurer) {
-	                configurer.setDefaultTimeout(50000000).setTaskExecutor(taskExecutor);
-	                configurer.registerCallableInterceptors(callableProcessingInterceptor);
-	                WebMvcConfigurer.super.configureAsyncSupport(configurer);
-	            }
-	        };
-	    }
+	/* *//** Configure async support for Spring MVC. *//*
+														 * @Bean public WebMvcConfigurer
+														 * webMvcConfigurerConfigurer(AsyncTaskExecutor taskExecutor,
+														 * CallableProcessingInterceptor callableProcessingInterceptor)
+														 * { return new WebMvcConfigurer() {
+														 * 
+														 * @Override public void
+														 * configureAsyncSupport(AsyncSupportConfigurer configurer) {
+														 * configurer.setDefaultTimeout(50000000).setTaskExecutor(
+														 * taskExecutor); configurer.registerCallableInterceptors(
+														 * callableProcessingInterceptor);
+														 * WebMvcConfigurer.super.configureAsyncSupport(configurer); }
+														 * }; }
+														 */
 
-	    @Bean
-	    public CallableProcessingInterceptor callableProcessingInterceptor() {
-	        return new TimeoutCallableProcessingInterceptor() {
-	            @Override
-	            public <T> Object handleTimeout(NativeWebRequest request, Callable<T> task) throws Exception {
-	                log.error("timeout!");
-	                return super.handleTimeout(request, task);
-	            }
-	        };
-	    }
-	
+	@Bean
+	public CallableProcessingInterceptor callableProcessingInterceptor() {
+		return new TimeoutCallableProcessingInterceptor() {
+			@Override
+			public <T> Object handleTimeout(NativeWebRequest request, Callable<T> task) throws Exception {
+				log.error("timeout!");
+				return super.handleTimeout(request, task);
+			}
+		};
+	}
 
 }

@@ -32,6 +32,10 @@
 
 
 	<dependencies>
+	<!--   <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-webflux</artifactId>
+        </dependency>-->
 	
 	<!-- https://mvnrepository.com/artifact/com.glazedlists/glazedlists -->
 
@@ -122,7 +126,7 @@
 		</dependency>
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
-			<artifactId>spring-boot-starter-web</artifactId>
+			<artifactId>spring-boot-starter-webflux</artifactId>
 		</dependency>
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
@@ -164,6 +168,10 @@
 			<groupId>org.fluentd</groupId>
 			<artifactId>fluent-logger</artifactId>
 			<version>0.3.4</version>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-webflux</artifactId>
 		</dependency>
 
 

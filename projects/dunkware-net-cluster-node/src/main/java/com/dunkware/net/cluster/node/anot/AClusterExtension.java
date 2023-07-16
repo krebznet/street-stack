@@ -17,6 +17,13 @@ public @interface AClusterExtension {
 	// kafka topic bus for all messages --> these are not request/reply 
 	// kafka topic for each cluster node -> to consume node specific messages 
 	// kafka topic 
+	// tipic is the place we need rto be whhere we go is we are not going tob e able to get there
+	//.. iu sneed to get there iii
+	// okay we are going to be there ... 
+	// if we did say 
+	// buenas nches 00 hhmm. 
+	// 
+	
 	
 	
 	// cluster service channels 
