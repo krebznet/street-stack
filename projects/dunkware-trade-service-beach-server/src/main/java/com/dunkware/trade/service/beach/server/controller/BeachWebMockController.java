@@ -9,7 +9,6 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.springframework.http.MediaType;
-import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -23,10 +22,8 @@ import com.dunkware.trade.service.beach.server.common.BeachRuntime;
 import com.dunkware.trade.service.beach.server.controller.mock.MockBrokerEventList;
 import com.dunkware.trade.service.beach.server.runtime.BeachService;
 
-import reactor.core.Disposable;
 import reactor.core.publisher.Flux;
 
-@CrossOrigin("*")
 @RestController
 public class BeachWebMockController {
 
