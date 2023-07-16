@@ -3,7 +3,7 @@ package com.dunkware.trade.service.stream.server.controller.session.capture.writ
 import java.awt.Robot;
 import java.util.Random;
 
-public class MouseMover {
+public class MouseMover	 {
 	
 	 public static final int FIVE_SECONDS = 5000;
 	    public static final int MAX_Y = 400;
