@@ -23,7 +23,6 @@ docker build --platform=linux/amd64 -t dunkware-trade-service-streamtest-server:
 docker tag dunkware-trade-service-streamtest-server:latest testrock1:31000/dunkware-trade-service-streamtest-server:latest
 docker push testrock1:31000/dunkware-trade-service-streamtest-server:latest
 echo "Deploying Gateway Service"
-mvn clean install  -DskipTests
 cd ${STREET_CLOUD_HOME}/projects/dunkware-trade-service-web-server
 docker build --platform=linux/amd64 -t dunkware-trade-service-web-server:latest5 .
 docker tag dunkware-trade-service-web-server:latest5 testrock1:31000/dunkware-trade-service-web-server:latest5

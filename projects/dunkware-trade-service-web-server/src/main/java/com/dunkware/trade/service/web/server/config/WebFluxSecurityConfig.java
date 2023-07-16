@@ -36,7 +36,7 @@ public class WebFluxSecurityConfig {
    
    
    	//http.csrf(ServerHttpSecurity.CsrfSpec::disable);
-        http.cors();
+        http.cors().disable();
         http
             .authorizeExchange(exchanges -> exchanges
                 .anyExchange().authenticated()
@@ -48,16 +48,15 @@ public class WebFluxSecurityConfig {
   
  
     @Bean
-    CorsConfigurationSource corsConfigurationSource() {
+    CorsConfigurationSource corsConfiguration() {
         CorsConfiguration configuration = new CorsConfiguration();
-       //configuration.applyPermitDefaultValues();
+       configuration.applyPermitDefaultValues();
        
-      
-        configuration.addExposedHeader("*");
+        configuration.setExposedHeaders(Arrays.asList("*"));
        configuration.setAllowedHeaders(Arrays.asList("*"));
         configuration.setAllowedMethods(Arrays.asList("*"));
         configuration.setAllowedOriginPatterns(Arrays.asList("*"));
-        configuration.setAllowedOrigins(Arrays.asList("*"));
+        
        // 	configuration.setMaxAge((long)23);
        configuration.setAllowCredentials(false);
         //the below three lines will add the relevant CORS response headers
@@ -70,6 +69,11 @@ public class WebFluxSecurityConfig {
         
         
         
+    }
+    
+    @Bean
+    public CorsWebFilter corsWebFilter() {
+        return new CorsWebFilter(corsConfiguration());
     }
     
     

@@ -10,7 +10,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
@@ -47,7 +46,7 @@ public class BeachWebMockController {
 	
 
 	
-	@RequestMapping(path = "/trade/v1/mock/dash/brokers", produces = MediaType.APPLICATION_STREAM_JSON_VALUE)
+	@GetMapping(path = "/trade/v1/mock/dash/brokers", produces = MediaType.APPLICATION_STREAM_JSON_VALUE)
     public Flux<List<DataGridUpdate>> brokerTrades() {
 		MockBrokerEventList list = MockBrokerEventList.newInstance(runtime.getExecutor(), 50, 1000);
 		list.start();
