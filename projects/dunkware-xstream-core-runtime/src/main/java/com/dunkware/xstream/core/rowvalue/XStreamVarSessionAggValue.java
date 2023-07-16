@@ -1,6 +1,6 @@
 package com.dunkware.xstream.core.rowvalue;
 
-import com.dunkware.xstream.model.search.XStreamValue;
+import com.dunkware.xstream.model.query.XStreamValue;
 
 public class XStreamVarSessionAggValue {
 	

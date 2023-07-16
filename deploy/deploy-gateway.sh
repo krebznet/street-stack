@@ -5,6 +5,6 @@ cd /Users/duncankrebs/dunkware/street/cloud/1.0.0/dunkware-street-cloud
 
 echo "Deploying Gateway Service"
 cd /Users/duncankrebs/dunkware/street/cloud/1.0.0/dunkware-street-cloud/projects/dunkware-trade-service-web-server
-docker build --platform=linux/amd64 -t dunkware-trade-service-web-server:latest .
-docker tag dunkware-trade-service-web-server:latest testrock1.dunkware.net:31000/dunkware-trade-service-web-server:latest
-docker -D  push  testrock1.dunkware.net:31000/dunkware-trade-service-web-server:latest
+docker build --platform=linux/amd64 -t dunkware-trade-service-web-server:fuck .
+docker tag dunkware-trade-service-web-server:fuck testrock1.dunkware.net:31000/dunkware-trade-service-web-server:fuck
+docker -D  push  testrock1.dunkware.net:31000/dunkware-trade-service-web-server:fuck

@@ -34,8 +34,8 @@ public class WebFluxSecurityConfig {
     public SecurityWebFilterChain springSecurityFilterChain(ServerHttpSecurity http) {
    http.csrf().disable();
    
-    
-    http.csrf(ServerHttpSecurity.CsrfSpec::disable);
+   
+   	//http.csrf(ServerHttpSecurity.CsrfSpec::disable);
         http.cors();
         http
             .authorizeExchange(exchanges -> exchanges
@@ -50,20 +50,25 @@ public class WebFluxSecurityConfig {
     @Bean
     CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration configuration = new CorsConfiguration();
+       //configuration.applyPermitDefaultValues();
        
-        configuration.setExposedHeaders(Arrays.asList("*"));
-        configuration.setAllowedOrigins(Arrays.asList("*"));
-        configuration.setAllowedHeaders(Arrays.asList("*"));
+      
+        configuration.addExposedHeader("*");
+       configuration.setAllowedHeaders(Arrays.asList("*"));
         configuration.setAllowedMethods(Arrays.asList("*"));
         configuration.setAllowedOriginPatterns(Arrays.asList("*"));
-        	configuration.setMaxAge((long)23);
-        configuration.setAllowCredentials(false);
+        configuration.setAllowedOrigins(Arrays.asList("*"));
+       // 	configuration.setMaxAge((long)23);
+       configuration.setAllowCredentials(false);
         //the below three lines will add the relevant CORS response headers
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
         source.registerCorsConfiguration("/**", configuration);
         return source;    	
     	
     	
+        
+        
+        
         
     }
     

@@ -15,6 +15,10 @@ public class UserController {
     @Autowired
     StorageService storageService;
 
+    @GetMapping(path = "/echo")
+    public @ResponseBody() String echo() {
+    	return "hello";
+    }
     @GetMapping()
     public User geUser(@RequestParam(name = "userId", required = false) Optional<Long> userId, @RequestParam(name = "username", required = false) Optional<String> email, @RequestParam(name = "password", required = false) Optional<String> password) {
       return this.storageService.getUserById(userId, email, password);

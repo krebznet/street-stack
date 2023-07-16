@@ -1,4 +1,4 @@
-package com.dunkware.xstream.model.search;
+package com.dunkware.xstream.model.query;
 
 import java.util.ArrayList;
 import java.util.List;

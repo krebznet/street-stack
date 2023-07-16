@@ -1,7 +1,7 @@
 #echo "Executing Maven Build"
-#cd $STREET_CLOUD_HOME
+cd $STREET_CLOUD_HOME
 
-#mvn clean install  -DskipTests
+mvn clean install  -DskipTests
 
 echo "Deploying Beach  Service"
 #cd /Users/duncankrebs/dunkware/street/cloud/1.0.0/dunkware-street-cloud/projects/dunkware-trade-service-beach-server

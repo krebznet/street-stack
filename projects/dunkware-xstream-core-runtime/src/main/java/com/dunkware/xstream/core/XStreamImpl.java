@@ -31,7 +31,7 @@ import com.dunkware.xstream.api.XStreamStatus;
 import com.dunkware.xstream.api.XStreamTickRouter;
 import com.dunkware.xstream.core.query.XStreamQueryRunnerImpl;
 import com.dunkware.xstream.model.metrics.XStreamMetrics;
-import com.dunkware.xstream.model.search.XStreamCriterias;
+import com.dunkware.xstream.model.query.XStreamCriterias;
 import com.dunkware.xstream.util.XStreamStatsBuilder;
 import com.dunkware.xstream.xproject.model.XStreamExtensionType;
 

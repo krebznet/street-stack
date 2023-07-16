@@ -6,7 +6,7 @@ import com.dunkware.xstream.api.XStream;
 import com.dunkware.xstream.api.XStreamQueryException;
 import com.dunkware.xstream.api.XStreamQueryRunner;
 import com.dunkware.xstream.api.XStreamRow;
-import com.dunkware.xstream.model.search.XStreamCriterias;
+import com.dunkware.xstream.model.query.XStreamCriterias;
 
 public class XStreamQueryRunnerImpl implements XStreamQueryRunner {
 

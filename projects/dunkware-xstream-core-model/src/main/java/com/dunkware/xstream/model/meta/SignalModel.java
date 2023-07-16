@@ -1,7 +1,7 @@
 package com.dunkware.xstream.model.meta;
 
-import com.dunkware.xstream.model.search.XStreamCriterias;
-import com.dunkware.xstream.model.search.XStreamTimeUnit;
+import com.dunkware.xstream.model.query.XStreamCriterias;
+import com.dunkware.xstream.model.query.XStreamTimeUnit;
 
 public class SignalModel {
 	

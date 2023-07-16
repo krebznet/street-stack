@@ -119,6 +119,7 @@ public class DataStreamSessionSnapshotWriter2 implements DKafkaByteHandler2 {
 		try {
 
 			mongoClient = MongoClients.create(config.getMongoURL());
+			
 			WriteConcern wc = new WriteConcern(0).withJournal(false);
 			mongoDatabase = mongoClient.getDatabase(config.getMongoDatabase());
 

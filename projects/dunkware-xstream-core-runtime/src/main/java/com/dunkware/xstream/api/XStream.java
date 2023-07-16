@@ -5,7 +5,7 @@ import java.util.List;
 import org.slf4j.Marker;
 
 import com.dunkware.xstream.model.metrics.XStreamMetrics;
-import com.dunkware.xstream.model.search.XStreamCriterias;
+import com.dunkware.xstream.model.query.XStreamCriterias;
 
 public interface XStream {
 	

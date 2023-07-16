@@ -1,24 +1,5 @@
 package com.dunkware.trade.service.web.server.config;
 
-import java.util.concurrent.Executor;
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.aop.interceptor.AsyncUncaughtExceptionHandler;
-import org.springframework.aop.interceptor.SimpleAsyncUncaughtExceptionHandler;
-import org.springframework.boot.autoconfigure.task.TaskExecutionProperties;
-import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Configuration;
-import org.springframework.scheduling.annotation.AsyncConfigurer;
-import org.springframework.scheduling.annotation.EnableAsync;
-import org.springframework.scheduling.annotation.EnableScheduling;
-import org.springframework.scheduling.concurrent.ConcurrentTaskExecutor;
-import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
-import org.springframework.web.servlet.config.annotation.AsyncSupportConfigurer;
-import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
-
-
-
 import java.util.concurrent.Callable;
 
 import org.slf4j.Logger;
@@ -51,7 +32,8 @@ public class AsyncConfig implements AsyncConfigurer {
 	        ThreadPoolTaskExecutor executor = new ThreadPoolTaskExecutor();
 	        executor.setCorePoolSize(5);
 	        executor.setMaxPoolSize(20);
-	        executor.setQueueCapacity(25);
+	         executor.setQueueCapacity(25);
+	       // executor.set
 	        return executor;
 	    }
 

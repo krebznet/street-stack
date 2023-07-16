@@ -1,6 +1,6 @@
 package com.dunkware.xstream.api;
 
-import com.dunkware.xstream.model.search.XStreamValue;
+import com.dunkware.xstream.model.query.XStreamValue;
 
 public interface XStreamRowValue {
 	

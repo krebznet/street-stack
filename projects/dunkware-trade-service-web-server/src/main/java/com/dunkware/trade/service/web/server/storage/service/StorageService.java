@@ -1,15 +1,17 @@
 package com.dunkware.trade.service.web.server.storage.service;
 
-import com.dunkware.trade.service.web.server.model.User;
-import com.dunkware.trade.service.web.server.storage.entity.UserEntity;
-import com.dunkware.trade.service.web.server.storage.repository.UserRepository;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-
-import javax.persistence.EntityNotFoundException;
 import java.time.LocalDateTime;
 import java.util.Optional;
 import java.util.stream.Collectors;
+
+import javax.persistence.EntityNotFoundException;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import com.dunkware.trade.service.web.server.model.User;
+import com.dunkware.trade.service.web.server.storage.entity.UserEntity;
+import com.dunkware.trade.service.web.server.storage.repository.UserRepository;
 
 @Service
 public class StorageService {
