@@ -1,9 +1,11 @@
 package com.dunkware.trade.service.web.server.config;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.web.reactive.EnableWebFluxSecurity;
 import org.springframework.security.config.web.server.ServerHttpSecurity;
@@ -33,14 +35,16 @@ public class WebFluxSecurityConfig {
     @Bean
     public SecurityWebFilterChain springSecurityFilterChain(ServerHttpSecurity http) {
    http.csrf().disable();
+   http.authorizeExchange().pathMatchers(HttpMethod.OPTIONS, "/**").permitAll();
    
    
-   	//http.csrf(ServerHttpSecurity.CsrfSpec::disable);
         http.cors().disable();
         http
             .authorizeExchange(exchanges -> exchanges
                 .anyExchange().authenticated()
+                
             )
+            
             .httpBasic(Customizer.withDefaults());
         return http.build();
     }
@@ -55,13 +59,14 @@ public class WebFluxSecurityConfig {
         configuration.setExposedHeaders(Arrays.asList("*"));
        configuration.setAllowedHeaders(Arrays.asList("*"));
         configuration.setAllowedMethods(Arrays.asList("*"));
-        configuration.setAllowedOriginPatterns(Arrays.asList("*"));
+        configuration.setAllowedOriginPatterns(Arrays.asList("http*", "https*"));
         
-       // 	configuration.setMaxAge((long)23);
-       configuration.setAllowCredentials(false);
+
+       configuration.setMaxAge((long)30);
+       configuration.setAllowCredentials(true);
         //the below three lines will add the relevant CORS response headers
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
-        source.registerCorsConfiguration("/**", configuration);
+        source.registerCorsConfiguration("/**",configuration);
         return source;    	
     	
     	

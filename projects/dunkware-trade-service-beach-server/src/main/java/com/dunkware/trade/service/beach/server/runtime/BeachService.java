@@ -55,7 +55,7 @@ public class BeachService {
 	@Autowired
 	private ApplicationContext ac;
 	
-	public static ObservableElementList<BeachBrokerBean> brokerBeans = new ObservableElementList<BeachBrokerBean>(GlazedLists.threadSafeList(new BasicEventList<BeachBrokerBean>()), new DataBeanConnector<BeachBrokerBean>());
+	private ObservableElementList<BeachBrokerBean> brokerBeans = new ObservableElementList<BeachBrokerBean>(GlazedLists.threadSafeList(new BasicEventList<BeachBrokerBean>()), new DataBeanConnector<BeachBrokerBean>());
 
 	private ObservableElementList<BeachAccountBean> accountBeans = new ObservableElementList<BeachAccountBean>(GlazedLists.threadSafeList(new BasicEventList<BeachAccountBean>()), new DataBeanConnector<BeachAccountBean>());
 	
@@ -65,17 +65,14 @@ public class BeachService {
 	@PostConstruct()
 	private void load() {
 		eventNode = runtime.getEventTree().getRoot().createChild("/service");
-		
 		BeachBrokerBean b = new BeachBrokerBean();
-		b.setAccounts(3);
-		b.setId(3);
-		b.setName("fuck");
-		b.setStatus("sa");
-		b.setSummary("msdfsd");
+		b.setStatus("Connected");
+		b.setId(23);
+		b.setName("Test Bean");
 		brokerBeans.getReadWriteLock().writeLock().lock();
 		brokerBeans.add(b);
 		brokerBeans.getReadWriteLock().writeLock().unlock();
-		
+	
 		Thread runner = new Thread() {
 			public void run() {
 				String[] streamIdents = runtime.getStreamIdentifiers().split(",");

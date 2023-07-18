@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.Semaphore;
 
+import org.reactivestreams.Subscriber;
+import org.reactivestreams.Subscription;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -15,7 +17,6 @@ import ca.odell.glazedlists.event.ListEvent;
 import ca.odell.glazedlists.event.ListEventListener;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Sinks;
-import reactor.core.scheduler.Scheduler;
 import reactor.core.scheduler.Schedulers;
 
 public class GlazedDataGrid implements ListEventListener<Object> {
@@ -53,11 +54,38 @@ public class GlazedDataGrid implements ListEventListener<Object> {
 			
 		 });
 		flux = flux.subscribeOn(Schedulers.boundedElastic());
+		flux.subscribe(new Subscriber<List<DataGridUpdate>>() {
+
+			private Subscription s;
+			@Override
+			public void onSubscribe(Subscription s) {
+				this.s = s;
+				s.request(1);;
+			}
+
+			
+			@Override
+			public void onError(Throwable t) {
+				s.cancel();
+			}
+
+			@Override
+			public void onComplete() {
+				s.cancel();
+			}
+
+			@Override
+			public void onNext(List<DataGridUpdate> t) {
+				s.request(1);
+			} 
+		});
+			
+		
 		logger.debug("starting glazed data grid " + id);;
 		
 		list.addListEventListener(this);
 		try {
-			GlazedDataGridService.get().register(this);
+			
 			logger.debug("registered glazed data grid to service");
 			list.getReadWriteLock().readLock().lock();
 			
@@ -73,6 +101,21 @@ public class GlazedDataGrid implements ListEventListener<Object> {
 				
 			}
 			running = true;
+			
+			Thread register = new Thread() { 
+				
+				public void run() {
+					try {
+						Thread.sleep(1000);
+						GlazedDataGridService.get().register(GlazedDataGrid.this);
+							
+					} catch (Exception e) {
+						// TODO: handle exception
+					}
+				}
+			};
+			register.start();
+			
 	
 		} catch (Exception e) {
 			logger.error("Exception strarting glazed lists " + e.toString());
