@@ -9,7 +9,7 @@ docker tag dunkware-net-cluster-server:latest testrock1:31000/dunkware-net-clust
 docker push testrock1:31000/dunkware-net-cluster-server:latest
 echo "Deploying Worker Service"
 cd ${STREET_CLOUD_HOME}/projects/dunkware-trade-service-worker-server
-docker build --platform=linux/amd64 -t dunkware-trade-service-worker-serve:latest .
+docker build --platform=linux/amd64 -t dunkware-trade-service-worker-server:latest .
 docker tag dunkware-trade-service-worker-server:latest testrock1:31000/dunkware-trade-service-worker-server:latest
 docker push testrock1:31000/dunkware-trade-service-worker-server:latest
 echo "Deploying Tick Service"
