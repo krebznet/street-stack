@@ -2,6 +2,7 @@ package com.dunkware.trade.sdk.core.runtime.broker;
 
 import com.dunkware.common.util.events.DEventNode;
 import com.dunkware.common.util.executor.DExecutor;
+import com.dunkware.trade.sdk.core.model.broker.BrokerBean;
 import com.dunkware.trade.sdk.core.model.broker.BrokerSpec;
 import com.dunkware.trade.sdk.core.model.broker.BrokerStatus;
 import com.dunkware.trade.sdk.core.model.broker.BrokerType;
@@ -15,9 +16,9 @@ public interface Broker extends InstrumentProvider {
 	
 	BrokerStatus getStatus();
 	
-	BrokerAccount getAccount(String accountId) throws Exception; 
+	public String getException();
 	
-	public BrokerSpec getSpec();
+	BrokerAccount getAccount(String accountId) throws Exception; 
 	
 	public DEventNode getEventNode();
 	
@@ -26,4 +27,6 @@ public interface Broker extends InstrumentProvider {
 	public String getIdentifier();
 	
 	public DExecutor getExecutor();
+	
+	public BrokerBean getBrokerBean();
 }
