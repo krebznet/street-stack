@@ -6,6 +6,7 @@ import java.util.concurrent.ConcurrentHashMap;
 
 import com.dunkware.common.util.events.DEventNode;
 import com.dunkware.common.util.executor.DExecutor;
+import com.dunkware.trade.sdk.core.model.broker.BrokerBean;
 import com.dunkware.trade.sdk.core.model.broker.BrokerSpec;
 import com.dunkware.trade.sdk.core.model.broker.BrokerStatus;
 import com.dunkware.trade.sdk.core.model.broker.BrokerType;
@@ -47,6 +48,20 @@ public class PaperBroker extends BrokerImpl {
 		
 	}
 
+	
+	
+	@Override
+	public String getException() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public BrokerBean getBrokerBean() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
 	@Override
 	public BrokerAccount getAccount(String accountId) throws Exception {
 		for (PaperAccount paperAccount : accounts) {
@@ -57,13 +72,7 @@ public class PaperBroker extends BrokerImpl {
 		throw new Exception("Account " + accountId + " not found");
 	}
 
-	@Override
-	public BrokerSpec getSpec() {
-		BrokerSpec spec = new BrokerSpec();
-		spec.setStatus(BrokerStatus.Connected);
-		spec.setIdentifier(myType.getIdentifier());
-		return spec; 
-	}
+	
 
 	@Override
 	public DEventNode getEventNode() {
