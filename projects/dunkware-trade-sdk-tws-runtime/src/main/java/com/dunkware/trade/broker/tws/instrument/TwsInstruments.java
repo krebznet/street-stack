@@ -14,6 +14,7 @@ import com.dunkware.trade.tick.api.instrument.Instrument;
 import com.dunkware.trade.tick.api.instrument.impl.InstrumentImpl;
 import com.dunkware.trade.tick.model.ticker.TradeTickerSpec;
 import com.dunkware.trade.tick.model.ticker.TradeTickerType;
+import com.ib.client.TickAttrib;
 import com.ib.client.TickType;
 import com.ib.contracts.StkContract;
 
@@ -39,7 +40,7 @@ public class TwsInstruments implements TwsSocketReader {
 	
 	public TwsInstruments(TwsBroker broker) {
 		this.broker = broker;
-		broker.getConnector().getConnectorSocket().addSocketReader(this);
+		broker.addSocketReader(this);
 	}
 	
 	public Instrument subscribe(TradeTickerSpec ticker) throws Exception { 
@@ -55,7 +56,7 @@ public class TwsInstruments implements TwsSocketReader {
 		pendingSubscriptions.put(id, latch);
 		Instrument instrument = new InstrumentImpl(ticker,broker.getExecutor());
 		instruments.put(ticker, instrument);
-		broker.getConnector().getConnectorSocket().getClientSocket().reqMktData(id, contract, "293",false);
+		//broker.getClientSocket().reqMktData(id, contract, "293",false);
 		if(!latch.waitTillZero(5, TimeUnit.SECONDS)) { 
 			throw new Exception("Tws Market Data 5 Second Timeout On Subscription Create  Ticker " + ticker.toString() );
 		}
@@ -66,7 +67,7 @@ public class TwsInstruments implements TwsSocketReader {
 	
 	public void unsubsribe(Instrument instrument) { 
 		if(instruments.containsKey(instrument.getTicker())) { 
-			broker.getConnector().getConnectorSocket().getClientSocket().cancelMktData(instrumentInverseIds.get(instrument.getTicker()));			
+			broker.getClientSocket().cancelMktData(instrumentInverseIds.get(instrument.getTicker()));			
 			instruments.remove(instrument.getTicker());
 			instrumentIds.remove(instrumentInverseIds.get(instrument.getTicker()));
 			instrumentInverseIds.remove(instrument.getTicker());
@@ -74,83 +75,47 @@ public class TwsInstruments implements TwsSocketReader {
 
 	}
 	
+	
+	
 	@Override
-	public void tickPrice(int tickerId, int field, double price, int canAutoExecute) {
+	public void tickPrice(int tickerId, int field, double price, TickAttrib attrib) {
 		if(!instrumentIds.containsKey(tickerId)) { 
 			logger.warn("Received TickPrice For TickerID that is not found in instrument id map");
 			return;
 		}
 		
-		Instrument instrument = instruments.get(instrumentIds.get(tickerId));
-		
-		switch (field) {
-		
-		case TickType.ASK:
-			instrument.setAskPrice(price);
-			break;
-		case TickType.BID:
-			instrument.setBidPrice(price);
-			break;
-		case TickType.OPEN:
-			instrument.setOpen(price);
-			break;
-		case TickType.CLOSE:
-			instrument.setClose(price);
-			break;
-		case TickType.HIGH:
-			instrument.setHigh(price);
-			break;
-		case TickType.LOW:
-			instrument.setLow(price);
-			break;
-		case TickType.LAST:
-			instrument.setLast(price);
-			break;
-		}
-		
+		/*
+		 * Instrument instrument = instruments.get(instrumentIds.get(tickerId));
+		 * if(TickType.valueOf(null)) switch (field) {
+		 * 
+		 * case TickType. instrument.setAskPrice(price); break; case TickType.BID:
+		 * instrument.setBidPrice(price); break; case TickType.OPEN:
+		 * instrument.setOpen(price); break; case TickType.CLOSE:
+		 * instrument.setClose(price); break; case TickType.HIGH:
+		 * instrument.setHigh(price); break; case TickType.LOW:
+		 * instrument.setLow(price); break; case TickType.LAST:
+		 * instrument.setLast(price); break; }
+		 * 
 		processPending(tickerId, instrument);
+		 */
 	}
 
-	@Override
-	public void tickSize(int tickerId, int field, int size) {
-		if(!instrumentIds.containsKey(tickerId)) { 
-			logger.warn("Received TickSize For TickerID that is not found in instrument id map");
-			return;
-		}
-		
-		Instrument instrument = instruments.get(instrumentIds.get(tickerId));
-		
-		
-		switch (field) {
-		case TickType.VOLUME:
-			instrument.setVolume(size);
-			break;
-		case TickType.ASK_SIZE:
-			instrument.setAskSize(size);
-			break;
-		case TickType.BID_SIZE:
-			instrument.setBidSize(size);
-			break;
-		case TickType.TRADE_COUNT:
-			instrument.setTradeCount(size);
-			break;
-		}
-		
-		processPending(tickerId, instrument);
-	}
-
-	@Override
-	public void tickGeneric(int tickerId, int tickType, double value) {
-		switch (tickType) {
-		case TickType.TRADE_COUNT:
-			//String vString = String.valueOf(value);
-			//vString = vString.substring(0,vString.length() - 2);
-			//int tcount = Integer.parseInt(vString);
-			
-			break;
-			default:
-		}
-	}
+	/*
+	 * @Override public void tickSize(int tickerId, int field, int size) {
+	 * if(!instrumentIds.containsKey(tickerId)) { logger.
+	 * warn("Received TickSize For TickerID that is not found in instrument id map"
+	 * ); return; }
+	 * 
+	 * Instrument instrument = instruments.get(instrumentIds.get(tickerId));
+	 * 
+	 * 
+	 * switch (field) { case TickType.VOLUME: instrument.setVolume(size); break;
+	 * case TickType.ASK_SIZE: instrument.setAskSize(size); break; case
+	 * TickType.BID_SIZE: instrument.setBidSize(size); break; case
+	 * TickType.TRADE_COUNT: instrument.setTradeCount(size); break; }
+	 * 
+	 * processPending(tickerId, instrument); }
+	 */
 
 	@Override
 	public void tickString(int tickerId, int tickType, String value) {

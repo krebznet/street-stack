@@ -1,7 +1,7 @@
 package com.dunkware.trade.broker.tws;
 
+import java.math.BigDecimal;
 import java.util.concurrent.BlockingQueue;
-import java.util.concurrent.LinkedBlockingDeque;
 import java.util.concurrent.LinkedBlockingQueue;
 import java.util.concurrent.TimeUnit;
 
@@ -31,6 +31,7 @@ import com.dunkware.trade.sdk.core.runtime.order.event.EOrderStatusUpdate;
 import com.dunkware.trade.sdk.core.runtime.order.event.EOrderSubmitted;
 import com.dunkware.trade.sdk.core.runtime.order.event.EOrderUpdate;
 import com.ib.client.Contract;
+import com.ib.client.Decimal;
 import com.ib.client.TwsOrder;
 import com.ib.client.TwsOrderState;
 
@@ -81,12 +82,12 @@ public class TwsAccountOrder implements Order {
 		this.eventNode = account.getEventNode().createChild("orders/" + getSpec().getId());
 
 		this.twsOrder = createTwsOrder();
-		spec.setId(twsOrder.m_orderId);
+		spec.setId(twsOrder.orderId());
 
 	}
 	
 	public OrderPreview preview() throws OrderException { 
-		this.twsOrder.m_whatIf = true; 
+		this.twsOrder.whatIf(true); 
 		send();
 		try {
 			OrderPreview preview = orderPreviewQueue.poll(10, TimeUnit.SECONDS);
@@ -108,32 +109,32 @@ public class TwsAccountOrder implements Order {
 			throw new OrderException("Cannot Submit Order that is not in Created status");
 		}
 		if (logger.isTraceEnabled()) {
-			logger.trace("{} TwsOrder Send Size={} Action={} Type={}", twsOrder.m_orderId, twsOrder.m_totalQuantity,
-					twsOrder.m_action, twsOrder.m_orderType);
+			logger.trace("{} TwsOrder Send Size={} Action={} Type={}", twsOrder.orderId(), twsOrder.totalQuantity().longValue(),
+					twsOrder.action(), twsOrder.orderType());
 		}
 		reader = new OrderSocketReader();
-		broker.getConnector().getConnectorSocket().addSocketReader(reader);
+		broker.addSocketReader(reader);
 		readerAttached = true;
 		try {
-			broker.getConnector().getConnectorSocket().getClientSocket().placeOrder(twsOrder.m_orderId,
-					twsOrder.m_contract, twsOrder);
+			broker.getClientSocket().placeOrder(twsOrder.orderId(),
+					twsOrder.getContract(), twsOrder);
 			
 			if (logger.isTraceEnabled()) {
-				logger.trace("{} TwsOrder Submitted", twsOrder.m_orderId);
+				logger.trace("{} TwsOrder Submitted", twsOrder.orderId());
 			}
 			// Update Status To Sent
 			if (logger.isTraceEnabled()) {
 				logger.trace("TwsOrder Sent {} ", spec.getId());
 			}
 			spec.setStatus(OrderStatus.Sent);
-			if(twsOrder.m_whatIf == false) {
+			if(twsOrder.whatIf() == false) {
 				// only send a send notification if its a real order. 
 				EOrderSent sent = new EOrderSent(this);
 				eventNode.event(sent);	
 			}
 			
 		} catch (Exception e) {
-			logger.error("{} Order Submit Exception " + e.toString(), twsOrder.m_orderId);
+			logger.error("{} Order Submit Exception " + e.toString(), twsOrder.orderId());
 			throw new OrderException("Internal TwsSocket OpenOrder Exception " + e.toString());
 		}
 
@@ -151,7 +152,7 @@ public class TwsAccountOrder implements Order {
 		if (logger.isTraceEnabled()) {
 			logger.trace("{} sending cancel requst ", getSpec().getId());
 		}
-		broker.getConnector().getConnectorSocket().getClientSocket().cancelOrder(twsOrder.m_orderId);
+		broker.getClientSocket().cancelOrder(twsOrder.orderId(),null);
 		if (logger.isTraceEnabled()) {
 			logger.trace("{} sent cancel requst ", getSpec().getId());
 		}
@@ -176,52 +177,53 @@ public class TwsAccountOrder implements Order {
 		TwsOrder twsOrder = new TwsOrder();
 
 		int twsOrderId = broker.getNextOrderId();
-		twsOrder.m_action = getSpec().getAction().Value();
+		twsOrder.action(getSpec().getAction().Value());
 		if (getSpec().getAction() == OrderAction.SSHORT) {
-			twsOrder.m_account = "SSHORT";
+			twsOrder.action("SSHORT");
 		}
-		twsOrder.m_account = account.getIdentifier();
-		twsOrder.m_orderType = getSpec().getKind().name();
-		twsOrder.m_outsideRth = true;
-	    twsOrder. m_tif = "DAY";
-		twsOrder.m_orderId = twsOrderId;
-		twsOrder.m_transmit = getSpec().isTransmit();
-		twsOrder.m_whatIf = getSpec().isWhatif();
-		twsOrder.m_totalQuantity = getSpec().getSize();
-		twsOrder.m_lmtPrice = getSpec().getLimitPrice();
+		twsOrder.account(account.getIdentifier());
+		twsOrder.orderType(getSpec().getKind().name());
+		twsOrder.outsideRth(true);
+	    twsOrder.tif("DAY");
+		twsOrder.orderId(twsOrderId);
+		twsOrder.transmit(getSpec().isTransmit());
+		twsOrder.whatIf(getSpec().isWhatif());
+		twsOrder.totalQuantity(Decimal.get(getSpec().getSize()));
+		twsOrder.lmtPrice(getSpec().getLimitPrice());
 		if (getSpec().getKind().equals(OrderKind.LMT)) {
-			twsOrder.m_auxPrice = getSpec().getLimitPrice();
-			twsOrder.m_lmtPrice = getSpec().getLimitPrice();
+			twsOrder.auxPrice(getSpec().getLimitPrice());
+			twsOrder.lmtPrice(getSpec().getLimitPrice());
 		}
 
 		if (getSpec().getKind().equals(OrderKind.TRAIL_PERCENT)) {
-			twsOrder.m_orderType = "TRAIL";
-			twsOrder.m_trailingPercent = getSpec().getTrailingPercent();
-			twsOrder.m_auxPrice = Double.MAX_VALUE;
+			twsOrder.orderType("TRAIL");
+			twsOrder.trailingPercent(getSpec().getTrailingPercent());
+			twsOrder.auxPrice(Double.MAX_VALUE);
 			if (getSpec().getTrailingStopPrice() != Double.MIN_VALUE) {
-				twsOrder.m_trailStopPrice = getSpec().getTrailingStopPrice();
+				twsOrder.trailStopPrice(getSpec().getTrailingStopPrice());
 			}
 		}
 		if (getSpec().getKind().equals(OrderKind.TRAIL_AMOUNT)) {
-			twsOrder.m_orderType = "TRAIL";
-			twsOrder.m_auxPrice = getSpec().getTrailingAmount();
+			twsOrder.orderType("TRAIL");
+			twsOrder.auxPrice(getSpec().getTrailingAmount());
 
 			if (getSpec().getTrailingStopPrice() != Double.MAX_VALUE) {
-				twsOrder.m_trailStopPrice = getSpec().getTrailingStopPrice();
+				twsOrder.trailStopPrice(getSpec().getTrailingStopPrice());
 			}
 
 		}
 		if (getSpec().getKind().equals(OrderKind.STP)) {
-			twsOrder.m_orderType = "STOP";
-			twsOrder.m_auxPrice = getSpec().getStopPrice();
+			twsOrder.orderType("STOP");
+			twsOrder.auxPrice(getSpec().getStopPrice());
 			if (getSpec().getStopTrigger() != null) {
-				twsOrder.m_triggerMethod = getSpec().getStopTrigger().val();
+				twsOrder.triggerMethod(getSpec().getStopTrigger().val());
 			}
 
 		}
 		try {
 			Contract contract = TwsUtil.tickerToContract(getSpec().getTicker());
-			twsOrder.m_contract = contract;
+			twsOrder.setContract(contract);
+			twsOrder.referenceContractId(contract.conid());
 		} catch (Exception e) {
 			throw new OrderException("Exception Creating Tws Contract " + e.toString());
 		}
@@ -232,24 +234,26 @@ public class TwsAccountOrder implements Order {
 
 	private void detachReader() {
 		if (logger.isTraceEnabled()) {
-			logger.trace("{} Detach Reader ", twsOrder.m_orderId);
+			logger.trace("{} Detach Reader ", twsOrder.orderId());
 		}
 		if (readerAttached) {
 			if (logger.isTraceEnabled()) {
 				logger.trace("{} detachReader() ", getSpec().getId());
 			}
-			broker.getConnector().getConnectorSocket().removeSocketReader(reader);
+			broker.removeSocketReader(reader);
 			readerAttached = false;
 		}
 
 	}
 
 	private class OrderSocketReader implements TwsSocketReader {
+		
+		
 
 		@Override
-		public void orderStatus(int orderId, String status, int filled, int remaining, double avgFillPrice, int permId,
-				int parentId, double lastFillPrice, int clientId, String whyHeld) {
-			if (orderId != twsOrder.m_orderId) {
+		public void orderStatus(int orderId, String status, Decimal filled, Decimal remaining, double avgFillPrice,
+				int permId, int parentId, double lastFillPrice, int clientId, String whyHeld, double mktCapPrice) {
+			if (orderId != twsOrder.orderId()) {
 				return;
 			}
 			if (logger.isTraceEnabled()) {
@@ -257,8 +261,8 @@ public class TwsAccountOrder implements Order {
 						getSpec().getId(), status, filled, remaining, avgFillPrice, lastFillPrice);
 			}
 
-			getSpec().setFilled(filled);
-			getSpec().setRemaining(remaining);
+			getSpec().setFilled(filled.value().intValue());
+			getSpec().setRemaining(remaining.value().intValue());
 			getSpec().setAvgFillPrice(avgFillPrice);
 
 			OrderStatus orderStatus = OrderStatus.valueOf(status);
@@ -271,7 +275,7 @@ public class TwsAccountOrder implements Order {
 			if (orderStatus == OrderStatus.Filled) {
 				if (!notifyFilled) {
 					if (logger.isTraceEnabled()) {
-						logger.trace("{} TwsOrder Filled Event Trigger", twsOrder.m_orderId);
+						logger.trace("{} TwsOrder Filled Event Trigger", twsOrder.orderId());
 					}
 					EOrderFilled fillEvent = new EOrderFilled(TwsAccountOrder.this);
 					eventNode.event(fillEvent);
@@ -335,35 +339,37 @@ public class TwsAccountOrder implements Order {
 
 		}
 
+		
 		/**
 		 * this is only invoked when the what_iff flag is = true
 		 */
 		@Override
 		public void openOrder(int orderId, Contract contract, TwsOrder order, TwsOrderState orderState) {
-			if (order.m_orderId != twsOrder.m_orderId) {
+			if (order.orderId() != twsOrder.orderId()) {
 				return;
 			}
-			OrderPreview preview = new OrderPreview(orderState.m_maxCommission, orderState.m_minCommission, orderState.m_warningText);
+			OrderPreview preview = new OrderPreview(orderState.maxCommission(), orderState.minCommission(), orderState.warningText());
 			orderPreviewQueue.add(preview);
 			
 			
 			if (logger.isTraceEnabled()) {
 				logger.trace("{} openOrder() method ", getSpec().getId());
 			}
-			getSpec().setStatus(OrderStatus.valueOf(orderState.m_status));
-			getSpec().setCommision(orderState.m_commission);
+			getSpec().setStatus(OrderStatus.valueOf(orderState.status().name()));
+			getSpec().setCommision(orderState.commission());
 			// yes call it because we got it. 
 			detachReader();
 		}
+		
+		
 
 		@Override
-		public void error(int id, int errorCode, String errorMsg) {
-
-			if (id != twsOrder.m_orderId) {
+		public void error(int id, int errorCode, String errorMsg, String advancedOrderRejectJson) {
+			if(id != twsOrder.orderId()) {
 				return;
 			}
 			if (logger.isTraceEnabled()) {
-				logger.trace("{} PreFilter Error id={} code={} msg={}", twsOrder.m_orderId, id, errorCode, errorMsg);
+				logger.trace("{} PreFilter Error id={} code={} msg={}", twsOrder.orderId(), id, errorCode, errorMsg);
 			}
 
 			if (errorMsg.contains("'Outside Regular Trading Hours'")) {
@@ -383,8 +389,9 @@ public class TwsAccountOrder implements Order {
 			eventNode.event(new EOrderException(TwsAccountOrder.this));
 			notifyException = true;
 			detachReader();
-
 		}
+
+
 
 	}
 

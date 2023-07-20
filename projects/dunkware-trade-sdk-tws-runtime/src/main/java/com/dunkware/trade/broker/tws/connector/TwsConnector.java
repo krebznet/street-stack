@@ -1,5 +1,6 @@
 package com.dunkware.trade.broker.tws.connector;
 
+import java.time.ZonedDateTime;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
@@ -12,7 +13,13 @@ import java.util.concurrent.atomic.AtomicInteger;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.dunkware.common.util.dtime.DTime;
+import com.dunkware.common.util.dtime.DTimeZone;
+import com.dunkware.common.util.events.DEvent;
+import com.dunkware.common.util.events.DEventNode;
 import com.dunkware.common.util.helpers.DRandom;
+import com.dunkware.trade.broker.tws.TwsBroker;
+import com.dunkware.trade.sdk.core.model.broker.BrokerStatus;
 import com.ib.client.Contract;
 import com.ib.client.ContractDetails;
 
@@ -36,59 +43,82 @@ public class TwsConnector implements TwsSocketReader {
 	private int _nextValidIdReturnedFromServer = 0;
 	private AtomicInteger _nextValidIdFactory = new AtomicInteger(0);
 
-	private int connectionId = DRandom.getRandom(1, 40000);
+	private int connectionId;
+	private String connectionHost; 
+	private int connectionPort; 
 
 	private String _managedAccounts = null;
 
 	private Map<String, ContractDetails> _contractDetailsMap = new HashMap<String, ContractDetails>();
 	private Semaphore _contractDetailsSemaphore = new Semaphore(1);
 	private TimeUpdater _timeUpdater = null;
-
+	private DEventNode eventNode;
+	
+	private ZonedDateTime connectTime = null;
+	private ZonedDateTime disconnectTime = null;
+	private TwsBroker broker;
+	
+	private BrokerStatus status = BrokerStatus.Pending;
+	
 	public TwsConnector() {
 		_connectorSocket = new TwsConnectorSocket();
+	}
+	
+	public void setEventNode(DEventNode eventNode) { 
+		this.eventNode = eventNode;
+		
+	}
+	
+	public DEventNode getEventNode() { 
+		return eventNode;
 	}
 
 	public void addConnectorService(TwsConnectorService service) {
 		_connectorServices.add(service);
 	}
 
-	public void startConnector(String connectorHost, int connectorPort) throws Exception {
-
+	public void startConnector(TwsBroker broker, String connectorHost, int connectorPort, int connectionId)   {
+		this.connectionId =connectionId;
+		this.broker = broker;
+		this.connectionHost = connectorHost;
+		this.connectionPort = connectorPort;
+		
 		// add this we should get a error on callback?
 
 		_connectorSocket.addSocketReader(this);
-		_connectorSocket.connect(this, connectorHost, connectorPort, connectionId);
-		Thread delay = new Thread() {
-			public void run() {
-				try {
-					Thread.sleep(1000);
-					getConnectorSocket().getClientSocket().reqAccountSummary(_nextValidIdFactory.incrementAndGet(),
-							"All", "AccountType");
-
-					try {
-						_timeUpdater = new TimeUpdater();
-						_timeUpdater.start();
-
-					} catch (Exception e) {
-						throw new Exception("Error connecting to tws " + e.toString());
-
-					}
-				} catch (Exception e) {
-					_logger.error("Uncaught exception " + e.toString());
-				}
-			}
-		};
-		delay.start();
-
-		// init services
-		for (TwsConnectorService service : _connectorServices) {
-			service.initService(this);
+		try {
+		//	_connectorSocket.connect(this, connectorHost, connectorPort, connectionId);	
+			status = BrokerStatus.Connected;
+			connectTime = ZonedDateTime.now(DTimeZone.toZoneId(DTimeZone.NewYork));
+		
+		} catch (Exception e) {
+			status = BrokerStatus.ConnectLoop;
+			
 		}
-		for (TwsConnectorService service : _connectorServices) {
-			service.startService();
-		}
+		
+		
 
 	}
+
+	/**
+	 * This called whenever we are connected
+	 * @author duncankrebs
+	 *
+	 */
+	private class ConnectHandler implements Runnable, TwsSocketReader { 
+		
+		public void run() { 
+			// we need to get next valid id 
+			// 
+			
+		}
+		
+		
+	}
+	
+	
+	
+	
 
 	public void stopConnector() {
 		_connectorSocket.disconnect();
@@ -102,11 +132,29 @@ public class TwsConnector implements TwsSocketReader {
 		}
 		return null;
 	}
+	
+	private class TimeUpdater extends Thread {
+
+		public void run() {
+			try {
+				while (!interrupted()) {
+					_connectorSocket.getClientSocket().reqCurrentTime();
+					Thread.sleep(1000);
+
+				}
+			} catch (Exception e) {
+
+			}
+
+		}
+	}
 
 	public TwsConnectorSocket getConnectorSocket() {
 		return _connectorSocket;
 	}
 
+	
+	//------- E SOCKET READER
 	@Override
 	public void nextValidId(int orderId) {
 		if (_logger.isDebugEnabled()) {
@@ -138,8 +186,8 @@ public class TwsConnector implements TwsSocketReader {
 		}
 		try {
 			Contract contract = new Contract();
-			contract.m_symbol = symbol;
-			contract.m_localSymbol = symbol;
+			contract.symbol(symbol);
+			contract.localSymbol(symbol);
 			getConnectorSocket().getClientSocket().reqContractDetails(getNextOrderId(), contract);
 			int loopcount = 0;
 			while (true) {
@@ -181,7 +229,7 @@ public class TwsConnector implements TwsSocketReader {
 				_logger.error("Contract Detail Semaphore not aquired in 3 seconds");
 				return;
 			}
-			_contractDetailsMap.put(contractDetails.m_summary.m_symbol, contractDetails);
+			_contractDetailsMap.put(contractDetails.underSymbol(), contractDetails);
 		} catch (Exception e) {
 			_logger.error("error getting contract details semaphore " + e.toString());
 		} finally {
@@ -214,20 +262,6 @@ public class TwsConnector implements TwsSocketReader {
 		}
 	}
 
-	private class TimeUpdater extends Thread {
-
-		public void run() {
-			try {
-				while (!interrupted()) {
-					_connectorSocket.getClientSocket().reqCurrentTime();
-					Thread.sleep(1000);
-
-				}
-			} catch (Exception e) {
-
-			}
-
-		}
-	}
+	
 
 }
