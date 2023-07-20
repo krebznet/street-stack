@@ -66,10 +66,11 @@ public class BeachAccount {
 		bean.setName(ent.getIdentifier());
 		bean.setId(ent.getId());
 		bean.notifyUpdate();
-		this.eventNode = broker.getEventNode().createChild("/accounts/" + ent.getId());
 		tradeBeans = new ObservableElementList<BeachTradeBean>(GlazedLists.threadSafeList(new BasicEventList<BeachTradeBean>()), new DataBeanConnector<BeachTradeBean>());
 		orderBeans = new ObservableElementList<BeachOrderBean>(GlazedLists.threadSafeList(new BasicEventList<BeachOrderBean>()), new DataBeanConnector<BeachOrderBean>());
 		playBeans = new ObservableElementList<BeachPlayBean>(GlazedLists.threadSafeList(new BasicEventList<BeachPlayBean>()), new DataBeanConnector<BeachPlayBean>());
+		
+		this.eventNode = broker.getEventNode().createChild("/accounts/" + ent.getId());
 		
 	}
 	

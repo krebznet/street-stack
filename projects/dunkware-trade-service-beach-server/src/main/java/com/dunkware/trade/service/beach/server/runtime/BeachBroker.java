@@ -29,7 +29,8 @@ import com.dunkware.trade.service.beach.server.common.BeachRuntime;
 import com.dunkware.trade.service.beach.server.entity.BeachAccountEnt;
 import com.dunkware.trade.service.beach.server.entity.BeachBrokerEnt;
 import com.dunkware.trade.service.beach.server.entity.BeachRepo;
-import com.dunkware.trade.service.beach.server.runtime.core.events.EBeachAccountAdded;
+import com.dunkware.trade.service.beach.server.runtime.core.BeachBrokerStatus;
+import com.dunkware.trade.service.beach.server.runtime.core.events.EBeachBrokerInitialized;
 import com.dunkware.trade.service.beach.server.runtime.core.events.EBeachBrokerUpdate;
 
 public class BeachBroker {
@@ -52,49 +53,62 @@ public class BeachBroker {
 
 	private BrokerType brokerType;
 	private Broker broker;
+	
+	@Autowired
+	private BeachService beachService; 
 
 	private DEventNode eventNode;
 
 	private BeachBrokerBean bean;
 	
-	public BeachBroker(BeachRuntime runime, BeachBrokerEnt ent) { 
+	private BeachBrokerStatus status = BeachBrokerStatus.Pending;
+	
+	private String exception = null;
+	
+	public BeachBroker() { 
+		eventNode = beachService.getEventNode().createChild(this);
+	}
+	
+	public BeachBrokerStatus getStatus() { 
+		return status;
+	}
+	
+	public String getException() {
+		return exception;
+	}
+
+	public void init(BeachBrokerEnt ent)  {
 		this.entity = ent;
-		this.runtime = runime;
 		bean = new BeachBrokerBean(); 
 		bean.setId(entity.getId());
 		bean.setName(ent.getIdentifier());
-		bean.setStatus("Pending");;
-		eventNode = runtime.getEventTree().getRoot().createChild("/brokers/" + entity.getIdentifier());
-	}
-
-	public void init() throws Exception {
-	
-		eventNode = runtime.getEventTree().getRoot().createChild("/brokers/" + entity.getIdentifier());
+		bean.setStatus(status.name());
 		try {
 			brokerType = DJson.getObjectMapper().readValue(entity.getType(), BrokerType.class);
 		} catch (Exception e) {
-			bean.setStatus("Broker Type Deserialize Exception " + e.toString());
+			status = BeachBrokerStatus.Exception;
 			bean.setStatus("Exception");
 			bean.notifyUpdate();
+			this.exception = "Broker Type " + e.toString();
 			logger.error("Exception deserializing broker type model in broker init " + e.toString());
-			throw e;
+			eventNode.event(new EBeachBrokerInitialized(this));
 		}
 		try {
 			broker = TradeRegistry.get().createBroker(brokerType);
 		} catch (Exception e) {
+			exception = "Broker Type registry " + e.toString();
+			status = BeachBrokerStatus.Exception;
 			bean.setStatus("Exception");
 			bean.setSummary("Exception creating broker type ");
 			bean.notifyUpdate();
-			logger.error("Exception creating broker type ");
+			eventNode.event(new EBeachBrokerInitialized(this));
+			logger.error("Exception creating broker type " + e.toString());
 			return;
 		}
 		try {
-			broker.connect(brokerType, eventNode, runtime.getExecutor());
-			broker.getEventNode().addEventHandler(this);
-			
-			bean.setStatus("Connected");
+			broker.connect(brokerType, getEventNode().createChild(broker), runtime.getExecutor());
+			bean.setStatus("Connected Inovked");
 			bean.notifyUpdate();
-			Thread.sleep(2500);
 		} catch (Exception e) {
 			bean.setStatus("Disconnected");
 			bean.setSummary(e.toString());
@@ -162,12 +176,12 @@ public class BeachBroker {
 						brokerType.getIdentifier());
 			}
 			BeachAccount act = new BeachAccount(actEnt,this,brokerAccount);
-			accounts.put(actEnt.getIdentifier(), act);
-			act.getEventNode().addEventHandler(this);;
 			ac.getAutowireCapableBeanFactory().autowireBean(act);
-			
-			getEventNode().event(new EBeachAccountAdded(act));
 			act.init();
+			accounts.put(actEnt.getIdentifier(), act);
+			//act.getEventNode().addEventHandler(this);;
+			//etEventNode().event(new EBeachAccountAdded(act));
+			
 	
 		}
 		// now what we are not doing yet is what if we have a beach account that exists

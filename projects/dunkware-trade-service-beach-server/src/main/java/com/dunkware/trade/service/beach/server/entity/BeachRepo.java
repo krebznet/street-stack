@@ -7,13 +7,17 @@ import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.PersistenceContext;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Component;
 
+
 @Component
 public class BeachRepo {
 
+	private Logger logger = LoggerFactory.getLogger(getClass());
 	@PersistenceContext(name = "trade")
 	private EntityManager em;
 
@@ -37,18 +41,12 @@ public class BeachRepo {
 	
 	
 
-	public List<BeachBrokerEnt> getBrokers() {
-		try {
-			List<BeachBrokerEnt> results = em.createQuery("SELECT e FROM BeachBrokerEnt e", BeachBrokerEnt.class)
-					.getResultList();
-			return results;
+	public List<BeachBrokerEnt> getBrokers()   {
+		List<BeachBrokerEnt> results = em.createQuery("SELECT e FROM BeachBrokerEnt e", BeachBrokerEnt.class)
+				.getResultList();
+		return results;
 
-		} catch (Exception e) {
-			e.printStackTrace();
-			return null;
-			// TODO: handle exception
-		}
-
+		
 	}
 
 	public BeachAccountEnt getAccount(String identifier) {

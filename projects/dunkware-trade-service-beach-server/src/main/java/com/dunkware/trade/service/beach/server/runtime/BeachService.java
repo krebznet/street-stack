@@ -27,7 +27,8 @@ import com.dunkware.trade.service.beach.protocol.broker.AddBrokerReq;
 import com.dunkware.trade.service.beach.server.common.BeachRuntime;
 import com.dunkware.trade.service.beach.server.entity.BeachBrokerEnt;
 import com.dunkware.trade.service.beach.server.entity.BeachRepo;
-import com.dunkware.trade.service.beach.server.runtime.core.events.EBeachAccountAdded;
+import com.dunkware.trade.service.beach.server.runtime.core.events.EBeachAcccountInitialized;
+import com.dunkware.trade.service.beach.server.runtime.core.events.EBeachBrokerInitialized;
 
 import ca.odell.glazedlists.BasicEventList;
 import ca.odell.glazedlists.GlazedLists;
@@ -36,78 +37,72 @@ import ca.odell.glazedlists.ObservableElementList;
 @Service
 public class BeachService {
 
+	// config.stream.enable=
+
 	private Logger logger = LoggerFactory.getLogger(getClass());
 
 	private ConcurrentHashMap<String, BeachStream> streams = new ConcurrentHashMap<String, BeachStream>();
-	
+
 	private ConcurrentHashMap<String, BeachBroker> brokers = new ConcurrentHashMap<String, BeachBroker>();
 
 	private DEventNode eventNode;
 
 	@Autowired
 	private BeachRepo repo;
-	
-	
 
 	@Autowired
 	private BeachRuntime runtime;
 
 	@Autowired
 	private ApplicationContext ac;
-	
-	private ObservableElementList<BeachBrokerBean> brokerBeans = new ObservableElementList<BeachBrokerBean>(GlazedLists.threadSafeList(new BasicEventList<BeachBrokerBean>()), new DataBeanConnector<BeachBrokerBean>());
 
-	private ObservableElementList<BeachAccountBean> accountBeans = new ObservableElementList<BeachAccountBean>(GlazedLists.threadSafeList(new BasicEventList<BeachAccountBean>()), new DataBeanConnector<BeachAccountBean>());
-	
-	
-	
-	
+	private ObservableElementList<BeachBrokerBean> brokerBeans = null;
+
+	private ObservableElementList<BeachAccountBean> accountBeans = null;
+
 	@PostConstruct()
 	private void load() {
-		eventNode = runtime.getEventTree().getRoot().createChild("/service");
-		BeachBrokerBean b = new BeachBrokerBean();
-		b.setStatus("Connected");
-		b.setId(23);
-		b.setName("Test Bean");
-		brokerBeans.getReadWriteLock().writeLock().lock();
-		brokerBeans.add(b);
-		brokerBeans.getReadWriteLock().writeLock().unlock();
-	
+		brokerBeans = new ObservableElementList<BeachBrokerBean>(
+				GlazedLists.threadSafeList(new BasicEventList<BeachBrokerBean>()),
+				new DataBeanConnector<BeachBrokerBean>());
+		accountBeans = new ObservableElementList<BeachAccountBean>(
+				GlazedLists.threadSafeList(new BasicEventList<BeachAccountBean>()),
+				new DataBeanConnector<BeachAccountBean>());
+		eventNode = runtime.getEventTree().getRoot().createChild(this);
+
 		Thread runner = new Thread() {
 			public void run() {
 				String[] streamIdents = runtime.getStreamIdentifiers().split(",");
-				/*
-				 * for (String ident : streamIdents) { BeachStream stream = new BeachStream();
-				 * ac.getAutowireCapableBeanFactory().autowireBean(stream); try {
-				 * stream.init(ident); streams.put(stream.getIdentifier(), stream); } catch
-				 * (Exception e) { logger.error("Exception Initializing Beach Stream " + ident +
-				 * " " + e.toString()); //System.exit(-1); }
-				 * 
-				 * }
-				 */	
-				
+
+				for (String ident : streamIdents) {
+
+					BeachStream stream = new BeachStream();
+					ac.getAutowireCapableBeanFactory().autowireBean(stream);
+					try {
+						stream.init(ident);
+						if (logger.isDebugEnabled()) {
+							logger.debug("Initialized stream " + ident);
+						}
+						streams.put(stream.getIdentifier(), stream);
+					} catch (Exception e) {
+						logger.error("Exception Initializing Beach Stream " + ident + " " + e.toString()); // System.exit(-1);
+																											// }
+					}
+				}
+
 				List<BeachBrokerEnt> brokers = repo.getBrokers();
 				for (BeachBrokerEnt beachBrokerEnt : brokers) {
-					BeachBroker broker = new BeachBroker(runtime,beachBrokerEnt);
+					BeachBroker broker = new BeachBroker();
 					ac.getAutowireCapableBeanFactory().autowireBean(broker);
 					broker.getEventNode().addEventHandler(this);
-					brokerBeans.getReadWriteLock().writeLock().lock();
-					brokerBeans.add(broker.getBean());
-					brokerBeans.getReadWriteLock().writeLock().unlock();
-					try {
-						broker.init();
-						
-					} catch (Exception e) {
-						logger.error("Broker {} Initialize Exception On Service Start {}",
-								beachBrokerEnt.getIdentifier(), e.toString());
-					}
+					broker.init(beachBrokerEnt);
 				}
 
 			}
 		};
+
 		runner.start();
 	}
-	
 
 	@Transactional
 	public BeachBroker addBroker(AddBrokerReq brokerAdd) throws Exception {
@@ -136,26 +131,18 @@ public class BeachService {
 
 			em.persist(entity);
 			em.getTransaction().commit();
+			em.close();
 
 		} catch (Exception e) {
 			throw new Exception("Broker Entity Persist Failed Internal Fatal " + e.toString());
 		} finally {
 		}
-		BeachBroker broker = new BeachBroker(runtime,entity);
+		BeachBroker broker = new BeachBroker();
 		ac.getAutowireCapableBeanFactory().autowireBean(broker);
+		broker.getEventNode().addEventHandler(this);
+		broker.init(entity);
+		;
 		brokers.put(entity.getIdentifier(), broker);
-		broker.getEventNode().addEventHandler(this);;
-		brokerBeans.getReadWriteLock().writeLock().lock();
-		brokerBeans.add(broker.getBean());
-		brokerBeans.getReadWriteLock().writeLock().unlock();
-	
-		try {
-			broker.init();
-					
-		} catch (Exception e) {
-			logger.error("Internal Add Broker Init Exception " + e.toString(), e);
-		}
-	
 		return broker;
 	}
 
@@ -200,7 +187,6 @@ public class BeachService {
 		throw new Exception("Beach Account ID " + accountId + " not found");
 	}
 
-	
 	public BeachAccount getAccount(String broker, String account) throws Exception {
 		for (BeachBroker beachBroker : brokers.values()) {
 			for (BeachAccount beachAccount : beachBroker.getAccounts()) {
@@ -228,12 +214,11 @@ public class BeachService {
 
 	public BeachStream getStream(String stream) throws Exception {
 		BeachStream results = streams.get(stream);
-		if(results == null) { 
-			throw new Exception("Cannot find stream " + stream); 
+		if (results == null) {
+			throw new Exception("Cannot find stream " + stream);
 		}
 		return results;
 	}
-	
 
 	public ObservableElementList<BeachBrokerBean> getBrokerBeans() {
 		return brokerBeans;
@@ -243,27 +228,21 @@ public class BeachService {
 		return accountBeans;
 	}
 
-	/**
-	 * Any child objects we attach ourselves to we route the events.
-	 * 
-	 * @param event
-	 */
 	@ADEventMethod
-	public void eventDispatch(DEvent event) {
-		eventNode.event(event);
+	public void brokerInitialized(EBeachBrokerInitialized event) {
+		if(logger.isDebugEnabled()) { 
+			logger.debug("Broker initialized event " + event.getBroker().getIdentifier());
+		}
+		brokerBeans.getReadWriteLock().writeLock().lock();
+		brokerBeans.add(event.getBroker().getBean());
+		brokerBeans.getReadWriteLock().writeLock().unlock();
 	}
-	
+
 	@ADEventMethod
-	public void brokerEvent(EBrokerEvent event) { 
-		
-	}
-	
-	@ADEventMethod
-	public void beachAccountAdded(EBeachAccountAdded event) {
+	public void beachAccountAdded(EBeachAcccountInitialized event) {
 		accountBeans.getReadWriteLock().writeLock().lock();
 		accountBeans.add(event.getAcccount().getBean());
 		accountBeans.getReadWriteLock().writeLock().unlock();
 	}
-	
 
 }

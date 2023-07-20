@@ -22,7 +22,7 @@
 	</root>
 
 
-	<logger name="com.dunkware" level="DEBUG">
+	<logger name="com.dunkware.trade.service.beach" level="DEBUG">
 		 
 		<appender-ref ref="CONSOLE" additivity="false"/>
 	</logger>

@@ -25,8 +25,8 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
 public class TradeDBConfig {
 	
 	
-//	@Value("${hibernate.hbm2ddl.auto}")
-//	private String hbm2dllUpdate;
+	@Value("${hibernate.hbm2ddl.auto}")
+	private String hbm2dllUpdate;
 	
  
 
@@ -44,7 +44,7 @@ public class TradeDBConfig {
 			@Qualifier("tradeDataSource") DataSource dataSource) {
 		HashMap<String, Object> properties = new HashMap<>();
 		// Dangerous! 
-		properties.put("hibernate.hbm2ddl.auto", "create");
+		properties.put("hibernate.hbm2ddl.auto", hbm2dllUpdate);
 		properties.put("hibernate.dialect", "org.hibernate.dialect.MySQL8Dialect");
 		return builder.dataSource(dataSource).properties(properties)
 				.packages("com.dunkware.trade.service.beach.server.entity").persistenceUnit("trade").build();

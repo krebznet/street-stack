@@ -27,6 +27,10 @@ public class BeachRuntime {
 	@Value("${config.stream.identifiers}")
 	private String streamIdentifiers;
 	
+	
+	@Value("${config.stream.enable}")
+	private boolean streamEnabled; 
+	
 	private DExecutor executor; 
 	private DEventTree eventTree; 
 	
@@ -34,10 +38,18 @@ public class BeachRuntime {
 	
 	@PostConstruct
 	private void start() { 
-		executor = new DExecutor(executorSize, executorTimeout, TimeUnit.SECONDS);
+		executor = new DExecutor(35, 50, TimeUnit.SECONDS);
 		eventTree = DEventTree.newInstance(executor);
 	}
 	
+	
+	
+	public boolean isStreamEnabled() {
+		return streamEnabled;
+	}
+
+
+
 	public DExecutor getExecutor() {
 		return executor;
 	}
