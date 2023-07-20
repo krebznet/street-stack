@@ -5,7 +5,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.Semaphore;
-import java.util.concurrent.TimeUnit;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -17,47 +16,89 @@ public class DEventNode {
 	private Logger logger = LoggerFactory.getLogger(getClass());
 
 	private DEventNode parent;
-	private ConcurrentHashMap<String, DEventNode> children = new ConcurrentHashMap<String, DEventNode>();
+	private ConcurrentHashMap<Class<?>, DEventNode> children = new ConcurrentHashMap<Class<?>, DEventNode>();
 
 	private DEventTree eventTree;
+	
+	private Object source;
 
-	private String path;
 	private List<AnnotatedEventHandler> eventHandlers = new ArrayList<AnnotatedEventHandler>();
 	private Semaphore eventHandlerLock = new Semaphore(1);
-	private List<RegisteredEventListener> eventListeners = new ArrayList<RegisteredEventListener>();
-	private Semaphore eventListenerLock = new Semaphore(1);
+	
 
-	public DEventNode(DEventNode parent, String path, DEventTree service)   {
+	public DEventNode(DEventNode parent, Object source, DEventTree service)   {
 		this.parent = parent;
-		this.path = path;
+		this.source = source;
 		this.eventTree = service;
 	}
 
-	public String getPath() {
-		return path;
-	}
-
+	
+	
 	public DEventNode getParent() {
 		return parent;
 	}
 	
-	public DEventNode createChild(String subPath) { 
-		DEventNode node = new DEventNode(this, this.path + " " + subPath, eventTree);
-		children.put(subPath, node);
+	public Object getSource() { 
+		return source; 
+	}
+	
+	/**
+	 * Recursively gets all upstream event handlers registered on parent nodes. 
+	 * @param hanlders
+	 */
+	public void getEventHandlerMethods(DEvent event, List<AnnotatedEventHandlerMethod> handlerMethods)  { 
+		boolean acquired = false;
+		try {
+			 acquired = eventHandlerLock.tryAcquire(1, eventTree.getLockTimeout(),eventTree.getLockTimeoutUnit());
+			 if(!acquired) { 
+				 logger.error("Event Handler Lock Timeout " + source.getClass().getName());;
+				 return;
+			 }
+			for (AnnotatedEventHandler annotatedEventHandler : eventHandlers) {
+				annotatedEventHandler.addMatchingMethodHandlers(event, handlerMethods);
+			}
+		} catch (Exception e) {
+			logger.error("Exception getting event handler methods " + e.toString());
+		} finally { 
+			if(acquired) { 
+				eventHandlerLock.release();	
+			}
+			
+		}
+		if(parent != null) { 
+			parent.getEventHandlerMethods(event, handlerMethods);
+		}
+	}
+	
+	
+	public DEventNode createChild(Object source) { 
+		DEventNode node = new DEventNode(this, source, eventTree);
+		children.put(source.getClass(), node);
 		return node;
 	}
 
 	public void addEventHandler(Object handler) throws DEventHandlerException {
-		AnnotatedEventHandler registered = new AnnotatedEventHandler(handler);
+		final AnnotatedEventHandler registered = new AnnotatedEventHandler(handler);
 		Runnable runnable = new Runnable() {
 			public void run() {
+				boolean hasLock = false;
 				try {
-					eventHandlerLock.acquire();
+					hasLock = eventTree.tryAcquire(eventHandlerLock);
+					if(!hasLock) { 
+						logger.error("Timeout getting event handler lock add event handler " + source.getClass().getName());
+						return;
+					}
 					eventHandlers.add(registered);
 				} catch (Exception e) {
+					if (e instanceof InterruptedException) { 
+						return;
+					}
 					logger.error("Exception in add event handler ? " + e.toString());
 				} finally { 
-					eventHandlerLock.release();
+					if(hasLock) { 
+						eventHandlerLock.release();
+					}
+						
 				}
 			}
 		} ;
@@ -69,8 +110,12 @@ public class DEventNode {
 			
 			@Override
 			public void run() {
+				boolean hasLock = false; 
 				try {
-					eventHandlerLock.acquire();
+					hasLock = eventTree.tryAcquire(eventHandlerLock);
+					if(!hasLock) {
+						logger.error("Lock tieout on remove event handler " + source.getClass() + " " + handler.getClass());;
+					}
 					AnnotatedEventHandler remove = null;
 					for (AnnotatedEventHandler annotatedEventHandler : eventHandlers) {
 						if(annotatedEventHandler.source.equals(handler) || annotatedEventHandler.source == handler) {
@@ -80,80 +125,60 @@ public class DEventNode {
 					}
 					if(remove != null) { 
 						eventHandlers.remove(remove);
+					} else { 
+						logger.error("Excent handler " + handler.getClass() + " not found in remove");
 					}
 				} catch (Exception e) {
 					logger.error("Exception removing event handler " + e.toString());
 				} finally { 
-					eventHandlerLock.release();
+					if(hasLock) { 
+						eventHandlerLock.release();	
+					}
+					
 				}
 			}
 		};
 		eventTree.getExecutor().execute(runnable);
 	}
+	
+	
 
+	/**
+	 * Okay so we are running event notifier in its own thread, that thread
+	 * will get all matching event handler methods for node handlers and all upstream
+	 * node handlers. if a handler is set to async it will run its onw thread if not
+	 * in this thread. 
+	 * @param event
+	 */
 	public void event(DEvent event) {
 		Runnable runnable = new Runnable() {
 
 			@Override
 			public void run() {
-				boolean flag = false;
-				try {
-					eventHandlerLock.acquire();
-					List<AnnotatedEventHandlerMethod> methods = new ArrayList<DEventNode.AnnotatedEventHandlerMethod>();
-					for (AnnotatedEventHandler eventHandler : eventHandlers) {
-						eventHandler.addMatchingMethodHandlers(event, methods);
-					}
+					List<AnnotatedEventHandlerMethod> methods  = new ArrayList<AnnotatedEventHandlerMethod>();
+					getEventHandlerMethods(event,methods);
 					for (AnnotatedEventHandlerMethod method : methods) {
-						try {
-							if(logger.isTraceEnabled()) { 
-								logger.trace("{} Event Handler Method {} on {} Invoke",event.getClass().getName(),method.method.getName(),method.source.getClass().getName());
-							}
-							// should invoke this in its own thread I am thinking. 
-							EventMethodInvocation invocation = new EventMethodInvocation(method.method, method.source, event);
-							geteventTree().getExecutor().execute(invocation);
-							//method.method.invoke(method.source,event);	
-						} catch (Exception e) {
-							logger.error("Exception invoking event handler method {} on class {} exception {}",method.method.getName(),method.source.getClass().getName(),e.toString());
-						}
 						
-					}
-				} catch (Exception e) {
-					logger.error("Error in event node sent " + e.toString());
-				} finally { 
-					eventHandlerLock.release();
-				}
-				try {
-					
-					flag = eventListenerLock.tryAcquire(15, TimeUnit.SECONDS);
-					if (!flag) {
-						logger.error("Event Handler Lock Acquire Failed In Notify Event");
-						return;
-					}
-					
-					for (RegisteredEventListener registeredEventHandler : eventListeners) {
-						if (registeredEventHandler.handle(event)) {
-							try {
-								if (logger.isTraceEnabled()) {
-									logger.trace(
-											"EventHandler Invocation " + registeredEventHandler.getClass().getName());
+							
+							// should invoke this in its own thread I am thinking. 
+							if(method.async) { 
+								if(logger.isTraceEnabled()) { 
+									logger.trace("{} Event Handler Method Async {} on {} Invoke",event.getClass().getName(),method.method.getName(),method.source.getClass().getName());
 								}
-								registeredEventHandler.handler.onEvent(event);
-							} catch (Exception e) {
-								logger.error("Exception calling event handler "
-										+ registeredEventHandler.handler.getClass().getName() + " " + e.toString(), e);
+								EventMethodInvocation invocation = new EventMethodInvocation(method.method, method.source, event);
+								geteventTree().getExecutor().execute(invocation);	
+							} else { 
+								try {
+									if(logger.isTraceEnabled()) { 
+										logger.trace("{} Event Handler Method {} on {} Invoke",event.getClass().getName(),method.method.getName(),method.source.getClass().getName());
+									}
+									method.method.invoke(method.source,event);	
+								} catch (Exception e) {
+									logger.error("Exception invoking event handler evetn node source " + source.getClass().getName() + " source method " + method.method.getName() + " " + method.method.getClass().getName() + e.toString());
+								}	
 							}
-
-						}
-					}
-				} catch (Exception e) {
-
-				} finally {
-					if (flag) {
-						eventListenerLock.release();
-					}
-				}
-			}
-		};
+					}	
+		}};
 		geteventTree().getExecutor().execute(runnable);
 	}
 
@@ -161,76 +186,7 @@ public class DEventNode {
 		return eventTree;
 	}
 
-	public void addEventListener(DEventListener listener) {
-		Runnable runnable = new Runnable() {
-
-			@Override
-			public void run() {
-				boolean flag = false;
-				try {
-					flag = eventListenerLock.tryAcquire(15, TimeUnit.SECONDS);
-					if (!flag) {
-						logger.error("Event Handler Lock Acquire Failed In AddEventHandler");
-						return;
-					}
-					RegisteredEventListener reg = new RegisteredEventListener();
-					reg.handler = listener;
-					eventListeners.add(reg);
-				} catch (Exception e) {
-
-				} finally {
-					if (flag) {
-						eventListenerLock.release();
-					}
-				}
-			}
-		};
-		geteventTree().getExecutor().execute(runnable);
-	}
-
-	public void removeEventListener(DEventListener handler) {
-		Runnable runnable = new Runnable() {
-
-			@Override
-			public void run() {
-				boolean flag = false;
-				try {
-					flag = eventListenerLock.tryAcquire(15, TimeUnit.SECONDS);
-					if (!flag) {
-						logger.error("Event Handler Lock Acquire Failed In AddEventHandler");
-						return;
-					}
-					RegisteredEventListener found = null;
-					for (RegisteredEventListener registeredEventHandler : eventListeners) {
-						if (registeredEventHandler.handler == handler) {
-							found = registeredEventHandler;
-						}
-					}
-					if (found != null) {
-						eventHandlers.remove(found);
-					} else {
-						logger.warn("Remove Event Handler Not Found " + handler.getClass());
-					}
-				} catch (Exception e) {
-
-				} finally {
-					if (flag) {
-						eventListenerLock.release();
-					}
-				}
-			}
-		};
-		geteventTree().getExecutor().execute(runnable);
-	}
-
-	private class RegisteredEventListener {
-
-		public DEventListener handler;
-
-		public boolean handle(DEvent evnent) {
-			return true;
-		}
-	}
+	
 
 	private class AnnotatedEventHandler {
 		public Object source;
@@ -251,6 +207,7 @@ public class DEventNode {
 					methodHandler.method = method;
 					methodHandler.expression = anot.expression();
 					methodHandler.source = source;
+					methodHandler.async = anot.async();
 					Class<?> paramClass = method.getParameterTypes()[0];
 					if(DEvent.class.isAssignableFrom(paramClass) == false) { 
 						throw new DEventHandlerException("method param on event handler method is not type of DEvent " + method.getName() + " " + source.getClass().getName());
@@ -268,7 +225,6 @@ public class DEventNode {
 				}
 			}
 		}
-	
 	}
 
 	private class AnnotatedEventHandlerMethod {
@@ -276,6 +232,7 @@ public class DEventNode {
 		public Method method;
 		public String expression;
 		public Object source;
+		public boolean async = false;
 	}
 	
 	private class EventMethodInvocation implements Runnable { 

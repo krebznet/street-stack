@@ -8,10 +8,14 @@ import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicLong;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import com.dunkware.common.util.concurrency.ReusableCountDownLatch;
 
 public class DExecutor {
 
+	private Logger logger = LoggerFactory.getLogger(getClass());	
 	private final Queue<Task> awaitingTasks;
 	private final ScheduledExecutorService executor;
 	private final int corePoolSize;
@@ -123,22 +127,25 @@ public class DExecutor {
 						try {
 							nextTask.task.run();
 							phaser.decrement();
-							
+							completedCount.incrementAndGet();
 						} finally {
 							poolSize--;
 							executeWaitingTask();
 						}
 					}
 				});
-				completedCount.incrementAndGet();
+				// okay so then we have a Future<?> taskHandler
+				// we schedule a runnable for delay and if its still running
+				// we delay interrupt or cancel the task. 
+				
 				executor.schedule(new Runnable() {
 					@Override
 					public void run() {
 						if (!taskHandler.isDone()) {
 							taskHandler.cancel(true);
+							logger.error("Executor task time out " + nextTask.task.getClass().getName() );
 							completedCount.decrementAndGet();
 							timeoutCount.incrementAndGet();
-							
 							phaser.decrement();
 						}
 
