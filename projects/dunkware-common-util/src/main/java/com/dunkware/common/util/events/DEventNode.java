@@ -47,6 +47,7 @@ public class DEventNode {
 	 * @param hanlders
 	 */
 	public void getEventHandlerMethods(DEvent event, List<AnnotatedEventHandlerMethod> handlerMethods)  { 
+		logger.debug("get event handler methods on event " + event.getClass().getName() + " source " + source.getClass().getName());
 		boolean acquired = false;
 		try {
 			 acquired = eventHandlerLock.tryAcquire(1, eventTree.getLockTimeout(),eventTree.getLockTimeoutUnit());
@@ -66,6 +67,7 @@ public class DEventNode {
 			
 		}
 		if(parent != null) { 
+			logger.debug("get event handler methods on parent source " + parent.getSource().getClass().getName());
 			parent.getEventHandlerMethods(event, handlerMethods);
 		}
 	}
@@ -150,7 +152,7 @@ public class DEventNode {
 	 * in this thread. 
 	 * @param event
 	 */
-	public void event(DEvent event) {
+	public void event(final DEvent event) {
 		Runnable runnable = new Runnable() {
 
 			@Override
@@ -221,6 +223,7 @@ public class DEventNode {
 		public void addMatchingMethodHandlers(DEvent event, List<AnnotatedEventHandlerMethod> list) { 
 			for (AnnotatedEventHandlerMethod method : methods) {
 				if(method.event.isInstance(event)) { 
+					logger.debug("Matched Event " + event.getClass().getName() + " to " + method.method.getName() +  " " + method.method.getClass());
 					list.add(method);
 				}
 			}

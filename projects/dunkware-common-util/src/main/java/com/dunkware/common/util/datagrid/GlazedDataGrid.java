@@ -88,7 +88,12 @@ public class GlazedDataGrid implements ListEventListener<Object> {
 			
 			logger.debug("registered glazed data grid to service");
 			list.getReadWriteLock().readLock().lock();
-			
+			if(list.size() == 0) { 
+				DataGridUpdate update  = new DataGridUpdate();
+				update.setType("INIT");
+				update.setId(-1);
+				addUpdate(update);
+			}
 			for (Object object : list) {
 				try {
 					
@@ -142,7 +147,13 @@ public class GlazedDataGrid implements ListEventListener<Object> {
 	 */
 	public void emitUpdates() { 
 		try {
+			// update = new DataGridUpdate();
+			//update.setId(-1);
+			//update.setType("PING");
+			
+			
 			updatesLock.acquire();
+			//updates.add(update);
 			if(updates.size() == 0) { 
 				return;
 			}
