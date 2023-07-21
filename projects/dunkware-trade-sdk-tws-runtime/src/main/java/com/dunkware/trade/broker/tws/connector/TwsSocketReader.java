@@ -33,49 +33,26 @@ import com.ib.client.TwsOrderState;
 public interface TwsSocketReader extends EWrapper  {
 
 	@Override
-	public default void error(Exception e) {
-		
-		
-	}
+	public default void error(Exception e) { }
 
 	@Override
-	public default void error(String str) {
-		
-		
-	}
-
-	
-
-	@Override
-	public default void connectionClosed() {
-		
-		
-	}
-
-	
-
-	
+	public default void error(String str) { }
 
 
 	@Override
-	public default void tickGeneric(int tickerId, int tickType, double value) {
-		
-		
-	}
+	public default void connectionClosed() {}
+
 
 	@Override
-	public default void tickString(int tickerId, int tickType, String value) {
-		
-		
-	}
+	public default void tickGeneric(int tickerId, int tickType, double value) {	 }
+
+	@Override
+	public default void tickString(int tickerId, int tickType, String value) {}
 
 	@Override
 	public default void tickEFP(int tickerId, int tickType, double basisPoints,
 			String formattedBasisPoints, double impliedFuture, int holdDays,
-			String futureExpiry, double dividendImpact, double dividendsToExpiry) {
-		
-		
-	}
+			String futureExpiry, double dividendImpact, double dividendsToExpiry) { }
 
 	
 

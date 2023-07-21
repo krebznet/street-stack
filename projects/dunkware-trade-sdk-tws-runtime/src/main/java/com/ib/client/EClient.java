@@ -19,7 +19,7 @@ public abstract class EClient {
     //     Also market depth is available.
     // 	8 = Added lastFillPrice to orderStatus() event and permId to execution details
     //  9 = Added 'averageCost', 'unrealizedPNL', and 'unrealizedPNL' to updatePortfolio event
-    // 10 = Added 'serverId' to the 'open order' & 'order status' events.
+    // 10 = Added 'serverId' to the 'open order' & 'order status' events
     //      We send back all the API open orders upon connection.
     //      Added new methods reqAllOpenOrders, reqAutoOpenOrders()
     //      Added FA support - reqExecution has filter.

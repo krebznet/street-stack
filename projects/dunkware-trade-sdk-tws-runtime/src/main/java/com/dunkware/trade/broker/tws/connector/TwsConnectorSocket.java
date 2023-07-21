@@ -13,9 +13,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.dunkware.trade.broker.tws.TwsBroker;
-import com.dunkware.trade.sdk.core.model.broker.BrokerStatus;
-import com.dunkware.trade.sdk.core.runtime.broker.event.EBrokerConnectFail;
-import com.dunkware.trade.sdk.core.runtime.broker.event.EBrokerConnected;
 import com.ib.client.Bar;
 import com.ib.client.CommissionReport;
 import com.ib.client.Contract;
@@ -25,6 +22,8 @@ import com.ib.client.Decimal;
 import com.ib.client.DeltaNeutralContract;
 import com.ib.client.DepthMktDataDescription;
 import com.ib.client.EClientSocket;
+import com.ib.client.EJavaSignal;
+import com.ib.client.EReader;
 import com.ib.client.EReaderSignal;
 import com.ib.client.EWrapper;
 import com.ib.client.Execution;
@@ -55,7 +54,7 @@ public class TwsConnectorSocket implements EWrapper, EReaderSignal {
 
 	private Logger _logger = LoggerFactory.getLogger(getClass());
 
-	private EClientSocket m_client = null;
+	private EClientSocket client = null;
 
 	private String _twsHost;
 
@@ -70,6 +69,8 @@ public class TwsConnectorSocket implements EWrapper, EReaderSignal {
 	private Semaphore _handlersSemaphore = new Semaphore(1);
 	
 	private TwsBroker broker = null;
+	
+	private EReaderSignal readerSignal;
 
 
 	public TwsConnectorSocket() {
@@ -80,26 +81,69 @@ public class TwsConnectorSocket implements EWrapper, EReaderSignal {
 
 	public void connect(TwsBroker broker, final String host,
 			final int port, final int connectionId)  {
+		
 			this.broker = broker;
-			m_client = new EClientSocket(this, this);
+		//	m_client = new EClientSocket(this, new EJavaSignal());
 			_twsHost = host;
 			_twsPort = port;
 			_twsConnectionId = connectionId;
-			m_client.eConnect(_twsHost, _twsPort, _twsConnectionId);
+			makeConnection();
+			
 	}
 	
+	  public void makeConnection() {
+
+	        //Try to connect here
+	        System.out.println("Connecting to TWS API...");
+	        readerSignal = new EJavaSignal();
+	        client = new EClientSocket(this, readerSignal);
+
+
+	        // Pause here for connection to complete
+	        try {
+	            while (!(client.isConnected())) {
+	                Thread.sleep(500);
+	                client.eConnect("127.0.0.1", _twsPort, _twsConnectionId);
+	            }
+	            System.out.println("Connected!");
+
+	            final EReader reader = new EReader(client, readerSignal);
+	            reader.start();
+
+
+	            new Thread(() -> {
+
+	                while (client.isConnected()) {
+	                    readerSignal.waitForSignal();
+	                    try {
+	                        reader.processMsgs();
+	                    } catch (Exception e) {
+	                        e.printStackTrace();
+	                        System.out.println("Error in reader: " + e.getMessage());
+	                    }
+	                }
+	            }).start();
+
+
+	        } catch (Exception eas) {
+	        	System.out.println(eas.toString());
+	        }
+
+	    }
+
+	
 	public boolean isConnected() { 
-		return m_client.isConnected();
+		return client.isConnected();
 	}
 	
 	
 	public void disconnect() {
-		m_client.eDisconnect();
+		client.eDisconnect();
 		
 	}
 
 	public EClientSocket getClientSocket() {
-		return m_client;
+		return client;
 	}
 
 	public void addSocketReader(final TwsSocketReader reader) {
@@ -197,10 +241,6 @@ public class TwsConnectorSocket implements EWrapper, EReaderSignal {
 
 	@Override
 	public void error(final String str) {
-		if (_logger.isDebugEnabled()) {
-			_logger.debug("error(" + "," + str + "," + ")");
-		}
-		_logger.error("Error String" + str);
 		_pool.execute(new Runnable() {
 
 			@Override

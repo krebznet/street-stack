@@ -8,6 +8,9 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.dunkware.common.util.events.DEventNode;
+import com.dunkware.trade.broker.tws.connector.TwsSocketReader;
+import com.dunkware.trade.sdk.core.model.broker.AccountBean;
+import com.dunkware.trade.sdk.core.model.broker.AccountStatus;
 import com.dunkware.trade.sdk.core.model.broker.BrokerAccountSpec;
 import com.dunkware.trade.sdk.core.model.order.OrderType;
 import com.dunkware.trade.sdk.core.runtime.broker.Broker;
@@ -16,7 +19,7 @@ import com.dunkware.trade.sdk.core.runtime.order.Order;
 import com.dunkware.trade.sdk.core.runtime.order.OrderException;
 import com.dunkware.trade.sdk.core.runtime.order.OrderPreview;
 
-public class TwsAccount implements BrokerAccount {
+public class TwsAccount implements BrokerAccount, TwsSocketReader {
 
 	private Logger logger = LoggerFactory.getLogger(getClass());
 
@@ -27,18 +30,46 @@ public class TwsAccount implements BrokerAccount {
 	private String id;
 
 	private DEventNode eventNode;
+	
+	private AccountBean bean;
 
+	private AccountStatus status = AccountStatus.Pending;
+	
 	public TwsAccount(TwsBroker broker, String id) {
 		this.id = id;
+		this.eventNode = broker.getEventNode().createChild(this);
+		bean = new AccountBean();
+		bean.setName(id);
+		bean.setStatus(status.name());
 		this.broker = broker;
 		eventNode = broker.getEventNode().createChild("accounts/" + id);
 	}
+	
+	public void setStatus(AccountStatus status)  { 
+		this.status = status;
+		bean.setStatus(status.name());
+		
+	}
+	
+	@Override
+	public AccountBean getBean() {
+		return bean;
+	}
 
 	@Override
-	public BrokerAccountSpec getSpec() {
-		// TODO: Figure me out
-		// here
-		return new BrokerAccountSpec();
+	public AccountStatus getStatus() {
+		return status;
+	}
+
+	@Override
+	public void init() {
+		broker.getClientSocket().reqAccountSummary(0, id, id);
+	}
+
+	@Override
+	public void dispose() {
+		// TODO Auto-generated method stub
+		
 	}
 
 	@Override
@@ -74,5 +105,7 @@ public class TwsAccount implements BrokerAccount {
 		TwsAccountOrder order = new TwsAccountOrder(this, type);
 		return order.preview();
 	}
+	
+	
 
 }

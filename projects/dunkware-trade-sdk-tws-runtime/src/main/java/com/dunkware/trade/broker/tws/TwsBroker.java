@@ -44,6 +44,8 @@ import com.ib.client.EClientSocket;
 @ABroker(type = TwsBrokerType.class)
 public class TwsBroker extends BrokerImpl implements TwsSocketReader {
 
+	public static AtomicInteger CLIENTID = new AtomicInteger(1); 
+	
 	private Logger logger = LoggerFactory.getLogger(getClass());
 
 	private TwsBrokerType type;
@@ -81,9 +83,9 @@ public class TwsBroker extends BrokerImpl implements TwsSocketReader {
 
 	private boolean hasConnected = false;
 	private boolean pendingConnect = true;
-	private boolean pendingingConnectNextId = false;
-	private boolean pendingConnectAccounts = false;
-	
+	private boolean pendingingConnectNextId = true;
+	private boolean pendingConnectAccounts = true;
+
 	private boolean connectionClosed = false;
 
 	public TwsBroker() {
@@ -94,16 +96,16 @@ public class TwsBroker extends BrokerImpl implements TwsSocketReader {
 	public BrokerBean getBrokerBean() {
 		return bean;
 	}
-	
-	public void addSocketReader(TwsSocketReader reader) { 
+
+	public void addSocketReader(TwsSocketReader reader) {
 		_connectorSocket.addSocketReader(reader);
 	}
-	
-	public void removeSocketReader(TwsSocketReader reader) { 
+
+	public void removeSocketReader(TwsSocketReader reader) {
 		_connectorSocket.removeSocketReader(reader);
 	}
-	
-	public EClientSocket getClientSocket() { 
+
+	public EClientSocket getClientSocket() {
 		return _connectorSocket.getClientSocket();
 	}
 
@@ -112,8 +114,10 @@ public class TwsBroker extends BrokerImpl implements TwsSocketReader {
 		try {
 			this.exector = executor;
 			this.eventNode = eventNode;
+			this.eventNode.addEventHandler(this);
 			connectLatch.increment();
 			this.type = (TwsBrokerType) type;
+			this.type.setConnectionId(CLIENTID.incrementAndGet());
 		} catch (Exception e) {
 			exception = e.toString();
 			status = BrokerStatus.Exception;
@@ -189,54 +193,6 @@ public class TwsBroker extends BrokerImpl implements TwsSocketReader {
 		instruments.unsubsribe(instrument);
 	}
 
-	@Override
-	public void nextValidId(int orderId) {
-		if (logger.isTraceEnabled()) {
-			logger.trace("{} NexValidId() {}", type.getIdentifier(), orderId);
-		}
-		this.nextOrderId = orderId;
-		if (pendingConnect) {
-			pendingingConnectNextId = false;
-			if (pendingConnectAccounts = false) {
-				hasConnected = true;
-				pendingConnect = false;
-				setStatus(BrokerStatus.Connected);
-				eventNode.event(new EBrokerInitialized(this));
-			}
-		}
-
-	}
-
-	@Override
-	public void managedAccounts(String accountsList) {
-		if (logger.isDebugEnabled()) {
-			logger.debug("{} Recieved Managed Accounts {}", type.getIdentifier(), accountsList);
-		}
-		String accounts[] = accountsList.split(",");
-		for (String string : accounts) {
-			if (logger.isDebugEnabled()) {
-				logger.debug("{} Creating Account {}", type.getIdentifier(), string);
-			}
-			if(hasConnected == false) { 
-				TwsAccount account = new TwsAccount(this, string);
-				this.accounts.add(account);	
-			} 
-			if (pendingConnect) {
-				pendingConnectAccounts = false;
-				if (pendingingConnectNextId = false) {
-					hasConnected = true;
-					pendingConnect = false;
-					setStatus(BrokerStatus.Connected);
-					eventNode.event(new EBrokerInitialized(this));
-				}
-			}
-		
-		}
-		
-		
-
-	}
-
 	public int getNextOrderId() {
 		nextOrderId++;
 		return nextOrderId;
@@ -266,7 +222,7 @@ public class TwsBroker extends BrokerImpl implements TwsSocketReader {
 				try {
 					Thread.sleep(4000);
 					if (_connectorSocket.getClientSocket().isConnected() == false) {
-					
+
 					}
 				} catch (Exception e) {
 					// TODO: handle exception
@@ -275,7 +231,6 @@ public class TwsBroker extends BrokerImpl implements TwsSocketReader {
 
 		}
 	}
-
 
 	/**
 	 * Event Handler Methods
@@ -293,29 +248,98 @@ public class TwsBroker extends BrokerImpl implements TwsSocketReader {
 	@Override
 	public void connectionClosed() {
 		connectionClosed = true;
-		if(logger.isInfoEnabled()) { 
+		if (logger.isInfoEnabled()) {
 			logger.info("Connection Closed Event");
 		}
 	}
-	
-	
-	
-	
 
 	@Override
 	public void error(int id, int errorCode, String errorMsg, String advancedOrderRejectJson) {
-		 
+		// okay so -- if e cannot connect then what do we do 
 		
+		logger.debug("error " + id + " " + errorCode + " " + errorMsg + " " + advancedOrderRejectJson);
+		_connectorSocket.getClientSocket().eDisconnect();
 		// TODO Auto-generated method stub
-		//EClientErrors.NOT_CONNECTED.c
-		
-		//TwsSocketReader.super.error(id, errorCode, errorMsg, advancedOrderRejectJson);
+		// EClientErrors.NOT_CONNECTED.c
+
+		// TwsSocketReader.super.error(id, errorCode, errorMsg,
+		// advancedOrderRejectJson);
+	}
+
+	/**
+	 * EEEEREEADER EVENTS 
+	 */
+	
+
+	@Override
+	public void nextValidId(int orderId) {
+		if (logger.isTraceEnabled()) {
+			logger.trace("{} NexValidId() {}", type.getIdentifier(), orderId);
+		}
+		this.nextOrderId = orderId;
+		if (pendingConnect) {
+			pendingingConnectNextId = false;
+			if (pendingConnectAccounts == false) {
+				hasConnected = true;
+				pendingConnect = false;
+				setStatus(BrokerStatus.Connected);
+				eventNode.event(new EBrokerInitialized(this));
+			}
+		}
+
 	}
 
 	@Override
-	public void connectAck() {
-		logger.info("connect act");
-		
+	public void managedAccounts(String accountsList) {
+		if (logger.isDebugEnabled()) {
+			logger.debug("{} Recieved Managed Accounts {}", type.getIdentifier(), accountsList);
+		}
+		String accounts[] = accountsList.split(",");
+		for (String string : accounts) {
+			if (logger.isDebugEnabled()) {
+				logger.debug("{} Creating Account {}", type.getIdentifier(), string);
+			}
+			if (hasConnected == false) {
+				TwsAccount account = new TwsAccount(this, string);
+			//	account.st
+				this.accounts.add(account);
+			}
+			if (pendingConnect) {
+				pendingConnectAccounts = false;
+				if (pendingingConnectNextId == false) {
+					hasConnected = true;
+					pendingConnect = false;
+					setStatus(BrokerStatus.Connected);
+					eventNode.event(new EBrokerInitialized(this));
+				}
+			}
+
+		}
+
 	}
+
+	
+	@Override
+	public void connectAck() {
+		Runnable runner = new Runnable() {
+			
+			@Override
+			public void run() {
+				try {
+					pendingConnect = true;
+				//	getClientSocket().reqManagedAccts();
+				//	getClientSocket().reqIds(0);
+					
+					logger.info("connect act");
+
+				} catch (Exception e) {
+					logger.error("Fuck " + e.toString());
+				}
+			}
+		};
+		exector.execute(runner);
+
+	}
+
 
 }
