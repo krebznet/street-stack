@@ -1,6 +1,8 @@
 package com.dunkware.trade.sdk.lib.runtime.paper;
 
 import com.dunkware.common.util.events.DEventNode;
+import com.dunkware.trade.sdk.core.model.broker.AccountBean;
+import com.dunkware.trade.sdk.core.model.broker.AccountStatus;
 import com.dunkware.trade.sdk.core.model.broker.BrokerAccountSpec;
 import com.dunkware.trade.sdk.core.model.order.OrderType;
 import com.dunkware.trade.sdk.core.runtime.broker.Broker;
@@ -29,15 +31,42 @@ public class PaperAccount implements BrokerAccount {
 		
 	}
 
+	
+
 	@Override
-	public BrokerAccountSpec getSpec() {
-		BrokerAccountSpec spec = new BrokerAccountSpec();
-		spec.setBroker(broker.getIdentifier());
-		spec.setName(identifier);
-		spec.setStatus("Connected");
-		return spec; 
+	public AccountBean getBean() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+
+
+	@Override
+	public AccountStatus getStatus() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+
+
+	
+
+
+	@Override
+	public void init() {
+		// TODO Auto-generated method stub
 		
 	}
+
+
+
+	@Override
+	public void dispose() {
+		// TODO Auto-generated method stub
+		
+	}
+
+
 
 	@Override
 	public Order createOrder(OrderType type) throws OrderException {
