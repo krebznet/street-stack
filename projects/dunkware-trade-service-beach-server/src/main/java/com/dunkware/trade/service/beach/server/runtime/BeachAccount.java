@@ -70,7 +70,7 @@ public class BeachAccount {
 		orderBeans = new ObservableElementList<BeachOrderBean>(GlazedLists.threadSafeList(new BasicEventList<BeachOrderBean>()), new DataBeanConnector<BeachOrderBean>());
 		playBeans = new ObservableElementList<BeachPlayBean>(GlazedLists.threadSafeList(new BasicEventList<BeachPlayBean>()), new DataBeanConnector<BeachPlayBean>());
 		
-		this.eventNode = broker.getEventNode().createChild("/accounts/" + ent.getId());
+		this.eventNode = broker.getEventNode().createChild(this);
 		
 	}
 	
@@ -83,6 +83,7 @@ public class BeachAccount {
 				plays.put(playEnt.getId(), play);
 			}
 		} catch (Exception e) {
+			
 			logger.error("Exception Init Beach Play " + e.toString());
 		}
 		
@@ -174,20 +175,5 @@ public class BeachAccount {
 
 	public ObservableElementList<BeachPlayBean> getPlayBeans() {
 		return playBeans;
-	}
-
-
-
-
-
-	private class BeanUpdater extends Thread { 
-		
-		public void run() { 
-			// activeCapital
-			// tradedCapital
-			// unreazliedPL
-			// realizedPL
-			// go through each play and do that. 
-		}
 	}
 }

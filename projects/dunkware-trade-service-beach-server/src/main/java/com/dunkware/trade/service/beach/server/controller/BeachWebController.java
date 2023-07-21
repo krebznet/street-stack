@@ -24,7 +24,7 @@ import reactor.core.publisher.Flux;
 import reactor.core.scheduler.Schedulers;
 
 
-@CrossOrigin("*")
+
 @RestController
 public class BeachWebController {
 
@@ -43,8 +43,63 @@ public class BeachWebController {
 	
 
 	@GetMapping(path = "/trade/v1/dash/core/brokers", produces = MediaType.APPLICATION_STREAM_JSON_VALUE)
-    public Flux<List<DataGridUpdate>> brokerTrades() {
+    public Flux<List<DataGridUpdate>> beachBrokers() {
 		GlazedDataGrid grid = GlazedDataGrid.newInstance(beachService.getBrokerBeans(),runtime.getExecutor(),"getId");
+		grid.start();
+		Flux<List<DataGridUpdate>> results = grid.getUpdates();
+		//Flux<List<DataGridUpdate>> results = grid.getUpdates();
+		//results = results.subscribeOn(Schedulers.boundedElastic());
+		
+		results.subscribe(new Subscriber<List<DataGridUpdate>>() {
+
+			private Subscription sub;
+			@Override
+			public void onSubscribe(Subscription s) {
+				this.sub = s;
+				sub.request(1);;
+			}
+
+			@Override
+			public void onNext(List<DataGridUpdate> t) {
+				try {
+					logger.debug("on next " + DJson.serialize(t));	
+				} catch (Exception e) {
+					e.printStackTrace();
+					// TODO: handle exception
+				}
+				sub.request(1);
+				
+				
+			}
+
+			@Override
+			public void onError(Throwable t) {
+				sub.cancel();
+				if(logger.isDebugEnabled() ) { 
+					logger.debug("one error dispposing mocked broker list" + t.toString());
+				}
+				//list.dispose();
+			}
+
+			@Override
+			public void onComplete() {
+				sub.cancel();
+				if(logger.isDebugEnabled() ) { 
+					logger.debug("disposing mocked broker list");
+				}
+			//	list.dispose();
+				
+				
+			} 
+			
+		});
+		return results;
+	
+	
+	}
+	@GetMapping(path = "/trade/v1/dash/core/accounts", produces = MediaType.APPLICATION_STREAM_JSON_VALUE)
+    public Flux<List<DataGridUpdate>> beacAccounts() {
+		GlazedDataGrid grid = GlazedDataGrid.newInstance(beachService.getAccountBeans(),runtime.getExecutor(),"getId");
 		grid.start();
 		Flux<List<DataGridUpdate>> results = grid.getUpdates();
 		//Flux<List<DataGridUpdate>> results = grid.getUpdates();

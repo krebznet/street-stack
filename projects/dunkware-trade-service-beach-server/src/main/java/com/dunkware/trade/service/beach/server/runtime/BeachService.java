@@ -21,6 +21,7 @@ import com.dunkware.common.util.events.DEventNode;
 import com.dunkware.common.util.events.anot.ADEventMethod;
 import com.dunkware.common.util.json.DJson;
 import com.dunkware.trade.broker.tws.TwsBrokerType;
+import com.dunkware.trade.sdk.core.model.broker.AccountBean;
 import com.dunkware.trade.sdk.core.runtime.broker.event.EBrokerEvent;
 import com.dunkware.trade.sdk.core.runtime.registry.TradeRegistry;
 import com.dunkware.trade.service.beach.protocol.broker.AddBrokerReq;
@@ -68,27 +69,40 @@ public class BeachService {
 		accountBeans = new ObservableElementList<BeachAccountBean>(
 				GlazedLists.threadSafeList(new BasicEventList<BeachAccountBean>()),
 				new DataBeanConnector<BeachAccountBean>());
+		
+		BeachAccountBean b = new  BeachAccountBean();
+		b.setName("Acccount1");
+		b.setBroker("Broker1");
+		b.setId(1);
+		b.setMarketValue(2323.3);
+		accountBeans.add(b);
 		eventNode = runtime.getEventTree().getRoot().createChild(this);
-
+		eventNode.addEventHandler(this);
+		
 		Thread runner = new Thread() {
 			public void run() {
-				String[] streamIdents = runtime.getStreamIdentifiers().split(",");
+				if(runtime.isStreamEnabled()) { 
+					String[] streamIdents = runtime.getStreamIdentifiers().split(",");
 
-				for (String ident : streamIdents) {
+					for (String ident : streamIdents) {
 
-					BeachStream stream = new BeachStream();
-					ac.getAutowireCapableBeanFactory().autowireBean(stream);
-					try {
-						stream.init(ident);
-						if (logger.isDebugEnabled()) {
-							logger.debug("Initialized stream " + ident);
+						BeachStream stream = new BeachStream();
+						ac.getAutowireCapableBeanFactory().autowireBean(stream);
+						try {
+							stream.init(ident);
+							if (logger.isDebugEnabled()) {
+								logger.debug("Initialized stream " + ident);
+							}
+							streams.put(stream.getIdentifier(), stream);
+						} catch (Exception e) {
+							logger.error("Exception Initializing Beach Stream " + ident + " " + e.toString()); // System.exit(-1);
+																												// }
 						}
-						streams.put(stream.getIdentifier(), stream);
-					} catch (Exception e) {
-						logger.error("Exception Initializing Beach Stream " + ident + " " + e.toString()); // System.exit(-1);
-																											// }
-					}
+					}	
+					
 				}
+
+				
 
 				List<BeachBrokerEnt> brokers = repo.getBrokers();
 				for (BeachBrokerEnt beachBrokerEnt : brokers) {
@@ -139,7 +153,6 @@ public class BeachService {
 		}
 		BeachBroker broker = new BeachBroker();
 		ac.getAutowireCapableBeanFactory().autowireBean(broker);
-		broker.getEventNode().addEventHandler(this);
 		broker.init(entity);
 		;
 		brokers.put(entity.getIdentifier(), broker);

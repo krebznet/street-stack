@@ -1,5 +1,6 @@
 package com.dunkware.trade.service.beach.server.runtime;
 
+import java.awt.dnd.DragGestureEvent;
 import java.util.Collection;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
@@ -16,14 +17,16 @@ import org.springframework.context.ApplicationContext;
 import com.dunkware.common.util.events.DEvent;
 import com.dunkware.common.util.events.DEventNode;
 import com.dunkware.common.util.events.anot.ADEventMethod;
+import com.dunkware.common.util.helpers.DRandom;
 import com.dunkware.common.util.json.DJson;
+import com.dunkware.trade.broker.tws.TwsBrokerType;
 import com.dunkware.trade.sdk.core.model.broker.BrokerStatus;
 import com.dunkware.trade.sdk.core.model.broker.BrokerType;
 import com.dunkware.trade.sdk.core.runtime.broker.Broker;
 import com.dunkware.trade.sdk.core.runtime.broker.BrokerAccount;
-import com.dunkware.trade.sdk.core.runtime.broker.event.EBrokerConnected;
 import com.dunkware.trade.sdk.core.runtime.broker.event.EBrokerConnecting;
 import com.dunkware.trade.sdk.core.runtime.broker.event.EBrokerDisconnected;
+import com.dunkware.trade.sdk.core.runtime.broker.event.EBrokerInitialized;
 import com.dunkware.trade.sdk.core.runtime.registry.TradeRegistry;
 import com.dunkware.trade.service.beach.server.common.BeachRuntime;
 import com.dunkware.trade.service.beach.server.entity.BeachAccountEnt;
@@ -36,6 +39,7 @@ import com.dunkware.trade.service.beach.server.runtime.core.events.EBeachBrokerU
 public class BeachBroker {
 
 	
+	@Autowired
 	private BeachRuntime runtime;
 
 	@Autowired
@@ -51,14 +55,14 @@ public class BeachBroker {
 	private BeachBrokerEnt entity;
 	private Map<String, BeachAccount> accounts = new ConcurrentHashMap<String, BeachAccount>();
 
-	private BrokerType brokerType;
+	private TwsBrokerType brokerType;
 	private Broker broker;
 	
 	@Autowired
 	private BeachService beachService; 
 
 	private DEventNode eventNode;
-
+  
 	private BeachBrokerBean bean;
 	
 	private BeachBrokerStatus status = BeachBrokerStatus.Pending;
@@ -66,7 +70,8 @@ public class BeachBroker {
 	private String exception = null;
 	
 	public BeachBroker() { 
-		eventNode = beachService.getEventNode().createChild(this);
+		
+		
 	}
 	
 	public BeachBrokerStatus getStatus() { 
@@ -78,13 +83,16 @@ public class BeachBroker {
 	}
 
 	public void init(BeachBrokerEnt ent)  {
+		eventNode = beachService.getEventNode().createChild(this);
+		eventNode.addEventHandler(this);
 		this.entity = ent;
 		bean = new BeachBrokerBean(); 
 		bean.setId(entity.getId());
 		bean.setName(ent.getIdentifier());
 		bean.setStatus(status.name());
 		try {
-			brokerType = DJson.getObjectMapper().readValue(entity.getType(), BrokerType.class);
+			brokerType = (TwsBrokerType)DJson.getObjectMapper().readValue(entity.getType(), BrokerType.class);
+			brokerType.setConnectionId(DRandom.getRandom(0, 200));
 		} catch (Exception e) {
 			status = BeachBrokerStatus.Exception;
 			bean.setStatus("Exception");
@@ -155,6 +163,7 @@ public class BeachBroker {
 	 */
 	@Transactional
 	private void loadAndSyncAccounts() {
+		em = repo.createEntityManager();
 		BrokerAccount[] brokerAccounts = broker.getAccounts();
 		for (BrokerAccount brokerAccount : brokerAccounts) {
 			// query an account
@@ -179,6 +188,7 @@ public class BeachBroker {
 			ac.getAutowireCapableBeanFactory().autowireBean(act);
 			act.init();
 			accounts.put(actEnt.getIdentifier(), act);
+			em.close();
 			//act.getEventNode().addEventHandler(this);;
 			//etEventNode().event(new EBeachAccountAdded(act));
 			
@@ -197,22 +207,29 @@ public class BeachBroker {
 	}
 
 	@ADEventMethod
-	public void brokerConnected(EBrokerConnected event) {
+	public void brokerInitialized(EBrokerInitialized event) {
 		bean.setStatus("Connected");
+		Runnable runnable = new Runnable() {
+			
+			@Override
+			public void run() {
+				loadAndSyncAccounts();
+			}
+		};
+		runtime.getExecutor().execute(runnable);
 		bean.notifyUpdate();
-		eventNode.event(new EBeachBrokerUpdate(this));
+		eventNode.event(new EBeachBrokerInitialized(this));
+		
 	}
 
 	@ADEventMethod
 	public void brokerConnecting(EBrokerConnecting event) {
 		bean.setStatus("Connecting");
 		bean.notifyUpdate();
-		eventNode.event(new EBeachBrokerUpdate(this));
+	
 	}
 	
-	@ADEventMethod
-	public void eventRouter(DEvent event) {
-		this.eventNode.event(event);
-	}
+	
+	
 
 }

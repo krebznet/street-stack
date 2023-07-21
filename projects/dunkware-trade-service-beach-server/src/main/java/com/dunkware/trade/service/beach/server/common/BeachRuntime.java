@@ -38,7 +38,7 @@ public class BeachRuntime {
 	
 	@PostConstruct
 	private void start() { 
-		executor = new DExecutor(35, 50, TimeUnit.SECONDS);
+		executor = new DExecutor(35, 60, TimeUnit.SECONDS);
 		eventTree = DEventTree.newInstance(executor);
 	}
 	
