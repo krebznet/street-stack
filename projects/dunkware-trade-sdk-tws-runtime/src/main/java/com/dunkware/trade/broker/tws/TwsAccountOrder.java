@@ -79,7 +79,7 @@ public class TwsAccountOrder implements Order {
 		spec.setTrailingStopPrice(type.getTrailingStopPrice());
 		
 		getSpec().setRemaining(getSpec().getSize());
-		this.eventNode = account.getEventNode().createChild("orders/" + getSpec().getId());
+		this.eventNode = account.getEventNode().createChild(this);
 
 		this.twsOrder = createTwsOrder();
 		spec.setId(twsOrder.orderId());

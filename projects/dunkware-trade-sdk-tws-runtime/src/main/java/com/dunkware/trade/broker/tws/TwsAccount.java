@@ -42,7 +42,7 @@ public class TwsAccount implements BrokerAccount, TwsSocketReader {
 		bean.setName(id);
 		bean.setStatus(status.name());
 		this.broker = broker;
-		eventNode = broker.getEventNode().createChild("accounts/" + id);
+		eventNode = broker.getEventNode().createChild(this);
 	}
 	
 	public void setStatus(AccountStatus status)  { 
