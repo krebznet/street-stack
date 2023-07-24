@@ -16,20 +16,17 @@ import org.springframework.context.ApplicationContext;
 import org.springframework.stereotype.Service;
 
 import com.dunkware.common.util.databean.DataBeanConnector;
-import com.dunkware.common.util.events.DEvent;
 import com.dunkware.common.util.events.DEventNode;
 import com.dunkware.common.util.events.anot.ADEventMethod;
 import com.dunkware.common.util.json.DJson;
 import com.dunkware.trade.broker.tws.TwsBrokerType;
-import com.dunkware.trade.sdk.core.model.broker.AccountBean;
-import com.dunkware.trade.sdk.core.runtime.broker.event.EBrokerEvent;
 import com.dunkware.trade.sdk.core.runtime.registry.TradeRegistry;
 import com.dunkware.trade.service.beach.protocol.broker.AddBrokerReq;
 import com.dunkware.trade.service.beach.server.common.BeachRuntime;
 import com.dunkware.trade.service.beach.server.entity.BeachBrokerEnt;
 import com.dunkware.trade.service.beach.server.entity.BeachRepo;
-import com.dunkware.trade.service.beach.server.runtime.core.events.EBeachAcccountInitialized;
-import com.dunkware.trade.service.beach.server.runtime.core.events.EBeachBrokerInitialized;
+import com.dunkware.trade.service.beach.server.event.EBeachAcccountInitialized;
+import com.dunkware.trade.service.beach.server.event.EBeachBrokerInitialized;
 
 import ca.odell.glazedlists.BasicEventList;
 import ca.odell.glazedlists.GlazedLists;
@@ -46,6 +43,10 @@ public class BeachService {
 
 	private ConcurrentHashMap<String, BeachBroker> brokers = new ConcurrentHashMap<String, BeachBroker>();
 
+	private ConcurrentHashMap<String, BeachSystem> systems = new ConcurrentHashMap<String, BeachSystem>();
+	
+	private ConcurrentHashMap<String, BeachAccount> accounts = new ConcurrentHashMap<String,BeachAccount>();
+	
 	private DEventNode eventNode;
 
 	@Autowired
@@ -70,12 +71,6 @@ public class BeachService {
 				GlazedLists.threadSafeList(new BasicEventList<BeachAccountBean>()),
 				new DataBeanConnector<BeachAccountBean>());
 		
-		BeachAccountBean b = new  BeachAccountBean();
-		b.setName("Acccount1");
-		b.setBroker("Broker1");
-		b.setId(1);
-		b.setMarketValue(2323.3);
-		accountBeans.add(b);
 		eventNode = runtime.getEventTree().getRoot().createChild(this);
 		eventNode.addEventHandler(this);
 		
@@ -102,13 +97,10 @@ public class BeachService {
 					
 				}
 
-				
-
 				List<BeachBrokerEnt> brokers = repo.getBrokers();
 				for (BeachBrokerEnt beachBrokerEnt : brokers) {
 					BeachBroker broker = new BeachBroker();
 					ac.getAutowireCapableBeanFactory().autowireBean(broker);
-					broker.getEventNode().addEventHandler(this);
 					broker.init(beachBrokerEnt);
 				}
 
@@ -162,25 +154,25 @@ public class BeachService {
 	public Collection<BeachBroker> getBrokers() {
 		return brokers.values();
 	}
+	
+	public Collection<BeachAccount> getAccounts() { 
+		return accounts.values();
+	}
 
+	
+	public Collection<BeachSystem> getSystems() { 
+		return systems.values();
+	}
+	
+	
 	public boolean brokerExists(String identifier) {
 		if (brokers.containsKey(identifier))
 			return true;
 		return false;
 	}
-
-	public BeachPlay getPlay(long playId) throws Exception {
-		for (BeachBroker beachBroker : brokers.values()) {
-			for (BeachAccount beachAccount : beachBroker.getAccounts()) {
-				for (BeachPlay play : beachAccount.getPlays()) {
-					if (play.getId() == playId) {
-						return play;
-					}
-				}
-			}
-		}
-		throw new Exception("Trade Play ID " + playId + " Not found");
-	}
+	
+	
+	
 
 	public BeachBroker getBroker(String identifier) throws Exception {
 		if (brokerExists(identifier) == false) {
@@ -215,16 +207,6 @@ public class BeachService {
 		return eventNode;
 	}
 
-	public List<BeachAccount> getAccounts() {
-		List<BeachAccount> accounts = new ArrayList<BeachAccount>();
-		for (BeachBroker broker : brokers.values()) {
-			for (BeachAccount beachAccount : broker.getAccounts()) {
-				accounts.add((BeachAccount) beachAccount);
-			}
-		}
-		return accounts;
-	}
-
 	public BeachStream getStream(String stream) throws Exception {
 		BeachStream results = streams.get(stream);
 		if (results == null) {
@@ -241,6 +223,7 @@ public class BeachService {
 		return accountBeans;
 	}
 
+
 	@ADEventMethod
 	public void brokerInitialized(EBeachBrokerInitialized event) {
 		if(logger.isDebugEnabled()) { 
@@ -252,7 +235,9 @@ public class BeachService {
 	}
 
 	@ADEventMethod
-	public void beachAccountAdded(EBeachAcccountInitialized event) {
+	public void beachAccountInitailized(EBeachAcccountInitialized event) {
+		accounts.put(event.getAcccount().getIdentifier(), event.getAcccount());
+		
 		accountBeans.getReadWriteLock().writeLock().lock();
 		accountBeans.add(event.getAcccount().getBean());
 		accountBeans.getReadWriteLock().writeLock().unlock();

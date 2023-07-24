@@ -83,14 +83,6 @@ public class BeachBrokerImpl implements BeachBroker {
 					e.toString());
 			// so if we can't connect to the broker then what dynamic shit?
 		}
-		// give the broker a chance to connect
-		Thread.sleep(1000);
-		// check if we are connected to do account sync
-		
-		if (broker.getStatus() == BrokerStatus.Connected) {
-			logger.info("Broker {} Connected During Broker Load ", brokerType.getIdentifier());
-			loadAndSyncAccounts();
-		}
 
 	}
 

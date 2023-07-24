@@ -14,6 +14,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 
+import com.dunkware.common.util.databean.DataBeanConnector;
 import com.dunkware.common.util.events.DEvent;
 import com.dunkware.common.util.events.DEventNode;
 import com.dunkware.common.util.events.anot.ADEventMethod;
@@ -32,9 +33,13 @@ import com.dunkware.trade.service.beach.server.common.BeachRuntime;
 import com.dunkware.trade.service.beach.server.entity.BeachAccountEnt;
 import com.dunkware.trade.service.beach.server.entity.BeachBrokerEnt;
 import com.dunkware.trade.service.beach.server.entity.BeachRepo;
-import com.dunkware.trade.service.beach.server.runtime.core.BeachBrokerStatus;
-import com.dunkware.trade.service.beach.server.runtime.core.events.EBeachBrokerInitialized;
-import com.dunkware.trade.service.beach.server.runtime.core.events.EBeachBrokerUpdate;
+import com.dunkware.trade.service.beach.server.event.EBeachAcccountInitialized;
+import com.dunkware.trade.service.beach.server.event.EBeachBrokerInitialized;
+import com.dunkware.trade.service.beach.server.event.EBeachBrokerUpdate;
+
+import ca.odell.glazedlists.BasicEventList;
+import ca.odell.glazedlists.GlazedLists;
+import ca.odell.glazedlists.ObservableElementList;
 
 public class BeachBroker {
 
@@ -69,6 +74,9 @@ public class BeachBroker {
 	
 	private String exception = null;
 	
+	private ObservableElementList<BeachAccountBean> accountBeans = null;
+
+	
 	public BeachBroker() { 
 		
 		
@@ -82,7 +90,15 @@ public class BeachBroker {
 		return exception;
 	}
 
+	
+	public ObservableElementList<BeachAccountBean> getAccountBeans() { 
+		return accountBeans;
+	}
+	
 	public void init(BeachBrokerEnt ent)  {
+		accountBeans = new ObservableElementList<BeachAccountBean>(
+				GlazedLists.threadSafeList(new BasicEventList<BeachAccountBean>()),
+				new DataBeanConnector<BeachAccountBean>());
 		eventNode = beachService.getEventNode().createChild(this);
 		eventNode.addEventHandler(this);
 		this.entity = ent;
@@ -123,7 +139,7 @@ public class BeachBroker {
 			bean.notifyUpdate();
 			logger.error("FIX ME: Broker connect exception " + e.toString());
 		}
-		loadAndSyncAccounts();
+		
 	}
 
 	public BeachBrokerBean getBean() {
@@ -175,7 +191,10 @@ public class BeachBroker {
 				actEnt.setIdentifier(brokerAccount.getIdentifier());
 				actEnt.setBroker(getEntity());
 				try {
+					em.getTransaction().begin();
 					em.persist(actEnt);
+					em.getTransaction().commit();
+					em.close();
 				} catch (Exception e) {
 					logger.error("Fatal DB Error persisting new beach account " + e.toString(), e);
 					continue;
@@ -186,17 +205,14 @@ public class BeachBroker {
 			}
 			BeachAccount act = new BeachAccount(actEnt,this,brokerAccount);
 			ac.getAutowireCapableBeanFactory().autowireBean(act);
+			
 			act.init();
-			accounts.put(actEnt.getIdentifier(), act);
-			em.close();
-			//act.getEventNode().addEventHandler(this);;
-			//etEventNode().event(new EBeachAccountAdded(act));
+			
+		
 			
 	
 		}
-		// now what we are not doing yet is what if we have a beach account that exists
-		// for this
-		// broker but that account is no longer on the broker? Fuck IT!
+		
 	}
 
 	@ADEventMethod()
@@ -220,6 +236,14 @@ public class BeachBroker {
 		bean.notifyUpdate();
 		eventNode.event(new EBeachBrokerInitialized(this));
 		
+	}
+	
+	@ADEventMethod()
+	public void beachAccountInitialized(EBeachAcccountInitialized event) {
+		this.accounts.put(event.getAcccount().getIdentifier(), event.getAcccount());
+		this.accountBeans.getReadWriteLock().writeLock().lock();
+		this.accountBeans.add(event.getAcccount().getBean());
+		this.accountBeans.getReadWriteLock().writeLock().unlock();
 	}
 
 	@ADEventMethod

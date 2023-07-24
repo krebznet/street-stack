@@ -25,7 +25,7 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
 public class TradeDBConfig {
 	
 	
-	@Value("${hibernate.hbm2ddl.auto}")
+	@Value("${spring.trade.datasource.jpa.properties.hibernate.hbm2ddl.auto}")
 	private String hbm2dllUpdate;
 	
  
