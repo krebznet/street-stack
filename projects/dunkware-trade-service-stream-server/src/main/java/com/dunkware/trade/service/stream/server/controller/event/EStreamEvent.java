@@ -3,11 +3,11 @@ package com.dunkware.trade.service.stream.server.controller.event;
 import com.dunkware.common.util.events.DEvent;
 import com.dunkware.trade.service.stream.server.controller.StreamController;
 
-public class ESteamEvent extends DEvent  {
+public class EStreamEvent extends DEvent  {
 
 	private StreamController stream; 
 	
-	public ESteamEvent(StreamController stream) { 
+	public EStreamEvent(StreamController stream) { 
 		this.stream = stream;
 	}
 	

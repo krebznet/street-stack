@@ -30,6 +30,8 @@ import com.dunkware.net.proto.stream.GStreamSpec;
 import com.dunkware.trade.service.stream.json.controller.spec.StreamControllerSpec;
 import com.dunkware.trade.service.stream.json.controller.spec.StreamControllerState;
 import com.dunkware.trade.service.stream.json.controller.spec.StreamControllerStreamStats;
+import com.dunkware.trade.service.stream.server.blueprint.StreamBlueprint;
+import com.dunkware.trade.service.stream.server.blueprint.StreamBlueprintService;
 import com.dunkware.trade.service.stream.server.controller.session.StreamSession;
 import com.dunkware.trade.service.stream.server.controller.session.StreamSessionException;
 import com.dunkware.trade.service.stream.server.controller.session.StreamSessionFactory;
@@ -93,7 +95,12 @@ public class StreamController
 
 	@Autowired
 	private StreamTickService tickService;
+	
+	@Autowired
+	private StreamBlueprintService blueprintService;
 
+	private StreamBlueprint blueprint = null;
+	
 	@Autowired
 	private ConfigService config;
 	
@@ -115,6 +122,8 @@ public class StreamController
 	private Marker marker = MarkerFactory.getMarker("StreamController");
 	
 	private StreamControllerStreamStats statsCache = null; 
+	
+	
 	private LocalTime statsCacheTimestamp = null;
 	
 	private List<StreamSignalListener> signalListeners = new ArrayList<StreamSignalListener>();
@@ -127,7 +136,11 @@ public class StreamController
 
 	public void start(StreamEntity ent) throws Exception {
 		logger.info(":Starting Stream Controller " + ent.getName());
-		
+		try {
+			this.blueprint = blueprintService.getBlueprint(ent.getName());
+		} catch (Exception e) {
+			throw new Exception("Could  not find blueprint for stream " + ent.getName());
+		}
 		// set member variabbes
 		this.ent = ent;
 		stats = new StreamControllerStreamStats();
@@ -188,6 +201,10 @@ public class StreamController
 			}
 		}
 
+	}
+	
+	public StreamBlueprint getBlueprint() { 
+		return blueprint;
 	}
 	
 	public XScriptBundle getScriptBundle() { 

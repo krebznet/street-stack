@@ -118,6 +118,7 @@ public class StreamEntity {
 	public void setState(StreamControllerState state) {
 		this.state = state;
 	}
+
 	
 	
 	

@@ -1,9 +1,9 @@
 package com.dunkware.trade.service.stream.server.controller.session.events;
 
-import com.dunkware.trade.service.stream.server.controller.event.ESteamEvent;
+import com.dunkware.trade.service.stream.server.controller.event.EStreamEvent;
 import com.dunkware.trade.service.stream.server.controller.session.StreamSession;
 
-public class EStreamSessionEvent extends ESteamEvent {
+public class EStreamSessionEvent extends EStreamEvent {
 
 	private StreamSession session;
 	
