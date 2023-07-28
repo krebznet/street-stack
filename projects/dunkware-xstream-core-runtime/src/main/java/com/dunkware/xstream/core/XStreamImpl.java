@@ -19,8 +19,6 @@ import com.dunkware.xstream.api.XStreamExecutor;
 import com.dunkware.xstream.api.XStreamExtension;
 import com.dunkware.xstream.api.XStreamInput;
 import com.dunkware.xstream.api.XStreamListener;
-import com.dunkware.xstream.api.XStreamQueryException;
-import com.dunkware.xstream.api.XStreamQueryRunner;
 import com.dunkware.xstream.api.XStreamRow;
 import com.dunkware.xstream.api.XStreamRowListener;
 import com.dunkware.xstream.api.XStreamRowSignal;
@@ -29,9 +27,9 @@ import com.dunkware.xstream.api.XStreamService;
 import com.dunkware.xstream.api.XStreamSignalListener;
 import com.dunkware.xstream.api.XStreamStatus;
 import com.dunkware.xstream.api.XStreamTickRouter;
-import com.dunkware.xstream.core.query.XStreamQueryRunnerImpl;
 import com.dunkware.xstream.model.metrics.XStreamMetrics;
-import com.dunkware.xstream.model.query.XStreamCriterias;
+import com.dunkware.xstream.model.stats.EntityStatsSession;
+import com.dunkware.xstream.model.stats.EntityStatsSessions;
 import com.dunkware.xstream.util.XStreamStatsBuilder;
 import com.dunkware.xstream.xproject.model.XStreamExtensionType;
 
@@ -157,7 +155,12 @@ public class XStreamImpl implements XStream {
 					input.getSessionId());
 		}
 		XStreamRowImpl row = new XStreamRowImpl();
-		row.start(rowId, rowIdentifier, this);
+		List<EntityStatsSession> statsList = new ArrayList<EntityStatsSession>();
+		EntityStatsSessions statSessions = input.getEntityStatsSessions().get(rowIdentifier);
+		if(statSessions != null) { 
+			statsList = statSessions.getSessions();
+		}
+		row.start(rowId, rowIdentifier, this, statsList);
 		row.addRowListener(rowListener);
 		rows.put(rowId, row);
 		try {
@@ -362,16 +365,6 @@ public class XStreamImpl implements XStream {
 	}
 	
 	
-
-	@Override
-	public XStreamQueryRunner queryRunner(XStreamCriterias query) throws XStreamQueryException {
-		XStreamQueryRunnerImpl runner = new XStreamQueryRunnerImpl();
-		runner.init(this, query);
-		return runner;
-	}
-
-
-
 	/**
 	 * RowListener for routing stream row events to RowListeners registered on the
 	 * stream level.

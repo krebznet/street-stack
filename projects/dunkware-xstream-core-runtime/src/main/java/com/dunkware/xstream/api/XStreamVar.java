@@ -11,7 +11,7 @@ import com.dunkware.xstream.xScript.VarType;
 
 public interface XStreamVar {
 	
-	public void init(XStreamRow row, VarType varType, List<EntityStatsSessionVar> sessionStats);
+	public void init(XStreamRow row, VarType varType);
 	
 	public void start();
 	
@@ -59,10 +59,4 @@ public interface XStreamVar {
 	
 	public int getValueCount();
 	
-	/**
-	 * Returns the available stats for the variable. 
-	 * @return
-	 */
-	public List<EntityStatsSessionVar> getStatSessions(); 
-
 }

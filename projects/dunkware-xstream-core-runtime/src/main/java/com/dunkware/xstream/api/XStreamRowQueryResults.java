@@ -2,7 +2,7 @@ package com.dunkware.xstream.api;
 
 import java.util.Collection;
 
-public interface XStreamQueryResults {
+public interface XStreamRowQueryResults {
 	
 	public double getMilliseconds();
 	

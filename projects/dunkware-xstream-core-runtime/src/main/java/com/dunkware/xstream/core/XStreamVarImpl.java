@@ -19,6 +19,7 @@ import org.slf4j.MarkerFactory;
 
 import com.dunkware.xstream.api.XStreamExpression;
 import com.dunkware.xstream.api.XStreamExpressionListener;
+import com.dunkware.xstream.api.XStreamResolveException;
 import com.dunkware.xstream.api.XStreamRow;
 import com.dunkware.xstream.api.XStreamRuntimeException;
 import com.dunkware.xstream.api.XStreamVar;
@@ -62,12 +63,11 @@ public class XStreamVarImpl implements XStreamVar, XStreamExpressionListener, XS
 	
 	private volatile LocalTime lastUpdate = null;
 
-	private List<EntityStatsSessionVar> statsSessions;
+
 	
 	@Override
-	public void init(XStreamRow row, VarType varType, List<EntityStatsSessionVar> varStats) {
+	public void init(XStreamRow row, VarType varType) {
 		this.row = row;
-		this.statsSessions = varStats;
 		this.varType = varType;
 		this.dataType = varType.getType();
 		expression = row.getStream().getInput().getRegistry().createVarExpression(varType.getExpression());
@@ -312,12 +312,6 @@ public class XStreamVarImpl implements XStreamVar, XStreamExpressionListener, XS
 				setValue(expression.getValue());
 			}
 		}
-	}
-	
-
-	@Override
-	public List<EntityStatsSessionVar> getStatSessions() {
-		return statsSessions;
 	}
 
 	@Override

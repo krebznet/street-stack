@@ -1,0 +1,43 @@
+package com.dunkware.xstream.core.search.row.values;
+
+import com.dunkware.xstream.api.XStreamQueryException;
+import com.dunkware.xstream.api.XStreamResolveException;
+import com.dunkware.xstream.api.XStreamRow;
+import com.dunkware.xstream.api.XStreamVar;
+import com.dunkware.xstream.core.search.row.XStreamRowValue;
+import com.dunkware.xstream.model.query.XStreamRowValueModel;
+
+public class XStreamRowVarCurrentValue implements XStreamRowValue {
+
+	private XStreamRowValueModel model;
+
+	@Override
+	public void init(XStreamRowValueModel model) throws XStreamQueryException {
+		this.model = model; 
+	}
+
+	@Override
+	public boolean canResolve(XStreamRow row) throws XStreamQueryException {
+		XStreamVar var = row.getVar(model.getVarIdent());
+		if(var == null) { 
+			throw new XStreamQueryException("Variable " + model.getVarIdent() + " not found");
+		}
+		if(var.getSize() > 0) { 
+			return true; 
+		}
+		return false;
+	}
+
+	@Override
+	public Number resolve(XStreamRow row) throws XStreamResolveException, XStreamQueryException {
+		Object value = row.getVar(model.getVarIdent()).getValue(0);
+		if (value instanceof Number) {
+			Number retValue = (Number) value;
+			return retValue;
+		}
+		throw new XStreamQueryException("Resolving variable value that is not instance of Number " + value.getClass().getName());
+	}
+	
+	
+
+}

@@ -1,11 +1,11 @@
 package com.dunkware.xstream.model.meta;
 
-import com.dunkware.xstream.model.query.XStreamCriterias;
+import com.dunkware.xstream.model.query.XStreamQueryModel;
 import com.dunkware.xstream.model.query.XStreamTimeUnit;
 
 public class SignalModel {
 	
-	private XStreamCriterias query; 
+	private XStreamQueryModel query; 
 	private int entitySignalThrottle; 
 	private XStreamTimeUnit entitySignalThrottleUnit;
 	private int entitySignalLimit;
@@ -13,10 +13,10 @@ public class SignalModel {
 	private String ident; 
 	private int scanInterval;
 	
-	public XStreamCriterias getQuery() {
+	public XStreamQueryModel getQuery() {
 		return query;
 	}
-	public void setQuery(XStreamCriterias query) {
+	public void setQuery(XStreamQueryModel query) {
 		this.query = query;
 	}
 	public int getEntitySignalThrottle() {

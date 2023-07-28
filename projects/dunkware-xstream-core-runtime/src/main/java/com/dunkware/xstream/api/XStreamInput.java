@@ -22,8 +22,7 @@ public class XStreamInput {
 	private XStreamRegistry registry;
 	private String identifier;
 	private String sessionId;
-	private DTimeZone timeZone;
-	// to do is have a 
+	private DTimeZone timeZone; 
 	private Map<String,EntityStatsSessions> entityStatsSessions = new HashMap<String,EntityStatsSessions>();
 	private List<SignalModel> signalTypes = new ArrayList<SignalModel>();
 	
