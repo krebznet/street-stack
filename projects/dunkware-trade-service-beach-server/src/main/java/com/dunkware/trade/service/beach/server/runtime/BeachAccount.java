@@ -1,5 +1,8 @@
 package com.dunkware.trade.service.beach.server.runtime;
 
+import java.util.Collection;
+import java.util.concurrent.ConcurrentHashMap;
+
 import javax.persistence.EntityManager;
 
 import org.slf4j.Logger;
@@ -9,14 +12,16 @@ import org.springframework.context.ApplicationContext;
 
 import com.dunkware.common.util.databean.DataBeanConnector;
 import com.dunkware.common.util.events.DEventNode;
+import com.dunkware.common.util.events.anot.ADEventMethod;
 import com.dunkware.common.util.json.DJson;
 import com.dunkware.trade.sdk.core.runtime.broker.BrokerAccount;
 import com.dunkware.trade.service.beach.model.system.BeachSystemModel;
 import com.dunkware.trade.service.beach.server.common.BeachRuntime;
 import com.dunkware.trade.service.beach.server.entity.BeachAccountEnt;
 import com.dunkware.trade.service.beach.server.entity.BeachRepo;
-import com.dunkware.trade.service.beach.server.entity.BeachSystemEntity;
+import com.dunkware.trade.service.beach.server.entity.BeachSystemEnt;
 import com.dunkware.trade.service.beach.server.event.EBeachAcccountInitialized;
+import com.dunkware.trade.service.beach.server.event.EBeachSystemInitialized;
 
 import ca.odell.glazedlists.BasicEventList;
 import ca.odell.glazedlists.GlazedLists;
@@ -44,10 +49,12 @@ public class BeachAccount {
 	private DEventNode eventNode;
 
 	private BeachAccountBean bean;
-
+	
+	private ConcurrentHashMap<Long, BeachSystem> systems = new ConcurrentHashMap<Long, BeachSystem>();
+	
 	private ObservableElementList<BeachTradeBean> tradeBeans;
 	private ObservableElementList<BeachOrderBean> orderBeans;
-	private ObservableElementList<BeachPlayBean> playBeans;
+	private ObservableElementList<BeachSystemBean> systemBeans;
 
 	public BeachAccount(BeachAccountEnt ent, BeachBroker broker, BrokerAccount brokerAccount) {
 		this.entity = ent;
@@ -66,17 +73,24 @@ public class BeachAccount {
 		orderBeans = new ObservableElementList<BeachOrderBean>(
 				GlazedLists.threadSafeList(new BasicEventList<BeachOrderBean>()),
 				new DataBeanConnector<BeachOrderBean>());
-		playBeans = new ObservableElementList<BeachPlayBean>(
-				GlazedLists.threadSafeList(new BasicEventList<BeachPlayBean>()),
-				new DataBeanConnector<BeachPlayBean>());
+		systemBeans = new ObservableElementList<BeachSystemBean>(
+				GlazedLists.threadSafeList(new BasicEventList<BeachSystemBean>()),
+				new DataBeanConnector<BeachSystemBean>());
 
 		this.eventNode = broker.getEventNode().createChild(this);
-
+		this.eventNode.addEventHandler(this);
 	}
 
 	public void init() {
 		try {
 
+			// okay we need to look for trading systems right? 
+			for (BeachSystemEnt sysEnt : entity.getSystems()) {
+				BeachSystem system = new BeachSystem();
+				ac.getAutowireCapableBeanFactory().autowireBean(sysEnt);
+				system.init(sysEnt, this);
+				
+			}
 		} catch (Exception e) {
 
 			logger.error("Exception Init Beach Play " + e.toString());
@@ -84,6 +98,10 @@ public class BeachAccount {
 
 		eventNode.event(new EBeachAcccountInitialized(this));
 
+	}
+	
+	public Collection<BeachSystem> getSystems() { 
+		return systems.values();
 	}
 
 	public void addSystem(BeachSystemModel model) throws Exception { 
@@ -94,7 +112,7 @@ public class BeachAccount {
 			}
 		}
 		// now what do we do create the fuckin entity 
-		BeachSystemEntity ent = new BeachSystemEntity(); 
+		BeachSystemEnt ent = new BeachSystemEnt(); 
 		ent.setAccount(this.getEntity());
 		ent.setName(model.getName());
 		try {
@@ -126,10 +144,6 @@ public class BeachAccount {
 		return entity.getId();
 	}
 
-	public boolean canTrade(BeachTradeSpec spec) {
-		return true;
-	}
-
 	public BeachAccountEnt getEntity() {
 		return entity;
 	}
@@ -158,7 +172,18 @@ public class BeachAccount {
 		return orderBeans;
 	}
 
-	public ObservableElementList<BeachPlayBean> getPlayBeans() {
-		return playBeans;
+	public ObservableElementList<BeachSystemBean> getSystemBeans() {
+		return systemBeans;
 	}
+	
+	@ADEventMethod()
+	public void systemInitialized(EBeachSystemInitialized event) { 
+		logger.debug("account recieved system initialized " + event.getSystem().getName());
+		this.systems.put(event.getSystem().getId(), event.getSystem());
+		this.systemBeans.getReadWriteLock().writeLock().lock();
+		this.systemBeans.add(event.getSystem().getBean());
+		this.systemBeans.getReadWriteLock().writeLock().unlock();
+	}
+	
+	//public void tradeInitialized(Ebeachtrade)
 }

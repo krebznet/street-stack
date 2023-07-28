@@ -5,11 +5,10 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
-import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
-@Entity(name = "BeachTradeSeqEnt")
-@Table(name = "beach_trade_seq")
+//@Entity(name = "BeachTradeSeqEnt")
+//@Table(name = "beach_trade_seq")
 public class BeachTradeSeqEnt {
 
 
@@ -21,7 +20,7 @@ public class BeachTradeSeqEnt {
 	
 	private int sequence; 
 	
-	@OneToOne
+	@ManyToOne
 	private BeachSystemEnt system;
 
 	public long getId() {

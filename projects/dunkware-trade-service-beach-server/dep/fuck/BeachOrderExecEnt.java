@@ -7,8 +7,8 @@ import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
-@Entity(name = "BeachOrderExecEnt")
-@Table(name = "beach_order_exec")
+//@Entity(name = "BeachOrderExecEnt")
+//@Table(name = "beach_order_exec")
 public class BeachOrderExecEnt {
 
 	@Id
@@ -24,8 +24,8 @@ public class BeachOrderExecEnt {
 	private String exchange; 
 	
 	
-	@ManyToOne()
-	private BeachOrderEnt order; 
+	//@ManyToOne()
+	//private BeachOrderEnt order; 
 	
 	
 
@@ -110,15 +110,12 @@ public class BeachOrderExecEnt {
 	}
 
 
-	public BeachOrderEnt getOrder() {
-		return order;
-	}
-
-
-	public void setOrder(BeachOrderEnt order) {
-		this.order = order;
-	}
-
+	/*
+	 * public BeachOrderEnt getOrder() { return order; }
+	 * 
+	 * 
+	 * public void setOrder(BeachOrderEnt order) { this.order = order; }
+	 */
 
 	
 	

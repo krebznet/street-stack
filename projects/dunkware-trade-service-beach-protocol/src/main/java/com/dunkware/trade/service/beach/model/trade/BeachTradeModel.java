@@ -13,7 +13,6 @@ public class BeachTradeModel {
 	private double capital; 
 	
 	private String side; // SHORT OR LONG
-	
 	private boolean enableEntryOffset; 
 	private double entryOffsetPercent; 
 	private boolean enableEntryTimeout; 
@@ -25,7 +24,7 @@ public class BeachTradeModel {
 	private boolean enableStop; 
 	private double stopPercent; 
 	
-	private List<BeachExitModel> exits = new ArrayList<BeachExitModel>();
+	private List<BeachExitTriggerModel> exits = new ArrayList<BeachExitTriggerModel>();
 
 	public String getSystemIdentifier() {
 		return systemIdentifier;
@@ -139,11 +138,11 @@ public class BeachTradeModel {
 		this.stopPercent = stopPercent;
 	}
 
-	public List<BeachExitModel> getExits() {
+	public List<BeachExitTriggerModel> getExits() {
 		return exits;
 	}
 
-	public void setExits(List<BeachExitModel> exits) {
+	public void setExits(List<BeachExitTriggerModel> exits) {
 		this.exits = exits;
 	}
 	

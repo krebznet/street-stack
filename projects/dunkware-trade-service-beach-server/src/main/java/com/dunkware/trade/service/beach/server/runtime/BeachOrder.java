@@ -1,7 +1,5 @@
 package com.dunkware.trade.service.beach.server.runtime;
 
-import java.time.LocalDateTime;
-
 import javax.persistence.EntityManager;
 import javax.transaction.Transactional;
 
@@ -20,9 +18,7 @@ import com.dunkware.trade.sdk.core.runtime.order.event.EOrderCancelled;
 import com.dunkware.trade.sdk.core.runtime.order.event.EOrderFilled;
 import com.dunkware.trade.sdk.core.runtime.order.event.EOrderRejected;
 import com.dunkware.trade.sdk.core.runtime.order.event.EOrderSubmitted;
-import com.dunkware.trade.sdk.core.runtime.util.TradeHelper;
 import com.dunkware.trade.service.beach.server.common.BeachRuntime;
-import com.dunkware.trade.service.beach.server.entity.BeachOrderEnt;
 import com.dunkware.trade.service.beach.server.entity.BeachRepo;
 
 public class BeachOrder implements Order {
@@ -35,7 +31,7 @@ public class BeachOrder implements Order {
 
 	private Logger logger = LoggerFactory.getLogger(getClass());
 	
-	private BeachOrderEnt entity;
+	//private BeachOrderEnt entity;
 
 	private Object trade;
 
@@ -45,21 +41,21 @@ public class BeachOrder implements Order {
 
 	public void create(Object trade, String source, String log, OrderType orderType) throws Exception {
 		//order = trade.getPlay().getAccount().getConnection().createOrder(orderType);
-		entity = new BeachOrderEnt();
+		//entity = new BeachOrderEnt();
 		//entity.setAccount(trade.getPlay().getAccount().getEntity());
 		//entity.setTrade(trade.getEntity());
-		entity.setBroker(entity.getAccount().getBroker());
-		entity.setLog(log);
-		entity.setAction(orderType.getAction());
-		entity.setCreateTime(BeachRuntime.dateTime());
-		entity.setFilled(0);
-		entity.setKind(orderType.getKind());
-		entity.setLastStatus(order.getStatus());
-		entity.setSource(source);
+		//entity.setBroker(entity.getAccount().getBroker());
+		//entity.setLog(log);
+		//entity.setAction(orderType.getAction());
+		//entity.setCreateTime(BeachRuntime.dateTime());
+	//	entity.setFilled(0);
+	//	entity.setKind(orderType.getKind());
+		//entity.setLastStatus(order.getStatus());
+		//entity.setSource(source);
 		EntityManager em = repo.createEntityManager();
 		try {
 			em.getTransaction().begin();
-			em.persist(entity);
+		//	em.persist(entity);
 			em.getTransaction().commit();
 		} catch (Exception e) {
 			logger.error("Fatal Problem Persist Order Failed " + e.toString(), e);
@@ -95,8 +91,8 @@ public class BeachOrder implements Order {
 
 	@Override
 	public void cancel() throws OrderException {
-		entity.setCancelRequestTime(BeachRuntime.dateTime());
-		persistAsync();
+		//entity.setCancelRequestTime(BeachRuntime.dateTime());
+		//persistAsync();
 		order.cancel();
 	}
 
@@ -113,13 +109,13 @@ public class BeachOrder implements Order {
 	@Transactional
 	@ADEventMethod()
 	public void orderFilled(EOrderFilled event) {
-		entity.setFillTime(LocalDateTime.now());
-		persistAsync();
+		//entity.setFillTime(LocalDateTime.now());
+		//persistAsync();
 	}
 
 	@ADEventMethod()
 	public void orderCancelled(EOrderCancelled event) {
-		entity.setCancelTime(TradeHelper.dateTime().get());
+		//entity.setCancelTime(TradeHelper.dateTime().get());
 		persistAsync();
 	}
 
@@ -130,7 +126,7 @@ public class BeachOrder implements Order {
 
 	@ADEventMethod()
 	public void orderSubmitted(EOrderSubmitted event) {
-		entity.setSubmitTime(TradeHelper.dateTime().get());
+		//entity.setSubmitTime(TradeHelper.dateTime().get());
 		persistAsync();
 
 	}
@@ -152,13 +148,13 @@ public class BeachOrder implements Order {
 		public void run() {
 			EntityManager em = null;
 			try {
-				entity.setLastUpdate(entity.getCancelTime());
-				entity.setLastStatus(getSpec().getStatus());
-				entity.setFilled(getSpec().getFilled());
+				//entity.setLastUpdate(entity.getCancelTime());
+			//	entity.setLastStatus(getSpec().getStatus());
+			//	entity.setFilled(getSpec().getFilled());
 
 				em = repo.createEntityManager();
 				em.getTransaction().begin();
-				em.merge(entity);
+			///	em.merge(entity);
 				// em.persist(entity);
 				em.getTransaction().commit();
 			} catch (Exception e) {

@@ -3,15 +3,19 @@ package com.dunkware.trade.service.beach.server.entity;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
-import javax.persistence.Transient;
+
+import org.hibernate.annotations.LazyCollection;
+import org.hibernate.annotations.LazyCollectionOption;
 
 @Entity(name = "BeachAccountEnt")
 @Table(name = "beach_account")
@@ -21,17 +25,20 @@ public class BeachAccountEnt {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private long id; 
 	
-	@ManyToOne
+	@ManyToOne()
 	private BeachBrokerEnt broker; 
 	private String identifier;
 	
 
-	@OneToMany(fetch = FetchType.EAGER, orphanRemoval = true)
-	private List<BeachPlayEnt> plays = new ArrayList<BeachPlayEnt>();
-	
-	@Transient
-	private List<BeachOrderEnt> orders = new ArrayList<BeachOrderEnt>();
+	//@Transient
+	//private List<BeachOrderEnt> orders = new ArrayList<BeachOrderEnt>();
 
+
+	@OneToMany(cascade = CascadeType.ALL, orphanRemoval =  true)
+	@LazyCollection(LazyCollectionOption.FALSE)
+	@JoinColumn(name = "account_id")
+	private List<BeachSystemEnt> systems = new ArrayList<BeachSystemEnt>();
+	
 	public long getId() {
 		return id;
 	}
@@ -58,21 +65,19 @@ public class BeachAccountEnt {
 		this.identifier = identifier;
 	}
 
-	public List<BeachPlayEnt> getPlays() {
-		return plays;
+	public List<BeachSystemEnt> getSystems() {
+		return systems;
 	}
 
-	public void setPlays(List<BeachPlayEnt> plays) {
-		this.plays = plays;
+	public void setSystems(List<BeachSystemEnt> systems) {
+		this.systems = systems;
 	}
+	
+	
 
-	public List<BeachOrderEnt> getOrders() {
-		return orders;
-	}
+	
+	
 
-	public void setOrders(List<BeachOrderEnt> orders) {
-		this.orders = orders;
-	}
 	
 	
 }

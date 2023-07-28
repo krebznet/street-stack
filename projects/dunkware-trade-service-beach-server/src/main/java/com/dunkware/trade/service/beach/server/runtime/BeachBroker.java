@@ -43,7 +43,6 @@ import ca.odell.glazedlists.ObservableElementList;
 
 public class BeachBroker {
 
-	
 	@Autowired
 	private BeachRuntime runtime;
 
@@ -58,56 +57,57 @@ public class BeachBroker {
 
 	private Logger logger = LoggerFactory.getLogger(getClass());
 	private BeachBrokerEnt entity;
-	private Map<String, BeachAccount> accounts = new ConcurrentHashMap<String, BeachAccount>();
+	private Map<Long, BeachAccount> accounts = new ConcurrentHashMap<Long, BeachAccount>();
 
 	private TwsBrokerType brokerType;
 	private Broker broker;
-	
+
 	@Autowired
-	private BeachService beachService; 
+	private BeachService beachService;
 
 	private DEventNode eventNode;
-  
+
 	private BeachBrokerBean bean;
-	
+
 	private BeachBrokerStatus status = BeachBrokerStatus.Pending;
-	
+
 	private String exception = null;
-	
+
 	private ObservableElementList<BeachAccountBean> accountBeans = null;
 
-	
-	public BeachBroker() { 
-		
-		
+	public BeachBroker() {
+
 	}
-	
-	public BeachBrokerStatus getStatus() { 
+
+	public BeachBrokerStatus getStatus() {
 		return status;
 	}
-	
+
 	public String getException() {
 		return exception;
 	}
 
-	
-	public ObservableElementList<BeachAccountBean> getAccountBeans() { 
+	public long getId() {
+		return entity.getId();
+	}
+
+	public ObservableElementList<BeachAccountBean> getAccountBeans() {
 		return accountBeans;
 	}
-	
-	public void init(BeachBrokerEnt ent)  {
+
+	public void init(BeachBrokerEnt ent) {
 		accountBeans = new ObservableElementList<BeachAccountBean>(
 				GlazedLists.threadSafeList(new BasicEventList<BeachAccountBean>()),
 				new DataBeanConnector<BeachAccountBean>());
 		eventNode = beachService.getEventNode().createChild(this);
 		eventNode.addEventHandler(this);
 		this.entity = ent;
-		bean = new BeachBrokerBean(); 
+		bean = new BeachBrokerBean();
 		bean.setId(entity.getId());
 		bean.setName(ent.getIdentifier());
 		bean.setStatus(status.name());
 		try {
-			brokerType = (TwsBrokerType)DJson.getObjectMapper().readValue(entity.getType(), BrokerType.class);
+			brokerType = (TwsBrokerType) DJson.getObjectMapper().readValue(entity.getType(), BrokerType.class);
 			brokerType.setConnectionId(DRandom.getRandom(0, 200));
 		} catch (Exception e) {
 			status = BeachBrokerStatus.Exception;
@@ -139,7 +139,7 @@ public class BeachBroker {
 			bean.notifyUpdate();
 			logger.error("FIX ME: Broker connect exception " + e.toString());
 		}
-		
+
 	}
 
 	public BeachBrokerBean getBean() {
@@ -203,16 +203,13 @@ public class BeachBroker {
 				logger.info("Loading Broker Account {} On Broker {}", brokerAccount.getIdentifier(),
 						brokerType.getIdentifier());
 			}
-			BeachAccount act = new BeachAccount(actEnt,this,brokerAccount);
+			BeachAccount act = new BeachAccount(actEnt, this, brokerAccount);
 			ac.getAutowireCapableBeanFactory().autowireBean(act);
-			
+
 			act.init();
-			
-		
-			
-	
+
 		}
-		
+
 	}
 
 	@ADEventMethod()
@@ -225,22 +222,25 @@ public class BeachBroker {
 	@ADEventMethod
 	public void brokerInitialized(EBrokerInitialized event) {
 		bean.setStatus("Connected");
+		bean.notifyUpdate();
+		eventNode.event(new EBeachBrokerInitialized(this));
+
 		Runnable runnable = new Runnable() {
-			
+
 			@Override
 			public void run() {
+
 				loadAndSyncAccounts();
 			}
 		};
+
 		runtime.getExecutor().execute(runnable);
-		bean.notifyUpdate();
-		eventNode.event(new EBeachBrokerInitialized(this));
-		
+
 	}
-	
+
 	@ADEventMethod()
 	public void beachAccountInitialized(EBeachAcccountInitialized event) {
-		this.accounts.put(event.getAcccount().getIdentifier(), event.getAcccount());
+		this.accounts.put(event.getAcccount().getId(), event.getAcccount());
 		this.accountBeans.getReadWriteLock().writeLock().lock();
 		this.accountBeans.add(event.getAcccount().getBean());
 		this.accountBeans.getReadWriteLock().writeLock().unlock();
@@ -250,10 +250,7 @@ public class BeachBroker {
 	public void brokerConnecting(EBrokerConnecting event) {
 		bean.setStatus("Connecting");
 		bean.notifyUpdate();
-	
+
 	}
-	
-	
-	
 
 }

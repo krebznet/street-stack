@@ -1,38 +1,33 @@
 package com.dunkware.trade.service.beach.server.entity;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
-@Entity(name = "BeachPlayEnt")
-@Table(name = "beach_play")
-public class BeachPlayEnt {
+@Entity(name = "BeachSystemEnt")
+@Table(name = "beach_system")
+public class BeachSystemEnt {
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private long id;
+	private long id; 
 	
-	@ManyToOne()
-	private BeachAccountEnt account;
-	
-	@OneToMany()
-	private List<BeachTradeSeqEnt> tradeSequences = new ArrayList<BeachTradeSeqEnt>();
+	private String name; 
 	
 	@Column(columnDefinition = "text")
 	private String model; 
 	
-	@Column()
-	private String name;
+	private int tradeSequence = 0;
+	
+	
+	@ManyToOne()
+	private BeachAccountEnt account; // right it must reference an account; 
+									 // you can swap accounts if you want
 
 	public long getId() {
 		return id;
@@ -41,14 +36,13 @@ public class BeachPlayEnt {
 	public void setId(long id) {
 		this.id = id;
 	}
-	
-	
-	public List<BeachTradeSeqEnt> getTradeSequences() {
-		return tradeSequences;
+
+	public String getName() {
+		return name;
 	}
 
-	public void setTradeSequences(List<BeachTradeSeqEnt> tradeSequences) {
-		this.tradeSequences = tradeSequences;
+	public void setName(String name) {
+		this.name = name;
 	}
 
 	public BeachAccountEnt getAccount() {
@@ -67,14 +61,22 @@ public class BeachPlayEnt {
 		this.model = model;
 	}
 
-	public String getName() {
-		return name;
+	public int getTradeSequence() {
+		return tradeSequence;
 	}
 
-	public void setName(String name) {
-		this.name = name;
-	} 
+	public void setTradeSequence(int tradeSequence) {
+		this.tradeSequence = tradeSequence;
+	}
 	
+	
+	
+	
+	
+	
+					
+	
+
 	
 
 }

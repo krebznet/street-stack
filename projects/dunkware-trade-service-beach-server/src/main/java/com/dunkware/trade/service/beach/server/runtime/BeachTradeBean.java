@@ -4,8 +4,10 @@ import com.dunkware.common.util.databean.DataBean;
 
 public class BeachTradeBean extends DataBean {
 	
-	private String account; 
-	private int accountId; 
+	private String accountIdent;
+	private long accountId; 
+	private long systemId; 
+	private String systemIdent; 
 	private int allocatedSize;
 	private String play; 
 	private int filledSize;
@@ -31,11 +33,14 @@ public class BeachTradeBean extends DataBean {
 	private int activeOrders;
 	
 	
-	public String getAccount() {
-		return account;
+	private String exception; 
+	private String brokerException;
+	
+	public String getAccountIdent() {
+		return accountIdent;
 	}
-	public void setAccount(String account) {
-		this.account = account;
+	public void setAccountIdent(String accountIdent) {
+		this.accountIdent = accountIdent;
 	}
 	public String getPlay() {
 		return play;
@@ -145,10 +150,12 @@ public class BeachTradeBean extends DataBean {
 	public void setStatus(String status) {
 		this.status = status;
 	}
-	public int getAccountId() {
+	
+	
+	public long getAccountId() {
 		return accountId;
 	}
-	public void setAccountId(int accountId) {
+	public void setAccountId(long accountId) {
 		this.accountId = accountId;
 	}
 	public int getAllocatedSize() {
@@ -182,7 +189,34 @@ public class BeachTradeBean extends DataBean {
 	}
 	public void setActiveOrders(int activeOrders) {
 		this.activeOrders = activeOrders;
+	}
+	public long getSystemId() {
+		return systemId;
+	}
+	public void setSystemId(long systemId) {
+		this.systemId = systemId;
+	}
+	public String getSystemIdent() {
+		return systemIdent;
+	}
+	public void setSystemIdent(String systemIdent) {
+		this.systemIdent = systemIdent;
+	}
+	public String getException() {
+		return exception;
+	}
+	public void setException(String exception) {
+		this.exception = exception;
+	}
+	public String getBrokerException() {
+		return brokerException;
+	}
+	public void setBrokerException(String brokerException) {
+		this.brokerException = brokerException;
 	} 
+	
+	
+	
 	
 	
 	

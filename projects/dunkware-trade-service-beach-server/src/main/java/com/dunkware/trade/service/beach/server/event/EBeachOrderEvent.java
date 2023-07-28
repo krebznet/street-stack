@@ -3,11 +3,11 @@
 import com.dunkware.common.util.events.DEvent;
 import com.dunkware.trade.service.beach.server.runtime.BeachOrder;
 
-public class EBeachOrderUpdate extends DEvent {
+public class EBeachOrderEvent extends DEvent {
 	
 	private BeachOrder order;
 
-	public EBeachOrderUpdate(BeachOrder order) { 
+	public EBeachOrderEvent(BeachOrder order) { 
 		this.order = order; 
 	}
 	

@@ -1,13 +1,14 @@
 package com.dunkware.trade.service.beach.model.trade;
 
-public class BeachExitModel {
+public class BeachExitTriggerModel {
 	
 	private String type; // TIMER | UPL | SIGNAL | TIME  
 	private double upl; 
 	private int timer; 
-	private int timerUnit; 
+	private String timerUnit; 
 	private String signalStream; 
 	private String signal;
+	private long entityId; 
 	
 	public String getType() {
 		return type;
@@ -27,10 +28,11 @@ public class BeachExitModel {
 	public void setTimer(int timer) {
 		this.timer = timer;
 	}
-	public int getTimerUnit() {
+	
+	public String getTimerUnit() {
 		return timerUnit;
 	}
-	public void setTimerUnit(int timerUnit) {
+	public void setTimerUnit(String timerUnit) {
 		this.timerUnit = timerUnit;
 	}
 	public String getSignalStream() {
@@ -44,7 +46,17 @@ public class BeachExitModel {
 	}
 	public void setSignal(String signal) {
 		this.signal = signal;
+	}
+	public long getEntityId() {
+		return entityId;
+	}
+	public void setEntityId(long entityId) {
+		this.entityId = entityId;
 	} 
+	
+	
+	
+	
 	
 	
 

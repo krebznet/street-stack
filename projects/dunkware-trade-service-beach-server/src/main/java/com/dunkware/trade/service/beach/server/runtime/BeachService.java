@@ -41,11 +41,9 @@ public class BeachService {
 
 	private ConcurrentHashMap<String, BeachStream> streams = new ConcurrentHashMap<String, BeachStream>();
 
-	private ConcurrentHashMap<String, BeachBroker> brokers = new ConcurrentHashMap<String, BeachBroker>();
+	private ConcurrentHashMap<Long, BeachBroker> brokers = new ConcurrentHashMap<Long, BeachBroker>();
 
-	private ConcurrentHashMap<String, BeachSystem> systems = new ConcurrentHashMap<String, BeachSystem>();
-	
-	private ConcurrentHashMap<String, BeachAccount> accounts = new ConcurrentHashMap<String,BeachAccount>();
+	private ConcurrentHashMap<Long, BeachAccount> accounts = new ConcurrentHashMap<Long,BeachAccount>();
 	
 	private DEventNode eventNode;
 
@@ -147,7 +145,6 @@ public class BeachService {
 		ac.getAutowireCapableBeanFactory().autowireBean(broker);
 		broker.init(entity);
 		;
-		brokers.put(entity.getIdentifier(), broker);
 		return broker;
 	}
 
@@ -160,8 +157,28 @@ public class BeachService {
 	}
 
 	
+	public BeachSystem getSystem(long id) throws Exception { 
+		for (BeachBroker broker : brokers.values()) {
+			for (BeachAccount account : broker.getAccounts()) {
+				for (BeachSystem system : account.getSystems()) {
+					if(system.getId() == id) { 
+						return system;
+					}
+				}
+			}
+		}
+		throw new Exception("System ID " + id + " not found");
+	}
+	
 	public Collection<BeachSystem> getSystems() { 
-		return systems.values();
+		List<BeachSystem> results = new ArrayList<BeachSystem>();
+		for (BeachBroker broker : brokers.values()) {
+			for (BeachAccount account : broker.getAccounts()) {
+				results.addAll(account.getSystems());
+			}
+		}
+		return results; 
+		
 	}
 	
 	
@@ -229,6 +246,7 @@ public class BeachService {
 		if(logger.isDebugEnabled()) { 
 			logger.debug("Broker initialized event " + event.getBroker().getIdentifier());
 		}
+		brokers.put(event.getBroker().getId(),event.getBroker());
 		brokerBeans.getReadWriteLock().writeLock().lock();
 		brokerBeans.add(event.getBroker().getBean());
 		brokerBeans.getReadWriteLock().writeLock().unlock();
@@ -236,11 +254,13 @@ public class BeachService {
 
 	@ADEventMethod
 	public void beachAccountInitailized(EBeachAcccountInitialized event) {
-		accounts.put(event.getAcccount().getIdentifier(), event.getAcccount());
+		accounts.put(event.getAcccount().getId(), event.getAcccount());
 		
 		accountBeans.getReadWriteLock().writeLock().lock();
 		accountBeans.add(event.getAcccount().getBean());
 		accountBeans.getReadWriteLock().writeLock().unlock();
 	}
 
+	
+	
 }
