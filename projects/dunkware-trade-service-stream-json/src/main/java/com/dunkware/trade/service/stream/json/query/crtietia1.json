@@ -1,0 +1,28 @@
+{
+    "type": "Value Compare Filter",
+    "compareFunction": "Percent Change",
+    "condition": "Greater Than",
+    "conditionValue": 2,
+    "value": [
+        {
+            "valueType": "Field Current Value",
+            "identifier": "SmaRoc1x2min",
+            "timeRange": "",
+            "time": "",
+            "timeUnit": "",
+            "startTime": "",
+            "stopTime": "",
+            "sessionAggregation": ""
+        },
+        {
+            "valueType": "Field Aggregation (Historical)",
+            "identifier": "SmaRoc1x2min",
+            "timeRange": "Relative",
+            "time": 30,
+            "timeUnit": "Days",
+            "startTime": "",
+            "stopTime": "",
+            "sessionAggregation": "High"
+        }
+    ]
+}
