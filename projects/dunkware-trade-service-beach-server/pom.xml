@@ -16,11 +16,30 @@
 	<description>Dunkware Trade Broker Service Server</description>
 
 	<properties>
-	
+
 		<java.version>11</java.version>
 		<xtextVersion>2.31.0</xtextVersion>
 		<mwe2Version>2.14.0</mwe2Version>
 	</properties>
+
+				<distributionManagement>
+					<snapshotRepository>
+						<uniqueVersion>false</uniqueVersion>
+						<id>dunkware-internal-snapshot</id>
+						<layout>default</layout>
+						<name>dunkware-internal-snapshot</name>
+						<url>https://nexus.dunkware.com/repository/dunkware-internal-snapshot/</url>
+
+					</snapshotRepository>
+					<repository>
+						<uniqueVersion>false</uniqueVersion>
+						<id>dunkware-internal-release</id>
+						<layout>default</layout>
+						<name>dunkware-internal-release</name>
+						<url>https://nexus.dunkware.com/repository/dunkware-internal-release/</url>
+
+					</repository>
+				</distributionManagement>
 
 	<scm>
 		<connection>scm:git:ssh://git@github.com:krebznet/dunkware-trade-service-broker-server.git</connection>
@@ -36,7 +55,7 @@
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-webflux</artifactId>
         </dependency>-->
-	
+
 	<!-- https://mvnrepository.com/artifact/com.glazedlists/glazedlists -->
 
 		<!-- Dunkware Dependencies -->
@@ -157,7 +176,7 @@
 		<dependency>
 			<groupId>mysql</groupId>
 			<artifactId>mysql-connector-java</artifactId>
-			
+
 		</dependency>
 		<dependency>
 			<groupId>com.sndyuk</groupId>

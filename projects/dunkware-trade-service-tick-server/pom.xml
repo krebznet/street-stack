@@ -23,6 +23,26 @@
 	</properties>
 
 
+				<distributionManagement>
+					<snapshotRepository>
+						<uniqueVersion>false</uniqueVersion>
+						<id>dunkware-internal-snapshot</id>
+						<layout>default</layout>
+						<name>dunkware-internal-snapshot</name>
+						<url>https://nexus.dunkware.com/repository/dunkware-internal-snapshot/</url>
+
+					</snapshotRepository>
+					<repository>
+						<uniqueVersion>false</uniqueVersion>
+						<id>dunkware-internal-release</id>
+						<layout>default</layout>
+						<name>dunkware-internal-release</name>
+						<url>https://nexus.dunkware.com/repository/dunkware-internal-release/</url>
+
+					</repository>
+				</distributionManagement>
+
+
 	<scm>
 		<connection>scm:git:ssh://git@github.com/krebznet/dunkware-trade-service-tick-server.git</connection>
 		<developerConnection>scm:git:ssh://git@github.com/krebznet/dunkware-trade-service-tick-server.git</developerConnection>
@@ -110,7 +130,7 @@
 
 		<!-- Dunkware Dependnecies -->
 
-		
+
 		<dependency>
 			<groupId>com.dunkware.net.cluster</groupId>
 			<artifactId>dunkware-net-cluster-node</artifactId>
@@ -138,7 +158,7 @@
 			<artifactId>dunkware-trade-service-tick-protocol</artifactId>
 			<version>1.2.0-SNAPSHOT</version>
 		</dependency>
-		<!--  
+		<!--
 		<dependency>
 			<groupId>com.dunkware.trade.tools</groupId>
 			<artifactId>dunkware-trade-tools-scrape</artifactId>
@@ -158,7 +178,7 @@
     <version>30.1-jre</version>
 </dependency>
 
-		
+
 		<dependency>
 			<groupId>org.apache.httpcomponents</groupId>
 			<artifactId>httpcore</artifactId>

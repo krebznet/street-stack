@@ -13,6 +13,25 @@
 	<name> Dunkware Trade Service Worker</name>
 	<description>Trade Service Worker </description>
 
+
+				<distributionManagement>
+					<snapshotRepository>
+						<uniqueVersion>false</uniqueVersion>
+						<id>dunkware-internal-snapshot</id>
+						<layout>default</layout>
+						<name>dunkware-internal-snapshot</name>
+						<url>https://nexus.dunkware.com/repository/dunkware-internal-snapshot/</url>
+
+					</snapshotRepository>
+					<repository>
+						<uniqueVersion>false</uniqueVersion>
+						<id>dunkware-internal-release</id>
+						<layout>default</layout>
+						<name>dunkware-internal-release</name>
+						<url>https://nexus.dunkware.com/repository/dunkware-internal-release/</url>
+
+					</repository>
+				</distributionManagement>
 	<properties>
 		<java.version>11</java.version>
 		<xtextVersion>2.31.0</xtextVersion>
@@ -145,7 +164,7 @@
     <artifactId>guava</artifactId>
     <version>31.0-jre</version>
 </dependency>
-		
+
 		<dependency>
 			<groupId>org.apache.httpcomponents</groupId>
 			<artifactId>httpcore</artifactId>

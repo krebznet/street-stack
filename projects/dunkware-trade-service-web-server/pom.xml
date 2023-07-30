@@ -18,6 +18,25 @@
 		<java.version>11</java.version>
 		<h2-version>1.4.199</h2-version>
 	</properties>
+
+				<distributionManagement>
+					<snapshotRepository>
+						<uniqueVersion>false</uniqueVersion>
+						<id>dunkware-internal-snapshot</id>
+						<layout>default</layout>
+						<name>dunkware-internal-snapshot</name>
+						<url>https://nexus.dunkware.com/repository/dunkware-internal-snapshot/</url>
+
+					</snapshotRepository>
+					<repository>
+						<uniqueVersion>false</uniqueVersion>
+						<id>dunkware-internal-release</id>
+						<layout>default</layout>
+						<name>dunkware-internal-release</name>
+						<url>https://nexus.dunkware.com/repository/dunkware-internal-release/</url>
+
+					</repository>
+				</distributionManagement>
 	<dependencyManagement>
 		<dependencies>
 			<dependency>
@@ -36,7 +55,7 @@
 			<artifactId>jsch</artifactId>
 			<version>0.1.55</version>
 		</dependency>
-		
+
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-webflux</artifactId>
@@ -61,7 +80,7 @@
 			<artifactId>micrometer-registry-prometheus</artifactId>
 		</dependency>
 		<!-- Spring Boot Dev Tool - High Performance Development -->
-		
+
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-security</artifactId>
@@ -84,7 +103,7 @@
 			<artifactId>spring-boot-starter-test</artifactId>
 			<scope>test</scope>
 		</dependency>
-		<!--  
+		<!--
 		<dependency>
 			<groupId>io.projectreactor</groupId>
 			<artifactId>reactor-test</artifactId>
@@ -95,8 +114,8 @@
 			<groupId>org.springframework.cloud</groupId>
 			<artifactId>spring-cloud-starter-gateway</artifactId>
 		</dependency>
-		
-		
+
+
 		<dependency>
 			<groupId>org.fluentd</groupId>
 			<artifactId>fluent-logger</artifactId>
