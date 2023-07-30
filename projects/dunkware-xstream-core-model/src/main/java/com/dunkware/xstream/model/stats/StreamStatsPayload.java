@@ -1,0 +1,25 @@
+package com.dunkware.xstream.model.stats;
+
+import java.util.ArrayList;
+import java.util.List;
+
+public class StreamStatsPayload {
+	
+	private List<EntityStatsSession> entities = new ArrayList<EntityStatsSession>();
+	private String streamIdent;
+	
+	public List<EntityStatsSession> getEntities() {
+		return entities;
+	}
+	public void setEntities(List<EntityStatsSession> entities) {
+		this.entities = entities;
+	}
+	public String getStreamIdent() {
+		return streamIdent;
+	}
+	public void setStreamIdent(String streamIdent) {
+		this.streamIdent = streamIdent;
+	} 
+	
+	
+}

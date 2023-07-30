@@ -1,7 +1,6 @@
 package com.dunkware.xstream.model.stats;
 
 import java.time.LocalDateTime;
-import java.time.LocalTime;
 
 public class EntityStatsSessionVar {
 
