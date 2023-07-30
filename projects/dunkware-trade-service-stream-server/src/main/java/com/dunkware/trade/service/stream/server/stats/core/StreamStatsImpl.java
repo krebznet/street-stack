@@ -24,8 +24,8 @@ import com.dunkware.trade.service.stream.server.sequence.MongoSequenceService;
 import com.dunkware.trade.service.stream.server.stats.StreamStats;
 import com.dunkware.trade.service.stream.server.stats.StreamStatsEntity;
 import com.dunkware.trade.service.stream.server.stats.repository.EntityStatsSessionDoc;
-import com.dunkware.xstream.core.stats.StreamStatsPayload;
 import com.dunkware.xstream.model.stats.EntityStatsSession;
+import com.dunkware.xstream.model.stats.StreamStatsPayload;
 import com.mongodb.bulk.BulkWriteResult;
 
 public class StreamStatsImpl implements StreamStats {

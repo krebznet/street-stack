@@ -3,7 +3,7 @@ package com.dunkware.trade.service.stream.server.stats;
 import java.util.Collection;
 
 import com.dunkware.trade.service.stream.server.controller.StreamController;
-import com.dunkware.xstream.core.stats.StreamStatsPayload;
+import com.dunkware.xstream.model.stats.StreamStatsPayload;
 
 /**
  * Stats Cache for a stream 

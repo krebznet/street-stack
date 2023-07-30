@@ -2,7 +2,6 @@ package com.dunkware.trade.service.stream.server.stats.web;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
-import java.util.List;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -10,8 +9,6 @@ import org.slf4j.Marker;
 import org.slf4j.MarkerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.mongodb.core.MongoOperations;
-import org.springframework.data.mongodb.core.query.Criteria;
-import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -26,12 +23,10 @@ import com.dunkware.trade.service.stream.server.sequence.MongoSequenceService;
 import com.dunkware.trade.service.stream.server.stats.StreamStats;
 import com.dunkware.trade.service.stream.server.stats.StreamStatsEntity;
 import com.dunkware.trade.service.stream.server.stats.StreamStatsService;
-import com.dunkware.trade.service.stream.server.stats.core.StreamStatsHelper;
-import com.dunkware.trade.service.stream.server.stats.repository.StreamEntityDayStatsDoc;
 import com.dunkware.trade.service.stream.server.stats.repository.StreamEntityDayStatsRepo;
-import com.dunkware.xstream.core.stats.StreamStatsPayload;
 import com.dunkware.xstream.model.stats.EntityStatsAgg;
 import com.dunkware.xstream.model.stats.EntityStatsSessions;
+import com.dunkware.xstream.model.stats.StreamStatsPayload;
 
 @RestController
 public class StreamStatsWebService {
