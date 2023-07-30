@@ -1,4 +1,4 @@
-package com.dunkware.trade.service.stream.server.util;
+package com.dunkware.trade.service.util;
 
 import com.dunkware.trade.service.stream.json.query.WebStreamCriteria;
 import com.dunkware.trade.service.stream.json.query.WebStreamCriteriaValue;

@@ -1,6 +1,8 @@
 package com.dunkware.trade.service.stream.server.controller.session.core;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.atomic.AtomicBoolean;
 
@@ -29,8 +31,12 @@ import com.dunkware.trade.service.stream.server.controller.session.StreamSession
 import com.dunkware.trade.service.stream.server.controller.session.StreamSessionExtension;
 import com.dunkware.trade.service.stream.server.controller.session.StreamSessionNode;
 import com.dunkware.trade.service.stream.server.controller.session.StreamSessionNodeInput;
+import com.dunkware.trade.service.stream.server.stats.StreamStats;
+import com.dunkware.trade.service.stream.server.stats.StreamStatsEntity;
+import com.dunkware.trade.service.stream.server.stats.StreamStatsService;
 import com.dunkware.trade.tick.model.ticker.TradeTickerSpec;
 import com.dunkware.xstream.model.snapshot.EntitySnapshot;
+import com.dunkware.xstream.model.stats.EntityStatsSessions;
 import com.dunkware.xstream.xproject.model.XStreamBundle;
 
 public class StreamSessionNodeImpl implements StreamSessionNode {
@@ -55,6 +61,9 @@ public class StreamSessionNodeImpl implements StreamSessionNode {
 
 	@Autowired
 	private Cluster cluster;
+
+	@Autowired
+	private StreamStatsService statsService;
 
 	private StreamSessionWorkerStats workerStats = null;
 
@@ -98,10 +107,32 @@ public class StreamSessionNodeImpl implements StreamSessionNode {
 				workerId = input.getStream().getName() + "_session_worker_" + input.getClusterNode().getId();
 				workerStats = new StreamSessionWorkerStats();
 				workerStats.setNodeId(workerId);
+				// yes put the stats
+				StreamStats stats = null;
+				try {
+					stats = statsService.getStreamStats(input.getSession().getStream().getName());
+					Map<String, EntityStatsSessions> entityStats = new HashMap<String, EntityStatsSessions>();
+					for (TradeTickerSpec ticker : input.getTickers()) {
+						try {
+							StreamStatsEntity streamStatsEntity = stats.getEntity(ticker.getSymbol());
+							EntityStatsSessions sessionStats = streamStatsEntity.getSessions();
+							entityStats.put(ticker.getSymbol(), sessionStats);
+						} catch (Exception e) {
+							logger.warn("Session Entity stats not found for " + ticker.getSymbol());
+							EntityStatsSessions emptyStats = new EntityStatsSessions(); 
+							emptyStats.setIdent(ticker.getSymbol());
+							entityStats.put(ticker.getSymbol(), new EntityStatsSessions());
+						}
+					}
+					req.setEntityStats(entityStats);
+				} catch (Exception e) {
+					logger.error("cannot get any stream stats for stream " + input.getSession().getStream().getName());
+				}
 				req.setWorkerId(workerId);
 				req.setStream(input.getSession().getStream().getName());
 				req.setSessionId(input.getSession().getSessionId());
 				req.setStreamBundle(xstreamBundle);
+				// okay here we need to insert the
 
 				// StreamSessionWorkerStartResp resp = null;
 				try {
@@ -298,9 +329,10 @@ public class StreamSessionNodeImpl implements StreamSessionNode {
 			throw new Exception("stream session node controller does not have ident " + ident);
 		}
 		try {
-				
-			EntitySnapshot snapshot  = (EntitySnapshot)getNode().jsonGet("/stream/worker/snapshot?ident=" + ident + "&workerId=" + workerId,EntitySnapshot.class);
-			return snapshot; 
+
+			EntitySnapshot snapshot = (EntitySnapshot) getNode()
+					.jsonGet("/stream/worker/snapshot?ident=" + ident + "&workerId=" + workerId, EntitySnapshot.class);
+			return snapshot;
 		} catch (Exception e) {
 			throw e;
 		}

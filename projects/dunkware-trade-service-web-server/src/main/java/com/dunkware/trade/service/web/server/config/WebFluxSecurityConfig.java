@@ -59,11 +59,10 @@ public class WebFluxSecurityConfig {
         configuration.setExposedHeaders(Arrays.asList("*"));
        configuration.setAllowedHeaders(Arrays.asList("*"));
         configuration.setAllowedMethods(Arrays.asList("*"));
-        configuration.setAllowedOriginPatterns(Arrays.asList("http*", "https*"));
-        
+        configuration.setAllowedOrigins(Arrays.asList("*"));
 
        configuration.setMaxAge((long)30);
-       configuration.setAllowCredentials(true);
+       configuration.setAllowCredentials(false);
         //the below three lines will add the relevant CORS response headers
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
         source.registerCorsConfiguration("/**",configuration);

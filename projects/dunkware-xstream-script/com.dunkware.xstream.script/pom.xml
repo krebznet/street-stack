@@ -5,6 +5,7 @@
 		<groupId>com.dunkware.xstream.script</groupId>
 		<artifactId>com.dunkware.xstream.script.parent</artifactId>
 		<version>1.5.0-SNAPSHOT</version>
+		
 	</parent>
 	<artifactId>com.dunkware.xstream.script</artifactId>
 	<packaging>jar</packaging>

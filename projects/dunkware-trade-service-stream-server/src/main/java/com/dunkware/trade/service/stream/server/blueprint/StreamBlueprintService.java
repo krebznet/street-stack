@@ -8,6 +8,7 @@ import javax.annotation.PostConstruct;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.ApplicationContext;
 import org.springframework.stereotype.Service;
 
 import com.dunkware.common.util.events.DEventNode;
@@ -35,6 +36,9 @@ public class StreamBlueprintService {
 	private DEventTree eventTree; 
 	
 	@Autowired
+	private ApplicationContext ac;
+	
+	@Autowired
 	private Cluster cluster;
 	
 	@PostConstruct
@@ -44,6 +48,7 @@ public class StreamBlueprintService {
 		eventNode = eventTree.getRoot().createChild(this);
 		for (StreamEntity ent : streamRepo.findAll()) {
 			StreamBlueprint blueprint = new StreamBlueprint();
+			ac.getAutowireCapableBeanFactory().autowireBean(blueprint);
 			try {
 				blueprint.init(ent, this);;
 				blueprints.put(ent.getName(), blueprint);

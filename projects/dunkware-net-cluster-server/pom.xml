@@ -29,6 +29,24 @@
 		<spring-cloud.version>Hoxton.SR6</spring-cloud.version>
 	</properties>
 
+			<distributionManagement>
+				<snapshotRepository>
+					<uniqueVersion>false</uniqueVersion>
+					<id>dunkware-internal-snapshot</id>
+					<layout>default</layout>
+					<name>dunkware-internal-snapshot</name>
+					<url>https://nexus.dunkware.com/repository/dunkware-internal-snapshot/</url>
+
+				</snapshotRepository>
+				<repository>
+					<uniqueVersion>false</uniqueVersion>
+					<id>dunkware-internal-release</id>
+					<layout>default</layout>
+					<name>dunkware-internal-release</name>
+					<url>https://nexus.dunkware.com/repository/dunkware-internal-release/</url>	
+
+				</repository>
+			</distributionManagement>
 	<scm>
 		<connection>scm:git:ssh://git@github.com:krebznet/dunkware-genesis-data-service.git
 		</connection>

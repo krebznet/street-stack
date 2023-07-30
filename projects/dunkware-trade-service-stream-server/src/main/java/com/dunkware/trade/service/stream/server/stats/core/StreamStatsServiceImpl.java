@@ -2,6 +2,8 @@ package com.dunkware.trade.service.stream.server.stats.core;
 
 import java.util.concurrent.ConcurrentHashMap;
 
+import javax.annotation.PostConstruct;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.slf4j.Marker;
@@ -34,11 +36,12 @@ public class StreamStatsServiceImpl implements StreamStatsService   {
 	private Logger logger = LoggerFactory.getLogger(getClass());
 	private Marker marker = MarkerFactory.getMarker("stream.stats");
 	
-	@EventListener(ApplicationReadyEvent.class)
+	@PostConstruct
 	private void init() { 
 		Thread runner = new Thread() { 
 	
 			public void run() { 
+				setName("Stream Stats Query");
 				for (StreamController stream : streamService.getStreams()) {
 					StreamStatsImpl streamStats = new StreamStatsImpl();
 					try {

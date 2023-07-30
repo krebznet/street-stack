@@ -12,6 +12,25 @@
 		<maven.compiler.source>11</maven.compiler.source>
 		<maven.compiler.target>11</maven.compiler.target>
 	</properties>
+	
+			<distributionManagement>
+				<snapshotRepository>
+					<uniqueVersion>false</uniqueVersion>
+					<id>dunkware-internal-snapshot</id>
+					<layout>default</layout>
+					<name>dunkware-internal-snapshot</name>
+					<url>https://nexus.dunkware.com/repository/dunkware-internal-snapshot/</url>
+
+				</snapshotRepository>
+				<repository>
+					<uniqueVersion>false</uniqueVersion>
+					<id>dunkware-internal-release</id>
+					<layout>default</layout>
+					<name>dunkware-internal-release</name>
+					<url>https://nexus.dunkware.com/repository/dunkware-internal-release/</url>	
+
+				</repository>
+			</distributionManagement>
 	<modules>
 		<module>com.dunkware.xstream.script</module>
 	</modules>
