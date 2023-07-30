@@ -25,7 +25,7 @@ public class XStreamInput {
 	private DTimeZone timeZone; 
 	private Map<String,EntityStatsSessions> entityStatsSessions = new HashMap<String,EntityStatsSessions>();
 	private List<SignalModel> signalTypes = new ArrayList<SignalModel>();
-	
+	// here we need to somehow provide a stat provider and not put the bullshit in memeory here. 
 	public List<XStreamExtensionType> getExtensions() {
 		return extensions;
 	}

@@ -25,6 +25,7 @@ import com.dunkware.xstream.model.stats.EntityStatsConstants;
 import com.dunkware.xstream.model.stats.EntityStatsSession;
 import com.dunkware.xstream.model.stats.EntityStatsSessionVar;
 import com.dunkware.xstream.model.stats.EntityStatsSessions;
+import com.dunkware.xstream.model.stats.StreamStatsPayload;
 import com.dunkware.xstream.xScript.DataType;
 import com.dunkware.xstream.xScript.VarType;
 import com.dunkware.xstream.xproject.model.XStreamExtensionType;
