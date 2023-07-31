@@ -66,7 +66,7 @@ public interface StreamStatsEntity {
 	 * @return
 	 * @throws StreamStatsException
 	 */
-	Number resolveVarRelativeHigh(LocalDate date, String varIdent, int daysBack) throws StreamStatsException; 
+	Number resolveVarRelativeHigh(LocalDate date, String varIdent, int daysBack) throws StreamStatsInternalException, StreamStatsResolveException; 
 	
 	
 

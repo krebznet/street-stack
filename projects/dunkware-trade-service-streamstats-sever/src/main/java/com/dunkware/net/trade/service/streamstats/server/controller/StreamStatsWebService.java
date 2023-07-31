@@ -23,8 +23,11 @@ import com.dunkware.net.trade.service.streamstats.server.repository.StreamEntity
 import com.dunkware.net.trade.service.streamstats.server.sequence.MongoSequenceService;
 import com.dunkware.net.trade.service.streamstats.server.service.StreamStats;
 import com.dunkware.net.trade.service.streamstats.server.service.StreamStatsEntity;
+import com.dunkware.net.trade.service.streamstats.server.service.StreamStatsInternalException;
+import com.dunkware.net.trade.service.streamstats.server.service.StreamStatsResolveException;
 import com.dunkware.net.trade.service.streamstats.server.service.StreamStatsService;
 import com.dunkware.xstream.model.stats.EntityStatReq;
+import com.dunkware.xstream.model.stats.EntityStatReqType;
 import com.dunkware.xstream.model.stats.EntityStatResp;
 import com.dunkware.xstream.model.stats.EntityStatRespType;
 import com.dunkware.xstream.model.stats.EntityStatsAgg;
@@ -163,14 +166,42 @@ public class StreamStatsWebService {
 		}
 		StreamStatsEntity statsEntity = null; 
 		try {
-			statsEntity = streamStats.getEntity(req.getIdent());
+			statsEntity = streamStats.getEntity(req.getEntity());
 		} catch (Exception e) {
 			EntityStatResp resp = new EntityStatResp();
 			resp.setType(EntityStatRespType.Exception);
-			resp.setException("Cannot find entity stats for " + req.getIdent());
+			resp.setException("Cannot find entity stats for " + req.getEntity());
 			return resp;
 		}
-		return null;
+		
+		if(req.getType() == EntityStatReqType.VarHighRelative) { 
+			try {
+				Number value = statsEntity.resolveVarRelativeHigh(req.getDate(), req.getTarget(), req.getRelativeDays());
+				EntityStatResp resp = new EntityStatResp();
+				resp.setType(EntityStatRespType.Resolved);
+				resp.setValue(value);
+				
+				return resp;
+			} catch (StreamStatsInternalException e) {
+				EntityStatResp resp = new EntityStatResp();
+				resp.setType(EntityStatRespType.Exception);
+				resp.setException(e.toString());
+				return resp;
+				
+			} catch(StreamStatsResolveException e2) { 
+				EntityStatResp resp = new EntityStatResp();
+				resp.setType(EntityStatRespType.Unresolved);
+				resp.setException(e2.toString());
+				return resp;
+			}
+		
+		}
+		EntityStatResp resp = new EntityStatResp();
+		resp.setType(EntityStatRespType.Exception);
+		resp.setException("Stat Type request  not handled " + req.getType().name());
+		return resp;
+		
+		
 	}
 	
 

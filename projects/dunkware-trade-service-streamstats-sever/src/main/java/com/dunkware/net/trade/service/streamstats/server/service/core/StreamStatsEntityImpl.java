@@ -20,6 +20,7 @@ import com.dunkware.xstream.model.stats.EntityStatsAggVar;
 import com.dunkware.xstream.model.stats.EntityStatsSession;
 import com.dunkware.xstream.model.stats.EntityStatsSessionVar;
 import com.dunkware.xstream.model.stats.EntityStatsSessions;
+import com.dunkware.xstream.model.stats.comparator.EntityStatsSessionDateComparator;
 import com.dunkware.xstream.model.stats.comparator.EntityStatsSessionVarHighComparator;
 
 /**
@@ -44,6 +45,7 @@ public class StreamStatsEntityImpl implements StreamStatsEntity {
 		this.ident = entityIdent;
 		this.sessions = sessions;
 		// build the agg 
+		//this.sessions = sessions.sort(new EntityStatsSessionDateComparator);
 		buildAgg();
 	}
 	
@@ -167,12 +169,13 @@ public class StreamStatsEntityImpl implements StreamStatsEntity {
 	}
 
 	@Override
-	public Number resolveVarRelativeHigh(LocalDate date, String varIdent, int daysBack) throws StreamStatsException {
-		LocalDate afterDate = date.minusDays(daysBack + 1);
-		List<EntityStatsSession> results =  sessions.stream().parallel().filter(p -> p.getDate().isAfter(afterDate) && p.getDate().isBefore(date)).collect(Collectors.toList());
+	public Number resolveVarRelativeHigh(LocalDate date, String varIdent, int daysBack) throws StreamStatsInternalException, StreamStatsResolveException {
+		List<EntityStatsSession> results =  sessions.stream().filter(p -> p.getDate().isBefore(date)).collect(Collectors.toList());
+		results.sort(EntityStatsSessionDateComparator.instance());
 		if(results.size() < daysBack) { 
 			throw new StreamStatsResolveException("Stat Session Count size of " + results.size() + " is less than # of days back " + daysBack);
 		}
+		results = results.subList(0, daysBack);
 		List<EntityStatsSessionVar> vars = new ArrayList<EntityStatsSessionVar>();
 		for (EntityStatsSession session : results) {
 			vars.addAll(session.getVars().stream().filter(p -> p.getIdent().equalsIgnoreCase(varIdent)).collect(Collectors.toList()));
