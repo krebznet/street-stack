@@ -16,6 +16,16 @@ public class XStreamRowCriterias {
 	}
 	
 	
+	public boolean canResolve(XStreamRow row) throws XStreamQueryException, XStreamResolveException { 
+		for (XStreamRowCriteria xStreamRowCriteria : criterias) {
+			if(!xStreamRowCriteria.canResolve(row)) { 
+				return false;
+			}
+		}
+		return true;
+	}
+	
+	
 	public boolean test(XStreamRow t) throws XStreamQueryException, XStreamResolveException {
 		for (XStreamRowCriteria xStreamRowCriteria : criterias) {
 			if(!xStreamRowCriteria.canResolve(t)) { 

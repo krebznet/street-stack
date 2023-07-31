@@ -1,21 +1,22 @@
 package com.dunkware.xstream.api;
 
-import java.util.Collection;
+import java.util.List;
+import java.util.Map;
 
 public interface XStreamRowQueryResults {
 	
-	public double getMilliseconds();
+	public double getTime();
 	
-	public Collection<XStreamRow> getRows();
+	public int getQueryCount();
 	
-	public boolean didResolve();
+	public int getExceptionCount();
 	
-	public boolean didEvaulate();
+	public int getUnresolvedCount();
 	
-	public boolean didFail(); 
-
-	public Collection<String> getMessages();
+	public int getResolvedCount();
 	
+	public Map<String,String> getExceptionMap();
 	
-
+	public List<XStreamRow> getMatched();
+	
 }

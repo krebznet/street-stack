@@ -61,21 +61,16 @@ public class XStreamRowImpl implements XStreamRow, XStreamVarListener {
 	private List<XStreamVarListener> varListeners = new ArrayList<XStreamVarListener>();
 	private Semaphore varListenerLock = new Semaphore(1);
 
-	private List<EntityStatsSession> statSessions = new ArrayList<EntityStatsSession>();
-	private XStreamEntityStatsResolver statsResolver; 
-	
 	
 	private int identifier;
 
 	@Override
-	public void start(String id, int identifier, XStream stream, List<EntityStatsSession> statSessions) {
+	public void start(String id, int identifier, XStream stream) {
 		tickStream = new TickStreamImpl();
 		this.identifier = identifier;
 		this.id = id;
 		this.stream = stream;
 		realTimeCreate = DTime.now();
-		this.statSessions = statSessions;
-		this.statsResolver = XStreamEntityStatsResolver.newInstance(statSessions);
 		streamTimeCreate = (DTime) stream.getClock().getTime();
 		List<VarType> varTypes = stream.getInput().getScript().getStreamVars();
 		for (VarType varType : varTypes) {
@@ -247,10 +242,7 @@ public class XStreamRowImpl implements XStreamRow, XStreamVarListener {
 		return identifier;
 	}
 
-	@Override
-	public List<EntityStatsSession> getStatsSessions() {
-		return statSessions;
-	}
+	
 
 	@Override
 	public void varUpdate(XStreamVar var) {
@@ -320,16 +312,6 @@ public class XStreamRowImpl implements XStreamRow, XStreamVarListener {
 	public LocalDateTime getLocalDateTime() {
 		return stream.getClock().getLocalDateTime();
 	}
-
-	@Override
-	public XStreamEntityStatsResolver getStatsResolver() {
-		return statsResolver;
-	}
-	
-	
-
-	
-	
 
 
 

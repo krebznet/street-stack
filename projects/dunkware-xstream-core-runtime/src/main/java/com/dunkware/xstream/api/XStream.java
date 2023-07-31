@@ -131,6 +131,14 @@ public interface XStream {
 	
 	
 	public XStreamExtension getExtension(Class clazz) throws XStreamException;
+	
+	/**
+	 * Okay this should create the query, does it do the lookup as needed based on the criteria type? 
+	 * @param model
+	 * @return
+	 * @throws XStreamQueryException
+	 */
+	public XStreamRowQuery createRowQuery(XStreamQueryModel model) throws XStreamQueryException;
 		
 }
 

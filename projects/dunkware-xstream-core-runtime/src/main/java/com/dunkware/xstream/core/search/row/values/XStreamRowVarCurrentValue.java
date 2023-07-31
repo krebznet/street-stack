@@ -1,5 +1,6 @@
 package com.dunkware.xstream.core.search.row.values;
 
+import com.dunkware.xstream.api.XStream;
 import com.dunkware.xstream.api.XStreamQueryException;
 import com.dunkware.xstream.api.XStreamResolveException;
 import com.dunkware.xstream.api.XStreamRow;
@@ -10,10 +11,12 @@ import com.dunkware.xstream.model.query.XStreamRowValueModel;
 public class XStreamRowVarCurrentValue implements XStreamRowValue {
 
 	private XStreamRowValueModel model;
-
+	private XStream stream;
+	
 	@Override
-	public void init(XStreamRowValueModel model) throws XStreamQueryException {
-		this.model = model; 
+	public void init(XStreamRowValueModel model, XStream stream) throws XStreamQueryException {
+		this.model = model;
+		this.stream  = stream;
 	}
 
 	@Override

@@ -8,8 +8,7 @@ public interface XStreamRowQuery {
 	
 	public void init(XStreamQueryModel model, XStream stream) throws XStreamQueryException;
 	
-	public XStreamRowQueryResults query(List<XStreamRow> rows) throws XStreamQueryException;
-	
+	public XStreamRowQueryResults query(List<XStreamRow> rows);
 	
 }
 

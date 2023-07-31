@@ -12,7 +12,7 @@ import com.dunkware.xstream.xScript.SignalType;
 
 public interface XStreamRow {
 	
-	void start(String id, int identifier, XStream stream, List<EntityStatsSession> statSessions);
+	void start(String id, int identifier, XStream stream);
 	
 	void dispose();
 	
@@ -93,19 +93,7 @@ public interface XStreamRow {
 	 * @param listener
 	 */
 	void removeVarListener(XStreamVarListener listener);
-	
-	/**
-	 * Returns the avialable entity stats sessions. 
-	 * @return
-	 */
-	List<EntityStatsSession> getStatsSessions(); 
-	
-	/**
-	 * Returns the entity stats resolver for getting 
-	 * historical aggregation values 
-	 * @return
-	 */
-	XStreamEntityStatsResolver getStatsResolver();
+
 	
 	
 }

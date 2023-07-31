@@ -104,6 +104,8 @@ public class XStreamClockImpl implements XStreamClock {
 		
 		
 	}
+	
+	
 
 	@Override
 	public void scheduleRunnable(Runnable runnable, int interval) {
