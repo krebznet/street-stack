@@ -6,6 +6,14 @@ import com.dunkware.xstream.model.stats.EntityStatsSession;
 
 public class EntityStatsSessionDateComparator implements Comparator<EntityStatsSession> {
 
+	private static EntityStatsSessionDateComparator instance = null;
+	
+	public static EntityStatsSessionDateComparator instance() { 
+		if(instance == null) { 
+			instance = new EntityStatsSessionDateComparator();
+		}
+		return instance; 
+	}
 	
 	@Override
 	public int compare(EntityStatsSession o1, EntityStatsSession o2) {

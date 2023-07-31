@@ -4,21 +4,15 @@ import java.time.LocalDate;
 
 public class EntityStatReq {
 	
-	private String ident; 
+	private String entity; 
 	private String stream; 
 	private LocalDate date; 
 	private int relativeDays;
+	private String target;
 	
 	private EntityStatReqType type;
 
-	public String getIdent() {
-		return ident;
-	}
-
-	public void setIdent(String ident) {
-		this.ident = ident;
-	}
-
+	
 	public String getStream() {
 		return stream;
 	}
@@ -49,7 +43,25 @@ public class EntityStatReq {
 
 	public void setType(EntityStatReqType type) {
 		this.type = type;
+	}
+
+	public String getEntity() {
+		return entity;
+	}
+
+	public void setEntity(String entity) {
+		this.entity = entity;
+	}
+
+	public String getTarget() {
+		return target;
+	}
+
+	public void setTarget(String target) {
+		this.target = target;
 	} 
+	
+	
 	
 	
 
