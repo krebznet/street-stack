@@ -401,6 +401,7 @@ public class StreamControllerWebService {
 			           HttpStatus.BAD_REQUEST, "Stream " + streamIdent + " not found " 	+ e.toString());
 			
 		}
+		// OKay so you will have to udpate this to take into account; dynamic signal types
 		GStreamSpec spec = stream.getGStreamSpec();
 		for (GEntitySignalSpec sig : spec.getScript().getSignalTypesList()) {
 			SignalResource re = new SignalResource();

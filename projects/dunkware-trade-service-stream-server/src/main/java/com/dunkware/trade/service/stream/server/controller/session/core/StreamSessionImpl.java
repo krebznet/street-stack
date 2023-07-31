@@ -12,7 +12,6 @@ import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.atomic.AtomicLong;
 
-import javax.swing.tree.ExpandVetoException;
 import javax.transaction.Transactional;
 
 import org.slf4j.Logger;
@@ -29,11 +28,8 @@ import com.dunkware.common.util.time.DunkTime;
 import com.dunkware.net.cluster.node.Cluster;
 import com.dunkware.net.cluster.node.ClusterNode;
 import com.dunkware.trade.service.stream.json.controller.model.StreamSessionSpec;
-import com.dunkware.trade.service.stream.json.controller.session.StreamSessionNodeStatus;
 import com.dunkware.trade.service.stream.json.controller.session.StreamSessionState;
 import com.dunkware.trade.service.stream.json.controller.session.StreamSessionStatus;
-import com.dunkware.trade.service.stream.json.message.StreamSessionStart;
-import com.dunkware.trade.service.stream.json.message.StreamSessionStop;
 import com.dunkware.trade.service.stream.json.worker.stream.StreamSessionWorkerStats;
 import com.dunkware.trade.service.stream.server.controller.StreamController;
 import com.dunkware.trade.service.stream.server.controller.session.StreamSession;
@@ -46,7 +42,6 @@ import com.dunkware.trade.service.stream.server.controller.session.StreamSession
 import com.dunkware.trade.service.stream.server.controller.session.events.EStreamSessionStarted;
 import com.dunkware.trade.service.stream.server.controller.session.events.EStreamSessionStopped;
 import com.dunkware.trade.service.stream.server.controller.session.events.EStreamSessionStopping;
-import com.dunkware.trade.service.stream.server.controller.util.StreamSessionSpecBuilder;
 import com.dunkware.trade.service.stream.server.repository.StreamSessionEntity;
 import com.dunkware.trade.service.stream.server.repository.StreamSessionProblemEntity;
 import com.dunkware.trade.service.stream.server.repository.StreamSessionRepo;
@@ -181,14 +176,7 @@ public class StreamSessionImpl implements StreamSession {
 			streamSessionExtension.sessionStopping(this);
 		}
 		
-		StreamSessionStop stop = new StreamSessionStop();
-		try {
-			stop.setSpec(StreamSessionSpecBuilder.build(this, sessionId));
-
-		} catch (Exception e) {
-			logger.error("Exception building session spec " + e.toString());
-			logger.error("No start session getting sent to cluster");
-		}
+		
 		for (StreamSessionNode node : nodes) {
 			logger.info(MarkerFactory.getMarker(getSessionId()), "Stopping Session node " + node.getNodeId());
 			node.stopNode();
@@ -308,10 +296,10 @@ public class StreamSessionImpl implements StreamSession {
 	}
 
 	private void handleSessionStarted() {
-		StreamSessionStart start = new StreamSessionStart();
+		//StreamSessionStart start = new StreamSessionStart();
 		try {
-			start.setSpec(StreamSessionSpecBuilder.build(this, configService.getKafkaBrokers()));
-			this.sessionSpec = start.getSpec();
+			//start.setSpec(StreamSessionSpecBuilder.build(this, configService.getKafkaBrokers()));
+			//this.sessionSpec = start.getSpec();
 			try {
 
 				// cluster.pojoEvent(start);
@@ -337,9 +325,9 @@ public class StreamSessionImpl implements StreamSession {
 
 	private void handleSessionStopped() {
 		this.stoppedSessionInvoked.set(true);
-		StreamSessionStop stop = new StreamSessionStop();
+		//StreamSessionStop stop = new StreamSessionStop();
 		try {
-			stop.setSpec(StreamSessionSpecBuilder.build(this, configService.getKafkaBrokers()));
+			//stop.setSpec(StreamSessionSpecBuilder.build(this, configService.getKafkaBrokers()));
 			try {
 
 				// cluster.pojoEvent(stop);
