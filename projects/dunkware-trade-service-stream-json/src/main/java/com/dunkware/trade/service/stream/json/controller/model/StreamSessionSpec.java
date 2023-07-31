@@ -6,7 +6,6 @@ import java.util.List;
 import com.dunkware.common.util.dtime.DDate;
 import com.dunkware.common.util.dtime.DTime;
 import com.dunkware.common.util.dtime.DTimeZone;
-import com.dunkware.xstream.model.script.StreamScript;
 
 /**
  * Defines a running stream session and the attributes needed to connect 
@@ -26,7 +25,7 @@ public class StreamSessionSpec {
 	private DTime stopTime;
 	private DTimeZone timeZone; 
 	private int entityCount;
-	private StreamScript streamScript;
+//	private StreamScript streamScript;
 	private String streamIdentifier;
 	private String sessionId;
 	
@@ -67,12 +66,12 @@ public class StreamSessionSpec {
 	public void setEntityCount(int entityCount) {
 		this.entityCount = entityCount;
 	}
-	public StreamScript getStreamScript() {
-		return streamScript;
-	}
-	public void setStreamScript(StreamScript streamScript) {
-		this.streamScript = streamScript;
-	}
+	//public StreamScript getStreamScript() {
+	//	return streamScript;
+	//}
+	///public void setStreamScript(StreamScript streamScript) {
+	//	this.streamScript = streamScript;
+	//}
 	public List<StreamEntitySpec> getStreamEntities() {
 		return streamEntities;
 	}

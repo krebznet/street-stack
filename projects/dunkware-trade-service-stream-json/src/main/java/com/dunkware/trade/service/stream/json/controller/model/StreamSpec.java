@@ -5,7 +5,6 @@ import java.util.List;
 
 import com.dunkware.common.util.dtime.DTime;
 import com.dunkware.common.util.dtime.DTimeZone;
-import com.dunkware.xstream.model.script.StreamScript;
 
 public class StreamSpec {
 	
@@ -13,7 +12,7 @@ public class StreamSpec {
 	private String kafkaSignalTopic; 
 	private String kafkaSnapshotTopic;
 	private String streamIdentifier; 
-	private StreamScript script; 
+	//private StreamScript script; 
 	private String days; 
 	private DTimeZone timeZone; 
 	private DTime startTime; 
@@ -27,12 +26,7 @@ public class StreamSpec {
 		this.streamIdentifier = streamIdentifier;
 	}
 	
-	public StreamScript getScript() {
-		return script;
-	}
-	public void setScript(StreamScript script) {
-		this.script = script;
-	}
+	
 	public String getDays() {
 		return days;
 	}
