@@ -70,6 +70,11 @@
 			<version>4.3.2</version>
 		</dependency>
 
+		<dependency>
+			<groupId>com.dunkware.trade.service</groupId>
+			<artifactId>dunkware-trade-service-streamstats-client</artifactId>
+			<version>1.0.0-SNAPSHOT</version>
+		</dependency>
 		<!-- Spring Boot Starter Dependencies -->
 		<dependency>
 			<groupId>javax.annotation</groupId>
