@@ -8,8 +8,6 @@ import org.springframework.boot.autoconfigure.mongo.MongoAutoConfiguration;
 
 
 @SpringBootApplication(scanBasePackages = "com.dunkware")
-@EnableAutoConfiguration()
-//@EnableBinding(StreamProcessor.class)
 public class StreamStatsServer {
 
 

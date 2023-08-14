@@ -16,6 +16,8 @@ import com.dunkware.common.kafka.consumer.DKafkaByteConsumer2;
 import com.dunkware.common.kafka.consumer.DKafkaByteHandler2;
 import com.dunkware.common.kafka.producer.DKafkaByteProducer;
 import com.dunkware.common.spec.kafka.DKafkaByteConsumer2Spec;
+import com.dunkware.common.spec.kafka.DKafkaByteConsumer2SpecBuilder;
+import com.dunkware.common.spec.kafka.DKafkaByteConsumer2Spec.ConsumerType;
 import com.dunkware.common.spec.kafka.DKafkaByteConsumer2Spec.OffsetType;
 import com.dunkware.common.util.json.DJson;
 import com.dunkware.common.util.stopwatch.DStopWatch;
@@ -49,22 +51,22 @@ public class StreamStatsClientImpl implements StreamStatsClient, DKafkaByteHandl
 	public void load(StreamStatsClientBean bean) throws StreamStatsClientException {
 		this.bean = bean;
 		try {
-			DKafkaByteConsumer2Spec spec = new DKafkaByteConsumer2Spec();
-			spec.setBrokers(bean.getBrokers().split(","));
-			spec.setConsumerGroup(bean.getGroupId());
-			spec.setConsumerId(bean.getClientId());
-			spec.setTopics(new String[] { bean.getResponseTopic() });
-			spec.setOffsetType(OffsetType.Latest);
+			
+			
+			
+			DKafkaByteConsumer2Spec spec = DKafkaByteConsumer2SpecBuilder.newBuilder(ConsumerType.Auto, OffsetType.Latest).addBroker("172.16.16.55:31090").setClientAndGroup("dd" + DUUID.randomUUID(5), DUUID.randomUUID(6))
+					.addTopic("statresp").build();
 			kafkaConsumer = DKafkaByteConsumer2.newInstance(spec);
 			kafkaConsumer.addStreamHandler(this);
 			kafkaConsumer.start();
+			responseController = new ResponseController();
+			responseController.start();
 		} catch (Exception e) {
 			throw new StreamStatsClientException(
 					"Exception creating consumer kafka topic " + bean.getBrokers() + " " + e.toString());
 		}
 		try {
-			kafkaProducer = DKafkaByteProducer.newInstance(bean.getBrokers(), bean.getResponseTopic(),
-					bean.getClientId());
+			kafkaProducer = DKafkaByteProducer.newInstance(bean.getBrokers(),"statreq",DUUID.randomUUID(5));
 
 		} catch (Exception e) {
 			kafkaConsumer.dispose();
@@ -115,13 +117,13 @@ public class StreamStatsClientImpl implements StreamStatsClient, DKafkaByteHandl
 	
 	
 
-	private  class ResponseFuture implements Future<StreamStatsResponse> {
+	public  class ResponseFuture implements Future<StreamStatsResponse> {
 
 		private StreamStatsRequest req;
 		private StreamStatsResponse resp;
 		private volatile boolean done = false;
-		private DStopWatch watch;
-
+		private DStopWatch watch = StreamStatsClientImpl.this.pool.acquire();
+		
 		public ResponseFuture(StreamStatsRequest request) {
 			this.req = request;
 			watch.start();
@@ -134,9 +136,15 @@ public class StreamStatsClientImpl implements StreamStatsClient, DKafkaByteHandl
 		
 
 		public void setResponse(StreamStatsResponse resp) {
-			watch.stop();
+			try {
+				System.out.println(DJson.serializePretty(resp));
+				watch.stop();	
+			} catch (Exception e) {
+				// TODO: handle exception
+			}
+			
 			resp.setTime(watch.getCompletedSeconds());
-		   releaseWatch(watch);
+		   //releaseWatch(watch);
 			this.resp = resp;
 			this.done = true;
 		}

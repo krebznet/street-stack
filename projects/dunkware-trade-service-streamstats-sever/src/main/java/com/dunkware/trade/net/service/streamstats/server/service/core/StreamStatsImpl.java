@@ -2,6 +2,7 @@ package com.dunkware.trade.net.service.streamstats.server.service.core;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.BlockingQueue;
@@ -25,6 +26,7 @@ import com.dunkware.trade.net.service.streamstats.server.service.StreamStats;
 import com.dunkware.trade.net.service.streamstats.server.service.StreamStatsEntity;
 import com.dunkware.xstream.model.stats.EntityStatsSession;
 import com.dunkware.xstream.model.stats.StreamStatsPayload;
+import com.dunkware.xstream.model.stats.comparator.EntityStatsSessionDateComparator;
 import com.google.common.base.Stopwatch;
 import com.mongodb.bulk.BulkWriteResult;
 
@@ -56,7 +58,8 @@ public class StreamStatsImpl implements StreamStats {
 			watch.start();
 			Query query = new Query();
 			query.addCriteria(Criteria.where("stream").is(streamIdent).andOperator(Criteria.where("ident").is("AAPL")));
-			results = mongoTemplate.find(query, EntityStatsSessionDoc.class);
+			results = mongoTemplate.
+		//	results = mongoTemplate.find(query, EntityStatsSessionDoc.class);
 			watch.stop();
 			System.out.println("1 Entity time " + watch.getCompletedSeconds());
 		} catch (Exception e) {
@@ -74,6 +77,8 @@ public class StreamStatsImpl implements StreamStats {
 			sessions.add(session);
 			sessionMap.put(session.getIdent(), sessions);
 		}
+		
+		
 		for (String entityIdent : sessionMap.keySet()) {
 			List<EntityStatsSession> sess = sessionMap.get(entityIdent);
 			try {

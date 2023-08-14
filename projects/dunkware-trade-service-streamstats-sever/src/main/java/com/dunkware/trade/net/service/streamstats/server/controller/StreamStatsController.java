@@ -17,12 +17,15 @@ import com.dunkware.common.kafka.consumer.DKafkaByteConsumer2;
 import com.dunkware.common.kafka.consumer.DKafkaByteHandler2;
 import com.dunkware.common.kafka.producer.DKafkaByteProducer;
 import com.dunkware.common.spec.kafka.DKafkaByteConsumer2Spec;
+import com.dunkware.common.spec.kafka.DKafkaByteConsumer2SpecBuilder;
 import com.dunkware.common.spec.kafka.DKafkaByteConsumer2Spec.ConsumerType;
+import com.dunkware.common.spec.kafka.DKafkaByteConsumer2Spec.OffsetType;
 import com.dunkware.common.util.executor.DExecutor;
 import com.dunkware.common.util.json.DJson;
 import com.dunkware.common.util.uuid.DUUID;
 import com.dunkware.trade.net.service.streamstats.client.proto.StreamStatsRequest;
 import com.dunkware.trade.net.service.streamstats.client.proto.StreamStatsResponse;
+import com.dunkware.trade.net.service.streamstats.server.config.StreamStatsRuntime;
 import com.dunkware.trade.net.service.streamstats.server.service.StreamStats;
 import com.dunkware.trade.net.service.streamstats.server.service.StreamStatsService;
 
@@ -40,10 +43,13 @@ public class StreamStatsController implements DKafkaByteHandler2 {
 	@Autowired
 	private StreamStatsService statsService; 
 	
+	@Autowired
+	private StreamStatsRuntime runtime; 
+	
 	private DExecutor executor; 
 	
 	
-	@Value("${config.controller.brokers}")
+	@Value("${config.controller.poopers}")
 	private String brokers;
 	
 	@Value("${config.controller.topic}")
@@ -66,16 +72,24 @@ public class StreamStatsController implements DKafkaByteHandler2 {
 	
 	private StreamStatsMetrics metrics = new StreamStatsMetrics();
 	
+	private StreamStatsRunnablePool runnablePool;
+	
 	@PostConstruct
 	private void load() { 
+		executor = runtime.getExecutor();
 		logger.info("Starting Stream Stats Controller" );
-		DKafkaByteConsumer2Spec spec = new DKafkaByteConsumer2Spec();
-		spec.setBrokers(brokers.split(","));
-		spec.setConsumerGroup(brokers);
-		spec.setConsumerId(kafkaClient);
-		spec.setConsumerType(ConsumerType.Auto);
-		spec.setTopics(topic.split(","));
+		runnablePool = StreamStatsRunnablePool.create(500);
 		try {
+			
+		} catch (Exception e) {
+			// TODO: handle exception
+		}
+		
+		
+		try {
+			DKafkaByteConsumer2Spec spec = DKafkaByteConsumer2SpecBuilder.newBuilder(ConsumerType.Auto, OffsetType.Latest).addBroker("172.16.16.55:31090").setClientAndGroup("dd" + DUUID.randomUUID(5), DUUID.randomUUID(6))
+					.addTopic("statreq").build();
+			
 			consumer = DKafkaByteConsumer2.newInstance(spec);
 			consumer.addStreamHandler(this);
 			consumer.start();	
@@ -108,16 +122,27 @@ public class StreamStatsController implements DKafkaByteHandler2 {
 	
 	
 	public void sendResponse(StreamStatsRequest req, StreamStatsResponse response) { 
-		DKafkaByteProducer producer = responseProucers.get(req.getRespTopic());
+		DKafkaByteProducer producer = responseProucers.get("statresp");
 		if(producer == null) { 
 			try {
-				producer = DKafkaByteProducer.newInstance(brokers,req.getRespTopic(),req.getRespTopic() + "-" + DUUID.randomUUID(5));
-				responseProucers.put(req.getRespTopic(),producer);
+				producer = DKafkaByteProducer.newInstance(brokers,"statresp",DUUID.randomUUID(5));
+				responseProucers.put("statresp",producer);
 			} catch (Exception e) {
 				logger.error("Exception creating response broker topic producer " + e.toString(),e);
 				metrics.setErrorCount(metrics.getErrorCount() + 1);
 			}
+			
 		}
+		try {
+			byte[] byotes = DJson.serialize(response).getBytes();
+			System.out.println("");
+			producer.sendBytes(byotes);
+			
+		} catch (Exception e) {
+			logger.error("Exception sending response back over kafka " + e.toString());;
+			metrics.setErrorCount(metrics.getErrorCount() + 1);
+		}
+		
 	}
 	
 	
@@ -142,13 +167,33 @@ public class StreamStatsController implements DKafkaByteHandler2 {
 				setName("Stream Stats Request Handler");
 				while(!interrupted()) { 
 					StreamStatsRequest req = requestQueue.take();
-					// get the stream. req.getReq().getStream();
+					StreamStatsRunnable runnaable = runnablePool.acquire();
+					runnaable.init(req, StreamStatsController.this);
+					int loopcount = 0;
+					while(executor.getActiveTaskCount() > 50) { 
+						try {
+							Thread.sleep(25);
+							loopcount++;
+							if(loopcount > 8) { 
+								logger.error("Exception waiting on Executor");
+								loopcount = 0;
+							}
+						} catch (Exception e) {
+							if (e instanceof InterruptedException) { 
+								return;
+								
+							}
+							logger.error("request handler" + e.toString());;
+						}
+					}
+					executor.execute(runnaable);
 					
-					//its a thread runnable you need. 
-					// okay here is fun. 
 				}
 			} catch (Exception e) {
-				// TODO: handle exception
+				if (e instanceof InterruptedException) {
+					return;
+				}
+				logger.error("Exception invoking stat runnable " + e.toString(),e);
 			}
 		}
 	}

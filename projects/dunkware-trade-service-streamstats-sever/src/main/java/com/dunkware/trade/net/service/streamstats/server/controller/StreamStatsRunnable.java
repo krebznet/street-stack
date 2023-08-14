@@ -25,15 +25,35 @@ public class StreamStatsRunnable implements Runnable {
 	public void run() {
 		StreamStatsResponse resp = new StreamStatsResponse();
 		EntityStatResp statResp = new EntityStatResp();
+		EntityStatReq statReq = req.getReq();
 		try {
 			StreamStats stats = controller.getstreamStats(req.getReq().getStream());	
-			EntityStatReq statReq = req.getReq();
+			
 			try {
-				StreamStatsEntity statsEntity = stats.getEntity(statReq.getEntity());	
-				// all you need here is to figure out how to get the fuckin stts
-				//EntityStatReqType.VarHighRelative;
-				//EntityStatReqType.VarLowRelative
-				//EntityStatReqType.SignalCountRelative
+				StreamStatsEntity statsEntity = stats.getEntity(statReq.getEntity());
+				if(statReq.getType() == EntityStatReqType.VarHighRelative) {
+					try {
+						Number hope = statsEntity.resolveVarRelativeHigh(statReq.getDate(), statReq.getTarget(),statReq.getRelativeDays());
+						statResp.setValue(hope);
+						statResp.setType(EntityStatRespType.Resolved);
+						resp.setResp(statResp);
+						resp.setReqId(req.getReqId());
+						controller.sendResponse(req, resp);
+						return;
+					} catch (Exception e) {
+						statResp.setException(e.toString());
+						statResp.setType(EntityStatRespType.Exception);
+						resp.setReqId(req.getReqId());
+						resp.setResp(statResp);
+						controller.sendResponse(req, resp);
+						return; 
+					}
+					
+				}
+				statResp.setException("Unahdled historical var agg " + req.getReq().getType().name());
+				statResp.setType(EntityStatRespType.Exception);
+				resp.setResp(statResp);
+				controller.sendResponse(req, resp);
 			} catch (Exception e) {
 				statResp.setException("Exception getting entity stats " + req.getReq().getEntity());
 				statResp.setType(EntityStatRespType.Exception);

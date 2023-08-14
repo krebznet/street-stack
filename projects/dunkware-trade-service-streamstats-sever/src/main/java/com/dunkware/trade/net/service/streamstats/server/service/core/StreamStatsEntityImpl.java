@@ -9,10 +9,10 @@ import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.stream.Collectors;
 
+import com.dunkware.common.util.helpers.DNumberHelper;
 import com.dunkware.common.util.time.DunkTime;
 import com.dunkware.trade.net.service.streamstats.server.service.StreamStats;
 import com.dunkware.trade.net.service.streamstats.server.service.StreamStatsEntity;
-import com.dunkware.trade.net.service.streamstats.server.service.StreamStatsException;
 import com.dunkware.trade.net.service.streamstats.server.service.StreamStatsInternalException;
 import com.dunkware.trade.net.service.streamstats.server.service.StreamStatsResolveException;
 import com.dunkware.xstream.model.stats.EntityStatsAgg;
@@ -44,6 +44,8 @@ public class StreamStatsEntityImpl implements StreamStatsEntity {
 		this.streamStats = streamStats;
 		this.ident = entityIdent;
 		this.sessions = sessions;
+		// we assum this will put the most recent date first
+		Collections.sort(this.sessions, EntityStatsSessionDateComparator.recentFirst());
 		// build the agg 
 		//this.sessions = sessions.sort(new EntityStatsSessionDateComparator);
 		buildAgg();
@@ -168,24 +170,34 @@ public class StreamStatsEntityImpl implements StreamStatsEntity {
 		throw new Exception("Entity Stats Session not found for " + DunkTime.format(date, DunkTime.YYYY_MM_DD));
 	}
 
+	
 	@Override
 	public Number resolveVarRelativeHigh(LocalDate date, String varIdent, int daysBack) throws StreamStatsInternalException, StreamStatsResolveException {
-		List<EntityStatsSession> results =  sessions.stream().filter(p -> p.getDate().isBefore(date)).collect(Collectors.toList());
-		results.sort(EntityStatsSessionDateComparator.instance());
-		if(results.size() < daysBack) { 
-			throw new StreamStatsResolveException("Stat Session Count size of " + results.size() + " is less than # of days back " + daysBack);
+		List<EntityStatsSession> samples = new ArrayList<EntityStatsSession>();
+		for (EntityStatsSession session : sessions) {
+			if(samples.size() == daysBack) { 
+				break;
+			}
+			if(session.getDate().isBefore(date)) { 
+				samples.add(session);
+			}
 		}
-		results = results.subList(0, daysBack);
-		List<EntityStatsSessionVar> vars = new ArrayList<EntityStatsSessionVar>();
-		for (EntityStatsSession session : results) {
-			vars.addAll(session.getVars().stream().filter(p -> p.getIdent().equalsIgnoreCase(varIdent)).collect(Collectors.toList()));
+		if(samples.size() < daysBack) { 
+			throw new StreamStatsResolveException("Not enough days of stats found for " + varIdent );
 		}
-		EntityStatsSessionVar max = vars.stream().max(EntityStatsSessionVarHighComparator.getInstance()).orElse(null);
-		if(max == null) { 
-			throw new StreamStatsInternalException("Not getting max from var lsit reduced shit is null");
+		Double high = samples.get(0).getVar(varIdent).getHigh().doubleValue();
+		for (EntityStatsSession sess : samples) {
+			if(sess.getVar(varIdent).getHigh().doubleValue() > high) { 
+				high = sess.getVar(varIdent).getHigh().doubleValue();
+			}
 		}
-		return max.getHigh();
 		
+		System.out.println("high is " + high);
+		for (EntityStatsSession entityStatsSession : samples) {
+			System.out.println(entityStatsSession.getDate().toString() + " " + entityStatsSession.getVar(varIdent).getHigh());
+		}
+		return high;
+	
 	}
 	
 	
