@@ -10,6 +10,12 @@ public class DNumberHelper {
 	public static final int UNKNOWN = 3;
 	
 	
+	public static void main(String[] args) {
+		Number higher = 2323.23;
+		Number lower = 23;
+		System.out.println(compare(higher,lower));
+				
+	}
 
 	/**
 	 * 0 if both values are equal 
