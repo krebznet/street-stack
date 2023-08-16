@@ -2,6 +2,10 @@ package com.dunkware.trade.net.service.streamstats.server.service;
 
 import java.util.Collection;
 
+import com.dunkware.trade.net.service.streamstats.client.proto.StreamStatsRequest;
+import com.dunkware.trade.service.stream.json.controller.StreamStatsResp;
+import com.dunkware.xstream.model.stats.EntityStatReq;
+import com.dunkware.xstream.model.stats.EntityStatResp;
 import com.dunkware.xstream.model.stats.StreamStatsPayload;
 
 /**
@@ -39,6 +43,14 @@ public interface StreamStats {
 	 * @param payload
 	 */
 	void payload(StreamStatsPayload payload); 
+	
+	
+	/**
+	 * Let the stream stats service or whatever handle a entity stat request. 
+	 * @param req
+	 * @return
+	 */
+	EntityStatResp entityStatRequest(EntityStatReq req); 
 	
 	
 }

@@ -11,4 +11,9 @@ public class ZonedDateTimeReadConverter implements Converter<Date, ZonedDateTime
     public ZonedDateTime convert(Date date) {
         return date.toInstant().atZone(ZoneOffset.UTC);
     }
+    
+    public static void main(String[] args) {
+		ZonedDateTime dt = ZonedDateTime.now();
+		System.out.println(dt.toInstant().atZone(ZoneOffset.UTC));
+	}
 }

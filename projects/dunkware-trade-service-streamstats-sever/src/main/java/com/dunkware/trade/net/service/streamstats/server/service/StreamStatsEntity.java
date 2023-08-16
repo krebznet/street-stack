@@ -2,6 +2,8 @@ package com.dunkware.trade.net.service.streamstats.server.service;
 
 import java.time.LocalDate;
 
+import com.dunkware.xstream.model.stats.EntityStatReq;
+import com.dunkware.xstream.model.stats.EntityStatResp;
 import com.dunkware.xstream.model.stats.EntityStatsAgg;
 import com.dunkware.xstream.model.stats.EntityStatsSession;
 import com.dunkware.xstream.model.stats.EntityStatsSessions;
@@ -68,6 +70,12 @@ public interface StreamStatsEntity {
 	 */
 	Number resolveVarRelativeHigh(LocalDate date, String varIdent, int daysBack) throws StreamStatsInternalException, StreamStatsResolveException; 
 	
+	/**
+	 * This will give us the entity stat request. 
+	 * @param req
+	 * @return
+	 */
+	EntityStatResp statRequest(EntityStatReq req);
 	
 
 

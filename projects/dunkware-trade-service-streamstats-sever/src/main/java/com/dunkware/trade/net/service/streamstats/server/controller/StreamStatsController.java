@@ -34,7 +34,7 @@ import com.dunkware.trade.net.service.streamstats.server.service.StreamStatsServ
  * @author duncankrebs
  *
  */
-@Service
+//@Service
 public class StreamStatsController implements DKafkaByteHandler2 {
 
 	

@@ -1,5 +1,7 @@
 package com.dunkware.trade.net.service.streamstats.server.service;
 
+import com.mongodb.client.MongoCollection;
+
 public interface StreamStatsService {
 
 	/**
@@ -9,6 +11,7 @@ public interface StreamStatsService {
 	 * @throws Exception
 	 */
 	StreamStats getStreamStats(String streamIdent) throws Exception; 
+	
 	
 	
 	

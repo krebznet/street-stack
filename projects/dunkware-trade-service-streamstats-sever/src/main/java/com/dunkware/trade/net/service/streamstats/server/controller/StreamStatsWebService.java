@@ -9,6 +9,7 @@ import org.slf4j.Marker;
 import org.slf4j.MarkerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.mongodb.core.MongoOperations;
+import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -16,6 +17,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.server.ResponseStatusException;
 
 import com.dunkware.common.util.json.DJson;
 import com.dunkware.common.util.time.DunkTime;
@@ -35,7 +37,7 @@ import com.dunkware.xstream.model.stats.EntityStatsSessionResp;
 import com.dunkware.xstream.model.stats.EntityStatsSessions;
 import com.dunkware.xstream.model.stats.StreamStatsPayload;
 
-@RestController
+//@RestController
 public class StreamStatsWebService {
 
 	private Logger logger = LoggerFactory.getLogger(getClass());
@@ -152,9 +154,25 @@ public class StreamStatsWebService {
 	}
 	
 	
-	@PostMapping(path = "/streamstats/entity/stat")
-	public @ResponseBody EntityStatResp entityStatRequest(@RequestBody() EntityStatReq req) { 
+	@PostMapping(path = "/stream/v1/stats/get/var/hist/high")
+	public @ResponseBody EntityStatResp entityStatRequest(@RequestParam() String stream, @RequestParam() String entity, @RequestParam String agg, @RequestParam() int days) { 
 		StreamStats streamStats = null; 
+		EntityStatReq req = new EntityStatReq();
+		req.setDate(LocalDate.now());
+		req.setEntity(entity);
+		req.setRelativeDays(days);
+		req.setStream(stream);
+		if(agg.equals("high")) { 
+			req.setType(EntityStatReqType.VarHighRelative);
+		}
+		if(agg.equals("low")) { 
+			req.setType(EntityStatReqType.VarLowRleative);
+		}
+		if(req.getType() == null) { 
+			throw new ResponseStatusException(
+			           HttpStatus.BAD_REQUEST, "Exception understanding var agg type " + agg);
+		}
+		
 		try {
 			streamStats = statsService.getStreamStats(req.getStream());
 		} catch (Exception e) {
@@ -174,32 +192,8 @@ public class StreamStatsWebService {
 			return resp;
 		}
 		
-		if(req.getType() == EntityStatReqType.VarHighRelative) { 
-			try {
-				Number value = statsEntity.resolveVarRelativeHigh(req.getDate(), req.getTarget(), req.getRelativeDays());
-				EntityStatResp resp = new EntityStatResp();
-				resp.setType(EntityStatRespType.Resolved);
-				resp.setValue(value);
-				
-				return resp;
-			} catch (StreamStatsInternalException e) {
-				EntityStatResp resp = new EntityStatResp();
-				resp.setType(EntityStatRespType.Exception);
-				resp.setException(e.toString());
-				return resp;
-				
-			} catch(StreamStatsResolveException e2) { 
-				EntityStatResp resp = new EntityStatResp();
-				resp.setType(EntityStatRespType.Unresolved);
-				resp.setException(e2.toString());
-				return resp;
-			}
-		
-		}
-		EntityStatResp resp = new EntityStatResp();
-		resp.setType(EntityStatRespType.Exception);
-		resp.setException("Stat Type request  not handled " + req.getType().name());
-		return resp;
+
+		return null;
 		
 		
 	}

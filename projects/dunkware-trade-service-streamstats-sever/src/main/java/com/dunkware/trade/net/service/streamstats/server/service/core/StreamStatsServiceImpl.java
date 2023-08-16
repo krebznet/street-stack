@@ -16,7 +16,7 @@ import com.dunkware.trade.net.service.streamstats.server.config.StreamStatsRunti
 import com.dunkware.trade.net.service.streamstats.server.service.StreamStats;
 import com.dunkware.trade.net.service.streamstats.server.service.StreamStatsService;
 
-@Service
+//@Service
 public class StreamStatsServiceImpl implements StreamStatsService   {
 	
 	//@Autowired
@@ -29,10 +29,12 @@ public class StreamStatsServiceImpl implements StreamStatsService   {
 	@Autowired
 	private StreamStatsRuntime statsRuntime; 
 	
+	
+	
 	private ConcurrentHashMap<String,StreamStats> streamStats = new ConcurrentHashMap<String,StreamStats>();
 
 	private Logger logger = LoggerFactory.getLogger(getClass());
-	private Marker marker = MarkerFactory.getMarker("stream.stats");
+	private Marker marker = MarkerFactory.getMarker("streamservice");
 	
 	@PostConstruct
 	private void init() { 
@@ -40,6 +42,7 @@ public class StreamStatsServiceImpl implements StreamStatsService   {
 	
 			public void run() { 
 				setName("Stream Stats Loader");
+				logger.debug(marker, "starting stream service init");
 				for (String stream : statsRuntime.getManagedStreams()) {
 					StreamStatsImpl streamStats = new StreamStatsImpl();
 					try {
@@ -49,13 +52,15 @@ public class StreamStatsServiceImpl implements StreamStatsService   {
 						continue;
 					}
 					try {
+						logger.debug(marker, "Initializing stream stats for " + stream);
 						streamStats.init(stream);
 						StreamStatsServiceImpl.this.streamStats.put(stream, streamStats);
+						logger.debug(marker, "Initialized stream stats for " + stream);
 					} catch (Exception e) {
 						logger.error(marker, "Exception Initializing Stream Stats " + e.toString());
 						continue;
 					}
-					// okay you want to load the stats. 
+	
 				}
 			}
 		};

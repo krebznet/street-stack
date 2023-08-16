@@ -1,27 +1,28 @@
 package com.dunkware.trade.net.service.streamstats.server.service.core;
 
 import java.time.LocalDate;
+import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
-import java.util.stream.Collectors;
 
-import com.dunkware.common.util.helpers.DNumberHelper;
 import com.dunkware.common.util.time.DunkTime;
 import com.dunkware.trade.net.service.streamstats.server.service.StreamStats;
 import com.dunkware.trade.net.service.streamstats.server.service.StreamStatsEntity;
 import com.dunkware.trade.net.service.streamstats.server.service.StreamStatsInternalException;
 import com.dunkware.trade.net.service.streamstats.server.service.StreamStatsResolveException;
+import com.dunkware.xstream.model.stats.EntityStatReq;
+import com.dunkware.xstream.model.stats.EntityStatResp;
 import com.dunkware.xstream.model.stats.EntityStatsAgg;
 import com.dunkware.xstream.model.stats.EntityStatsAggVar;
 import com.dunkware.xstream.model.stats.EntityStatsSession;
 import com.dunkware.xstream.model.stats.EntityStatsSessionVar;
 import com.dunkware.xstream.model.stats.EntityStatsSessions;
 import com.dunkware.xstream.model.stats.comparator.EntityStatsSessionDateComparator;
-import com.dunkware.xstream.model.stats.comparator.EntityStatsSessionVarHighComparator;
 
 /**
  * This will just work off of stat model objects nothing mongo db related
@@ -199,6 +200,15 @@ public class StreamStatsEntityImpl implements StreamStatsEntity {
 		return high;
 	
 	}
+
+	@Override
+	public EntityStatResp statRequest(EntityStatReq req) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+	
+	
+	
 	
 	
 	

@@ -2,12 +2,13 @@ package com.dunkware.trade.net.service.streamstats.server.service.core;
 
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.LinkedBlockingQueue;
+import java.util.concurrent.atomic.AtomicInteger;
+import java.util.stream.Stream;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -21,19 +22,21 @@ import org.springframework.data.mongodb.core.query.Query;
 
 import com.dunkware.common.util.stopwatch.DStopWatch;
 import com.dunkware.trade.net.service.streamstats.server.repository.EntityStatsSessionDoc;
+import com.dunkware.trade.net.service.streamstats.server.repository.EntityStatsSessionRepo;
 import com.dunkware.trade.net.service.streamstats.server.sequence.MongoSequenceService;
 import com.dunkware.trade.net.service.streamstats.server.service.StreamStats;
 import com.dunkware.trade.net.service.streamstats.server.service.StreamStatsEntity;
+import com.dunkware.xstream.model.stats.EntityStatReq;
+import com.dunkware.xstream.model.stats.EntityStatResp;
 import com.dunkware.xstream.model.stats.EntityStatsSession;
 import com.dunkware.xstream.model.stats.StreamStatsPayload;
-import com.dunkware.xstream.model.stats.comparator.EntityStatsSessionDateComparator;
-import com.google.common.base.Stopwatch;
 import com.mongodb.bulk.BulkWriteResult;
+import com.mongodb.client.MongoCursor;
 
 public class StreamStatsImpl implements StreamStats {
 
+	private Marker marker = MarkerFactory.getMarker("streamstats");
 	private Logger logger = LoggerFactory.getLogger(getClass());
-	private Marker sessionstats = MarkerFactory.getMarker("stream.stats.session");
 
 	private BlockingQueue<PayloadWrapper> payloads = new LinkedBlockingQueue<PayloadWrapper>();
 	private PayloadInserter payloadInserter;
@@ -43,51 +46,61 @@ public class StreamStatsImpl implements StreamStats {
 
 	@Autowired
 	private MongoSequenceService sequenceService;
+	
+	@Autowired
+	private EntityStatsSessionRepo repo1; 
 
 	private String streamIdent;
 	private Map<String, StreamStatsEntity> entities = new ConcurrentHashMap<String, StreamStatsEntity>();
 
 	public void init(String streamIdent) throws Exception {
+
 		this.streamIdent = streamIdent;
 		payloadInserter = new PayloadInserter();
+
 		payloadInserter.start();
-		// Load the EntityStatsSessionDocs
-		List<EntityStatsSessionDoc> results = null;
+
 		try {
 			DStopWatch watch = DStopWatch.create();
 			watch.start();
-			Query query = new Query();
-			query.addCriteria(Criteria.where("stream").is(streamIdent).andOperator(Criteria.where("ident").is("AAPL")));
-			results = mongoTemplate.
-		//	results = mongoTemplate.find(query, EntityStatsSessionDoc.class);
-			watch.stop();
-			System.out.println("1 Entity time " + watch.getCompletedSeconds());
+			logger.debug(marker,"Starting stat query");
+			Map<String, List<EntityStatsSession>> sessionMap = new ConcurrentHashMap<String, List<EntityStatsSession>>();
+			Stream<EntityStatsSessionDoc> stream = repo1.findAll().parallelStream();
+			
+
+			AtomicInteger count = new AtomicInteger(0);
+			AtomicInteger counter = new AtomicInteger(0);
+			
+			stream.forEach(doc -> {
+				EntityStatsSession session = StreamStatsHelper.buildEntityStatsSession(doc);
+				List<EntityStatsSession> sessions = sessionMap.get(session.getIdent());
+				if (sessions == null) {
+					sessions = new ArrayList<EntityStatsSession>();
+				}
+				sessions.add(session);
+				sessionMap.put(session.getIdent(), sessions);
+				counter.incrementAndGet();
+		        
+		    });
+			
+			logger.debug(marker, "Finished stats query" );
+			
+		
+	
+			for (String entityIdent : sessionMap.keySet()) {
+				List<EntityStatsSession> sess = sessionMap.get(entityIdent);
+				try {
+					StreamStatsEntityImpl ent = new StreamStatsEntityImpl();
+					ent.init(StreamStatsImpl.this, 0, entityIdent, sess);
+					entities.put(entityIdent, ent);
+				} catch (Exception e) {
+					logger.error(marker, "Exception Creating StreamStatsEntity " + e.toString());
+				}
+			}
+
 		} catch (Exception e) {
-			logger.error(sessionstats, "Exception Querying EntitySessionStats " + e.toString());
+			logger.error(marker, "Exception Querying Entitymarker " + e.toString());
 			throw e;
-		}
-		// Now Create the StreamStats Entities
-		Map<String, List<EntityStatsSession>> sessionMap = new ConcurrentHashMap<String, List<EntityStatsSession>>();
-		for (EntityStatsSessionDoc entityStatsSessionDoc : results) {
-			EntityStatsSession session = StreamStatsHelper.buildEntityStatsSession(entityStatsSessionDoc);
-			List<EntityStatsSession> sessions = sessionMap.get(session.getIdent());
-			if (sessions == null) {
-				sessions = new ArrayList<EntityStatsSession>();
-			}
-			sessions.add(session);
-			sessionMap.put(session.getIdent(), sessions);
-		}
-		
-		
-		for (String entityIdent : sessionMap.keySet()) {
-			List<EntityStatsSession> sess = sessionMap.get(entityIdent);
-			try {
-				StreamStatsEntityImpl ent = new StreamStatsEntityImpl();
-				ent.init(StreamStatsImpl.this, 0, entityIdent, sess);
-				entities.put(entityIdent, ent);
-			} catch (Exception e) {
-				logger.error(sessionstats, "Exception Creating StreamStatsEntity " + e.toString());
-			}
 		}
 
 	}
@@ -100,12 +113,9 @@ public class StreamStatsImpl implements StreamStats {
 
 	}
 
-	
 	public void setEntities(Map<String, StreamStatsEntity> entities) {
 		this.entities = entities;
 	}
-
-	
 
 	@Override
 	public String getStreamIdent() {
@@ -147,7 +157,7 @@ public class StreamStatsImpl implements StreamStats {
 			try {
 				docs.add(StreamStatsHelper.buildEntityStatsSessionDoc(entityStats, sequenceService));
 			} catch (Exception e) {
-				logger.error(sessionstats, "Exception Converting EntitySessionStats to Mongo Entity " + e.toString());
+				logger.error(marker, "Exception Converting Entitymarker to Mongo Entity " + e.toString());
 			}
 		}
 
@@ -157,18 +167,18 @@ public class StreamStatsImpl implements StreamStats {
 		try {
 			BulkWriteResult results = bulkOps.execute();
 			if (results.getInsertedCount() < docs.size()) {
-				logger.error(sessionstats, "Stats Bulk insert result count is " + results.getInsertedCount()
+				logger.error(marker, "Stats Bulk insert result count is " + results.getInsertedCount()
 						+ " doc list size is " + docs.size());
 			}
 		} catch (Exception e) {
-			logger.error(sessionstats, "Exception inserting Stream Stats Payload into mongo  " + e.toString(), e);
+			logger.error(marker, "Exception inserting Stream Stats Payload into mongo  " + e.toString(), e);
 		}
 		watch.stop();
 		if (logger.isDebugEnabled()) {
 			StringBuilder builder = new StringBuilder();
 			builder.append("Stats pushed for " + payload.getStreamIdent() + ", " + docs.size()
 					+ " entities inserted into db " + watch.getCompletedSeconds() + "secs");
-			logger.debug(sessionstats, builder.toString());
+			logger.debug(marker, builder.toString());
 		}
 
 		// now lets update our entities with new stats or create any entities that
@@ -196,7 +206,7 @@ public class StreamStatsImpl implements StreamStats {
 		public StreamStatsPayload payload;
 	}
 
-	// not sure here -- okay fine 
+	// not sure here -- okay fine
 	private class PayloadInserter extends Thread {
 
 		public void run() {
@@ -205,7 +215,7 @@ public class StreamStatsImpl implements StreamStats {
 					PayloadWrapper wrapper = payloads.take();
 
 					processPayload(wrapper.payload);
-					logger.info(sessionstats, "inserted payload ");
+					logger.info(marker, "inserted payload ");
 				} catch (Exception e) {
 					logger.error("Exception in payload inserted");
 				}
@@ -213,5 +223,16 @@ public class StreamStatsImpl implements StreamStats {
 
 		}
 	}
+
+	
+	@Override
+	public EntityStatResp entityStatRequest(EntityStatReq req) {
+		// okay so here we go we want the goods right. 
+		// 
+		// TODO Auto-generated method stub
+		return null;
+	}
+	
+	
 
 }

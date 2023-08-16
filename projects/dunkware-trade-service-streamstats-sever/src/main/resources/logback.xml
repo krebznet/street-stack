@@ -14,29 +14,30 @@
 	</appender>
 
 
-	
- 	<appender name="FLUENT"
+
+	<appender name="FLUENT"
 		class="ch.qos.logback.more.appenders.DataFluentAppender">
 		<tag>myrock</tag>
-		<label>cluster</label>
-	<remoteHost>172.16.16.55</remoteHost>
+		<label>streamstats</label>
+		<remoteHost>172.16.16.55</remoteHost>
 		<port>32759</port>
 		<additionalField>
 			<key>node</key>
-			<value>worker-1</value>
+			<value>streamstats</value>
 		</additionalField>
 	</appender>
 
-	<root level="INFO">
-
+	<root level="ERROR">
+		<appender-ref ref="FLUENT" />
 		<appender-ref ref="CONSOLE" additivity="false" />
 	</root>
 
 
-	<logger name="com.dunkware" level="DEBUG">
- <appender-ref ref="FLUENT" />
-		<appender-ref ref="CONSOLE" additivity="false"/>
+	<logger name="com.dunkware.trade.net.service.streamstats"
+		level="ERROR">
+		<appender-ref ref="FLUENT" />
+		<appender-ref ref="CONSOLE" additivity="false" />
 	</logger>
 
-	
+
 </configuration>
