@@ -1,11 +1,11 @@
 package com.dunkware.trade.service.beach.server.runtime;
 
-import com.dunkware.common.util.databean.DataBean;
 import com.dunkware.common.util.helpers.DRandom;
 import com.dunkware.common.util.json.DJson;
+import com.dunkware.common.util.observable.ObservableBean;
 import com.dunkware.common.util.uuid.DUUID;
 
-public class BeachBrokerBean extends DataBean {
+public class BeachBrokerBean extends ObservableBean {
 
 	private String status; 
 	private String name;

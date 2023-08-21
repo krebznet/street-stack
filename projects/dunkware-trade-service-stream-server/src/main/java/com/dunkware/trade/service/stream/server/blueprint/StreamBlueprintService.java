@@ -41,6 +41,8 @@ public class StreamBlueprintService {
 	@Autowired
 	private Cluster cluster;
 	
+	
+	
 	@PostConstruct
 	private void load() { 
 		streamRepo.findAll();

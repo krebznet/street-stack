@@ -13,14 +13,14 @@ import com.dunkware.common.util.executor.DExecutor;
 import com.dunkware.common.util.helpers.DDateTimeHelper;
 import com.dunkware.common.util.time.DunkTime;
 import com.dunkware.net.cluster.node.Cluster;
-import com.dunkware.spring.channel.Channel;
+import com.dunkware.spring.messaging.channel.Channel;
 import com.dunkware.trade.service.stream.json.worker.stream.StreamSessionWorkerStartReq;
 import com.dunkware.trade.service.stream.json.worker.stream.StreamSessionWorkerStats;
 import com.dunkware.xstream.api.XStream;
 import com.dunkware.xstream.api.XStreamInput;
-import com.dunkware.xstream.api.XStreamRow;
+import com.dunkware.xstream.api.XStreamEntity;
 import com.dunkware.xstream.api.XStreamSignalService;
-import com.dunkware.xstream.api.XStreamVar;
+import com.dunkware.xstream.api.XStreamEntityVar;
 import com.dunkware.xstream.core.XStreamCore;
 import com.dunkware.xstream.core.extensions.StreamEventPublisherExt.EntitySnapshotBuilder;
 import com.dunkware.xstream.model.snapshot.EntitySnapshot;
@@ -158,7 +158,7 @@ public class StreamSessionWorkerImpl implements StreamSessionWorker {
 
 	@Override
 	public EntitySnapshot getEntitySnapshot(String ident) throws Exception {
-		XStreamRow row = stream.getRow(ident);
+		XStreamEntity row = stream.getRow(ident);
 		if(row == null) { 
 			throw new Exception("Entity ident not found " + ident);
 		}
@@ -168,7 +168,7 @@ public class StreamSessionWorkerImpl implements StreamSessionWorker {
 		snap.setTime(row.getStream().getClock().getLocalTime());
 		snap.setTimeString(DunkTime.formatHHMMSS(snap.getTime()));
 		
-		for (XStreamVar var : row.getVars()) {
+		for (XStreamEntityVar var : row.getVars()) {
 			EntitySnapshotVar sVar = new EntitySnapshotVar();
 			sVar.setIdent(var.getVarType().getName());
 			if(var.getSize() == 0) { 

@@ -12,7 +12,7 @@ import com.dunkware.xstream.api.XObjectElement;
 import com.dunkware.xstream.api.XObjectFunction;
 import com.dunkware.xstream.api.XObjectStack;
 import com.dunkware.xstream.api.XStream;
-import com.dunkware.xstream.api.XStreamRow;
+import com.dunkware.xstream.api.XStreamEntity;
 import com.dunkware.xstream.api.XStreamRuntimeException;
 import com.dunkware.xstream.xScript.XClassElementType;
 import com.dunkware.xstream.xScript.XClassType;
@@ -25,7 +25,7 @@ import com.dunkware.xstream.xScript.XFunctionType;
  */
 public class XObjectImpl implements XObject {
 
-	private XStreamRow _row;
+	private XStreamEntity _row;
 	private XClassType _xClassType;
 	private XObjectContext _xObjectContext = null;
 	private List<XObjectElement> _rootElements = new ArrayList<XObjectElement>();
@@ -34,7 +34,7 @@ public class XObjectImpl implements XObject {
 	private XObjectStackImpl _stack = new XObjectStackImpl();
 
 	
-	public XObjectImpl(XObjectContext context, XClassType xClassType, XStream stream, XStreamRow row)  {
+	public XObjectImpl(XObjectContext context, XClassType xClassType, XStream stream, XStreamEntity row)  {
 		_row = row;
 		_stream = stream;
 		_xObjectContext = context;
@@ -156,7 +156,7 @@ public class XObjectImpl implements XObject {
 
 	
 	@Override
-	public XStreamRow getRow() {
+	public XStreamEntity getRow() {
 		return _row;
 	}
 

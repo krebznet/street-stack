@@ -12,6 +12,7 @@ import org.slf4j.Marker;
 import org.slf4j.MarkerFactory;
 
 import com.dunkware.common.util.uuid.DUUID;
+import com.dunkware.xstream.api.DD;
 import com.dunkware.xstream.api.XStream;
 import com.dunkware.xstream.api.XStreamClock;
 import com.dunkware.xstream.api.XStreamException;
@@ -20,20 +21,18 @@ import com.dunkware.xstream.api.XStreamExtension;
 import com.dunkware.xstream.api.XStreamInput;
 import com.dunkware.xstream.api.XStreamListener;
 import com.dunkware.xstream.api.XStreamQueryException;
-import com.dunkware.xstream.api.XStreamRow;
-import com.dunkware.xstream.api.XStreamRowListener;
-import com.dunkware.xstream.api.XStreamRowQuery;
+import com.dunkware.xstream.api.XStreamEntity;
+import com.dunkware.xstream.api.XStreamEntityListener;
+import com.dunkware.xstream.api.XStreamEntityQuery;
 import com.dunkware.xstream.api.XStreamRowSignal;
 import com.dunkware.xstream.api.XStreamRuntimeException;
-import com.dunkware.xstream.api.XStreamService;
 import com.dunkware.xstream.api.XStreamSignalListener;
+import com.dunkware.xstream.api.XStreamStatProvider;
 import com.dunkware.xstream.api.XStreamStatus;
 import com.dunkware.xstream.api.XStreamTickRouter;
 import com.dunkware.xstream.core.search.row.XStreamRowQueryImpl;
 import com.dunkware.xstream.model.metrics.XStreamMetrics;
 import com.dunkware.xstream.model.query.XStreamQueryModel;
-import com.dunkware.xstream.model.stats.EntityStatsSession;
-import com.dunkware.xstream.model.stats.EntityStatsSessions;
 import com.dunkware.xstream.util.XStreamStatsBuilder;
 import com.dunkware.xstream.xproject.model.XStreamExtensionType;
 
@@ -41,7 +40,7 @@ public class XStreamImpl implements XStream {
 
 	private Logger logger = LoggerFactory.getLogger(getClass());
 
-	private volatile ConcurrentHashMap<String, XStreamRow> rows = new ConcurrentHashMap<String, XStreamRow>();
+	private volatile ConcurrentHashMap<String, XStreamEntity> rows = new ConcurrentHashMap<String, XStreamEntity>();
 
 	private XStreamStatus status = XStreamStatus.Created;
 
@@ -55,7 +54,7 @@ public class XStreamImpl implements XStream {
 	private Semaphore streamListenerLock = new Semaphore(1);
 
 	// Row Listeners
-	private List<XStreamRowListener> rowListeners = new ArrayList<XStreamRowListener>();
+	private List<XStreamEntityListener> rowListeners = new ArrayList<XStreamEntityListener>();
 	private Semaphore rowListenerLock = new Semaphore(1);
 	private RowListener rowListener = new RowListener();
 
@@ -64,11 +63,13 @@ public class XStreamImpl implements XStream {
 
 	// Extensions & Services
 	private List<XStreamExtension> extensions = new ArrayList<XStreamExtension>();
-	private List<XStreamService> services = new ArrayList<XStreamService>();
+	private List<DD> services = new ArrayList<DD>();
 
 	private XStreamExecutor executor;
 
 	private String sessionId;
+	
+	
 
 	@Override
 	public void start(XStreamInput input) throws XStreamException {
@@ -83,7 +84,7 @@ public class XStreamImpl implements XStream {
 		tickRouter = new XStreamTickRouterImpl(this);
 
 		services = input.getRegistry().createServices();
-		for (XStreamService service : services) {
+		for (DD service : services) {
 			service.init(this);
 		}
 		for (XStreamExtensionType extType : input.getExtensions()) {
@@ -92,7 +93,7 @@ public class XStreamImpl implements XStream {
 			extensions.add(ext);
 		}
 
-		for (XStreamService service : services) {
+		for (DD service : services) {
 			service.preStart();
 		}
 
@@ -100,7 +101,7 @@ public class XStreamImpl implements XStream {
 			ext.preStart();
 		}
 
-		for (XStreamService service : services) {
+		for (DD service : services) {
 			service.start();
 		}
 
@@ -110,6 +111,15 @@ public class XStreamImpl implements XStream {
 
 		status = XStreamStatus.Running;
 	}
+	
+	
+
+	@Override
+	public XStreamStatProvider getStatProvider() {
+		return input.getStatProvider();
+	}
+
+
 
 	@Override
 	public void dispose() throws XStreamException {
@@ -117,18 +127,18 @@ public class XStreamImpl implements XStream {
 			ext.preDispose();
 		}
 
-		for (XStreamService service : services) {
+		for (DD service : services) {
 			service.preDispose();
 		}
 
 		for (XStreamExtension ext : extensions) {
 			ext.dispose();
 		}
-		for (XStreamService service : services) {
+		for (DD service : services) {
 			service.dispose();
 		}
 
-		for (XStreamRow row : rows.values()) {
+		for (XStreamEntity row : rows.values()) {
 			row.dispose();
 		}
 
@@ -136,7 +146,7 @@ public class XStreamImpl implements XStream {
 	}
 
 	@Override
-	public XStreamRow getRow(String id) {
+	public XStreamEntity getRow(String id) {
 		if (!rows.containsKey(id)) {
 			throw new XStreamRuntimeException("Row " + id + " does not exist");
 		}
@@ -144,16 +154,16 @@ public class XStreamImpl implements XStream {
 	}
 
 	@Override
-	public List<XStreamRow> getRows() {
-		List<XStreamRow> list = new ArrayList<XStreamRow>();
-		for (Map.Entry<String, XStreamRow> entry : rows.entrySet()) {
+	public List<XStreamEntity> getRows() {
+		List<XStreamEntity> list = new ArrayList<XStreamEntity>();
+		for (Map.Entry<String, XStreamEntity> entry : rows.entrySet()) {
 			list.add(entry.getValue());
 		}
 		return list;
 	}
 
 	@Override
-	public XStreamRow createRow(String rowId, int rowIdentifier) {
+	public XStreamEntity createRow(String rowId, int rowIdentifier) {
 		if (logger.isDebugEnabled()) {
 			logger.debug(MarkerFactory.getMarker("EntityCreated"), "{} {} {}", rowId, rowIdentifier,
 					input.getSessionId());
@@ -310,7 +320,7 @@ public class XStreamImpl implements XStream {
 
 	@Override
 	public <T> T getService(Class<T> clazz) throws XStreamException {
-		for (XStreamService service : services) {
+		for (DD service : services) {
 			if (clazz.isInstance(service)) {
 				return (T) service;
 			}
@@ -324,7 +334,7 @@ public class XStreamImpl implements XStream {
 	}
 
 	@Override
-	public void addRowListener(XStreamRowListener listener) {
+	public void addRowListener(XStreamEntityListener listener) {
 		Runnable runner = new Runnable() {
 
 			@Override
@@ -344,7 +354,7 @@ public class XStreamImpl implements XStream {
 	}
 
 	@Override
-	public void removeRowListener(XStreamRowListener listener) {
+	public void removeRowListener(XStreamEntityListener listener) {
 		Runnable runner = new Runnable() {
 
 			@Override
@@ -365,7 +375,7 @@ public class XStreamImpl implements XStream {
 	
 	
 	@Override
-	public XStreamRowQuery createRowQuery(XStreamQueryModel model) throws XStreamQueryException { 
+	public XStreamEntityQuery entityQuery(XStreamQueryModel model) throws XStreamQueryException { 
 		XStreamRowQueryImpl query = new XStreamRowQueryImpl();
 		query.init(model, this);
 		return query;
@@ -378,10 +388,10 @@ public class XStreamImpl implements XStream {
 	 * RowListener for routing stream row events to RowListeners registered on the
 	 * stream level.
 	 */
-	private class RowListener implements XStreamRowListener {
+	private class RowListener implements XStreamEntityListener {
 
 		@Override
-		public void rowSignal(XStreamRow row, XStreamRowSignal signal) {
+		public void rowSignal(XStreamEntity row, XStreamRowSignal signal) {
 			try {
 				signalListenerLock.acquire();
 				for (XStreamSignalListener list : signalListeners) {
@@ -395,7 +405,7 @@ public class XStreamImpl implements XStream {
 			}
 			try {
 				rowListenerLock.acquire();
-				for (XStreamRowListener list : rowListeners) {
+				for (XStreamEntityListener list : rowListeners) {
 					list.rowSignal(row, signal);
 				}
 			} catch (Exception e) {

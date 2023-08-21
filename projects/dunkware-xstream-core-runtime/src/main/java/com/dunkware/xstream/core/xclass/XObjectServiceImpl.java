@@ -9,9 +9,9 @@ import com.dunkware.xstream.api.XObjectService;
 import com.dunkware.xstream.api.XStream;
 import com.dunkware.xstream.api.XStreamException;
 import com.dunkware.xstream.api.XStreamListener;
-import com.dunkware.xstream.api.XStreamRow;
+import com.dunkware.xstream.api.XStreamEntity;
 import com.dunkware.xstream.api.XStreamRuntimeException;
-import com.dunkware.xstream.api.XStreamService;
+import com.dunkware.xstream.api.DD;
 import com.dunkware.xstream.core.annotations.AXStreamService;
 import com.dunkware.xstream.core.xclass.impl.XObjectContextImpl;
 import com.dunkware.xstream.core.xclass.impl.XObjectImpl;
@@ -20,7 +20,7 @@ import com.dunkware.xstream.xScript.XClassType;
 import com.dunkware.xstream.xScript.XExpressionType;
 
 @AXStreamService(profiles = "xclass")
-public class XObjectServiceImpl implements XStreamService, XStreamListener, XObjectService  {
+public class XObjectServiceImpl implements DD, XStreamListener, XObjectService  {
 
 	private XStream stream; 
 	private List<XClassType> classTypes;
@@ -54,7 +54,7 @@ public class XObjectServiceImpl implements XStreamService, XStreamListener, XObj
 	}
 
 	@Override
-	public void rowInsert(XStreamRow row) {
+	public void rowInsert(XStreamEntity row) {
 		for (XClassType xclass : classTypes) {
 			XObject object = createXObject(xclass, row);
 		
@@ -78,7 +78,7 @@ public class XObjectServiceImpl implements XStreamService, XStreamListener, XObj
 	}
 
 	@Override
-	public XObject createXObject(XClassType clazz, XStreamRow row) {
+	public XObject createXObject(XClassType clazz, XStreamEntity row) {
 		XObjectContextImpl context = new XObjectContextImpl(this, clazz, stream, row);
 		context.startContext();
 		return context.getXObject();

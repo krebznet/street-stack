@@ -13,7 +13,7 @@ import com.dunkware.xstream.api.XStreamExpression;
 import com.dunkware.xstream.api.XStreamExtension;
 import com.dunkware.xstream.api.XStreamRegistry;
 import com.dunkware.xstream.api.XStreamRuntimeException;
-import com.dunkware.xstream.api.XStreamService;
+import com.dunkware.xstream.api.DD;
 import com.dunkware.xstream.core.annotations.AXObjectElement;
 import com.dunkware.xstream.core.annotations.AXObjectExpression;
 import com.dunkware.xstream.core.annotations.AXStreamExpression;
@@ -183,11 +183,11 @@ public class XStreamRegistryImpl implements XStreamRegistry {
 	
 
 	@Override
-	public List<XStreamService> createServices() {
-		List<XStreamService> list = new ArrayList<XStreamService>();
+	public List<DD> createServices() {
+		List<DD> list = new ArrayList<DD>();
 		for (Class clazz : services) {
 			try {
-				XStreamService service = (XStreamService)clazz.newInstance();
+				DD service = (DD)clazz.newInstance();
 				list.add(service);
 			} catch (Exception e) {
 				throw new XStreamRuntimeException("XStream Service Class Instantiation exception " + e.toString() + " class " + clazz.getName());

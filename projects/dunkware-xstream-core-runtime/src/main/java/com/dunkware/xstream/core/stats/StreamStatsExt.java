@@ -18,7 +18,7 @@ import com.dunkware.xstream.api.XStream;
 import com.dunkware.xstream.api.XStreamException;
 import com.dunkware.xstream.api.XStreamExtension;
 import com.dunkware.xstream.api.XStreamListener;
-import com.dunkware.xstream.api.XStreamRow;
+import com.dunkware.xstream.api.XStreamEntity;
 import com.dunkware.xstream.core.annotations.AXStreamExtension;
 import com.dunkware.xstream.core.stats.builders.EntityStatsBuilder;
 import com.dunkware.xstream.model.stats.EntityStatsConstants;
@@ -124,7 +124,7 @@ public class StreamStatsExt implements XStreamExtension, XStreamListener {
 	}
 
 	@Override
-	public void rowInsert(XStreamRow row) {
+	public void rowInsert(XStreamEntity row) {
 		if (entityStatBuilders.containsKey(row.getId())) {
 			logger.warn("Row Insert event on entity " + row.getId() + "already has stat builder");
 			return;
@@ -134,7 +134,7 @@ public class StreamStatsExt implements XStreamExtension, XStreamListener {
 
 	}
 
-	public boolean canResolveVarStat(XStreamRow row, VarType varType, int days, int stat) throws Exception {
+	public boolean canResolveVarStat(XStreamEntity row, VarType varType, int days, int stat) throws Exception {
 		return entityStatsService.canResolveVarStat(row.getId(), varType.getName(), days, stat);
 	}
 
@@ -147,7 +147,7 @@ public class StreamStatsExt implements XStreamExtension, XStreamListener {
 	 * @return
 	 * @throws Exception
 	 */
-	public Object resolveVarStat(XStreamRow row, VarType varType, int days, int stat) throws Exception {
+	public Object resolveVarStat(XStreamEntity row, VarType varType, int days, int stat) throws Exception {
 		return entityStatsService.resolveVarStat(row, varType, days, stat);
 		// so you will hit that web service 3,000 times? nice duncan! 
 	}
@@ -156,7 +156,7 @@ public class StreamStatsExt implements XStreamExtension, XStreamListener {
 
 		private Map<String, EntityStatsContainer> statsContainers = new ConcurrentHashMap<String, StreamStatsExt.EntityStatsContainer>();
 
-		public Object resolveVarStat(XStreamRow row, VarType type, int days, int stat) throws Exception { 
+		public Object resolveVarStat(XStreamEntity row, VarType type, int days, int stat) throws Exception { 
 			if(!canResolveVarStat(row.getId(), type.getName(), days, stat)) { 
 				throw new Exception("Trying to resolve var stat that cannot be rsolved check code");
 			}

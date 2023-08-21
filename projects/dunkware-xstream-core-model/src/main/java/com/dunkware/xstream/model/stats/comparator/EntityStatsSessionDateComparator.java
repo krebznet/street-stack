@@ -8,7 +8,7 @@ public class EntityStatsSessionDateComparator implements Comparator<EntityStatsS
 
 	private static EntityStatsSessionDateComparator instance = null;
 	
-	public static EntityStatsSessionDateComparator instance() { 
+	public static EntityStatsSessionDateComparator recentFirst() { 
 		if(instance == null) { 
 			instance = new EntityStatsSessionDateComparator();
 		}
@@ -21,9 +21,9 @@ public class EntityStatsSessionDateComparator implements Comparator<EntityStatsS
 			return 0;
 		}
 		if(o1.getDate().isAfter(o2.getDate())) { 
-			return 1;
+			return -1;
 		}
-		return -1;
+		return 1;
 	}
 
 }

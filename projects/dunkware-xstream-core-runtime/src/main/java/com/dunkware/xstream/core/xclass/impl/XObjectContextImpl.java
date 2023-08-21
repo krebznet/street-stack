@@ -16,7 +16,7 @@ import com.dunkware.xstream.api.XObjectExpression;
 import com.dunkware.xstream.api.XObjectService;
 import com.dunkware.xstream.api.XObjectWorker;
 import com.dunkware.xstream.api.XStream;
-import com.dunkware.xstream.api.XStreamRow;
+import com.dunkware.xstream.api.XStreamEntity;
 import com.dunkware.xstream.xScript.XClassElementType;
 import com.dunkware.xstream.xScript.XClassType;
 import com.dunkware.xstream.xScript.XEqualityType;
@@ -32,13 +32,13 @@ public class XObjectContextImpl implements XObjectContext {
 	private XObject _xObject;
 	private List<XObjectWorker> _workers = new ArrayList<XObjectWorker>();
 	private Map<String,Object> _attributes = new HashMap<String,Object>();
-	private XStreamRow _XStreamRow; 
+	private XStreamEntity _XStreamRow; 
 	private XStream _xStream; 
 	private XClassType _xClassType;
 	private AtomicBoolean _disposed = new AtomicBoolean(false);
 	private XObjectService _xObjectService; 
 	
-	public XObjectContextImpl(XObjectService xObjectService, XClassType type, XStream xStream, XStreamRow row) {
+	public XObjectContextImpl(XObjectService xObjectService, XClassType type, XStream xStream, XStreamEntity row) {
 		_xObjectService = xObjectService;
 		_XStreamRow = row;
 		_xClassType = type;

@@ -2,7 +2,7 @@ package com.dunkware.xstream.core.search.row.criteria;
 
 import com.dunkware.xstream.api.XStreamQueryException;
 import com.dunkware.xstream.api.XStreamResolveException;
-import com.dunkware.xstream.api.XStreamRow;
+import com.dunkware.xstream.api.XStreamEntity;
 import com.dunkware.xstream.core.search.XStreamSearchHelper;
 import com.dunkware.xstream.core.search.row.XStreamRowValue;
 import com.dunkware.xstream.model.query.XStreamOperator;
@@ -20,12 +20,12 @@ public class XStreamRowValueCriteria implements XStreamRowCriteria {
 	}
 
 	@Override
-	public boolean canResolve(XStreamRow row) throws XStreamQueryException, XStreamResolveException {
+	public boolean canResolve(XStreamEntity row) throws XStreamQueryException, XStreamResolveException {
 		return value.canResolve(row);
 	}
 
 	@Override
-	public boolean test(XStreamRow row) throws XStreamResolveException, XStreamQueryException {
+	public boolean test(XStreamEntity row) throws XStreamResolveException, XStreamQueryException {
 		Number resolved = value.resolve(row);
 		return XStreamSearchHelper.testCondition(resolved, eval, operator);
 	}

@@ -9,9 +9,13 @@ public class EntityStatReq {
 	private LocalDate date; 
 	private int relativeDays;
 	private String target;
+	private String agg;
 	
 	private EntityStatReqType type;
 
+	public static void main(String[] args) {
+		
+	}
 	
 	public String getStream() {
 		return stream;
@@ -59,7 +63,18 @@ public class EntityStatReq {
 
 	public void setTarget(String target) {
 		this.target = target;
+	}
+
+	public String getAgg() {
+		return agg;
+	}
+
+	public void setAgg(String agg) {
+		this.agg = agg;
 	} 
+	
+	
+
 	
 	
 	

@@ -14,7 +14,7 @@ import com.dunkware.common.tick.filter.TickFilterBuilder;
 import com.dunkware.common.tick.proto.TickProto.Tick;
 import com.dunkware.common.tick.proto.TickProto.Tick.TickField;
 import com.dunkware.common.tick.proto.TickProto.Tick.TickFieldType;
-import com.dunkware.xstream.api.XStreamRow;
+import com.dunkware.xstream.api.XStreamEntity;
 import com.dunkware.xstream.api.XStreamRuntimeException;
 import com.dunkware.xstream.core.XStreamExpressionImpl;
 import com.dunkware.xstream.core.annotations.AXStreamExpression;
@@ -25,7 +25,7 @@ import com.dunkware.xstream.xScript.TickExpressionType;
 @AXStreamExpression(type = TickExpressionType.class)
 public class TickExpression extends XStreamExpressionImpl implements TickHandler {
 
-	private XStreamRow row;
+	private XStreamEntity row;
 	private TickExpressionType type;
 
 	private Logger logger = LoggerFactory.getLogger(getClass());
@@ -36,7 +36,7 @@ public class TickExpression extends XStreamExpressionImpl implements TickHandler
 	private Object lastValue = null;
 
 	@Override
-	public void init(XStreamRow row, ExpressionType expType) {
+	public void init(XStreamEntity row, ExpressionType expType) {
 		this.row = row;
 		this.type = (TickExpressionType) expType;
 		this.tickType = this.type.getType();

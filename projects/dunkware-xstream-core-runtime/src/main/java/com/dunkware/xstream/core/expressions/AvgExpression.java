@@ -6,9 +6,9 @@ import java.util.List;
 
 import com.dunkware.common.util.calc.DCalc;
 import com.dunkware.xstream.api.XStreamExpression;
-import com.dunkware.xstream.api.XStreamRow;
+import com.dunkware.xstream.api.XStreamEntity;
 import com.dunkware.xstream.api.XStreamRuntimeException;
-import com.dunkware.xstream.api.XStreamVar;
+import com.dunkware.xstream.api.XStreamEntityVar;
 import com.dunkware.xstream.core.XStreamExpressionImpl;
 import com.dunkware.xstream.core.annotations.AXStreamExpression;
 import com.dunkware.xstream.xScript.AvgExpressionType;
@@ -18,11 +18,11 @@ import com.dunkware.xstream.xScript.ExpressionType;
 public class AvgExpression extends XStreamExpressionImpl {
 
 	AvgExpressionType type;
-	private XStreamRow row;
+	private XStreamEntity row;
 	private VarSetExpression targetExp = null;
 
 	@Override
-	public void init(XStreamRow row, ExpressionType type) {
+	public void init(XStreamEntity row, ExpressionType type) {
 		this.type = (AvgExpressionType) type;
 		this.row = row;
 		targetExp = (VarSetExpression) row.getStream().getInput().getRegistry().createVarExpression(this.type.getTarget());
@@ -77,7 +77,7 @@ public class AvgExpression extends XStreamExpressionImpl {
 
 
 	@Override
-	public void containedVariables(List<XStreamVar> varList) {
+	public void containedVariables(List<XStreamEntityVar> varList) {
 		targetExp.containedVariables(varList);
 	}
 

@@ -4,8 +4,7 @@ import com.dunkware.common.util.dtime.DDateTime;
 import com.dunkware.net.cluster.json.node.ClusterNodeState;
 import com.dunkware.net.cluster.json.node.ClusterNodeStats;
 import com.dunkware.net.cluster.json.node.ClusterNodeType;
-import com.dunkware.spring.channel.Channel;
-import com.dunkware.spring.message.Message;
+import com.dunkware.spring.messaging.message.DunkNetMessage;
 
 public interface ClusterNode {
 
@@ -43,14 +42,10 @@ public interface ClusterNode {
 	
 	public String getException();
 	
-	// wouldnt you want to have a input message to create a channel
-	// this will all work duncan krebs
-	// yes it will 
-	public Channel createChannel(String channelType) throws ClusterNodeException;
 	
-	public void sendMessage(Message message) throws ClusterNodeException;
+	public void sendMessage(DunkNetMessage message) throws ClusterNodeException;
 	
-	public Message requestReply(Message message) throws ClusterNodeException;
+	public DunkNetMessage requestReply(DunkNetMessage message) throws ClusterNodeException;
 	
 
 }

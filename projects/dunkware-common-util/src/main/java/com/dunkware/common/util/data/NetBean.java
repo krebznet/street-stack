@@ -7,7 +7,6 @@ import com.fasterxml.jackson.annotation.JsonValue;
 
 public class NetBean {
 	
-	
 	private Map<String,Object> values = new HashMap<String,Object>();
 	
 	public void setValue(String key, Object value) { 

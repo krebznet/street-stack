@@ -45,8 +45,8 @@ import com.dunkware.net.proto.cluster.GNodeUpdateRequest;
 import com.dunkware.net.proto.cluster.GNodeUpdateResponse;
 import com.dunkware.net.proto.cluster.service.GClustererviceGrpc;
 import com.dunkware.net.proto.cluster.service.GClustererviceGrpc.GClustererviceStub;
-import com.dunkware.spring.message.Message;
-import com.dunkware.spring.message.MessageTransport;
+import com.dunkware.spring.messaging.message.DunkNetMessage;
+import com.dunkware.spring.messaging.message.DunkNetMessageTransport;
 
 import io.grpc.ConnectivityState;
 import io.grpc.ManagedChannel;
@@ -90,11 +90,11 @@ public class ClusterImpl implements Cluster {
 
 	private BlockingQueue<GNodeUpdateResponse> responseQueue = new LinkedBlockingDeque<GNodeUpdateResponse>();
 
-	private BlockingQueue<MessageTransport> messageQueue = new LinkedBlockingQueue<MessageTransport>();
+	private BlockingQueue<DunkNetMessageTransport> messageQueue = new LinkedBlockingQueue<DunkNetMessageTransport>();
 
 	private Reflections reflections;
 	
-	private ClusterChannelService channelService = null;
+
 
 	@PostConstruct
 	public void load() {
@@ -407,7 +407,7 @@ public class ClusterImpl implements Cluster {
 		@Override
 		public void record(ConsumerRecord<String, byte[]> record) {
 			try {
-				MessageTransport transport = DJson.getObjectMapper().readValue(record.value(), MessageTransport.class);
+				DunkNetMessageTransport transport = DJson.getObjectMapper().readValue(record.value(), DunkNetMessageTransport.class);
 				messageQueue.add(transport);
 			} catch (Exception e) {
 				logger.error("Invalid Cluster Message handler " + e.toString());
@@ -420,7 +420,7 @@ public class ClusterImpl implements Cluster {
 		public void run() {
 
 			while (!interrupted()) {
-				MessageTransport transport = null;
+				DunkNetMessageTransport transport = null;
 				try {
 					transport = messageQueue.take();
 				} catch (Exception e) {
@@ -452,7 +452,7 @@ public class ClusterImpl implements Cluster {
 	}
 
 	@Override
-	public Message clusterService(Object payload) throws ClusterNodeException {
+	public DunkNetMessage clusterService(Object payload) throws ClusterNodeException {
 		// TODO Auto-generated method stub
 		return null;
 	}

@@ -10,7 +10,7 @@ import com.dunkware.common.util.events.DEventTree;
 import com.dunkware.common.util.executor.DExecutor;
 import com.dunkware.net.cluster.json.node.ClusterNodeStats;
 import com.dunkware.net.cluster.node.internal.ClusterConfig;
-import com.dunkware.spring.message.Message;
+import com.dunkware.spring.messaging.message.DunkNetMessage;
 
 @Service
 public interface Cluster {
@@ -44,7 +44,7 @@ public interface Cluster {
 	 * @return
 	 * @throws ClusterNodeException
 	 */
-	public Message clusterService(Object payload) throws ClusterNodeException;
+	public DunkNetMessage clusterService(Object payload) throws ClusterNodeException;
 }
 // DunkCluster
 // DunkNode -- 

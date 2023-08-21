@@ -1,8 +1,12 @@
 package com.dunkware.xstream.model.stats;
 
+import java.beans.Transient;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.ConcurrentHashMap;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 public class EntityStatsSession {
 	
@@ -13,6 +17,11 @@ public class EntityStatsSession {
 	private int sessionId;
 	
 	private List<EntityStatsSessionVar> vars = new ArrayList<EntityStatsSessionVar>();
+	
+	@JsonIgnore
+	public static ConcurrentHashMap<String,EntityStatsSessionVar> varMap = new ConcurrentHashMap<String, EntityStatsSessionVar>();
+	
+	
 	
 	
 	public LocalDate getDate() {
@@ -52,8 +61,20 @@ public class EntityStatsSession {
 	}
 	public void setVars(List<EntityStatsSessionVar> vars) {
 		this.vars = vars;
+		for (EntityStatsSessionVar entityStatsSessionVar : vars) {
+			varMap.put(entityStatsSessionVar.getIdent(), entityStatsSessionVar);
+		}
 	} 
 	
+	@JsonIgnore
+	public EntityStatsSessionVar getVar(String ident) { 
+		if(varMap.size() == 0 && vars.size() > 0) { 
+			for (EntityStatsSessionVar entityStatsSessionVar : vars) {
+				varMap.put(entityStatsSessionVar.getIdent(), entityStatsSessionVar);
+			}	
+		}
+		return varMap.get(ident);
+	}
 	
 	
 	

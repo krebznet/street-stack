@@ -17,6 +17,6 @@ public interface XStreamRowQueryResults {
 	
 	public Map<String,String> getExceptionMap();
 	
-	public List<XStreamRow> getMatched();
+	public List<XStreamEntity> getMatched();
 	
 }

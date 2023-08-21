@@ -2,5 +2,5 @@ package com.dunkware.xstream.api;
 
 public interface XStreamListener {
 
-	public void rowInsert(XStreamRow row);
+	public void rowInsert(XStreamEntity row);
 }

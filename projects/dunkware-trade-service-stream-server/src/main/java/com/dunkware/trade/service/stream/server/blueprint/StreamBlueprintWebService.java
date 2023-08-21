@@ -1,30 +1,106 @@
 package com.dunkware.trade.service.stream.server.blueprint;
 
+import java.util.List;
+
+import org.reactivestreams.Subscriber;
+import org.reactivestreams.Subscription;
+import org.slf4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.server.ResponseStatusException;
 
-import com.dunkware.trade.service.stream.json.blueprint.WebBlueprintSignal;
+import com.dunkware.common.util.datagrid.DataGridUpdate;
+import com.dunkware.common.util.glazed.GlazedDataGrid;
+import com.dunkware.net.cluster.node.Cluster;
+import com.dunkware.trade.service.stream.json.blueprint.WebStreamSignaltype;
+
+import reactor.core.publisher.Flux;
 
 @RestController
 public class StreamBlueprintWebService {
+	
+	private Logger logger = org.slf4j.LoggerFactory.getLogger(getClass());
 
 	@Autowired
 	private StreamBlueprintService blueprintService; 
 	
-	@GetMapping("/stream/v1/blueprint/signal/add")
-	public void addSignalType(@RequestBody WebBlueprintSignal model, @RequestParam String streamIdent) { 
-		StreamBlueprint blueprint = null;
+	
+	@Autowired
+	private Cluster cluster;
+	
+
+	
+	@GetMapping(path = "/stream/v1/blueprint/dash/signals", produces = MediaType.APPLICATION_STREAM_JSON_VALUE)
+    public Flux<List<DataGridUpdate>> blueprintSignals(@RequestParam() String stream) {
+		StreamBlueprint bp = null;
 		try {
-			blueprint = blueprintService.getBlueprint(streamIdent);
+			blueprintService.getBlueprint(stream);
+			
 		} catch (Exception e) {
 			throw new ResponseStatusException(
-			           HttpStatus.BAD_REQUEST, "Stream Ident not found " + streamIdent);
+			           HttpStatus.BAD_REQUEST, "Stream blueprint not found for " + stream);
+		}
+		GlazedDataGrid grid = GlazedDataGrid.newInstance(bp.getSignalBeans(),cluster.getExecutor(),"getId");
+		Flux<List<DataGridUpdate>> results = grid.getUpdates();
+		results.subscribe(new Subscriber<List<DataGridUpdate>>() {
+			private Subscription sub;
+			@Override
+			public void onSubscribe(Subscription s) {
+				this.sub = s;
+				sub.request(1);;
+			}
+
+			@Override
+			public void onNext(List<DataGridUpdate> t) {
+				try {
+					
+				} catch (Exception e) {
+					logger.error("error on next in bluepritn signal stream" + e.toString());
+				}
+				sub.request(1);
+				
+				
+			}
+
+			@Override
+			public void onError(Throwable t) {
+				sub.cancel();
+				if(logger.isDebugEnabled() ) { 
+					logger.debug("one error dispposing mocked broker list" + t.toString());
+				}
+				//list.dispose();
+			}
+
+			@Override
+			public void onComplete() {
+				sub.cancel();
+				if(logger.isDebugEnabled() ) { 
+					logger.debug("disposing mocked broker list");
+				}
+			//	list.dispose();
+				
+				
+			} 
+			
+		});
+		return results;
+	
+	}
+	
+	
+	@GetMapping("/stream/v1/blueprint/signal/add")
+	public void addSignalType(@RequestBody WebStreamSignaltype model, @RequestParam String stream) { 
+		StreamBlueprint blueprint = null;
+		try {
+			blueprint = blueprintService.getBlueprint(stream);
+		} catch (Exception e) {
+			throw new ResponseStatusException(
+			           HttpStatus.BAD_REQUEST, "Stream Ident not found " + stream);
 		}
 		
 		try {
@@ -36,6 +112,26 @@ public class StreamBlueprintWebService {
 		}
 	}
 	
+
+	
+	@GetMapping("/stream/v1/blueprint/signal/get")
+	public WebStreamSignaltype getBlueprintSignalModel(@RequestParam() String stream,  @RequestParam() long id) { 
+		StreamBlueprint bp = null;
+		try {
+			bp = blueprintService.getBlueprint(stream);
+		} catch (Exception e) {
+			throw new ResponseStatusException(
+			           HttpStatus.BAD_REQUEST, "Stream blueprint not found for " + stream);
+		}
+		try {
+			StreamBlueprintSignal sig = bp.getSignal(id);
+			return sig.getModel();
+		} catch (Exception e) {
+			throw new ResponseStatusException(
+			           HttpStatus.BAD_REQUEST, "Stream blueprint signal not found for " + id);
+			
+		}
+	}
 	
 	
 }

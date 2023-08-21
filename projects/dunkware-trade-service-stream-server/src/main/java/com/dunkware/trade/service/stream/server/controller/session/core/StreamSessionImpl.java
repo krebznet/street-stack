@@ -20,7 +20,6 @@ import org.slf4j.MarkerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 
-import com.dunkware.common.util.data.NetScanner;
 import com.dunkware.common.util.dtime.DTime;
 import com.dunkware.common.util.dtime.DTimeZone;
 import com.dunkware.common.util.events.DEventNode;
@@ -33,6 +32,7 @@ import com.dunkware.trade.service.stream.json.controller.session.StreamSessionSt
 import com.dunkware.trade.service.stream.json.worker.stream.StreamSessionWorkerStats;
 import com.dunkware.trade.service.stream.server.controller.StreamController;
 import com.dunkware.trade.service.stream.server.controller.session.StreamSession;
+import com.dunkware.trade.service.stream.server.controller.session.StreamSessionEntityScanner;
 import com.dunkware.trade.service.stream.server.controller.session.StreamSessionException;
 import com.dunkware.trade.service.stream.server.controller.session.StreamSessionExtension;
 import com.dunkware.trade.service.stream.server.controller.session.StreamSessionInput;
@@ -184,7 +184,7 @@ public class StreamSessionImpl implements StreamSession {
 	}
 
 	@Override
-	public StreamSessionStatus getStatus() {
+	public synchronized StreamSessionStatus getStatus() {
 		if (status.getNodes() != null)
 			status.getNodes().clear();
 		status.setNodeCount(nodes.size());
@@ -360,7 +360,7 @@ public class StreamSessionImpl implements StreamSession {
 	}
 
 	@Override
-	public NetScanner entityScanner(SessionEntityScanner model) throws XStreamRuntimeException {
+	public StreamSessionEntityScanner entityScanner(SessionEntityScanner model) throws XStreamRuntimeException {
 		// okay fun ->
 		return null;
 	}

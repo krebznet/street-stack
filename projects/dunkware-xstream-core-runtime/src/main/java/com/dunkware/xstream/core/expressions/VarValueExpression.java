@@ -4,9 +4,9 @@ import java.util.List;
 
 import com.dunkware.common.util.helpers.DConverter;
 import com.dunkware.xstream.api.XStreamExpression;
-import com.dunkware.xstream.api.XStreamRow;
+import com.dunkware.xstream.api.XStreamEntity;
 import com.dunkware.xstream.api.XStreamRuntimeException;
-import com.dunkware.xstream.api.XStreamVar;
+import com.dunkware.xstream.api.XStreamEntityVar;
 import com.dunkware.xstream.core.XStreamExpressionImpl;
 import com.dunkware.xstream.core.annotations.AXStreamExpression;
 import com.dunkware.xstream.xScript.ExpressionType;
@@ -19,11 +19,11 @@ public class VarValueExpression extends XStreamExpressionImpl {
 	private XStreamExpression indexExpression = null;
 	private boolean useExpression = false;
 	private int indexValue = 0;
-	private XStreamRow row;
-	private XStreamVar valueVar = null;
+	private XStreamEntity row;
+	private XStreamEntityVar valueVar = null;
 
 	@Override
-	public void init(XStreamRow row, ExpressionType type) {
+	public void init(XStreamEntity row, ExpressionType type) {
 		this.row = row;
 		this.type = (VariableValueType)type;
 		
@@ -127,7 +127,7 @@ public class VarValueExpression extends XStreamExpressionImpl {
 	}
 
 	@Override
-	public void containedVariables(List<XStreamVar> varList) {
+	public void containedVariables(List<XStreamEntityVar> varList) {
 		varList.add(valueVar);
 		if(indexExpression != null) { 
 			indexExpression.containedVariables(varList);

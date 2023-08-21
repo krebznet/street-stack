@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.dunkware.common.util.datagrid.DataGridUpdate;
-import com.dunkware.common.util.datagrid.GlazedDataGrid;
+import com.dunkware.common.util.glazed.GlazedDataGrid;
 import com.dunkware.common.util.json.DJson;
 import com.dunkware.trade.service.beach.server.common.BeachRuntime;
 import com.dunkware.trade.service.beach.server.controller.mock.MockBrokerEventList;

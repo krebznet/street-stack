@@ -20,8 +20,8 @@ import com.dunkware.common.util.dtime.DDateTime;
 import com.dunkware.common.util.helpers.DConverter;
 import com.dunkware.common.util.mysql.pool.MySqlConnectionPool;
 import com.dunkware.xstream.api.XStream;
-import com.dunkware.xstream.api.XStreamRow;
-import com.dunkware.xstream.api.XStreamRowListener;
+import com.dunkware.xstream.api.XStreamEntity;
+import com.dunkware.xstream.api.XStreamEntityListener;
 import com.dunkware.xstream.api.XStreamRowSignal;
 import com.dunkware.xstream.api.XStreamRowSnapshot;
 import com.dunkware.xstream.xScript.DataType;
@@ -33,7 +33,7 @@ import com.dunkware.xstream.xScript.VarType;
  * @author dkrebs
  *
  */
-public class MySqlCaptureRunner implements XStreamRowListener {
+public class MySqlCaptureRunner implements XStreamEntityListener {
 
 	private Logger logger = LoggerFactory.getLogger(getClass());
 	// change this to change batch insert size
@@ -199,7 +199,7 @@ public class MySqlCaptureRunner implements XStreamRowListener {
 	}
 
 	@Override
-	public void rowSignal(XStreamRow row, XStreamRowSignal signal) {
+	public void rowSignal(XStreamEntity row, XStreamRowSignal signal) {
 		signalQueue.add(signal);
 	}
 
@@ -428,7 +428,7 @@ public class MySqlCaptureRunner implements XStreamRowListener {
 			if (logger.isTraceEnabled()) {
 				// logger.trace("Snapshot Produce Runnable Invoked");
 			}
-			for (XStreamRow xStreamRow : stream.getRows()) {
+			for (XStreamEntity xStreamRow : stream.getRows()) {
 				snapshotQueue.add(xStreamRow.snapshot());
 				// snapshotPhaser.register();
 			}

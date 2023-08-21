@@ -20,18 +20,18 @@ import org.slf4j.MarkerFactory;
 import com.dunkware.xstream.api.XStreamExpression;
 import com.dunkware.xstream.api.XStreamExpressionListener;
 import com.dunkware.xstream.api.XStreamResolveException;
-import com.dunkware.xstream.api.XStreamRow;
+import com.dunkware.xstream.api.XStreamEntity;
 import com.dunkware.xstream.api.XStreamRuntimeException;
-import com.dunkware.xstream.api.XStreamVar;
-import com.dunkware.xstream.api.XStreamVarListener;
+import com.dunkware.xstream.api.XStreamEntityVar;
+import com.dunkware.xstream.api.XStreamEntityVarListener;
 import com.dunkware.xstream.model.metrics.XStreamVarMetrics;
 import com.dunkware.xstream.model.stats.EntityStatsSessionVar;
 import com.dunkware.xstream.xScript.DataType;
 import com.dunkware.xstream.xScript.VarType;
 
-public class XStreamVarImpl implements XStreamVar, XStreamExpressionListener, XStreamVarListener {
+public class XStreamVarImpl implements XStreamEntityVar, XStreamExpressionListener, XStreamEntityVarListener {
 
-	private XStreamRow row;
+	private XStreamEntity row;
 	private VarType varType;
 	
 	private Logger logger = LoggerFactory.getLogger(getClass());
@@ -49,12 +49,12 @@ public class XStreamVarImpl implements XStreamVar, XStreamExpressionListener, XS
 //	private volatile Integer updateCount = 0;
 	private volatile Integer currentOffset = -1;
 	
-	private List<XStreamVar> downstreamVars = new ArrayList<XStreamVar>();
+	private List<XStreamEntityVar> downstreamVars = new ArrayList<XStreamEntityVar>();
 	private Semaphore downstreamVarLock = new Semaphore(1);
 
 	private List<XStreamExpression> containedExpressions = new ArrayList<XStreamExpression>();
 
-	private List<XStreamVarListener> varListeners = new ArrayList<XStreamVarListener>();
+	private List<XStreamEntityVarListener> varListeners = new ArrayList<XStreamEntityVarListener>();
 	private Semaphore varListenerLock = new Semaphore(1);
 
 	private AtomicLong updateCounter = new AtomicLong(0);
@@ -66,7 +66,7 @@ public class XStreamVarImpl implements XStreamVar, XStreamExpressionListener, XS
 
 	
 	@Override
-	public void init(XStreamRow row, VarType varType) {
+	public void init(XStreamEntity row, VarType varType) {
 		this.row = row;
 		this.varType = varType;
 		this.dataType = varType.getType();
@@ -214,7 +214,7 @@ public class XStreamVarImpl implements XStreamVar, XStreamExpressionListener, XS
 	}
 
 	@Override
-	public void addVarListener(XStreamVarListener listener) {
+	public void addVarListener(XStreamEntityVarListener listener) {
 		try {
 			varListenerLock.acquire();
 			varListeners.add(listener);
@@ -226,7 +226,7 @@ public class XStreamVarImpl implements XStreamVar, XStreamExpressionListener, XS
 	}
 
 	@Override
-	public void removeVarListener(XStreamVarListener listener) {
+	public void removeVarListener(XStreamEntityVarListener listener) {
 		try {
 			varListenerLock.acquire();
 			varListeners.remove(listener);
@@ -255,12 +255,12 @@ public class XStreamVarImpl implements XStreamVar, XStreamExpressionListener, XS
 	}
 
 	@Override
-	public XStreamRow getRow() {
+	public XStreamEntity getRow() {
 		return row;
 	}
 
 	@Override
-	public void addDownStreamVar(XStreamVar var) {
+	public void addDownStreamVar(XStreamEntityVar var) {
 		try {
 			downstreamVarLock.acquire();
 			downstreamVars.add(var);
@@ -282,7 +282,7 @@ public class XStreamVarImpl implements XStreamVar, XStreamExpressionListener, XS
 	}
 
 	@Override
-	public Collection<XStreamVar> getDownStreamVars() {
+	public Collection<XStreamEntityVar> getDownStreamVars() {
 		return downstreamVars;
 	}
 
@@ -306,7 +306,7 @@ public class XStreamVarImpl implements XStreamVar, XStreamExpressionListener, XS
 	}
 
 	@Override
-	public void varUpdate(XStreamVar var) {
+	public void varUpdate(XStreamEntityVar var) {
 		if (expression.canExecute()) {
 			if (expression.execute()) {
 				setValue(expression.getValue());
@@ -350,7 +350,7 @@ public class XStreamVarImpl implements XStreamVar, XStreamExpressionListener, XS
 		public void run() {
 			try {
 				varListenerLock.acquire();
-				for (XStreamVarListener xStreamVarListener : varListeners) {
+				for (XStreamEntityVarListener xStreamVarListener : varListeners) {
 					try {
 						xStreamVarListener.varUpdate(XStreamVarImpl.this);
 					} catch (Exception e) {

@@ -10,12 +10,12 @@ import org.slf4j.LoggerFactory;
 
 import com.dunkware.common.util.data.DataHelper;
 import com.dunkware.common.util.dtime.DTimeZone;
-import com.dunkware.xstream.api.XStreamVar;
-import com.dunkware.xstream.api.XStreamVarListener;
+import com.dunkware.xstream.api.XStreamEntityVar;
+import com.dunkware.xstream.api.XStreamEntityVarListener;
 import com.dunkware.xstream.core.stats.StreamStatsHelper;
 import com.dunkware.xstream.model.stats.EntityStatsSessionVar;
 
-public class EntityVarStatsBuilder implements XStreamVarListener {
+public class EntityVarStatsBuilder implements XStreamEntityVarListener {
 
 	private Logger logger = LoggerFactory.getLogger(getClass());
 
@@ -29,15 +29,15 @@ public class EntityVarStatsBuilder implements XStreamVarListener {
 
 	private AtomicInteger valueCounter = new AtomicInteger();
 
-	private XStreamVar var;
+	private XStreamEntityVar var;
 	
 	private LocalDateTime fromTime;
 
-	public static EntityVarStatsBuilder newInstance(XStreamVar var) {
+	public static EntityVarStatsBuilder newInstance(XStreamEntityVar var) {
 		return new EntityVarStatsBuilder(var);
 	}
 
-	private EntityVarStatsBuilder(XStreamVar var) {
+	private EntityVarStatsBuilder(XStreamEntityVar var) {
 		this.fromTime = var.getRow().getLocalDateTime();
 		this.var = var;
 		this.var.addVarListener(this);
@@ -47,7 +47,7 @@ public class EntityVarStatsBuilder implements XStreamVarListener {
 	 * Handle update right now its simple, max/min
 	 */
 	@Override
-	public void varUpdate(XStreamVar var) {
+	public void varUpdate(XStreamEntityVar var) {
 		if (!StreamStatsHelper.isNumeric(var)) {
 			return;
 		}

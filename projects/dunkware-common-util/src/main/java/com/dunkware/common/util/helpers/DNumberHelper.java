@@ -38,6 +38,20 @@ public class DNumberHelper {
 	    return 1;
 	}
 	
+	public static boolean isFirstGreater(Number targetValue, Number compareValue) {
+		   // ignoring null handling
+	    double target = targetValue.doubleValue();
+	    double compare = compareValue.doubleValue();
+	    if(target == compare) { 
+	    	return false;
+	    }
+	    if(target < compare) { 
+	    	return false;
+	    }
+	    return true;
+	}
+	
+	
 	public static int getNumberType(Number number) { 
 		if (number instanceof Double) {
 			return DOUBLE;

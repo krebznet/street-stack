@@ -594,7 +594,7 @@ public class StreamController
 		if (logger.isDebugEnabled()) {
 			logger.debug("Recieved Session Stopped Event, Status Update Stopped");
 		}
-		stats.setState(StreamControllerState.Stopped);
+	//	stats.setState(StreamControllerState.Stopped);
 		ent.setState(StreamControllerState.Stopped);
 		ent.getSessions().add(session.getEntity());
 		streamRepo.save(ent);

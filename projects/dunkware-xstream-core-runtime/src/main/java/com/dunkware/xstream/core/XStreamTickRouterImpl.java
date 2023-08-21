@@ -14,7 +14,7 @@ import com.dunkware.common.tick.stream.TickStream;
 import com.dunkware.common.tick.time.TimeTick;
 import com.dunkware.common.util.dtime.DTime;
 import com.dunkware.common.util.dtime.DTimeZone;
-import com.dunkware.xstream.api.XStreamRow;
+import com.dunkware.xstream.api.XStreamEntity;
 import com.dunkware.xstream.api.XStreamTickRouter;
 
 public class XStreamTickRouterImpl implements XStreamTickRouter, TickStream {
@@ -82,7 +82,7 @@ public class XStreamTickRouterImpl implements XStreamTickRouter, TickStream {
 			dataTickCount.incrementAndGet();
 			String rowId = getDataTickRowId(tick);
 			if(stream.hasRow(rowId)) { 
-				XStreamRow row = stream.getRow(rowId);
+				XStreamEntity row = stream.getRow(rowId);
 				row.getTickStream().streamTick(tick);
 			} else { 
 				// new row create event //
@@ -104,7 +104,7 @@ public class XStreamTickRouterImpl implements XStreamTickRouter, TickStream {
 					return;
 				}
 				
-				XStreamRow row = stream.createRow(rowId,identifier);
+				XStreamEntity row = stream.createRow(rowId,identifier);
 				row.getTickStream().streamTick(tick);
 			}
 		}

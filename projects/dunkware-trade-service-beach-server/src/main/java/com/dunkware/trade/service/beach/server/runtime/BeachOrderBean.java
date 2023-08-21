@@ -1,8 +1,8 @@
 package com.dunkware.trade.service.beach.server.runtime;
 
-import com.dunkware.common.util.databean.DataBean;
+import com.dunkware.common.util.observable.ObservableBean;
 
-public class BeachOrderBean extends DataBean {
+public class BeachOrderBean extends ObservableBean {
 	
 	private String play; 
 	private String account; 

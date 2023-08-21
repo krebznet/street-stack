@@ -33,7 +33,19 @@
 			<version>3.8.1</version>
 		</dependency>
 
+		<dependency>
+			<groupId>com.dunkware.spring</groupId>
+			<artifactId>dunkware-spring-messaging</artifactId>
+			<version>1.0.0-SNAPSHOT</version>
 
+		</dependency>
+
+		<dependency>
+			<groupId>com.dunkware.spring</groupId>
+			<artifactId>dunkware-spring-messaging</artifactId>
+			<version>1.0.0-SNAPSHOT</version>
+
+		</dependency>
 		<dependency>
 			<groupId>org.projectreactor</groupId>
 			<artifactId>reactor-spring</artifactId>
@@ -45,13 +57,13 @@
 			<artifactId>dunkware-xstream-core-model</artifactId>
 			<version>1.3.0-SNAPSHOT</version>
 		</dependency>
-		 <dependency>
-        <groupId>org.slf4j</groupId>
-        <artifactId>log4j-over-slf4j</artifactId>
-        <version>1.7.36</version>
-      </dependency>
-		
-		
+		<dependency>
+			<groupId>org.slf4j</groupId>
+			<artifactId>log4j-over-slf4j</artifactId>
+			<version>1.7.36</version>
+		</dependency>
+
+
 
 
 	</dependencies>

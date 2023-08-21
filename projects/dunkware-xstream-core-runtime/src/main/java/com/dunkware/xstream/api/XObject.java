@@ -25,7 +25,7 @@ public interface XObject {
 	
 	public XClassType getXClassType();
 	
-	public XStreamRow getRow();
+	public XStreamEntity getRow();
 		
 	public XObjectContext getContext();
 	

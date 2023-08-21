@@ -4,7 +4,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
-import com.dunkware.xstream.api.XStreamRow;
+import com.dunkware.xstream.api.XStreamEntity;
 import com.dunkware.xstream.api.XStreamRowQueryResults;
 
 public class XStreamRowQueryResultsImpl implements XStreamRowQueryResults {
@@ -71,7 +71,7 @@ public class XStreamRowQueryResultsImpl implements XStreamRowQueryResults {
 	}
 
 	@Override
-	public List<XStreamRow> getMatched() {
+	public List<XStreamEntity> getMatched() {
 		// TODO Auto-generated method stub
 		return null;
 	}

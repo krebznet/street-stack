@@ -1,10 +1,10 @@
 package com.dunkware.net.cluster.node.internal;
 
-import com.dunkware.spring.message.MessageTransport;
+import com.dunkware.spring.messaging.message.DunkNetMessageTransport;
 
 public interface TransportHandler {
 
 	
 	
-	boolean handler(MessageTransport transpor);
+	boolean handler(DunkNetMessageTransport transpor);
 }

@@ -1,9 +1,9 @@
 package com.dunkware.trade.service.beach.server.runtime;
 
-import com.dunkware.common.util.databean.DataBean;
 import com.dunkware.common.util.json.DJson;
+import com.dunkware.common.util.observable.ObservableBean;
 
-public class BeachAccountBean extends DataBean {
+public class BeachAccountBean extends ObservableBean {
 
 	private String name; 
 	private String broker;

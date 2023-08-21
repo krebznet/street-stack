@@ -3,7 +3,6 @@ package com.dunkware.trade.service.stream.server.controller.session;
 
 import java.util.List;
 
-import com.dunkware.common.util.data.NetScanner;
 import com.dunkware.common.util.events.DEventNode;
 import com.dunkware.trade.service.stream.json.controller.model.StreamSessionSpec;
 import com.dunkware.trade.service.stream.json.controller.session.StreamSessionStatus;
@@ -43,7 +42,7 @@ public interface StreamSession {
 	
 	public StreamSessionSpec getSessionSpec();
 	
-	public NetScanner entityScanner(SessionEntityScanner model) throws XStreamRuntimeException;
+	public StreamSessionEntityScanner entityScanner(SessionEntityScanner model) throws XStreamRuntimeException;
 	
 	public EntitySnapshot getEntitySnapshot(String ident) throws Exception;
 

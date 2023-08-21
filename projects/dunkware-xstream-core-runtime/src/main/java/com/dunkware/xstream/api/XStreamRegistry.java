@@ -23,5 +23,5 @@ public interface XStreamRegistry {
 	
 	public XObjectExpression createObjectExpression(XExpressionType type);
 	
-	public List<XStreamService> createServices();
+	public List<DD> createServices();
 }

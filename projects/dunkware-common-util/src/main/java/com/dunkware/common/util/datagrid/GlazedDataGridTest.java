@@ -2,7 +2,7 @@ package com.dunkware.common.util.datagrid;
 
 import java.util.ArrayList;
 
-import com.dunkware.common.util.databean.DataBeanConnector;
+import com.dunkware.common.util.observable.ObservableBeanListConnector;
 
 import ca.odell.glazedlists.EventList;
 import ca.odell.glazedlists.GlazedLists;
@@ -21,7 +21,7 @@ public class GlazedDataGridTest implements ListEventListener<DataGridBean> {
 	public GlazedDataGridTest() {
 		EventList<DataGridBean> personEventList = GlazedLists.eventList(new ArrayList<DataGridBean>());
 
-		list = new ObservableElementList<>(personEventList, new DataBeanConnector<>());
+		list = new ObservableElementList<>(personEventList, new ObservableBeanListConnector<>());
 		list.addListEventListener(this);
 		Updater updater = new Updater();
 		updater.start();

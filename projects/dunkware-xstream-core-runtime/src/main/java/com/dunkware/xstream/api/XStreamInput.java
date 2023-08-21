@@ -21,6 +21,8 @@ public class XStreamInput {
 	private String sessionId;
 	private DTimeZone timeZone; 
 	private List<XStreamSignalType> signalTypes = new ArrayList<XStreamSignalType>();
+	private XStreamStatProvider statProvider;
+	
 	// here we need to somehow provide a stat provider and not put the bullshit in memeory here. 
 	public List<XStreamExtensionType> getExtensions() {
 		return extensions;
@@ -80,6 +82,14 @@ public class XStreamInput {
 	public void setSignalTypes(List<XStreamSignalType> signalTypes) {
 		this.signalTypes = signalTypes;
 	}
+	public XStreamStatProvider getStatProvider() {
+		return statProvider;
+	}
+	public void setStatProvider(XStreamStatProvider statProvider) {
+		this.statProvider = statProvider;
+	}
+	
+	
 	
 	
 	

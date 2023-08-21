@@ -3,8 +3,8 @@ package com.dunkware.xstream.core.expressions;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.dunkware.xstream.api.XStreamRow;
-import com.dunkware.xstream.api.XStreamVar;
+import com.dunkware.xstream.api.XStreamEntity;
+import com.dunkware.xstream.api.XStreamEntityVar;
 import com.dunkware.xstream.core.XStreamExpressionImpl;
 import com.dunkware.xstream.core.annotations.AXStreamExpression;
 import com.dunkware.xstream.core.util.XStreamAggHelper;
@@ -21,15 +21,15 @@ public class VarAggSessionExpression extends XStreamExpressionImpl {
 	private Logger logger = LoggerFactory.getLogger(getClass());
 
 	private VarAggSessionType myType;
-	private XStreamRow row;
+	private XStreamEntity row;
 	private int secondRange = 0;
 	private boolean todayRange = false;
 	private SessionAggFunc function = null;
-	private XStreamVar targetVar;
+	private XStreamEntityVar targetVar;
 	private boolean exception = false;
 
 	@Override
-	public void init(XStreamRow row, ExpressionType type) {
+	public void init(XStreamEntity row, ExpressionType type) {
 		this.row = row;
 		myType = (VarAggSessionType) type;
 		SessionTimeRange rnage = myType.getTimeRange();

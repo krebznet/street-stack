@@ -5,9 +5,9 @@ import java.util.concurrent.atomic.AtomicInteger;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.dunkware.common.util.databean.DataBeanConnector;
 import com.dunkware.common.util.executor.DExecutor;
 import com.dunkware.common.util.helpers.DRandom;
+import com.dunkware.common.util.observable.ObservableBeanListConnector;
 import com.dunkware.trade.service.beach.server.runtime.BeachBrokerBean;
 
 import ca.odell.glazedlists.BasicEventList;
@@ -42,7 +42,7 @@ public class MockBrokerEventList   {
 		this.updateInterval = updatInterval;
 		list = new ObservableElementList<BeachBrokerBean>(
 				GlazedLists.threadSafeList(new BasicEventList<BeachBrokerBean>()),
-				new DataBeanConnector<BeachBrokerBean>());
+				new ObservableBeanListConnector<BeachBrokerBean>());
 		
 	}
 	

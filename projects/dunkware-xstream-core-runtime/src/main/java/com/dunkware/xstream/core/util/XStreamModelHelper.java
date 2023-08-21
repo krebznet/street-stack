@@ -7,7 +7,7 @@ import org.slf4j.LoggerFactory;
 
 import com.dunkware.xstream.api.XDataType;
 import com.dunkware.xstream.api.XStreamRuntimeException;
-import com.dunkware.xstream.api.XStreamVar;
+import com.dunkware.xstream.api.XStreamEntityVar;
 import com.dunkware.xstream.model.query.XStreamTime;
 import com.dunkware.xstream.model.query.XStreamTimeUnit;
 import com.dunkware.xstream.model.util.Condition;
@@ -49,7 +49,7 @@ public class XStreamModelHelper {
 		return LocalTime.of(time.getHour(), time.getMinute(), time.getSecond());
 	}
 
-	public static XDataType getXDataType(XStreamVar var) {
+	public static XDataType getXDataType(XStreamEntityVar var) {
 		DataType dt = var.getVarType().getType();
 		if (dt == DataType.BO_OL) {
 			return XDataType.BOOL;

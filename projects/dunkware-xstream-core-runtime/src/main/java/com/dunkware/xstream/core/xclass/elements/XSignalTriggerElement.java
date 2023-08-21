@@ -3,7 +3,7 @@
  */
 package com.dunkware.xstream.core.xclass.elements;
 
-import com.dunkware.xstream.api.XStreamRow;
+import com.dunkware.xstream.api.XStreamEntity;
 import com.dunkware.xstream.core.annotations.AXObjectElement;
 import com.dunkware.xstream.core.xclass.impl.XObjectElementImpl;
 import com.dunkware.xstream.xScript.XSignalTriggerType;
@@ -36,7 +36,7 @@ public class XSignalTriggerElement extends XObjectElementImpl {
 	
 	@Override
 	public void execute()  {
-		XStreamRow row = getXObject().getRow();
+		XStreamEntity row = getXObject().getRow();
 		row.signal(_type.getSignal());
 	}
 

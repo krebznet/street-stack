@@ -14,7 +14,7 @@ import org.springframework.web.servlet.mvc.method.annotation.StreamingResponseBo
 
 import com.dunkware.common.util.json.DJson;
 
-public class StreamingAdapter implements StreamingResponseBody {
+public class  implements StreamingResponseBody {
 
 	private BlockingQueue<Object> streamQueue = new LinkedBlockingQueue<Object>();
 	

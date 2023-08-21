@@ -7,7 +7,7 @@ import com.dunkware.common.util.helpers.DConverter;
 import com.dunkware.xstream.api.XObject;
 import com.dunkware.xstream.api.XObjectExpression;
 import com.dunkware.xstream.api.XStreamRuntimeException;
-import com.dunkware.xstream.api.XStreamVar;
+import com.dunkware.xstream.api.XStreamEntityVar;
 import com.dunkware.xstream.core.annotations.AXObjectExpression;
 import com.dunkware.xstream.xScript.XExpressionType;
 import com.dunkware.xstream.xScript.XStreamVarValueExpType;
@@ -21,7 +21,7 @@ import com.dunkware.xstream.xScript.XStreamVarValueExpType;
 public class XStreamVarValueExp implements XObjectExpression {
 	private XStreamVarValueExpType _type;
 	private XObject _xObject; 
-	private XStreamVar _refVar = null;
+	private XStreamEntityVar _refVar = null;
 	private XObjectExpression _expression; 
 	private Integer _index = null;
 	@Override

@@ -17,11 +17,9 @@ import com.dunkware.net.cluster.json.node.ClusterNodeType;
 import com.dunkware.net.cluster.json.node.ClusterNodeUpdate;
 import com.dunkware.net.cluster.node.ClusterNode;
 import com.dunkware.net.cluster.node.ClusterNodeException;
-import com.dunkware.spring.channel.Channel;
-import com.dunkware.spring.channel.ChannelException;
-import com.dunkware.spring.message.Message;
-import com.dunkware.spring.message.MessageHelper;
-import com.dunkware.spring.message.MessageTransport;
+import com.dunkware.spring.messaging.message.DunkNetMessage;
+import com.dunkware.spring.messaging.message.DunkNetMessageHelper;
+import com.dunkware.spring.messaging.message.DunkNetMessageTransport;
 
 import io.grpc.ConnectivityState;
 import io.grpc.ManagedChannel;
@@ -218,9 +216,9 @@ public class ClusterNodeImpl implements ClusterNode {
 	}
 	
 	@Override
-	public void sendMessage(Message message) throws ClusterNodeException {
+	public void sendMessage(DunkNetMessage message) throws ClusterNodeException {
 		try {
-			MessageTransport port = MessageHelper.toTransport(message);
+			DunkNetMessageTransport port = DunkNetMessageHelper.toTransport(message,getId());
 			String portString = DJson.serialize(port);
 			messageProducer.sendBytes(portString.getBytes());
 		} catch (Exception e) {
@@ -284,15 +282,9 @@ public class ClusterNodeImpl implements ClusterNode {
 
 	}
 
-	@Override
-	public Channel createChannel(String channelType) throws ClusterNodeException {
-		
-		// TODO Auto-generated method stub
-		return null;
-	}
 
 	@Override
-	public Message requestReply(Message message) throws ClusterNodeException {
+	public DunkNetMessage requestReply(DunkNetMessage message) throws ClusterNodeException {
 		// TODO Auto-generated method stub
 		return null;
 	}

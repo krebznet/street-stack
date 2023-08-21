@@ -3,7 +3,7 @@ package com.dunkware.xstream.core.expressions;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.dunkware.xstream.api.XStreamRow;
+import com.dunkware.xstream.api.XStreamEntity;
 import com.dunkware.xstream.core.XStreamExpressionImpl;
 import com.dunkware.xstream.core.annotations.AXStreamExpression;
 import com.dunkware.xstream.xScript.ExpressionType;
@@ -15,10 +15,10 @@ public class SignalCountHistorical extends XStreamExpressionImpl {
 	private Logger logger = LoggerFactory.getLogger(getClass());
 
 	private SignalCountHistory myType; 
-	private XStreamRow row; 
+	private XStreamEntity row; 
 	
 	@Override
-	public void init(XStreamRow row, ExpressionType type) {
+	public void init(XStreamEntity row, ExpressionType type) {
 		this.row = row; 
 		this.myType = (SignalCountHistory)type;
 		

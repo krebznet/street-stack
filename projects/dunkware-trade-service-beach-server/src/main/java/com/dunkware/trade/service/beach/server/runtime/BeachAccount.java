@@ -10,10 +10,10 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 
-import com.dunkware.common.util.databean.DataBeanConnector;
 import com.dunkware.common.util.events.DEventNode;
 import com.dunkware.common.util.events.anot.ADEventMethod;
 import com.dunkware.common.util.json.DJson;
+import com.dunkware.common.util.observable.ObservableBeanListConnector;
 import com.dunkware.trade.sdk.core.runtime.broker.BrokerAccount;
 import com.dunkware.trade.service.beach.model.system.BeachSystemModel;
 import com.dunkware.trade.service.beach.server.common.BeachRuntime;
@@ -69,13 +69,13 @@ public class BeachAccount {
 		bean.notifyUpdate();
 		tradeBeans = new ObservableElementList<BeachTradeBean>(
 				GlazedLists.threadSafeList(new BasicEventList<BeachTradeBean>()),
-				new DataBeanConnector<BeachTradeBean>());
+				new ObservableBeanListConnector<BeachTradeBean>());
 		orderBeans = new ObservableElementList<BeachOrderBean>(
 				GlazedLists.threadSafeList(new BasicEventList<BeachOrderBean>()),
-				new DataBeanConnector<BeachOrderBean>());
+				new ObservableBeanListConnector<BeachOrderBean>());
 		systemBeans = new ObservableElementList<BeachSystemBean>(
 				GlazedLists.threadSafeList(new BasicEventList<BeachSystemBean>()),
-				new DataBeanConnector<BeachSystemBean>());
+				new ObservableBeanListConnector<BeachSystemBean>());
 
 		this.eventNode = broker.getEventNode().createChild(this);
 		this.eventNode.addEventHandler(this);

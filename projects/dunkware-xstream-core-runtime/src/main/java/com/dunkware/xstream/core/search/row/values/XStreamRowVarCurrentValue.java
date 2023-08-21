@@ -3,8 +3,8 @@ package com.dunkware.xstream.core.search.row.values;
 import com.dunkware.xstream.api.XStream;
 import com.dunkware.xstream.api.XStreamQueryException;
 import com.dunkware.xstream.api.XStreamResolveException;
-import com.dunkware.xstream.api.XStreamRow;
-import com.dunkware.xstream.api.XStreamVar;
+import com.dunkware.xstream.api.XStreamEntity;
+import com.dunkware.xstream.api.XStreamEntityVar;
 import com.dunkware.xstream.core.search.row.XStreamRowValue;
 import com.dunkware.xstream.model.query.XStreamRowValueModel;
 
@@ -20,8 +20,8 @@ public class XStreamRowVarCurrentValue implements XStreamRowValue {
 	}
 
 	@Override
-	public boolean canResolve(XStreamRow row) throws XStreamQueryException {
-		XStreamVar var = row.getVar(model.getVarIdent());
+	public boolean canResolve(XStreamEntity row) throws XStreamQueryException {
+		XStreamEntityVar var = row.getVar(model.getVarIdent());
 		if(var == null) { 
 			throw new XStreamQueryException("Variable " + model.getVarIdent() + " not found");
 		}
@@ -32,7 +32,7 @@ public class XStreamRowVarCurrentValue implements XStreamRowValue {
 	}
 
 	@Override
-	public Number resolve(XStreamRow row) throws XStreamResolveException, XStreamQueryException {
+	public Number resolve(XStreamEntity row) throws XStreamResolveException, XStreamQueryException {
 		Object value = row.getVar(model.getVarIdent()).getValue(0);
 		if (value instanceof Number) {
 			Number retValue = (Number) value;

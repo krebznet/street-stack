@@ -15,10 +15,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.springframework.stereotype.Service;
 
-import com.dunkware.common.util.databean.DataBeanConnector;
 import com.dunkware.common.util.events.DEventNode;
 import com.dunkware.common.util.events.anot.ADEventMethod;
 import com.dunkware.common.util.json.DJson;
+import com.dunkware.common.util.observable.ObservableBeanListConnector;
 import com.dunkware.trade.broker.tws.TwsBrokerType;
 import com.dunkware.trade.sdk.core.runtime.registry.TradeRegistry;
 import com.dunkware.trade.service.beach.protocol.broker.AddBrokerReq;
@@ -64,10 +64,10 @@ public class BeachService {
 	private void load() {
 		brokerBeans = new ObservableElementList<BeachBrokerBean>(
 				GlazedLists.threadSafeList(new BasicEventList<BeachBrokerBean>()),
-				new DataBeanConnector<BeachBrokerBean>());
+				new ObservableBeanListConnector<BeachBrokerBean>());
 		accountBeans = new ObservableElementList<BeachAccountBean>(
 				GlazedLists.threadSafeList(new BasicEventList<BeachAccountBean>()),
-				new DataBeanConnector<BeachAccountBean>());
+				new ObservableBeanListConnector<BeachAccountBean>());
 		
 		eventNode = runtime.getEventTree().getRoot().createChild(this);
 		eventNode.addEventHandler(this);

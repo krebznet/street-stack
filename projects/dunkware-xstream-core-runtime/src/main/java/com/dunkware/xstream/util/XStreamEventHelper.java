@@ -17,9 +17,9 @@ import com.dunkware.net.proto.stream.GEntitySnapshot.GSnapshotSignal;
 import com.dunkware.net.proto.stream.GEntityVarSnapshot;
 import com.dunkware.net.proto.stream.GStreamEvent;
 import com.dunkware.net.proto.stream.GStreamEventType;
-import com.dunkware.xstream.api.XStreamRow;
+import com.dunkware.xstream.api.XStreamEntity;
 import com.dunkware.xstream.api.XStreamRowSignal;
-import com.dunkware.xstream.api.XStreamVar;
+import com.dunkware.xstream.api.XStreamEntityVar;
 import com.dunkware.xstream.core.comparator.VarNameComparator;
 import com.dunkware.xstream.xScript.DataType;
 import com.google.protobuf.Timestamp;
@@ -33,7 +33,7 @@ public class XStreamEventHelper {
 	 * @return
 	 * @throws XStreamEventException
 	 */
-	public static GStreamEvent buildEntitySnapshotEvent(XStreamRow row, ZoneId timeZoneId,List<XStreamRowSignal> signals, LocalDateTime time)
+	public static GStreamEvent buildEntitySnapshotEvent(XStreamEntity row, ZoneId timeZoneId,List<XStreamRowSignal> signals, LocalDateTime time)
 			throws XStreamEventException {
 		GEntitySnapshot snapshot = buildEntitySnapshot(row, timeZoneId,signals,time);
 		
@@ -50,7 +50,7 @@ public class XStreamEventHelper {
 	 * @return
 	 * @throws XStreamEventException
 	 */
-	public static GStreamEvent buildEntitySignalEvent(XStreamRow row, XStreamRowSignal signal)
+	public static GStreamEvent buildEntitySignalEvent(XStreamEntity row, XStreamRowSignal signal)
 			throws XStreamEventException {
 		GEntitySignal sig = buildEntitySignal(row, signal);
 		return GStreamEvent.newBuilder().setEntitySignal(sig).setType(GStreamEventType.EntitySignal)
@@ -66,7 +66,7 @@ public class XStreamEventHelper {
 	 * @return
 	 * @throws XStreamEventException
 	 */
-	public static GEntitySnapshot buildEntitySnapshot(XStreamRow row, ZoneId timeZoneId, List<XStreamRowSignal> signals, LocalDateTime time)
+	public static GEntitySnapshot buildEntitySnapshot(XStreamEntity row, ZoneId timeZoneId, List<XStreamRowSignal> signals, LocalDateTime time)
 			throws XStreamEventException {
 		GEntitySnapshot.Builder builder = GEntitySnapshot.newBuilder();
 		builder.setId(row.getIdentifier());
@@ -96,7 +96,7 @@ public class XStreamEventHelper {
 	 * @return
 	 * @throws XStreamEventException
 	 */
-	public static GEntitySignal buildEntitySignal(XStreamRow row, XStreamRowSignal signal)
+	public static GEntitySignal buildEntitySignal(XStreamEntity row, XStreamRowSignal signal)
 			throws XStreamEventException {
 		
 		GEntitySignal.Builder builder = GEntitySignal.newBuilder();
@@ -134,10 +134,10 @@ public class XStreamEventHelper {
 	 * @return
 	 * @throws XStreamEventException
 	 */
-	public static List<GEntityVarSnapshot> buildVarSnapshots(XStreamRow row) throws XStreamEventException {
+	public static List<GEntityVarSnapshot> buildVarSnapshots(XStreamEntity row) throws XStreamEventException {
 
 		List<GEntityVarSnapshot> snapshots = new ArrayList<GEntityVarSnapshot>();
-		for (XStreamVar var : row.getVars()) {
+		for (XStreamEntityVar var : row.getVars()) {
 			if(var.getSize() == 0) { 
 				continue;
 			}
@@ -204,13 +204,13 @@ public class XStreamEventHelper {
 	 * @param row
 	 * @return
 	 */
-	public static String varSnapshotString(XStreamRow row) {
-		List<XStreamVar> varList = new ArrayList<XStreamVar>();
+	public static String varSnapshotString(XStreamEntity row) {
+		List<XStreamEntityVar> varList = new ArrayList<XStreamEntityVar>();
 		varList.addAll(row.getVars());
 		Collections.sort(varList, new VarNameComparator());
 		StringBuilder builder = new StringBuilder();
 		int count = 0;
-		for (XStreamVar xStreamVar : varList) {
+		for (XStreamEntityVar xStreamVar : varList) {
 			if (count > 0) {
 				builder.append(",");
 			}

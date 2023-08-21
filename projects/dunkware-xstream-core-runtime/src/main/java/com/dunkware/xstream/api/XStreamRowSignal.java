@@ -8,7 +8,7 @@ import com.dunkware.xstream.xScript.SignalType;
 
 public interface XStreamRowSignal {
 
-	public XStreamRow getRow();
+	public XStreamEntity getRow();
 
 	public SignalType getSignalType();
 	

@@ -6,7 +6,7 @@ import java.util.concurrent.ConcurrentHashMap;
 import com.dunkware.xstream.api.XStream;
 import com.dunkware.xstream.api.XStreamQueryException;
 import com.dunkware.xstream.api.XStreamResolveException;
-import com.dunkware.xstream.api.XStreamRow;
+import com.dunkware.xstream.api.XStreamEntity;
 import com.dunkware.xstream.core.search.row.XStreamRowValue;
 import com.dunkware.xstream.model.query.XStreamRowValueModel;
 import com.dunkware.xstream.model.stats.EntityStatReq;
@@ -30,7 +30,7 @@ public class XStreamRowSignalHistoricalCountValue implements XStreamRowValue {
 	}
 
 	@Override
-	public boolean canResolve(XStreamRow row) throws XStreamQueryException {
+	public boolean canResolve(XStreamEntity row) throws XStreamQueryException {
 		EntityStatResp resp = cache.get(row.getId());
 		if(resp == null) { 
 			// make a new request
@@ -50,7 +50,7 @@ public class XStreamRowSignalHistoricalCountValue implements XStreamRowValue {
 	}
 
 	@Override
-	public Number resolve(XStreamRow row) throws XStreamResolveException, XStreamQueryException {
+	public Number resolve(XStreamEntity row) throws XStreamResolveException, XStreamQueryException {
 		// assuming it returned true. we shoudl get resp and get number
 		EntityStatResp resp = cache.get(row.getId());
 		if(resp == null) { 

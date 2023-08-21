@@ -8,32 +8,32 @@ import org.slf4j.LoggerFactory;
 
 import com.dunkware.common.util.json.DJson;
 import com.dunkware.xstream.api.XStream;
-import com.dunkware.xstream.api.XStreamRow;
-import com.dunkware.xstream.api.XStreamRowListener;
+import com.dunkware.xstream.api.XStreamEntity;
+import com.dunkware.xstream.api.XStreamEntityListener;
 import com.dunkware.xstream.api.XStreamRowSignal;
-import com.dunkware.xstream.api.XStreamVar;
+import com.dunkware.xstream.api.XStreamEntityVar;
 import com.dunkware.xstream.core.stats.StreamStatsExt;
 import com.dunkware.xstream.model.stats.EntityStatsSession;
 import com.dunkware.xstream.model.stats.EntityStatsSessionVar;
 import com.dunkware.xstream.util.XStreamHelper;
 import com.dunkware.xstream.xScript.SignalType;
 
-public class EntityStatsBuilder implements XStreamRowListener {
+public class EntityStatsBuilder implements XStreamEntityListener {
 
 	private Logger logger = LoggerFactory.getLogger(getClass());
 
-	public static EntityStatsBuilder newInstance(StreamStatsExt ext, XStreamRow row) {
+	public static EntityStatsBuilder newInstance(StreamStatsExt ext, XStreamEntity row) {
 		return new EntityStatsBuilder(ext, row);
 	}
 
 	private ConcurrentHashMap<String, EntityVarStatsBuilder> varStats = new ConcurrentHashMap<String, EntityVarStatsBuilder>();
 	private EntityStatsSession stats = new EntityStatsSession();
 	private XStream stream;
-	private XStreamRow row;
+	private XStreamEntity row;
 	
 	private ConcurrentHashMap<SignalType,AtomicInteger> signalCounts = new ConcurrentHashMap<SignalType,AtomicInteger>();
 
-	private EntityStatsBuilder(StreamStatsExt ext, XStreamRow row) {
+	private EntityStatsBuilder(StreamStatsExt ext, XStreamEntity row) {
 		this.stream = row.getStream();
 		this.row = row;
 		stats.setDate(row.getStream().getClock().getLocalDateTime().toLocalDate());
@@ -41,7 +41,7 @@ public class EntityStatsBuilder implements XStreamRowListener {
 		stats.setIdent(row.getId());
 		stats.setStream(stream.getInput().getIdentifier());
 		// for each variable build a EntityVarStats builder
-		for (XStreamVar var : row.getVars()) {
+		for (XStreamEntityVar var : row.getVars()) {
 			if (XStreamHelper.isVarNumeric(var)) {
 				EntityVarStatsBuilder varStatBuilder = EntityVarStatsBuilder.newInstance(var);
 				this.varStats.put(var.getVarType().getName(), varStatBuilder);
@@ -52,7 +52,7 @@ public class EntityStatsBuilder implements XStreamRowListener {
 	
 
 	@Override
-	public void rowSignal(XStreamRow row, XStreamRowSignal signal) {
+	public void rowSignal(XStreamEntity row, XStreamRowSignal signal) {
 		if(signalCounts.get(signal.getSignalType()) == null) { 
 			signalCounts.put(signal.getSignalType(), new AtomicInteger(1));
 		}

@@ -3,7 +3,7 @@ package com.dunkware.xstream.core.search.row.criteria;
 import com.dunkware.common.util.calc.DCalc;
 import com.dunkware.xstream.api.XStreamQueryException;
 import com.dunkware.xstream.api.XStreamResolveException;
-import com.dunkware.xstream.api.XStreamRow;
+import com.dunkware.xstream.api.XStreamEntity;
 import com.dunkware.xstream.core.search.XStreamSearchHelper;
 import com.dunkware.xstream.core.search.row.XStreamRowValue;
 import com.dunkware.xstream.model.query.XStreamCriteriaCompareFunc;
@@ -26,7 +26,7 @@ public class XStreamRowValueCompareCriteria implements XStreamRowCriteria {
 	}
 
 	@Override
-	public boolean canResolve(XStreamRow row) throws XStreamQueryException, XStreamResolveException {
+	public boolean canResolve(XStreamEntity row) throws XStreamQueryException, XStreamResolveException {
 		if(value1.canResolve(row) && value2.canResolve(row)) { 
 			return true; 
 		}
@@ -34,7 +34,7 @@ public class XStreamRowValueCompareCriteria implements XStreamRowCriteria {
 	}
 
 	@Override
-	public boolean test(XStreamRow row) throws XStreamResolveException, XStreamQueryException {
+	public boolean test(XStreamEntity row) throws XStreamResolveException, XStreamQueryException {
 		Number rowValue1 = value1.resolve(row);
 		Number rowValue2 = value2.resolve(row);
 		Number computed = doCompare(rowValue1, rowValue2);

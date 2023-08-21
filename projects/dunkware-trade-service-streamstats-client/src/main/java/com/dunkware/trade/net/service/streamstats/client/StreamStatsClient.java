@@ -1,17 +1,17 @@
 package com.dunkware.trade.net.service.streamstats.client;
 
-import java.util.concurrent.Future;
-
-import com.dunkware.trade.net.service.streamstats.client.impl.StreamStatsClientBean;
-import com.dunkware.trade.net.service.streamstats.client.proto.StreamStatsRequest;
-import com.dunkware.trade.net.service.streamstats.client.proto.StreamStatsResponse;
+import com.dunkware.spring.messaging.DunkNet;
+import com.dunkware.xstream.model.stats.EntityStatReq;
+import com.dunkware.xstream.model.stats.EntityStatResp;
 
 public interface StreamStatsClient {
 	
-	void load(StreamStatsClientBean bean) throws StreamStatsClientException; 
+	void start(DunkNet net) throws StreamStatsClientException; 
 	
-	Future<StreamStatsResponse> request(StreamStatsRequest req) throws StreamStatsClientException; 
+	void stop();
 	
 	void dispose();
+	
+	EntityStatResp getEntityStat(EntityStatReq req) throws Exception;
 
 }

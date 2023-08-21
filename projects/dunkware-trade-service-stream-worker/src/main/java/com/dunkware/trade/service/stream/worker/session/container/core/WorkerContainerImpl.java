@@ -9,8 +9,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import com.dunkware.common.util.executor.DExecutor;
 import com.dunkware.net.cluster.node.Cluster;
-import com.dunkware.spring.channel.Channel;
-import com.dunkware.spring.channel.ChannelService;
+import com.dunkware.spring.messaging.channel.Channel;
+import com.dunkware.spring.messaging.channel.ChannelService;
 import com.dunkware.trade.service.stream.container.worker.WorkerContainerInput;
 import com.dunkware.trade.service.stream.worker.session.container.WorkerContainer;
 import com.dunkware.trade.service.stream.worker.session.container.WorkerContainerException;
@@ -24,13 +24,10 @@ public class WorkerContainerImpl implements WorkerContainer {
 
 	private WorkerContainerInput input; 
 	
-	private Channel workerChannel; 
-	
 	
 	private Logger logger = LoggerFactory.getLogger(getClass());
 	
-	@Autowired
-	private ChannelService channelService; 
+	
 	
 	@Autowired
 	private Cluster cluster; 

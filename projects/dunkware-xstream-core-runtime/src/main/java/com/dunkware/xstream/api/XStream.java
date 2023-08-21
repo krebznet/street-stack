@@ -6,7 +6,6 @@ import org.slf4j.Marker;
 
 import com.dunkware.xstream.model.metrics.XStreamMetrics;
 import com.dunkware.xstream.model.query.XStreamQueryModel;
-import com.dunkware.xstream.util.XStreamEntityStatsResolver;
 
 public interface XStream {
 	
@@ -22,13 +21,19 @@ public interface XStream {
 	 * @param id
 	 * @return
 	 */
-	XStreamRow getRow(String id);
+	XStreamEntity getRow(String id);
 	
 	/**
 	 * Returns a List of Rows -- can do better here. 
 	 * @return
 	 */
-	List<XStreamRow> getRows();
+	List<XStreamEntity> getRows();
+	
+	/**
+	 * This will return the stats my friend and cache as needed.
+	 * @return
+	 */
+	XStreamStatProvider getStatProvider();
 	
 	/**
 	 * Returns a String array of all the row ids that 
@@ -38,7 +43,7 @@ public interface XStream {
 	String[] getRowIds();
 	
 	
-	XStreamRow createRow(String rowId, int rowIdentifier);
+	XStreamEntity createRow(String rowId, int rowIdentifier);
 	
 	XStreamExecutor getExecutor();
 	
@@ -82,13 +87,13 @@ public interface XStream {
 	 * Registers an XRowListener and adds it to all existing and future rows
 	 * @param listener
 	 */
-	public void addRowListener(XStreamRowListener listener);
+	public void addRowListener(XStreamEntityListener listener);
 	
 	/**
 	 * Removes a XRowListener from all existing and future rows
 	 * @param listener
 	 */
-	public void removeRowListener(XStreamRowListener listener);
+	public void removeRowListener(XStreamEntityListener listener);
 	
 	/**
 	 * Returns a service and throws exception if not exists
@@ -138,7 +143,8 @@ public interface XStream {
 	 * @return
 	 * @throws XStreamQueryException
 	 */
-	public XStreamRowQuery createRowQuery(XStreamQueryModel model) throws XStreamQueryException;
+	public XStreamEntityQuery entityQuery(XStreamQueryModel model) throws XStreamQueryException;
 		
+	
 }
 

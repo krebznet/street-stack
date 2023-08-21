@@ -8,15 +8,12 @@ import com.dunkware.common.util.helpers.DAnotHelper;
 import com.dunkware.net.cluster.node.ClusterNodeException;
 import com.dunkware.net.cluster.node.anot.AClusterMessage;
 import com.dunkware.net.cluster.node.anot.AClusterService;
-import com.dunkware.spring.channel.Channel;
-import com.dunkware.spring.channel.ChannelException;
-import com.dunkware.spring.channel.core.ChannelHandler;
 
 public class ClusterExtension {
 	
-	public static ChannelHandler newInstance(Object target, Channel channel) throws ChannelException {
-		return new ChannelHandler(target, channel);
-	}
+	//public static ChannelHandler newInstance(Object target, Channel channel) throws ChannelException {
+	//	return new ChannelHandler(target, channel);
+	//}
 
 	private List<MessageHandler> messageHandlers = new ArrayList<MessageHandler>();
 	private List<MessageReply> messageReplies = new ArrayList<MessageReply>();

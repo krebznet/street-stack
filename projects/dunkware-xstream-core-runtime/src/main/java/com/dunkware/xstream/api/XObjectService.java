@@ -28,7 +28,7 @@ public interface XObjectService {
 	 * @return
 	 * @throws XClassException
 	 */
-	public XObject createXObject(XClassType clazz, XStreamRow row) ;
+	public XObject createXObject(XClassType clazz, XStreamEntity row) ;
 
 	public XObjectExpression createExpression(XExpressionType type) ;
 	

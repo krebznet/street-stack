@@ -6,12 +6,12 @@ import com.dunkware.common.util.stopwatch.DStopWatch;
 import com.dunkware.xstream.api.XStream;
 import com.dunkware.xstream.api.XStreamQueryException;
 import com.dunkware.xstream.api.XStreamResolveException;
-import com.dunkware.xstream.api.XStreamRow;
-import com.dunkware.xstream.api.XStreamRowQuery;
+import com.dunkware.xstream.api.XStreamEntity;
+import com.dunkware.xstream.api.XStreamEntityQuery;
 import com.dunkware.xstream.api.XStreamRowQueryResults;
 import com.dunkware.xstream.model.query.XStreamQueryModel;
 
-public class XStreamRowQueryImpl implements XStreamRowQuery   {
+public class XStreamRowQueryImpl implements XStreamEntityQuery   {
 
 	private XStream stream; 
 	private XStreamQueryModel model; 
@@ -28,12 +28,12 @@ public class XStreamRowQueryImpl implements XStreamRowQuery   {
 	
 
 	@Override
-	public XStreamRowQueryResults query(List<XStreamRow> rows)  {
+	public XStreamRowQueryResults query(List<XStreamEntity> rows)  {
 		XStreamRowQueryResultsImpl results = new XStreamRowQueryResultsImpl();
 		results.setQueryCount(rows.size());
 		DStopWatch timer = DStopWatch.create();
 		timer.start();
-		for (XStreamRow xStreamRow : rows) {
+		for (XStreamEntity xStreamRow : rows) {
 			boolean resolved = false; 
 			try {
 				resolved = criterias.canResolve(xStreamRow);

@@ -5,7 +5,7 @@ import java.util.List;
 import com.dunkware.xstream.api.XStream;
 import com.dunkware.xstream.api.XStreamException;
 import com.dunkware.xstream.api.XStreamExtension;
-import com.dunkware.xstream.api.XStreamRow;
+import com.dunkware.xstream.api.XStreamEntity;
 import com.dunkware.xstream.core.annotations.AXStreamExtension;
 import com.dunkware.xstream.util.XStreamHelper;
 import com.dunkware.xstream.xproject.model.XStreamExtensionType;
@@ -49,9 +49,9 @@ public class VarSnapshotPrinter implements XStreamExtension {
 		
 		public void run() { 
 			
-			List<XStreamRow> rows = stream.getRows();
+			List<XStreamEntity> rows = stream.getRows();
 			System.out.println("Snapshot Stream Row Count " + rows.size());
-			for (XStreamRow xStreamRow : rows) {
+			for (XStreamEntity xStreamRow : rows) {
 				System.out.println(XStreamHelper.varSnapshotString(xStreamRow));
 			}
 		}

@@ -4,14 +4,14 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-import com.dunkware.xstream.api.XStreamRow;
-import com.dunkware.xstream.api.XStreamVar;
+import com.dunkware.xstream.api.XStreamEntity;
+import com.dunkware.xstream.api.XStreamEntityVar;
 import com.dunkware.xstream.core.comparator.VarNameComparator;
 import com.dunkware.xstream.xScript.DataType;
 
 public class XStreamHelper {
 	
-	public static boolean isVarNumeric(XStreamVar var) { 
+	public static boolean isVarNumeric(XStreamEntityVar var) { 
 		DataType dt = var.getVarType().getType();
 		if(dt.getValue() == DataType.INT_VALUE) { 
 			return true; 
@@ -25,13 +25,13 @@ public class XStreamHelper {
 		return false;
 	}
 
-	public static String varSnapshotString(XStreamRow row) {
-		List<XStreamVar> varList = new ArrayList<XStreamVar>();
+	public static String varSnapshotString(XStreamEntity row) {
+		List<XStreamEntityVar> varList = new ArrayList<XStreamEntityVar>();
 		varList.addAll(row.getVars());
 		Collections.sort(varList, new VarNameComparator());
 		StringBuilder builder = new StringBuilder();
 		int count = 0;
-		for (XStreamVar xStreamVar : varList) {
+		for (XStreamEntityVar xStreamVar : varList) {
 			if (count > 0) {
 				builder.append(",");
 			}

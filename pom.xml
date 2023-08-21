@@ -55,7 +55,7 @@
 					<id>dunkware-internal-release</id>
 					<layout>default</layout>
 					<name>dunkware-internal-release</name>
-					<url>https://nexus.dunkware.com/repository/dunkware-internal-release/</url>	
+					<url>https://nexus.dunkware.com/repository/dunkware-internal-release/</url>
 
 				</repository>
 			</distributionManagement>
@@ -110,6 +110,10 @@
      	<module>projects/dunkware-xstream-net-client</module>
 			<module>projects/dunkware-xstream-net-server</module>
 			<module>projects/dunkware-spring-messaging</module>
+			<module>/projects/dunkware-trade-service-streamstats-server</module>
+
+			<module>projects/dunkware-trade-service-streamstats-client</module>
+
 
 
 

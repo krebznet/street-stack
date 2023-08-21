@@ -9,7 +9,7 @@ import org.slf4j.LoggerFactory;
 
 import com.dunkware.xstream.api.XStreamExpression;
 import com.dunkware.xstream.api.XStreamExpressionListener;
-import com.dunkware.xstream.api.XStreamVar;
+import com.dunkware.xstream.api.XStreamEntityVar;
 
 public abstract class XStreamExpressionImpl implements XStreamExpression  {
 	
@@ -51,7 +51,7 @@ public abstract class XStreamExpressionImpl implements XStreamExpression  {
 	}
 
 	@Override
-	public void containedVariables(List<XStreamVar> varList) {
+	public void containedVariables(List<XStreamEntityVar> varList) {
 		
 	}
 

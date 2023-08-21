@@ -2,9 +2,9 @@ package com.dunkware.xstream.core.expressions;
 
 import java.util.List;
 
-import com.dunkware.xstream.api.XStreamRow;
+import com.dunkware.xstream.api.XStreamEntity;
 import com.dunkware.xstream.api.XStreamRuntimeException;
-import com.dunkware.xstream.api.XStreamVar;
+import com.dunkware.xstream.api.XStreamEntityVar;
 import com.dunkware.xstream.core.XStreamExpressionImpl;
 import com.dunkware.xstream.core.annotations.AXStreamExpression;
 import com.dunkware.xstream.xScript.ExpressionType;
@@ -14,14 +14,14 @@ import com.dunkware.xstream.xScript.VariableValueRangeType;
 public class VarValueRangeExpression extends XStreamExpressionImpl {
 
 	private VariableValueRangeType type;
-	private XStreamRow row;
-	private XStreamVar targetVar = null;
+	private XStreamEntity row;
+	private XStreamEntityVar targetVar = null;
 	private int startIndex = 0;
 	private int endIndex = 0;
 	
 	
 	@Override
-	public void init(XStreamRow row, ExpressionType type) {
+	public void init(XStreamEntity row, ExpressionType type) {
 		this.row = row;
 		this.type = (VariableValueRangeType)type;
 		this.startIndex = this.type.getStartIndex();
@@ -72,7 +72,7 @@ public class VarValueRangeExpression extends XStreamExpressionImpl {
 	}
 
 	@Override
-	public void containedVariables(List<XStreamVar> varList) {
+	public void containedVariables(List<XStreamEntityVar> varList) {
 		varList.add(targetVar);
 	}
 

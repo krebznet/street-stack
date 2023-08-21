@@ -22,13 +22,13 @@ import com.dunkware.common.util.time.DunkTime;
 import com.dunkware.xstream.api.XStream;
 import com.dunkware.xstream.api.XStreamQueryException;
 import com.dunkware.xstream.api.XStreamResolveException;
-import com.dunkware.xstream.api.XStreamRow;
-import com.dunkware.xstream.api.XStreamRowListener;
+import com.dunkware.xstream.api.XStreamEntity;
+import com.dunkware.xstream.api.XStreamEntityListener;
 import com.dunkware.xstream.api.XStreamRowSignal;
 import com.dunkware.xstream.api.XStreamRowSnapshot;
 import com.dunkware.xstream.api.XStreamRuntimeException;
-import com.dunkware.xstream.api.XStreamVar;
-import com.dunkware.xstream.api.XStreamVarListener;
+import com.dunkware.xstream.api.XStreamEntityVar;
+import com.dunkware.xstream.api.XStreamEntityVarListener;
 import com.dunkware.xstream.model.metrics.XStreamRowMetrics;
 import com.dunkware.xstream.model.metrics.XStreamVarMetrics;
 import com.dunkware.xstream.model.query.XStreamRowValueModel;
@@ -39,14 +39,14 @@ import com.dunkware.xstream.util.XStreamEntityStatsResolver;
 import com.dunkware.xstream.xScript.SignalType;
 import com.dunkware.xstream.xScript.VarType;
 
-public class XStreamRowImpl implements XStreamRow, XStreamVarListener {
+public class XStreamRowImpl implements XStreamEntity, XStreamEntityVarListener {
 
 	private String id;
 	private XStream stream;
 
 	private Logger logger = LoggerFactory.getLogger(getClass());
 
-	private ConcurrentHashMap<String, XStreamVar> vars = new ConcurrentHashMap<String, XStreamVar>();
+	private ConcurrentHashMap<String, XStreamEntityVar> vars = new ConcurrentHashMap<String, XStreamEntityVar>();
 
 	private List<XStreamRowSignal> signals = new ArrayList<XStreamRowSignal>();
 	private AtomicInteger signalCount = new AtomicInteger(0);
@@ -55,10 +55,10 @@ public class XStreamRowImpl implements XStreamRow, XStreamVarListener {
 	private DTime realTimeCreate;
 	private DTime streamTimeCreate;
 
-	private List<XStreamRowListener> rowListeners = new ArrayList<XStreamRowListener>();
+	private List<XStreamEntityListener> rowListeners = new ArrayList<XStreamEntityListener>();
 	private Semaphore rowListenerLock = new Semaphore(1);
 
-	private List<XStreamVarListener> varListeners = new ArrayList<XStreamVarListener>();
+	private List<XStreamEntityVarListener> varListeners = new ArrayList<XStreamEntityVarListener>();
 	private Semaphore varListenerLock = new Semaphore(1);
 
 	
@@ -78,7 +78,7 @@ public class XStreamRowImpl implements XStreamRow, XStreamVarListener {
 			var.init(this, varType);
 			vars.put(varType.getName(), var);
 		}
-		for (XStreamVar var : vars.values()) {
+		for (XStreamEntityVar var : vars.values()) {
 			var.start();
 			var.addVarListener(this);
 		}
@@ -86,7 +86,7 @@ public class XStreamRowImpl implements XStreamRow, XStreamVarListener {
 
 	@Override
 	public void dispose() {
-		for (XStreamVar var : vars.values()) {
+		for (XStreamEntityVar var : vars.values()) {
 			var.dispose();
 		}
 	}
@@ -102,12 +102,12 @@ public class XStreamRowImpl implements XStreamRow, XStreamVarListener {
 	}
 
 	@Override
-	public Collection<XStreamVar> getVars() {
+	public Collection<XStreamEntityVar> getVars() {
 		return vars.values();
 	}
 
 	@Override
-	public XStreamVar getVar(String name) {
+	public XStreamEntityVar getVar(String name) {
 		if (vars.containsKey(name) == false) {
 			throw new XStreamRuntimeException("Variable " + name + " not found on row " + id);
 		}
@@ -123,7 +123,7 @@ public class XStreamRowImpl implements XStreamRow, XStreamVarListener {
 	public XStreamRowSnapshot snapshot() {
 		Map<String, Object> varMap = new HashMap<String, Object>();
 		for (String key : vars.keySet()) {
-			XStreamVar var = vars.get(key);
+			XStreamEntityVar var = vars.get(key);
 			if (var.getSize() == 0) {
 				varMap.put(var.getVarType().getName(), null);
 			} else {
@@ -146,7 +146,7 @@ public class XStreamRowImpl implements XStreamRow, XStreamVarListener {
 		stats.setTickCount(getTickStream().getTickCount());
 		List<XStreamVarMetrics> varList = new ArrayList<XStreamVarMetrics>();
 		if (varStats) {
-			for (XStreamVar var : vars.values()) {
+			for (XStreamEntityVar var : vars.values()) {
 				varList.add(var.getStats());
 			}
 			stats.setVarStats(varList);
@@ -176,7 +176,7 @@ public class XStreamRowImpl implements XStreamRow, XStreamVarListener {
 
 		try {
 			rowListenerLock.acquire();
-			for (XStreamRowListener xStreamRowListener : rowListeners) {
+			for (XStreamEntityListener xStreamRowListener : rowListeners) {
 				xStreamRowListener.rowSignal(XStreamRowImpl.this, signal);
 			}
 		} catch (Exception e) {
@@ -188,7 +188,7 @@ public class XStreamRowImpl implements XStreamRow, XStreamVarListener {
 	}
 
 	@Override
-	public void addRowListener(XStreamRowListener list) {
+	public void addRowListener(XStreamEntityListener list) {
 		Runnable runner = new Runnable() {
 
 			@Override
@@ -208,7 +208,7 @@ public class XStreamRowImpl implements XStreamRow, XStreamVarListener {
 	}
 
 	@Override
-	public void removeRowListener(XStreamRowListener list) {
+	public void removeRowListener(XStreamEntityListener list) {
 		Runnable runner = new Runnable() {
 
 			@Override
@@ -245,12 +245,12 @@ public class XStreamRowImpl implements XStreamRow, XStreamVarListener {
 	
 
 	@Override
-	public void varUpdate(XStreamVar var) {
+	public void varUpdate(XStreamEntityVar var) {
 		Runnable run = new Runnable() {
 			public void run() {
 				try {
 					varListenerLock.acquire();
-					for (XStreamVarListener varListener : varListeners) {
+					for (XStreamEntityVarListener varListener : varListeners) {
 						varListener.varUpdate(var);
 					}
 				} catch (Exception e) {
@@ -265,7 +265,7 @@ public class XStreamRowImpl implements XStreamRow, XStreamVarListener {
 	}
 
 	@Override
-	public void addVarListener(XStreamVarListener listener) {
+	public void addVarListener(XStreamEntityVarListener listener) {
 		Runnable run = new Runnable() {
 
 			@Override
@@ -287,7 +287,7 @@ public class XStreamRowImpl implements XStreamRow, XStreamVarListener {
 	}
 
 	@Override
-	public void removeVarListener(XStreamVarListener listener) {
+	public void removeVarListener(XStreamEntityVarListener listener) {
 		Runnable run = new Runnable() {
 
 			@Override

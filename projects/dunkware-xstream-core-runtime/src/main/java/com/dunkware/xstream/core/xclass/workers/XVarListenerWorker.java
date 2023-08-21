@@ -9,8 +9,8 @@ import org.slf4j.LoggerFactory;
 import com.dunkware.xstream.api.XObject;
 import com.dunkware.xstream.api.XObjectFunction;
 import com.dunkware.xstream.api.XObjectWorker;
-import com.dunkware.xstream.api.XStreamVar;
-import com.dunkware.xstream.api.XStreamVarListener;
+import com.dunkware.xstream.api.XStreamEntityVar;
+import com.dunkware.xstream.api.XStreamEntityVarListener;
 import com.dunkware.xstream.xScript.XStreamVarListenerType;
 
 /**
@@ -18,13 +18,13 @@ import com.dunkware.xstream.xScript.XStreamVarListenerType;
  * @date Oct 24, 2015
  * @category M10-Comcast
  */
-public class XVarListenerWorker implements XObjectWorker, XStreamVarListener {
+public class XVarListenerWorker implements XObjectWorker, XStreamEntityVarListener {
 	
 	private Logger _logger = LoggerFactory.getLogger(getClass());
 
 	private XStreamVarListenerType _type;
 	private XObject _xObject; 
-	private XStreamVar _var;
+	private XStreamEntityVar _var;
 	private XObjectFunction _function; 
 	
 	public XVarListenerWorker(XStreamVarListenerType type) {
@@ -45,7 +45,7 @@ public class XVarListenerWorker implements XObjectWorker, XStreamVarListener {
 	}
 
 	@Override
-	public void varUpdate(XStreamVar var) {
+	public void varUpdate(XStreamEntityVar var) {
 		try {
 			Runnable runner = new Runnable() { 
 				

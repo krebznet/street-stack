@@ -27,15 +27,15 @@ import com.dunkware.xstream.api.XStreamClock;
 import com.dunkware.xstream.api.XStreamClockListener;
 import com.dunkware.xstream.api.XStreamException;
 import com.dunkware.xstream.api.XStreamExtension;
-import com.dunkware.xstream.api.XStreamRow;
-import com.dunkware.xstream.api.XStreamRowListener;
+import com.dunkware.xstream.api.XStreamEntity;
+import com.dunkware.xstream.api.XStreamEntityListener;
 import com.dunkware.xstream.api.XStreamRowSignal;
 import com.dunkware.xstream.core.annotations.AXStreamExtension;
 import com.dunkware.xstream.util.XStreamEventHelper;
 import com.dunkware.xstream.xproject.model.XStreamExtensionType;
 
 @AXStreamExtension(type = StreamEventPublisherExtType.class)
-public class StreamEventPublisherExt implements XStreamExtension, XStreamRowListener {
+public class StreamEventPublisherExt implements XStreamExtension, XStreamEntityListener {
 
 	private XStream stream;
 	private StreamEventPublisherExtType type;
@@ -187,7 +187,7 @@ public class StreamEventPublisherExt implements XStreamExtension, XStreamRowList
 	}
 
 	@Override
-	public void rowSignal(final XStreamRow row, final XStreamRowSignal signal) {
+	public void rowSignal(final XStreamEntity row, final XStreamRowSignal signal) {
 		// add it to our snapshot queue
 		if (snapshotSignals.get(row.getId()) == null) {
 			List<XStreamRowSignal> signals = new ArrayList<XStreamRowSignal>();
@@ -216,7 +216,7 @@ public class StreamEventPublisherExt implements XStreamExtension, XStreamRowList
 				timeUpdateQueue.add(time);
 				// in the same thread iterating through rows
 				// can't be that long 
-				for (XStreamRow row : stream.getRows()) {
+				for (XStreamEntity row : stream.getRows()) {
 					RowSnapshot snapshot = new RowSnapshot();
 					snapshot.row = row;
 					snapshot.time = time;
@@ -263,7 +263,7 @@ public class StreamEventPublisherExt implements XStreamExtension, XStreamRowList
 	public class EntitySnapshotBuilder implements Runnable {
 		public void run() {
 			try {
-				for (XStreamRow row : stream.getRows()) {
+				for (XStreamEntity row : stream.getRows()) {
 					try {
 						// so here #1 we need to pull signals of the queue
 						// update the schema to NewEntitySnapshotPublish have signals
@@ -320,7 +320,7 @@ public class StreamEventPublisherExt implements XStreamExtension, XStreamRowList
 		
 		public List<XStreamRowSignal> signals;
 		public LocalDateTime time; 
-		public XStreamRow row; 
+		public XStreamEntity row; 
 	}
 	
 	

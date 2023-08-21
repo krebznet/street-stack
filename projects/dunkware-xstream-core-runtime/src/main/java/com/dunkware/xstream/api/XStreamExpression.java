@@ -12,7 +12,7 @@ public interface XStreamExpression {
 	 * @param expType
 	 * @throws XStreamException
 	 */
-	public void init(XStreamRow row, ExpressionType type) ;
+	public void init(XStreamEntity row, ExpressionType type) ;
 	
 	/**
 	 * Starts the expression after all variables have been
@@ -68,7 +68,7 @@ public interface XStreamExpression {
 	 * Child classes can override this to provide contained variables
 	 * @param varList
 	 */
-	public void containedVariables(List<XStreamVar> varList);
+	public void containedVariables(List<XStreamEntityVar> varList);
 
 	/**
 	 * Child classes can override this to provide contained expressions

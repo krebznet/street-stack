@@ -5,28 +5,28 @@ import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
 import com.dunkware.common.util.dtime.DTime;
-import com.dunkware.xstream.api.XStreamRow;
+import com.dunkware.xstream.api.XStreamEntity;
 import com.dunkware.xstream.api.XStreamRowSignal;
-import com.dunkware.xstream.api.XStreamVar;
+import com.dunkware.xstream.api.XStreamEntityVar;
 import com.dunkware.xstream.xScript.SignalType;
 
 public class XStreamSignalImpl implements XStreamRowSignal {
 	
-	private XStreamRow row; 
+	private XStreamEntity row; 
 	private SignalType signalType; 
 	private long timestamp; 
 	private DTime time; 
 	private LocalDateTime localDateTime;
 	private Map<Integer,Object> vars = new ConcurrentHashMap<Integer,Object>();
 	
-	public XStreamSignalImpl(XStreamRow row, SignalType signalType,  long timestamp,  DTime time, LocalDateTime dateTime) { 
+	public XStreamSignalImpl(XStreamEntity row, SignalType signalType,  long timestamp,  DTime time, LocalDateTime dateTime) { 
 		this.row = row; 
 		this.localDateTime = dateTime;
 		this.signalType = signalType; 
 		this.timestamp = timestamp; 
 		this.time = time; 
 		
-		for (XStreamVar var : row.getVars()) {
+		for (XStreamEntityVar var : row.getVars()) {
 			if(var.getSize() == 0) { 
 				vars.put(var.getVarType().getCode(), "null");
 			} else { 
@@ -36,7 +36,7 @@ public class XStreamSignalImpl implements XStreamRowSignal {
 	}
 
 	@Override
-	public XStreamRow getRow() {
+	public XStreamEntity getRow() {
 		return row; 
 	}
 

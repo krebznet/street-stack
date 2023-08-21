@@ -46,7 +46,7 @@ public interface StreamSessionNode {
 	
 	public EntitySnapshot getEntitySnapshot(String ident) throws Exception;
 	
-	
+	// yes have a channel - that makes the most sense! 
 	// getChannel(); 
 	
 }

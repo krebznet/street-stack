@@ -4,8 +4,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.dunkware.xstream.api.XStreamExpression;
-import com.dunkware.xstream.api.XStreamRow;
-import com.dunkware.xstream.api.XStreamVar;
+import com.dunkware.xstream.api.XStreamEntity;
+import com.dunkware.xstream.api.XStreamEntityVar;
 import com.dunkware.xstream.core.XStreamExpressionImpl;
 import com.dunkware.xstream.core.annotations.AXStreamExpression;
 import com.dunkware.xstream.xScript.ExpressionType;
@@ -16,12 +16,12 @@ import com.dunkware.xstream.xScript.SetExpressionType;
 public class VarSetExpression extends XStreamExpressionImpl {
 	
 	private SetExpressionType type; 
-	private XStreamRow row; 
+	private XStreamEntity row; 
 	
 	private List<XStreamExpression> children = new ArrayList<XStreamExpression>();
 
 	@Override
-	public void init(XStreamRow row, ExpressionType type) {
+	public void init(XStreamEntity row, ExpressionType type) {
 		this.row = row;
 		this.type = (SetExpressionType)type;
 		for (ExpressionType expType : this.type.getArgs()) {
@@ -81,7 +81,7 @@ public class VarSetExpression extends XStreamExpressionImpl {
 	
 	
 	@Override
-	public void containedVariables(List<XStreamVar> varList) {
+	public void containedVariables(List<XStreamEntityVar> varList) {
 		for (XStreamExpression exp : children) {
 			exp.containedVariables(varList);
 		}

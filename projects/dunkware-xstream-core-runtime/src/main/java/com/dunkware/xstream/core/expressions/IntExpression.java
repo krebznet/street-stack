@@ -1,6 +1,6 @@
 package com.dunkware.xstream.core.expressions;
 
-import com.dunkware.xstream.api.XStreamRow;
+import com.dunkware.xstream.api.XStreamEntity;
 import com.dunkware.xstream.core.XStreamExpressionImpl;
 import com.dunkware.xstream.core.annotations.AXStreamExpression;
 import com.dunkware.xstream.xScript.ExpressionType;
@@ -10,9 +10,9 @@ import com.dunkware.xstream.xScript.IntConstantType;
 public class IntExpression extends XStreamExpressionImpl {
 
 	private IntConstantType type;
-	private XStreamRow row; 
+	private XStreamEntity row; 
 	@Override
-	public void init(XStreamRow row, ExpressionType type) {
+	public void init(XStreamEntity row, ExpressionType type) {
 		this.type = (IntConstantType)type;
 		
 	}

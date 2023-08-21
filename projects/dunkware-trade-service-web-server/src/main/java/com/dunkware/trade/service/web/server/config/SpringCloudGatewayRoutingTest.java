@@ -38,6 +38,7 @@ public class SpringCloudGatewayRoutingTest {
 				.route("trade", r -> r.path("/trade/**").uri("http://192.168.50.10:8032"))
 				.route("tick", r -> r.path("/tick/**").uri("http://172.16.16.55:31890"))
 				.route("feed", r -> r.path("/feed/**").uri("http://172.16.16.55:31890"))
+				.route("feed", r -> r.path("/streamstats/**").uri("http://172.16.16.55:32199"))
 					.build();
 	  }
 	 

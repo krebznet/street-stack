@@ -20,7 +20,7 @@ public class StreamStatsClientTest {
 
 	private StreamStatsClientTest() {
 		try {
-			client = StreamStatsCientFactory.create("172.16.16.55:31090", "statreq", "statresp",
+			client = StreamStatNetClientFactory.create("172.16.16.55:31090", "statreq", "statresp",
 					"testme1 " + DUUID.randomUUID(5), "testgroup1" + DUUID.randomUUID(5), 30, TimeUnit.SECONDS, LocalDate.now());
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -36,27 +36,7 @@ public class StreamStatsClientTest {
 					StreamStatsRequest req = null;
 					req = StreamStatsRequest.builder().stream("us_equity").date(LocalDate.now()).entity("AAPL").relativeDays(DRandom.getRandom(3, 40)).varHighReative("TickLast").buid();
 					
-					Future<StreamStatsResponse> calback = client.request(req);
-					int count = 0;
-					while(!calback.isDone()) { 
-						System.out.println("not done");
-						Thread.sleep(10);
-						count++;
-						if(count == 30) { 
-							continue;
-						}
-					}
-					System.out.println(calback.get().getResp().getType());
-					if(calback.get().getResp().getType() == EntityStatRespType.Resolved) {
-						System.out.println("shit resolved " + calback.get().getResp().getValue());
-					}
-					if(calback.get().getResp().getType() == EntityStatRespType.Exception) {
-						System.out.println("shit exception " + calback.get().getResp().getException());
-					}
-					if(calback.get().getResp().getType() == EntityStatRespType.Unresolved) {
-						System.out.println("shit unresolved");
-					}
-					Thread.sleep(5000);
+				
 					
 							
 					Thread.sleep(250);

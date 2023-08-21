@@ -14,12 +14,12 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 
-import com.dunkware.common.util.databean.DataBeanConnector;
 import com.dunkware.common.util.events.DEvent;
 import com.dunkware.common.util.events.DEventNode;
 import com.dunkware.common.util.events.anot.ADEventMethod;
 import com.dunkware.common.util.helpers.DRandom;
 import com.dunkware.common.util.json.DJson;
+import com.dunkware.common.util.observable.ObservableBeanListConnector;
 import com.dunkware.trade.broker.tws.TwsBrokerType;
 import com.dunkware.trade.sdk.core.model.broker.BrokerStatus;
 import com.dunkware.trade.sdk.core.model.broker.BrokerType;
@@ -98,7 +98,7 @@ public class BeachBroker {
 	public void init(BeachBrokerEnt ent) {
 		accountBeans = new ObservableElementList<BeachAccountBean>(
 				GlazedLists.threadSafeList(new BasicEventList<BeachAccountBean>()),
-				new DataBeanConnector<BeachAccountBean>());
+				new ObservableBeanListConnector<BeachAccountBean>());
 		eventNode = beachService.getEventNode().createChild(this);
 		eventNode.addEventHandler(this);
 		this.entity = ent;
