@@ -15,7 +15,7 @@
 
 
 
-	<appender name="FLUENT"
+	<!--  <appender name="FLUENT"
 		class="ch.qos.logback.more.appenders.DataFluentAppender">
 		<tag>myrock</tag>
 		<label>streamstats</label>
@@ -25,17 +25,16 @@
 			<key>node</key>
 			<value>streamstats</value>
 		</additionalField>
-	</appender>
+	</appender>-->
 
-	<root level="ERROR">
-		<appender-ref ref="FLUENT" />
+	<root level="INFO">
+
 		<appender-ref ref="CONSOLE" additivity="false" />
 	</root>
 
 
 	<logger name="com.dunkware.trade.net.service.streamstats"
 		level="ERROR">
-		<appender-ref ref="FLUENT" />
 		<appender-ref ref="CONSOLE" additivity="false" />
 	</logger>
 

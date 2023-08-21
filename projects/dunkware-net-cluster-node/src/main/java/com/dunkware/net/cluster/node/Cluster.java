@@ -10,7 +10,6 @@ import com.dunkware.common.util.events.DEventTree;
 import com.dunkware.common.util.executor.DExecutor;
 import com.dunkware.net.cluster.json.node.ClusterNodeStats;
 import com.dunkware.net.cluster.node.internal.ClusterConfig;
-import com.dunkware.spring.messaging.message.DunkNetMessage;
 
 @Service
 public interface Cluster {
@@ -37,14 +36,7 @@ public interface Cluster {
 	
 	public String httpURL(String path);
 	
-	/**
-	 * Okay Maybe this can round robin or load balance service calls 
-	 * This needs to include an end point if I am not mistaken here 
-	 * @param payload
-	 * @return
-	 * @throws ClusterNodeException
-	 */
-	public DunkNetMessage clusterService(Object payload) throws ClusterNodeException;
+
 }
 // DunkCluster
 // DunkNode -- 

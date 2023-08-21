@@ -3,8 +3,6 @@ package com.dunkware.trade.net.service.streamstats.client;
 import java.time.LocalDate;
 import java.util.concurrent.TimeUnit;
 
-import com.dunkware.trade.net.service.streamstats.client.impl.StreamStatNetClientImpl;
-
 public class StreamStatNetClientFactory {
 
 	

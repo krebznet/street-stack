@@ -29,7 +29,7 @@ public class GlazedDataGrid implements ListEventListener<Object> {
 	private List<DataGridUpdate> updates = new ArrayList<DataGridUpdate>();
 	private Semaphore updatesLock = new Semaphore(1);
 	private Sinks.Many<List<DataGridUpdate>> sink = Sinks.many().multicast().onBackpressureBuffer();
-	//private Flux<List<DataGridUpdate>> flux;
+	private Flux<List<DataGridUpdate>> flux;
 	private String id = DUUID.randomUUID(5);
 	private boolean running = false;
 

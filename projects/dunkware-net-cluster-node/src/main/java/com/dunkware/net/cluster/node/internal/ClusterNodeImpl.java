@@ -17,9 +17,6 @@ import com.dunkware.net.cluster.json.node.ClusterNodeType;
 import com.dunkware.net.cluster.json.node.ClusterNodeUpdate;
 import com.dunkware.net.cluster.node.ClusterNode;
 import com.dunkware.net.cluster.node.ClusterNodeException;
-import com.dunkware.spring.messaging.message.DunkNetMessage;
-import com.dunkware.spring.messaging.message.DunkNetMessageHelper;
-import com.dunkware.spring.messaging.message.DunkNetMessageTransport;
 
 import io.grpc.ConnectivityState;
 import io.grpc.ManagedChannel;
@@ -216,19 +213,6 @@ public class ClusterNodeImpl implements ClusterNode {
 	}
 	
 	@Override
-	public void sendMessage(DunkNetMessage message) throws ClusterNodeException {
-		try {
-			DunkNetMessageTransport port = DunkNetMessageHelper.toTransport(message,getId());
-			String portString = DJson.serialize(port);
-			messageProducer.sendBytes(portString.getBytes());
-		} catch (Exception e) {
-			throw new ClusterNodeException("Exception Sending Message " + e.toString());
-		}
-		
-		
-	}
-
-	@Override
 	public Object jsonGet(String path, Class response) throws ClusterNodeException {
 		String endpoint = getHttpPathEndPoint(path);
 		try {
@@ -283,12 +267,6 @@ public class ClusterNodeImpl implements ClusterNode {
 	}
 
 
-	@Override
-	public DunkNetMessage requestReply(DunkNetMessage message) throws ClusterNodeException {
-		// TODO Auto-generated method stub
-		return null;
-	}
-	
 	
 	
 	

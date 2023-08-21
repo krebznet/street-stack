@@ -3,7 +3,7 @@ package com.dunkware.trade.net.service.streamstats.client;
 import java.time.LocalDate;
 import java.util.concurrent.TimeUnit;
 
-import com.dunkware.spring.messaging.DunkNet;
+import com.dunkware.spring.cluster.DunkNet;
 
 public class StreamStatsClientInput {
 

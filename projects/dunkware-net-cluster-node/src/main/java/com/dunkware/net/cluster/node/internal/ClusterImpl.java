@@ -7,11 +7,9 @@ import java.util.Map;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.LinkedBlockingDeque;
-import java.util.concurrent.LinkedBlockingQueue;
 
 import javax.annotation.PostConstruct;
 
-import org.apache.kafka.clients.consumer.ConsumerRecord;
 import org.reflections.Reflections;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -21,7 +19,6 @@ import org.springframework.context.ApplicationContext;
 import org.springframework.stereotype.Service;
 
 import com.dunkware.common.kafka.consumer.DKafkaByteConsumer2;
-import com.dunkware.common.kafka.consumer.DKafkaByteHandler2;
 import com.dunkware.common.spec.kafka.DKafkaByteConsumer2Spec;
 import com.dunkware.common.spec.kafka.DKafkaByteConsumer2Spec.ConsumerType;
 import com.dunkware.common.spec.kafka.DKafkaByteConsumer2Spec.OffsetType;
@@ -45,8 +42,6 @@ import com.dunkware.net.proto.cluster.GNodeUpdateRequest;
 import com.dunkware.net.proto.cluster.GNodeUpdateResponse;
 import com.dunkware.net.proto.cluster.service.GClustererviceGrpc;
 import com.dunkware.net.proto.cluster.service.GClustererviceGrpc.GClustererviceStub;
-import com.dunkware.spring.messaging.message.DunkNetMessage;
-import com.dunkware.spring.messaging.message.DunkNetMessageTransport;
 
 import io.grpc.ConnectivityState;
 import io.grpc.ManagedChannel;
@@ -84,13 +79,10 @@ public class ClusterImpl implements Cluster {
 
 	private DKafkaByteConsumer2 messageConsumer;
 
-	private MessageHandler messageHandler;
-
-	private MessageRouter messageRouter;
+	
 
 	private BlockingQueue<GNodeUpdateResponse> responseQueue = new LinkedBlockingDeque<GNodeUpdateResponse>();
 
-	private BlockingQueue<DunkNetMessageTransport> messageQueue = new LinkedBlockingQueue<DunkNetMessageTransport>();
 
 	private Reflections reflections;
 	
@@ -117,11 +109,7 @@ public class ClusterImpl implements Cluster {
 									.build();
 							messageConsumer = DKafkaByteConsumer2.newInstance(spec);
 							messageConsumer.start();
-							messageHandler = new MessageHandler();
-							messageConsumer.addStreamHandler(messageHandler);
-							messageRouter = new MessageRouter();
-							messageRouter.start();
-
+							
 						} catch (Exception e) {
 							logger.error("Exception creating cluster event kafka consumer " + e.toString());
 						}
@@ -402,39 +390,7 @@ public class ClusterImpl implements Cluster {
 		getExecutor().execute(nodeUpdater);
 	}
 
-	private class MessageHandler implements DKafkaByteHandler2 {
-
-		@Override
-		public void record(ConsumerRecord<String, byte[]> record) {
-			try {
-				DunkNetMessageTransport transport = DJson.getObjectMapper().readValue(record.value(), DunkNetMessageTransport.class);
-				messageQueue.add(transport);
-			} catch (Exception e) {
-				logger.error("Invalid Cluster Message handler " + e.toString());
-			}
-		}
-	}
-
-	private class MessageRouter extends Thread {
-
-		public void run() {
-
-			while (!interrupted()) {
-				DunkNetMessageTransport transport = null;
-				try {
-					transport = messageQueue.take();
-				} catch (Exception e) {
-					logger.error("Invalid Cluster Message Router " + e.toString());
-					continue;
-				}
-				
-				// MessageRouter ---> --> filter chain 
-				// 
-
-			}
-
-		}
-	}
+	
 	
 	
 
@@ -451,12 +407,7 @@ public class ClusterImpl implements Cluster {
 		return endpoint;
 	}
 
-	@Override
-	public DunkNetMessage clusterService(Object payload) throws ClusterNodeException {
-		// TODO Auto-generated method stub
-		return null;
-	}
-	
+
 	
 	
 

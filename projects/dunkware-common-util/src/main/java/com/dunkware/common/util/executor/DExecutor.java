@@ -5,6 +5,7 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
 import java.util.concurrent.LinkedBlockingQueue;
 import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.ScheduledFuture;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicLong;
 
@@ -43,8 +44,15 @@ public class DExecutor {
 		this.awaitingTasks = new LinkedBlockingQueue<>();
 		this.executor = Executors.newScheduledThreadPool(corePoolSize);
 		this.corePoolSize = corePoolSize;
-		this.poolSize = Runtime.getRuntime().availableProcessors();
+	
+	//	this.poolSize = Runtime.getRuntime().availableProcessors();
 
+	}
+	
+	
+	
+	public static void main(String[] args) {
+		System.out.println(Runtime.getRuntime().availableProcessors());
 	}
 
 	public DExecutor(int corePoolSize, long delayTimeout, TimeUnit delayTimeUnit) {
@@ -147,6 +155,7 @@ public class DExecutor {
 							completedCount.decrementAndGet();
 							timeoutCount.incrementAndGet();
 							phaser.decrement();
+							poolSize--;
 						}
 
 					}

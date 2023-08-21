@@ -1,6 +1,6 @@
 package com.dunkware.trade.net.service.streamstats.client;
 
-import com.dunkware.spring.messaging.DunkNet;
+import com.dunkware.spring.cluster.DunkNet;
 import com.dunkware.xstream.model.stats.EntityStatReq;
 import com.dunkware.xstream.model.stats.EntityStatResp;
 

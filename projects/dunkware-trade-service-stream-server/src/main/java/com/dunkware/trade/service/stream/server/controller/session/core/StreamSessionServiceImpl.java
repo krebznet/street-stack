@@ -11,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.springframework.stereotype.Component;
 
+import com.dunkware.common.util.helpers.DAnotHelper;
 import com.dunkware.trade.service.stream.server.controller.session.StreamSession;
 import com.dunkware.trade.service.stream.server.controller.session.StreamSessionException;
 import com.dunkware.trade.service.stream.server.controller.session.StreamSessionExtension;
@@ -27,8 +28,7 @@ public class StreamSessionServiceImpl implements StreamSessionService {
 	
 	@PostConstruct
 	void load() { 
-		Reflections reflections = new Reflections("com.dunkware");
-		extClasses = reflections.getTypesAnnotatedWith(AStreamSessionExt.class);
+		extClasses = DAnotHelper.getClassesAnnotedWith(AStreamSessionExt.class);
 	}
 	
 	public List<StreamSessionExtension> createExtensions() throws StreamSessionException { 

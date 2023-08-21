@@ -88,14 +88,14 @@ public class StreamStatCacheService {
 				BasicDBObject query = new BasicDBObject();
 				query.put("stream", "us_equity");
 				Bson projection = fields(exclude("vars.id","vars.lowTime","vars.highTime"),excludeId());
-				//Bson filter = Filters.or(Filters.eq("ident", "AAPL"),Filters.eq("ident", "BAC"),Filters.eq("ident","JPM"));
+				Bson filter = Filters.or(Filters.eq("ident", "AAPL"),Filters.eq("ident", "BAC"),Filters.eq("ident","JPM"));
 				long docSize = mongoEntityStatSessions.get().countDocuments();
 				watch.stop();
 				
 				bean.setDocuments(docSize);
 				bean.setCountTime((long)watch.getCompletedSeconds());
 				watch.start();
-				MongoCursor<Document> docs = mongoEntityStatSessions.get().find(query).batchSize(batchSize).projection(projection).cursor();
+				MongoCursor<Document> docs = mongoEntityStatSessions.get().find(filter).batchSize(batchSize).projection(projection).cursor();
 			
 				int counter = 0;
 				int countme = 0;
