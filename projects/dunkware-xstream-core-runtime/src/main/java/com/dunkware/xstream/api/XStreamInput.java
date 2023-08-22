@@ -6,6 +6,7 @@ import java.util.List;
 import com.dunkware.common.util.dtime.DDate;
 import com.dunkware.common.util.dtime.DTimeZone;
 import com.dunkware.common.util.executor.DExecutor;
+import com.dunkware.xstream.model.signal.XStreamSignalModel;
 import com.dunkware.xstream.model.signal.XStreamSignalType;
 import com.dunkware.xstream.xproject.XScriptProject;
 import com.dunkware.xstream.xproject.model.XStreamExtensionType;
@@ -20,7 +21,7 @@ public class XStreamInput {
 	private String identifier;
 	private String sessionId;
 	private DTimeZone timeZone; 
-	private List<XStreamSignalType> signalTypes = new ArrayList<XStreamSignalType>();
+	private List<XStreamSignalModel> signalModels = new ArrayList<XStreamSignalModel>();
 	private XStreamStatProvider statProvider;
 	
 	// here we need to somehow provide a stat provider and not put the bullshit in memeory here. 
@@ -76,11 +77,12 @@ public class XStreamInput {
 	public void setSessionId(String sessionId) {
 		this.sessionId = sessionId;
 	}
-	public List<XStreamSignalType> getSignalTypes() {
-		return signalTypes;
+	
+	public List<XStreamSignalModel> getSignalModels() {
+		return signalModels;
 	}
-	public void setSignalTypes(List<XStreamSignalType> signalTypes) {
-		this.signalTypes = signalTypes;
+	public void setSignalModels(List<XStreamSignalModel> signalModels) {
+		this.signalModels = signalModels;
 	}
 	public XStreamStatProvider getStatProvider() {
 		return statProvider;

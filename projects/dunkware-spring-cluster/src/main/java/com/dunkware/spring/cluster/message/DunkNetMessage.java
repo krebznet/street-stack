@@ -40,13 +40,14 @@ public class DunkNetMessage {
 		
 		public Builder serviceResponse(Object payload, String requestId) {  
 			m.setType(TYPE_SERVICE_RESPONSE);
+			m.setHeader(KEY_REQUEST_ID, requestId);
+			m.setHeader(KEY_RESPONSE_CODE, RESPONSE_SUCCESS);
 			m.setPayload(payload);
 			return this;
 		}
 		
-		public Builder serviceException(Object payload, String requestId, String exception) {  
+		public Builder serviceException(String requestId, String exception) {  
 			m.setType(TYPE_SERVICE_RESPONSE);
-			m.setPayload(payload);
 			m.setHeader(KEY_RESPONSE_CODE, RESPONSE_ERROR);
 			m.setHeader(KEY_RESPONSE_ERROR, exception);
 			return this;
@@ -112,10 +113,17 @@ public class DunkNetMessage {
 				throw new DunkNetException(
 						"Exception Deserializing Payload class " + transport.getPayloadClass() + " " + e.toString());
 			}
-			return new DunkNetMessage(payload, transport.getHeaders());
-		} else {
-			return new DunkNetMessage(transport.getHeaders());
 		}
+			DunkNetMessage message = new DunkNetMessage();
+			message.setChannel(transport.getChannel());
+			message.setHeaders(transport.getHeaders());
+			message.setType(transport.getType());
+			message.setSenderId(transport.getSenderId());
+			message.setPayload(payload);;
+			message.setMessageId(transport.getMessageId());
+			return message;
+			
+		
 
 	}
 	
@@ -148,6 +156,10 @@ public class DunkNetMessage {
 
 	}
 
+	public void setMessageId(String messageId) { 
+		this.messageId = messageId;
+	}
+	
 	@Transient
 	public boolean isChannelMessage() { 
 		if(channel != null) { 

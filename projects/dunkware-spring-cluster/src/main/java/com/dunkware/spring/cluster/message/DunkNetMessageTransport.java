@@ -2,6 +2,8 @@ package com.dunkware.spring.cluster.message;
 
 import java.util.Map;
 
+import com.dunkware.common.util.uuid.DUUID;
+
 /**
  * This is what gets serialized and sent over wire 
  * Message -> serializes into a Message Transport 
@@ -16,6 +18,10 @@ public class DunkNetMessageTransport {
 	private String payload; 
 	private String payloadClass;
 	private String senderId;
+	private int type;
+	private String channel = null;
+	private String messageId = DUUID.randomUUID(5);
+	
 	
 	
 	public Map<String, Object> getHeaders() {
@@ -41,7 +47,28 @@ public class DunkNetMessageTransport {
 	}
 	public void setSenderId(String senderId) {
 		this.senderId = senderId;
+	}
+	public int getType() {
+		return type;
+	}
+	public void setType(int type) {
+		this.type = type;
+	}
+	public String getChannel() {
+		return channel;
+	}
+	public void setChannel(String channel) {
+		this.channel = channel;
+	}
+	public String getMessageId() {
+		return messageId;
+	}
+	public void setMessageId(String messageId) {
+		this.messageId = messageId;
 	} 
+	
+	
+	
 	
 	
 	

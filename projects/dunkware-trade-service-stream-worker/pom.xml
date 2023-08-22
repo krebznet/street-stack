@@ -52,6 +52,13 @@
 			<artifactId>dunkware-xstream-core-runtime</artifactId>
 			<version>1.2.0-SNAPSHOT</version>
 		</dependency>
+		
+		
+		<dependency>
+			<groupId>com.dunkware.spring</groupId>
+			<artifactId>dunkware-spring-cluster</artifactId>
+			<version>1.0.0-SNAPSHOT</version>
+		</dependency>
 		<dependency>
 			<groupId>com.dunkware.trade.service</groupId>
 			<artifactId>dunkware-trade-service-tick-client</artifactId>

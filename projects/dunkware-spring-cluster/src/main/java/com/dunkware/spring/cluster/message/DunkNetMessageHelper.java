@@ -19,6 +19,9 @@ public class DunkNetMessageHelper {
 			transport.setPayload(payloadString);
 			transport.setPayloadClass(message.getPayload().getClass().getName());;		
 			transport.setSenderId(senderId);
+			transport.setMessageId(message.getMessageId());
+			transport.setChannel(message.getChannel());
+			transport.setType(message.getType());
 		}
 
 		return transport; 

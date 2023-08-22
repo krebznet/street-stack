@@ -1,13 +1,13 @@
 package com.dunkware.xstream.model.signal;
 
-import com.dunkware.xstream.model.query.XStreamQueryModel;
+import com.dunkware.xstream.model.query.XStreamEntityQueryModel;
 import com.dunkware.xstream.model.query.XStreamTimeUnit;
 
 public class XStreamSignalType {
 	
 	private String identifier; 
 	private long id; 
-	private XStreamQueryModel query; 
+	private XStreamEntityQueryModel query; 
 	private boolean enableEntityThrottle = false; 
 	private int entityThrottle; 
 	private XStreamTimeUnit entityThrrottleTimeUnit; 
@@ -27,10 +27,10 @@ public class XStreamSignalType {
 	public void setId(long id) {
 		this.id = id;
 	}
-	public XStreamQueryModel getQuery() {
+	public XStreamEntityQueryModel getQuery() {
 		return query;
 	}
-	public void setQuery(XStreamQueryModel query) {
+	public void setQuery(XStreamEntityQueryModel query) {
 		this.query = query;
 	}
 	public boolean isEnableEntityThrottle() {

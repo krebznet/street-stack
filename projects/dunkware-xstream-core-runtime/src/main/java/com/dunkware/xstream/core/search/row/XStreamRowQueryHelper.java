@@ -11,14 +11,14 @@ import com.dunkware.xstream.core.search.row.criteria.XStreamRowValueCriteria;
 import com.dunkware.xstream.core.search.row.values.XStreamRowVarCurrentValue;
 import com.dunkware.xstream.model.query.XStreamCriteriaModel;
 import com.dunkware.xstream.model.query.XStreamCriteriaType;
-import com.dunkware.xstream.model.query.XStreamQueryModel;
+import com.dunkware.xstream.model.query.XStreamEntityQueryModel;
 import com.dunkware.xstream.model.query.XStreamRowValueModel;
 import com.dunkware.xstream.model.query.XStreamValueType;
 
 public class XStreamRowQueryHelper {
 
 	
-	public static XStreamRowCriterias createCriterias(XStreamQueryModel model, XStream stream) throws XStreamQueryException { 
+	public static XStreamRowCriterias createCriterias(XStreamEntityQueryModel model, XStream stream) throws XStreamQueryException { 
 		List<XStreamRowCriteria> criterias = new ArrayList<XStreamRowCriteria>();
 		for (XStreamCriteriaModel criteriaModel : model.getCriterias()) {
 			if(criteriaModel.getType() == XStreamCriteriaType.Value) {

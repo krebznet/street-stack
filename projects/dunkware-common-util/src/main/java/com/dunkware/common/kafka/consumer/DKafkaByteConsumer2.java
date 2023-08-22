@@ -88,7 +88,7 @@ public class DKafkaByteConsumer2 {
 		props.put("topics", topics);
 		props.put("client.id", spec.getConsumerId());
 		props.put("group.id", spec.getConsumerGroup());
-		props.put("batch.size", 5000);
+		props.put("batch.size", 200);
 		if (spec.getOffsetType() == OffsetType.Earliest)
 			props.put("auto.offset.reset", "earliest");
 		if (spec.getOffsetType() == OffsetType.Latest)
@@ -97,10 +97,10 @@ public class DKafkaByteConsumer2 {
 		props.put("heartbeat.interval.ms", "2500");
 		props.put("max.poll.records", 1000);
 		props.put("enable.auto.commit", "true");
-		props.put("auto.commit.interval.ms", "2500");
+		props.put("auto.commit.interval.ms", "100");
 		//props.put("session.timeout.ms", "3000");
 		props.put("buffer.memory", 835544323);
-		props.put("fetch.max.wait.ms", 30);
+		props.put("fetch.max.wait.ms", 100);
 		props.put("key.deserializer", "org.apache.kafka.common.serialization.StringDeserializer");
 		props.put("value.deserializer", "org.apache.kafka.common.serialization.ByteArrayDeserializer");
 		status = DKafkaByteConsumerStatus.Connecting;
@@ -332,7 +332,7 @@ public class DKafkaByteConsumer2 {
 						consumerPaused = false;
 					}
 
-					ConsumerRecords<String, byte[]> records = consumer.poll(3000);
+					ConsumerRecords<String, byte[]> records = consumer.poll(500);
 					if (printPoolCount) {
 						System.out.println("Consumer consumed " + records.count());
 						printPoolCount = false;

@@ -9,17 +9,17 @@ import com.dunkware.xstream.api.XStreamResolveException;
 import com.dunkware.xstream.api.XStreamEntity;
 import com.dunkware.xstream.api.XStreamEntityQuery;
 import com.dunkware.xstream.api.XStreamRowQueryResults;
-import com.dunkware.xstream.model.query.XStreamQueryModel;
+import com.dunkware.xstream.model.query.XStreamEntityQueryModel;
 
 public class XStreamRowQueryImpl implements XStreamEntityQuery   {
 
 	private XStream stream; 
-	private XStreamQueryModel model; 
+	private XStreamEntityQueryModel model; 
 	private XStreamRowCriterias criterias;
 	
 	
 	@Override
-	public void init(XStreamQueryModel model, XStream stream) throws XStreamQueryException {
+	public void init(XStreamEntityQueryModel model, XStream stream) throws XStreamQueryException {
 		this.model = model;
 		this.stream = stream; 
 		this.criterias = XStreamRowQueryHelper.createCriterias(model, stream);

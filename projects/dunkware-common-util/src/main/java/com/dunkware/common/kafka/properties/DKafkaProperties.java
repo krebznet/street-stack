@@ -20,8 +20,8 @@ public class DKafkaProperties {
 	public static void addProducerProperties(Properties props) { 
 		props.put("acks", "0");
 		props.put("retries", 2);
-		props.put("batch.size", 10000);
-		props.put("linger.ms", 300);
+		props.put("batch.size", 2500);
+		props.put("linger.ms", 0);
 		props.put("buffer.memory", 335544323);
 		props.put("key.serializer", "org.apache.kafka.common.serialization.StringSerializer");
 		props.put("value.serializer", "org.apache.kafka.common.serialization.ByteArraySerializer");

@@ -2,16 +2,16 @@ package com.dunkware.xstream.core.signal;
 
 import com.dunkware.xstream.api.XStream;
 import com.dunkware.xstream.api.XStreamEntityQuery;
+import com.dunkware.xstream.model.signal.XStreamSignalModel;
 import com.dunkware.xstream.model.signal.XStreamSignalType;
 
 public class XStreamSignalHandler {
 
 	private XStream stream; 
-	private XStreamSignalType type; 
-	
+	private XStreamSignalModel model; 
 	private XStreamEntityQuery query; 
 	
-	public void init(XStream stream, XStreamSignalType type) throws Exception { 
+	public void init(XStream stream, XStrea type) throws Exception { 
 		this.stream = stream;
 		this.type = type;
 		// this will happen in the start thread of xsream 

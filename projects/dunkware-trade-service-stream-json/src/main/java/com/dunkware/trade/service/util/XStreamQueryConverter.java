@@ -9,7 +9,7 @@ import com.dunkware.xstream.model.query.XStreamCriteriaType;
 import com.dunkware.xstream.model.query.XStreamHIstoryTimeRangeType;
 import com.dunkware.xstream.model.query.XStreamHistoryTimeRange;
 import com.dunkware.xstream.model.query.XStreamOperator;
-import com.dunkware.xstream.model.query.XStreamQueryModel;
+import com.dunkware.xstream.model.query.XStreamEntityQueryModel;
 import com.dunkware.xstream.model.query.XStreamTimeUnit;
 import com.dunkware.xstream.model.query.XStreamRowValueModel;
 import com.dunkware.xstream.model.query.XStreamValueType;
@@ -17,8 +17,8 @@ import com.dunkware.xstream.model.query.XStreamVarHistoricalAggFunc;
 
 public class XStreamQueryConverter {
 
-	public static XStreamQueryModel toXStreamQuery(WebStreamQuery web) throws Exception  { 
-		XStreamQueryModel model = new XStreamQueryModel();
+	public static XStreamEntityQueryModel toXStreamQuery(WebStreamQuery web) throws Exception  { 
+		XStreamEntityQueryModel model = new XStreamEntityQueryModel();
 		for (WebStreamCriteria webCriteria : web.getCriterias()) {
 			XStreamCriteriaModel criteriaModel = toXStreamCriteria(webCriteria);
 			model.getCriterias().add(criteriaModel);

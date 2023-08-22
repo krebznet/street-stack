@@ -29,12 +29,6 @@ public class XStreamBundle {
 		
 	}
 	
-	/*
-	 * @JsonCreator public XStreamBundle(@JsonProperty("script") XScriptBundle
-	 * bundle, @JsonProperty("extensions") List<XStreamExtensionType>
-	 * extensions, @JsonProperty("date") DDate date) { this.scriptBundle = bundle;
-	 * this.extensions = extensions; this.date = date; }
-	 */
 	
 
 	public List<XStreamExtensionType> getExtensions() {

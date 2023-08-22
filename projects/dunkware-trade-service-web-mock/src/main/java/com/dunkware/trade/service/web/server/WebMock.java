@@ -6,12 +6,11 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.autoconfigure.data.mongo.MongoDataAutoConfiguration;
 import org.springframework.boot.autoconfigure.mongo.MongoAutoConfiguration;
 import org.springframework.integration.config.EnableIntegration;
-import org.springframework.web.socket.config.annotation.EnableWebSocketMessageBroker;
 
-@SpringBootApplication
+
 @EnableIntegration
+@SpringBootApplication(scanBasePackages = "com.dunkware")
 @EnableAutoConfiguration(exclude={MongoAutoConfiguration.class, MongoDataAutoConfiguration.class})
-@EnableWebSocketMessageBroker 
 public class WebMock {
 
     public static void main(String[] args) {

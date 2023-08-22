@@ -53,6 +53,8 @@ public class XStreamRowVarHistoricalAggValue implements XStreamRowValue {
 				throw new XStreamQueryException("Exception internal not handling var agg function " + model.getHistoricalAgg().name());
 			}
 			
+			// get the stat mother fucker 
+			
 			// okay request again here 
 			// okay we have a request here now we need to run it? 
 			// block here 

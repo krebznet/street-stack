@@ -28,7 +28,7 @@ import com.dunkware.spring.cluster.protocol.DunkNetNodeService;
 
 public class DunkNodeImpl implements DunkNetNode {
 	
-	private Marker marker = MarkerFactory.getMarker("dunknet");
+	private Marker marker = MarkerFactory.getMarker("DunkNet");
 	private Logger logger = LoggerFactory.getLogger(getClass());
 	
 	private DKafkaByteProducer kafkaProducer;
@@ -44,7 +44,9 @@ public class DunkNodeImpl implements DunkNetNode {
 		this.ping = ping;
 		this.descriptor = ping.getDescriptor();
 		try {
-			String nodeTopic = "dunknet." + net.getConfig().getClusterId() + " .node." + ping.getId();
+		
+			String nodeTopic = "dunknet." + net.getConfig().getClusterId() + ".node." + ping.getId();
+			System.out.println("producer on node " + nodeTopic);
 			kafkaProducer = DKafkaByteProducer.newInstance(net.getConfig().getServerBrokers(),nodeTopic,nodeTopic);
 		} catch (Exception e) {
 			throw new DunkNetException("Exception creating node message producer " + e.toString());

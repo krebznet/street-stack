@@ -3,7 +3,7 @@ package com.dunkware.xstream.model.query;
 import java.util.ArrayList;
 import java.util.List;
 
-public class XStreamQueryModel {
+public class XStreamEntityQueryModel {
 
 	private List<XStreamCriteriaModel> criterias = new ArrayList<XStreamCriteriaModel>();
 

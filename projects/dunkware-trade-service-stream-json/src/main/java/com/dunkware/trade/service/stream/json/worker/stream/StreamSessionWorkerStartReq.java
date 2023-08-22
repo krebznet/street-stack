@@ -1,10 +1,11 @@
 package com.dunkware.trade.service.stream.json.worker.stream;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import com.dunkware.xstream.model.stats.EntityStatsSession;
+import com.dunkware.xstream.model.signal.XStreamSignalModel;
 import com.dunkware.xstream.model.stats.EntityStatsSessions;
 import com.dunkware.xstream.xproject.model.XStreamBundle;
 
@@ -14,9 +15,8 @@ public class StreamSessionWorkerStartReq {
 	private String stream; 
 	private String workerId; 
 	private String sessionId; 
+	private List<XStreamSignalModel> signals = new ArrayList<XStreamSignalModel>();
 
-	private Map<String,EntityStatsSessions> entityStats = new HashMap<String,EntityStatsSessions>();
-	
 	
 	public StreamSessionWorkerStartReq() { 
 	

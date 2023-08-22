@@ -3,14 +3,9 @@ package com.dunkware.trade.service.stream.server.controller.session.capture;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
-import javax.transaction.Transactional;
-
-import org.apache.kafka.clients.consumer.ConsumerRecord;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.slf4j.Marker;
@@ -18,27 +13,15 @@ import org.slf4j.MarkerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 
-import com.dunkware.common.kafka.consumer.DKafkaByteConsumer2;
-import com.dunkware.common.kafka.consumer.DKafkaByteHandler2;
-import com.dunkware.common.spec.kafka.DKafkaByteConsumer2Spec;
-import com.dunkware.common.spec.kafka.DKafkaByteConsumer2Spec.ConsumerType;
-import com.dunkware.common.spec.kafka.DKafkaByteConsumer2Spec.OffsetType;
-import com.dunkware.common.spec.kafka.DKafkaByteConsumer2SpecBuilder;
 import com.dunkware.common.util.dtime.DTimeZone;
-import com.dunkware.common.util.helpers.DProtoHelper;
-import com.dunkware.common.util.uuid.DUUID;
 import com.dunkware.net.proto.stream.GEntitySignal;
 import com.dunkware.net.proto.stream.GEntitySnapshot;
-import com.dunkware.net.proto.stream.GStreamEvent;
-import com.dunkware.trade.service.data.json.enums.DataStreamSessionState;
 import com.dunkware.trade.service.stream.json.controller.model.StreamSessionSpec;
 import com.dunkware.trade.service.stream.server.controller.StreamController;
 import com.dunkware.trade.service.stream.server.controller.session.StreamSession;
 import com.dunkware.trade.service.stream.server.controller.session.StreamSessionExtension;
-import com.dunkware.trade.service.stream.server.controller.session.StreamSessionNode;
 import com.dunkware.trade.service.stream.server.controller.session.anot.AStreamSessionExt;
 import com.dunkware.trade.service.stream.server.controller.session.capture.writers.DataStreamSessionSignalWriter;
-import com.dunkware.trade.service.stream.server.controller.session.capture.writers.DataStreamSessionSnapshotWriter2;
 import com.dunkware.trade.service.stream.server.repository.StreamSessionEntEntity;
 import com.dunkware.trade.service.stream.server.repository.StreamSessionEntRepo;
 import com.dunkware.trade.service.stream.server.repository.StreamSessionRepo;
@@ -75,7 +58,7 @@ public class StreamSessionCaptureExt implements StreamSessionExtension {
 	
 
 	
-	private DataStreamSessionState state = DataStreamSessionState.Pending;
+	//private DataStreamSessionState state = DataStreamSessionState.Pending;
 	private boolean snapshotWriterComplete = false;
 	private boolean signalWriterComplete = false;
 
@@ -108,7 +91,7 @@ public class StreamSessionCaptureExt implements StreamSessionExtension {
 			logger.error("Exception starting session signal writer " + e.toString());
 		}
 
-		state = DataStreamSessionState.Running;
+	//	state = DataStreamSessionState.Running;
 	}
 
 	/**

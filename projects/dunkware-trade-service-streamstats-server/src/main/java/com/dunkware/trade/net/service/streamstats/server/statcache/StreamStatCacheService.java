@@ -1,13 +1,14 @@
 package com.dunkware.trade.net.service.streamstats.server.statcache;
 
-import java.math.BigDecimal;
-import java.math.RoundingMode;
+import static com.mongodb.client.model.Projections.exclude;
+import static com.mongodb.client.model.Projections.excludeId;
+import static com.mongodb.client.model.Projections.fields;
+
 import java.time.Duration;
 import java.time.LocalTime;
-import java.time.temporal.TemporalUnit;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
-import static com.mongodb.client.model.Projections.*;
+import java.util.concurrent.TimeUnit;
 
 import javax.annotation.PostConstruct;
 
@@ -17,17 +18,19 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.slf4j.Marker;
 import org.slf4j.MarkerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.dunkware.common.mongo.DMongoClient;
 import com.dunkware.common.mongo.DMongoCollection;
 import com.dunkware.common.mongo.DMongoDatabase;
 import com.dunkware.common.util.stopwatch.DStopWatch;
+import com.dunkware.spring.cluster.DunkNet;
+import com.dunkware.spring.cluster.core.request.DunkNetServiceRequest;
 import com.dunkware.xstream.model.stats.EntityStatReq;
 import com.dunkware.xstream.model.stats.EntityStatResp;
 import com.dunkware.xstream.model.stats.EntityStatRespBuilder;
 import com.mongodb.BasicDBObject;
-import com.mongodb.ReadConcern;
 import com.mongodb.client.MongoCursor;
 import com.mongodb.client.model.Filters;
 
@@ -46,6 +49,7 @@ public class StreamStatCacheService {
 
 	private StreamStatCacheServiceBean bean;
 	
+	
 	public static void main(String[] args) {
 		double discountedPrice = 0;
 		double price = 1000.0;
@@ -57,6 +61,9 @@ public class StreamStatCacheService {
 	}
 	@PostConstruct
 	private void load() {
+		
+		
+		logger.info("Can you see me?");
 		bean = new StreamStatCacheServiceBean();
 		bean.setLoaded(false);
 		
