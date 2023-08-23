@@ -1,4 +1,5 @@
-package com.dunkware.trade.service.stream.worker.config;
+package com.dunkware.spring.runtime.controller;
+
 
 import java.time.LocalDateTime;
 
@@ -12,13 +13,13 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 public class ControllerAdvice {
     @ExceptionHandler(Exception.class)
     @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
-    public ResponseEntity<ErrorMessage> globalExceptionHandler(Exception ex) {
-        ErrorMessage message = new ErrorMessage(
+    public ResponseEntity<ControllerError> globalExceptionHandler(Exception ex) {
+        ControllerError message = new ControllerError(
                 HttpStatus.INTERNAL_SERVER_ERROR.value(),
                 LocalDateTime.now(),
                 ex.getMessage(),
                 ex.getMessage());
 
-        return new ResponseEntity<ErrorMessage>(message, HttpStatus.INTERNAL_SERVER_ERROR);
+        return new ResponseEntity<ControllerError>(message, HttpStatus.INTERNAL_SERVER_ERROR);
     }
 }

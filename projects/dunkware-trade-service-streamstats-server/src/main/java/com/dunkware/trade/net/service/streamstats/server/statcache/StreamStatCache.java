@@ -38,5 +38,13 @@ public class StreamStatCache {
 		}
 		return ent.getStat(req);
 	}
+	
+	public StreamEntityStatCache getEntity(String ident) throws Exception { 
+		StreamEntityStatCache entity = entities.get(ident);
+		if(entity == null) { 
+			throw new Exception("Stream Entity " + ident + " not found on stream " + stream);
+		}
+		return entity;
+	}
 
 }

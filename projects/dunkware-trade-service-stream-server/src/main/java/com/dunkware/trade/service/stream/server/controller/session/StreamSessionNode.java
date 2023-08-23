@@ -4,6 +4,7 @@ import java.util.List;
 
 import com.dunkware.common.util.events.DEventNode;
 import com.dunkware.net.cluster.node.ClusterNode;
+import com.dunkware.spring.cluster.DunkNetNode;
 import com.dunkware.trade.service.stream.json.controller.session.StreamSessionNodeState;
 import com.dunkware.trade.service.stream.json.controller.session.StreamSessionNodeStatus;
 import com.dunkware.trade.service.stream.json.worker.stream.StreamSessionWorkerStats;
@@ -19,6 +20,8 @@ public interface StreamSessionNode {
 	StreamSessionWorkerStats getWorkerStats();
 	
 	ClusterNode getNode(); 
+	
+	DunkNetNode getDunkNode();
 	
 	String getNodeId();
 	

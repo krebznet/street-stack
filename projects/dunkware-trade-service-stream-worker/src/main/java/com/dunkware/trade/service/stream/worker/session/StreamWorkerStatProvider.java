@@ -1,4 +1,4 @@
-package com.dunkware.trade.service.stream.worker.config.session;
+package com.dunkware.trade.service.stream.worker.session;
 
 import org.springframework.beans.factory.annotation.Autowired;
 

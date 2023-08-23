@@ -1,6 +1,5 @@
 package com.dunkware.trade.net.service.streamstats.server.statcache;
 
-import java.time.Duration;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
@@ -22,6 +21,7 @@ import com.dunkware.common.util.dtime.DDate;
 import com.dunkware.common.util.dtime.DTime;
 import com.dunkware.common.util.helpers.DNumberHelper;
 import com.dunkware.common.util.time.DunkTime;
+import com.dunkware.xstream.model.stats.EntityStatsAggVar;
 
 public class StreamEntityVarStatCache {
 	
@@ -37,6 +37,9 @@ public class StreamEntityVarStatCache {
 	private Map<DDate, StreamEntityVarSession> sessionIndex = new ConcurrentHashMap<DDate,StreamEntityVarSession>();
 	private boolean sorted = false; 
 	
+	private EntityStatsAggVar agg;
+	// so we know if we are consuming the first session
+	private boolean aggInitialized = false;
 	private static EntityVarSessionComparator sessionComparator = new EntityVarSessionComparator();
 	
 	private static class EntityVarSessionComparator implements Comparator<StreamEntityVarSession> {
@@ -57,6 +60,9 @@ public class StreamEntityVarStatCache {
 	
 	public StreamEntityVarStatCache(String ident) { 
 		this.ident = ident;
+		agg = new EntityStatsAggVar();
+		agg.setIdent(ident);;
+		
 	}
 	
 	public String getIdent() { 
@@ -71,6 +77,10 @@ public class StreamEntityVarStatCache {
 			}
 		}
 		return null;
+	}
+	
+	public EntityStatsAggVar getAgg() { 
+		return agg;
 	}
 	
 	public void consumeSession(Document doc, DDate date) { 
@@ -90,12 +100,34 @@ public class StreamEntityVarStatCache {
 		session.setHighTIme(DTime.from(LocalDateTime.parse(highTime,DateTimeFormatter.ofPattern(DunkTime.YYYY_MM_DD_HH_MM_SS)).toLocalTime()));
 		session.setLowTIme(DTime.from(LocalDateTime.parse(lowTime,DateTimeFormatter.ofPattern(DunkTime.YYYY_MM_DD_HH_MM_SS)).toLocalTime()));
 		session.setDate(date);
+		if(!aggInitialized) { 
+			agg.setHigh(session.getHigh());
+			agg.setLow(session.getLow());
+			agg.setHighDateTime(LocalDateTime.of(session.getDate().get(), session.getHighTIme().get()));
+			agg.setLowDateTime(LocalDateTime.of(session.getDate().get(),session.getLowTIme().get()));
+			aggInitialized = true;
+		}
+		else { 
+			if(DNumberHelper.isFirstGreater(session.getHigh(), agg.getHigh())) { 
+				agg.setHigh(session.getHigh());
+				agg.setHighDateTime(LocalDateTime.of(session.getDate().get(), session.getHighTIme().get()));
+			}
+			if(DNumberHelper.isFirstGreater(agg.getLow(), session.getLow())) {
+				agg.setLow(session.getLow());
+				agg.setHighDateTime(LocalDateTime.of(session.getDate().get(), session.getHighTIme().get()));
+			}
+		}
+		agg.setValueCount(agg.getValueCount() + 1);
 		sessionIndex.put(date, session);
 		if(logger.isDebugEnabled()) { 
 			logger.info("added" + date.toMMDDYY());	
 		}
 		
 		sessions.add(session);
+		
+	}
+	
+	public void buildAgg() { 
 		
 	}
 	

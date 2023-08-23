@@ -55,16 +55,6 @@ public class StreamSessionWorkerStartReq {
 		this.sessionId = sessionId;
 	}
 
-	public Map<String, EntityStatsSessions> getEntityStats() {
-		return entityStats;
-	}
-
-	public void setEntityStats(Map<String, EntityStatsSessions> entityStats) {
-		this.entityStats = entityStats;
-	}
-	
-	
-
 	
 	
 

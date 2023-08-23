@@ -20,6 +20,7 @@ import com.dunkware.common.util.json.DJson;
 import com.dunkware.common.util.json.bytes.DBytes;
 import com.dunkware.net.cluster.node.Cluster;
 import com.dunkware.net.cluster.node.ClusterNode;
+import com.dunkware.spring.cluster.DunkNetNode;
 import com.dunkware.trade.service.stream.json.controller.session.StreamSessionNodeState;
 import com.dunkware.trade.service.stream.json.controller.session.StreamSessionNodeStatus;
 import com.dunkware.trade.service.stream.json.worker.stream.StreamSessionWorkerStartReq;
@@ -70,6 +71,8 @@ public class StreamSessionNodeImpl implements StreamSessionNode {
 	private AtomicBoolean stopped = new AtomicBoolean(false);
 
 	private Marker marker = MarkerFactory.getMarker("stream.session.node");
+	
+	private DunkNetNode dunkNode;
 
 	@Override
 	public void startNode(StreamSessionNodeInput input) {
@@ -109,25 +112,7 @@ public class StreamSessionNodeImpl implements StreamSessionNode {
 				workerStats.setNodeId(workerId);
 				// yes put the stats
 				StreamStats stats = null;
-				try {
-					stats = statsService.getStreamStats(input.getSession().getStream().getName());
-					Map<String, EntityStatsSessions> entityStats = new HashMap<String, EntityStatsSessions>();
-					for (TradeTickerSpec ticker : input.getTickers()) {
-						try {
-							StreamStatsEntity streamStatsEntity = stats.getEntity(ticker.getSymbol());
-							EntityStatsSessions sessionStats = streamStatsEntity.getSessions();
-							entityStats.put(ticker.getSymbol(), sessionStats);
-						} catch (Exception e) {
-							logger.warn("Session Entity stats not found for " + ticker.getSymbol());
-							EntityStatsSessions emptyStats = new EntityStatsSessions(); 
-							emptyStats.setIdent(ticker.getSymbol());
-							entityStats.put(ticker.getSymbol(), new EntityStatsSessions());
-						}
-					}
-					req.setEntityStats(entityStats);
-				} catch (Exception e) {
-					logger.error("cannot get any stream stats for stream " + input.getSession().getStream().getName());
-				}
+				
 				req.setWorkerId(workerId);
 				req.setStream(input.getSession().getStream().getName());
 				req.setSessionId(input.getSession().getSessionId());
@@ -200,6 +185,15 @@ public class StreamSessionNodeImpl implements StreamSessionNode {
 		starter.start();
 
 	}
+	
+	
+
+	@Override
+	public DunkNetNode getDunkNode() {
+		return dunkNode;
+	}
+
+
 
 	@Override
 	public StreamSessionNodeStatus getStatus() {

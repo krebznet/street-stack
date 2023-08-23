@@ -21,6 +21,8 @@ import com.dunkware.xstream.model.stats.EntityStatReq;
 import com.dunkware.xstream.model.stats.EntityStatReqType;
 import com.dunkware.xstream.model.stats.EntityStatResp;
 import com.dunkware.xstream.model.stats.EntityStatRespBuilder;
+import com.dunkware.xstream.model.stats.EntityStatsAgg;
+import com.dunkware.xstream.model.stats.EntityStatsAggVar;
 
 public class StreamEntityStatCache {
 	
@@ -30,16 +32,40 @@ public class StreamEntityStatCache {
 	private String ident; 
 	private Map<String,StreamEntityVarStatCache> varCache = new ConcurrentHashMap<String,StreamEntityVarStatCache>();
 	private Map<LocalDate,StreamEntityVarStatCache> varCacheIndex = new ConcurrentHashMap<LocalDate, StreamEntityVarStatCache>();
+	private EntityStatsAgg agg; 
+	private boolean aggInitialized = false;
+	
+	
+	
 	public void init(String ident) { 
 		this.ident = ident;
+		agg = new EntityStatsAgg();
+		agg.setIdent(ident);;
+		agg.setSessions(0);
 	}
 	
 	public String getIdent() { 
 		return ident; 
 	}
 	
+	public EntityStatsAgg getAgg() {
+		List<EntityStatsAggVar> varAggs = new ArrayList<EntityStatsAggVar>();
+		for (StreamEntityVarStatCache var : varCache.values()) {
+			varAggs.add(var.getAgg());
+		}
+		agg.setVars(varAggs);
+		return agg;
+	}
 	
 	
+	public StreamEntityVarStatCache getVar(String ident) throws Exception { 
+		StreamEntityVarStatCache var = varCache.get(ident);
+		if(var == null) { 
+			throw new Exception("Stream Var Not Found " + ident);
+		}
+		return var;
+		
+	}
 	
 	
 	public void consumeSession(Document doc) { 
@@ -50,16 +76,26 @@ public class StreamEntityStatCache {
 		  .atOffset(ZoneOffset.UTC);
 		date = Date.from(offsetDateTime.withOffsetSameInstant(ZoneOffset.UTC).toInstant());
 		LocalDate hmm = offsetDateTime.toLocalDate();
-		
-	
 		DDate ddate = DDate.from(hmm);
 		if(varCacheIndex.keySet().contains(hmm)) { 
 			return;
 		}
-		
+		if(!aggInitialized) { 
+			agg.setStart(ddate.get());
+			agg.setEnd(ddate.get());
+			agg.setSessions(1);
+			aggInitialized = true;
+		} else { 
+			if(ddate.isAfter(DDate.from(agg.getEnd()))) {
+				agg.setEnd(ddate.get());
+			}
+			if(ddate.isBefore(DDate.from(agg.getStart()))) {
+				agg.setStart(ddate.get());
+			}
+			agg.setSessions(agg.getSessions() + 1);
+		}
 		
 		Iterator<Document> vars = (Iterator<Document>)doc.getList("vars", Document.class).iterator();
-		
 
 		int count = 1;
 		List<String> varNames = new ArrayList<String>();

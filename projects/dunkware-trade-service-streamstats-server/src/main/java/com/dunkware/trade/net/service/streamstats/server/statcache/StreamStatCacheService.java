@@ -56,8 +56,7 @@ public class StreamStatCacheService {
 		double discount = 105;
 		discountedPrice = (discount * 100) / price;
 		System.out.println(discountedPrice);
-		
-		
+	
 	}
 	@PostConstruct
 	private void load() {
@@ -146,6 +145,14 @@ public class StreamStatCacheService {
 		return bean;
 	}
 	
+	
+	public StreamStatCache getStream(String stream) throws Exception { 
+		StreamStatCache cache = streamStats.get(stream);
+		if(cache == null) { 
+			throw new Exception("Stream Stat Cache Not Found For Stream " + stream);
+		}
+		return cache;
+	}
 	
 	public EntityStatResp entityStat(EntityStatReq req) { 
 		StreamStatCache cache = streamStats.get(req.getStream());
