@@ -1,0 +1,49 @@
+Resources
+  http://localhost:3000/api/users
+  http://localhost:3000/api/tasks
+  
+  http://localhost:3000/states
+  http://localhost:3000/tasks
+  
+
+  Other routes
+  /api/* -> /$1
+
+  Home
+  http://localhost:3000
+
+  Type s + enter at any time to create a snapshot of the database
+GET /tasks/?= 200 8.041 ms - 579
+GET /tasks/?status=Completed 200 5.039 ms - 269
+GET /tasks/?status=Planned 200 3.640 ms - 166
+GET /tasks/?status=Critical 200 3.441 ms - 2
+GET /tasks/?status=Scheduled 200 3.421 ms - 2
+GET /tasks/?status=Active 200 3.170 ms - 148
+PATCH /tasks/1 200 21.708 ms - 133
+GET /tasks/?status=Active 200 3.395 ms - 2
+GET /tasks/?status=Completed 200 3.454 ms - 418
+GET /tasks/?=Completed 200 2.973 ms - 582
+POST /tasks 201 4.678 ms - 115
+GET /tasks/?=Completed 200 3.268 ms - 713
+GET /stories 304 3.262 ms - -
+GET /tasks/?=Completed 304 3.063 ms - -
+GET /user_list 200 3.083 ms - 757
+GET /tasks/?=Completed 304 3.127 ms - -
+GET /stories 304 3.156 ms - -
+GET /tasks/?=Completed 304 3.241 ms - -
+GET /user_list 304 4.232 ms - -
+POST /user_list 201 3.586 ms - 197
+GET /user_list 200 3.246 ms - 984
+GET /stories 304 2.883 ms - -
+GET /tasks/?=Completed 304 3.217 ms - -
+GET /stories 304 3.307 ms - -
+GET /tasks/?=Completed 304 2.996 ms - -
+GET /tasks/?=Completed 304 4.075 ms - -
+GET /user_list 304 3.107 ms - -
+GET /user_list 304 3.369 ms - -
+GET /stories 304 3.245 ms - -
+GET /tasks/?=Completed 304 3.223 ms - -
+GET /tasks/?=Completed 304 5.801 ms - -
+GET /stories 304 3.507 ms - -
+GET /tasks/?=Completed 304 1.974 ms - -
+GET /stories 304 3.161 ms - -
