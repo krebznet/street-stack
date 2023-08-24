@@ -94,23 +94,31 @@ public class StreamStatCacheService {
 				BasicDBObject query = new BasicDBObject();
 				query.put("stream", "us_equity");
 				Bson projection = fields(exclude("vars.id","vars.lowTime","vars.highTime"),excludeId());
-				Bson filter = Filters.or(Filters.eq("ident", "AAPL"),Filters.eq("ident", "BAC"),Filters.eq("ident","JPM"));
+			//	Bson filter = Filters.or(Filters.eq("ident", "AAPL"),Filters.eq("ident", "BAC"),Filters.eq("ident","JPM"));
 				long docSize = mongoEntityStatSessions.get().countDocuments();
+				logger.info(marker, "cache collection size " + docSize);
 				watch.stop();
 				
 				bean.setDocuments(docSize);
 				bean.setCountTime((long)watch.getCompletedSeconds());
 				watch.start();
-				MongoCursor<Document> docs = mongoEntityStatSessions.get().find(filter).batchSize(batchSize).projection(projection).cursor();
+				logger.info(marker, "starting cache query");
+				MongoCursor<Document> docs = mongoEntityStatSessions.get().find(query).batchSize(batchSize).projection(projection).cursor();
 			
 				int counter = 0;
 				int countme = 0;
+				int loggercounter =0;
 				LocalTime start2 = LocalTime.now();
 				
 				while(docs.hasNext()) {
 					Document doc = docs.next();
 					countme++;
 					counter++;
+					loggercounter++;
+					if(loggercounter == 10000) { 
+						logger.info(marker, "loaded 10K cache docs");
+						loggercounter = 0;
+					}
 					if(countme == 1000) { 
 						bean.setLoadBatch(Duration.between(start2, LocalTime.now()).toMillis());
 						start2 = LocalTime.now();
@@ -131,6 +139,7 @@ public class StreamStatCacheService {
 				
 				}
 				long loadTime = Duration.between(start, LocalTime.now()).toSeconds();
+				logger.info(marker,"completed cache query");
 				bean.setLoaded(true);
 				bean.setLoadTime(loadTime);
 			}
