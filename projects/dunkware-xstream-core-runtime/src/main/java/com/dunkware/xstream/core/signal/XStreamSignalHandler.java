@@ -3,7 +3,6 @@ package com.dunkware.xstream.core.signal;
 import com.dunkware.xstream.api.XStream;
 import com.dunkware.xstream.api.XStreamEntityQuery;
 import com.dunkware.xstream.model.signal.XStreamSignalModel;
-import com.dunkware.xstream.model.signal.XStreamSignalType;
 
 public class XStreamSignalHandler {
 
@@ -11,9 +10,9 @@ public class XStreamSignalHandler {
 	private XStreamSignalModel model; 
 	private XStreamEntityQuery query; 
 	
-	public void init(XStream stream, XStrea type) throws Exception { 
+	public void init(XStream stream, XStreamSignalModel model) throws Exception { 
 		this.stream = stream;
-		this.type = type;
+		//this.type = type;
 		// this will happen in the start thread of xsream 
 		// okay so this is created is is it initialized? 
 		//stream.createRowQuery(type.getQuery());
@@ -21,7 +20,7 @@ public class XStreamSignalHandler {
 		// so this thing needs a runnable
 		// so it needs to be scheduled basd on the type settings
 		// how do we schedule recurring things 
-		stream.getClock().scheduleRunnable(new Runner(), type.getRunInterva());
+		//stream.getClock().scheduleRunnable(new Runner(), type.getRunInterva());
 		
 	}
 	
