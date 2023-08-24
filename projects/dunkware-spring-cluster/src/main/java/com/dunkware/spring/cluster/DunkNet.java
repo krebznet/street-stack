@@ -1,14 +1,14 @@
 package com.dunkware.spring.cluster;
 
-import java.util.List;
 import java.util.Vector;
 
 import com.dunkware.common.util.events.DEventNode;
 import com.dunkware.common.util.executor.DExecutor;
-import com.dunkware.spring.cluster.DunkNetComponent.ComponentMethod;
+import com.dunkware.spring.cluster.core.controllers.DunkNetController;
+import com.dunkware.spring.cluster.core.controllers.DunkNetState;
 import com.dunkware.spring.cluster.core.request.DunkNetChannelRequest;
 import com.dunkware.spring.cluster.core.request.DunkNetServiceRequest;
-import com.dunkware.spring.cluster.protocol.DunkNetNodeDescriptor;
+import com.dunkware.spring.cluster.protocol.descriptors.DunkNetNodeDescriptor;
 
 public interface DunkNet {
 	
@@ -40,11 +40,11 @@ public interface DunkNet {
 	
 	public DExecutor getExecutor(); 
 	
-	public ComponentMethod getSerivceMethod(Object input) throws DunkNetException; 
+	public DunkNetExtensions extensions();
 	
-	public ComponentMethod getChannelMethod(Object input) throws DunkNetException; 
+	public DunkNetState getState();
 	
-	public List<ComponentMethod> getEventMethods(Object input) throws DunkNetException;
+	public DunkNetController getController();
 	
 }
 

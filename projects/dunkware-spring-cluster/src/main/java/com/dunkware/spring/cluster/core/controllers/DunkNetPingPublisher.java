@@ -10,20 +10,19 @@ import org.springframework.context.ApplicationContext;
 
 import com.dunkware.common.kafka.consumer.DKafkaByteConsumer2;
 import com.dunkware.common.kafka.consumer.DKafkaByteHandler2;
-import com.dunkware.common.spec.kafka.DKafkaByteConsumer2SpecBuilder;
 import com.dunkware.common.spec.kafka.DKafkaByteConsumer2Spec.ConsumerType;
 import com.dunkware.common.spec.kafka.DKafkaByteConsumer2Spec.OffsetType;
+import com.dunkware.common.spec.kafka.DKafkaByteConsumer2SpecBuilder;
 import com.dunkware.common.util.dtime.DDateTime;
 import com.dunkware.common.util.json.DJson;
 import com.dunkware.spring.cluster.DunkNet;
-import com.dunkware.spring.cluster.DunkNetNode;
 import com.dunkware.spring.cluster.core.DunkNetController;
 import com.dunkware.spring.cluster.core.DunkNetImpl;
 import com.dunkware.spring.cluster.message.DunkNetMessage;
-import com.dunkware.spring.cluster.protocol.DunkNetNodePing;
+import com.dunkware.spring.cluster.protocol.descriptors.DunkNetNodeDescriptor;
 
 
-public class DunkNetPingController implements DunkNetController, DKafkaByteHandler2 {
+public class DunkNetPingPublisher implements DKafkaByteHandler2 {
 
 	private DunkNetImpl dunkNet;
 	
@@ -59,8 +58,8 @@ public class DunkNetPingController implements DunkNetController, DKafkaByteHandl
 	@Override
 	public void record(ConsumerRecord<String, byte[]> record) {
 		try {
-			DunkNetNodePing ping = DJson.getObjectMapper().readValue(record.value(), DunkNetNodePing.class);
-			dunkNet.consumePing(ping);
+			DunkNetNodeDescriptor ping = DJson.getObjectMapper().readValue(record.value(), DunkNetNodeDescriptor.class);
+			dunkNet.nodeDescriptor(ping);
 		} catch (Exception e) {
 			logger.error(marker, "Exception consuming ping " + e.toString());
 		}
@@ -68,27 +67,21 @@ public class DunkNetPingController implements DunkNetController, DKafkaByteHandl
 
 
 
-	@Override
-	public boolean handleMessage(DunkNetMessage message) {
-		return false;
-	}
-	
-	
 	private class PingSender extends Thread { 
 		
 		public void run() {
 			setName("DunkNet-PingSender");
 			while(!interrupted()) { 
-				DunkNetNodePing ping = new DunkNetNodePing();
-				ping.setDescriptor(dunkNet.getDescriptor());
+				DunkNetNodeDescriptor ping = new DunkNetNodeDescriptor();
+				ping.setDescriptors(dunkNet.extensions().buildDescriptors());
+				ping.setTimestamp(DDateTime.now());
 				ping.setId(dunkNet.getId());
 				ping.setProfiles(dunkNet.getConfig().getProfiles());
-				ping.setPingTime(DDateTime.now());
-				dunkNet.sendPing(ping);
+				dunkNet.sendUpdate(ping);
 				try {
-					Thread.sleep(3000);	
+					Thread.sleep(1000);	
 				} catch (Exception e) {
-					// TODO: handle exception
+					logger.error(marker, "Exception sending node update");
 				}
 				
 			}

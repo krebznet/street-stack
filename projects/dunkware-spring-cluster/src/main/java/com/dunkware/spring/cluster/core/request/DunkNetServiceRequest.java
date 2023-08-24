@@ -8,7 +8,7 @@ import java.util.concurrent.TimeUnit;
 import com.dunkware.spring.cluster.DunkNetException;
 import com.dunkware.spring.cluster.DunkNetNode;
 import com.dunkware.spring.cluster.message.DunkNetMessage;
-import com.dunkware.spring.cluster.protocol.DunkNetNodeService;
+import com.dunkware.spring.cluster.protocol.descriptors.DunkNetServiceDescriptor;
 
 public class DunkNetServiceRequest {
 
@@ -21,7 +21,7 @@ public class DunkNetServiceRequest {
 	private volatile boolean error = false;
 	private CountDownLatch completionLatch = new CountDownLatch(1);
 	private String requestId;
-	private DunkNetNodeService serviceDescriptor;
+	private DunkNetServiceDescriptor serviceDescriptor;
 	private short waiters;
 	private String responseErrror = null;
 	private static final Object SUCCESS = new Object();
@@ -30,10 +30,11 @@ public class DunkNetServiceRequest {
 	private BlockingQueue<String> wait = new LinkedBlockingQueue<String>();
 
 	private volatile Object result;
+	
 
 	public DunkNetServiceRequest(DunkNetNode node, Object payload) throws DunkNetException {
 		this.node = node;
-		this.serviceDescriptor = node.getServiceDescriptor(payload);
+		this.serviceDescriptor = node.getDescriptor().getDescriptors().getService(payload);
 		if (serviceDescriptor == null) {
 			throw new DunkNetException("Service Descriptor on node " + node.getId() + " not found for class "
 					+ payload.getClass().getName());
@@ -91,77 +92,10 @@ public class DunkNetServiceRequest {
 	}
 
 	public boolean isDone() {
-		return isDone0(result);
+		return completed;
 	}
 
-	private static boolean isDone0(Object result) {
-		return result != null && result != UNCANCELLABLE;
-	}
 
-	private boolean await0(long timeoutNanos, boolean interruptable) throws InterruptedException {
-		if (isDone()) {
-			return true;
-		}
-
-		if (timeoutNanos <= 0) {
-			return isDone();
-		}
-
-		if (interruptable && Thread.interrupted()) {
-			throw new InterruptedException(toString());
-		}
-
-		// checkDeadLock();
-
-		long startTime = System.nanoTime();
-		long waitTime = timeoutNanos;
-		boolean interrupted = false;
-		try {
-			for (;;) {
-				synchronized (this) {
-					if (isDone()) {
-						return true;
-					}
-					incWaiters();
-					try {
-						wait(waitTime / 1000000, (int) (waitTime % 1000000));
-					} catch (InterruptedException e) {
-						if (interruptable) {
-							throw e;
-						} else {
-							interrupted = true;
-						}
-					} finally {
-						decWaiters();
-					}
-				}
-				if (isDone()) {
-					return true;
-				} else {
-					waitTime = timeoutNanos - (System.nanoTime() - startTime);
-					if (waitTime <= 0) {
-						return isDone();
-					}
-				}
-			}
-		} finally {
-			if (interrupted) {
-				Thread.currentThread().interrupt();
-			}
-		}
-	}
-
-	private void incWaiters() {
-		if (waiters == Short.MAX_VALUE) {
-			throw new IllegalStateException("too many waiters: " + this);
-		}
-		++waiters;
-	}
-
-	private void decWaiters() {
-		--waiters;
-	}
-	
 	public Object getResponse() throws DunkNetException { 
 		return result;
 	}

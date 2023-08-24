@@ -2,9 +2,11 @@ package com.dunkware.spring.cluster;
 
 public interface DunkNetChannelListener {
 	
-	public void channelOpen();
+	public void onChannelStart();
 	
-	public void channelClose();
+	public void onChannelClose();
+	
+	public void onChannelError(Throwable t);
 	
 	
 

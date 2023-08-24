@@ -4,18 +4,15 @@ import com.dunkware.spring.cluster.core.request.DunkNetChannelRequest;
 import com.dunkware.spring.cluster.core.request.DunkNetServiceRequest;
 import com.dunkware.spring.cluster.message.DunkNetMessage;
 import com.dunkware.spring.cluster.message.DunkNetMessageTransport;
-import com.dunkware.spring.cluster.protocol.DunkNetNodeChannel;
-import com.dunkware.spring.cluster.protocol.DunkNetNodeDescriptor;
-import com.dunkware.spring.cluster.protocol.DunkNetNodePing;
-import com.dunkware.spring.cluster.protocol.DunkNetNodeService;
+import com.dunkware.spring.cluster.protocol.descriptors.DunkNetNodeDescriptor;
 
 public interface DunkNetNode {
 
 	String getId();
 	
-	public DunkNet getDunkNet(); 
+	public DunkNet getNet();
 	
-	public void ping(DunkNetNodePing ping);
+	public void nodeUpdate(DunkNetNodeDescriptor descriptor);
 	
 	public DunkNetNodeDescriptor getDescriptor();
 	
@@ -29,17 +26,11 @@ public interface DunkNetNode {
 
 	DunkNetChannelRequest channel(Object payload) throws DunkNetException;
 	
-	public boolean isChannelProvider(Object input);
+	public DunkNetNodeDescriptor descriptor();
 	
-	public boolean isEventConsumer(Object input);
+	public boolean isOnline(); 
 	
-	public boolean isServiceProvider(Object input);
 	
-	public DunkNetNodeService getServiceDescriptor(Object input) throws DunkNetException;
-	
-	public DunkNetNodeChannel getChannelDescriptor(Object input) throws DunkNetException;
-	
-	public boolean hasProfile(String profile); 
 }
 
 
