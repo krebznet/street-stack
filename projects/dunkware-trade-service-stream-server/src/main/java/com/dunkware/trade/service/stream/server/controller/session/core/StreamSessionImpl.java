@@ -24,8 +24,7 @@ import com.dunkware.common.util.dtime.DTime;
 import com.dunkware.common.util.dtime.DTimeZone;
 import com.dunkware.common.util.events.DEventNode;
 import com.dunkware.common.util.time.DunkTime;
-import com.dunkware.net.cluster.node.Cluster;
-import com.dunkware.net.cluster.node.ClusterNode;
+import com.dunkware.spring.cluster.DunkNetNode;
 import com.dunkware.trade.service.stream.json.controller.model.StreamSessionSpec;
 import com.dunkware.trade.service.stream.json.controller.session.StreamSessionState;
 import com.dunkware.trade.service.stream.json.controller.session.StreamSessionStatus;
@@ -71,9 +70,7 @@ public class StreamSessionImpl implements StreamSession {
 
 	@Autowired
 	private ApplicationContext ac;
-
-	@Autowired
-	private Cluster cluster;
+	
 
 	private StreamSessionStatus status;
 
@@ -109,7 +106,7 @@ public class StreamSessionImpl implements StreamSession {
 		stoppedSessionInvoked.set(false);
 		this.input = input;
 		nodeStartFailures = new AtomicInteger(0);
-		eventNode = cluster.getEventTree().getRoot();
+		eventNode = input.getController().getEventNode().createChild(this);
 		;
 		status = new StreamSessionStatus();
 		status.setState(StreamSessionState.Starting);
@@ -143,10 +140,11 @@ public class StreamSessionImpl implements StreamSession {
 		
 		Map<StreamSessionNode,StreamSessionNodeInput> pendingStartNodes = new ConcurrentHashMap<StreamSessionNode,StreamSessionNodeInput>();
 
-		for (ClusterNode workerNode : input.getWorkerNodes()) {
-			StreamSessionNodeInput nodeInput = new StreamSessionNodeInput(nodeTickers.get(nodeIndex), workerNode,
+		int workerId = 1;
+		for (DunkNetNode workerNode : input.getWorkerNodes()) {
+			StreamSessionNodeInput nodeInput = new StreamSessionNodeInput(workerId,nodeTickers.get(nodeIndex), workerNode,
 					extensionTypes, this, input.getController(), this.nodeCallback);
-
+			workerId++;
 			StreamSessionNodeImpl sessionNode = new StreamSessionNodeImpl();
 			ac.getAutowireCapableBeanFactory().autowireBean(sessionNode);
 			logger.info(MarkerFactory.getMarker(sessionId), "Starting session node on worker " + workerNode.getId());
@@ -164,8 +162,8 @@ public class StreamSessionImpl implements StreamSession {
 
 	@Override
 	public void stopSession() throws StreamSessionException {
-		StopMonitor stopMonitor = new StopMonitor();
-		stopMonitor.start();
+		
+		
 		logger.info(MarkerFactory.getMarker(getSessionId()), "Stopping Session");
 		EStreamSessionStopping stopping = new EStreamSessionStopping(this);
 		eventNode.event(stopping);
@@ -366,8 +364,6 @@ public class StreamSessionImpl implements StreamSession {
 	}
 	
 	
-	
-
 	@Override
 	public StreamSessionNode getEntityNode(String ident) throws Exception {
 		for (StreamSessionNode node : this.nodes) {
@@ -378,15 +374,8 @@ public class StreamSessionImpl implements StreamSession {
 		throw new Exception("Unresolved entity does not have node " + ident);
 	}
 
-	@Override
-	public EntitySnapshot getEntitySnapshot(String ident) throws Exception {
-		if(status.getState() != StreamSessionState.Running) { 
-			throw new Exception("Cannot get entity snapshot when stream is not running");
-		}
-		StreamSessionNode node = getEntityNode(ident);
-		return node.getEntitySnapshot(ident);
-		
-	}
+	
+	
 
 
 
@@ -418,8 +407,8 @@ public class StreamSessionImpl implements StreamSession {
 
 		@Override
 		public synchronized void nodeStartException(StreamSessionNode node) {
-			logger.warn(MarkerFactory.getMarker(getSessionId()), "Session Node {} Failed To Sstart {} ", node.getNode(),
-					node.getEventNode());
+			//logger.warn(MarkerFactory.getMarker(getSessionId()), "Session Node {} Failed To Sstart {} ", node.getNodeId());
+			//		node.getEventNode());
 			nodeStartFailures.incrementAndGet();
 			sessionEntity.setNodeStartFailures(sessionEntity.getNodeStartFailures() + 1);
 			;
@@ -466,42 +455,6 @@ public class StreamSessionImpl implements StreamSession {
 
 	}
 	
-	private class StopMonitor extends Thread { 
-		
-		public void run() { 
-			try {
-				Thread.sleep(30000);
-				if(!stoppedSessionInvoked.get()) { 
-					logger.error("Session Stopped Not invoked after 30 seconds, callback count " + stoppedNodes.size() + " node count is " + nodeCount);
-					List<String> missingStops = new ArrayList<String>();
-					for (StreamSessionNode node : nodes) {
-						String id = node.getNodeId();
-						boolean found = false; 
-						for (String string : stoppedNodes) {
-							if(string.equalsIgnoreCase(id)) {
-								found = true; 
-								break;
-							}
-						}
-						if(!found) { 
-							missingStops.add(id);
-						}
-					}
-					StringBuilder nodeBuilder = new StringBuilder();
-					for (String node : missingStops) {
-						nodeBuilder.append(node + ":");
-					}
-					
-					logger.error("Session Missing Stop Nodes are " + nodeBuilder.toString());
-					handleSessionStopped();
-				} else { 
-					logger.info("Session Monitor Correct");
-				}
-				
-			} catch (Exception e) {
-				// TODO: handle exception
-			}
-		}
-	}
+
 
 }

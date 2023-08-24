@@ -172,7 +172,7 @@ public class StreamControllerService {
 		}
 		// notify spec update
 		// no stream controller
-		stream.specUpdate(spec);
+		
 
 	}
 

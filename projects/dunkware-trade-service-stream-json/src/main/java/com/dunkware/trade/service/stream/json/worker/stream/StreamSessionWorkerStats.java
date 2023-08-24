@@ -8,6 +8,7 @@ public class StreamSessionWorkerStats {
 
 	private String nodeId; 
 	private String stream; 
+	private String startException;
 	private long pendingTaskCount; 
 	private long completedTaskCount; 
 	private long timeoutTaskCount; 
@@ -18,6 +19,9 @@ public class StreamSessionWorkerStats {
 	private DTime systemTime; 
 	private int rowCount; 
 	private long tickCount; 
+	private int workerId; 
+	
+	private String status;
 
 	@JsonInclude(Include.NON_NULL)
 	private String requestError;
@@ -148,6 +152,39 @@ public class StreamSessionWorkerStats {
 	public void setRequestError(String requestError) {
 		this.requestError = requestError;
 	}
+
+
+	public int getWorkerId() {
+		return workerId;
+	}
+
+
+	public void setWorkerId(int workerId) {
+		this.workerId = workerId;
+	}
+
+
+	public String getStatus() {
+		return status;
+	}
+
+
+	public void setStatus(String status) {
+		this.status = status;
+	}
+
+
+	public String getStartException() {
+		return startException;
+	}
+
+
+	public void setStartException(String startException) {
+		this.startException = startException;
+	}
+
+	
+
 	
 	
 	

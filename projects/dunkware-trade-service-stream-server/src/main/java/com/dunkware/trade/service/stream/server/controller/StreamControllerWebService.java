@@ -8,7 +8,6 @@ import javax.annotation.PostConstruct;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.expression.spel.ast.VariableReference;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -19,9 +18,9 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.server.ResponseStatusException;
 
+import com.dunkware.common.util.events.DEventNode;
 import com.dunkware.common.util.helpers.DRandom;
 import com.dunkware.common.util.json.DJson;
-import com.dunkware.common.util.time.DunkTime;
 import com.dunkware.net.proto.stream.GEntitySignalSpec;
 import com.dunkware.net.proto.stream.GStreamSpec;
 import com.dunkware.net.proto.stream.GStreamVarSpec;
@@ -46,15 +45,10 @@ import com.dunkware.trade.service.stream.resources.SignalResource;
 import com.dunkware.trade.service.stream.resources.StreamResource;
 import com.dunkware.trade.service.stream.resources.VariableResource;
 import com.dunkware.trade.service.stream.server.controller.util.StreamSpecBuilder;
-import com.dunkware.trade.service.stream.server.stats.StreamStatsEntity;
-import com.dunkware.trade.service.stream.server.stats.StreamStatsService;
 import com.dunkware.trade.service.stream.server.tick.StreamTickService;
 import com.dunkware.trade.tick.model.ticker.TradeTickerSpec;
-import com.dunkware.xstream.model.snapshot.EntitySnapshot;
-import com.dunkware.xstream.model.snapshot.EntitySnapshotVar;
 import com.dunkware.xstream.model.spec.StreamSpec;
 import com.dunkware.xstream.model.spec.StreamSpecList;
-import com.dunkware.xstream.model.stats.EntityStatsAggVar;
 
 
 @RestController
@@ -66,8 +60,7 @@ public class StreamControllerWebService {
 	@Autowired
 	private StreamTickService tickService; 
 	
-	@Autowired
-	private StreamStatsService statsService; 
+	
 	
 	private Logger logger = LoggerFactory.getLogger(getClass());
 	
@@ -332,44 +325,7 @@ public class StreamControllerWebService {
 	}
 	
 	
-	@GetMapping(path = "/stream/session/snapshot")
-	public @ResponseBody() EntitySnapshot streamEntitySnapshot(@RequestParam() String stream, @RequestParam() String ident) throws Exception { 
-		EntitySnapshot snapshot = null;
-		try {
-			StreamController controller =  service.getStreamByName(stream);
-			
-			if(controller.getSession() == null) { 
-				snapshot = new EntitySnapshot();
-				snapshot.setError("Stream Session Null");
-				return snapshot; 
-			}
-			snapshot = controller.getSession().getEntitySnapshot(ident);
-			try {
-				StreamStatsEntity entity = statsService.getStreamStats(stream).getEntity(ident);
-				if(entity != null) { 
-					for (EntitySnapshotVar var : snapshot.getVars()) {
-						for (EntityStatsAggVar aggV : entity.getAgg().getVars()) {
-							if(aggV.getIdent().equalsIgnoreCase(ident)) { 
-								var.setHigh(aggV.getHigh());
-								var.setHighTimeString(DunkTime.format(aggV.getHighDateTime(), DunkTime.YYYY_MM_DD_HH_MM_SS));
-								var.setLow(aggV.getLow());
-								var.setLowTimeString(DunkTime.format(aggV.getLowDateTime(), DunkTime.YYYY_MM_DD_HH_MM_SS));
-								break;
-							}
-						}
-					}
-				}
-			} catch (Exception e) {
-				// TODO: handle exception
-			}
-			
-			return snapshot;
-		} catch (Exception e) {
-			snapshot = new EntitySnapshot();
-			snapshot.setError(e.toString());
-			return snapshot;
-		}
-	}
+
 	
 	@GetMapping(path = "/stream/resource/streams")
 	public @ResponseBody() List<StreamResource> getStreamIdentifiers() { 
@@ -390,52 +346,8 @@ public class StreamControllerWebService {
 		
 	}
 	
-	@GetMapping(path = "/stream/spec/signals")
-	public @ResponseBody() List<SignalResource> getSignalNames(@RequestParam() String streamIdent) { 
-		List<SignalResource> mock = new ArrayList<SignalResource>();
-		StreamController stream = null;
-		try {
-			stream = service.getStreamByName(streamIdent);
-		} catch (Exception e) {
-			throw new ResponseStatusException(
-			           HttpStatus.BAD_REQUEST, "Stream " + streamIdent + " not found " 	+ e.toString());
-			
-		}
-		// OKay so you will have to udpate this to take into account; dynamic signal types
-		GStreamSpec spec = stream.getGStreamSpec();
-		for (GEntitySignalSpec sig : spec.getScript().getSignalTypesList()) {
-			SignalResource re = new SignalResource();
-			re.setId(sig.getId());
-			re.setIdent(sig.getIdentifier());
-			re.setName(sig.getIdentifier());
-			mock.add(re);
-		}
-		
-		return mock; 
-	}
 	
-	@GetMapping(path = "/stream/spec/vars")
-	public @ResponseBody() List<VariableResource> getVarResources(@RequestParam() String streamIdent) { 
-		List<VariableResource> mock = new ArrayList<VariableResource>();
-		StreamController stream = null;
-		try {
-			stream = service.getStreamByName(streamIdent);
-		} catch (Exception e) {
-			throw new ResponseStatusException(
-			           HttpStatus.BAD_REQUEST, "Stream " + streamIdent + " not found " 	+ e.toString());
-			
-		}
-		GStreamSpec spec = stream.getGStreamSpec();
-		for (GStreamVarSpec sig : spec.getScript().getVariablesList()) {
-			VariableResource var = new VariableResource(); 
-			var.setId(sig.getId());
-			var.setIdent(sig.getIdentifier());
-			var.setName(sig.getIdentifier());
-			mock.add(var);
-		}
-		
-		return mock; 
-	}
+	
 	
 	
 	

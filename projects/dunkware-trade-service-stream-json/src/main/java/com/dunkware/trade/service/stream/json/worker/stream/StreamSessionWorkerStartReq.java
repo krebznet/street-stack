@@ -13,10 +13,10 @@ public class StreamSessionWorkerStartReq {
 
 	private XStreamBundle streamBundle; 
 	private String stream; 
-	private String workerId; 
+	private int workerId; 
 	private String sessionId; 
 	private List<XStreamSignalModel> signals = new ArrayList<XStreamSignalModel>();
-
+	private String nodeId;
 	
 	public StreamSessionWorkerStartReq() { 
 	
@@ -39,12 +39,30 @@ public class StreamSessionWorkerStartReq {
 		this.stream = stream;
 	}
 
-	public String getWorkerId() {
+	
+
+	public String getNodeId() {
+		return nodeId;
+	}
+
+	public void setNodeId(String nodeId) {
+		this.nodeId = nodeId;
+	}
+
+	public int getWorkerId() {
 		return workerId;
 	}
 
-	public void setWorkerId(String workerId) {
+	public void setWorkerId(int workerId) {
 		this.workerId = workerId;
+	}
+
+	public List<XStreamSignalModel> getSignals() {
+		return signals;
+	}
+
+	public void setSignals(List<XStreamSignalModel> signals) {
+		this.signals = signals;
 	}
 
 	public String getSessionId() {

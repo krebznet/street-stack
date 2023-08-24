@@ -1,34 +1,39 @@
 package com.dunkware.trade.service.stream.worker.session;
 
 import com.dunkware.spring.cluster.DunkNetChannel;
+import com.dunkware.spring.cluster.DunkNetChannelHandler;
 import com.dunkware.spring.cluster.DunkNetChannelListener;
 import com.dunkware.spring.cluster.DunkNetComponent;
+import com.dunkware.spring.cluster.DunkNetException;
+import com.dunkware.spring.cluster.anot.ADunkNetEvent;
 import com.dunkware.trade.service.stream.json.worker.scanner.StreamEntityScannerReq;
+import com.dunkware.trade.service.stream.json.worker.scanner.StreamEntityScannerStopReq;
 import com.dunkware.xstream.api.XStreamEntityQuery;
 
-public class StreamWorkerEntityScanner extends DunkNetComponent implements DunkNetChannelListener  {
+public class StreamWorkerEntityScanner implements DunkNetChannelHandler  {
 	
 	private DunkNetChannel channel;
 	private StreamWorkerNode workerNode; 
 	private StreamEntityScannerReq req; 
 	private XStreamEntityQuery query; 
 	
-	public void init(DunkNetChannel channel, StreamWorkerNode workerNode, StreamEntityScannerReq req) throws Exception { 
-		this.channel = channel;
+	
+	public void init(StreamWorkerNode workerNode, StreamEntityScannerReq req) throws Exception { 
 		this.workerNode = workerNode;
 		this.req = req;
-		query = workerNode.getXStream().entityQuery(req.getQuery());
+		query = workerNode.getStream().entityQuery(req.getQuery());
 		
-	}
-	
-	public void onClose() { 
-		// require it. 
 	}
 
 	@Override
-	public void channelOpen() {
-		// TODO Auto-generated method stub
-		
+	public void channelInit(DunkNetChannel channel) throws DunkNetException {
+		this.channel = channel;
+		this.channel.addExtension(this);
+	}
+
+	@Override
+	public void channelStart() throws DunkNetException {
+		// so this will start after channel client inits
 	}
 
 	@Override
@@ -38,16 +43,19 @@ public class StreamWorkerEntityScanner extends DunkNetComponent implements DunkN
 	}
 	
 	
-	private class ScanUpdate implements Runnable {
-
-		@Override
-		public void run() {
-			
-		} 
-		
-		
-		
+	@ADunkNetEvent
+	public void stopScanner(StreamEntityScannerStopReq req) { 
 		
 	}
+
+	@Override
+	public void channelStartError(String exception) {
+		// TODO Auto-generated method stub
+		
+	}
+	
+	
+	
+	
 
 }

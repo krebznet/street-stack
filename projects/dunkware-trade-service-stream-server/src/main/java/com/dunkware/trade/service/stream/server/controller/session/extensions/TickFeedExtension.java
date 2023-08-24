@@ -31,7 +31,7 @@ public class TickFeedExtension implements StreamSessionExtension {
 	public void nodeStarting(StreamSessionNode node) {
 		TickFeedExtType type = new TickFeedExtType();
 		//type.setServiceEndpoint(null);
-		TickConsumerSpecBuilder builder = TickConsumerSpecBuilder.newInstance(session.getStream().getName() + "_" + node.getNode().getId() + "_" + DUUID.randomUUID(4));
+		TickConsumerSpecBuilder builder = TickConsumerSpecBuilder.newInstance(session.getStream().getName() + "_" + node.getNodeId() + "_" + DUUID.randomUUID(4));
 			//	DunkTime.formatHHMMSS(LocalDateTime.now(DTimeZone.toZoneId(node.getStream().getTimeZone())));
 		type.getDataTicks().put(TradeTicks.TickSnapshot, TradeTicks.FieldSymbol);
 		

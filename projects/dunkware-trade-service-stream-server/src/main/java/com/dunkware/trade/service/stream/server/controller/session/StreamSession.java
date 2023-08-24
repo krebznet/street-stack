@@ -43,8 +43,6 @@ public interface StreamSession {
 	public StreamSessionSpec getSessionSpec();
 	
 	public StreamSessionEntityScanner entityScanner(SessionEntityScanner model) throws XStreamRuntimeException;
-	
-	public EntitySnapshot getEntitySnapshot(String ident) throws Exception;
 
 	public StreamSessionNode getEntityNode(String ident) throws Exception;
 }

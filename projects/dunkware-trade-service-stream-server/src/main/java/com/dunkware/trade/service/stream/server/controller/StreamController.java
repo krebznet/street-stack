@@ -4,6 +4,7 @@ import java.time.DayOfWeek;
 import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Vector;
 import java.util.concurrent.Semaphore;
 import java.util.concurrent.TimeUnit;
 
@@ -22,11 +23,15 @@ import com.dunkware.common.util.dtime.DZonedClock;
 import com.dunkware.common.util.dtime.DZonedClockListener;
 import com.dunkware.common.util.dtime.DZonedClockUpdater;
 import com.dunkware.common.util.dtime.DZonedDateTime;
+import com.dunkware.common.util.events.DEventNode;
 import com.dunkware.common.util.events.anot.ADEventMethod;
 import com.dunkware.common.util.json.DJson;
-import com.dunkware.net.cluster.node.Cluster;
 import com.dunkware.net.cluster.node.ClusterNode;
 import com.dunkware.net.proto.stream.GStreamSpec;
+import com.dunkware.spring.cluster.DunkNet;
+import com.dunkware.spring.cluster.DunkNetNode;
+import com.dunkware.spring.runtime.services.EventService;
+import com.dunkware.spring.runtime.services.ExecutorService;
 import com.dunkware.trade.service.stream.json.controller.spec.StreamControllerSpec;
 import com.dunkware.trade.service.stream.json.controller.spec.StreamControllerState;
 import com.dunkware.trade.service.stream.json.controller.spec.StreamControllerStreamStats;
@@ -46,7 +51,6 @@ import com.dunkware.trade.service.stream.server.repository.StreamEntity;
 import com.dunkware.trade.service.stream.server.repository.StreamRepo;
 import com.dunkware.trade.service.stream.server.repository.StreamVersionEntity;
 import com.dunkware.trade.service.stream.server.spring.ConfigService;
-import com.dunkware.trade.service.stream.server.spring.RuntimeService;
 import com.dunkware.trade.service.stream.server.tick.StreamTickService;
 import com.dunkware.trade.tick.model.ticker.TradeTickerSpec;
 import com.dunkware.trade.tick.service.protocol.ticker.spec.TradeTickerListSpec;
@@ -70,6 +74,9 @@ public class StreamController
 	private String confgiredWorkerNodes; 
 	
 	private StreamSchedule schedule;
+	
+	@Autowired
+	private DunkNet dunkNet;
 
 	private StreamControllerStreamStats stats = new StreamControllerStreamStats();
 
@@ -80,13 +87,13 @@ public class StreamController
 	@Autowired
 	private StreamControllerService service;
 
+	private DEventNode eventNode;
+	
 	@Autowired
-	private Cluster cluster;
-
+	private ExecutorService executorService;
+	
 	@Autowired
-	private RuntimeService runtimeService;
-
-	private GStreamSpec gSpec;
+	private EventService eventService; 
 
 	private TradeTickerListSpec tickerList;
 
@@ -111,8 +118,6 @@ public class StreamController
 
 	private StreamControllerSpec spec;
 
-	private GStreamSpec gStreamSpec = null;
-
 	private XScriptProject scriptProject;
 
 	private StreamVersionEntity streamVersion;
@@ -121,9 +126,7 @@ public class StreamController
 	
 	private Marker marker = MarkerFactory.getMarker("StreamController");
 	
-	private StreamControllerStreamStats statsCache = null; 
-	
-	
+
 	private LocalTime statsCacheTimestamp = null;
 	
 	private List<StreamSignalListener> signalListeners = new ArrayList<StreamSignalListener>();
@@ -136,6 +139,7 @@ public class StreamController
 
 	public void start(StreamEntity ent) throws Exception {
 		logger.info(":Starting Stream Controller " + ent.getName());
+		eventNode = eventService.getEventRoot().createChild(this);
 		try {
 			this.blueprint = blueprintService.getBlueprint(ent.getName());
 		} catch (Exception e) {
@@ -149,7 +153,7 @@ public class StreamController
 		streamVersion = getCurrentVersion();
 
 		spec = DJson.getObjectMapper().readValue(ent.getSpec(), StreamControllerSpec.class);
-		this.specUpdate(spec);
+		
 		
 		try {
 			TradeTickerListSpec spec = tickerList = tickService.getClient().getTickerList(getEntity().getTickerLists());
@@ -272,29 +276,16 @@ public class StreamController
 			// TOODO: here right -->
 			input.setTickers(tickers);
 			input.setController(this);
-			//cluster.getNodeSevice().getAvailableWorkerNodes();
-			List<ClusterNode> nodes = new ArrayList<ClusterNode>();
+			
+			
 			try {
 				Thread.sleep(2500);	
 			} catch (Exception e) {
 				// TODO: handle exception
 			}
 			
-			String[] configedNodes = confgiredWorkerNodes.split(",");
-			try {
-				for (String nodeId : configedNodes) {
-					ClusterNode node = cluster.getNode(nodeId);
-					if(node == null) { 
-						logger.error("Stream Worker Configured Node not found " + nodeId);
-				 	} else { 
-				 		nodes.add(node);
-				 	}
-				} 
-	
-			} catch (Exception e) {
-				logger.error("exception requesting worker nodes " + e.toString());
-				throw new StreamSessionException("Exception getting worker nodes " + e.toString());
-			}
+			Vector<DunkNetNode> nodes = dunkNet.getNodes("StreamWorker");
+			
 
 			if (nodes.size() == 0) {
 				logger.error("Exception Starting Stream {} Session, available worker nodes is 0", getName());
@@ -306,8 +297,7 @@ public class StreamController
 			input.setWorkerNodes(nodes);
 			logger.info("Stream {} Scheduler Starting Session",getName());
 			session.startSession(input);
-		//	stats.setSession(session.getStatus());
-			// need to call this after start session annoying
+		
 			session.getEventNode().addEventHandler(this);
 		} catch (StreamSessionException e) {
 			stats.setState(StreamControllerState.Exception);
@@ -320,6 +310,9 @@ public class StreamController
 		return session;
 	}
 
+	public DEventNode getEventNode() {
+		return eventNode;
+	}
 	
 	public StreamControllerStreamStats getStats() {
 		if(session != null) { 
@@ -346,31 +339,8 @@ public class StreamController
 		return stats.getState();
 	}
 
-	public void specUpdate(StreamControllerSpec spec) {
-		this.spec = spec;
-		try {
-			tickerList = tickService.getClient().getTickerList(getEntity().getTickerLists());
-		} catch (Exception e) {
-			logger.error("Exception building ticker list on spec update " + e.toString());
-		}
+	
 
-		try {
-			gSpec = GStreamHelper.build(this);
-		} catch (Exception e) {
-			logger.error("Exception building g stream spec on spec update for stream {} " + e.toString(),getName());
-		}
-
-		if (schedule == null) {
-			return;
-		}
-		if (config.isScheduleStreams())
-			this.schedule.specUpdate();
-
-	}
-
-	public GStreamSpec getGStreamSpec() {
-		return gSpec;
-	}
 
 	private class StreamSchedule extends Thread implements DZonedClockListener {
 
@@ -622,88 +592,6 @@ public class StreamController
 			sessionStartedEvent((EStreamSessionStarted)event);
 		}
 	}
-	
-	public void addSignalListener(final StreamSignalListener listener) { 
-		Runnable adder = new Runnable() {
-			
-			@Override
-			public void run() {
-				boolean result = true;
-				try {
-					 result = signalListenerSemaphore.tryAcquire(5, TimeUnit.SECONDS);
-					if(!result) { 
-						logger.error("Code error getting semaphore in signal listener add ");
-						return;
-					}
-					signalListeners.add(listener);
-				} catch (Exception e) {
-					logger.error("Exception getting signal listener semaphore add exception " + e.toString());
-				} finally { 
-					if(result) { 
-						signalListenerSemaphore.release();
-					}
-				}
-			}
-		};
-		this.cluster.getExecutor().execute(adder);
-	}
-	
-	
-	public void removeSignalListener(final StreamSignalListener listener) { 
-	Runnable remover = new Runnable() {
-			
-			@Override
-			public void run() {
-				boolean result = true;
-				try {
-					 result = signalListenerSemaphore.tryAcquire(5, TimeUnit.SECONDS);
-					if(!result) { 
-						logger.error("Code error getting semaphore in signal listener remove ");
-						return;
-					}
-					signalListeners.remove(listener);
-				} catch (Exception e) {
-					logger.error("Exception getting signal listener semaphore remove exception " + e.toString());
-				} finally { 
-					if(result) { 
-						signalListenerSemaphore.release();
-					}
-				}
-			}
-		};
-		this.cluster.getExecutor().execute(remover);
-	}
-	
-	/**
-	 * Okay called by the stream session somehow
-	 * @param signal
-	 */
-	public void signal(final StreamSignal signal) { 
-		Runnable signalNotifier = new Runnable() {
-			
-			@Override
-			public void run() {
-				boolean result = true;
-				try {
-					 result = signalListenerSemaphore.tryAcquire(5, TimeUnit.SECONDS);
-					if(!result) { 
-						logger.error("Code error getting semaphore in signal notifier  ");
-						return;
-					}
-					for (StreamSignalListener streamSignalListener : signalListeners) {
-						streamSignalListener.onSignal(signal);
-					}
-				} catch (Exception e) {
-					logger.error("Exception getting signal listener semaphore notify exception " + e.toString());
-				} finally { 
-					if(result) { 
-						signalListenerSemaphore.release();
-					}
-				}
-			}
-		};
-		
-		cluster.getExecutor().execute(signalNotifier);
-	}
+
 
 }
