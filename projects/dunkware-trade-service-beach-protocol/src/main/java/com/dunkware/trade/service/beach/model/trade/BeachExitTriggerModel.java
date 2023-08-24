@@ -2,6 +2,7 @@ package com.dunkware.trade.service.beach.model.trade;
 
 public class BeachExitTriggerModel {
 	
+	// Signal (or)  (Query) with any criteria - SmaTradecount < sd > $$ unrealize d>
 	private String type; // TIMER | UPL | SIGNAL | TIME  
 	private double upl; 
 	private int timer; 

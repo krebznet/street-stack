@@ -2,7 +2,7 @@ package com.dunkware.trade.service.beach.model.trade;
 
 import java.util.ArrayList;
 import java.util.List;
-
+//DunkSpring
 public class BeachTradeModel {
 	
 	private String systemIdentifier; 
