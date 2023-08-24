@@ -1,5 +1,6 @@
 package com.dunkware.spring.cluster.core.controllers;
 
+import java.util.List;
 import java.util.concurrent.ConcurrentHashMap;
 
 import org.slf4j.Logger;
@@ -7,7 +8,6 @@ import org.slf4j.LoggerFactory;
 import org.slf4j.Marker;
 import org.slf4j.MarkerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.ApplicationArguments;
 import org.springframework.context.ApplicationContext;
 
 import com.dunkware.common.util.uuid.DUUID;
@@ -72,7 +72,7 @@ public class DunkNetController {
 
 	}
 
-	DunkNetChannelRequest nodeChannelRequest(DunkNetNode node, Object input) throws DunkNetException {
+	public DunkNetChannelRequest nodeChannelRequest(DunkNetNode node, Object input) throws DunkNetException {
 		DunkNetChannelDescriptor descript = node.getDescriptor().getDescriptors().getChannel(input);
 		if (input.getClass().getName().equals(descript.getInput()) == false) {
 			throw new DunkNetException("Channel input " + input.getClass().getName() + " is not matching descriptor "
@@ -85,10 +85,24 @@ public class DunkNetController {
 		node.message(m);
 		return req;
 	}
+	
+	public DunkNetServiceRequest channelServiceRequest(DunkNetChannel channel, Object payload) throws DunkNetException { 
+		if(!channel.getDescriptors().hasService(payload)) { 
+			throw new DunkNetException("Channel service with input " + payload.getClass().getName() + " not found");
+		}
+		DunkNetMessage message = DunkNetMessage.builder().channelServiceRequest(channel.getChannelId(), payload).buildMessage();
+		DunkNetServiceRequest request = new DunkNetServiceRequest(channel.getNode(), payload);
+		pendingServiceRequests.put(message.getMessageId(), request);
+		channel.getNode().message(message);
+		return request;
+		
+		
+	}
 
 	public boolean handleInboundMessage(DunkNetMessage message) throws DunkNetException {
 		switch (message.getType()) {
 		case DunkNetMessage.TYPE_CHANNEL_CLIENT_INIT:
+			logger.info("Handling client channel init message");
 			handleChannelClientInit(message);
 			return true;
 		case DunkNetMessage.TYPE_CHANNEL_CLOSE:
@@ -98,6 +112,7 @@ public class DunkNetController {
 			handleChannelRequest(message);
 			return true;
 		case DunkNetMessage.TYPE_CHANNEL_RESPONSE:
+			logger.info("Handling client channel response message");
 			handleChannelResponse(message);
 			return true;
 		case DunkNetMessage.TYPE_CHANNEL_CLIENT_INIT_ERROR:
@@ -119,6 +134,7 @@ public class DunkNetController {
 			handleServiceRequest(message);
 			return true;
 		case DunkNetMessage.TYPE_SERVICE_RESPONSE:
+			handleServiceResponse(message);
 			return true;
 		}
 		return true;
@@ -171,8 +187,10 @@ public class DunkNetController {
 						"Exception init channel handler   " + e.toString()).buildMessage());
 				channel.getHandler().channelStartError(e.toString());
 				channel.getHandler().channelClose();
+				
 			}
 			channel.setState(DunkNetChannelState.INITIALIZED);
+			activeChannels.put(channel.getChannelId(), channel);
 			node.message(DunkNetMessage.builder().channelResponse(newChannelId, message.getMessageId()).buildMessage());
 		} catch (Exception e) {
 			node.message(DunkNetMessage.builder().channelException(null, message.getMessageId(),
@@ -274,6 +292,7 @@ public class DunkNetController {
 		DunkNetChannel channel = getChannel(message.getChannel());
 		DunkNetNode node = getSenderNode(message);
 		try {
+			channel.setState(DunkNetChannelState.OPEN);
 			channel.getHandler().channelStart();
 			node.message(DunkNetMessage.builder().channelServerStart(channel.getChannelId()).buildMessage());
 		} catch (Exception e) {
@@ -319,6 +338,7 @@ public class DunkNetController {
 	private void handleChannelServerStart(DunkNetMessage message) throws DunkNetException {
 		DunkNetNode node = getSenderNode(message);
 		DunkNetChannel channel = getChannel(message.getChannel());
+		channel.setState(DunkNetChannelState.OPEN);
 		try {
 			channel.getHandler().channelStart();
 		} catch (Exception e) {
@@ -349,13 +369,133 @@ public class DunkNetController {
 	private void handleChannelClose(DunkNetMessage message) {
 
 	}
+	
+	private void handleServiceRequest(DunkNetMessage message) throws DunkNetException { 
+		if(message.getChannel() != null) { 
+			handleChannelServiceRequest(message);
+			return;
+		}
+		DunkNetNode node = getSenderNode(message);
+		ComponentMethod method = null;
+		try {
+			method = net.extensions().getSerivceMethod(message.getPayload());	
+		} catch (Exception e) {
+			DunkNetMessage m = DunkNetMessage.builder().serviceResponseError(message.getMessageId(), "Service method not found " + e.toString()).buildMessage();
+			node.message(m);
+			return;
+		}
+		try {
+			Object result = method.getMethod().invoke(method.getObject(), message.getPayload());
+			node.message(DunkNetMessage.builder().serviceResponse(result,message.getMessageId()).buildMessage());
+		} catch (Exception e) {
+			try {
+				DunkNetMessage m = DunkNetMessage.builder().serviceResponseError(message.getMessageId(), "Service invocation exception " + e.toString()).buildMessage();
+				node.message(m);
+			} catch (Exception e2) {
+				throw new DunkNetException("Exception sending service response error to node " + e.toString());
+			}
+		}
+		
+	}
 
-	private void handleServiceRequest(DunkNetMessage message) {
-
+	private void handleChannelServiceRequest(DunkNetMessage message)  {
+		ComponentMethod method = null;
+		DunkNetChannel channel = null;
+		try {
+			channel = getChannel(message.getChannel());
+		} catch (Exception e) {
+			logger.error(marker, "Internal exception channel service request but not found");
+			return;
+		}
+		try {
+			method = channel.getExtensions().getChannelMethod(message.getPayload());	
+		} catch (Exception e) {
+			DunkNetMessage m = DunkNetMessage.builder().channelServiceResponseError(channel.getChannelId(), message.getMessageId(), e.toString()).buildMessage();
+			try {
+				channel.getNode().message(m);	
+			} catch (Exception e2) {
+				logger.error(marker, "Exceptions sending channel service request error " + e.toString());
+				return;
+			}			
+		}
+		DunkNetMessage responseMessage = null;
+		try {
+			Object results = method.getMethod().invoke(method.getObject(), message.getPayload());
+			responseMessage = DunkNetMessage.builder().channelServiceResponse(channel.getChannelId(), message.getMessageId(), results).buildMessage();
+		} catch (Exception e) {
+			responseMessage = DunkNetMessage.builder().channelServiceResponseError(channel.getChannelId(), message.getMessageId(), e.toString()).buildMessage();
+		}
+		try {
+			channel.getNode().message(responseMessage);
+		} catch (Exception e) {
+			logger.error(marker, "internal exception sending message channel service response " + e.toString());
+		}
+		
+		
+		
+			
+	}
+	
+	
+	private void handleServiceResponse(DunkNetMessage message) { 
+		if(message.getChannel() != null) { 
+			handleChannelServiceResponse(message);
+			return;
+		}
+		DunkNetServiceRequest request = null;
+		try {
+			request = pendingServiceRequests.get(message.getRequestId());	
+		} catch (Exception e) {
+			// TODO: handle exception
+		}
+		if(request == null) { 
+			logger.error(marker, "Exception internal looking for pending service request not in the map ");
+			return;
+		}
+		int respType = (Integer)message.getHeader(DunkNetMessage.KEY_RESPONSE_CODE);
+		if(respType == DunkNetMessage.RESPONSE_ERROR) {
+			request.setError(message.getHeader(DunkNetMessage.KEY_RESPONSE_ERROR).toString());
+			pendingServiceRequests.remove(request);
+		}
+		request.setSuccess(message.getPayload());
+		pendingServiceRequests.remove(request);
+		
+	}
+	
+	
+	private void handleChannelServiceResponse(DunkNetMessage message) { 
+		// don't think it matters if its a channel or not
+		// it should be a pending service request. 
+		DunkNetServiceRequest request = null;
+		try {
+			request = pendingServiceRequests.get(message.getRequestId());	
+		} catch (Exception e) {
+			// TODO: handle exception
+		}
+		if(request == null) { 
+			logger.error(marker, "Exception internal looking for pending service request not in the map ");
+			return;
+		}
+		int respType = (Integer)message.getHeader(DunkNetMessage.KEY_RESPONSE_CODE);
+		if(respType == DunkNetMessage.RESPONSE_ERROR) {
+			request.setError(message.getHeader(DunkNetMessage.KEY_RESPONSE_ERROR).toString());
+			pendingServiceRequests.remove(request);
+		}
+		request.setSuccess(message.getPayload());
+		pendingServiceRequests.remove(request);
 	}
 
 	private void handleEvent(DunkNetMessage message) {
-
+		try {
+			List<ComponentMethod> methods = net.extensions().getEventMethods(message.getPayload());
+			for (ComponentMethod componentMethod : methods) {
+				componentMethod.getMethod().invoke(componentMethod.getObject(),message.getPayload());
+			}
+		} catch (Exception e) {
+			System.out.println("event not bueno");
+		}
+		
+		
 	}
 
 	private Object invokeComponentMethod(ComponentMethod method, Object input) throws DunkNetException {

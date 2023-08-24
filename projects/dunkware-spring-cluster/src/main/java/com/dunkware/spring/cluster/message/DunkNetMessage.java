@@ -68,7 +68,9 @@ public class DunkNetMessage {
 			return this;
 		}
 		
-		public Builder serviceException(String requestId, String exception) {  
+		
+		
+		public Builder serviceResponseError(String requestId, String exception) {  
 			m.setType(TYPE_SERVICE_RESPONSE);
 			m.setHeader(KEY_RESPONSE_CODE, RESPONSE_ERROR);
 			m.setHeader(KEY_RESPONSE_ERROR, exception);
@@ -85,6 +87,7 @@ public class DunkNetMessage {
 		
 		public Builder channelResponse(String channelId, String requestId) { 
 			m.setType(TYPE_CHANNEL_RESPONSE);
+			m.setHeader(KEY_RESPONSE_CODE, RESPONSE_SUCCESS);
 			m.setHeader(KEY_REQUEST_ID, requestId);
 			m.setChannel(channelId);;
 			return this;
@@ -147,6 +150,31 @@ public class DunkNetMessage {
 			m.setHeader(KEY_RESPONSE_ERROR, error);
 			return this;
 		}
+
+		public Builder channelServiceRequest(String channelId, Object payload ) {
+			m.setType(TYPE_CHANNEL_REQUEST);
+			m.setChannel(channelId);
+			m.setPayload(payload);
+			return this;
+		}
+		
+		public Builder channelServiceResponseError(String channelId, String requestId, String error) { 
+			m.setType(TYPE_SERVICE_RESPONSE);
+			m.setHeader(KEY_RESPONSE_CODE, RESPONSE_ERROR);
+			m.setHeader(KEY_ERROR,error);
+			m.setHeader(KEY_REQUEST_ID, requestId);
+			m.setChannel(channelId);
+			return this;
+		}
+		
+		public Builder channelServiceResponse(String channelId, String requestId, Object payload) { 
+			m.setType(TYPE_SERVICE_RESPONSE);
+			m.setHeader(KEY_RESPONSE_CODE, RESPONSE_SUCCESS);
+			m.setHeader(KEY_REQUEST_ID, requestId);
+			m.setChannel(channelId);
+			m.setPayload(payload);
+			return this;
+		}
 		
 		public Builder event(Object payload) {
 			m.setType(TYPE_EVENT);
@@ -200,6 +228,7 @@ public class DunkNetMessage {
 			message.setSenderId(transport.getSenderId());
 			message.setPayload(payload);;
 			message.setMessageId(transport.getMessageId());
+			message.setParentChannel(transport.getParentChannel());
 			return message;
 			
 		

@@ -20,6 +20,7 @@ public class DunkNetMessageTransport {
 	private String senderId;
 	private int type;
 	private String channel = null;
+	private String parentChannel;
 	private String messageId = DUUID.randomUUID(5);
 	
 	
@@ -65,7 +66,14 @@ public class DunkNetMessageTransport {
 	}
 	public void setMessageId(String messageId) {
 		this.messageId = messageId;
+	}
+	public String getParentChannel() {
+		return parentChannel;
+	}
+	public void setParentChannel(String parentChannel) {
+		this.parentChannel = parentChannel;
 	} 
+	
 	
 	
 	

@@ -3,6 +3,7 @@ package com.dunkware.spring.cluster.core;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.Semaphore;
+import java.util.concurrent.TimeUnit;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -18,6 +19,7 @@ import com.dunkware.spring.cluster.DunkNetException;
 import com.dunkware.spring.cluster.DunkNetExtensions;
 import com.dunkware.spring.cluster.DunkNetNode;
 import com.dunkware.spring.cluster.core.request.DunkNetChannelRequest;
+import com.dunkware.spring.cluster.core.request.DunkNetServiceRequest;
 import com.dunkware.spring.cluster.message.DunkNetMessage;
 import com.dunkware.spring.cluster.protocol.descriptors.DunkNetDescriptors;
 
@@ -61,6 +63,7 @@ public class DunkNetChannelImpl implements DunkNetChannel {
 	@Override
 	public void addExtension(Object source) throws DunkNetException {
 		extensions.addExtension(source);
+		descriptors = extensions.buildDescriptors();
 	}
 
 	@Override
@@ -133,18 +136,20 @@ public class DunkNetChannelImpl implements DunkNetChannel {
 	@Override
 	public Object serviceBlocking(Object payload) throws DunkNetException {
 		checkOpen();
-		/*
-		 * DunkNetServiceRequest request = serviceController.serviceRequest(payload);
-		 * try { boolean complete = request.await(30, TimeUnit.SECONDS); if(!complete) {
-		 * throw new DunkNetException("Channel Service Blocking timeout " +
-		 * payload.getClass()); } if(request.isFailure()) { throw new
-		 * DunkNetException("Service Response Exception " + request.getError()); }
-		 * if(request.getResponse() == null) { throw new
-		 * DunkNetException("Response on service not failed is null"); } return
-		 * request.getResponse(); } catch (Exception e) { throw new
-		 * DunkNetException("Service Blocking Exception " + e.toString()); }
-		 */
-		return null;
+		DunkNetServiceRequest sReq = node.getNet().getController().channelServiceRequest(this, payload);
+		boolean returned = false;
+		try {
+			 returned = sReq.await(60, TimeUnit.SECONDS);	
+		} catch (Exception e) {
+			throw new DunkNetException("Interrupted Exception");
+		}
+		if(!returned) { 
+			throw new DunkNetException("Service Request Timeout 60 Seconds");
+		}
+		if(sReq.isSuccess()) {
+			return sReq.getResponse();
+		}
+		throw new DunkNetException("Error Returned: " + sReq.getError());
 	}
 
 	@Override

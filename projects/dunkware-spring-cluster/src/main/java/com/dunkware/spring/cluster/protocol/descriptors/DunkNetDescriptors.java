@@ -55,6 +55,8 @@ public class DunkNetDescriptors {
 	@Transient
 	public boolean hasChannel(Object input) { 
 		for (DunkNetChannelDescriptor dunkNetChannelDescriptor : channels) {
+			System.out.println(dunkNetChannelDescriptor.getInput());
+			System.out.println(input.getClass().getName());
 			if(dunkNetChannelDescriptor.getInput().equals(input.getClass().getName())) { 
 				return true; 
 			}

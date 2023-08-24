@@ -66,7 +66,7 @@ public class DunkNetChannelRequest implements Future<DunkNetChannel> {
 	@Override
 	public DunkNetChannel get() throws InterruptedException, ExecutionException {
 		if(!done) { 
-			Object result = getQueue.poll(60, TimeUnit.SECONDS);
+			Object result = getQueue.poll(1200, TimeUnit.SECONDS);
 			if(result == null) { 
 				throw new ExecutionException(new Exception("Timeout after 60 seconds for channel something is wrong"));
 			}	

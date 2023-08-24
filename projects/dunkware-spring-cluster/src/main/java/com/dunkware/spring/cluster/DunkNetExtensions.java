@@ -2,8 +2,13 @@ package com.dunkware.spring.cluster;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 
+import org.springframework.context.ApplicationContext;
+
+import com.dunkware.common.util.helpers.DAnotHelper;
 import com.dunkware.spring.cluster.DunkNetExtension.ComponentMethod;
+import com.dunkware.spring.cluster.anot.ADunkNetComponent;
 import com.dunkware.spring.cluster.protocol.descriptors.DunkNetChannelDescriptor;
 import com.dunkware.spring.cluster.protocol.descriptors.DunkNetDescriptors;
 import com.dunkware.spring.cluster.protocol.descriptors.DunkNetEventDescriptor;
@@ -12,17 +17,36 @@ import com.dunkware.spring.cluster.protocol.descriptors.DunkNetServiceDescriptor
 public class DunkNetExtensions {
 
 	private List<DunkNetExtension> extensions = new ArrayList<DunkNetExtension>();
+	
+	
 
-	public void addExtension(Object source) throws DunkNetException { 
+	public static DunkNetExtensions buildComponentExtensions(ApplicationContext ac) throws DunkNetException {
+
+		DunkNetExtensions ext = new DunkNetExtensions();
+		Set<Class<?>> classes = DAnotHelper.getClassesAnnotedWith(ADunkNetComponent.class);
+
+		for (Class<?> clazz : classes) {
+			try {
+				Object source = clazz.newInstance();
+				ac.getAutowireCapableBeanFactory().autowireBean(source);
+				ext.addExtension(source);
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+		}
+		return ext;
+	}
+
+	public void addExtension(Object source) throws DunkNetException {
 		DunkNetExtension ext = new DunkNetExtension();
 		ext.initialize(source);
 		extensions.add(ext);
 	}
-	
-	public ComponentMethod getSerivceMethod(Object input) throws DunkNetException { 
+
+	public ComponentMethod getSerivceMethod(Object input) throws DunkNetException {
 		for (DunkNetExtension ext : extensions) {
 			for (ComponentMethod method : ext.getServices()) {
-				if(method.getParamType().isInstance(input)) { 
+				if (method.getParamType().isInstance(input)) {
 					return method;
 				}
 			}
@@ -33,7 +57,7 @@ public class DunkNetExtensions {
 	public ComponentMethod getChannelMethod(Object input) throws DunkNetException {
 		for (DunkNetExtension ext : extensions) {
 			for (ComponentMethod method : ext.getChannels()) {
-				if(method.getParamType().isInstance(input)) { 
+				if (method.getParamType().isInstance(input)) {
 					return method;
 				}
 			}
@@ -45,16 +69,16 @@ public class DunkNetExtensions {
 		List<ComponentMethod> results = new ArrayList<ComponentMethod>();
 		for (DunkNetExtension ext : extensions) {
 			for (ComponentMethod method : ext.getEvents()) {
-				if(method.getParamType().isInstance(input)) { 
+				if (method.getParamType().isInstance(input)) {
 					results.add(method);
 				}
 			}
 		}
 		return results;
-		
+
 	}
-	
-	public DunkNetDescriptors buildDescriptors() { 
+
+	public DunkNetDescriptors buildDescriptors() {
 		DunkNetDescriptors descriptors = new DunkNetDescriptors();
 		for (DunkNetExtension ext : extensions) {
 			for (ComponentMethod method : ext.getEvents()) {

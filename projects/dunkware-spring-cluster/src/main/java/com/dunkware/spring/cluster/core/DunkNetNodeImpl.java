@@ -102,7 +102,6 @@ public class DunkNetNodeImpl implements DunkNetNode {
 	
 	@Override
 	public void event(Object payload) throws DunkNetException {
-		// TODO Auto-generated method stub
 		
 	}
 

@@ -59,10 +59,13 @@ public class DunkNetExtension {
 			if (args.length == 0) {
 				throw new DunkNetException("Channel Handler method " + method.getName() + " must return ChannelReply");
 			}
-			if (DunkNetChannelResponse.class.equals(method.getReturnType()) == false) {
+			if(DunkNetChannelHandler.class.isAssignableFrom(method.getReturnType())) { 
+				System.out.println("great");
+			} else { 
 				throw new DunkNetException(
 						"Channel method must return ChannelReply but returns " + method.getReturnType().getName());
 			}
+			
 			handler.setParamType(args[0]);
 			handler.setReturnType(anot.getClass());
 			channels.add(handler);

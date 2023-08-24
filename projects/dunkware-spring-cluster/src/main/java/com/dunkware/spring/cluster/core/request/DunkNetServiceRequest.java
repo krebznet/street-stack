@@ -76,7 +76,7 @@ public class DunkNetServiceRequest {
 		return true;
 	}
 
-	private void setError(String error) {
+	public void setError(String error) {
 		responseErrror = error;
 		this.error = true;
 		this.completed = true;

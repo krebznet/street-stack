@@ -1,7 +1,6 @@
 package com.dunkware.spring.cluster.core;
 
 import java.util.Map;
-import java.util.Set;
 import java.util.Vector;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.ConcurrentHashMap;
@@ -31,8 +30,8 @@ import com.dunkware.common.util.dtime.DDateTime;
 import com.dunkware.common.util.events.DEventNode;
 import com.dunkware.common.util.events.DEventTree;
 import com.dunkware.common.util.executor.DExecutor;
-import com.dunkware.common.util.helpers.DAnotHelper;
 import com.dunkware.common.util.json.DJson;
+import com.dunkware.common.util.pool.ObjectPool;
 import com.dunkware.common.util.uuid.DUUID;
 import com.dunkware.spring.cluster.DunkNet;
 import com.dunkware.spring.cluster.DunkNetBean;
@@ -40,11 +39,12 @@ import com.dunkware.spring.cluster.DunkNetConfig;
 import com.dunkware.spring.cluster.DunkNetException;
 import com.dunkware.spring.cluster.DunkNetExtensions;
 import com.dunkware.spring.cluster.DunkNetNode;
-import com.dunkware.spring.cluster.anot.ADunkNetComponent;
 import com.dunkware.spring.cluster.core.controllers.DunkNetController;
+import com.dunkware.spring.cluster.core.controllers.DunkNetPingPublisher;
 import com.dunkware.spring.cluster.core.controllers.DunkNetState;
 import com.dunkware.spring.cluster.core.request.DunkNetChannelRequest;
 import com.dunkware.spring.cluster.core.request.DunkNetServiceRequest;
+import com.dunkware.spring.cluster.core.tasks.DunkNetEventDispatcher;
 import com.dunkware.spring.cluster.event.EDunkNodeNodeOnline;
 import com.dunkware.spring.cluster.message.DunkNetMessage;
 import com.dunkware.spring.cluster.message.DunkNetMessageTransport;
@@ -75,7 +75,6 @@ public class DunkNetImpl implements DunkNet, DKafkaByteHandler2 {
 
 	private DunkNetBean bean = new DunkNetBean();
 	
-	//private ObjectPool<DunkNetEventDispatcher> eventDispatchers = new ObjectPool<>();
 	
 	private MessageRouter router;
 	
@@ -97,28 +96,17 @@ public class DunkNetImpl implements DunkNet, DKafkaByteHandler2 {
 	
 	@PostConstruct
 	public void start() throws DunkNetException {
+		
 		controller = new DunkNetController();
 		ac.getAutowireCapableBeanFactory().autowireBean(controller);
+		extensions = DunkNetExtensions.buildComponentExtensions(ac);
 		controller.init(this);
-		extensions = new DunkNetExtensions();
 		eventTree = DEventTree.newInstance(executorService.get());
 		eventNode = eventTree.getRoot().createChild(this);
 		bean.setStartTime(DDateTime.now());
 		bean.setId(config.getNodeId());
 		// initialize components 
 		descriptor = new DunkNetNodeDescriptor();
-		Set<Class<?>> classes = DAnotHelper.getClassesAnnotedWith(ADunkNetComponent.class);
-		
-		for (Class<?> clazz : classes) {
-			try {
-				Object source = clazz.newInstance();
-				ac.getAutowireCapableBeanFactory().autowireBean(source);
-				extensions().addExtension(source);				
-			} catch (Exception e) {
-				logger.error(marker, "Exception Initializing DunkNet Extension " +clazz.getName() + " " + e.toString());
-				System.exit(-1);
-			}
-		}
 			
 			try {
 				String pingTopic = "dunknet." + getConfig().getClusterId() + ".node.ping";
@@ -141,15 +129,16 @@ public class DunkNetImpl implements DunkNet, DKafkaByteHandler2 {
 				System.exit(-1);
 			}
 	
+			
+		DunkNetPingPublisher publisher = new DunkNetPingPublisher();
+		ac.getAutowireCapableBeanFactory().autowireBean(publisher);
+		publisher.init(this);
 		
 		messageRouter = new MessageRouter();
 		messageRouter.start();
 		
 		
 	}
-
-	
-
 
 
 	@Override
@@ -176,6 +165,9 @@ public class DunkNetImpl implements DunkNet, DKafkaByteHandler2 {
 				node = new DunkNetNodeImpl(this, descriptor);	
 				nodes.put(descriptor.getId(), node);
 				EDunkNodeNodeOnline event = new EDunkNodeNodeOnline(node);
+				if(logger.isDebugEnabled()) { 
+					logger.debug(marker, "NodeID:" + getId() + " Added New Node " + descriptor.getId());
+				}
 				eventNode.event(event);
 			} catch (Exception e) {
 				logger.error(marker, "Exceptions starting new node " + e.toString());
@@ -280,10 +272,10 @@ public class DunkNetImpl implements DunkNet, DKafkaByteHandler2 {
 	@Override
 	public void event(Object payload)  {
 		try {
-			//DunkNetMessageTransport transport = DunkNetMessage.builder().event(payload).buildTransport(getId());
-			//DunkNetEventDispatcher dispatch = eventDispatchers.get();
-			//dispatch.set(this, transport, eventDispatchers);
-			//getExecutor().execute(dispatch);
+			DunkNetMessageTransport transport = DunkNetMessage.builder().event(payload).buildTransport(getId());
+			DunkNetEventDispatcher dispatch = new DunkNetEventDispatcher();
+			dispatch.set(this, transport,payload);
+			getExecutor().execute(dispatch);
 		} catch (Exception e) {
 			logger.error(marker, "Exception sending cluster event " + e.toString());
 		}
@@ -364,8 +356,9 @@ public class DunkNetImpl implements DunkNet, DKafkaByteHandler2 {
 		if(channelNode == null) { 
 			throw new DunkNetException("No channel handler found on any nodes for input " + payload.getClass().getName());
 		}
+		return controller.nodeChannelRequest(channelNode, payload);
 		
-		return null;
+		
 	}
 
 	
