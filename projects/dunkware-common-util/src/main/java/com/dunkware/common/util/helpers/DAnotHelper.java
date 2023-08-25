@@ -20,7 +20,7 @@ public class DAnotHelper {
 	}
 	
 	public static Set<Class<?>> getClassesAnnotedWith(Class<? extends Annotation> annotation) { 
-		return reflections.getTypesAnnotatedWith(annotation);
+		return getDunkwareReflections().getTypesAnnotatedWith(annotation);
 		
 	}
 	
