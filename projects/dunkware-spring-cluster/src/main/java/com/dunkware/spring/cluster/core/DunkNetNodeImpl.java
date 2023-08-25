@@ -115,6 +115,15 @@ public class DunkNetNodeImpl implements DunkNetNode {
 	@Override
 	public void message(DunkNetMessage message) throws DunkNetException {
 		try {
+			if(logger.isDebugEnabled()) { 
+				if(message.getPayload() != null) {
+					logger.debug("Sending message id {} of type {} on node {} to node {} payload {} headers {}",
+							message.getMessageId(), message.getType(), net.getId(), getId(), message.getPayload().getClass().getName(),message.getHeaders().toString());
+				} else { 
+					logger.debug("Sending message id {} of type {} on node {} to node {} with node payload headers {} size {}",
+							message.getMessageId(), message.getType(), net.getId(), getId(), message.getHeaders().toString(),message.getHeaders().size());
+				}
+			}
 			kafkaProducer.sendBytes(DJson.serialize(DunkNetMessageHelper.toTransport(message,net.getId())).getBytes());	
 		} catch (Exception e) {
 			logger.error(marker, "Exception sending event transport to node " + getId() + " " +  e.toString());
@@ -125,6 +134,10 @@ public class DunkNetNodeImpl implements DunkNetNode {
 	@Override
 	public void message(DunkNetMessageTransport transport) throws DunkNetException {
 		try {
+			if(logger.isDebugEnabled()) { 
+				logger.debug(marker, "Sending ransport on node {} to node {} serialized {} ",
+						net.getId(),getId(),DJson.serializePretty(transport));
+			}
 			kafkaProducer.sendBytes(DJson.serialize(transport).getBytes());	
 		} catch (Exception e) {
 			logger.error(marker, "Exception sending event transport to node " + getId() + " " +  e.toString());

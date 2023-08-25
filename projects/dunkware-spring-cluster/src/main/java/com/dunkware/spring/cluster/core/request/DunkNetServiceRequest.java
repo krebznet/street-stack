@@ -21,7 +21,7 @@ public class DunkNetServiceRequest {
 	private volatile boolean error = false;
 	private CountDownLatch completionLatch = new CountDownLatch(1);
 	private String requestId;
-	private DunkNetServiceDescriptor serviceDescriptor;
+//	private DunkNetServiceDescriptor serviceDescriptor;
 	private short waiters;
 	private String responseErrror = null;
 	private static final Object SUCCESS = new Object();
@@ -34,11 +34,11 @@ public class DunkNetServiceRequest {
 
 	public DunkNetServiceRequest(DunkNetNode node, Object payload) throws DunkNetException {
 		this.node = node;
-		this.serviceDescriptor = node.getDescriptor().getDescriptors().getService(payload);
-		if (serviceDescriptor == null) {
-			throw new DunkNetException("Service Descriptor on node " + node.getId() + " not found for class "
-					+ payload.getClass().getName());
-		}
+		//this.serviceDescriptor = node.getDescriptor().getDescriptors().getService(payload);
+		//if (serviceDescriptor == null) {
+		//	throw new DunkNetException("Service Descriptor on node " + node.getId() + " not found for class "
+		///			+ payload.getClass().getName());
+		//}
 
 	}
 

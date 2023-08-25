@@ -20,6 +20,12 @@ public interface DunkNetChannel {
 	
 	public void setState(DunkNetChannelState state);
 	
+	public void setRemoteDescriptors(DunkNetDescriptors descriptors);
+	
+	public DunkNetDescriptors getRemoteDescriptors();
+	
+	public void setDescriptors(DunkNetDescriptors descriptors);
+	
 	DunkNetChannelRequest channel(Object payload) throws Exception; 
 		
 	void event(Object payload) throws DunkNetException; 

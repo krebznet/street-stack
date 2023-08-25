@@ -9,6 +9,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.slf4j.Marker;
 import org.slf4j.MarkerFactory;
+import org.springframework.remoting.RemoteAccessException;
 
 import com.dunkware.spring.cluster.DunkNet;
 import com.dunkware.spring.cluster.DunkNetChannel;
@@ -36,6 +37,8 @@ public class DunkNetChannelImpl implements DunkNetChannel {
 	
 	private boolean initialized = false;
 	
+	private DunkNetDescriptors remoteDescriptors;
+	
 	private DunkNet net;
 	private DunkNetNode node;
 	private String channelId;
@@ -60,6 +63,24 @@ public class DunkNetChannelImpl implements DunkNetChannel {
 		this.node = node;
 	}
 	
+	
+	
+	@Override
+	public void setDescriptors(DunkNetDescriptors descriptors) {
+		this.descriptors = descriptors;
+	}
+
+
+	@Override
+	public void setRemoteDescriptors(DunkNetDescriptors descriptors) {
+		this.remoteDescriptors = descriptors;
+	}
+
+	@Override
+	public DunkNetDescriptors getRemoteDescriptors() {
+		return remoteDescriptors;
+	}
+
 	@Override
 	public void addExtension(Object source) throws DunkNetException {
 		extensions.addExtension(source);
@@ -130,6 +151,8 @@ public class DunkNetChannelImpl implements DunkNetChannel {
 	@Override
 	public void event(Object payload) throws DunkNetException {
 		checkOpen();
+		DunkNetMessage message = DunkNetMessage.builder().event(payload, getChannelId()).buildMessage();
+				
 		node.message(DunkNetMessage.builder(channelId).event(payload).buildMessage());
 	}
 
@@ -194,7 +217,7 @@ public class DunkNetChannelImpl implements DunkNetChannel {
 			initialized = true; // is this a client channel
 			if(client) { 
 				try {
-					DunkNetMessage m = DunkNetMessage.builder().channelClientInit(getChannelId()).buildMessage();
+					DunkNetMessage m = DunkNetMessage.builder().channelClientInit(channelId, descriptors).buildMessage();
 					getNode().message(m);
 					return;
 				} catch (Exception e) {

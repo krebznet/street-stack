@@ -7,6 +7,7 @@ import java.util.concurrent.ConcurrentHashMap;
 import com.dunkware.common.util.json.DJson;
 import com.dunkware.common.util.uuid.DUUID;
 import com.dunkware.spring.cluster.DunkNetException;
+import com.dunkware.spring.cluster.protocol.descriptors.DunkNetDescriptors;
 
 public class DunkNetMessage {
 
@@ -77,18 +78,20 @@ public class DunkNetMessage {
 			return this;
 		}
 		
-		public Builder channelResponse(String parentChannelId, String channelId, String requestId) { 
+		public Builder channelResponseWithParent(String parentChannelId, String channelId, String requestId, DunkNetDescriptors descriptors) { 
 			m.setType(TYPE_CHANNEL_RESPONSE);
 			m.setHeader(KEY_REQUEST_ID, requestId);
+			m.setPayload(descriptors);
 			m.setChannel(channelId);;
 			m.setParentChannel(parentChannelId);
 			return this;
 		}
 		
-		public Builder channelResponse(String channelId, String requestId) { 
+		public Builder channelResponse(String channelId, String requestId, DunkNetDescriptors descriptors) { 
 			m.setType(TYPE_CHANNEL_RESPONSE);
 			m.setHeader(KEY_RESPONSE_CODE, RESPONSE_SUCCESS);
 			m.setHeader(KEY_REQUEST_ID, requestId);
+			m.setPayload(descriptors);
 			m.setChannel(channelId);;
 			return this;
 		}
@@ -109,9 +112,10 @@ public class DunkNetMessage {
 			return this;
 		}
 		
-		public Builder channelClientInit(String channelId) { 
+		public Builder channelClientInit(String channelId, DunkNetDescriptors descriptors) { 
 			m.setType(TYPE_CHANNEL_CLIENT_INIT);
 			m.setChannel(channelId);
+			m.setPayload(descriptors);
 			return this;
 		}
 		
@@ -152,7 +156,7 @@ public class DunkNetMessage {
 		}
 
 		public Builder channelServiceRequest(String channelId, Object payload ) {
-			m.setType(TYPE_CHANNEL_REQUEST);
+			m.setType(TYPE_SERVICE_REQUEST);
 			m.setChannel(channelId);
 			m.setPayload(payload);
 			return this;
@@ -256,6 +260,7 @@ public class DunkNetMessage {
 	public static final int TYPE_CHANNEL_CLIENT_STARRT_ERROR = 14;
 	public static final int TYPE_CHANNEL_SERVER_START = 9;
 	public static final int TYPE_CHANNEL_SERVER_START_ERROR = 10;
+	
 	
 
 	private Object payload;
