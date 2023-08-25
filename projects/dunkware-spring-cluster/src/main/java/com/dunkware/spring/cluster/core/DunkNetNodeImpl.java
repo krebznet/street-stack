@@ -1,6 +1,5 @@
 package com.dunkware.spring.cluster.core;
 
-import java.util.concurrent.Future;
 import java.util.concurrent.Semaphore;
 
 import org.slf4j.Logger;
@@ -11,7 +10,6 @@ import org.slf4j.MarkerFactory;
 import com.dunkware.common.kafka.producer.DKafkaByteProducer;
 import com.dunkware.common.util.json.DJson;
 import com.dunkware.spring.cluster.DunkNet;
-import com.dunkware.spring.cluster.DunkNetChannel;
 import com.dunkware.spring.cluster.DunkNetException;
 import com.dunkware.spring.cluster.DunkNetNode;
 import com.dunkware.spring.cluster.core.request.DunkNetChannelRequest;
@@ -115,7 +113,7 @@ public class DunkNetNodeImpl implements DunkNetNode {
 	@Override
 	public void message(DunkNetMessage message) throws DunkNetException {
 		try {
-			if(logger.isDebugEnabled()) { 
+			if(logger.isTraceEnabled()) { 
 				if(message.getPayload() != null) {
 					logger.debug("Sending message id {} of type {} on node {} to node {} payload {} headers {}",
 							message.getMessageId(), message.getType(), net.getId(), getId(), message.getPayload().getClass().getName(),message.getHeaders().toString());
@@ -134,7 +132,7 @@ public class DunkNetNodeImpl implements DunkNetNode {
 	@Override
 	public void message(DunkNetMessageTransport transport) throws DunkNetException {
 		try {
-			if(logger.isDebugEnabled()) { 
+			if(logger.isTraceEnabled()) { 
 				logger.debug(marker, "Sending ransport on node {} to node {} serialized {} ",
 						net.getId(),getId(),DJson.serializePretty(transport));
 			}

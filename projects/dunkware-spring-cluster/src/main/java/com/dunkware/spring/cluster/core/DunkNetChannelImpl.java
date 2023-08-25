@@ -57,10 +57,14 @@ public class DunkNetChannelImpl implements DunkNetChannel {
 	
 	private boolean client; 
 	
-	public void init(String channelId, DunkNetNode node, boolean client) throws DunkNetException { 
+	private String label; 
+	
+	public void init(String channelId, String label, DunkNetNode node, boolean client) throws DunkNetException { 
 		this.channelId = channelId;
+		this.label = label;
 		this.client = client;
 		this.node = node;
+		this.net = node.getNet();
 	}
 	
 	
@@ -69,8 +73,13 @@ public class DunkNetChannelImpl implements DunkNetChannel {
 	public void setDescriptors(DunkNetDescriptors descriptors) {
 		this.descriptors = descriptors;
 	}
-
-
+	
+	
+	@Override
+	public String getLabel() {
+		return label;
+	}
+	
 	@Override
 	public void setRemoteDescriptors(DunkNetDescriptors descriptors) {
 		this.remoteDescriptors = descriptors;
@@ -93,13 +102,20 @@ public class DunkNetChannelImpl implements DunkNetChannel {
 			return;
 		}
 		try {
+			handler.channelClose();
+			
 			node.message(DunkNetMessage.builder(channelId).channelClose(channelId).buildMessage());			
 		} catch (Exception e) {
 			logger.error(marker, "Can't send channel close message " + e.toString());
 		}
 		notifyListeners(LISTENER_EVENT_CLOSE);
 		state = DunkNetChannelState.CLOSED;
-		net.getState().removeChannel(channelId);
+		net.getController().removeChannel(channelId);
+		if(logger.isDebugEnabled()) { 
+			logger.debug(marker, "Close channel invoked on channel with handler class {} removed from active channel on node {}",
+					handler.getClass().getName(),node.getNet().getId());
+			
+		}
 	}
 
 	@Override

@@ -93,12 +93,15 @@ public class DunkNetExtensions {
 				eventDesc.setClazz(ext.getClass().getName());
 				eventDesc.setMethod(method.getMethod().getName());
 				eventDesc.setInput(method.getParamType().getName());
+				eventDesc.setLabel(method.getLabel());
 				descriptors.getServices().add(eventDesc);
+				
 			}
 			for (ComponentMethod method : ext.getChannels()) {
 				DunkNetChannelDescriptor eventDesc = new DunkNetChannelDescriptor();
 				eventDesc.setClazz(ext.getClass().getName());
 				eventDesc.setMethod(method.getMethod().getName());
+				eventDesc.setLabel(method.getLabel());
 				eventDesc.setInput(method.getParamType().getName());
 				descriptors.getChannels().add(eventDesc);
 			}

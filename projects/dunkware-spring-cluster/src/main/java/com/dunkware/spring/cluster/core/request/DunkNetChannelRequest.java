@@ -27,10 +27,16 @@ public class DunkNetChannelRequest implements Future<DunkNetChannel> {
 	private BlockingQueue<Integer> getQueue = new LinkedBlockingDeque<Integer>();
 	private BlockingQueue<Integer> getTimeoutQueue = new LinkedBlockingDeque<Integer>();
 	
+	private String label;
 	
-	public DunkNetChannelRequest(String requestId, DunkNetNode node) { 
+	public DunkNetChannelRequest(String requestId, DunkNetNode node, String label) { 
 		this.node = node;
+		this.label = label;
 		this.requestId = requestId;
+	}
+	
+	public String getChannelLabel() { 
+		return label;
 	}
 	
 	public void setChannel(DunkNetChannel channel) { 

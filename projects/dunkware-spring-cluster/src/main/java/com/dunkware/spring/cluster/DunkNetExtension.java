@@ -39,6 +39,8 @@ public class DunkNetExtension {
 			handler.setMethod(method);
 			handler.setObject(source);
 			Class<?>[] args = method.getParameterTypes();
+			ADunkNetService anot = method.getDeclaredAnnotationsByType(ADunkNetService.class)[0];
+			handler.setLabel(anot.label());
 			if (args.length == 0) {
 				throw new DunkNetException("Service Handler method " + method.getName() + " must return ServiceReply");
 			}
@@ -53,7 +55,7 @@ public class DunkNetExtension {
 			handler.setObject(source);
 			handler.setMethod(method);
 			ADunkNetChannel anot = method.getAnnotationsByType(ADunkNetChannel.class)[0];
-			
+			handler.setLabel(anot.label());
 			Class<?>[] args = method.getParameterTypes();
 
 			if (args.length == 0) {
@@ -126,6 +128,7 @@ public class DunkNetExtension {
 		private Class paramType;
 		private Method method;
 		private Class returnType = null;
+		private String label;
 
 		public Class getParamType() {
 			return paramType;
@@ -158,6 +161,24 @@ public class DunkNetExtension {
 		public void setObject(Object object) {
 			this.object = object;
 		}
+
+		public String getLabel() {
+			return label;
+		}
+
+		public void setLabel(String label) {
+			this.label = label;
+		}
+		
+		
+
+		
+		
+		//  "Start Worker Node"
+		// "Entity Stat Req" 
+		// name "Feed Channel" 
+		// "
+		
 		
 		
 

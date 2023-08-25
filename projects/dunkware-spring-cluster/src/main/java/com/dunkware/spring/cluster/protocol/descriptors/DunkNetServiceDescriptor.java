@@ -8,6 +8,7 @@ public class DunkNetServiceDescriptor {
 	private String node; 
 	private String clazz; 
 	private String method;
+	private String label; 
 	
 	public String getInput() {
 		return input;
@@ -39,6 +40,14 @@ public class DunkNetServiceDescriptor {
 	public void setMethod(String method) {
 		this.method = method;
 	}
+	public String getLabel() {
+		return label;
+	}
+	public void setLabel(String label) {
+		this.label = label;
+	}
+	
+	
 	
 	
 	

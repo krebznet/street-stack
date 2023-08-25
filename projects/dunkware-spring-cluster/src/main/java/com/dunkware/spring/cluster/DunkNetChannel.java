@@ -12,6 +12,8 @@ public interface DunkNetChannel {
 	
 	void closeChannel();
 	
+	String getLabel();
+	
 	boolean isOpen();
 	
 	Throwable getException();

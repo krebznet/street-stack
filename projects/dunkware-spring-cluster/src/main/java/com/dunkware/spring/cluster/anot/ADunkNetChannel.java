@@ -11,5 +11,5 @@ import java.lang.annotation.Target;
 @Documented
 public @interface ADunkNetChannel {
 
-	 Class<?> returnType();
+	 String label();
 }

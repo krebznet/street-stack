@@ -1,5 +1,7 @@
 package com.dunkware.spring.cluster.core;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 import java.util.Vector;
 import java.util.concurrent.BlockingQueue;
@@ -31,7 +33,6 @@ import com.dunkware.common.util.events.DEventNode;
 import com.dunkware.common.util.events.DEventTree;
 import com.dunkware.common.util.executor.DExecutor;
 import com.dunkware.common.util.json.DJson;
-import com.dunkware.common.util.pool.ObjectPool;
 import com.dunkware.common.util.uuid.DUUID;
 import com.dunkware.spring.cluster.DunkNet;
 import com.dunkware.spring.cluster.DunkNetBean;
@@ -75,9 +76,6 @@ public class DunkNetImpl implements DunkNet, DKafkaByteHandler2 {
 
 	private DunkNetBean bean = new DunkNetBean();
 	
-	
-	private MessageRouter router;
-	
 	private DunkNetState state = new DunkNetState();
 	
 	private DunkNetExtensions extensions;
@@ -93,6 +91,8 @@ public class DunkNetImpl implements DunkNet, DKafkaByteHandler2 {
 	
 	
 	private DunkNetController controller;
+	
+	private List<MessageRouter> messageRouters = new ArrayList<MessageRouter>();
 	
 	@PostConstruct
 	public void start() throws DunkNetException {
@@ -134,8 +134,13 @@ public class DunkNetImpl implements DunkNet, DKafkaByteHandler2 {
 		ac.getAutowireCapableBeanFactory().autowireBean(publisher);
 		publisher.init(this);
 		
-		messageRouter = new MessageRouter();
-		messageRouter.start();
+		int routers = 0;
+		while(routers < 3) { 
+			MessageRouter router = new MessageRouter();
+			router.start();
+			messageRouters.add(router);
+			routers++;
+		}
 		
 		
 	}
@@ -225,7 +230,6 @@ public class DunkNetImpl implements DunkNet, DKafkaByteHandler2 {
 		return null;
 	}
 	
-	
 
 	@Override
 	public DunkNetController getController() {
@@ -244,9 +248,6 @@ public class DunkNetImpl implements DunkNet, DKafkaByteHandler2 {
 	}
 	
 	
-	
-	
-
 	@Override
 	public boolean nodeExists(String id) {
 		if (nodes.containsKey(id) == false) {
@@ -313,6 +314,7 @@ public class DunkNetImpl implements DunkNet, DKafkaByteHandler2 {
 		public void run() {
 			while (!interrupted()) {
 				try {
+					setName("DunkNet-Handler");
 					DunkNetMessage message = messageQueue.take();
 					try {
 						if(!controller.handleInboundMessage(message)) { 
