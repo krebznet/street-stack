@@ -27,7 +27,7 @@ import com.dunkware.xstream.api.XStreamEntityQuery;
 import com.dunkware.xstream.api.XStreamRowSignal;
 import com.dunkware.xstream.api.XStreamRuntimeException;
 import com.dunkware.xstream.api.XStreamSignalListener;
-import com.dunkware.xstream.api.XStreamStatProvider;
+import com.dunkware.xstream.api.XStreamStatService;
 import com.dunkware.xstream.api.XStreamStatus;
 import com.dunkware.xstream.api.XStreamTickRouter;
 import com.dunkware.xstream.core.search.row.XStreamRowQueryImpl;
@@ -115,7 +115,7 @@ public class XStreamImpl implements XStream {
 	
 
 	@Override
-	public XStreamStatProvider getStatProvider() {
+	public XStreamStatService getStatProvider() {
 		return input.getStatProvider();
 	}
 

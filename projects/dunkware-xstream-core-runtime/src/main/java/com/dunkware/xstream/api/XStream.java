@@ -33,7 +33,7 @@ public interface XStream {
 	 * This will return the stats my friend and cache as needed.
 	 * @return
 	 */
-	XStreamStatProvider getStatProvider();
+	XStreamStatService getStatProvider();
 	
 	/**
 	 * Returns a String array of all the row ids that 

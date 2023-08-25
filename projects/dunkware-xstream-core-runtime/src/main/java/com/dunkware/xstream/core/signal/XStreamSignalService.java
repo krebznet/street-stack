@@ -5,6 +5,10 @@ import com.dunkware.xstream.api.XStreamException;
 import com.dunkware.xstream.model.signal.XStreamSignalModel;
 
 public class XStreamSignalService {
+	
+	// need  a protocol here for a StreamSignal - publish 
+							// StreamEntitySnapshot
+							// -- 
 
 	public XStream getStream() { 
 		return null;
@@ -13,8 +17,6 @@ public class XStreamSignalService {
 	public void init(XStream stream) throws XStreamException { 
 		
 	}
-	
-	
 	
 	public void startSignalHandler(XStreamSignalModel model) throws XStreamException { 
 		
