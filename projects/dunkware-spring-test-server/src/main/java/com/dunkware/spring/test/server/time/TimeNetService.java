@@ -10,7 +10,7 @@ import com.dunkware.spring.test.model.time.TimeResponse;
 public class TimeNetService {
 
 	
-	@ADunkNetService()
+	@ADunkNetService(label = "Time Service")
 	public TimeResponse getTime(TimeRequest req) { 
 		return new TimeResponse(DTime.now());
 		

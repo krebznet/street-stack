@@ -4,6 +4,11 @@ import java.util.Collection;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.slf4j.Marker;
+import org.slf4j.MarkerFactory;
+
 import com.dunkware.spring.cluster.DunkNetChannel;
 import com.dunkware.spring.cluster.DunkNetChannelHandler;
 import com.dunkware.spring.cluster.DunkNetException;
@@ -16,6 +21,9 @@ public class FeedClient implements DunkNetChannelHandler {
 
 	private DunkNetChannel channel;
 	
+	private Logger logger = LoggerFactory.getLogger(getClass());
+	private Marker marker = MarkerFactory.getMarker("SpringTest");
+	
 	public Map<String,Quote> quotes = new ConcurrentHashMap<String,Quote>();
 	
 	@Override
@@ -26,10 +34,13 @@ public class FeedClient implements DunkNetChannelHandler {
 
 	@Override
 	public void channelStart() throws DunkNetException {
-		// TODO Auto-generated method stub
+		logger.info(marker, "Feed Client Handler Start Invoked");
 		
 	}
 
+	public void close() { 
+		channel.closeChannel();
+	}
 	public void subscribe(String symbol) { 
 		try {
 			channel.serviceBlocking(Subscription.builder().symbol(symbol).build());

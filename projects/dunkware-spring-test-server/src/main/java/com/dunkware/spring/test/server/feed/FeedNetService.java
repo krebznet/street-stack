@@ -8,9 +8,12 @@ import com.dunkware.spring.test.model.feed.FeedRequest;
 public class FeedNetService {
 
 	
-	@ADunkNetChannel(returnType = Object.class)
+	
+	@ADunkNetChannel(label = "Feeed Channel")
 	public FeedChannel feedChannel(FeedRequest request) { 
 		FeedChannel channel = new FeedChannel();
 		return channel;
 	}
+	
+	
 }

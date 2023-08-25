@@ -1,5 +1,6 @@
 <configuration scan="true">
 
+
 	<property name="PATTERN"
 		value="%d{HH:mm:ss.SSS} %-5level %logger{0} - %msg%n" />
 
@@ -11,28 +12,30 @@
 			</pattern>
 		</encoder>
 	</appender>
+ 
+	  	<appender name="FLUENT"
+		class="ch.qos.logback.more.appenders.DataFluentAppender">
+		<tag>myrock</tag>
+		<label>test</label>
+	<remoteHost>172.16.16.55</remoteHost>
+		<port>32759</port>
+		<additionalField>
+			<key>node</key>
+			<value>testserver</value>
+		</additionalField>
+	</appender>
 	
-	
-
-	
 
 
+	<root level="INFO">
 
-	<root level="info">
 		<appender-ref ref="CONSOLE" additivity="false" />
-		
 	</root>
 
-	
 
-	<logger name="com.dunkware" level="debug" additivity="false">
-		<appender-ref ref="CONSOLE" additivity="false" />
-		
+	<logger name="com.dunkware.spring" level="DEBUG">
+		  <appender-ref ref="FLUENT" />
+		<appender-ref ref="CONSOLE" additivity="false"/>
 	</logger>
-	
-	
-	
-
-
 
 </configuration>

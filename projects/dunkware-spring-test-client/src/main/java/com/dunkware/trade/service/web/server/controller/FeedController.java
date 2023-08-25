@@ -76,4 +76,9 @@ public class FeedController {
 		client.reset();
 	}
 	
+	@GetMapping(path = "/feed/close")
+	public void close() { 
+		client.close();
+	}
+	
 }
