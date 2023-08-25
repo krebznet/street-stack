@@ -6,7 +6,6 @@ import com.dunkware.common.util.events.DEventNode;
 import com.dunkware.spring.cluster.DunkNetChannel;
 import com.dunkware.spring.cluster.DunkNetNode;
 import com.dunkware.trade.service.stream.json.controller.session.StreamSessionNodeState;
-import com.dunkware.trade.service.stream.json.controller.session.StreamSessionNodeStatus;
 import com.dunkware.trade.service.stream.json.worker.stream.StreamSessionWorkerStats;
 import com.dunkware.trade.service.stream.server.controller.StreamController;
 import com.dunkware.trade.tick.model.ticker.TradeTickerSpec;
@@ -22,13 +21,19 @@ public interface StreamSessionNode {
 	
 	String getNodeId();
 	
+	int getNumericId();
+	
+	String getWorkerId();
+	
 	List<TradeTickerSpec> getTickers();
 	
 	boolean hasTicker(String symbol);
 	
-	void stopNode();
+	public List<String> getErrors();
 	
-	void startNode(StreamSessionNodeInput input) ;
+	void stop(); 
+	
+	void start(StreamSessionNodeInput input) ;
 	
 	DEventNode getEventNode();
 	
@@ -37,15 +42,20 @@ public interface StreamSessionNode {
 	public StreamSession getSession();
 	
 	public StreamController getStream();
+		
+	String getStartExcetpion();
 	
-	public XStreamBundle getStreamBundle();
-	
-	public String getStartError();
-	
-	public StreamSessionNodeStatus getStatus();
-	
+	String getStopException();
+		
 	public StreamSessionWorkerStats getWorkerStats();
 	
+	public double stoppingElapsedTime();
+	
+	public double startingElapsedTime();
+	
+	public boolean isStarting();
+	
+	public boolean isStopping();
 	
 	
 	

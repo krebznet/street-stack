@@ -1,6 +1,7 @@
 
 package com.dunkware.trade.service.stream.server.controller.session;
 
+import java.util.Collection;
 import java.util.List;
 
 import com.dunkware.common.util.events.DEventNode;
@@ -11,18 +12,20 @@ import com.dunkware.trade.service.stream.server.repository.StreamSessionEntity;
 import com.dunkware.trade.tick.model.ticker.TradeTickerSpec;
 import com.dunkware.xstream.api.XStreamRuntimeException;
 import com.dunkware.xstream.model.scanner.SessionEntityScanner;
-import com.dunkware.xstream.model.snapshot.EntitySnapshot;
 import com.dunkware.xstream.xproject.XScriptProject;
+import com.dunkware.xstream.xproject.model.XStreamBundle;
 
 public interface StreamSession {
 
+	public XStreamBundle getStreamBundle(); 
+	
 	public void startSession(StreamSessionInput input) throws StreamSessionException;
 	
 	public void stopSession() throws StreamSessionException;
 	
 	public StreamSessionStatus getStatus();
 	
-	public List<StreamSessionNode> getNodes();
+	public Collection<StreamSessionNode> getNodes();
 	
 	public StreamController getStream();
 	

@@ -43,32 +43,21 @@ public class StreamBlueprint {
 	
 	private StreamEntity streamEntity; 
 	
-	private StreamBlueprintService blueprintService; 
-	
-
 	private ObservableElementList<StreamBlueprintSignalBean> signalBeans = null;
 	
-	public static void main(String[] args) {
-		StreamBlueprintSignalBean tb = new StreamBlueprintSignalBean();
-		tb.setCount("2323,23");
-		tb.setCreated("09/12/22");
-		tb.setDescription("Alpha Breakout Signal 1");
-		tb.setGroup("Alpha Breakout");
-		tb.setId(1);
-		tb.setStatus("Active");
-		try {
-			System.out.println(DJson.serializePretty(tb));
-		} catch (Exception e) {
-			// TODO: handle exception
-		}
-	}
+	// Thing
+		// symbol
+			// variable
+			// 
+	// version --> Blueprint Version; 
+	
+	// also have the tickers --> 
 	
 	public void init(StreamEntity stream, StreamBlueprintService service) throws Exception  { 
 		signalBeans = new ObservableElementList<StreamBlueprintSignalBean>(
 				GlazedLists.threadSafeList(new BasicEventList<StreamBlueprintSignalBean>()),
 				new ObservableBeanListConnector<StreamBlueprintSignalBean>());
 		this.streamEntity = stream; 
-		this.blueprintService = service;
 		eventNode = service.getEventNode().createChild(this);
 		eventNode.addEventHandler(this);
 		StreamBlueprintSignalBean tb = new StreamBlueprintSignalBean();

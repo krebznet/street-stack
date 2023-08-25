@@ -1,32 +1,38 @@
 package com.dunkware.trade.service.stream.server.controller.session;
 
+import java.util.ArrayList;
 import java.util.List;
 
-import com.dunkware.net.cluster.node.ClusterNode;
 import com.dunkware.spring.cluster.DunkNetNode;
 import com.dunkware.trade.service.stream.server.controller.StreamController;
-import com.dunkware.trade.service.stream.server.controller.session.core.StreamSessionNodeCallback;
 import com.dunkware.trade.tick.model.ticker.TradeTickerSpec;
+import com.dunkware.xstream.model.signal.XStreamSignalModel;
+import com.dunkware.xstream.xproject.model.XStreamBundle;
 
 public class StreamSessionNodeInput {
 	
 	
+	private XStreamBundle streamBundle;
 	private List<TradeTickerSpec> tickers;
 	private DunkNetNode node;
 	private List<StreamSessionExtension> extensionTypes;
+	private List<XStreamSignalModel> signalModels = new ArrayList<XStreamSignalModel>();
 	private StreamSession session;
 	private StreamController stream; 
-	private StreamSessionNodeCallback callBack;
-	private int id; 
-	public StreamSessionNodeInput(int id, List<TradeTickerSpec> tickers, DunkNetNode node, List<StreamSessionExtension> extensionTypes, 
-			StreamSession session, StreamController stream, StreamSessionNodeCallback callBack) {
+	private int numericId;
+	private String workerId;
+	
+	
+	public StreamSessionNodeInput(int numericId, String workerId, List<TradeTickerSpec> tickers, DunkNetNode node, List<StreamSessionExtension> extensionTypes, 
+			StreamSession session, StreamController stream) {
 		this.tickers = tickers;
-		this.id = id;
+		this.numericId = numericId;
+		this.workerId = workerId;
 		this.node = node;
 		this.extensionTypes = extensionTypes;
 		this.session = session;
 		this.stream = stream;
-		this.callBack = callBack;
+		
 	}
 
 	public List<TradeTickerSpec> getTickers() {
@@ -37,10 +43,7 @@ public class StreamSessionNodeInput {
 		return node;
 	}
 	
-	public int getId() { 
-		return id;
-	}
-
+	
 	public List<StreamSessionExtension> getExtensionTypes() {
 		return extensionTypes;
 	}
@@ -53,9 +56,22 @@ public class StreamSessionNodeInput {
 		return stream;
 	}
 
-	public StreamSessionNodeCallback getCallBack() {
-		return callBack;
+	public XStreamBundle getStreamBundle() {
+		return streamBundle;
 	}
+
+	public List<XStreamSignalModel> getSignalModels() {
+		return signalModels;
+	}
+
+	public int getNumericId() {
+		return numericId;
+	}
+
+	public String getWorkerId() {
+		return workerId;
+	}
+
 	
 	
 	
