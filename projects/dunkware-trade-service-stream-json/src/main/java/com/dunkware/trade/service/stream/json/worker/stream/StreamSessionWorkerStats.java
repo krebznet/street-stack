@@ -19,7 +19,8 @@ public class StreamSessionWorkerStats {
 	private DTime systemTime; 
 	private int rowCount; 
 	private long tickCount; 
-	private int workerId; 
+	private String workerId; 
+	private int numericId;
 	
 	private String status;
 
@@ -154,13 +155,25 @@ public class StreamSessionWorkerStats {
 	}
 
 
-	public int getWorkerId() {
+	
+
+	public String getWorkerId() {
 		return workerId;
 	}
 
 
-	public void setWorkerId(int workerId) {
+	public void setWorkerId(String workerId) {
 		this.workerId = workerId;
+	}
+
+
+	public int getNumericId() {
+		return numericId;
+	}
+
+
+	public void setNumericId(int numericId) {
+		this.numericId = numericId;
 	}
 
 

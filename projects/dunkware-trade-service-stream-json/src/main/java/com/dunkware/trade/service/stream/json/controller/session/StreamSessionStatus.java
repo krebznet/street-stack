@@ -31,6 +31,8 @@ public class StreamSessionStatus {
 	@JsonInclude(Include.NON_NULL)
 	private List<String> warnings = new ArrayList<String>();
 	@JsonInclude(Include.NON_NULL)
+	private List<String> nodeStartErrors = new ArrayList<String>();
+	@JsonInclude(Include.NON_NULL)
 	private int exceptionNodeCount;
 	private int nodeCount; 
 	@JsonInclude(Include.NON_NULL)
@@ -253,6 +255,17 @@ public class StreamSessionStatus {
 	public void setTickCount(long tickCount) {
 		this.tickCount = tickCount;
 	}
+
+
+	public List<String> getNodeStartErrors() {
+		return nodeStartErrors;
+	}
+
+
+	public void setNodeStartErrors(List<String> nodeStartErrors) {
+		this.nodeStartErrors = nodeStartErrors;
+	}
+	
 	
 	
 	
