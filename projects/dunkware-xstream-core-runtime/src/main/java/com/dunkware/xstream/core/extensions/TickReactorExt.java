@@ -56,6 +56,12 @@ public class TickReactorExt implements XStreamExtension, TickHandler {
 		
 	}
 
+	
+	@Override
+	public void cancel() {
+		controller.interrupt();
+	}
+
 	@Override
 	public void preDispose() {
 		controller.interrupt();

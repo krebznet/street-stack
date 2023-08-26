@@ -5,7 +5,7 @@ import java.util.concurrent.atomic.AtomicInteger;
 import com.dunkware.xstream.core.annotations.AXStreamService;
 
 @AXStreamService(profiles = "*")
-public class XStreamSignalService implements DD, XStreamSignalListener  {
+public class XStreamSignalService implements XStreamService, XStreamSignalListener  {
 	
 	private XStream stream; 
 	private AtomicInteger sigCount = new AtomicInteger(0);
@@ -37,6 +37,14 @@ public class XStreamSignalService implements DD, XStreamSignalListener  {
 
 	@Override
 	public void dispose() {
+		// TODO Auto-generated method stub
+		
+	}
+	
+	
+
+	@Override
+	public void cancel() {
 		// TODO Auto-generated method stub
 		
 	}

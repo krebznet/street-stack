@@ -153,6 +153,26 @@ public class StreamEventPublisherExt implements XStreamExtension, XStreamEntityL
 		// TODO Auto-generated method stub
 
 	}
+	
+	
+
+	@Override
+	public void cancel() {
+		eventProducer.dispose();
+		eventPublisher.interrupt();
+		snapshotProducer.dispose();
+		signalProducer.dispose();
+		timePublisher.interrupt();
+		timeProducer.dispose();
+		snapshotPublisher.interrupt();
+		stream.getClock().unscheduleRunnable(snapshotRunnable);
+		signalPublisher.interrupt();
+		
+		for (SnapshotConsumer consumer : snapshotConsumers) {
+			consumer.interrupt();
+		}
+		
+	}
 
 	@Override
 	public void dispose() {

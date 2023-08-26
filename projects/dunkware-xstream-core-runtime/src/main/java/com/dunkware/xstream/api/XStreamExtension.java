@@ -10,6 +10,8 @@ public interface XStreamExtension {
 	
 	public void start() throws XStreamException;
 	
+	public void cancel();
+	
 	public void preDispose(); 
 	
 	public void dispose();

@@ -49,7 +49,7 @@ public class StreamStatsExt implements XStreamExtension, XStreamListener {
 	private LocalDate today;
 
 	private String id = DUUID.randomUUID(5);
-	
+
 	private EntityStatsService entityStatsService;
 
 	@Override
@@ -75,6 +75,14 @@ public class StreamStatsExt implements XStreamExtension, XStreamListener {
 	public void start() throws XStreamException {
 		// okay so we need to manage
 
+	}
+
+	@Override
+	public void cancel() {
+		stream.removeStreamListener(this);
+		for (EntityStatsBuilder builder : entityStatBuilders.values()) {
+			builder.dispose();
+		}
 	}
 
 	@Override
@@ -149,47 +157,47 @@ public class StreamStatsExt implements XStreamExtension, XStreamListener {
 	 */
 	public Object resolveVarStat(XStreamEntity row, VarType varType, int days, int stat) throws Exception {
 		return entityStatsService.resolveVarStat(row, varType, days, stat);
-		// so you will hit that web service 3,000 times? nice duncan! 
+		// so you will hit that web service 3,000 times? nice duncan!
 	}
 
 	private class EntityStatsService {
 
 		private Map<String, EntityStatsContainer> statsContainers = new ConcurrentHashMap<String, StreamStatsExt.EntityStatsContainer>();
 
-		public Object resolveVarStat(XStreamEntity row, VarType type, int days, int stat) throws Exception { 
-			if(!canResolveVarStat(row.getId(), type.getName(), days, stat)) { 
+		public Object resolveVarStat(XStreamEntity row, VarType type, int days, int stat) throws Exception {
+			if (!canResolveVarStat(row.getId(), type.getName(), days, stat)) {
 				throw new Exception("Trying to resolve var stat that cannot be rsolved check code");
 			}
 			try {
 				EntityStatsContainer container = statsContainers.get(row.getId());
 				Number resolved = container.resolveVarAgg(type.getName(), days, stat);
-				if(type.getType() == DataType.DUB) { 
+				if (type.getType() == DataType.DUB) {
 					return resolved.doubleValue();
 				}
-				if(type.getType() == DataType.INT) { 
+				if (type.getType() == DataType.INT) {
 					return resolved.intValue();
 				}
-				if(type.getType() == DataType.LONG) { 
+				if (type.getType() == DataType.LONG) {
 					return resolved.longValue();
 				}
 				logger.warn("data type not handled for conversion " + type.getType().name());
 				return resolved.doubleValue();
-				
+
 			} catch (Exception e) {
 				logger.error("Exception calling canResolveVaragg on entity stats container " + e.toString());
-				return false; 
+				return false;
 			}
-			
-			
+
 		}
-		
-		public boolean canResolveVarStat(String entityIdent, String varIdent, int days, int stat ) throws Exception { 
-			if(statsContainers.get(entityIdent) == null) { 
-				// make a web service call. 
-				String url = myType.getBaseURL() + "/stream/stats/entity/sessions?stream=" + myType.getStreamIdent() + "&ident=" + entityIdent;
+
+		public boolean canResolveVarStat(String entityIdent, String varIdent, int days, int stat) throws Exception {
+			if (statsContainers.get(entityIdent) == null) {
+				// make a web service call.
+				String url = myType.getBaseURL() + "/stream/stats/entity/sessions?stream=" + myType.getStreamIdent()
+						+ "&ident=" + entityIdent;
 				String responseString = null;
 				try {
-					responseString = DHttpHelper.getURLContent(url);	
+					responseString = DHttpHelper.getURLContent(url);
 				} catch (Exception e) {
 					logger.error("Exception getting entity stats sessions URL " + url + " " + e.toString());
 					return false;
@@ -199,7 +207,7 @@ public class StreamStatsExt implements XStreamExtension, XStreamListener {
 					statsSessions = DJson.getObjectMapper().readValue(responseString, EntityStatsSessions.class);
 				} catch (Exception e) {
 					logger.error("Exception deserializing entity stats sesions in stats ext " + e.toString());
-					return false; 
+					return false;
 				}
 				EntityStatsContainer statsContainer = new EntityStatsContainer(entityIdent, statsSessions);
 				this.statsContainers.put(entityIdent, statsContainer);
@@ -210,7 +218,7 @@ public class StreamStatsExt implements XStreamExtension, XStreamListener {
 				return container.canResolveVarAgg(varIdent, days, stat);
 			} catch (Exception e) {
 				logger.error("Exception calling canResolveVaragg on entity stats container " + e.toString());
-				return false; 
+				return false;
 			}
 		}
 
@@ -253,7 +261,7 @@ public class StreamStatsExt implements XStreamExtension, XStreamListener {
 		}
 
 		public Number resolveVarAgg(String varIdent, int days, int stat) throws Exception {
-			if(sessions.isResolved() == false) { 
+			if (sessions.isResolved() == false) {
 				throw new Exception("can't resolve var agg sessions did not resolve on " + ident);
 			}
 			Number result = null;
@@ -278,23 +286,23 @@ public class StreamStatsExt implements XStreamExtension, XStreamListener {
 					case EntityStatsConstants.VAR_STAT_LOW:
 						result = targetVar.getLow();
 						break;
-						default:
-							throw new Exception("Invalid stat constant " + stat);
+					default:
+						throw new Exception("Invalid stat constant " + stat);
 					}
-				} else { 
+				} else {
 					switch (stat) {
 					case EntityStatsConstants.VAR_STAT_HIGH:
-						if(targetVar.getHigh().doubleValue() > result.doubleValue()) { 
+						if (targetVar.getHigh().doubleValue() > result.doubleValue()) {
 							result = targetVar.getHigh();
 						}
 						break;
 					case EntityStatsConstants.VAR_STAT_LOW:
-						if(targetVar.getLow().doubleValue() < result.doubleValue()) { 
+						if (targetVar.getLow().doubleValue() < result.doubleValue()) {
 							result = targetVar.getLow();
 						}
 						break;
-						default:
-							throw new Exception("Invalid stat constant " + stat);
+					default:
+						throw new Exception("Invalid stat constant " + stat);
 					}
 				}
 			}

@@ -93,6 +93,8 @@ public interface XStreamEntity {
 	 * @param listener
 	 */
 	void removeVarListener(XStreamEntityVarListener listener);
+	
+	
 
 	
 	

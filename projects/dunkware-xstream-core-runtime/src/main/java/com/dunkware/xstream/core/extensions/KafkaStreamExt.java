@@ -54,6 +54,13 @@ public class KafkaStreamExt implements XStreamExtension, DKafkaByteHandler {
 			throw new XStreamException("Exception connecting KafkaByteConsumer " + e.toString());
 		}
 	}
+	
+	
+
+	@Override
+	public void cancel() {
+		consumer.dispose();
+	}
 
 	@Override
 	public void preDispose() {

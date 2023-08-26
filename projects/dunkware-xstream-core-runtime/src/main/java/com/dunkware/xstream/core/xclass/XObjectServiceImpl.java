@@ -11,7 +11,7 @@ import com.dunkware.xstream.api.XStreamException;
 import com.dunkware.xstream.api.XStreamListener;
 import com.dunkware.xstream.api.XStreamEntity;
 import com.dunkware.xstream.api.XStreamRuntimeException;
-import com.dunkware.xstream.api.DD;
+import com.dunkware.xstream.api.XStreamService;
 import com.dunkware.xstream.core.annotations.AXStreamService;
 import com.dunkware.xstream.core.xclass.impl.XObjectContextImpl;
 import com.dunkware.xstream.core.xclass.impl.XObjectImpl;
@@ -20,7 +20,7 @@ import com.dunkware.xstream.xScript.XClassType;
 import com.dunkware.xstream.xScript.XExpressionType;
 
 @AXStreamService(profiles = "xclass")
-public class XObjectServiceImpl implements DD, XStreamListener, XObjectService  {
+public class XObjectServiceImpl implements XStreamService, XStreamListener, XObjectService  {
 
 	private XStream stream; 
 	private List<XClassType> classTypes;
@@ -40,6 +40,12 @@ public class XObjectServiceImpl implements DD, XStreamListener, XObjectService  
 	public void start() throws XStreamException {
 		stream.addStreamListener(this);
 		classTypes = stream.getInput().getScript().getClasses();
+	}
+
+	
+	@Override
+	public void cancel() {
+		stream.removeStreamListener(this);
 	}
 
 	@Override

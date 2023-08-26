@@ -25,6 +25,13 @@ public class MySqlCaptureExt implements XStreamExtension {
 	public void preStart() throws XStreamException {
 
 	}
+	
+	
+
+	@Override
+	public void cancel() {
+		runner.stopCapture();
+	}
 
 	@Override
 	public void start() throws XStreamException {

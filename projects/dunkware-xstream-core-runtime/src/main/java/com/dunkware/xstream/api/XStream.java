@@ -13,6 +13,8 @@ public interface XStream {
 	
 	void dispose() throws XStreamException;
 	
+	void cancel();
+	
 	XStreamStatus getStatus();
 	
 	/**

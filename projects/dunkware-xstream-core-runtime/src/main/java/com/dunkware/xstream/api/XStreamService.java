@@ -6,7 +6,7 @@ package com.dunkware.xstream.api;
  * @author dkrebs
  *
  */
-public interface DD {
+public interface XStreamService {
 
 	public void init(XStream stream) throws XStreamException;
 
@@ -17,4 +17,6 @@ public interface DD {
 	public void preDispose();
 
 	public void dispose();
+	
+	public void cancel();
 }

@@ -12,7 +12,7 @@ import org.slf4j.Marker;
 import org.slf4j.MarkerFactory;
 
 import com.dunkware.common.util.uuid.DUUID;
-import com.dunkware.xstream.api.DD;
+import com.dunkware.xstream.api.XStreamService;
 import com.dunkware.xstream.api.XStream;
 import com.dunkware.xstream.api.XStreamClock;
 import com.dunkware.xstream.api.XStreamException;
@@ -63,7 +63,7 @@ public class XStreamImpl implements XStream {
 
 	// Extensions & Services
 	private List<XStreamExtension> extensions = new ArrayList<XStreamExtension>();
-	private List<DD> services = new ArrayList<DD>();
+	private List<XStreamService> services = new ArrayList<XStreamService>();
 
 	private XStreamExecutor executor;
 
@@ -84,7 +84,7 @@ public class XStreamImpl implements XStream {
 		tickRouter = new XStreamTickRouterImpl(this);
 
 		services = input.getRegistry().createServices();
-		for (DD service : services) {
+		for (XStreamService service : services) {
 			service.init(this);
 		}
 		for (XStreamExtensionType extType : input.getExtensions()) {
@@ -93,7 +93,7 @@ public class XStreamImpl implements XStream {
 			extensions.add(ext);
 		}
 
-		for (DD service : services) {
+		for (XStreamService service : services) {
 			service.preStart();
 		}
 
@@ -101,7 +101,7 @@ public class XStreamImpl implements XStream {
 			ext.preStart();
 		}
 
-		for (DD service : services) {
+		for (XStreamService service : services) {
 			service.start();
 		}
 
@@ -127,14 +127,14 @@ public class XStreamImpl implements XStream {
 			ext.preDispose();
 		}
 
-		for (DD service : services) {
+		for (XStreamService service : services) {
 			service.preDispose();
 		}
 
 		for (XStreamExtension ext : extensions) {
 			ext.dispose();
 		}
-		for (DD service : services) {
+		for (XStreamService service : services) {
 			service.dispose();
 		}
 
@@ -144,6 +144,28 @@ public class XStreamImpl implements XStream {
 
 		status = XStreamStatus.Disposed;
 	}
+	
+	
+
+	@Override
+	public void cancel() {
+		for (XStreamExtension ext : extensions) {
+			ext.cancel();
+		}
+		for (XStreamService service : services) {
+			service.cancel();
+		}
+		
+		for (XStreamEntity row : rows.values()) {
+			row.dispose();
+		}
+		status = XStreamStatus.Cancelled;
+		
+		
+		
+	}
+
+
 
 	@Override
 	public XStreamEntity getRow(String id) {
@@ -320,7 +342,7 @@ public class XStreamImpl implements XStream {
 
 	@Override
 	public <T> T getService(Class<T> clazz) throws XStreamException {
-		for (DD service : services) {
+		for (XStreamService service : services) {
 			if (clazz.isInstance(service)) {
 				return (T) service;
 			}

@@ -49,6 +49,14 @@ public class TimeUpdaterExt implements XStreamExtension {
 	}
 
 	
+	
+	@Override
+	public void cancel() {
+		updater.interrupt();
+	}
+
+
+
 	private class Updater extends Thread { 
 		
 		public void run() { 
