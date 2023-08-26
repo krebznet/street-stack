@@ -171,6 +171,15 @@ public class DunkNetChannelImpl implements DunkNetChannel {
 				
 		node.message(DunkNetMessage.builder(channelId).event(payload).buildMessage());
 	}
+	
+	
+
+	@Override
+	public DunkNetServiceRequest service(Object payload) throws DunkNetException {
+		checkOpen();
+		DunkNetServiceRequest sReq = node.getNet().getController().channelServiceRequest(this, payload);
+		return sReq;
+	}
 
 	@Override
 	public Object serviceBlocking(Object payload) throws DunkNetException {

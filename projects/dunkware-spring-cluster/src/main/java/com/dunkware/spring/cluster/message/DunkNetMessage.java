@@ -151,6 +151,7 @@ public class DunkNetMessage {
 			m.setType(TYPE_CHANNEL_RESPONSE);
 			m.setHeader(KEY_REQUEST_ID, requestId);
 			m.setChannel(channelId);
+			m.setHeader(KEY_RESPONSE_CODE, RESPONSE_ERROR);
 			m.setHeader(KEY_RESPONSE_ERROR, error);
 			return this;
 		}

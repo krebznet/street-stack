@@ -92,8 +92,7 @@ public class DunkNetNodeImpl implements DunkNetNode {
 	
 	@Override
 	public DunkNetChannelRequest channel(Object payload) throws DunkNetException {
-		// TODO Auto-generated method stub
-		return null;
+		return net.getController().nodeChannelRequest(this, payload);
 	}
 
 
@@ -113,7 +112,7 @@ public class DunkNetNodeImpl implements DunkNetNode {
 	@Override
 	public void message(DunkNetMessage message) throws DunkNetException {
 		try {
-			if(logger.isTraceEnabled()) { 
+			if(logger.isDebugEnabled()) { 
 				if(message.getPayload() != null) {
 					logger.debug("Sending message id {} of type {} on node {} to node {} payload {} headers {}",
 							message.getMessageId(), message.getType(), net.getId(), getId(), message.getPayload().getClass().getName(),message.getHeaders().toString());
@@ -132,7 +131,7 @@ public class DunkNetNodeImpl implements DunkNetNode {
 	@Override
 	public void message(DunkNetMessageTransport transport) throws DunkNetException {
 		try {
-			if(logger.isTraceEnabled()) { 
+			if(logger.isDebugEnabled()) { 
 				logger.debug(marker, "Sending ransport on node {} to node {} serialized {} ",
 						net.getId(),getId(),DJson.serializePretty(transport));
 			}

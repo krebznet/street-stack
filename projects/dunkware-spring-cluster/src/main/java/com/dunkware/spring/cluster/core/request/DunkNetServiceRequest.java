@@ -1,5 +1,7 @@
 package com.dunkware.spring.cluster.core.request;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.LinkedBlockingQueue;
@@ -8,7 +10,6 @@ import java.util.concurrent.TimeUnit;
 import com.dunkware.spring.cluster.DunkNetException;
 import com.dunkware.spring.cluster.DunkNetNode;
 import com.dunkware.spring.cluster.message.DunkNetMessage;
-import com.dunkware.spring.cluster.protocol.descriptors.DunkNetServiceDescriptor;
 
 public class DunkNetServiceRequest {
 
@@ -26,11 +27,14 @@ public class DunkNetServiceRequest {
 	private String responseErrror = null;
 	private static final Object SUCCESS = new Object();
 	private static final Object UNCANCELLABLE = new Object();
-	
+	private List<DunkNetServiceRequestListener> listeners = new ArrayList<DunkNetServiceRequestListener>();
 	private BlockingQueue<String> wait = new LinkedBlockingQueue<String>();
 
 	private volatile Object result;
 	
+	public void addListener(DunkNetServiceRequestListener listener) { 
+		this.listeners.add(listener);
+	}
 
 	public DunkNetServiceRequest(DunkNetNode node, Object payload) throws DunkNetException {
 		this.node = node;
@@ -56,17 +60,7 @@ public class DunkNetServiceRequest {
 		return false;
 	}
 
-	public void response(DunkNetMessage message) {
-		Integer respCode = (Integer) message.getHeader(DunkNetMessage.KEY_RESPONSE_CODE);
-		if (respCode == DunkNetMessage.RESPONSE_ERROR) {
-			String error = message.getHeader(DunkNetMessage.KEY_RESPONSE_ERROR).toString();
-			setError(error);
-		}
-		if (respCode == DunkNetMessage.RESPONSE_SUCCESS) {
-			result = message.getPayload();
-			setSuccess(result);
-		}
-	}
+
 
 	public boolean await(long timeout, TimeUnit unit) throws InterruptedException {
 		Object result = wait.poll(timeout, unit);
@@ -81,6 +75,9 @@ public class DunkNetServiceRequest {
 		this.error = true;
 		this.completed = true;
 		wait.add("error");
+		for (DunkNetServiceRequestListener dunkNetServiceRequestListener : listeners) {
+			dunkNetServiceRequestListener.onServiceReqError(this);
+		}
 	}
 
 	public void setSuccess(Object result) {
@@ -88,6 +85,9 @@ public class DunkNetServiceRequest {
 		this.completed = true;
 		this.success = true;
 		wait.add("success");
+		for (DunkNetServiceRequestListener dunkNetServiceRequestListener : listeners) {
+			dunkNetServiceRequestListener.onServiceReqDone(this);
+		}
 
 	}
 

@@ -15,6 +15,7 @@ import com.dunkware.common.spec.kafka.DKafkaByteConsumer2Spec.OffsetType;
 import com.dunkware.common.spec.kafka.DKafkaByteConsumer2SpecBuilder;
 import com.dunkware.common.util.dtime.DDateTime;
 import com.dunkware.common.util.json.DJson;
+import com.dunkware.common.util.uuid.DUUID;
 import com.dunkware.spring.cluster.DunkNet;
 import com.dunkware.spring.cluster.core.DunkNetImpl;
 import com.dunkware.spring.cluster.protocol.descriptors.DunkNetNodeDescriptor;
@@ -43,7 +44,7 @@ public class DunkNetPingPublisher implements DKafkaByteHandler2 {
 		
 		try {
 			String pingTopic = "dunknet." + dunkNet.getConfig().getClusterId() + ".node.ping";
-			pingConsumer = DKafkaByteConsumer2.newInstance(DKafkaByteConsumer2SpecBuilder.newBuilder(ConsumerType.Auto, OffsetType.Latest).setClientAndGroup(dunkNet.getConfig().getNodeId(), dunkNet.getConfig().getNodeId()).addBroker(dunkNet.getConfig().getServerBrokers()).addTopic(pingTopic).build());
+			pingConsumer = DKafkaByteConsumer2.newInstance(DKafkaByteConsumer2SpecBuilder.newBuilder(ConsumerType.Auto, OffsetType.Latest).setClientAndGroup(dunkNet.getConfig().getNodeId() + DUUID.randomUUID(4), dunkNet.getConfig().getNodeId()).addBroker(dunkNet.getConfig().getServerBrokers()).addTopic(pingTopic).build());
 			pingConsumer.addStreamHandler(this);
 			pingConsumer.start();
 			

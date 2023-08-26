@@ -3,6 +3,7 @@ package com.dunkware.spring.cluster;
 import java.util.List;
 
 import com.dunkware.spring.cluster.core.request.DunkNetChannelRequest;
+import com.dunkware.spring.cluster.core.request.DunkNetServiceRequest;
 import com.dunkware.spring.cluster.message.DunkNetMessage;
 import com.dunkware.spring.cluster.protocol.descriptors.DunkNetDescriptors;
 
@@ -31,6 +32,8 @@ public interface DunkNetChannel {
 	DunkNetChannelRequest channel(Object payload) throws Exception; 
 		
 	void event(Object payload) throws DunkNetException; 
+	
+	public DunkNetServiceRequest service(Object payload) throws DunkNetException;
 	
 	public Object serviceBlocking(Object payload) throws DunkNetException;
 	

@@ -292,6 +292,8 @@ public class DunkNetController {
 		int respType = (Integer) message.getHeader(DunkNetMessage.KEY_RESPONSE_CODE);
 		if (respType == DunkNetMessage.RESPONSE_ERROR) {
 			req.setError(message.getHeader(DunkNetMessage.KEY_RESPONSE_ERROR).toString());
+			return;
+		
 		}
 		if (respType != DunkNetMessage.RESPONSE_SUCCESS) {
 			logger.error(marker, "Fucked up channel response not error or success is " + respType);
@@ -595,6 +597,7 @@ public class DunkNetController {
 			logger.error(marker, "Exception internal looking for pending service request not in the map ");
 			return;
 		}
+		
 		int respType = (Integer) message.getHeader(DunkNetMessage.KEY_RESPONSE_CODE);
 		if (respType == DunkNetMessage.RESPONSE_ERROR) {
 			if (logger.isDebugEnabled()) {
