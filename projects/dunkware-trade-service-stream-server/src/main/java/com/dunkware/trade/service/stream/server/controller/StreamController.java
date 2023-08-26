@@ -31,11 +31,9 @@ import com.dunkware.trade.service.stream.server.controller.session.StreamSession
 import com.dunkware.trade.service.stream.server.controller.session.StreamSessionException;
 import com.dunkware.trade.service.stream.server.controller.session.StreamSessionFactory;
 import com.dunkware.trade.service.stream.server.controller.session.StreamSessionInput;
-import com.dunkware.trade.service.stream.server.controller.session.events.EStreamSessionEvent;
 import com.dunkware.trade.service.stream.server.controller.session.events.EStreamSessionException;
 import com.dunkware.trade.service.stream.server.controller.session.events.EStreamSessionStarted;
 import com.dunkware.trade.service.stream.server.controller.session.events.EStreamSessionStopped;
-import com.dunkware.trade.service.stream.server.controller.session.events.EStreamSessionStopping;
 import com.dunkware.trade.service.stream.server.repository.StreamEntity;
 import com.dunkware.trade.service.stream.server.repository.StreamRepo;
 import com.dunkware.trade.service.stream.server.repository.StreamVersionEntity;
@@ -225,9 +223,15 @@ public class StreamController
 	}
 
 	public synchronized void startSession() throws StreamSessionException {
-		if (getStats().getState() == StreamControllerState.Starting || getStats().getState() == StreamControllerState.Running) {
-			throw new StreamSessionException("Stream State is " + stats.getState().name() + " cannot start session");
+		if(session != null) { 
+			
 		}
+		//if (getStats().getState() == StreamControllerState.Starting) {
+			
+		//}
+		//if (getStats().getState() == StreamControllerState.Running) {
+		////	throw new StreamSessionException("Stream State is " + stats.getState().name() + " cannot start session");
+		//}
 		logger.info(marker, "Starting {}", getName());
 		stats.setState(StreamControllerState.Starting);
 		session = StreamSessionFactory.createSession();
@@ -237,6 +241,18 @@ public class StreamController
 			input.setTickers(tickers);
 			input.setController(this);
 			Vector<DunkNetNode> nodes = dunkNet.getNodes("StreamWorker");
+			int sleepCount = 0;
+			while(nodes.size() == 0) { 
+				try {
+					Thread.sleep(1000);
+					sleepCount++;
+					if(sleepCount > 5) { 
+						break;
+					}
+				} catch (Exception e) {
+					// TODO: handle exception
+				}
+			}
 			if (nodes.size() == 0) {
 				logger.error(marker, "Exception Starting Stream {} Session, available worker nodes is 0", getName());
 				stats.setState(StreamControllerState.StartException);
@@ -265,6 +281,7 @@ public class StreamController
 	
 	public StreamControllerStreamStats getStats() {
 		if(session != null) { 
+		
 			stats.setSession(session.getStatus());
 			stats.setName(getSession().getSessionId());
 		}

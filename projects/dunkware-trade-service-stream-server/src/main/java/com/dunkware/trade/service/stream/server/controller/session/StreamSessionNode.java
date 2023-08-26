@@ -9,10 +9,13 @@ import com.dunkware.trade.service.stream.json.controller.session.StreamSessionNo
 import com.dunkware.trade.service.stream.json.worker.stream.StreamSessionWorkerStats;
 import com.dunkware.trade.service.stream.server.controller.StreamController;
 import com.dunkware.trade.tick.model.ticker.TradeTickerSpec;
+import com.dunkware.xstream.api.XStream;
 import com.dunkware.xstream.xproject.model.XStreamBundle;
 
 public interface StreamSessionNode {
 
+	XStreamBundle getStreamBundle();
+	
 	StreamSessionNodeState getState(); 
 	
 	DunkNetNode getDunkNode();
@@ -48,6 +51,10 @@ public interface StreamSessionNode {
 	String getStopException();
 		
 	public StreamSessionWorkerStats getWorkerStats();
+	
+	public void cancel();
+	
+	public boolean isRunning();
 	
 	public double stoppingElapsedTime();
 	

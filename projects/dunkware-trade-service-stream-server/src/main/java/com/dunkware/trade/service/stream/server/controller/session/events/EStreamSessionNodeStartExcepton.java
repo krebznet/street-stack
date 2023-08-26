@@ -14,6 +14,8 @@ public class EStreamSessionNodeStartExcepton extends EStreamSessionNodeEvent {
 	public String getException() { 
 		return exception;
 	}
+	
+
 
 	
 }

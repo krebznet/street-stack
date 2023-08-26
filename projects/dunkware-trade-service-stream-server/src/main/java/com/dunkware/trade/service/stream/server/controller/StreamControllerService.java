@@ -6,6 +6,7 @@ import java.util.List;
 
 import javax.annotation.PostConstruct;
 
+import org.hibernate.annotations.NaturalId;
 import org.slf4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -15,6 +16,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.dunkware.common.util.json.DJson;
 import com.dunkware.trade.service.stream.json.controller.spec.StreamControllerSpec;
+import com.dunkware.trade.service.stream.server.blueprint.StreamBlueprintService;
 import com.dunkware.trade.service.stream.server.repository.StreamEntity;
 import com.dunkware.trade.service.stream.server.repository.StreamRepo;
 import com.dunkware.trade.service.stream.server.repository.StreamVersionEntity;
@@ -40,6 +42,9 @@ public class StreamControllerService {
 	
 	@Autowired
 	private StreamTickService tickService; 
+	
+	@Autowired
+	private StreamBlueprintService blueprintService; 
 	
 	@Value("${streams.schedule.enable}")
 	private boolean enableSchedule = true; 

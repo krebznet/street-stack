@@ -8,7 +8,6 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
-import java.util.concurrent.ExecutorService;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.atomic.AtomicLong;
@@ -28,6 +27,7 @@ import com.dunkware.common.util.events.DEventNode;
 import com.dunkware.common.util.events.anot.ADEventMethod;
 import com.dunkware.common.util.time.DunkTime;
 import com.dunkware.spring.cluster.DunkNetNode;
+import com.dunkware.spring.runtime.services.ExecutorService;
 import com.dunkware.trade.service.stream.json.controller.model.StreamSessionSpec;
 import com.dunkware.trade.service.stream.json.controller.session.StreamSessionState;
 import com.dunkware.trade.service.stream.json.controller.session.StreamSessionStatus;
@@ -45,6 +45,7 @@ import com.dunkware.trade.service.stream.server.controller.session.events.EStrea
 import com.dunkware.trade.service.stream.server.controller.session.events.EStreamSessionNodeStarted;
 import com.dunkware.trade.service.stream.server.controller.session.events.EStreamSessionNodeStopException;
 import com.dunkware.trade.service.stream.server.controller.session.events.EStreamSessionNodeStopped;
+import com.dunkware.trade.service.stream.server.controller.session.events.EStreamSessionStartException;
 import com.dunkware.trade.service.stream.server.controller.session.events.EStreamSessionStarted;
 import com.dunkware.trade.service.stream.server.controller.session.events.EStreamSessionStopped;
 import com.dunkware.trade.service.stream.server.controller.session.events.EStreamSessionStopping;
@@ -54,6 +55,7 @@ import com.dunkware.trade.tick.model.ticker.TradeTickerSpec;
 import com.dunkware.xstream.api.XStreamRuntimeException;
 import com.dunkware.xstream.model.scanner.SessionEntityScanner;
 import com.dunkware.xstream.xproject.XScriptProject;
+import com.dunkware.xstream.xproject.model.XScriptBundle;
 import com.dunkware.xstream.xproject.model.XStreamBundle;
 
 public class StreamSessionImpl implements StreamSession {
@@ -111,30 +113,21 @@ public class StreamSessionImpl implements StreamSession {
 	
 	@Override
 	public void startSession(StreamSessionInput input) throws StreamSessionException {
+		status = new StreamSessionStatus();
+		status.setState(StreamSessionState.Starting);
+		status.setStartingTime(DTime.from(LocalTime.now(DTimeZone.toZoneId(input.getController().getTimeZone()))));
 		nodeStartEventCount.set(0);
 		logger.info(marker, "Starting Stream {} Session with {} workers ", input.getController().getName(),
 				input.getWorkerNodes().size());
-		streamBundle = new XStreamBundle();
-		streamBundle.setDate(DDate.now());
-		streamBundle.setTimeZone(DTimeZone.NewYork);
-		try {
-			streamBundle.setScriptBundle(getStream().getScriptBundle());	
-		} catch (Exception e) {
-			startException = "Stream Script Set " + e.toString();
-			status.setState(StreamSessionState.Exception);
-			logger.error(marker, "Script bundle build failed " + e.toString());;
-			throw new StreamSessionException("Exception getting script bundle " + e.toString());
-		}
+		
 		
 		stoppedSessionInvoked.set(false);
 		this.input = input;
 
 		nodeStartFailures = new AtomicInteger(0);
 		eventNode = input.getController().getEventNode().createChild(this);
-
-		status = new StreamSessionStatus();
-		status.setState(StreamSessionState.Starting);
-		status.setStartingTime(DTime.from(LocalTime.now(DTimeZone.toZoneId(input.getController().getTimeZone()))));
+		eventNode.addEventHandler(this);
+		
 		ZoneId zoneId = DTimeZone.toZoneId(input.getController().getTimeZone());
 		sessionId = input.getController().getName() + " _"
 				+ DunkTime.format(LocalDateTime.now(zoneId), DunkTime.YYYY_MM_DD_HH_MM_SS);
@@ -145,7 +138,7 @@ public class StreamSessionImpl implements StreamSession {
 		if (dupes.size() > 0) {
 			logger.error(marker, "Duplicate Tickers in node subscriptions size " + dupes.size());
 		}
-		int nodeIndex = 0;
+		
 		extensionTypes = sessionService.createExtensions();
 		for (StreamSessionExtension ext : extensionTypes) {
 			if (logger.isDebugEnabled()) {
@@ -157,29 +150,28 @@ public class StreamSessionImpl implements StreamSession {
 			createSessionEntity();
 		} catch (Exception e) {
 			logger.error(marker, "Exception creating Sesssion Entity " + e.toString(), e);
-			status.setState(StreamSessionState.Exception);
+			status.setState(StreamSessionState.StartException);
 			status.setException(e.toString());
 			throw new StreamSessionException("Exception creating Session Entity " + e.toString(), e);
 		}
 		int numericId = 1;
+		int nodeIndex = 0;
 		for (DunkNetNode node : input.getWorkerNodes()) {
 			String workerId = getStream().getName().toUpperCase() + "_" + numericId;
 			StreamSessionNodeInput nodeInput = new StreamSessionNodeInput(numericId, workerId,
-					nodeTickers.get(numericId), node, extensionTypes, this, input.getController());
+					nodeTickers.get(nodeIndex), node, extensionTypes, this, input.getController());
 			StreamSessionNodeImpl sessionNode = new StreamSessionNodeImpl();
 			ac.getAutowireCapableBeanFactory().autowireBean(sessionNode);
 			sessionNode.start(nodeInput);
 			logger.info(marker, "Started {} Session Worker {} on node {}", getStream().getName(), workerId,
 					node.getId());
 			nodes.put(node.getId(), sessionNode);
+			nodeIndex++;
+			numericId++;
 		}
 
 	}
 
-	@Override
-	public XStreamBundle getStreamBundle() {
-		return streamBundle;
-	}
 
 	@Override
 	public void stopSession() throws StreamSessionException {
@@ -197,6 +189,8 @@ public class StreamSessionImpl implements StreamSession {
 			node.stop();
 		}
 	}
+	
+	
 
 	@Override
 	public synchronized StreamSessionStatus getStatus() {
@@ -350,9 +344,10 @@ public class StreamSessionImpl implements StreamSession {
 	}
 
 	@ADEventMethod()
-	public void nodeStartException(EStreamSessionNodeStartExcepton startExeption) {
-		logger.error(marker, "Stream {} Session Node {} Start Exception {}",getStream().getName(),startExeption.getNode().getWorkerId(),startExeption.getException());
+	public void nodeStartException(EStreamSessionNodeStartExcepton exp) {
+		logger.error(marker, "Stream {} Session Node {} Start Exception {}",getStream().getName(),exp.getNode().getWorkerId(),exp.getException());
 		nodeStartFailures.incrementAndGet();
+		status.getNodeStartErrors().add("Node Worker " + exp.getNode().getWorkerId() + " " + exp.getException());
 		int started = nodeStartEventCount.incrementAndGet();
 		if(started == nodes.size()) {
 			Runnable runner = new Runnable() {
@@ -402,6 +397,17 @@ public class StreamSessionImpl implements StreamSession {
 
 	private void handleSessionSart() {
 		logger.info(marker, "Handling Stream {} Session Start",getStream().getName());
+		if(nodeStartFailures.get() > 0) { 
+			this.status.setState(StreamSessionState.StartException);
+			for (StreamSessionNode node : nodes.values()) {
+				if(node.isRunning()) { 
+					node.cancel();
+				}
+			}
+			eventNode.event(new EStreamSessionStartException(this));
+			return;
+		}
+		
 		this.status.setState(StreamSessionState.Running);
 		this.status.setStartTime(DTime.now());
 		for (StreamSessionExtension ext : extensionTypes) {
@@ -430,6 +436,11 @@ public class StreamSessionImpl implements StreamSession {
 		}
 		EStreamSessionStopped stopped = new EStreamSessionStopped(this);
 		eventNode.event(stopped);
+	}
+
+	@Override
+	public XScriptBundle getXScriptBundle() {
+		return getStream().getScriptBundle();
 	}
 
 }

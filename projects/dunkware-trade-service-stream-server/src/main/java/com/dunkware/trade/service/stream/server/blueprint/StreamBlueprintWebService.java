@@ -16,7 +16,7 @@ import org.springframework.web.server.ResponseStatusException;
 
 import com.dunkware.common.util.datagrid.DataGridUpdate;
 import com.dunkware.common.util.glazed.GlazedDataGrid;
-import com.dunkware.net.cluster.node.Cluster;
+import com.dunkware.spring.runtime.services.ExecutorService;
 import com.dunkware.trade.service.stream.json.blueprint.WebStreamSignaltype;
 
 import reactor.core.publisher.Flux;
@@ -31,9 +31,7 @@ public class StreamBlueprintWebService {
 	
 	
 	@Autowired
-	private Cluster cluster;
-	
-
+	private ExecutorService executorService; 
 	
 	@GetMapping(path = "/stream/v1/blueprint/dash/signals", produces = MediaType.APPLICATION_STREAM_JSON_VALUE)
     public Flux<List<DataGridUpdate>> blueprintSignals(@RequestParam() String stream) {
@@ -45,7 +43,7 @@ public class StreamBlueprintWebService {
 			throw new ResponseStatusException(
 			           HttpStatus.BAD_REQUEST, "Stream blueprint not found for " + stream);
 		}
-		GlazedDataGrid grid = GlazedDataGrid.newInstance(bp.getSignalBeans(),cluster.getExecutor(),"getId");
+		GlazedDataGrid grid = GlazedDataGrid.newInstance(bp.getSignalBeans(),executorService.get(),"getId");
 		Flux<List<DataGridUpdate>> results = grid.getUpdates();
 		results.subscribe(new Subscriber<List<DataGridUpdate>>() {
 			private Subscription sub;

@@ -13,11 +13,12 @@ import com.dunkware.trade.tick.model.ticker.TradeTickerSpec;
 import com.dunkware.xstream.api.XStreamRuntimeException;
 import com.dunkware.xstream.model.scanner.SessionEntityScanner;
 import com.dunkware.xstream.xproject.XScriptProject;
+import com.dunkware.xstream.xproject.model.XScriptBundle;
 import com.dunkware.xstream.xproject.model.XStreamBundle;
 
 public interface StreamSession {
 
-	public XStreamBundle getStreamBundle(); 
+	public XScriptBundle getXScriptBundle(); 
 	
 	public void startSession(StreamSessionInput input) throws StreamSessionException;
 	

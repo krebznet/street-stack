@@ -11,6 +11,8 @@ import org.slf4j.LoggerFactory;
 import org.slf4j.Marker;
 import org.slf4j.MarkerFactory;
 
+import com.dunkware.common.util.dtime.DDate;
+import com.dunkware.common.util.dtime.DTimeZone;
 import com.dunkware.common.util.events.DEventNode;
 import com.dunkware.common.util.stopwatch.DStopWatch;
 import com.dunkware.spring.cluster.DunkNetChannel;
@@ -19,12 +21,13 @@ import com.dunkware.spring.cluster.DunkNetException;
 import com.dunkware.spring.cluster.DunkNetNode;
 import com.dunkware.spring.cluster.anot.ADunkNetEvent;
 import com.dunkware.spring.cluster.core.request.DunkNetChannelRequest;
+import com.dunkware.spring.cluster.core.request.DunkNetServiceRequest;
+import com.dunkware.spring.cluster.core.request.DunkNetServiceRequestListener;
 import com.dunkware.trade.service.stream.json.controller.session.StreamSessionNodeState;
-import com.dunkware.trade.service.stream.json.worker.event.WorkerStartException;
-import com.dunkware.trade.service.stream.json.worker.event.WorkerStarted;
-import com.dunkware.trade.service.stream.json.worker.event.WorkerStopped;
-import com.dunkware.trade.service.stream.json.worker.event.WorkerStoppedException;
+import com.dunkware.trade.service.stream.json.worker.stream.StreamSessionWorkerCancelReq;
+import com.dunkware.trade.service.stream.json.worker.stream.StreamSessionWorkerCreateReq;
 import com.dunkware.trade.service.stream.json.worker.stream.StreamSessionWorkerStartReq;
+import com.dunkware.trade.service.stream.json.worker.stream.StreamSessionWorkerStartResp;
 import com.dunkware.trade.service.stream.json.worker.stream.StreamSessionWorkerStats;
 import com.dunkware.trade.service.stream.json.worker.stream.StreamSessionWorkerStopReq;
 import com.dunkware.trade.service.stream.server.controller.StreamController;
@@ -41,6 +44,8 @@ import com.dunkware.xstream.xproject.model.XStreamBundle;
 
 public class StreamSessionNodeImpl implements StreamSessionNode, DunkNetChannelHandler {
 
+	
+
 	private Logger logger = LoggerFactory.getLogger(getClass());
 
 	private XStreamBundle streamBundle;
@@ -52,29 +57,37 @@ public class StreamSessionNodeImpl implements StreamSessionNode, DunkNetChannelH
 	private StreamSessionNodeState state = StreamSessionNodeState.Starting;
 
 	private String startException = null;
-	
-	private String stopException; 
-	
+
+	private String stopException;
+
 	private DStopWatch startingTimer;
-	
+
 	private DStopWatch stoppingTimer;
+
+	private volatile boolean starting = false;
+
+	private volatile boolean stopping = false;
 
 	private String workerId;
 
 	private DEventNode eventNode;
 
-	private StreamSessionWorkerStats workerStats = null;
+	private StreamSessionWorkerStats workerStats = new StreamSessionWorkerStats();
 
 	private AtomicBoolean stopped = new AtomicBoolean(false);
-	
+
 	private List<String> errors = new ArrayList<String>();
 
 	private Marker marker = MarkerFactory.getMarker("StreamSessionNode");
-	
+
 	private DunkNetNode dunkNode;
-	
+
 	private DunkNetChannel channel;
+
+	private StreamSessionWorkerStartReq startReq;
 	
+	private boolean startingInitiazed = false; 
+	private boolean stoppingInitiazed = false; 
 
 	@Override
 	public void start(StreamSessionNodeInput input) {
@@ -90,138 +103,134 @@ public class StreamSessionNodeImpl implements StreamSessionNode, DunkNetChannelH
 		Thread starter = new Thread() {
 
 			public void run() {
-			
-				for (StreamSessionExtension ext : input.getSession().getExtensions()) {
-					ext.nodeStarting(StreamSessionNodeImpl.this);
-
+				starting = true;
+				startingInitiazed = true;
+				try {
+					startingTimer = DStopWatch.create();
+					startingTimer.start();
+					streamBundle = createBundle();
+				} catch (Exception e) {
+					startException = e.toString();
+					state = StreamSessionNodeState.StartException;
+					eventNode.event(new EStreamSessionNodeStartExcepton(StreamSessionNodeImpl.this, startException));
+					startingTimer.stop();
+					starting = false; 
+					logger.error(marker, "Node Start Exception {} creating stream bundle {}",input.getWorkerId(),e.toString());
+					return;
 				}
-				StreamSessionWorkerStartReq req = new StreamSessionWorkerStartReq();
-				workerId = input.getStream().getName() + "_session_worker_" + input.getNode().getId();
+
+				notifyExtensions(StreamSessionExtension.NODE_STARTING);
+				startReq = new StreamSessionWorkerStartReq();
+				startReq.setWorkerId(input.getWorkerId());
+				startReq.setNumericId(input.getNumericId());
+				startReq.setStream(input.getSession().getStream().getName());
+				startReq.setSessionId(input.getSession().getSessionId());
+				startReq.setStreamBundle(streamBundle);
+				startReq.setNodeId(input.getNode().getId());
 				workerStats = new StreamSessionWorkerStats();
 				workerStats.setNodeId(workerId);
-				// yes put the stats
-				
-				req.setWorkerId(input.getWorkerId());
-				req.setNumericId(input.getNumericId());
-				req.setStream(input.getSession().getStream().getName());
-				req.setSessionId(input.getSession().getSessionId());
-				req.setStreamBundle(input.getSession().getStreamBundle());
-				req.setNodeId(input.getNode().getId());
-				
+
 				try {
-					DunkNetChannelRequest request =  dunkNode.channel(req);
+					StreamSessionWorkerCreateReq req = new StreamSessionWorkerCreateReq();
+					req.setWorkerId(input.getWorkerId());
+					DunkNetChannelRequest request = dunkNode.channel(req);
+					channel = request.get(90, TimeUnit.SECONDS);	
 					channel.setHandler(StreamSessionNodeImpl.this);
-					channel = request.get(90, TimeUnit.SECONDS);
-					
 				} catch (Exception e) {
 					logger.error(marker, "Exception creating session node chanel " + e.toString());
 					state = StreamSessionNodeState.StartException;
 					startException = "Exception creating node channel " + e.toString();
-					eventNode.event(new EStreamSessionNodeStartExcepton(StreamSessionNodeImpl.this,"Exception creating channel " + e.toString()));
+					eventNode.event(new EStreamSessionNodeStartExcepton(StreamSessionNodeImpl.this,
+							"Exception creating channel " + e.toString()));
 					return;
 				}
-
-
+				
 			}
 
 		};
 		starter.start();
 	}
-	
-	
+
+	@Override
+	public XStreamBundle getStreamBundle() {
+		return streamBundle;
+	}
+
 	@Override
 	public boolean isStarting() {
-		// TODO Auto-generated method stub
-		return false;
+		return starting;
 	}
 
 	@Override
 	public boolean isStopping() {
-		// TODO Auto-generated method stub
+		return stopping;
+	}
+	
+
+	@Override
+	public boolean isRunning() {
+		if(state == StreamSessionNodeState.Running) {
+			return true;
+		}
 		return false;
 	}
 
-
 	@Override
 	public String getStartExcetpion() {
-		// TODO Auto-generated method stub
-		return null;
+		return startException;
 	}
 
 	@Override
 	public String getStopException() {
-		// TODO Auto-generated method stub
-		return null;
+		return stopException;
 	}
-
-
 
 	@Override
 	public double stoppingElapsedTime() {
-		// TODO Auto-generated method stub
-		return 0;
+		if(!stoppingInitiazed) {
+			return 0;
+		}
+		if(stopping) { 
+			return stoppingTimer.getRunningSeconds();
+		}
+		return stoppingTimer.getCompletedSeconds();
 	}
-
-
 
 	@Override
 	public double startingElapsedTime() {
-		// TODO Auto-generated method stub
-		return 0;
+		if(!startingInitiazed) { 
+			return 0;
+		}
+		if(starting) { 
+			return startingTimer.getRunningSeconds();
+		}
+		return startingTimer.getCompletedSeconds();
 	}
-
-
 
 	@Override
 	public StreamSessionWorkerStats getWorkerStats() {
 		return workerStats;
 	}
-	
+
 	@Override
 	public DunkNetChannel getChannel() {
 		return channel;
 	}
 
-
-
 	@Override
 	public DunkNetNode getDunkNode() {
 		return dunkNode;
 	}
-	
-	@ADunkNetEvent
-	public void workerStarted(WorkerStarted started) { 
-		eventNode.event(new EStreamSessionNodeStarted(this));
-	}
-	
-	@ADunkNetEvent
-	public void workerStartException(WorkerStartException exp) { 
-		eventNode.event(new EStreamSessionNodeStartExcepton(this, exp.getException()));
-	}
 
 	@ADunkNetEvent
-	public void workerStopped(WorkerStopped stopped) { 
-		eventNode.event(new EStreamSessionNodeStopped(this));
-		channel.closeChannel();
-	}
-	
-	@ADunkNetEvent
-	public void workerStoppedException(WorkerStoppedException exp) { 
-		eventNode.event(new EStreamSessionNodeStopException(this, exp.getException()));
-		channel.closeChannel();
-	}
-	
-	@ADunkNetEvent
-	public void workerStats(StreamSessionWorkerStats stats) { 
+	public void workerStats(StreamSessionWorkerStats stats) {
 		this.workerStats = stats;
 	}
-	
 
 	@Override
 	public StreamSessionNodeState getState() {
 		return state;
 	}
-
 
 	@Override
 	public String getNodeId() {
@@ -238,18 +247,15 @@ public class StreamSessionNodeImpl implements StreamSessionNode, DunkNetChannelH
 		return input.getSession();
 	}
 
-
 	@Override
 	public int getNumericId() {
 		return input.getNumericId();
 	}
 
-
 	@Override
 	public String getWorkerId() {
 		return input.getWorkerId();
 	}
-
 
 	@Override
 	public List<String> getErrors() {
@@ -258,13 +264,79 @@ public class StreamSessionNodeImpl implements StreamSessionNode, DunkNetChannelH
 
 	@Override
 	public void stop() {
-		try {
-			channel.serviceBlocking(new StreamSessionWorkerStopReq());	
-		} catch (Exception e) {
-			// TODO: handle exception
-			
-		}
 		
+			if(stoppingInitiazed) { 
+				logger.error(marker, "Stop invoked on node with stop initiazed");
+			}
+			stopping = true;
+			stoppingTimer = DStopWatch.create();
+			stoppingTimer.start();
+			stoppingInitiazed = true;
+			if(state == StreamSessionNodeState.Running == false) { 
+				stopping = false;
+				stoppingTimer.stop();
+				eventNode.event(new EStreamSessionNodeStopped(this));
+			}
+			if(state == StreamSessionNodeState.Running) { 
+				StreamSessionWorkerStopReq req = new StreamSessionWorkerStopReq();
+				req.setWorkerId(input.getWorkerId());
+				DunkNetServiceRequest sReq = null;
+				try {
+					sReq = channel.service(req);
+				} catch (Exception e) {
+					state = StreamSessionNodeState.StopException;
+					stopException = "Stop Request Service Failed " + e.toString();
+					stopping = false; 
+					stoppingTimer.stop();
+					logger.error(marker, "Stream {} Worker {} Node {} Stop Exception Service Request Timeout",
+							input.getStream().getName(),input.getWorkerId(),input.getNode().getId());
+					eventNode.event(new EStreamSessionNodeStopException(StreamSessionNodeImpl.this,stopException));
+					return;
+				}
+
+				sReq.addListener(new DunkNetServiceRequestListener() {
+					
+					@Override
+					public void onServiceReqTimeout(DunkNetServiceRequest req) {
+						state = StreamSessionNodeState.StopException;
+						stopException = "Stop Request Timeout";
+						stopping = false; 
+						stoppingTimer.stop();
+						logger.error(marker, "Stream {} Worker {} Node {} Stop Exception Service Request Timeout",
+								input.getStream().getName(),input.getWorkerId(),input.getNode().getId());
+						eventNode.event(new EStreamSessionNodeStopException(StreamSessionNodeImpl.this,stopException));
+						return;
+					
+					}
+					
+					@Override
+					public void onServiceReqError(DunkNetServiceRequest req) {
+						state = StreamSessionNodeState.StopException;
+						stopException = "Stop Service Error Response + " + req.getError();
+						stopping = false; 
+						stoppingTimer.stop();
+						logger.error(marker, "Stream {} Worker {} Node {} Stop Exception Service Response Error {}",
+								input.getStream().getName(),input.getWorkerId(),input.getNode().getId(),stopException);
+						eventNode.event(new EStreamSessionNodeStopException(StreamSessionNodeImpl.this,stopException));
+						return;
+					}
+					
+					@Override
+					public void onServiceReqDone(DunkNetServiceRequest req) {
+						state = StreamSessionNodeState.Stopped;
+						stopping = false; 
+						stoppingTimer.stop();
+						logger.info(marker, "Stream {} Worker {} Stopped On Node {} Duration {}",input.getStream().getName(),
+								input.getWorkerId(),input.getNode().getId(),stoppingTimer.getCompletedSeconds());
+						eventNode.event(new EStreamSessionNodeStopped(StreamSessionNodeImpl.this));
+						
+						
+					}
+				});
+			}
+
+		
+
 	}
 
 	@Override
@@ -292,32 +364,146 @@ public class StreamSessionNodeImpl implements StreamSessionNode, DunkNetChannelH
 
 	@Override
 	public void channelInit(DunkNetChannel channel) throws DunkNetException {
-			channel.addExtension(this);
+		channel.addExtension(this);
 	}
 
 	@Override
 	public void channelStart() throws DunkNetException {
-		// plau gppd
+		DunkNetServiceRequest sReq = null;
+		try {
+			sReq = channel.service(startReq);			
+		} catch (Exception e) {
+			startException = "exception invoking start stream service " + e.toString();
+			starting = false; 
+			startingTimer.stop();
+			startException = "channel service request failed " + e.toString();
+			eventNode.event(new EStreamSessionNodeStartExcepton(StreamSessionNodeImpl.this, "Exception getting service request " + e.toString()));
+			return;
+		}
+		sReq.addListener(new DunkNetServiceRequestListener() {
+			
+			@Override
+			public void onServiceReqTimeout(DunkNetServiceRequest req) {
+				state = StreamSessionNodeState.StartException;
+				startException = "Start Request Timeout";
+				starting = false; 
+				startingTimer.stop();
+				eventNode.event(new EStreamSessionNodeStartExcepton(StreamSessionNodeImpl.this,startException));
+				return;
+			}
+			
+			@Override
+			public void onServiceReqError(DunkNetServiceRequest req) {
+				startException = "start service response error " + req.getError();
+				starting = false; 
+				startingTimer.stop();
+				state = StreamSessionNodeState.StartException;
+				eventNode.event(new EStreamSessionNodeStartExcepton(StreamSessionNodeImpl.this, startException));
+				return;
+			}
+			
+			@Override
+			public void onServiceReqDone(DunkNetServiceRequest req) {
+				try {
+					StreamSessionWorkerStartResp resp = (StreamSessionWorkerStartResp)req.getResponse();
+					startingTimer.stop();
+					starting = false;
+					if(resp.getCode().equals("ERROR")) { 
+						startException = resp.getError();
+						state = StreamSessionNodeState.StartException;
+						startException = "Start Request service returned error " + resp.getError();
+						eventNode.event(new EStreamSessionNodeStartExcepton(StreamSessionNodeImpl.this, startException));
+						return;
+					}
+					state = StreamSessionNodeState.Running;
+					eventNode.event(new EStreamSessionNodeStarted(StreamSessionNodeImpl.this));
+				} catch (Exception e) {
+					startingTimer.stop();
+					starting = false; 
+					state = StreamSessionNodeState.StartException;
+					startException = "get responsnse on net service " + e.toString();
+					eventNode.event(new EStreamSessionNodeStartExcepton(StreamSessionNodeImpl.this, "Internal shit could not get service req resp " + e.toString()));
+				}
+
+			}
+		});
+
 	}
 
 	@Override
 	public void channelClose() {
 		// TODO Auto-generated method stub
-		
+
+	}
+	
+
+	@Override
+	public void cancel() {
+		try {
+			if(channel.isOpen() == false) { 
+				return;
+			}
+			if(!isRunning()) { 
+				return;
+			}
+			StreamSessionWorkerCancelReq req = new StreamSessionWorkerCancelReq();
+			req.setWorkerId(getWorkerId());
+			channel.serviceBlocking(req);
+			state = StreamSessionNodeState.Cancelled;
+			channel.closeChannel();
+		} catch (Exception e) {
+			logger.error(marker, "Exception cancelling session node " + e.toString());
+		}
 	}
 
 	@Override
 	public void channelStartError(String exception) {
+		logger.error(marker, "Stream Node {} channel start exception {}", input.getNode().getId(), exception);
+		startException = exception;
+		state = StreamSessionNodeState.StartException;
+		starting = false;
+		startingTimer.stop();
 		eventNode.event(new EStreamSessionNodeStartExcepton(this, "channel stat error " + exception));
-		// start exception
+
 	}
-	
-	
-	
 
-	
+	private void notifyExtensions(int type) {
+		switch (type) {
+		case StreamSessionExtension.NODE_STARTING:
+			for (StreamSessionExtension ext : input.getSession().getExtensions()) {
+				ext.nodeStarting(this);
+			}
+			return;
+		case StreamSessionExtension.NODE_STARTED:
+			for (StreamSessionExtension ext : input.getSession().getExtensions()) {
+				ext.nodeStarted(this);
+			}
 
-	
-	
+			return;
+		case StreamSessionExtension.SESSION_NODE_START_EXCEPTION:
+			for (StreamSessionExtension ext : input.getSession().getExtensions()) {
+				ext.nodeStartException(this, startException);
+			}
+
+		}
+	}
+
+	private XStreamBundle createBundle() throws Exception {
+		XStreamBundle xstreamBundle = null;
+		xstreamBundle = new XStreamBundle();
+		xstreamBundle.setDate(DDate.now());
+		xstreamBundle.setTimeZone(DTimeZone.NewYork);
+		try {
+			xstreamBundle.setScriptBundle(input.getSession().getStream().getScriptBundle());
+		} catch (Exception e) {
+			logger.error(marker,
+					"Stream Session Node Start Exception setting script bundle on stream bundle " + e.toString(), e);
+			startException = "Setting XScriptBundle that is encoded into bytes on steram bundle exception "
+					+ e.toString();
+			throw new Exception("Exceptoin setting XScriptBundle int byotes " + e.toString());
+		}
+
+		return xstreamBundle;
+	}
 
 }
