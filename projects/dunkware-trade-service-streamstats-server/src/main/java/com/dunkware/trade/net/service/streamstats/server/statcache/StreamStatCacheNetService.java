@@ -24,7 +24,7 @@ public class StreamStatCacheNetService extends DunkNetComponent {
 		System.out.println("okay");
 	}
 	
-	@ADunkNetService()
+	@ADunkNetService(label =  "Entity Stas")
 	public EntityStatResp entityStatReq(EntityStatReq req) {
 		return cache.entityStat(req);
 	}
