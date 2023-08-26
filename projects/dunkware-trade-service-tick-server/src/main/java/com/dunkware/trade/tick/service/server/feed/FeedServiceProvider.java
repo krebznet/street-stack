@@ -1,11 +1,12 @@
 package com.dunkware.trade.tick.service.server.feed;
 
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import com.dunkware.common.util.json.DJson;
-import com.dunkware.net.cluster.node.Cluster;
+import com.dunkware.spring.runtime.services.ExecutorService;
 import com.dunkware.trade.tick.api.provider.TickProvider;
 import com.dunkware.trade.tick.api.provider.TickProviderFactory;
 import com.dunkware.trade.tick.model.provider.TickProviderSpec;
@@ -23,8 +24,9 @@ public class FeedServiceProvider {
 	@Autowired
 	private TickerService tickerService; 
 	
+	
 	@Autowired
-	private Cluster cluster; 
+	private ExecutorService executorService; 
 
 	private Logger logger = LoggerFactory.getLogger(getClass());
 	
@@ -39,7 +41,7 @@ public class FeedServiceProvider {
 			provider = new ActiveTickProvider();
 		}
 		
-		provider.connect(type, service.getFeed(), cluster.getExecutor());
+		provider.connect(type, service.getFeed(), executorService.get());
 		
 	}
 	

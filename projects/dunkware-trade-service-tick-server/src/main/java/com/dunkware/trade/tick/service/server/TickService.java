@@ -8,7 +8,7 @@ import org.springframework.boot.autoconfigure.mongo.MongoAutoConfiguration;
 
 
 @EnableAutoConfiguration(exclude={MongoAutoConfiguration.class, MongoDataAutoConfiguration.class})
-@SpringBootApplication(scanBasePackages = "com.dunkware.net.cluster.spring,com.dunkware.net.cluster.node, com.dunkware.trade.tick.service.server")
+@SpringBootApplication(scanBasePackages = "com.dunkware")
 public class TickService {
 
 	public static void main(String[] args) {

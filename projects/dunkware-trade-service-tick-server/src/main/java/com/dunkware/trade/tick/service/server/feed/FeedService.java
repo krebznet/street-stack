@@ -2,7 +2,6 @@ package com.dunkware.trade.tick.service.server.feed;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
 import java.util.Map;
@@ -20,7 +19,6 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Component;
-import org.springframework.web.servlet.mvc.condition.ConsumesRequestCondition;
 
 import com.dunkware.common.kafka.admin.DKafkaAdmin;
 import com.dunkware.common.util.dtime.DDateTime;
@@ -28,7 +26,6 @@ import com.dunkware.common.util.dtime.DTimeZone;
 import com.dunkware.common.util.executor.DExecutor;
 import com.dunkware.common.util.helpers.DConverter;
 import com.dunkware.common.util.json.DJson;
-import com.dunkware.net.cluster.node.Cluster;
 import com.dunkware.trade.tick.api.consumer.TickConsumer;
 import com.dunkware.trade.tick.api.feed.TickFeed;
 import com.dunkware.trade.tick.api.feed.TickFeedSubscription;
@@ -45,7 +42,6 @@ import com.dunkware.trade.tick.service.protocol.service.spec.FeedServiceState;
 import com.dunkware.trade.tick.service.protocol.service.spec.FeedServiceStats;
 import com.dunkware.trade.tick.service.server.feed.repository.FeedProviderDO;
 import com.dunkware.trade.tick.service.server.feed.repository.FeedRepository;
-import com.dunkware.trade.tick.service.server.logging.TickLoggingService;
 import com.dunkware.trade.tick.service.server.ticker.repsoitory.TickerListSubscribeDO;
 import com.dunkware.trade.tick.service.server.ticker.repsoitory.TickerListSubscribeRepo;
 import com.dunkware.trade.tick.service.server.ticker.repsoitory.TickerListTickerDO;
@@ -75,14 +71,11 @@ public class FeedService {
 	private String zookeepers;
 
 	
-	@Autowired
-	Cluster cluster;
+	
 	
 	
 	private Map<String,TickConsumer> consumers = new ConcurrentHashMap<String, TickConsumer>();
 
-	@Autowired
-	private TickLoggingService logging;
 
 	private Marker logMarker = null;
 	
@@ -105,7 +98,7 @@ public class FeedService {
 		startTime = DDateTime.now(DTimeZone.NewYork);
 		dayChecker = new ResetDayChecker();
 		dayChecker.start();
-		logMarker = logging.getMarker();
+		logMarker = MarkerFactory.getMarker("FeedService");
 		List<FeedProviderDO> providers = providerRepo.getProviders();
 		for (FeedProviderDO tickProviderEntity : providers) {
 			FeedServiceProvider provider = new FeedServiceProvider();
