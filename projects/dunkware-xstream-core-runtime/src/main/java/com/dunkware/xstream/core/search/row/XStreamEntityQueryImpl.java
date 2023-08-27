@@ -16,13 +16,59 @@ public class XStreamEntityQueryImpl implements XStreamEntityQuery   {
 
 	private XStream stream; 
 	private List<XStreamEntityPredicate> predicates;
+	private double buildTime; 
 	
-	public XStreamEntityQueryImpl(List<XStreamEntityPredicate> predicates) { 
-		this.predicates = predicates;
+	public XStreamEntityQueryImpl() { 
+		
 	}
 	
-	
-	
+
+	@Override
+	public void init(List<XStreamEntityPredicate> predicates, XStream stream, double buildTime) {
+		this.predicates = predicates;
+		this.buildTime = buildTime;
+		this.stream = stream;
+	}
+
+
+	@Override
+	public double getBuildTime() {
+		return buildTime; 
+	}
+
+	@Override
+	public XStreamEntityQueryRun execute() {
+		XStreamEntityQueryRun run = new XStreamEntityQueryRunImpl();
+		DStopWatch timer = DStopWatch.create();
+		for (XStreamEntityPredicate pre : predicates) {
+			pre.setQueryRun(run);
+		}
+		//stream.getRows().stream()
+		return run;
+	}
+
+
+	@Override
+	public XStreamEntityQueryRun execute(List<XStreamEntity> entities) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+
+	@Override
+	public boolean isRunnable() {
+		for (XStreamEntityPredicate predicate : predicates) {
+			if(!predicate.isRunnable()) { 
+				return false; 
+			}
+		}
+		return true;
+	}
+
+
+
+
+
 	@Override
 	public List<XStreamEntityPredicate> getPredicates() {
 		return predicates;
@@ -30,22 +76,6 @@ public class XStreamEntityQueryImpl implements XStreamEntityQuery   {
 
 
 
-	@Override
-	public void init(XStreamEntityQueryModel model, XStream stream) throws XStreamQueryException {
-		// TODO Auto-generated method stub
-		
-	}
-	@Override
-	public XStreamEntityQueryRun run() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-	@Override
-	public XStreamEntityQueryRun run(List<XStreamEntity> entities) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-	
 	
 	
 	

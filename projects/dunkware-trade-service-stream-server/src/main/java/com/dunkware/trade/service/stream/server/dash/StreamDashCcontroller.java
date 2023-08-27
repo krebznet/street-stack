@@ -18,7 +18,7 @@ import com.dunkware.trade.service.stream.server.controller.StreamControllerServi
 import reactor.core.publisher.Flux;
 
 @RestController
-public class StreamScannerWebService {
+public class StreamDashCcontroller {
 
 	@Autowired
 	private StreamControllerService streamService;

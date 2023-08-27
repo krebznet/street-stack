@@ -21,7 +21,7 @@ public class StreamWorkerEntityScanner implements DunkNetChannelHandler  {
 	public void init(StreamWorkerChannel workerNode, StreamEntityScannerReq req) throws Exception { 
 		this.workerNode = workerNode;
 		this.req = req;
-		query = workerNode.getStream().entityQuery(req.getQuery());
+		//query = workerNode.getStream().entityQuery(req.getQuery());
 		
 	}
 

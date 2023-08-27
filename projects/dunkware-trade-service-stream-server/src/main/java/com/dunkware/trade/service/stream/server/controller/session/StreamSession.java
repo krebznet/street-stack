@@ -6,7 +6,6 @@ import java.util.List;
 
 import com.dunkware.common.util.events.DEventNode;
 import com.dunkware.trade.service.stream.json.controller.model.StreamSessionSpec;
-import com.dunkware.trade.service.stream.json.controller.session.StreamSessionNodeBean;
 import com.dunkware.trade.service.stream.json.controller.session.StreamSessionStats;
 import com.dunkware.trade.service.stream.json.controller.spec.StreamState;
 import com.dunkware.trade.service.stream.server.controller.StreamController;
@@ -17,11 +16,7 @@ import com.dunkware.xstream.model.scanner.SessionEntityScanner;
 import com.dunkware.xstream.xproject.XScriptProject;
 import com.dunkware.xstream.xproject.model.XScriptBundle;
 
-import ca.odell.glazedlists.ObservableElementList;
-
 public interface StreamSession {
-	
-	public ObservableElementList<StreamSessionNodeBean> getNodeBeans();
 
 	public XScriptBundle getXScriptBundle(); 
 	

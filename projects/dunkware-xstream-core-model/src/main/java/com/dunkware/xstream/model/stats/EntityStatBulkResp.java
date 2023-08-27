@@ -4,28 +4,30 @@ import java.util.Map;
 
 public class EntityStatBulkResp {
 
-	private Map<String,Exception> exception;
-	private Map<String,Integer> unresolved;
-	private Map<String,Number> resolved;
+	private Map<String,String> exceptionStats;
+	private Map<String,Integer> unresolvedStats;
+	private Map<String,Number> resolvedStats;
 	
-	public Map<String, Exception> getException() {
-		return exception;
+	public Map<String, String> getExceptionStats() {
+		return exceptionStats;
 	}
-	public void setException(Map<String, Exception> exception) {
-		this.exception = exception;
+	public void setExceptionStats(Map<String, String> exceptionStats) {
+		this.exceptionStats = exceptionStats;
 	}
-	public Map<String, Integer> getUnresolved() {
-		return unresolved;
+	public Map<String, Integer> getUnresolvedStats() {
+		return unresolvedStats;
 	}
-	public void setUnresolved(Map<String, Integer> unresolved) {
-		this.unresolved = unresolved;
+	public void setUnresolvedStats(Map<String, Integer> unresolvedStats) {
+		this.unresolvedStats = unresolvedStats;
 	}
-	public Map<String, Number> getResolved() {
-		return resolved;
+	public Map<String, Number> getResolvedStats() {
+		return resolvedStats;
 	}
-	public void setResolved(Map<String, Number> resolved) {
-		this.resolved = resolved;
+	public void setResolvedStats(Map<String, Number> resolvedStats) {
+		this.resolvedStats = resolvedStats;
 	}
+	
+	
 	
 	
 }

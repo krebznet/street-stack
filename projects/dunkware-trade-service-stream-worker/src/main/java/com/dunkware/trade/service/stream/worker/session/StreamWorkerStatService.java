@@ -21,5 +21,4 @@ public class StreamWorkerStatService {
 	}
 	
 	
-	public Future<ASyn>
 }

@@ -21,7 +21,7 @@ public class XStreamEntityVarAggValue implements XStreamEntityQueryValue {
 	private String varIdent; 
 	
 	
-	public void init(XStreamEntityValueModel model, XStream stream) throws XStreamQueryException {
+	public void init(XStreamEntityValueModel model, XStream stream) throws XStreamQueryException  {
 		this.model = model; 
 		this.stream = stream; 
 		this.aggType = model.getSessionAgg();

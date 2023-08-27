@@ -40,6 +40,7 @@ import com.dunkware.spring.cluster.DunkNetConfig;
 import com.dunkware.spring.cluster.DunkNetException;
 import com.dunkware.spring.cluster.DunkNetExtensions;
 import com.dunkware.spring.cluster.DunkNetNode;
+import com.dunkware.spring.cluster.DunkNetServiceResponse;
 import com.dunkware.spring.cluster.core.controllers.DunkNetController;
 import com.dunkware.spring.cluster.core.controllers.DunkNetPingPublisher;
 import com.dunkware.spring.cluster.core.controllers.DunkNetState;
@@ -51,6 +52,9 @@ import com.dunkware.spring.cluster.message.DunkNetMessage;
 import com.dunkware.spring.cluster.message.DunkNetMessageTransport;
 import com.dunkware.spring.cluster.protocol.descriptors.DunkNetNodeDescriptor;
 import com.dunkware.spring.runtime.services.ExecutorService;
+
+import io.vertx.core.Future;
+import io.vertx.core.Promise;
 
 @Service()
 @Profile("DunkNet")
@@ -227,9 +231,39 @@ public class DunkNetImpl implements DunkNet, DKafkaByteHandler2 {
 
 	@Override
 	public DunkNetServiceRequest service(Object payload) throws DunkNetException {
-		return null;
+		DunkNetNode serviceNode = null;
+		for (DunkNetNode node : nodes.values()) {
+			if(node.getDescriptor().getDescriptors().hasService(payload)) { 
+				serviceNode = node;
+				break;
+			}
+		}
+		if(serviceNode == null) { 
+			throw new DunkNetException("No channel handler found on any nodes for input " + payload.getClass().getName());
+		}
+		
+		DunkNetServiceRequest req = getController().nodeServiceRequest(serviceNode, payload);
+		return req;
 	}
 	
+	
+	
+
+	@Override
+	public Future<Object> serviceFuure(Object payload)  {
+		Promise<Object> promise = Promise.promise();
+		Future<Object> future = promise.future();
+		try {
+			DunkNetServiceRequest req = service(payload);
+			req.setPromise(promise);
+			return future;
+		} catch (Exception e) {
+			promise.fail("Exception invoking service " + e.toString());
+			return future;
+
+		}
+	}
+
 
 	@Override
 	public DunkNetController getController() {

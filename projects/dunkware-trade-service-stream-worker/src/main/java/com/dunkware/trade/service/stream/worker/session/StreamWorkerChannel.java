@@ -195,8 +195,6 @@ public class StreamWorkerChannel implements DunkNetChannelHandler {
 		
 	}
 	
-	public 
-
 	private class StatPublisher extends TimerTask {
 
 		public void run() {

@@ -7,6 +7,8 @@ import org.slf4j.Marker;
 import com.dunkware.xstream.model.metrics.XStreamMetrics;
 import com.dunkware.xstream.model.query.XStreamEntityQueryModel;
 
+import io.vertx.core.Future;
+
 public interface XStream {
 	
 	void start(XStreamInput input) throws XStreamException;
@@ -147,7 +149,7 @@ public interface XStream {
 	 * @return
 	 * @throws XStreamQueryException
 	 */
-	public XStreamEntityQuery buildEntityQuery(XStreamEntityQueryModel model) throws XStreamQueryException;
+	public Future<XStreamEntityQuery> buildEntityQuery(XStreamEntityQueryModel model) throws XStreamQueryException;
 		
 	
 }

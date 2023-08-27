@@ -95,6 +95,21 @@ public class DunkNetController {
 		node.message(m);
 		return req;
 	}
+	
+	public DunkNetServiceRequest nodeServiceRequest(DunkNetNode node, Object payload) throws DunkNetException { 
+		if(!node.getDescriptor().getDescriptors().hasService(payload)) { 
+			throw new DunkNetException("NOde " + node.getId() + " does not have service request handler for " + payload.getClass().getName());
+		}
+		DunkNetMessage message = DunkNetMessage.builder().serviceRequest(payload).buildMessage();
+		DunkNetServiceRequest req = new DunkNetServiceRequest(node, payload);
+		pendingServiceRequests.put(message.getMessageId(), req);
+		if(logger.isDebugEnabled()) { 
+			logger.debug(marker, "Sending Noded Service Request From {} to {} with payload {}",
+					node.getNet().getId(),node.getId(),payload.getClass().getName());
+		}
+		node.message(message);
+		return req;
+	}
 
 	public DunkNetServiceRequest channelServiceRequest(DunkNetChannel channel, Object payload) throws DunkNetException {
 		if (!channel.getRemoteDescriptors().hasService(payload)) {

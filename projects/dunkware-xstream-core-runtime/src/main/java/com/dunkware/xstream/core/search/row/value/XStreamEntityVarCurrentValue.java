@@ -13,7 +13,7 @@ public class XStreamEntityVarCurrentValue implements XStreamEntityQueryValue {
 	private XStream stream;
 	
 	
-	public void init(XStreamEntityValueModel model, XStream stream) throws XStreamQueryException {
+	public void init(XStreamEntityValueModel model, XStream stream)   {
 		this.model = model;
 		this.stream  = stream;
 	}

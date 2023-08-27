@@ -5,7 +5,7 @@ import java.util.Map;
 
 public interface XStreamEntityQueryRun {
 	
-	public static final int FAILED = 0;
+	public static final int ERRORS = 0;
 	public static final int SUCCESS = 1;
 	
 	public double getTime();
@@ -20,7 +20,7 @@ public interface XStreamEntityQueryRun {
 	
 	public int getResolvedCount();
 	
-	public Map<String,String> getExceptionMap();
+	public List<String> getExceptions();
 	
 	public List<XStreamEntity> getEntities();
 	

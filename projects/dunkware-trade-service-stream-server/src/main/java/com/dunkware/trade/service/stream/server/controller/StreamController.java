@@ -18,6 +18,7 @@ import com.dunkware.common.util.dtime.DTimeZone;
 import com.dunkware.common.util.events.DEventNode;
 import com.dunkware.common.util.events.anot.ADEventMethod;
 import com.dunkware.common.util.json.DJson;
+import com.dunkware.common.util.observable.ObservableBeanListConnector;
 import com.dunkware.spring.cluster.DunkNet;
 import com.dunkware.spring.cluster.DunkNetNode;
 import com.dunkware.spring.runtime.services.EventService;
@@ -52,6 +53,8 @@ import com.dunkware.xstream.xproject.XScriptProject;
 import com.dunkware.xstream.xproject.bundle.XscriptBundleHelper;
 import com.dunkware.xstream.xproject.model.XScriptBundle;
 
+import ca.odell.glazedlists.BasicEventList;
+import ca.odell.glazedlists.GlazedLists;
 import ca.odell.glazedlists.ObservableElementList;
 
 public class StreamController {
@@ -122,6 +125,7 @@ public class StreamController {
 	
 	private Semaphore signalListenerSemaphore = new Semaphore(1);
 
+	private ObservableElementList<StreamSessionNodeBean> sessionNodeBeans = null;
 
 	public StreamController() throws Exception {
 
@@ -132,6 +136,11 @@ public class StreamController {
 	}
 
 	public void start(StreamEntity ent) throws Exception {
+		
+		sessionNodeBeans = new ObservableElementList<StreamSessionNodeBean>(
+				GlazedLists.threadSafeList(new BasicEventList<StreamSessionNodeBean>()),
+				new ObservableBeanListConnector<StreamSessionNodeBean>());
+		
 		logger.info(marker, "Starting Stream " + ent.getName());
 		eventNode = eventService.getEventRoot().createChild(this);
 		eventNode.addEventHandler(this);
@@ -176,6 +185,10 @@ public class StreamController {
 
 	public StreamBlueprint getBlueprint() {
 		return blueprint;
+	}
+	
+	public ObservableElementList<StreamSessionNodeBean> getSessionNodeBeans() {
+		return sessionNodeBeans;
 	}
 
 	public XScriptBundle getScriptBundle() {
@@ -288,6 +301,7 @@ public class StreamController {
 			}
 			input.setWorkerNodes(nodes);
 			logger.info("Stream {} Session Starting", getName());
+			sessionNodeBeans.clear();
 			session.startSession(input);
 			session.getEventNode().addEventHandler(this);
 		} catch (StreamSessionException e) {

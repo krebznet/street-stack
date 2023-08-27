@@ -14,7 +14,6 @@ import java.util.concurrent.atomic.AtomicLong;
 
 import javax.transaction.Transactional;
 
-import org.hibernate.internal.build.AllowSysOut;
 import org.slf4j.Logger;
 import org.slf4j.Marker;
 import org.slf4j.MarkerFactory;
@@ -42,7 +41,6 @@ import com.dunkware.trade.service.stream.server.controller.session.StreamSession
 import com.dunkware.trade.service.stream.server.controller.session.StreamSessionNode;
 import com.dunkware.trade.service.stream.server.controller.session.StreamSessionNodeInput;
 import com.dunkware.trade.service.stream.server.controller.session.StreamSessionService;
-import com.dunkware.trade.service.stream.server.controller.session.core.StreamSessionImpl.Human;
 import com.dunkware.trade.service.stream.server.controller.session.events.EStreamSessionNodeStartExcepton;
 import com.dunkware.trade.service.stream.server.controller.session.events.EStreamSessionNodeStarted;
 import com.dunkware.trade.service.stream.server.controller.session.events.EStreamSessionNodeStopException;
@@ -58,7 +56,6 @@ import com.dunkware.xstream.api.XStreamRuntimeException;
 import com.dunkware.xstream.model.scanner.SessionEntityScanner;
 import com.dunkware.xstream.xproject.XScriptProject;
 import com.dunkware.xstream.xproject.model.XScriptBundle;
-import com.dunkware.xstream.xproject.model.XStreamBundle;
 
 import ca.odell.glazedlists.BasicEventList;
 import ca.odell.glazedlists.GlazedLists;
@@ -113,12 +110,10 @@ public class StreamSessionImpl implements StreamSession {
 
 	// put the stream session capture in here?
 
-	private ObservableElementList<StreamSessionNodeBean> nodeBeans = null;
+	
 
 	public StreamSessionImpl() {
-		nodeBeans = new ObservableElementList<StreamSessionNodeBean>(
-				GlazedLists.threadSafeList(new BasicEventList<StreamSessionNodeBean>()),
-				new ObservableBeanListConnector<StreamSessionNodeBean>());
+		
 	}
 
 	@Override
@@ -126,10 +121,7 @@ public class StreamSessionImpl implements StreamSession {
 		return status.getState();
 	}
 
-	@Override
-	public ObservableElementList<StreamSessionNodeBean> getNodeBeans() {
-		return nodeBeans;
-	}
+
 
 	@Override
 	public void startSession(StreamSessionInput input) throws StreamSessionException {
@@ -181,7 +173,7 @@ public class StreamSessionImpl implements StreamSession {
 			StreamSessionNodeInput nodeInput = new StreamSessionNodeInput(numericId, workerId,
 					nodeTickers.get(nodeIndex), node, extensionTypes, this, input.getController());
 			StreamSessionNodeImpl sessionNode = new StreamSessionNodeImpl();
-			nodeBeans.add(sessionNode.getBean());
+			input.getController().getSessionNodeBeans().add(sessionNode.getBean());
 			ac.getAutowireCapableBeanFactory().autowireBean(sessionNode);
 			sessionNode.start(nodeInput);
 			logger.info(marker, "Started {} Session Worker {} on node {}", getStream().getName(), workerId,

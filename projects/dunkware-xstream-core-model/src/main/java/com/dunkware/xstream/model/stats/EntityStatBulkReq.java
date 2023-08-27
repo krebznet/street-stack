@@ -10,6 +10,7 @@ public class EntityStatBulkReq {
 	private int relativeDays;
 	private String target;
 	private String agg;
+	private EntityStatReqType type;
 	
 	public List<String> getEntities() {
 		return entities;
@@ -41,6 +42,14 @@ public class EntityStatBulkReq {
 	public void setAgg(String agg) {
 		this.agg = agg;
 	}
+	public EntityStatReqType getType() {
+		return type;
+	}
+	public void setType(EntityStatReqType type) {
+		this.type = type;
+	}
+	
+	
 	
 	
 }

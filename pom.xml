@@ -73,7 +73,7 @@
 		<module>projects/dunkware-xstream-script</module>
 			<module>projects/dunkware-xstream-core-model</module>
       <module>projects/dunkware-xstream-core-runtime</module>
-      <module>projects/dunkware-xstream-data-runtime</module>
+      <module>projects/dunkware-xstream-core-mock</module>
       <module>projects/dunkware-trade-service-tick-protocol</module>
       <module>projects/dunkware-trade-service-tick-client</module>
       <module>projects/dunkware-trade-service-tick-server</module>

@@ -1,4 +1,4 @@
-package com.dunkware.xstream.core;
+package com.dunkware.xstream.core.mock;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -11,7 +11,6 @@ import org.slf4j.LoggerFactory;
 import org.slf4j.Marker;
 import org.slf4j.MarkerFactory;
 
-import com.dunkware.common.util.uuid.DUUID;
 import com.dunkware.xstream.api.XStream;
 import com.dunkware.xstream.api.XStreamClock;
 import com.dunkware.xstream.api.XStreamEntity;
@@ -24,21 +23,21 @@ import com.dunkware.xstream.api.XStreamInput;
 import com.dunkware.xstream.api.XStreamListener;
 import com.dunkware.xstream.api.XStreamQueryException;
 import com.dunkware.xstream.api.XStreamRowSignal;
-import com.dunkware.xstream.api.XStreamRuntimeException;
 import com.dunkware.xstream.api.XStreamService;
 import com.dunkware.xstream.api.XStreamSignalListener;
 import com.dunkware.xstream.api.XStreamStatService;
 import com.dunkware.xstream.api.XStreamStatus;
 import com.dunkware.xstream.api.XStreamTickRouter;
+import com.dunkware.xstream.core.XStreamClockImpl;
+import com.dunkware.xstream.core.XStreamTickRouterImpl;
 import com.dunkware.xstream.model.metrics.XStreamMetrics;
 import com.dunkware.xstream.model.query.XStreamEntityQueryModel;
 import com.dunkware.xstream.util.XStreamStatsBuilder;
-import com.dunkware.xstream.xproject.model.XStreamExtensionType;
 
 import io.vertx.core.Future;
 
-public class XStreamImpl implements XStream {
-
+public class MockXStream implements XStream {
+	
 	private Logger logger = LoggerFactory.getLogger(getClass());
 
 	private volatile ConcurrentHashMap<String, XStreamEntity> rows = new ConcurrentHashMap<String, XStreamEntity>();
@@ -72,114 +71,41 @@ public class XStreamImpl implements XStream {
 	
 	private List<String> rowIdentifiers = new ArrayList<String>();
 	
+	
 
 	@Override
 	public void start(XStreamInput input) throws XStreamException {
-		if (logger.isDebugEnabled()) {
-			logger.debug("{} Starting", input.getIdentifier());
-		}
-
-		this.input = input;
-		sessionId = input.getIdentifier() + DUUID.randomUUID(5);
-		executor = new XStreamExecutorImpl(input.getExecutor());
-		clock = new XStreamClockImpl(this);
-		tickRouter = new XStreamTickRouterImpl(this);
-
-		services = input.getRegistry().createServices();
-		for (XStreamService service : services) {
-			service.init(this);
-		}
-		for (XStreamExtensionType extType : input.getExtensions()) {
-			XStreamExtension ext = input.getRegistry().createExtension(extType);
-			ext.init(this, extType);
-			extensions.add(ext);
-		}
-
-		for (XStreamService service : services) {
-			service.preStart();
-		}
-
-		for (XStreamExtension ext : extensions) {
-			ext.preStart();
-		}
-
-		for (XStreamService service : services) {
-			service.start();
-		}
-
-		for (XStreamExtension ext : extensions) {
-			ext.start();
-		}
-
-		status = XStreamStatus.Running;
+		// TODO Auto-generated method stub
+		
 	}
-	
-	
-	
-	@Override
-	public List<String> getRowIdentifiers() {
-		return rowIdentifiers;
-	}
-
-	@Override
-	public XStreamStatService getStatProvider() {
-		return input.getStatProvider();
-	}
-
-
 
 	@Override
 	public void dispose() throws XStreamException {
-		for (XStreamExtension ext : extensions) {
-			ext.preDispose();
-		}
-
-		for (XStreamService service : services) {
-			service.preDispose();
-		}
-
-		for (XStreamExtension ext : extensions) {
-			ext.dispose();
-		}
-		for (XStreamService service : services) {
-			service.dispose();
-		}
-
-		for (XStreamEntity row : rows.values()) {
-			row.dispose();
-		}
-
-		status = XStreamStatus.Disposed;
+		// TODO Auto-generated method stub
+		
 	}
-	
-	
 
 	@Override
 	public void cancel() {
-		for (XStreamExtension ext : extensions) {
-			ext.cancel();
-		}
-		for (XStreamService service : services) {
-			service.cancel();
-		}
-		
-		for (XStreamEntity row : rows.values()) {
-			row.dispose();
-		}
-		status = XStreamStatus.Cancelled;
-		
-		
+		// TODO Auto-generated method stub
 		
 	}
 
-
+	@Override
+	public XStreamStatus getStatus() {
+		return status;
+	}
 
 	@Override
 	public XStreamEntity getRow(String id) {
-		if (!rows.containsKey(id)) {
-			throw new XStreamRuntimeException("Row " + id + " does not exist");
-		}
-		return rows.get(id);
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public List<String> getRowIdentifiers() {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 	@Override
@@ -192,53 +118,36 @@ public class XStreamImpl implements XStream {
 	}
 
 	@Override
-	public XStreamEntity createRow(String rowId, int rowIdentifier) {
-		if (logger.isDebugEnabled()) {
-			logger.debug(MarkerFactory.getMarker("EntityCreated"), "{} {} {}", rowId, rowIdentifier,
-					input.getSessionId());
-		}
-		XStreamRowImpl row = new XStreamRowImpl();
-		row.start(rowId, rowIdentifier, this);
-		row.addRowListener(rowListener);
-		rows.put(rowId, row);
-		try {
-			streamListenerLock.acquire();
-			for (XStreamListener listener : streamListeners) {
-				try {
-					listener.rowInsert(row);
-				} catch (Exception e) {
-					throw new XStreamRuntimeException(
-							"Stream Listnener exception " + e.toString() + " " + listener.getClass().getName());
-				}
-			}
-		} catch (Exception e) {
+	public XStreamStatService getStatProvider() {
+		// TODO Auto-generated method stub
+		return null;
+	}
 
-		} finally {
-			streamListenerLock.release();
-		}
-		rowIdentifiers.add(rowId);
-		return row;
+	
+
+	@Override
+	public XStreamEntity createRow(String rowId, int rowIdentifier) {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 	@Override
 	public XStreamExecutor getExecutor() {
-		return executor;
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 	@Override
-	public boolean hasRow(String key) {
-		return rows.containsKey(key);
-	}
-
-	@Override
-	public XStreamStatus getStatus() {
-		return status;
+	public boolean hasRow(String id) {
+		return rows.containsKey(id);
 	}
 
 	@Override
 	public XStreamTickRouter getTickRouter() {
-		return tickRouter;
+		// TODO Auto-generated method stub
+		return null;
 	}
+
 
 	@Override
 	public XStreamClock getClock() {
@@ -359,11 +268,6 @@ public class XStreamImpl implements XStream {
 	}
 
 	@Override
-	public String getSessionId() {
-		return sessionId;
-	}
-
-	@Override
 	public void addRowListener(XStreamEntityListener listener) {
 		Runnable runner = new Runnable() {
 
@@ -403,15 +307,12 @@ public class XStreamImpl implements XStream {
 		getExecutor().execute(runner);
 	}
 	
-	
+
 	@Override
 	public Future<XStreamEntityQuery> buildEntityQuery(XStreamEntityQueryModel model) throws XStreamQueryException {
+		// TODO Auto-generated method stub
 		return null;
-		// hook this up to the worker query builder
 	}
-
-
-
 
 	/**
 	 * RowListener for routing stream row events to RowListeners registered on the
@@ -447,4 +348,11 @@ public class XStreamImpl implements XStream {
 
 	}
 
+	@Override
+	public String getSessionId() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	
 }

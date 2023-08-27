@@ -3,23 +3,18 @@ package com.dunkware.trade.service.stream.worker.session;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.dunkware.spring.cluster.DunkNetServiceResponse;
 import com.dunkware.xstream.api.XStreamEntityQuery;
 import com.dunkware.xstream.core.search.row.criteria.XStreamEntityPredicate;
 import com.dunkware.xstream.core.search.row.value.XStreamEntityQueryValue;
-import com.dunkware.xstream.core.search.row.value.XStreamEntityVarAggHistValue;
 import com.dunkware.xstream.core.search.row.value.XStreamEntityVarCurrentValue;
 import com.dunkware.xstream.model.query.XStreamCriteriaModel;
 import com.dunkware.xstream.model.query.XStreamEntityCriteriaType;
 import com.dunkware.xstream.model.query.XStreamEntityQueryModel;
 import com.dunkware.xstream.model.query.XStreamEntityValueModel;
 import com.dunkware.xstream.model.query.XStreamEntityValueType;
-import com.dunkware.xstream.model.query.XStreamRowValueModel;
-import com.dunkware.xstream.model.query.XStreamValueType;
 import com.dunkware.xstream.model.stats.EntityStatBulkReq;
 import com.dunkware.xstream.model.stats.EntityStatBulkResp;
 
-import io.vertx.core.AsyncResult;
 import io.vertx.core.CompositeFuture;
 import io.vertx.core.Future;
 import io.vertx.core.Handler;
@@ -34,7 +29,8 @@ public class AsyncQueryBuilder {
 	}
 	
 	public Future<XStreamEntityQuery> buildQuery(XStreamEntityQueryModel model ) {
-			List<XStreamEntityPredicate> predicates = new ArrayList<XStreamEntityPredicate>()
+		
+			List<XStreamEntityPredicate> predicates = new ArrayList<XStreamEntityPredicate>();
 			Promise<XStreamEntityQuery> queryPromise = Promise.promise();
 			List<Future<XStreamEntityPredicate>> predicateFutures = new ArrayList<Future<XStreamEntityPredicate>>();
 			for (XStreamCriteriaModel criteria: model.getCriterias()) {
@@ -91,46 +87,55 @@ public class AsyncQueryBuilder {
 			}
 		});
 		
+		return promise.future();
+		
 	}
 	
 	private Future<XStreamEntityQueryValue> buildEntityValue(XStreamEntityValueModel model) {
-		Promise<XStreamEntityQueryValue> promise = Promise.promise();
 		if(model.getType() == XStreamEntityValueType.SignalHistoricalCount) { 
+			return buildSignalHistCountValue(model);
 			
 		}
 		if(model.getType() == XStreamEntityValueType.SignalSessionCount) { 
-			
+			return buildSignalCountValue(model);
 		}
 		if(model.getType() == XStreamEntityValueType.VarCurrentValue) { 
-			
+			return buildVarCurrentValue(model);
 		}
 		
 		if(model.getType() == XStreamEntityValueType.VarHistoricalAgg) {
-			
+			return buildVarAggHistValue(model);
 		}
 		
 		if(model.getType() == XStreamEntityValueType.VarSessionAgg) { 
-			
+			return buildVarAggValue(model);
 		}
+		
+		Promise<XStreamEntityQueryValue> promise = Promise.promise();
+		Future<XStreamEntityQueryValue> future = promise.future();
+		promise.fail("XStreamEntityValue Type " + model.getType().name() + " not handled in query builder");
+		return future;
 		
 		
 	}
 	
-	private Future<XStreamEntityQueryValue> buildVarAggHistValue(XStreamEntityValueModel model, XStreamEntityVarAggHistValue value, XStreamEntityVarAggHistValue agg) {
+	private Future<XStreamEntityQueryValue> buildVarAggHistValue(XStreamEntityValueModel model) {
 		Promise<XStreamEntityQueryValue> promise = Promise.promise();
 			EntityStatBulkReq req = new EntityStatBulkReq();
 			req.setAgg(model.getHistoricalAgg().name());
 			req.setEntities(context.getStream().getRowIdentifiers());
 			req.setTarget(model.getVarIdent());
 			req.setRelativeDays(model.getHistoricalTimeRange().getRealtiveTimeRange());
-			Future<DunkNetServiceResponse> statReq = entityStatBulkRequest(req);
-			statReq.onSuccess(new Handler<DunkNetServiceResponse>() {
-				
+			Future<Object> statReq = netService(req);
+			statReq.onSuccess(new Handler<Object>() {
+
 				@Override
-				public void handle(DunkNetServiceResponse event) {
+				public void handle(Object event) {
 					// TODO Auto-generated method stub
 					
 				}
+
+			
 			});
 			statReq.onFailure(new Handler<Throwable>() {
 				
@@ -148,7 +153,7 @@ public class AsyncQueryBuilder {
 		Promise<XStreamEntityQueryValue> promise = Promise.promise();
 		Future<XStreamEntityQueryValue> future = promise.future();
 		model.getVarIdent(); 
-		if(!context.getStream().getInput().getScript().varExists(model.getVarIdent()) { 
+		if(!(context.getStream().getInput().getScript().varExists(model.getVarIdent()))) { 
 			promise.fail("Value Type Current Var Value invalid Var reference, not found " + model.getVarIdent());
 			return future;
 		}
@@ -160,33 +165,33 @@ public class AsyncQueryBuilder {
 	
 	private Future<XStreamEntityQueryValue> buildVarAggValue(XStreamEntityValueModel model) { 
 		Promise<XStreamEntityQueryValue> promise = Promise.promise();
-		Future<XStreamEntityQueryValue> fuure = promise.future();
+		Future<XStreamEntityQueryValue> future = promise.future();
+		return future;
 		
-		model.get
 		
-		
-	}
-	
-	Future<DunkNetServiceResponse> entityStatBulkRequest(EntityStatBulkReq req) {
-		Promise<EntityStatBulkResp> promise = Promise.promise();
-		dunknetsydunkNet.serviceFuure(EntityStatBulkResp.class);
-		dunkNet.serviceFuure(req).onComplete(new Handler<AsyncResult<DunkNetServiceResponse>>() {
-			
-			@Override
-			public void handle(AsyncResult<DunkNetServiceResponse> event) {
-				if(event.failed()) { 
-					promise.fail("DUnkNet Failed On get servie");
-					return;
-				}
-				if(event.succeeded()) { 
-					//EntityStatBulkResp resp = event.res
-				}
-			}
-		});
-		
-		return promise.future();
 		
 	}
 	
-	private Future<XStreamEntityQueryValue>
+	private Future<XStreamEntityQueryValue> buildSignalCountValue(XStreamEntityValueModel model) { 
+		Promise<XStreamEntityQueryValue> promise = Promise.promise();
+		Future<XStreamEntityQueryValue> future = promise.future();
+		promise.fail("Signal Counts Not Implemented Yet");
+		return future;
+	}
+
+	
+	private Future<XStreamEntityQueryValue> buildSignalHistCountValue(XStreamEntityValueModel model) { 
+		Promise<XStreamEntityQueryValue> promise = Promise.promise();
+		Future<XStreamEntityQueryValue> future = promise.future();
+		promise.fail("Signal Counts Not Implemented Yet");
+		return future;
+	}
+	
+
+	Future<Object> netService(Object req) {
+		return context.getDunkNet().serviceFuure(EntityStatBulkResp.class);
+		
+	}
+	
+	
 }

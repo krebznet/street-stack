@@ -1,5 +1,6 @@
 package com.dunkware.xstream.core.search.row;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
@@ -14,13 +15,14 @@ public class XStreamEntityQueryRunImpl implements XStreamEntityQueryRun {
 	private int exceptionCount = 0;
 	private int unresolvedCount = 0;
 	private int resolvedCount = 0;
-	private int returnCode;
-	private Map<String,String> exceptionMap = new ConcurrentHashMap<String,String>();
+	private int returnCode = XStreamEntityQueryRun.SUCCESS;
+	private List<XStreamEntity> entities = null;
+	private List<String> exceptions = new ArrayList<String>();
 	
-	
-	public void addException(String rowIDent, String exception) { 
+	public void addException(String exception) { 
 		this.exceptionCount++;
-		this.exceptionMap.put(rowIDent, exception);
+		this.exceptions.add(exception);
+		returnCode = XStreamEntityQueryRun.ERRORS;
 	}
 	
 	public void incrementResolvedCount() { 
@@ -29,20 +31,17 @@ public class XStreamEntityQueryRunImpl implements XStreamEntityQueryRun {
 	
 	@Override
 	public int getResolvedCount() {
-		// TODO Auto-generated method stub
-		return 0;
+		return resolvedCount;
 	}
 	
 	@Override
 	public int getReturnCode() {
-		// TODO Auto-generated method stub
-		return 0;
+		return returnCode;
 	}
 
 	@Override
 	public List<XStreamEntity> getEntities() {
-		// TODO Auto-generated method stub
-		return null;
+		return entities;
 	}
 
 	public void incremenetUnresolvedCount() { 
@@ -77,10 +76,14 @@ public class XStreamEntityQueryRunImpl implements XStreamEntityQueryRun {
 	}
 
 	@Override
-	public Map<String, String> getExceptionMap() {
-		return exceptionMap;
+	public List<String> getExceptions() {
+		return exceptions;
 	}
+	
+	
 
+
+	
 	
 	
 	

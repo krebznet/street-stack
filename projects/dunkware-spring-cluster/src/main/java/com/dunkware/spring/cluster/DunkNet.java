@@ -10,6 +10,8 @@ import com.dunkware.spring.cluster.core.request.DunkNetChannelRequest;
 import com.dunkware.spring.cluster.core.request.DunkNetServiceRequest;
 import com.dunkware.spring.cluster.protocol.descriptors.DunkNetNodeDescriptor;
 
+import io.vertx.core.Future;
+
 public interface DunkNet {
 	
 	public DEventNode getEventNode();
@@ -22,7 +24,7 @@ public interface DunkNet {
 	
 	public Object serviceBlocking(Object payload) throws DunkNetException;
 	
-	public DunkNetServiceResponse serviceFuure(Object payload) throws DunkNetException;
+	public Future<Object> serviceFuure(Object payload);
 	
 	public DunkNetServiceRequest service(Object payload) throws DunkNetException;
 	

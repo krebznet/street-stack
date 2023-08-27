@@ -30,7 +30,7 @@ public class XStreamEntityScannerImpl { // a channel
 			GlazedLists.threadSafeList(new BasicEventList<ObservableNetBean>()),
 					new ObservableBeanListConnector<ObservableNetBean>());
 		try {
-			entityQuery = stream.entityQuery(model.getQueryModel());
+		//stream.entityQuery(model.getQueryModel());
 		} catch (Exception e) {
 			throw new XStreamEntityScannerException();
 		}
