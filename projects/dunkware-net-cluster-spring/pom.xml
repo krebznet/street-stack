@@ -38,7 +38,11 @@
 	<dependencies>
 		<!-- Dunkware Dependencies -->
 
-
+		<dependency>
+			<groupId>io.vertx</groupId>
+			<artifactId>vertx-core</artifactId>
+			<version>4.4.4</version>
+		</dependency>
 
 
 		<dependency>
@@ -61,13 +65,13 @@
 			<version>${logback.classic-version}</version>
 			<scope>test</scope>
 		</dependency>
-		
-			<dependency>
+
+		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot</artifactId>
 			<version>2.4.0</version>
 		</dependency>
-		
+
 		<dependency>
 			<groupId>ch.qos.logback</groupId>
 			<artifactId>logback-classic</artifactId>
@@ -89,15 +93,15 @@
 			<artifactId>javax.annotation-api</artifactId>
 			<version>1.2</version>
 		</dependency>
-		
-		
+
+
 
 
 
 	</dependencies>
 
 	<build>
-		<pluginManagement><!-- lock down plugins versions to avoid using Maven
+		<pluginManagement><!-- lock down plugins versions to avoid using Maven 
 				defaults (may be moved to parent pom) -->
 			<plugins>
 				<plugin>

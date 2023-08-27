@@ -36,10 +36,10 @@ import com.dunkware.trade.service.stream.json.controller.UpdateStreamResp;
 import com.dunkware.trade.service.stream.json.controller.session.StreamDashEntity;
 import com.dunkware.trade.service.stream.json.controller.session.StreamDashNode;
 import com.dunkware.trade.service.stream.json.controller.session.StreamDashStats;
-import com.dunkware.trade.service.stream.json.controller.session.StreamSessionStatus;
+import com.dunkware.trade.service.stream.json.controller.session.StreamSessionStats;
 import com.dunkware.trade.service.stream.json.controller.spec.StreamControllerSpec;
-import com.dunkware.trade.service.stream.json.controller.spec.StreamControllerState;
-import com.dunkware.trade.service.stream.json.controller.spec.StreamControllerStreamStats;
+import com.dunkware.trade.service.stream.json.controller.spec.StreamState;
+import com.dunkware.trade.service.stream.json.controller.spec.StreamControllerStats;
 import com.dunkware.trade.service.stream.json.worker.stream.StreamSessionWorkerStats;
 import com.dunkware.trade.service.stream.resources.SignalResource;
 import com.dunkware.trade.service.stream.resources.StreamResource;
@@ -126,6 +126,24 @@ public class StreamControllerWebService {
 		
 	}
 	
+	@GetMapping(path = "/stream/core/kill") 
+	public @ResponseBody()String streamKill(@RequestParam(name = "stream")String stream) {
+		StartStreamResp resp = new StartStreamResp();
+		StreamController controller = null;
+		try {
+			controller = service.getStreamByName(stream);
+		} catch (Exception e) {
+			return e.toString();
+		}
+		try {
+			return controller.killSession();
+		} catch (Exception e) {
+			return e.toString();
+		}
+		
+	}
+	
+	
 	@GetMapping(path = "/stream/core/stop") 
 	public @ResponseBody()StopStreamResp stopStream(@RequestParam(name = "stream")String stream) {
 		StopStreamResp resp = new StopStreamResp();
@@ -138,13 +156,7 @@ public class StreamControllerWebService {
 			return resp;
 		}
 		try {
-			if(controller.getStats().getState() == StreamControllerState.Running) { 
-				controller.stopSession();
-				resp.setCode("SUCCSS");
-				return resp;
-			}
-			resp.setCode("ERROR");
-			resp.setError("Stream is Not In Session");
+			controller.stopSession();
 			return resp;
 		} catch (Exception e) {
 			resp.setError("Internal " + e.toString());
@@ -245,11 +257,11 @@ public class StreamControllerWebService {
 	@GetMapping(path = "/stream/dash/stats")
 	public @ResponseBody StreamDashStats streamFuckMe(@RequestParam String ident) throws Exception { 
 		StreamController controller = service.getStreamByName("us_equity");
-		StreamControllerStreamStats stats = controller.getStats();
+		StreamControllerStats stats = controller.getStats();
 		StreamDashStats resp = new StreamDashStats();
 		resp.setStatus(stats.getState().name());
 		
-		StreamSessionStatus session = stats.getSession();
+		StreamSessionStats session = stats.getSession();
 		if(session != null) { 
 			resp.setEntityCount(session.getTickerCount());
 			resp.setNodes(session.getNodeCount());
@@ -271,28 +283,8 @@ public class StreamControllerWebService {
 
 	@GetMapping(path = "/stream/dash/nodes")
 	public @ResponseBody List<StreamDashNode> streamDashNodes(@RequestParam String ident) throws Exception  { 
-		StreamController controller = service.getStreamByName("us_equity");
-		StreamControllerStreamStats stats = controller.getStats();
-		StreamDashStats resp = new StreamDashStats();
-		resp.setStatus(stats.getState().name());
-		List<StreamDashNode> results = new ArrayList<StreamDashNode>();
-		StreamSessionStatus session = stats.getSession();
-		if(session != null) { 
-			for (StreamSessionWorkerStats worker : session.getNodes()) {
-				StreamDashNode node = new StreamDashNode();
-				node.setNode(worker.getNodeId());
-				node.setEntityCount(worker.getRowCount());
-				node.setStreamTime(worker.getStreamTime().toHHmmSS());
-				node.setSystemTime(worker.getSystemTime().toHHmmSS());
-				node.setTasksPending(worker.getPendingTaskCount());
-				node.setTasksCompleted(worker.getCompletedTaskCount());
-				node.setTasksExpired(worker.getTimeoutTaskCount());
-				node.setTickCount(worker.getTickCount());
-				results.add(node);
-			}
-		}
 		
-		return results;
+		return null;
 	}
 	
 	

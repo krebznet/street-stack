@@ -13,12 +13,12 @@ import com.dunkware.xstream.api.XStreamEntityQuery;
 public class StreamWorkerEntityScanner implements DunkNetChannelHandler  {
 	
 	private DunkNetChannel channel;
-	private StreamSessionWorkerChannel workerNode; 
+	private StreamWorkerChannel workerNode; 
 	private StreamEntityScannerReq req; 
 	private XStreamEntityQuery query; 
 	
 	
-	public void init(StreamSessionWorkerChannel workerNode, StreamEntityScannerReq req) throws Exception { 
+	public void init(StreamWorkerChannel workerNode, StreamEntityScannerReq req) throws Exception { 
 		this.workerNode = workerNode;
 		this.req = req;
 		query = workerNode.getStream().entityQuery(req.getQuery());

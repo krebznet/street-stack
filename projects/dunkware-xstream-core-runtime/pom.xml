@@ -25,11 +25,18 @@
 
 	<properties>
 		<java.version>11</java.version>
-	
+
 	</properties>
 
 
 	<dependencies>
+
+		<!-- https://mvnrepository.com/artifact/io.vertx/vertx-core -->
+		<dependency>
+			<groupId>io.vertx</groupId>
+			<artifactId>vertx-core</artifactId>
+			<version>4.4.4</version>
+		</dependency>
 
 		<!-- Dunkware Dependencies -->
 		<dependency>
@@ -88,7 +95,7 @@
 				<plugin>
 					<artifactId>maven-clean-plugin</artifactId>
 					<version>3.1.0</version>
-				</plugin>	
+				</plugin>
 				<plugin>
 					<artifactId>maven-site-plugin</artifactId>
 					<version>3.7.1</version>

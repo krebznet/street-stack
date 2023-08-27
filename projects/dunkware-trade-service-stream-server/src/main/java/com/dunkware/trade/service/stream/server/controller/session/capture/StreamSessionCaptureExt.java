@@ -27,7 +27,7 @@ import com.dunkware.trade.service.stream.server.repository.StreamSessionEntRepo;
 import com.dunkware.trade.service.stream.server.repository.StreamSessionRepo;
 import com.dunkware.trade.service.stream.server.spring.ConfigService;
 
-@AStreamSessionExt
+//@AStreamSessionExt
 public class StreamSessionCaptureExt implements StreamSessionExtension {
 
 	@Autowired

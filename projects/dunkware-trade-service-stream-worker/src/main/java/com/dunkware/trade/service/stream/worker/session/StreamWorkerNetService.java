@@ -15,8 +15,8 @@ public class StreamWorkerNetService  {
 	
 	
 	@ADunkNetChannel(label = "Create Stream Session Worker Channel")
-	public StreamSessionWorkerChannel workerChannel(StreamSessionWorkerCreateReq req) throws Exception { 
-		StreamSessionWorkerChannel node = new StreamSessionWorkerChannel();
+	public StreamWorkerChannel workerChannel(StreamSessionWorkerCreateReq req) throws Exception { 
+		StreamWorkerChannel node = new StreamWorkerChannel();
 		ac.getAutowireCapableBeanFactory().autowireBean(node);
 		node.init();
 		return node;

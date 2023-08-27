@@ -23,7 +23,8 @@ import com.dunkware.spring.cluster.anot.ADunkNetEvent;
 import com.dunkware.spring.cluster.core.request.DunkNetChannelRequest;
 import com.dunkware.spring.cluster.core.request.DunkNetServiceRequest;
 import com.dunkware.spring.cluster.core.request.DunkNetServiceRequestListener;
-import com.dunkware.trade.service.stream.json.controller.session.StreamSessionNodeState;
+import com.dunkware.trade.service.stream.json.controller.session.StreamSessionNodeBean;
+import com.dunkware.trade.service.stream.json.controller.spec.StreamState;
 import com.dunkware.trade.service.stream.json.worker.stream.StreamSessionWorkerCancelReq;
 import com.dunkware.trade.service.stream.json.worker.stream.StreamSessionWorkerCreateReq;
 import com.dunkware.trade.service.stream.json.worker.stream.StreamSessionWorkerStartReq;
@@ -35,6 +36,7 @@ import com.dunkware.trade.service.stream.server.controller.session.StreamSession
 import com.dunkware.trade.service.stream.server.controller.session.StreamSessionExtension;
 import com.dunkware.trade.service.stream.server.controller.session.StreamSessionNode;
 import com.dunkware.trade.service.stream.server.controller.session.StreamSessionNodeInput;
+import com.dunkware.trade.service.stream.server.controller.session.events.EStreamSessionNodeKilled;
 import com.dunkware.trade.service.stream.server.controller.session.events.EStreamSessionNodeStartExcepton;
 import com.dunkware.trade.service.stream.server.controller.session.events.EStreamSessionNodeStarted;
 import com.dunkware.trade.service.stream.server.controller.session.events.EStreamSessionNodeStopException;
@@ -54,7 +56,7 @@ public class StreamSessionNodeImpl implements StreamSessionNode, DunkNetChannelH
 
 	private ConcurrentHashMap<String, String> tickerMap = new ConcurrentHashMap<String, String>();
 
-	private StreamSessionNodeState state = StreamSessionNodeState.Starting;
+	private StreamState state = StreamState.Starting;
 
 	private String startException = null;
 
@@ -72,8 +74,6 @@ public class StreamSessionNodeImpl implements StreamSessionNode, DunkNetChannelH
 
 	private DEventNode eventNode;
 
-	private StreamSessionWorkerStats workerStats = new StreamSessionWorkerStats();
-
 	private AtomicBoolean stopped = new AtomicBoolean(false);
 
 	private List<String> errors = new ArrayList<String>();
@@ -86,6 +86,10 @@ public class StreamSessionNodeImpl implements StreamSessionNode, DunkNetChannelH
 
 	private StreamSessionWorkerStartReq startReq;
 	
+	private StreamSessionNodeBean bean = new StreamSessionNodeBean();
+	
+	private StreamSessionWorkerStats workerStats = null;
+	
 	private boolean startingInitiazed = false; 
 	private boolean stoppingInitiazed = false; 
 
@@ -94,6 +98,11 @@ public class StreamSessionNodeImpl implements StreamSessionNode, DunkNetChannelH
 
 		this.input = input;
 		this.dunkNode = input.getNode();
+		bean.setWorkerId(input.getWorkerId());
+		bean.setNodeId(input.getNode().getId());
+		bean.setStatus(state.name());
+		bean.setSignalCount(0);
+		
 		eventNode = input.getSession().getEventNode().createChild(this);
 
 		for (TradeTickerSpec tickerSpec : input.getTickers()) {
@@ -111,7 +120,7 @@ public class StreamSessionNodeImpl implements StreamSessionNode, DunkNetChannelH
 					streamBundle = createBundle();
 				} catch (Exception e) {
 					startException = e.toString();
-					state = StreamSessionNodeState.StartException;
+					setState(StreamState.StartException);
 					eventNode.event(new EStreamSessionNodeStartExcepton(StreamSessionNodeImpl.this, startException));
 					startingTimer.stop();
 					starting = false; 
@@ -127,8 +136,7 @@ public class StreamSessionNodeImpl implements StreamSessionNode, DunkNetChannelH
 				startReq.setSessionId(input.getSession().getSessionId());
 				startReq.setStreamBundle(streamBundle);
 				startReq.setNodeId(input.getNode().getId());
-				workerStats = new StreamSessionWorkerStats();
-				workerStats.setNodeId(workerId);
+				
 
 				try {
 					StreamSessionWorkerCreateReq req = new StreamSessionWorkerCreateReq();
@@ -138,7 +146,7 @@ public class StreamSessionNodeImpl implements StreamSessionNode, DunkNetChannelH
 					channel.setHandler(StreamSessionNodeImpl.this);
 				} catch (Exception e) {
 					logger.error(marker, "Exception creating session node chanel " + e.toString());
-					state = StreamSessionNodeState.StartException;
+					setState(StreamState.StartException);
 					startException = "Exception creating node channel " + e.toString();
 					eventNode.event(new EStreamSessionNodeStartExcepton(StreamSessionNodeImpl.this,
 							"Exception creating channel " + e.toString()));
@@ -169,7 +177,7 @@ public class StreamSessionNodeImpl implements StreamSessionNode, DunkNetChannelH
 
 	@Override
 	public boolean isRunning() {
-		if(state == StreamSessionNodeState.Running) {
+		if(state == StreamState.Running) {
 			return true;
 		}
 		return false;
@@ -207,11 +215,7 @@ public class StreamSessionNodeImpl implements StreamSessionNode, DunkNetChannelH
 		return startingTimer.getCompletedSeconds();
 	}
 
-	@Override
-	public StreamSessionWorkerStats getWorkerStats() {
-		return workerStats;
-	}
-
+	
 	@Override
 	public DunkNetChannel getChannel() {
 		return channel;
@@ -224,11 +228,20 @@ public class StreamSessionNodeImpl implements StreamSessionNode, DunkNetChannelH
 
 	@ADunkNetEvent
 	public void workerStats(StreamSessionWorkerStats stats) {
+		bean.setEntityCount(stats.getRowCount());
+		bean.setSignalCount(stats.getSignalCount());
+		bean.setStreamTime(stats.getStreamTime().toHHmmSS());
+		bean.setSystemTime(stats.getSystemTime().toHHmmSS());
+		bean.setIssueCount(errors.size());
+		bean.setTasksCompleted(stats.getCompletedTaskCount());
+		bean.setTasksPending(stats.getPendingTaskCount());
+		bean.setTasksExpired(stats.getTimeoutTaskCount());
+		bean.notifyUpdate();
 		this.workerStats = stats;
 	}
 
 	@Override
-	public StreamSessionNodeState getState() {
+	public StreamState getState() {
 		return state;
 	}
 
@@ -261,6 +274,14 @@ public class StreamSessionNodeImpl implements StreamSessionNode, DunkNetChannelH
 	public List<String> getErrors() {
 		return errors;
 	}
+	
+
+	@Override
+	public StreamSessionNodeBean getBean() {
+		return bean;
+	}
+	
+	
 
 	@Override
 	public void stop() {
@@ -272,19 +293,19 @@ public class StreamSessionNodeImpl implements StreamSessionNode, DunkNetChannelH
 			stoppingTimer = DStopWatch.create();
 			stoppingTimer.start();
 			stoppingInitiazed = true;
-			if(state == StreamSessionNodeState.Running == false) { 
+			if(state == StreamState.Running == false) { 
 				stopping = false;
 				stoppingTimer.stop();
 				eventNode.event(new EStreamSessionNodeStopped(this));
 			}
-			if(state == StreamSessionNodeState.Running) { 
+			if(state == StreamState.Running) { 
 				StreamSessionWorkerStopReq req = new StreamSessionWorkerStopReq();
 				req.setWorkerId(input.getWorkerId());
 				DunkNetServiceRequest sReq = null;
 				try {
 					sReq = channel.service(req);
 				} catch (Exception e) {
-					state = StreamSessionNodeState.StopException;
+					setState(StreamState.StopException);
 					stopException = "Stop Request Service Failed " + e.toString();
 					stopping = false; 
 					stoppingTimer.stop();
@@ -298,7 +319,7 @@ public class StreamSessionNodeImpl implements StreamSessionNode, DunkNetChannelH
 					
 					@Override
 					public void onServiceReqTimeout(DunkNetServiceRequest req) {
-						state = StreamSessionNodeState.StopException;
+						setState(StreamState.StopException);
 						stopException = "Stop Request Timeout";
 						stopping = false; 
 						stoppingTimer.stop();
@@ -311,7 +332,7 @@ public class StreamSessionNodeImpl implements StreamSessionNode, DunkNetChannelH
 					
 					@Override
 					public void onServiceReqError(DunkNetServiceRequest req) {
-						state = StreamSessionNodeState.StopException;
+						setState(StreamState.StopException);
 						stopException = "Stop Service Error Response + " + req.getError();
 						stopping = false; 
 						stoppingTimer.stop();
@@ -323,7 +344,7 @@ public class StreamSessionNodeImpl implements StreamSessionNode, DunkNetChannelH
 					
 					@Override
 					public void onServiceReqDone(DunkNetServiceRequest req) {
-						state = StreamSessionNodeState.Stopped;
+						setState(StreamState.Stopped);
 						stopping = false; 
 						stoppingTimer.stop();
 						logger.info(marker, "Stream {} Worker {} Stopped On Node {} Duration {}",input.getStream().getName(),
@@ -384,7 +405,7 @@ public class StreamSessionNodeImpl implements StreamSessionNode, DunkNetChannelH
 			
 			@Override
 			public void onServiceReqTimeout(DunkNetServiceRequest req) {
-				state = StreamSessionNodeState.StartException;
+				setState(StreamState.StartException);
 				startException = "Start Request Timeout";
 				starting = false; 
 				startingTimer.stop();
@@ -397,7 +418,7 @@ public class StreamSessionNodeImpl implements StreamSessionNode, DunkNetChannelH
 				startException = "start service response error " + req.getError();
 				starting = false; 
 				startingTimer.stop();
-				state = StreamSessionNodeState.StartException;
+				setState(StreamState.StartException);
 				eventNode.event(new EStreamSessionNodeStartExcepton(StreamSessionNodeImpl.this, startException));
 				return;
 			}
@@ -410,17 +431,17 @@ public class StreamSessionNodeImpl implements StreamSessionNode, DunkNetChannelH
 					starting = false;
 					if(resp.getCode().equals("ERROR")) { 
 						startException = resp.getError();
-						state = StreamSessionNodeState.StartException;
+						setState(StreamState.StartException);
 						startException = "Start Request service returned error " + resp.getError();
 						eventNode.event(new EStreamSessionNodeStartExcepton(StreamSessionNodeImpl.this, startException));
 						return;
 					}
-					state = StreamSessionNodeState.Running;
+					setState(StreamState.Running);
 					eventNode.event(new EStreamSessionNodeStarted(StreamSessionNodeImpl.this));
 				} catch (Exception e) {
 					startingTimer.stop();
 					starting = false; 
-					state = StreamSessionNodeState.StartException;
+					setState(StreamState.StartException);
 					startException = "get responsnse on net service " + e.toString();
 					eventNode.event(new EStreamSessionNodeStartExcepton(StreamSessionNodeImpl.this, "Internal shit could not get service req resp " + e.toString()));
 				}
@@ -439,6 +460,7 @@ public class StreamSessionNodeImpl implements StreamSessionNode, DunkNetChannelH
 
 	@Override
 	public void cancel() {
+		setState(StreamState.RunKill);
 		try {
 			if(channel.isOpen() == false) { 
 				return;
@@ -449,7 +471,7 @@ public class StreamSessionNodeImpl implements StreamSessionNode, DunkNetChannelH
 			StreamSessionWorkerCancelReq req = new StreamSessionWorkerCancelReq();
 			req.setWorkerId(getWorkerId());
 			channel.serviceBlocking(req);
-			state = StreamSessionNodeState.Cancelled;
+			eventNode.event(new EStreamSessionNodeKilled(this));
 			channel.closeChannel();
 		} catch (Exception e) {
 			logger.error(marker, "Exception cancelling session node " + e.toString());
@@ -460,7 +482,7 @@ public class StreamSessionNodeImpl implements StreamSessionNode, DunkNetChannelH
 	public void channelStartError(String exception) {
 		logger.error(marker, "Stream Node {} channel start exception {}", input.getNode().getId(), exception);
 		startException = exception;
-		state = StreamSessionNodeState.StartException;
+		setState(StreamState.StartException);
 		starting = false;
 		startingTimer.stop();
 		eventNode.event(new EStreamSessionNodeStartExcepton(this, "channel stat error " + exception));
@@ -504,6 +526,12 @@ public class StreamSessionNodeImpl implements StreamSessionNode, DunkNetChannelH
 		}
 
 		return xstreamBundle;
+	}
+	
+	private void setState(StreamState state) { 
+		this.state = state;
+		bean.setStatus(state.name());
+		bean.notifyUpdate();
 	}
 
 }

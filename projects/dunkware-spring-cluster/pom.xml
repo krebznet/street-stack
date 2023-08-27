@@ -25,6 +25,12 @@
 
 	<dependencies>
 
+<dependency>
+			<groupId>io.vertx</groupId>
+			<artifactId>vertx-core</artifactId>
+			<version>4.4.4</version>
+		</dependency>
+
 
 
 		<dependency>

@@ -9,7 +9,8 @@ import java.util.concurrent.TimeUnit;
 
 import com.dunkware.spring.cluster.DunkNetException;
 import com.dunkware.spring.cluster.DunkNetNode;
-import com.dunkware.spring.cluster.message.DunkNetMessage;
+
+import io.vertx.core.Future;
 
 public class DunkNetServiceRequest {
 
@@ -29,7 +30,8 @@ public class DunkNetServiceRequest {
 	private static final Object UNCANCELLABLE = new Object();
 	private List<DunkNetServiceRequestListener> listeners = new ArrayList<DunkNetServiceRequestListener>();
 	private BlockingQueue<String> wait = new LinkedBlockingQueue<String>();
-
+	private Future<Object> future;
+	
 	private volatile Object result;
 	
 	public void addListener(DunkNetServiceRequestListener listener) { 
@@ -45,6 +47,8 @@ public class DunkNetServiceRequest {
 		//}
 
 	}
+	
+	
 
 	public boolean isSuccess() {
 		if (completed && success) {

@@ -8,7 +8,7 @@ import com.dunkware.trade.service.stream.server.controller.session.StreamSession
 import com.dunkware.trade.service.stream.server.controller.session.anot.AStreamSessionExt;
 import com.dunkware.xstream.core.extensions.StreamEventPublisherExtType;
 
-@AStreamSessionExt
+//@AStreamSessionExt
 public class StreamEventPublisher implements StreamSessionExtension {
 
 	private StreamSession session;

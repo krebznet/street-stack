@@ -111,6 +111,9 @@
 			<module>projects/dunkware-xstream-net-server</module>
 			<module>projects/dunkware-spring-cluster</module>
 			<module>projects/dunkware-spring-runtime</module>
+			<module>projects/dunkware-spring-test-model</module>
+			<module>projects/dunkware-spring-test-server</module>
+			<module>projects/dunkware-spring-test-client</module>
 			<module>/projects/dunkware-trade-service-streamstats-server</module>
 
 			<module>projects/dunkware-trade-service-streamstats-client</module>

@@ -22,7 +22,7 @@ public class SpringCloudGatewayRoutingLocal {
 
 	 @Bean public RouteLocator configureRoute(RouteLocatorBuilder builder) {
 		  
-		  return builder.routes().route("stream", r -> r.path("/stream/**").uri("http://172.16.16.55:32100")) // static
+		  return builder.routes().route("stream", r -> r.path("/stream/**").uri("http://127.0.0.1:8086")) // static
 					.route("trade", r -> r.path("/trade/**").uri("http://127.0.0.1:8032"))
 					.route("tick", r -> r.path("/tick/**").uri("http://172.16.16.55:31890"))
 					.route("feed", r -> r.path("/feed/**").uri("http://172.16.16.55:31890"))

@@ -22,6 +22,8 @@ public interface DunkNet {
 	
 	public Object serviceBlocking(Object payload) throws DunkNetException;
 	
+	public DunkNetServiceResponse serviceFuure(Object payload) throws DunkNetException;
+	
 	public DunkNetServiceRequest service(Object payload) throws DunkNetException;
 	
 	public DunkNetChannelRequest channel(Object payload) throws DunkNetException;

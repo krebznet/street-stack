@@ -25,6 +25,8 @@ public interface XStream {
 	 */
 	XStreamEntity getRow(String id);
 	
+	List<String> getRowIdentifiers();
+	
 	/**
 	 * Returns a List of Rows -- can do better here. 
 	 * @return
@@ -145,7 +147,7 @@ public interface XStream {
 	 * @return
 	 * @throws XStreamQueryException
 	 */
-	public XStreamEntityQuery entityQuery(XStreamEntityQueryModel model) throws XStreamQueryException;
+	public XStreamEntityQuery buildEntityQuery(XStreamEntityQueryModel model) throws XStreamQueryException;
 		
 	
 }

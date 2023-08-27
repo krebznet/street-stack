@@ -17,7 +17,7 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Transient;
 
-import com.dunkware.trade.service.stream.json.controller.session.StreamSessionState;
+import com.dunkware.trade.service.stream.json.controller.spec.StreamState;
 
 @Entity(name = "stream_session")
 public class StreamSessionEntity {
@@ -61,7 +61,7 @@ public class StreamSessionEntity {
 
 	
 	@Transient
-	private StreamSessionState state;
+	private StreamState state;
 	
 	@ManyToOne
 	private StreamEntity stream;
@@ -107,11 +107,13 @@ public class StreamSessionEntity {
 		this.stream = stream;
 	}
 
-	public StreamSessionState getState() {
+	
+
+	public StreamState getState() {
 		return state;
 	}
 
-	public void setState(StreamSessionState state) {
+	public void setState(StreamState state) {
 		this.state = state;
 	}
 

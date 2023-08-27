@@ -30,7 +30,8 @@ import com.dunkware.xstream.api.XStreamSignalListener;
 import com.dunkware.xstream.api.XStreamStatService;
 import com.dunkware.xstream.api.XStreamStatus;
 import com.dunkware.xstream.api.XStreamTickRouter;
-import com.dunkware.xstream.core.search.row.XStreamRowQueryImpl;
+import com.dunkware.xstream.core.search.row.XStreamEntityQueryImpl;
+import com.dunkware.xstream.core.search.row.builder.XStreamEntityQueryBuilder;
 import com.dunkware.xstream.model.metrics.XStreamMetrics;
 import com.dunkware.xstream.model.query.XStreamEntityQueryModel;
 import com.dunkware.xstream.util.XStreamStatsBuilder;
@@ -397,9 +398,8 @@ public class XStreamImpl implements XStream {
 	
 	
 	@Override
-	public XStreamEntityQuery entityQuery(XStreamEntityQueryModel model) throws XStreamQueryException { 
-		XStreamRowQueryImpl query = new XStreamRowQueryImpl();
-		query.init(model, this);
+	public XStreamEntityQuery buildEntityQuery(XStreamEntityQueryModel model) throws XStreamQueryException {
+		XStreamEntityQuery query = XStreamEntityQueryBuilder.createQuery(model, this);
 		return query;
 	}
 

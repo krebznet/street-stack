@@ -14,24 +14,25 @@ import java.util.concurrent.atomic.AtomicLong;
 
 import javax.transaction.Transactional;
 
+import org.hibernate.internal.build.AllowSysOut;
 import org.slf4j.Logger;
 import org.slf4j.Marker;
 import org.slf4j.MarkerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 
-import com.dunkware.common.util.dtime.DDate;
 import com.dunkware.common.util.dtime.DTime;
 import com.dunkware.common.util.dtime.DTimeZone;
 import com.dunkware.common.util.events.DEventNode;
 import com.dunkware.common.util.events.anot.ADEventMethod;
+import com.dunkware.common.util.observable.ObservableBeanListConnector;
 import com.dunkware.common.util.time.DunkTime;
 import com.dunkware.spring.cluster.DunkNetNode;
 import com.dunkware.spring.runtime.services.ExecutorService;
 import com.dunkware.trade.service.stream.json.controller.model.StreamSessionSpec;
-import com.dunkware.trade.service.stream.json.controller.session.StreamSessionState;
-import com.dunkware.trade.service.stream.json.controller.session.StreamSessionStatus;
-import com.dunkware.trade.service.stream.json.worker.stream.StreamSessionWorkerStats;
+import com.dunkware.trade.service.stream.json.controller.session.StreamSessionNodeBean;
+import com.dunkware.trade.service.stream.json.controller.session.StreamSessionStats;
+import com.dunkware.trade.service.stream.json.controller.spec.StreamState;
 import com.dunkware.trade.service.stream.server.controller.StreamController;
 import com.dunkware.trade.service.stream.server.controller.session.StreamSession;
 import com.dunkware.trade.service.stream.server.controller.session.StreamSessionEntityScanner;
@@ -41,6 +42,7 @@ import com.dunkware.trade.service.stream.server.controller.session.StreamSession
 import com.dunkware.trade.service.stream.server.controller.session.StreamSessionNode;
 import com.dunkware.trade.service.stream.server.controller.session.StreamSessionNodeInput;
 import com.dunkware.trade.service.stream.server.controller.session.StreamSessionService;
+import com.dunkware.trade.service.stream.server.controller.session.core.StreamSessionImpl.Human;
 import com.dunkware.trade.service.stream.server.controller.session.events.EStreamSessionNodeStartExcepton;
 import com.dunkware.trade.service.stream.server.controller.session.events.EStreamSessionNodeStarted;
 import com.dunkware.trade.service.stream.server.controller.session.events.EStreamSessionNodeStopException;
@@ -58,6 +60,10 @@ import com.dunkware.xstream.xproject.XScriptProject;
 import com.dunkware.xstream.xproject.model.XScriptBundle;
 import com.dunkware.xstream.xproject.model.XStreamBundle;
 
+import ca.odell.glazedlists.BasicEventList;
+import ca.odell.glazedlists.GlazedLists;
+import ca.odell.glazedlists.ObservableElementList;
+
 public class StreamSessionImpl implements StreamSession {
 
 	public static final String METRIC_PENDING_TASK_COUNT = "stream.us_equity.stats.cluster.pendingtasks";
@@ -69,7 +75,7 @@ public class StreamSessionImpl implements StreamSession {
 	private StreamSessionInput input;
 
 	@Autowired
-	private ExecutorService executorService; 
+	private ExecutorService executorService;
 
 	@Autowired
 	private StreamSessionService sessionService;
@@ -77,7 +83,7 @@ public class StreamSessionImpl implements StreamSession {
 	@Autowired
 	private ApplicationContext ac;
 
-	private StreamSessionStatus status;
+	private StreamSessionStats status;
 
 	private List<StreamSessionExtension> extensionTypes;
 
@@ -94,40 +100,54 @@ public class StreamSessionImpl implements StreamSession {
 
 	private StreamSessionSpec sessionSpec;
 
-	private String startException; 
-	
+	private String startException;
+
 	private int nodeCount = 0;
 
 	private AtomicBoolean stoppedSessionInvoked = new AtomicBoolean(false);
 
 	private Map<String, StreamSessionNode> nodes = new ConcurrentHashMap<String, StreamSessionNode>();
 
-	private XStreamBundle streamBundle;
-	
 	private AtomicInteger nodeStartEventCount = new AtomicInteger(0);
 	private AtomicInteger nodeStopEventCount = new AtomicInteger(0);
 
 	// put the stream session capture in here?
 
-	
-	
+	private ObservableElementList<StreamSessionNodeBean> nodeBeans = null;
+
+	public StreamSessionImpl() {
+		nodeBeans = new ObservableElementList<StreamSessionNodeBean>(
+				GlazedLists.threadSafeList(new BasicEventList<StreamSessionNodeBean>()),
+				new ObservableBeanListConnector<StreamSessionNodeBean>());
+	}
+
+	@Override
+	public StreamState getState() {
+		return status.getState();
+	}
+
+	@Override
+	public ObservableElementList<StreamSessionNodeBean> getNodeBeans() {
+		return nodeBeans;
+	}
+
 	@Override
 	public void startSession(StreamSessionInput input) throws StreamSessionException {
-		status = new StreamSessionStatus();
-		status.setState(StreamSessionState.Starting);
+		this.input = input;
+		status = new StreamSessionStats();
+		status.setState(StreamState.Starting);
 		status.setStartingTime(DTime.from(LocalTime.now(DTimeZone.toZoneId(input.getController().getTimeZone()))));
 		nodeStartEventCount.set(0);
 		logger.info(marker, "Starting Stream {} Session with {} workers ", input.getController().getName(),
 				input.getWorkerNodes().size());
-		
-		
+
 		stoppedSessionInvoked.set(false);
 		this.input = input;
 
 		nodeStartFailures = new AtomicInteger(0);
 		eventNode = input.getController().getEventNode().createChild(this);
 		eventNode.addEventHandler(this);
-		
+
 		ZoneId zoneId = DTimeZone.toZoneId(input.getController().getTimeZone());
 		sessionId = input.getController().getName() + " _"
 				+ DunkTime.format(LocalDateTime.now(zoneId), DunkTime.YYYY_MM_DD_HH_MM_SS);
@@ -138,7 +158,7 @@ public class StreamSessionImpl implements StreamSession {
 		if (dupes.size() > 0) {
 			logger.error(marker, "Duplicate Tickers in node subscriptions size " + dupes.size());
 		}
-		
+
 		extensionTypes = sessionService.createExtensions();
 		for (StreamSessionExtension ext : extensionTypes) {
 			if (logger.isDebugEnabled()) {
@@ -150,7 +170,7 @@ public class StreamSessionImpl implements StreamSession {
 			createSessionEntity();
 		} catch (Exception e) {
 			logger.error(marker, "Exception creating Sesssion Entity " + e.toString(), e);
-			status.setState(StreamSessionState.StartException);
+			status.setState(StreamState.StartException);
 			status.setException(e.toString());
 			throw new StreamSessionException("Exception creating Session Entity " + e.toString(), e);
 		}
@@ -161,6 +181,7 @@ public class StreamSessionImpl implements StreamSession {
 			StreamSessionNodeInput nodeInput = new StreamSessionNodeInput(numericId, workerId,
 					nodeTickers.get(nodeIndex), node, extensionTypes, this, input.getController());
 			StreamSessionNodeImpl sessionNode = new StreamSessionNodeImpl();
+			nodeBeans.add(sessionNode.getBean());
 			ac.getAutowireCapableBeanFactory().autowireBean(sessionNode);
 			sessionNode.start(nodeInput);
 			logger.info(marker, "Started {} Session Worker {} on node {}", getStream().getName(), workerId,
@@ -172,10 +193,24 @@ public class StreamSessionImpl implements StreamSession {
 
 	}
 
+	@Override
+	public String killSession() {
+		if (getState() == StreamState.Stopped) {
+			return "Session Already Stopped";
+		}
+
+		int killCount = 0;
+		for (StreamSessionNode node : nodes.values()) {
+			node.cancel();
+		}
+		status.setState(StreamState.RunKill);
+		return "Killed All Nodes";
+
+	}
 
 	@Override
 	public void stopSession() throws StreamSessionException {
-		if (!(getStatus().getState() == StreamSessionState.Running)) {
+		if (!(status.getState() == StreamState.Running)) {
 			throw new StreamSessionException("Session is not running, how do you want to stop it?");
 		}
 		logger.info(marker, "Stopping {} Session", getStream().getName());
@@ -184,16 +219,15 @@ public class StreamSessionImpl implements StreamSession {
 		for (StreamSessionExtension streamSessionExtension : extensionTypes) {
 			streamSessionExtension.sessionStopping(this);
 		}
-		nodeStopEventCount.set(0);;
+		nodeStopEventCount.set(0);
+		;
 		for (StreamSessionNode node : nodes.values()) {
 			node.stop();
 		}
 	}
-	
-	
 
 	@Override
-	public synchronized StreamSessionStatus getStatus() {
+	public synchronized StreamSessionStats getStatus() {
 		if (status.getNodes() != null)
 			status.getNodes().clear();
 		status.setNodeCount(nodes.size());
@@ -207,14 +241,14 @@ public class StreamSessionImpl implements StreamSession {
 		AtomicInteger signalCount = new AtomicInteger(0);
 
 		for (StreamSessionNode node : nodes.values()) {
-			StreamSessionWorkerStats workerStats = node.getWorkerStats();
-			rowCount.addAndGet(workerStats.getRowCount());
-			signalCount.addAndGet(workerStats.getSignalCount());
-			pendingTasks.addAndGet(workerStats.getPendingTaskCount());
-			completedTasks.addAndGet(workerStats.getCompletedTaskCount());
-			timeoutTasks.addAndGet(workerStats.getTimeoutTaskCount());
-			tickCount.addAndGet(workerStats.getTickCount());
-			status.getNodes().add(workerStats);
+			StreamSessionNodeBean nodeBean = node.getBean();
+			rowCount.addAndGet(nodeBean.getEntityCount());
+			signalCount.addAndGet(nodeBean.getSignalCount());
+			pendingTasks.addAndGet(nodeBean.getTasksPending());
+			completedTasks.addAndGet(nodeBean.getTasksCompleted());
+			timeoutTasks.addAndGet(nodeBean.getTasksExpired());
+			tickCount.addAndGet(nodeBean.getEntityCount());
+			status.getNodes().add(nodeBean);
 		}
 		status.setSignalCount(signalCount.get());
 		status.setCompletedTasks(completedTasks.get());
@@ -324,96 +358,97 @@ public class StreamSessionImpl implements StreamSession {
 		if (logger.isDebugEnabled()) {
 			logger.debug(marker, "Event Session node " + nodeStarted.getNode().getWorkerId() + "Started");
 		}
-		
-		if(logger.isDebugEnabled()) { 
-			logger.debug(marker, "Starting Stream Session Start Runnable {}",getStream().getName());
+
+		if (logger.isDebugEnabled()) {
+			logger.debug(marker, "Starting Stream Session Start Runnable {}", getStream().getName());
 		}
 		int started = nodeStartEventCount.incrementAndGet();
-		if(started == nodes.size()) {
+		if (started == nodes.size()) {
 			Runnable runner = new Runnable() {
-				
+
 				@Override
 				public void run() {
 					handleSessionSart();
 				}
 			};
 			executorService.execute(runner);
-			
+
 		}
-		
+
 	}
 
 	@ADEventMethod()
 	public void nodeStartException(EStreamSessionNodeStartExcepton exp) {
-		logger.error(marker, "Stream {} Session Node {} Start Exception {}",getStream().getName(),exp.getNode().getWorkerId(),exp.getException());
+		logger.error(marker, "Stream {} Session Node {} Start Exception {}", getStream().getName(),
+				exp.getNode().getWorkerId(), exp.getException());
 		nodeStartFailures.incrementAndGet();
 		status.getNodeStartErrors().add("Node Worker " + exp.getNode().getWorkerId() + " " + exp.getException());
 		int started = nodeStartEventCount.incrementAndGet();
-		if(started == nodes.size()) {
+		if (started == nodes.size()) {
 			Runnable runner = new Runnable() {
-				
+
 				@Override
 				public void run() {
 					handleSessionSart();
 				}
 			};
 			executorService.execute(runner);
-			
+
 		}
-		
+
 	}
 
 	@ADEventMethod
 	public void nodeStopped(EStreamSessionNodeStopped stopped) {
 		int stopCount = nodeStopEventCount.incrementAndGet();
-		if(stopCount == nodes.size()) { 
+		if (stopCount == nodes.size()) {
 			Runnable runner = new Runnable() {
-				
+
 				@Override
 				public void run() {
 					handleSessionStop();
 				}
 			};
 			executorService.execute(runner);
-		
+
 		}
 	}
 
 	@ADEventMethod
 	public void nodeStopExcetion(EStreamSessionNodeStopException stopExp) {
 		int stopCount = nodeStopEventCount.incrementAndGet();
-		if(stopCount == nodes.size()) { 
+		if (stopCount == nodes.size()) {
 			Runnable runner = new Runnable() {
-				
+
 				@Override
 				public void run() {
 					handleSessionStop();
 				}
 			};
 			executorService.execute(runner);
-		
+
 		}
 	}
 
 	private void handleSessionSart() {
-		logger.info(marker, "Handling Stream {} Session Start",getStream().getName());
-		if(nodeStartFailures.get() > 0) { 
-			this.status.setState(StreamSessionState.StartException);
+		logger.info(marker, "Handling Stream {} Session Start", getStream().getName());
+		if (nodeStartFailures.get() > 0) {
+			this.status.setState(StreamState.StartException);
 			for (StreamSessionNode node : nodes.values()) {
-				if(node.isRunning()) { 
+				if (node.isRunning()) {
 					node.cancel();
 				}
 			}
-			eventNode.event(new EStreamSessionStartException(this));
+			eventNode.event(new EStreamSessionStartException(this,"Node Errors"));
 			return;
 		}
-		
-		this.status.setState(StreamSessionState.Running);
+
+		this.status.setState(StreamState.Running);
 		this.status.setStartTime(DTime.now());
 		for (StreamSessionExtension ext : extensionTypes) {
 			ext.sessionStarted(this);
 		}
-		if(logger.isDebugEnabled()) { 
+		if (logger.isDebugEnabled()) {
 			logger.debug(marker, "EStreamSessionStarted Event Trigger");
 		}
 		EStreamSessionStarted started = new EStreamSessionStarted(this);
@@ -421,8 +456,9 @@ public class StreamSessionImpl implements StreamSession {
 	}
 
 	private void handleSessionStop() {
-		status.setState(StreamSessionState.Stopped);;
-		logger.info(marker, "Handling Stream {} Session Stop",getStream().getName());
+		status.setState(StreamState.Stopped);
+		;
+		logger.info(marker, "Handling Stream {} Session Stop", getStream().getName());
 		this.stoppedSessionInvoked.set(true);
 		try {
 			sessionEntity.setStopDateTime(LocalDateTime.now(DTimeZone.toZoneId(input.getController().getTimeZone())));

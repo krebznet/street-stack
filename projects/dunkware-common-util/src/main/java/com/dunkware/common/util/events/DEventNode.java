@@ -10,6 +10,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.dunkware.common.util.events.anot.ADEventMethod;
+import com.dunkware.common.util.helpers.DReflectionHelper;
 
 public class DEventNode {
 
@@ -222,10 +223,16 @@ public class DEventNode {
 		
 		public void addMatchingMethodHandlers(DEvent event, List<AnnotatedEventHandlerMethod> list) { 
 			for (AnnotatedEventHandlerMethod method : methods) {
-				if(method.event.isInstance(event)) { 
-					logger.debug("Matched Event " + event.getClass().getName() + " to " + method.method.getName() +  " " + method.method.getClass());
-					list.add(method);
+				if(method.method.getParameterTypes().length > 0) {
+					if(method.method.getName().equals("sessionEvent")) { 
+						System.out.println("Stop here");
+					}
+					Class clazz = method.method.getParameterTypes()[0];
+					if(DReflectionHelper.isAssignableFrom(clazz, event.getClass())) { 
+						list.add(method);
+					}
 				}
+
 			}
 		}
 	}

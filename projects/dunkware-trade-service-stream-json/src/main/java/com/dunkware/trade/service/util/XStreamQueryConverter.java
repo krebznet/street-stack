@@ -5,15 +5,15 @@ import com.dunkware.trade.service.stream.json.query.WebStreamCriteriaValue;
 import com.dunkware.trade.service.stream.json.query.WebStreamQuery;
 import com.dunkware.xstream.model.query.XStreamCriteriaCompareFunc;
 import com.dunkware.xstream.model.query.XStreamCriteriaModel;
-import com.dunkware.xstream.model.query.XStreamCriteriaType;
+import com.dunkware.xstream.model.query.XStreamEntityCriteriaType;
 import com.dunkware.xstream.model.query.XStreamHIstoryTimeRangeType;
 import com.dunkware.xstream.model.query.XStreamHistoryTimeRange;
 import com.dunkware.xstream.model.query.XStreamOperator;
 import com.dunkware.xstream.model.query.XStreamEntityQueryModel;
 import com.dunkware.xstream.model.query.XStreamTimeUnit;
-import com.dunkware.xstream.model.query.XStreamRowValueModel;
-import com.dunkware.xstream.model.query.XStreamValueType;
-import com.dunkware.xstream.model.query.XStreamVarHistoricalAggFunc;
+import com.dunkware.xstream.model.query.XStreamEntityValueModel;
+import com.dunkware.xstream.model.query.XStreamEntityValueType;
+import com.dunkware.xstream.model.query.XStreamEntityVarAggHistType;
 
 public class XStreamQueryConverter {
 
@@ -29,7 +29,7 @@ public class XStreamQueryConverter {
 	private static XStreamCriteriaModel toXStreamCriteria(WebStreamCriteria web) throws Exception { 
 		XStreamCriteriaModel model = new XStreamCriteriaModel();
 		model.setType(toXStreamCriteriaType(web.getType()));
-		if(model.getType() == XStreamCriteriaType.Value) { 
+		if(model.getType() == XStreamEntityCriteriaType.Value) { 
 			model.setValue1(toXStreamValue(web.getValue().get(0)));
 		}
 		else { 
@@ -56,17 +56,17 @@ public class XStreamQueryConverter {
 		throw new Exception("Compare function not handled " + value);
 	}
 	
-	private static XStreamRowValueModel toXStreamValue(WebStreamCriteriaValue web) throws Exception { 
-		XStreamRowValueModel value = new XStreamRowValueModel();
+	private static XStreamEntityValueModel toXStreamValue(WebStreamCriteriaValue web) throws Exception { 
+		XStreamEntityValueModel value = new XStreamEntityValueModel();
 		value.setType(toXStreamValueType(web));
-		if(value.getType() == XStreamValueType.VarCurrentValue || value.getType() == XStreamValueType.VarHistoricalAgg || 
-				value.getType() == XStreamValueType.VarSessionAgg) { 
+		if(value.getType() == XStreamEntityValueType.VarCurrentValue || value.getType() == XStreamEntityValueType.VarHistoricalAgg || 
+				value.getType() == XStreamEntityValueType.VarSessionAgg) { 
 			value.setVarIdent(web.getIdentifier());
 		}
-		if(value.getType() == XStreamValueType.SignalHistoricalCount || value.getType() ==  XStreamValueType.SignalSessionCount) { 
+		if(value.getType() == XStreamEntityValueType.SignalHistoricalCount || value.getType() ==  XStreamEntityValueType.SignalSessionCount) { 
 			value.setSignalIdent(web.getIdentifier());;
 		}
-		if(value.getType() == XStreamValueType.VarHistoricalAgg) {
+		if(value.getType() == XStreamEntityValueType.VarHistoricalAgg) {
 			value.setHistoricalTimeRange(toXStreamHistoricalTimeRange(web));
 			value.setHistoricalAgg(toXStreamHistoricalAggFunc(web));
 		}
@@ -93,12 +93,12 @@ public class XStreamQueryConverter {
 		return range;
 	}
 	
-	private static XStreamVarHistoricalAggFunc toXStreamHistoricalAggFunc(WebStreamCriteriaValue value) throws Exception {
+	private static XStreamEntityVarAggHistType toXStreamHistoricalAggFunc(WebStreamCriteriaValue value) throws Exception {
 		if(value.getSessionAggregation().equals("High")) { 
-			return XStreamVarHistoricalAggFunc.HIGH;
+			return XStreamEntityVarAggHistType.HIGH;
 		}
 		if(value.getSessionAggregation().equals("Low")) { 
-			return XStreamVarHistoricalAggFunc.LOW;
+			return XStreamEntityVarAggHistType.LOW;
 		}
 		throw new Exception("Hisotrical Agg Not Handled " + value.getSessionAggregation());
 		
@@ -120,19 +120,19 @@ public class XStreamQueryConverter {
 		throw new Exception("Logic missing for time unit converstion of " + value);
 	}
 	
-	private static XStreamValueType toXStreamValueType(WebStreamCriteriaValue web) throws Exception{ 
+	private static XStreamEntityValueType toXStreamValueType(WebStreamCriteriaValue web) throws Exception{ 
 		String type = web.getValueType();
 		if(type.equals("Field Current Value")) { 
-			return XStreamValueType.VarCurrentValue;
+			return XStreamEntityValueType.VarCurrentValue;
 			
 		}
 		throw new Exception("Add logic for converting value type " + web.getValueType());
 	}
 	
-	private static XStreamCriteriaType toXStreamCriteriaType(String web) throws Exception { 
+	private static XStreamEntityCriteriaType toXStreamCriteriaType(String web) throws Exception { 
 		if(web.equals("Value Compare Filter")) {
-			return XStreamCriteriaType.ValueCompare;
+			return XStreamEntityCriteriaType.ValueCompare;
 		}
-		return XStreamCriteriaType.Value;
+		return XStreamEntityCriteriaType.Value;
 	}
 }

@@ -22,7 +22,7 @@ public class SignalModelsProvider implements StreamSessionExtension {
 	@Override
 	public void sessionStarting(StreamSession session) {
 		try {
-			bluePrint = bluePrintService.getBlueprint(session.getStream().getName());
+		//	kkbluePrint = bluePrintService.getBlueprint(session.getStream().getName());
 			// get the fuckin singlas yes 
 			
 		} catch (Exception e) {

@@ -2,29 +2,29 @@ package com.dunkware.xstream.model.query;
 
 public class XStreamCriteriaModel {
 	
-	private XStreamCriteriaType type;
-	private XStreamRowValueModel value1; 
-	private XStreamRowValueModel value2;
+	private XStreamEntityCriteriaType type;
+	private XStreamEntityValueModel value1; 
+	private XStreamEntityValueModel value2;
 	private XStreamCriteriaCompareFunc compareFunc; 
 	private XStreamOperator operator; 
 	private Number operatorValue; 
 	
-	public XStreamCriteriaType getType() {
+	public XStreamEntityCriteriaType getType() {
 		return type;
 	}
-	public void setType(XStreamCriteriaType type) {
+	public void setType(XStreamEntityCriteriaType type) {
 		this.type = type;
 	}
-	public XStreamRowValueModel getValue1() {
+	public XStreamEntityValueModel getValue1() {
 		return value1;
 	}
-	public void setValue1(XStreamRowValueModel value1) {
+	public void setValue1(XStreamEntityValueModel value1) {
 		this.value1 = value1;
 	}
-	public XStreamRowValueModel getValue2() {
+	public XStreamEntityValueModel getValue2() {
 		return value2;
 	}
-	public void setValue2(XStreamRowValueModel value2) {
+	public void setValue2(XStreamEntityValueModel value2) {
 		this.value2 = value2;
 	}
 	public XStreamCriteriaCompareFunc getCompareFunc() {
@@ -44,7 +44,10 @@ public class XStreamCriteriaModel {
 	}
 	public void setOperatorValue(Number operatorValue) {
 		this.operatorValue = operatorValue;
-	} 
+	}
+	
+	
+	
 	
 	
 	

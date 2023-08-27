@@ -1,5 +1,6 @@
 package com.dunkware.xstream.xproject;
 
+import java.beans.Transient;
 import java.io.ByteArrayInputStream;
 import java.io.InputStream;
 import java.util.ArrayList;
@@ -64,6 +65,16 @@ public class XScriptProject {
 		}
 		
 		
+	}
+	
+	@Transient
+	public boolean varExists(String name) { 
+		for (VarType varType : streamVars) {
+			if(varType.getName().equals(name)) { 
+				return true; 
+			}
+		}
+		return false; 
 	}
 	
 	
