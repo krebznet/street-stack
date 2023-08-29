@@ -106,9 +106,9 @@
 			<module>projects/dunkware-spring-test-client</module>
 			<module>/projects/dunkware-trade-service-streamstats-server</module>
 			<module>projects/dunkware-trade-service-streamstats-client</module>
-			<module>projects/dunkware-trade-service-streamdata-server</module>
-
-
+			<module>projects/dunkware-trade-service-data-server</module>
+			<module>projects/dunkware-trade-service-data-model</module>
+			<module>projects/dunkware-trade-service-data-tester</module>
 
 
 
