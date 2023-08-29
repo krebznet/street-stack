@@ -14,12 +14,14 @@ import com.dunkware.common.util.dtime.DTimeZone;
 import com.dunkware.common.util.events.DEventNode;
 import com.dunkware.common.util.json.DJson;
 import com.dunkware.common.util.observable.ObservableBeanListConnector;
+import com.dunkware.common.util.time.DunkTime;
 import com.dunkware.trade.service.stream.json.blueprint.WebStreamSignaltype;
 import com.dunkware.trade.service.stream.server.blueprint.event.EStreamBlueprintSignalCreated;
 import com.dunkware.trade.service.stream.server.repository.StreamBlueprintSignalEntity;
 import com.dunkware.trade.service.stream.server.repository.StreamBlueprintSignalRepo;
 import com.dunkware.trade.service.stream.server.repository.StreamBlueprintSignalStatus;
 import com.dunkware.trade.service.stream.server.repository.StreamEntity;
+import com.dunkware.xstream.model.stats.EntityStatBulkReq;
 
 import ca.odell.glazedlists.BasicEventList;
 import ca.odell.glazedlists.GlazedLists;
@@ -45,6 +47,7 @@ public class StreamBlueprint {
 	
 	private ObservableElementList<StreamBlueprintSignalBean> signalBeans = null;
 	
+	private WebStreamSignaltype model;
 	// Thing
 		// symbol
 			// variable
@@ -60,21 +63,29 @@ public class StreamBlueprint {
 		this.streamEntity = stream; 
 		eventNode = service.getEventNode().createChild(this);
 		eventNode.addEventHandler(this);
-		StreamBlueprintSignalBean tb = new StreamBlueprintSignalBean();
-		tb.setCount("2323,23");
-		tb.setCreated("09/12/22");
-		tb.setDescription("Alpha Breakout Signal 1");
-		tb.setGroup("Alpha Breakout");
-		tb.setId(1);
-		tb.setStatus("Active");
-		signalBeans.add(tb);
+		
+		
 		for (StreamBlueprintSignalEntity entity : signalRepo.findAll()) {
 			if(entity.getStreamId() == stream.getId()) { 
 				StreamBlueprintSignal signal = new StreamBlueprintSignal();
+				try {
+					model = DJson.getObjectMapper().readValue(entity.getModel(), WebStreamSignaltype.class);
+				} catch (Exception e) {
+					logger.error("Exception parsing signal blueprint mode");
+				}
 				ac.getAutowireCapableBeanFactory().autowireBean(signal);
 				try {
 					signal.init(entity, this);
 					signals.add(signal);
+					StreamBlueprintSignalBean tb = new StreamBlueprintSignalBean();
+					
+					tb.setCreated(DunkTime.format(entity.getCreated(), DunkTime.YYYY_MM_DD_HH_MM_SS));
+					tb.setName(model.getName());
+					tb.setDescription(model.getDescription());
+					tb.setGroup("Default");
+					tb.setStatus("Active");
+					tb.setId(entity.getId());
+					signalBeans.add(tb);
 				} catch (Exception e) {
 					logger.error("Exception init stream blueprint signal " + e.toString());
 
@@ -135,6 +146,17 @@ public class StreamBlueprint {
 		try {
 			signal.init(fuck, this);
 			signals.add(signal);
+			
+			signals.add(signal);
+			StreamBlueprintSignalBean tb = new StreamBlueprintSignalBean();
+			
+			tb.setCreated(DunkTime.format(fuck.getCreated(), DunkTime.YYYY_MM_DD_HH_MM_SS));
+			tb.setName(model.getName());
+			tb.setDescription(model.getDescription());
+			tb.setGroup("Default");
+			tb.setStatus("Active");
+			tb.setId(fuck.getId());
+			signalBeans.add(tb);
 			eventNode.event(new EStreamBlueprintSignalCreated(this, signal));
 		} catch (Exception e) {
 			logger.error("Exception init stream blueprint signal " + e.toString());

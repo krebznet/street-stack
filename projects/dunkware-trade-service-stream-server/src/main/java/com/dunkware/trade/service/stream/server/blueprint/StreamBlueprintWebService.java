@@ -1,5 +1,6 @@
 package com.dunkware.trade.service.stream.server.blueprint;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.reactivestreams.Subscriber;
@@ -11,6 +12,7 @@ import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.server.ResponseStatusException;
 
@@ -110,10 +112,9 @@ public class StreamBlueprintWebService {
 		}
 	}
 	
-
 	
-	@GetMapping("/stream/v1/blueprint/signal/get")
-	public WebStreamSignaltype getBlueprintSignalModel(@RequestParam() String stream,  @RequestParam() long id) { 
+	@GetMapping("/stream/v1/blueprint/signals/get")
+	public @ResponseBody() List<StreamBlueprintSignalBean> getSignals(@RequestParam() String stream) { 
 		StreamBlueprint bp = null;
 		try {
 			bp = blueprintService.getBlueprint(stream);
@@ -122,11 +123,11 @@ public class StreamBlueprintWebService {
 			           HttpStatus.BAD_REQUEST, "Stream blueprint not found for " + stream);
 		}
 		try {
-			StreamBlueprintSignal sig = bp.getSignal(id);
-			return sig.getModel();
+			return bp.getSignalBeans();
+
 		} catch (Exception e) {
 			throw new ResponseStatusException(
-			           HttpStatus.BAD_REQUEST, "Stream blueprint signal not found for " + id);
+			           HttpStatus.BAD_REQUEST, "Stream blueprint signal not found fo");
 			
 		}
 	}

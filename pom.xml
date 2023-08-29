@@ -65,8 +65,7 @@
 
   <module> projects/dunkware-maven-parent</module>
       <module>projects/dunkware-common-util</module>
-      <module>projects/dunkware-net-core-proto</module>
-      <module>projects/dunkware-net-core-runtime</module>
+
       <module>projects/dunkware-trade-tick-model</module>
       <module>projects/dunkware-trade-tick-api</module>
       <module>projects/dunkware-trade-tick-provider-atick</module>
@@ -80,7 +79,7 @@
       <module>projects/dunkware-trade-service-stream-json</module>
       <module>projects/dunkware-trade-service-stream-server</module>
 			<module>projects/dunkware-trade-service-stream-worker</module>
-			<module>projects/dunkware-trade-service-stream-util</module>
+
 			<module>projects/dunkware-trade-sdk-tws-runtime</module>
       <module>projects/dunkware-trade-service-web-server</module>
 			<module>projects/dunkware-trade-service-web-mock</module>
@@ -98,25 +97,17 @@
 			<module>projects/dunkware-trade-service-beach-web</module>
 
 
-			<module>projects/dunkware-net-cluster-node</module>
-			<module>projects/dunkware-net-cluster-client</module>
-			<module>projects/dunkware-net-cluster-util</module>
-			<module>projects/dunkware-net-cluster-server</module>
-    	<module>projects/dunkware-net-cluster-json</module>
-	    <module>projects/dunkware-net-cluster-spring</module>
 
-			<module>projects/dunkware-xstream-net-json</module>
-     	<module>projects/dunkware-xstream-net-core</module>
-     	<module>projects/dunkware-xstream-net-client</module>
-			<module>projects/dunkware-xstream-net-server</module>
+
 			<module>projects/dunkware-spring-cluster</module>
 			<module>projects/dunkware-spring-runtime</module>
 			<module>projects/dunkware-spring-test-model</module>
 			<module>projects/dunkware-spring-test-server</module>
 			<module>projects/dunkware-spring-test-client</module>
 			<module>/projects/dunkware-trade-service-streamstats-server</module>
-
 			<module>projects/dunkware-trade-service-streamstats-client</module>
+			<module>projects/dunkware-trade-service-streamdata-server</module>
+
 
 
 

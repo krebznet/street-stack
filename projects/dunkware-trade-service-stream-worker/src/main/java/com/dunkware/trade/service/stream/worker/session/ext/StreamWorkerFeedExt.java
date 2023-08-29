@@ -35,6 +35,8 @@ public class StreamWorkerFeedExt implements XStreamExtension, TickHandler {
 			throw new XStreamException("TickFeedExt has null data tick type array ");
 		}
 	}
+	
+	
 
 	@Override
 	public void preStart() throws XStreamException {
@@ -54,6 +56,9 @@ public class StreamWorkerFeedExt implements XStreamExtension, TickHandler {
 		}
 		
 	}
+	
+	
+	
 
 	@Override
 	public void preDispose() {

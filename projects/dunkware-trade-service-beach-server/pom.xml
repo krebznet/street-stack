@@ -119,12 +119,8 @@
 			<version>1.0.0-SNAPSHOT</version>
 
 		</dependency>
-	<!--  	<dependency>
-			<groupId>com.dunkware.net.cluster</groupId>
-			<artifactId>dunkware-net-cluster-node</artifactId>
-			<version>1.0.0-SNAPSHOT</version>
-		</dependency>
--->
+	
+
 		<dependency>
 			<groupId>ch.qos.logback</groupId>
 			<artifactId>logback-classic</artifactId>

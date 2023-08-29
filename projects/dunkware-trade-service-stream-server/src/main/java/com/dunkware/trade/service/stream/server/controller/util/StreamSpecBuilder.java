@@ -4,7 +4,6 @@ package com.dunkware.trade.service.stream.server.controller.util;
 import com.dunkware.trade.service.stream.server.controller.StreamController;
 import com.dunkware.trade.tick.model.ticker.TradeTickerSpec;
 import com.dunkware.xstream.model.entity.Entity;
-import com.dunkware.xstream.model.spec.NetStreamSpec;
 import com.dunkware.xstream.model.spec.StreamSpec;
 import com.dunkware.xstream.model.spec.StreamSpecEntityField;
 import com.dunkware.xstream.model.spec.StreamSpecEntitySignal;

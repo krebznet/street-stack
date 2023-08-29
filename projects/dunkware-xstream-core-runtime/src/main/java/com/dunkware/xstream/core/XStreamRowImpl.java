@@ -1,7 +1,5 @@
 package com.dunkware.xstream.core;
 
-import static org.mockito.Mockito.RETURNS_DEEP_STUBS;
-
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -20,22 +18,15 @@ import com.dunkware.common.tick.stream.impl.TickStreamImpl;
 import com.dunkware.common.util.dtime.DTime;
 import com.dunkware.common.util.time.DunkTime;
 import com.dunkware.xstream.api.XStream;
-import com.dunkware.xstream.api.XStreamQueryException;
-import com.dunkware.xstream.api.XStreamResolveException;
 import com.dunkware.xstream.api.XStreamEntity;
 import com.dunkware.xstream.api.XStreamEntityListener;
+import com.dunkware.xstream.api.XStreamEntityVar;
+import com.dunkware.xstream.api.XStreamEntityVarListener;
 import com.dunkware.xstream.api.XStreamRowSignal;
 import com.dunkware.xstream.api.XStreamRowSnapshot;
 import com.dunkware.xstream.api.XStreamRuntimeException;
-import com.dunkware.xstream.api.XStreamEntityVar;
-import com.dunkware.xstream.api.XStreamEntityVarListener;
 import com.dunkware.xstream.model.metrics.XStreamRowMetrics;
 import com.dunkware.xstream.model.metrics.XStreamVarMetrics;
-import com.dunkware.xstream.model.query.XStreamEntityValueModel;
-import com.dunkware.xstream.model.query.XStreamEntityValueType;
-import com.dunkware.xstream.model.stats.EntityStatsSession;
-import com.dunkware.xstream.model.stats.EntityStatsSessionVar;
-import com.dunkware.xstream.util.XStreamEntityStatsResolver;
 import com.dunkware.xstream.xScript.SignalType;
 import com.dunkware.xstream.xScript.VarType;
 

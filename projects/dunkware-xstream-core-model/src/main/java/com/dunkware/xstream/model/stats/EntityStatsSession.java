@@ -22,8 +22,6 @@ public class EntityStatsSession {
 	public static ConcurrentHashMap<String,EntityStatsSessionVar> varMap = new ConcurrentHashMap<String, EntityStatsSessionVar>();
 	
 	
-	
-	
 	public LocalDate getDate() {
 		return date;
 	}

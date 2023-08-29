@@ -151,12 +151,7 @@
 			<artifactId>httpcore</artifactId>
 
 		</dependency>
-		<dependency>
-			<groupId>net.devh</groupId>
-			<artifactId>grpc-server-spring-boot-starter</artifactId>
-			<version>2.0.1.RELEASE</version>
-		</dependency>
-
+	
 		<!-- spring cloud -->
 		<!-- https://mvnrepository.com/artifact/com.google.	/guava -->
 

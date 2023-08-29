@@ -1,44 +1,61 @@
 package com.dunkware.xstream.model.signal;
 
 import java.time.LocalDateTime;
+import java.util.HashMap;
 import java.util.Map;
 
-import com.dunkware.common.util.dtime.DDate;
-import com.dunkware.common.util.dtime.DTime;
+import com.dunkware.common.util.json.DJson;
 
 public class StreamSignal {
 	
-	private int id; 
-	private String ident;
-	private String entIdent;
-	private int entId; 
+	public static void main(String[] args) {
+		StreamSignal signal = new StreamSignal();
+		signal.setSignalId(3);
+		signal.setEntityId(3);
+		signal.setStreamId(1);
+		signal.setTime(LocalDateTime.now());
+		signal.getVars().put(2, 23.3);
+		signal.getVars().put(4, 2);
+		try {
+			String out = DJson.serialize(signal);
+			System.out.println(out);
+			byte[] bytes = out.getBytes();
+			StringBuilder s = new StringBuilder();
+			for (byte b : bytes) {
+				s.append(b);
+			}
+			System.out.println(s.toString());
+			System.out.println(bytes);
+			
+			StreamSignal signal2 = DJson.getObjectMapper().readValue(out, StreamSignal.class);
+			System.out.println(signal2.getSignalId());
+		} catch (Exception e) {
+			e.printStackTrace();
+			// TODO: handle exception
+		}
+	}
+	
+	private int signalId;
+	private int streamId;
+	private int entityId;
+	
 	private LocalDateTime time;
-	private Map<String,Object> vars;
+	private Map<Integer,Object> vars = new HashMap<Integer,Object>();
 	
 	private String streamIdent;
-	public int getId() {
-		return id;
+	
+	public int getSignalId() {
+		return signalId;
 	}
-	public void setId(int id) {
-		this.id = id;
+	public void setSignalId(int signalId) {
+		this.signalId = signalId;
 	}
-	public String getIdent() {
-		return ident;
+	
+	public int getEntityId() {
+		return entityId;
 	}
-	public void setIdent(String ident) {
-		this.ident = ident;
-	}
-	public String getEntIdent() {
-		return entIdent;
-	}
-	public void setEntIdent(String entIdent) {
-		this.entIdent = entIdent;
-	}
-	public int getEntId() {
-		return entId;
-	}
-	public void setEntId(int entId) {
-		this.entId = entId;
+	public void setEntityId(int entityId) {
+		this.entityId = entityId;
 	}
 	public LocalDateTime getTime() {
 		return time;
@@ -46,10 +63,17 @@ public class StreamSignal {
 	public void setTime(LocalDateTime time) {
 		this.time = time;
 	}
-	public Map<String, Object> getVars() {
+	
+	public int getStreamId() {
+		return streamId;
+	}
+	public void setStreamId(int streamId) {
+		this.streamId = streamId;
+	}
+	public Map<Integer, Object> getVars() {
 		return vars;
 	}
-	public void setVars(Map<String, Object> vars) {
+	public void setVars(Map<Integer, Object> vars) {
 		this.vars = vars;
 	}
 	public String getStreamIdent() {

@@ -41,10 +41,7 @@
 		<lombok.version>1.18.20</lombok.version>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
-		<protoc.version>3.6.1</protoc.version>
-		<protobuf.plugin.version>0.6.1</protobuf.plugin.version>
-		<net-devh-grpc.version>2.0.1.RELEASE</net-devh-grpc.version>
-		<grpc.version>1.15.1</grpc.version>
+		
 		<spring-cloud.version>Hoxton.SR6</spring-cloud.version>
 		<lombok.version>1.18.20</lombok.version>
 	</properties>
@@ -79,11 +76,7 @@
 		<!-- GRPC Dependencies -->
 
 
-		<dependency>
-			<groupId>com.google.protobuf</groupId>
-			<artifactId>protobuf-java</artifactId>
-			<version>3.13.0</version>
-		</dependency>
+		
 
 
 		<!-- GRPC DEPS -->
@@ -96,11 +89,7 @@
 			<version>1.3.0-SNAPSHOT</version>
 		</dependency>
 
-		<dependency>
-			<groupId>com.dunkware.net</groupId>
-			<artifactId>dunkware-net-core-runtime</artifactId>
-			<version>1.0.0-SNAPSHOT</version>
-		</dependency>
+		
 
 		<dependency>
 			<groupId>ch.qos.logback</groupId>

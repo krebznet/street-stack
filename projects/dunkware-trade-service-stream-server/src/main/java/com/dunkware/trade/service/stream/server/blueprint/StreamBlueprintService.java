@@ -64,6 +64,7 @@ public class StreamBlueprintService  {
 				try {
 					blueprint.init(ent, StreamBlueprintService.this);;
 					blueprints.put(ent.getName(), blueprint);
+					
 				} catch (Exception e) {
 					logger.error("Exception init stream blueprint " + e.toString(),e);
 				}
@@ -74,5 +75,8 @@ public class StreamBlueprintService  {
 		}
 		
 	}
+	
+	
+	
 	
 }

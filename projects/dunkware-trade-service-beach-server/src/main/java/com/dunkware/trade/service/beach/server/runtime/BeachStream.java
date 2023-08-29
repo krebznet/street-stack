@@ -20,16 +20,8 @@ import com.dunkware.common.spec.kafka.DKafkaByteConsumer2Spec;
 import com.dunkware.common.spec.kafka.DKafkaByteConsumer2Spec.ConsumerType;
 import com.dunkware.common.spec.kafka.DKafkaByteConsumer2Spec.OffsetType;
 import com.dunkware.common.spec.kafka.DKafkaByteConsumer2SpecBuilder;
-import com.dunkware.common.util.dtime.DTimeZone;
-import com.dunkware.common.util.helpers.DProtoHelper;
 import com.dunkware.common.util.uuid.DUUID;
-import com.dunkware.net.proto.stream.GEntitySignal;
-import com.dunkware.net.proto.stream.GEntityVarSnapshot;
-import com.dunkware.net.proto.stream.GStreamEvent;
-import com.dunkware.net.proto.stream.GStreamEventType;
 import com.dunkware.trade.service.beach.server.common.BeachRuntime;
-import com.dunkware.xstream.model.signal.StreamSignal;
-import com.google.api.client.util.Value;
 
 public class BeachStream {
 
@@ -170,63 +162,9 @@ public class BeachStream {
 		@Override
 		public void record(ConsumerRecord<String, byte[]> record) {
 
-			GStreamEvent event = null;
-			try {
-				event = GStreamEvent.parseFrom(record.value());
-			} catch (Exception e) {
-				logger.error("Exception parsing GStreamEvent from signal topic " + e.toString());
-			}
-			if (event.getType() == GStreamEventType.EntitySignal) {
-				GEntitySignal signal = event.getEntitySignal();
-				if (signalSubscriptions.containsKey(signal.getIdentifier())) {
-					StreamSignal streamSignal = new StreamSignal();
-					streamSignal.setEntId(signal.getEntityId());
-					streamSignal.setEntIdent(signal.getEntityIdentifier());
-					streamSignal.setTime(DProtoHelper.toLocalDateTime(signal.getTime(), DTimeZone.NewYork));
-					streamSignal.setId(signal.getId());
-					streamSignal.setIdent(signal.getIdentifier());
-					BeachSignal beachSignal = new BeachSignal();
-					beachSignal.setSignal(signal.getIdentifier());
-					beachSignal.setStream(identifier);
-
-					try {
-						for (GEntityVarSnapshot varSnapshot : signal.getVarsList()) {
-							if (varSnapshot.getIdentifier().equalsIgnoreCase("TickLast")) {
-								beachSignal.setLast(varSnapshot.getDoubleValue());
-							}
-							if (varSnapshot.getIdentifier().equalsIgnoreCase("TickVolume")) {
-								beachSignal.setVolume(varSnapshot.getLongValue());
-							}
-							if (varSnapshot.getIdentifier().equalsIgnoreCase("TickSymbol")) {
-								beachSignal.setSymbol(varSnapshot.getStringValue());
-							}
-							
-						}
-					}
-
-					catch (Exception e) {
-						// TODO: handle exception
-					}
-					try {
-						signalListenerLock.acquire();
-						for (BeachSignalListenerWrapper wrapper : signalListeners) {
-							if (wrapper.subscribed(signal.getIdentifier())) {
-								if (logger.isTraceEnabled()) {
-									logger.trace(signalMarker,
-											"Signal Listener " + wrapper.getListener().getClass().getName() + " signal "
-													+ streamSignal.getIdent() + " ticker "
-													+ streamSignal.getEntIdent());
-								}
-								wrapper.getListener().onSignal(beachSignal);
-							}
-						}
-					} catch (Exception e) {
-						logger.error("Exception processing stream signal " + e.toString());
-					} finally {
-						signalListenerLock.release();
-					}
-				}
-			}
+		
+				
+			
 
 		}
 

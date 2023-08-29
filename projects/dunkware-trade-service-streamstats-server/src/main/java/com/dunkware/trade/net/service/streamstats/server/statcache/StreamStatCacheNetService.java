@@ -7,6 +7,8 @@ import org.springframework.stereotype.Service;
 
 import com.dunkware.spring.cluster.DunkNetComponent;
 import com.dunkware.spring.cluster.anot.ADunkNetService;
+import com.dunkware.xstream.model.stats.EntityStatBulkReq;
+import com.dunkware.xstream.model.stats.EntityStatBulkResp;
 import com.dunkware.xstream.model.stats.EntityStatReq;
 import com.dunkware.xstream.model.stats.EntityStatResp;
 
@@ -24,9 +26,14 @@ public class StreamStatCacheNetService extends DunkNetComponent {
 		System.out.println("okay");
 	}
 	
-	@ADunkNetService(label =  "Entity Stas")
+	@ADunkNetService(label =  "Entity Stat Request")
 	public EntityStatResp entityStatReq(EntityStatReq req) {
 		return cache.entityStat(req);
+	}
+	
+	@ADunkNetService(label = "Entity Stat Bulk Request")
+	public EntityStatBulkResp entityStatBulkReq(EntityStatBulkReq req) { 
+		return cache.entityBulkStat(req);
 	}
 	
 

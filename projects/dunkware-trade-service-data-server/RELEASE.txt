@@ -1,8 +1,0 @@
-1.2.0
- - Major Stream Session Rebuild
- - Cluster Framework 
- - Stable cluster with easier configuration of node discovery 
- 
- 1.3.0
-  - XStream Tick Publisher Session Extension
-  - Yeah pretty much we are just publishing stream data using StreamProto to kafka topic

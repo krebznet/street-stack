@@ -10,6 +10,7 @@ public class EntityStatBulkReq {
 	private int relativeDays;
 	private String target;
 	private String agg;
+	private String stream;
 	private EntityStatReqType type;
 	
 	public List<String> getEntities() {
@@ -48,6 +49,14 @@ public class EntityStatBulkReq {
 	public void setType(EntityStatReqType type) {
 		this.type = type;
 	}
+	public String getStream() {
+		return stream;
+	}
+	public void setStream(String stream) {
+		this.stream = stream;
+	}
+	
+	
 	
 	
 	

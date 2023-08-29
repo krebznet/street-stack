@@ -72,10 +72,12 @@ public class MockXStream implements XStream {
 	private List<String> rowIdentifiers = new ArrayList<String>();
 	
 	
+	
 
 	@Override
 	public void start(XStreamInput input) throws XStreamException {
-		// TODO Auto-generated method stub
+		rowIdentifiers.add("AAPL");
+		rowIdentifiers.add("SPY");
 		
 	}
 

@@ -123,6 +123,7 @@ public class StreamEntityStatCache {
 	
 	
 	EntityStatResp getStat(EntityStatReq req) { 
+		
 		EntityStatRespBuilder builder = EntityStatRespBuilder.newInstance();
 		if(req.getType() == EntityStatReqType.VarHighRelative || req.getType() == EntityStatReqType.VarLowRleative) { 
 			StreamEntityVarStatCache varStats = varCache.get(req.getTarget());

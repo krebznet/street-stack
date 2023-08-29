@@ -35,10 +35,6 @@
 		<lombok.version>1.18.20</lombok.version>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
-		<protoc.version>3.6.1</protoc.version>
-		<protobuf.plugin.version>0.6.1</protobuf.plugin.version>
-		<net-devh-grpc.version>2.0.1.RELEASE</net-devh-grpc.version>
-		<grpc.version>1.32.1</grpc.version>
 		<spring-cloud.version>Hoxton.SR6</spring-cloud.version>
 	</properties>
 

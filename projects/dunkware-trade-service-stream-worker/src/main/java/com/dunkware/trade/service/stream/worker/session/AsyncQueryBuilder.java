@@ -24,13 +24,12 @@ public class AsyncQueryBuilder {
 	
 	public AsyncQueryContext context;
 	
-	public static void main(String[] args) {
-		
-	}
 	
-	public Future<XStreamEntityQuery> buildQuery(XStreamEntityQueryModel model ) {
-		
+	public Future<XStreamEntityQuery> buildQuery(AsyncQueryContext context, XStreamEntityQueryModel model ) {
+			this.context = context;
+			XStreamEntityQueryModel query = new XStreamEntityQueryModel();
 			List<XStreamEntityPredicate> predicates = new ArrayList<XStreamEntityPredicate>();
+			
 			Promise<XStreamEntityQuery> queryPromise = Promise.promise();
 			List<Future<XStreamEntityPredicate>> predicateFutures = new ArrayList<Future<XStreamEntityPredicate>>();
 			for (XStreamCriteriaModel criteria: model.getCriterias()) {

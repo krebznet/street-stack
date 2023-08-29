@@ -8,7 +8,6 @@ import java.time.Duration;
 import java.time.LocalTime;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
-import java.util.concurrent.TimeUnit;
 
 import javax.annotation.PostConstruct;
 
@@ -18,21 +17,19 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.slf4j.Marker;
 import org.slf4j.MarkerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.dunkware.common.mongo.DMongoClient;
 import com.dunkware.common.mongo.DMongoCollection;
 import com.dunkware.common.mongo.DMongoDatabase;
 import com.dunkware.common.util.stopwatch.DStopWatch;
-import com.dunkware.spring.cluster.DunkNet;
-import com.dunkware.spring.cluster.core.request.DunkNetServiceRequest;
+import com.dunkware.xstream.model.stats.EntityStatBulkReq;
+import com.dunkware.xstream.model.stats.EntityStatBulkResp;
 import com.dunkware.xstream.model.stats.EntityStatReq;
 import com.dunkware.xstream.model.stats.EntityStatResp;
 import com.dunkware.xstream.model.stats.EntityStatRespBuilder;
 import com.mongodb.BasicDBObject;
 import com.mongodb.client.MongoCursor;
-import com.mongodb.client.model.Filters;
 
 @Service
 public class StreamStatCacheService {
@@ -161,6 +158,18 @@ public class StreamStatCacheService {
 			throw new Exception("Stream Stat Cache Not Found For Stream " + stream);
 		}
 		return cache;
+	}
+	
+	
+	public EntityStatBulkResp entityBulkStat(EntityStatBulkReq req) { 
+		StreamStatCache cache = streamStats.get(req.getStream());
+		if(cache == null) { 
+			EntityStatBulkResp resp = new EntityStatBulkResp();
+			resp.setSuccess(false);
+			resp.setException("Stream Stats Cache not found for stream " + req.getStream());
+			return resp;
+		}
+		return cache.getBulkStat(req);
 	}
 	
 	public EntityStatResp entityStat(EntityStatReq req) { 

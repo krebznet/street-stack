@@ -1,6 +1,7 @@
 package com.dunkware.trade.service.stream.server.apigen;
 
 import java.io.StringWriter;
+import java.time.DayOfWeek;
 
 import javax.annotation.PostConstruct;
 
@@ -15,7 +16,6 @@ import com.dunkware.trade.service.stream.json.controller.spec.StreamControllerSp
 import com.dunkware.xstream.xproject.bundle.XscriptBundleHelper;
 import com.dunkware.xstream.xproject.model.XScriptBundle;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.google.type.DayOfWeek;
 
 @Service
 @Profile("AddStreamReqGen")
@@ -23,7 +23,7 @@ public class AddStreamReqGen {
 
 	
 	public static void main(String[] args) {
-		System.out.println(DayOfWeek.valueOf(1).toString());
+		
 		
 	}
 	public static final String DEV1 = "/Users/duncankrebs/dunkware/street/dunkware-stream-us-equity";

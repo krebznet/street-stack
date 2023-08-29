@@ -24,7 +24,6 @@ import com.dunkware.common.util.dtime.DTime;
 import com.dunkware.common.util.dtime.DTimeZone;
 import com.dunkware.common.util.events.DEventNode;
 import com.dunkware.common.util.events.anot.ADEventMethod;
-import com.dunkware.common.util.observable.ObservableBeanListConnector;
 import com.dunkware.common.util.time.DunkTime;
 import com.dunkware.spring.cluster.DunkNetNode;
 import com.dunkware.spring.runtime.services.ExecutorService;
@@ -34,7 +33,6 @@ import com.dunkware.trade.service.stream.json.controller.session.StreamSessionSt
 import com.dunkware.trade.service.stream.json.controller.spec.StreamState;
 import com.dunkware.trade.service.stream.server.controller.StreamController;
 import com.dunkware.trade.service.stream.server.controller.session.StreamSession;
-import com.dunkware.trade.service.stream.server.controller.session.StreamSessionEntityScanner;
 import com.dunkware.trade.service.stream.server.controller.session.StreamSessionException;
 import com.dunkware.trade.service.stream.server.controller.session.StreamSessionExtension;
 import com.dunkware.trade.service.stream.server.controller.session.StreamSessionInput;
@@ -52,14 +50,8 @@ import com.dunkware.trade.service.stream.server.controller.session.events.EStrea
 import com.dunkware.trade.service.stream.server.repository.StreamSessionEntity;
 import com.dunkware.trade.service.stream.server.repository.StreamSessionRepo;
 import com.dunkware.trade.tick.model.ticker.TradeTickerSpec;
-import com.dunkware.xstream.api.XStreamRuntimeException;
-import com.dunkware.xstream.model.scanner.SessionEntityScanner;
 import com.dunkware.xstream.xproject.XScriptProject;
 import com.dunkware.xstream.xproject.model.XScriptBundle;
-
-import ca.odell.glazedlists.BasicEventList;
-import ca.odell.glazedlists.GlazedLists;
-import ca.odell.glazedlists.ObservableElementList;
 
 public class StreamSessionImpl implements StreamSession {
 
@@ -329,11 +321,7 @@ public class StreamSessionImpl implements StreamSession {
 		return sessionSpec;
 	}
 
-	@Override
-	public StreamSessionEntityScanner entityScanner(SessionEntityScanner model) throws XStreamRuntimeException {
-		// okay fun ->
-		return null;
-	}
+	
 
 	@Override
 	public StreamSessionNode getEntityNode(String ident) throws Exception {
