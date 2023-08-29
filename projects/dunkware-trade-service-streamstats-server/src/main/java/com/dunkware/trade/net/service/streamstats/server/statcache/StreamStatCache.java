@@ -39,6 +39,12 @@ public class StreamStatCache {
 		List<StreamEntityStatCache> resolvedEntities = new ArrayList<StreamEntityStatCache>();
 		
 		List<String> unresolvedEntities = new ArrayList<String>();
+		if(req.getEntities() == null) { 
+			EntityStatBulkResp resp = new EntityStatBulkResp();
+			resp.setSuccess(false);
+			resp.setException("Entities is null");
+			return resp;
+		}
 		for (String string : req.getEntities()) {
 			StreamEntityStatCache cache  = entities.get(string);
 			if(cache == null) { 
@@ -56,6 +62,7 @@ public class StreamStatCache {
 		statReq.setRelativeDays(req.getRelativeDays());
 		statReq.setStream(req.getTarget());
 		statReq.setType(req.getType());
+		statReq.setTarget(req.getTarget());
 		
 		for (StreamEntityStatCache ent : resolvedEntities) {
 			EntityStatResp resp = ent.getStat(statReq);

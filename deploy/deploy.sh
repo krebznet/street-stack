@@ -3,10 +3,6 @@ cd ${STREET_CLOUD_HOME}
 
 #mvn clean install  -DskipTests
 #echo "Deploying Cluster Service"
-cd ${STREET_CLOUD_HOME}/projects/dunkware-net-cluster-server
-docker build --platform=linux/amd64 -t dunkware-net-cluster-server:latest .
-docker tag dunkware-net-cluster-server:latest testrock1:31000/dunkware-net-cluster-server:latest
-docker push testrock1:31000/dunkware-net-cluster-server:latest
 echo "Deploying Worker Service"
 cd ${STREET_CLOUD_HOME}/projects/dunkware-trade-service-worker-server
 docker build --platform=linux/amd64 -t dunkware-trade-service-worker-server:latest .
