@@ -17,6 +17,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.slf4j.Marker;
 import org.slf4j.MarkerFactory;
+import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Service;
 
 import com.dunkware.common.mongo.DMongoClient;
@@ -30,7 +31,9 @@ import com.dunkware.xstream.model.stats.EntityStatResp;
 import com.dunkware.xstream.model.stats.EntityStatRespBuilder;
 import com.mongodb.BasicDBObject;
 import com.mongodb.client.MongoCursor;
+import com.mongodb.client.model.Filters;
 
+@Profile("SatCache")
 @Service
 public class StreamStatCacheService {
 
@@ -41,7 +44,7 @@ public class StreamStatCacheService {
 	private Logger logger = LoggerFactory.getLogger(getClass());
 
 	private Marker marker = MarkerFactory.getMarker("statscache");
-	
+	private Marker statsload = MarkerFactory.getMarker("statsload");
 	private Map<String,StreamStatCache> streamStats = new ConcurrentHashMap<String,StreamStatCache>();
 
 	private StreamStatCacheServiceBean bean;
@@ -91,7 +94,8 @@ public class StreamStatCacheService {
 				BasicDBObject query = new BasicDBObject();
 				query.put("stream", "us_equity");
 				Bson projection = fields(exclude("vars.id","vars.lowTime","vars.highTime"),excludeId());
-			//	Bson filter = Filters.or(Filters.eq("ident", "AAPL"),Filters.eq("ident", "BAC"),Filters.eq("ident","JPM"));
+				Bson filter = Filters.or(Filters.eq("stream", "us_equity"));
+				//Bson filter = Filters.or(Filters.eq("ident", "AAPL"),Filters.eq("ident", "BAC"),Filters.eq("ident","JPM"));
 				long docSize = mongoEntityStatSessions.get().countDocuments();
 				logger.info(marker, "cache collection size " + docSize);
 				watch.stop();
@@ -100,7 +104,8 @@ public class StreamStatCacheService {
 				bean.setCountTime((long)watch.getCompletedSeconds());
 				watch.start();
 				logger.info(marker, "starting cache query");
-				MongoCursor<Document> docs = mongoEntityStatSessions.get().find(query).batchSize(batchSize).projection(projection).cursor();
+				logger.info(statsload, "Start Stats Load");
+				MongoCursor<Document> docs = mongoEntityStatSessions.get().find(filter).batchSize(500).projection(projection).cursor();
 			
 				int counter = 0;
 				int countme = 0;
@@ -112,19 +117,12 @@ public class StreamStatCacheService {
 					countme++;
 					counter++;
 					loggercounter++;
-					if(loggercounter == 10000) { 
-						logger.info(marker, "loaded 10K cache docs");
+					if(loggercounter == 20000) { 
+						logger.info(marker, "loaded 20,000 cache docs");
 						loggercounter = 0;
 					}
-					if(countme == 1000) { 
-						bean.setLoadBatch(Duration.between(start2, LocalTime.now()).toMillis());
-						start2 = LocalTime.now();
-						double percentDone = (counter * 100) / bean.getDocuments();
-						bean.setCompleted(String.valueOf(percentDone));
-						countme = 0;
-					}
-					bean.setLoadCount(bean.getLoadCount() + 1);
 					
+					try {
 					String streamIdent = doc.getString("stream");
 					StreamStatCache streamCache = streamStats.get(doc.get("stream"));
 					if(streamCache == null) { 
@@ -132,13 +130,18 @@ public class StreamStatCacheService {
 						streamStats.put(streamIdent,streamCache);
 					}
 					
-					streamCache.consumeEntitySession(doc);
+				   streamCache.consumeEntitySession(doc);
+						
+					} catch (Exception e) {
+							logger.error(marker, "exception consuming cache doc " + e.toString());
+					}
 				
 				}
 				long loadTime = Duration.between(start, LocalTime.now()).toSeconds();
 				logger.info(marker,"completed cache query");
 				bean.setLoaded(true);
 				bean.setLoadTime(loadTime);
+				logger.info(statsload, "Cache Load Done");
 			}
 		};
 
