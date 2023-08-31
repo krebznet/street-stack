@@ -37,6 +37,10 @@
  <appender-ref ref="FLUENT" />
 		<appender-ref ref="CONSOLE" additivity="false"/>
 	</logger>
+<logger name="com.dunkware.spring.cluster" level="TRACE">
+ 
+		<appender-ref ref="CONSOLE" additivity="false"/>
+	</logger>
 
 	
 </configuration>

@@ -1,9 +1,61 @@
 package com.dunkware.xstream.model.stats;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 
 public class EntityStatBulkReq {
+	
+	public static class Builder {
+		
+		public static Builder builder(EntityStatReqType type) { 
+			return new Builder(type);
+		}
+		
+		private List<String> entities = new ArrayList<String>();
+		private EntityStatBulkReq req  = new EntityStatBulkReq();
+	
+		private Builder(EntityStatReqType reqType) { 
+			this.req.setType(reqType);
+			this.req.setDate(LocalDate.now().minusDays(4));
+			
+		
+			
+			
+		}
+		
+		public Builder setDate(LocalDate date) { 
+			this.req.setDate(date);;
+			return this;
+		}
+		
+		public Builder setRelativeDays(int days) { 
+			this.req.setRelativeDays(days);
+			return this;
+		}
+		
+		
+		
+		public Builder stream(String ident) { 
+			this.req.setStream(ident);
+			return this;
+		}
+		
+		public Builder target(String target) { 
+			req.setTarget(target);
+			return this;
+		}
+		
+		public Builder addEntity(String ident) { 
+			entities.add(ident);
+			return this;
+		}
+		
+		public EntityStatBulkReq build() {
+			req.setEntities(entities);
+			return req;
+		}
+	}
 
 	private List<String> entities; 
 	private LocalDate date; 

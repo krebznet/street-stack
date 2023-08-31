@@ -1,5 +1,6 @@
 package com.dunkware.xstream.core.search.row;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import com.dunkware.common.util.stopwatch.DStopWatch;
@@ -10,6 +11,7 @@ import com.dunkware.xstream.api.XStreamEntityQueryRun;
 import com.dunkware.xstream.api.XStreamQueryException;
 import com.dunkware.xstream.api.XStreamResolveException;
 import com.dunkware.xstream.core.search.row.criteria.XStreamEntityPredicate;
+import com.dunkware.xstream.core.search.row.criteria.XStreamEntityResolvablePredicate;
 import com.dunkware.xstream.model.query.XStreamEntityQueryModel;
 
 public class XStreamEntityQueryImpl implements XStreamEntityQuery   {
@@ -25,7 +27,12 @@ public class XStreamEntityQueryImpl implements XStreamEntityQuery   {
 
 	@Override
 	public void init(List<XStreamEntityPredicate> predicates, XStream stream, double buildTime) {
-		this.predicates = predicates;
+		XStreamEntityResolvablePredicate resolvable = new XStreamEntityResolvablePredicate();
+		resolvable.init(predicates);
+		List<XStreamEntityPredicate> updated = new ArrayList<XStreamEntityPredicate>();
+		updated.add(resolvable);
+		updated.addAll(predicates);
+		this.predicates = updated;
 		this.buildTime = buildTime;
 		this.stream = stream;
 	}
@@ -43,6 +50,7 @@ public class XStreamEntityQueryImpl implements XStreamEntityQuery   {
 		for (XStreamEntityPredicate pre : predicates) {
 			pre.setQueryRun(run);
 		}
+		
 		//stream.getRows().stream()
 		return run;
 	}

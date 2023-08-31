@@ -10,6 +10,7 @@ import com.dunkware.xstream.core.search.row.XStreamEntityQueryRunImpl;
 import com.dunkware.xstream.core.search.row.value.XStreamEntityQueryValue;
 import com.dunkware.xstream.model.query.XStreamCriteriaCompareFunc;
 import com.dunkware.xstream.model.query.XStreamCriteriaModel;
+import com.dunkware.xstream.model.query.XStreamEntityValueModel;
 import com.dunkware.xstream.model.query.XStreamOperator;
 
 public class XStreamEntityValueComparePredicate implements XStreamEntityPredicate  {
@@ -18,16 +19,16 @@ public class XStreamEntityValueComparePredicate implements XStreamEntityPredicat
 	private XStreamEntityQueryValue value2; 
 	private XStreamCriteriaCompareFunc compareFunc;
 	private XStreamOperator operator; 
-	private double eval; 
+	private Number eval; 
 	
 	private XStreamEntityQueryRunImpl queryRun; 
 	
-	public void init(XStreamEntityQueryValue value1, XStreamEntityQueryValue value2, XStreamCriteriaCompareFunc compareFunc, XStreamOperator operator, Double eval) throws XStreamQueryException { 
+	public void init(XStreamEntityQueryValue value1, XStreamEntityQueryValue value2, XStreamCriteriaModel model) throws XStreamQueryException { 
 		this.value1 = value1; 
 		this.value2 = value2; 
-		this.compareFunc = compareFunc;
-		this.operator = operator;
-		this.eval = eval;
+		this.compareFunc = model.getCompareFunc();
+		this.operator = model.getOperator();
+		this.eval = model.getOperatorValue();
 	}
 
 	public boolean test(XStreamEntity t) {

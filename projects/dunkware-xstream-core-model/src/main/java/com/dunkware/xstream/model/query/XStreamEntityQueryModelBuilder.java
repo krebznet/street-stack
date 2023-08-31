@@ -16,6 +16,36 @@ public class XStreamEntityQueryModelBuilder {
 	}
 	
 	
+	
+	public static XStreamEntityQueryModel currentHistoricalCompare(String var, int days, String entity, boolean greater, Number operand) { 
+		XStreamEntityQueryModel model = new XStreamEntityQueryModel();
+		XStreamCriteriaModel crit = new XStreamCriteriaModel();
+		crit.setType(XStreamEntityCriteriaType.ValueCompare);
+		if(greater)
+			crit.setOperator(XStreamOperator.GreaterThan);
+		crit.setOperator(XStreamOperator.LessThan);
+		crit.setOperatorValue(operand);
+		crit.setValue1(currentVarValue(var));
+		crit.setValue2(varAggHistoryHigh(var, days));
+		model.getCriterias().add(crit);
+		return model;
+	}
+	
+	
+	public static XStreamEntityValueModel varAggHistoryHigh(String var, int days) { 
+		XStreamEntityValueModel model = new XStreamEntityValueModel();
+		model.setType(XStreamEntityValueType.VarHistoricalAgg);
+		model.setVarIdent(var);
+		XStreamHistoryTimeRange t = new XStreamHistoryTimeRange();
+		t.setType(XStreamHIstoryTimeRangeType.RELATIVE);
+		t.setRelativeTimeUnit(XStreamTimeUnit.Days);
+		t.setRealtiveTimeRange(days);
+		model.setHistoricalTimeRange(t);
+		model.setHistoricalAgg(XStreamEntityVarAggHistType.HIGH);
+		return model;
+	}
+	
+	
 
 	public static XStreamEntityQueryModel query(XStreamCriteriaModel... models) {
 		XStreamEntityQueryModel m = new XStreamEntityQueryModel();
@@ -42,6 +72,7 @@ public class XStreamEntityQueryModelBuilder {
 		XStreamEntityValueModel model = new XStreamEntityValueModel();
 		model.setType(XStreamEntityValueType.VarCurrentValue);
 		model.setVarIdent(var);
+		
 		return model;
 	}
 

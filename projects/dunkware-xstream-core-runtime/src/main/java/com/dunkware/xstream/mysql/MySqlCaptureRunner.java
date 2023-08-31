@@ -135,6 +135,7 @@ public class MySqlCaptureRunner implements XStreamEntityListener {
 			st.close();
 			st = con.createStatement();
 			st.execute(signalSql);
+			
 		} catch (Exception e) {
 			throw new Exception("Create Table Sql Execution Exception " + e.toString());
 		} finally {

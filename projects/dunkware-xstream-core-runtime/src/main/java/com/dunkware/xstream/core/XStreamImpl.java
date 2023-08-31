@@ -40,7 +40,7 @@ import io.vertx.core.Future;
 public class XStreamImpl implements XStream {
 
 	private Logger logger = LoggerFactory.getLogger(getClass());
-
+	private Marker stopMarker = MarkerFactory.getMarker("XStreamStop");
 	private volatile ConcurrentHashMap<String, XStreamEntity> rows = new ConcurrentHashMap<String, XStreamEntity>();
 
 	private XStreamStatus status = XStreamStatus.Created;
@@ -69,9 +69,8 @@ public class XStreamImpl implements XStream {
 	private XStreamExecutor executor;
 
 	private String sessionId;
-	
+
 	private List<String> rowIdentifiers = new ArrayList<String>();
-	
 
 	@Override
 	public void start(XStreamInput input) throws XStreamException {
@@ -113,9 +112,7 @@ public class XStreamImpl implements XStream {
 
 		status = XStreamStatus.Running;
 	}
-	
-	
-	
+
 	@Override
 	public List<String> getRowIdentifiers() {
 		return rowIdentifiers;
@@ -126,33 +123,40 @@ public class XStreamImpl implements XStream {
 		return input.getStatProvider();
 	}
 
-
-
 	@Override
 	public void dispose() throws XStreamException {
+
 		for (XStreamExtension ext : extensions) {
+			logger.info(stopMarker, "Ext Predispose Start {} ", ext.getClass().getName());
 			ext.preDispose();
+			logger.info(stopMarker, "Ext Predispose Done {} ", ext.getClass().getName());
 		}
 
 		for (XStreamService service : services) {
+			logger.info(stopMarker, "Service Predispose Start {} ", service.getClass().getName());
 			service.preDispose();
+						logger.info(stopMarker, "Service Predispose Done {} ", service.getClass().getName());
 		}
 
 		for (XStreamExtension ext : extensions) {
+			logger.info(stopMarker, "Ext Dispose Start {} ", ext.getClass().getName());
 			ext.dispose();
+			logger.info(stopMarker, "Ext Dispose Donet {} ", ext.getClass().getName());
 		}
 		for (XStreamService service : services) {
+						logger.info(stopMarker, "Service Dispose Start {} ", service.getClass().getName());
 			service.dispose();
+						logger.info(stopMarker, "Service Dispose Done {} ", service.getClass().getName());
 		}
 
+		logger.info(stopMarker, "Entities Dispose Start");
 		for (XStreamEntity row : rows.values()) {
 			row.dispose();
 		}
-
+		logger.info(stopMarker, "Entities Dispose Done");
+		logger.info(stopMarker, "XStream Disposed");
 		status = XStreamStatus.Disposed;
 	}
-	
-	
 
 	@Override
 	public void cancel() {
@@ -162,17 +166,13 @@ public class XStreamImpl implements XStream {
 		for (XStreamService service : services) {
 			service.cancel();
 		}
-		
+
 		for (XStreamEntity row : rows.values()) {
 			row.dispose();
 		}
 		status = XStreamStatus.Cancelled;
-		
-		
-		
+
 	}
-
-
 
 	@Override
 	public XStreamEntity getRow(String id) {
@@ -335,14 +335,12 @@ public class XStreamImpl implements XStream {
 	public Marker getSessionMarker() {
 		return MarkerFactory.getMarker(sessionId);
 	}
-	
-	
 
 	@Override
 	public XStreamExtension getExtension(Class clazz) throws XStreamException {
 		for (XStreamExtension extension : extensions) {
-			if(clazz.isInstance(extension)) { 
-				return extension; 
+			if (clazz.isInstance(extension)) {
+				return extension;
 			}
 		}
 		throw new XStreamException("Extension Class " + clazz.getName() + " not found");
@@ -402,16 +400,12 @@ public class XStreamImpl implements XStream {
 
 		getExecutor().execute(runner);
 	}
-	
-	
+
 	@Override
 	public Future<XStreamEntityQuery> buildEntityQuery(XStreamEntityQueryModel model) throws XStreamQueryException {
 		return null;
 		// hook this up to the worker query builder
 	}
-
-
-
 
 	/**
 	 * RowListener for routing stream row events to RowListeners registered on the
