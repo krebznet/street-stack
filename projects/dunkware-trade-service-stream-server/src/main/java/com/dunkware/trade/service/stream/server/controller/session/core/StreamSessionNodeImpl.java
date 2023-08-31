@@ -49,7 +49,7 @@ public class StreamSessionNodeImpl implements StreamSessionNode, DunkNetChannelH
 	
 
 	private Logger logger = LoggerFactory.getLogger(getClass());
-
+    private Marker stopMarker = MarkerFactory.getMarker("StreamStop");
 	private XStreamBundle streamBundle;
 
 	private StreamSessionNodeInput input;
@@ -230,7 +230,9 @@ public class StreamSessionNodeImpl implements StreamSessionNode, DunkNetChannelH
 	public void workerStats(StreamSessionWorkerStats stats) {
 		bean.setEntityCount(stats.getRowCount());
 		bean.setSignalCount(stats.getSignalCount());
+		if(stats.getStreamTime() != null)
 		bean.setStreamTime(stats.getStreamTime().toHHmmSS());
+		if(stats.getSystemTime() != null)
 		bean.setSystemTime(stats.getSystemTime().toHHmmSS());
 		bean.setIssueCount(errors.size());
 		bean.setTasksCompleted(stats.getCompletedTaskCount());
@@ -285,7 +287,7 @@ public class StreamSessionNodeImpl implements StreamSessionNode, DunkNetChannelH
 
 	@Override
 	public void stop() {
-		
+			logger.info(stopMarker, "Calling stop on node {} and worker id {}", input.getNode().getId(),input.getWorkerId());
 			if(stoppingInitiazed) { 
 				logger.error(marker, "Stop invoked on node with stop initiazed");
 			}
@@ -293,9 +295,10 @@ public class StreamSessionNodeImpl implements StreamSessionNode, DunkNetChannelH
 			stoppingTimer = DStopWatch.create();
 			stoppingTimer.start();
 			stoppingInitiazed = true;
-			if(state == StreamState.Running == false) { 
+			if(state != StreamState.Running) { 
 				stopping = false;
 				stoppingTimer.stop();
+				logger.info(stopMarker, "Not sending stop service method to worker node because status is not running node {} worker {}",input.getNode().getId(), input.getWorkerId());
 				eventNode.event(new EStreamSessionNodeStopped(this));
 			}
 			if(state == StreamState.Running) { 
@@ -303,8 +306,10 @@ public class StreamSessionNodeImpl implements StreamSessionNode, DunkNetChannelH
 				req.setWorkerId(input.getWorkerId());
 				DunkNetServiceRequest sReq = null;
 				try {
+				    logger.info(stopMarker, "Sending stop message to node {} worker {}",input.getNode().getId(), input.getWorkerId());
 					sReq = channel.service(req);
 				} catch (Exception e) {
+					logger.error(stopMarker, "Exception sending stop message to node {} worker {}",input.getNode().getId(),input.getWorkerId());
 					setState(StreamState.StopException);
 					stopException = "Stop Request Service Failed " + e.toString();
 					stopping = false; 
@@ -323,7 +328,7 @@ public class StreamSessionNodeImpl implements StreamSessionNode, DunkNetChannelH
 						stopException = "Stop Request Timeout";
 						stopping = false; 
 						stoppingTimer.stop();
-						logger.error(marker, "Stream {} Worker {} Node {} Stop Exception Service Request Timeout",
+						logger.error(stopMarker, "Stream {} Worker {} Node {} Stop Exception Service Request Timeout",
 								input.getStream().getName(),input.getWorkerId(),input.getNode().getId());
 						eventNode.event(new EStreamSessionNodeStopException(StreamSessionNodeImpl.this,stopException));
 						return;
@@ -336,7 +341,7 @@ public class StreamSessionNodeImpl implements StreamSessionNode, DunkNetChannelH
 						stopException = "Stop Service Error Response + " + req.getError();
 						stopping = false; 
 						stoppingTimer.stop();
-						logger.error(marker, "Stream {} Worker {} Node {} Stop Exception Service Response Error {}",
+						logger.error(stopMarker, "Stream {} Worker {} Node {} Stop Exception Service Response Error {}",
 								input.getStream().getName(),input.getWorkerId(),input.getNode().getId(),stopException);
 						eventNode.event(new EStreamSessionNodeStopException(StreamSessionNodeImpl.this,stopException));
 						return;
@@ -347,7 +352,7 @@ public class StreamSessionNodeImpl implements StreamSessionNode, DunkNetChannelH
 						setState(StreamState.Stopped);
 						stopping = false; 
 						stoppingTimer.stop();
-						logger.info(marker, "Stream {} Worker {} Stopped On Node {} Duration {}",input.getStream().getName(),
+						logger.info(stopMarker, "Stream {} Worker {} Stopped On Node {} Duration {}",input.getStream().getName(),
 								input.getWorkerId(),input.getNode().getId(),stoppingTimer.getCompletedSeconds());
 						eventNode.event(new EStreamSessionNodeStopped(StreamSessionNodeImpl.this));
 						
@@ -359,6 +364,8 @@ public class StreamSessionNodeImpl implements StreamSessionNode, DunkNetChannelH
 		
 
 	}
+	
+	
 
 	@Override
 	public StreamController getStream() {
@@ -453,7 +460,7 @@ public class StreamSessionNodeImpl implements StreamSessionNode, DunkNetChannelH
 
 	@Override
 	public void channelClose() {
-		// TODO Auto-generated method stub
+		logger.info(startException);
 
 	}
 	
@@ -462,12 +469,12 @@ public class StreamSessionNodeImpl implements StreamSessionNode, DunkNetChannelH
 	public void cancel() {
 		setState(StreamState.RunKill);
 		try {
-			if(channel.isOpen() == false) { 
-				return;
-			}
-			if(!isRunning()) { 
-				return;
-			}
+			//if(channel.isOpen() == false) { 
+			//	return;
+			//}
+			//if(!isRunning()) { 
+			////	return;
+			//}
 			StreamSessionWorkerCancelReq req = new StreamSessionWorkerCancelReq();
 			req.setWorkerId(getWorkerId());
 			channel.serviceBlocking(req);

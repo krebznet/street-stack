@@ -7,7 +7,6 @@
 		<groupId>org.springframework.boot</groupId>
 		<artifactId>spring-boot-starter-parent</artifactId>
 		<version>2.7.1</version>
-
 	</parent>
 	<groupId>com.dunkware.trade.service</groupId>
 	<artifactId>dunkware-trade-service-stream-server</artifactId>
@@ -23,7 +22,7 @@
 		<lombok.version>1.18.20</lombok.version>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
-		
+
 
 	</properties>
 
@@ -52,7 +51,7 @@
 	<dependencies>
 
 		<!-- https://mvnrepository.com/artifact/org.springframework.boot/spring-boot-starter-data-mongodb -->
-	
+
 
 		<dependency>
 			<groupId>com.dunkware.xstream.core</groupId>
@@ -67,7 +66,7 @@
 		</dependency>
 
 
-	
+
 
 		<dependency>
 			<groupId>org.projectlombok</groupId>
@@ -75,7 +74,7 @@
 			<optional>true</optional>
 		</dependency>
 
-		
+
 		<!-- Spring Boot Actuator for Production Ready Features -->
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
@@ -87,15 +86,15 @@
 			<artifactId>micrometer-registry-prometheus</artifactId>
 		</dependency>
 		<!-- Spring Boot Dev Tool - High Performance Development -->
-		
-		 <dependency> 
-		 	<groupId>org.springframework.boot</groupId> 
-		 	<artifactId>spring-boot-starter-data-jpa</artifactId> 
-			</dependency>
+
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-data-jpa</artifactId>
+		</dependency>
 		<!-- <dependency> <groupId>org.springframework.boot</groupId> <artifactId>spring-boot-starter-security</artifactId> 
 			</dependency> -->
 
-		
+
 		<!-- Logging Dependencies -->
 		<dependency>
 			<groupId>ch.qos.logback</groupId>
@@ -118,7 +117,7 @@
 			<artifactId>logback-more-appenders</artifactId>
 			<version>1.8.3</version>
 		</dependency>
-		
+
 		<!-- <dependency> <groupId>io.jsonwebtoken</groupId> <artifactId>jjwt</artifactId> 
 			<version>0.9.1</version> </dependency> -->
 		<dependency>
@@ -130,17 +129,17 @@
 		<!-- <dependency> <groupId>org.flywaydb</groupId> <artifactId>flyway-core</artifactId> 
 			<version>${flyway.version}</version> </dependency> -->
 		<!-- https://mvnrepository.com/artifact/org.springframework/spring-context -->
-<dependency>
-    <groupId>org.springframework</groupId>
-    <artifactId>spring-context</artifactId>
-    
-</dependency>
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-context</artifactId>
+
+		</dependency>
 		<dependency>
 			<groupId>org.mapstruct</groupId>
 			<artifactId>mapstruct</artifactId>
 			<version>${org.mapstruct.version}</version>
 		</dependency>
-	<dependency>
+		<dependency>
 			<groupId>com.dunkware.trade.service</groupId>
 			<artifactId>dunkware-trade-service-stream-worker</artifactId>
 			<version>1.0.0-SNAPSHOT</version>
@@ -148,28 +147,25 @@
 
 		<!-- Spring Boot Starter Dependencies -->
 
-		
-		
-		<dependency>
-			<groupId>org.springframework.boot</groupId>
-			<artifactId>spring-boot-starter-web</artifactId>
-		</dependency>
+
+
+	
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-test</artifactId>
 			<scope>test</scope>
 		</dependency>
-		<!-- Spring Boot Actuator for Production Ready Features-->
+		<!-- Spring Boot Actuator for Production Ready Features -->
 		<dependency>
-		    <groupId>org.springframework.boot</groupId>
-		    <artifactId>spring-boot-starter-actuator</artifactId>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-actuator</artifactId>
 		</dependency>
 		<!-- Prometheus -->
 		<dependency>
-		    <groupId>io.micrometer</groupId>
-		    <artifactId>micrometer-registry-prometheus</artifactId>
+			<groupId>io.micrometer</groupId>
+			<artifactId>micrometer-registry-prometheus</artifactId>
 		</dependency>
-		<!-- Spring Boot Dev Tool - High Performance Development-->
+		<!-- Spring Boot Dev Tool - High Performance Development -->
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-devtools</artifactId>
@@ -208,7 +204,7 @@
 			<version>1.8.3</version>
 		</dependency>
 		<!-- MongoDB Dependencies -->
-		<!-- <dependency> <groupId>org.mongodb</groupId> <artifactId>mongo-java-driver</artifactId>
+		<!-- <dependency> <groupId>org.mongodb</groupId> <artifactId>mongo-java-driver</artifactId> 
 			<version>3.4.1</version> </dependency> -->
 		<!-- Kafka Dependencies -->
 		<dependency>
@@ -217,17 +213,17 @@
 		</dependency>
 
 
-		
+
 		<!-- GRPC Dependencies -->
 
-		
+
 		<dependency>
 			<groupId>javax.annotation</groupId>
 			<artifactId>javax.annotation-api</artifactId>
 
 		</dependency>
 
-		
+
 
 		<!-- https://mvnrepository.com/artifact/com.google.inject/guice -->
 
@@ -237,25 +233,32 @@
 			<artifactId>guice</artifactId>
 			<version>4.2.3</version>
 		</dependency>
-		
+
 		<dependency>
-		
+
 			<groupId>mysql</groupId>
 			<artifactId>mysql-connector-java</artifactId>
-		
+
+		</dependency>
+
+		<dependency>
+			<groupId>com.zaxxer</groupId>
+			<artifactId>HikariCP</artifactId>
+
 		</dependency>
 
 <dependency>
-    <groupId>com.zaxxer</groupId>
-    <artifactId>HikariCP</artifactId>
-
-</dependency>
-
-
-		<dependency>
-			<groupId>org.springframework.boot</groupId>
-			<artifactId>spring-boot-starter-web</artifactId>
-		</dependency>
+        <groupId>org.springframework.boot</groupId>
+        <artifactId>spring-boot-starter-data-rest</artifactId>
+        <exclusions>
+            <!-- Exclude the Tomcat dependency -->
+            <exclusion>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-starter-tomcat</artifactId>
+            </exclusion>
+        </exclusions>
+    </dependency>
+    
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-webflux</artifactId>
@@ -271,14 +274,14 @@
 			<artifactId>reactor-test</artifactId>
 			<scope>test</scope>
 		</dependency>
-		
+
 
 		<!-- GRPC DEPS -->
 
 		<!-- https://mvnrepository.com/artifact/org.springframework.metrics/spring-metrics -->
 
 
-	
+
 		<!-- Dunkware Dependencies -->
 
 		<dependency>
@@ -287,7 +290,7 @@
 			<version>1.3.0-SNAPSHOT</version>
 		</dependency>
 
-		
+
 		<dependency>
 			<groupId>com.dunkware.xstream.core</groupId>
 			<artifactId>dunkware-xstream-core-runtime</artifactId>
@@ -321,7 +324,7 @@
 			<artifactId>dunkware-trade-service-stream-json</artifactId>
 			<version>1.2.0-SNAPSHOT</version>
 		</dependency>
-		
+
 
 		<!-- Metrics/Prometheus -->
 

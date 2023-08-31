@@ -88,9 +88,6 @@ public class StreamController {
 
 	private TradeTickerListSpec tickerList;
 
-	@Value("${net.cluster.server.brokers}")
-	private String kafkaBrokers;
-
 	@Autowired
 	private StreamTickService tickService;
 
@@ -227,8 +224,8 @@ public class StreamController {
 		return scriptProject;
 	}
 
-	public String getKafkaBrokers() {
-		return kafkaBrokers;
+	public String getKafkaBrokers() { 
+		return dunkNet.getConfig().getServerBrokers();
 	}
 
 	public void stopSession() throws StreamSessionException {

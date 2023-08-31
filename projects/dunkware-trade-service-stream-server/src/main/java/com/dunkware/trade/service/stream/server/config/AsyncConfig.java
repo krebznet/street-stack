@@ -31,7 +31,7 @@ public class AsyncConfig implements AsyncConfigurer {
 	        log.debug("Creating Async Task Executor");
 	        ThreadPoolTaskExecutor executor = new ThreadPoolTaskExecutor();
 	        executor.setCorePoolSize(5);
-	        executor.setMaxPoolSize(10);
+	        executor.setMaxPoolSize(325);
 	        executor.setQueueCapacity(25);
 	        return executor;
 	    }
@@ -41,20 +41,7 @@ public class AsyncConfig implements AsyncConfigurer {
 	        return new SimpleAsyncUncaughtExceptionHandler();
 	    }
 
-	    /** Configure async support for Spring MVC. */
-	    @Bean
-	    public WebMvcConfigurer webMvcConfigurerConfigurer(AsyncTaskExecutor taskExecutor, CallableProcessingInterceptor callableProcessingInterceptor) {
-	        return new WebMvcConfigurer() {
-	            @Override
-	            public void configureAsyncSupport(AsyncSupportConfigurer configurer) {
-	                configurer.setDefaultTimeout(360000).setTaskExecutor(taskExecutor);
-	                
-	                configurer.registerCallableInterceptors(callableProcessingInterceptor);
-	                WebMvcConfigurer.super.configureAsyncSupport(configurer);
-	            }
-	        };
-	    }
-
+	  
 	    @Bean
 	    public CallableProcessingInterceptor callableProcessingInterceptor() {
 	        return new TimeoutCallableProcessingInterceptor() {

@@ -2,11 +2,14 @@ package com.dunkware.trade.service.stream.server.blueprint;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.Semaphore;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.slf4j.Marker;
+import org.slf4j.MarkerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 
@@ -21,52 +24,49 @@ import com.dunkware.trade.service.stream.server.repository.StreamBlueprintSignal
 import com.dunkware.trade.service.stream.server.repository.StreamBlueprintSignalRepo;
 import com.dunkware.trade.service.stream.server.repository.StreamBlueprintSignalStatus;
 import com.dunkware.trade.service.stream.server.repository.StreamEntity;
-import com.dunkware.xstream.model.stats.EntityStatBulkReq;
 
 import ca.odell.glazedlists.BasicEventList;
 import ca.odell.glazedlists.GlazedLists;
 import ca.odell.glazedlists.ObservableElementList;
 
-
 public class StreamBlueprint {
-	
+
 	private Logger logger = LoggerFactory.getLogger(getClass());
-	
-	private List<StreamBlueprintSignal> signals;
+	private Marker marker = MarkerFactory.getMarker("streamblueprint");
+	private List<StreamBlueprintSignal> signals = new ArrayList<StreamBlueprintSignal>();
 	private Semaphore signalLock = new Semaphore(1);
-	
+
 	@Autowired
-	private StreamBlueprintSignalRepo signalRepo; 
-	
+	private StreamBlueprintSignalRepo signalRepo;
+
 	@Autowired
 	private ApplicationContext ac;
-	
-	private DEventNode eventNode; 
-	
-	private StreamEntity streamEntity; 
-	
+
+	private DEventNode eventNode;
+
+	private StreamEntity streamEntity;
+
 	private ObservableElementList<StreamBlueprintSignalBean> signalBeans = null;
-	
+
 	private WebStreamSignaltype model;
 	// Thing
-		// symbol
-			// variable
-			// 
-	// version --> Blueprint Version; 
-	
-	// also have the tickers --> 
-	
-	public void init(StreamEntity stream, StreamBlueprintService service) throws Exception  { 
+	// symbol
+	// variable
+	//
+	// version --> Blueprint Version;
+
+	// also have the tickers -->
+
+	public void init(StreamEntity stream, StreamBlueprintService service) throws Exception {
 		signalBeans = new ObservableElementList<StreamBlueprintSignalBean>(
 				GlazedLists.threadSafeList(new BasicEventList<StreamBlueprintSignalBean>()),
 				new ObservableBeanListConnector<StreamBlueprintSignalBean>());
-		this.streamEntity = stream; 
+		this.streamEntity = stream;
 		eventNode = service.getEventNode().createChild(this);
 		eventNode.addEventHandler(this);
-		
-		
+
 		for (StreamBlueprintSignalEntity entity : signalRepo.findAll()) {
-			if(entity.getStreamId() == stream.getId()) { 
+			if (entity.getStreamId() == stream.getId()) {
 				StreamBlueprintSignal signal = new StreamBlueprintSignal();
 				try {
 					model = DJson.getObjectMapper().readValue(entity.getModel(), WebStreamSignaltype.class);
@@ -78,53 +78,58 @@ public class StreamBlueprint {
 					signal.init(entity, this);
 					signals.add(signal);
 					StreamBlueprintSignalBean tb = new StreamBlueprintSignalBean();
-					
-					tb.setCreated(DunkTime.format(entity.getCreated(), DunkTime.YYYY_MM_DD_HH_MM_SS));
-					tb.setName(model.getName());
-					tb.setDescription(model.getDescription());
-					tb.setGroup("Default");
-					tb.setStatus("Active");
-					tb.setId(entity.getId());
-					signalBeans.add(tb);
+					try {
+						tb.setCreated(DunkTime.format(entity.getCreated(), DunkTime.YYYY_MM_DD_HH_MM_SS));
+						tb.setName(model.getName());
+						if (model.getDescription() != null) {
+							tb.setDescription(model.getDescription());
+						} else { 
+							tb.setDescription(model.getName());
+						}
+
+						tb.setGroup("Default");
+						tb.setStatus("Active");
+						tb.setId(entity.getId());
+						signalBeans.add(tb);
+
+					} catch (Exception e) {
+						logger.error(marker, "Exception creating the fuckin bean get it together " + e.toString());
+					}
 				} catch (Exception e) {
 					logger.error("Exception init stream blueprint signal " + e.toString());
 
 				}
 			}
 		}
-		
+
 	}
-	
-	
-	
+
 	public ObservableElementList<StreamBlueprintSignalBean> getSignalBeans() {
 		return signalBeans;
 	}
 
-	
-	public StreamBlueprintSignal getSignal(long id) throws Exception { 
+	public StreamBlueprintSignal getSignal(long id) throws Exception {
 		for (StreamBlueprintSignal sig : signals) {
 			try {
 				signalLock.acquire();
-				if(sig.getEntity().getId()== id) { 
+				if (sig.getEntity().getId() == id) {
 					return sig;
 				}
-				
+
 			} catch (Exception e) {
 				throw new Exception("internal " + e.toString());
-			} finally { 
+			} finally {
 				signalLock.release();
 			}
-			
+
 		}
 		throw new Exception("String signal id " + id + " not found on stream");
-		
+
 	}
 
-
-	public void addSignal(WebStreamSignaltype model) throws Exception { 
+	public void addSignal(WebStreamSignaltype model) throws Exception {
 		for (StreamBlueprintSignal signal : signals) {
-			if(signal.getModel().getName().equalsIgnoreCase(model.getName())) { 
+			if (signal.getModel().getName().equalsIgnoreCase(model.getName())) {
 				throw new Exception("Signal name " + model.getName() + " already exists");
 			}
 		}
@@ -146,41 +151,40 @@ public class StreamBlueprint {
 		try {
 			signal.init(fuck, this);
 			signals.add(signal);
-			
-			signals.add(signal);
+
 			StreamBlueprintSignalBean tb = new StreamBlueprintSignalBean();
-			
+
 			tb.setCreated(DunkTime.format(fuck.getCreated(), DunkTime.YYYY_MM_DD_HH_MM_SS));
 			tb.setName(model.getName());
 			tb.setDescription(model.getDescription());
 			tb.setGroup("Default");
 			tb.setStatus("Active");
 			tb.setId(fuck.getId());
+			logger.info(marker, "Singal bean added");
 			signalBeans.add(tb);
 			eventNode.event(new EStreamBlueprintSignalCreated(this, signal));
 		} catch (Exception e) {
 			logger.error("Exception init stream blueprint signal " + e.toString());
 
 		}
-		
+
 	}
-	
+
 	public DEventNode getEventNode() {
 		return eventNode;
 	}
-	
-	
-	List<StreamBlueprintSignal> getSignals() throws Exception { 
+
+	List<StreamBlueprintSignal> getSignals() throws Exception {
 		try {
 			signalLock.acquire();
-			return signals; 
+			return signals;
 		} catch (Exception e) {
 			logger.error("Exception getting signals " + e.toString());
 			throw e;
-		}finally { 
+		} finally {
 			signalLock.release();
 		}
-		
+
 	}
 
 }

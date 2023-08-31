@@ -1,15 +1,13 @@
 package com.dunkware.trade.service.stream.server.blueprint;
 
-import java.util.ArrayList;
 import java.util.List;
 
-import org.reactivestreams.Subscriber;
-import org.reactivestreams.Subscription;
 import org.slf4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -31,7 +29,8 @@ public class StreamBlueprintWebService {
 	@Autowired
 	private StreamBlueprintService blueprintService; 
 	
-	
+	//| curl -H "Content-Type: application/json" -H "Transfer-Encoding: chunked" -X GET -d @- http://localhost:8086/stream/v1/blueprint/dash/signals?stream=us_equity
+// curl -v -H  "http://localhost:8086/stream/v1/blueprint/dash/signals?stream=us_equity"
 	@Autowired
 	private ExecutorService executorService; 
 	
@@ -39,7 +38,7 @@ public class StreamBlueprintWebService {
     public Flux<List<DataGridUpdate>> blueprintSignals(@RequestParam() String stream) {
 		StreamBlueprint bp = null;
 		try {
-			blueprintService.getBlueprint(stream);
+			bp = blueprintService.getBlueprint(stream);
 			
 		} catch (Exception e) {
 			throw new ResponseStatusException(
@@ -47,53 +46,15 @@ public class StreamBlueprintWebService {
 		}
 		GlazedDataGrid grid = GlazedDataGrid.newInstance(bp.getSignalBeans(),executorService.get(),"getId");
 		Flux<List<DataGridUpdate>> results = grid.getUpdates();
-		results.subscribe(new Subscriber<List<DataGridUpdate>>() {
-			private Subscription sub;
-			@Override
-			public void onSubscribe(Subscription s) {
-				this.sub = s;
-				sub.request(1);;
-			}
-
-			@Override
-			public void onNext(List<DataGridUpdate> t) {
-				try {
-					
-				} catch (Exception e) {
-					logger.error("error on next in bluepritn signal stream" + e.toString());
-				}
-				sub.request(1);
-				
-				
-			}
-
-			@Override
-			public void onError(Throwable t) {
-				sub.cancel();
-				if(logger.isDebugEnabled() ) { 
-					logger.debug("one error dispposing mocked broker list" + t.toString());
-				}
-				//list.dispose();
-			}
-
-			@Override
-			public void onComplete() {
-				sub.cancel();
-				if(logger.isDebugEnabled() ) { 
-					logger.debug("disposing mocked broker list");
-				}
-			//	list.dispose();
-				
-				
-			} 
-			
-		});
+		results.subscribe();
+		grid.sendInserts();
+		
 		return results;
 	
 	}
 	
 	
-	@GetMapping("/stream/v1/blueprint/signal/add")
+	@PostMapping( path = "/stream/v1/blueprint/signal/add")
 	public void addSignalType(@RequestBody WebStreamSignaltype model, @RequestParam String stream) { 
 		StreamBlueprint blueprint = null;
 		try {
