@@ -1,59 +1,59 @@
 package com.dunkware.trade.service.data.model.domain;
 
-import java.time.LocalDateTime;
+import java.time.LocalDate;
+import java.time.LocalTime;
 import java.util.HashMap;
 import java.util.Map;
 
 public class EntitySignal {
 	
-	private int typeid;
-	private int streamId;
-	private int entityId;
+	private int type;
+	private int entity;
+	LocalDate date; 
+	LocalTime time; 
 	
-	private LocalDateTime time;
-	private Map<Integer,Object> vars = new HashMap<Integer,Object>();
-	
-	private String streamIdent;
-	
+	private Map<Integer, Number> varValues = new HashMap<Integer,Number>();
 
-	public int getEntityId() {
-		return entityId;
+	public int getType() {
+		return type;
 	}
-	public void setEntityId(int entityId) {
-		this.entityId = entityId;
+
+	public void setType(int type) {
+		this.type = type;
 	}
-	public LocalDateTime getTime() {
+
+	public int getEntity() {
+		return entity;
+	}
+
+	public void setEntity(int entity) {
+		this.entity = entity;
+	}
+
+	public LocalDate getDate() {
+		return date;
+	}
+
+	public void setDate(LocalDate date) {
+		this.date = date;
+	}
+
+	public LocalTime getTime() {
 		return time;
 	}
-	public void setTime(LocalDateTime time) {
+	public void setTime(LocalTime time) {
 		this.time = time;
 	}
+	public Map<Integer, Number> getVarValues() {
+		return varValues;
+	}
+	public void setVarValues(Map<Integer, Number> varValues) {
+		this.varValues = varValues;
+	}
 	
-	public int getStreamId() {
-		return streamId;
-	}
-	public void setStreamId(int streamId) {
-		this.streamId = streamId;
-	}
-	public Map<Integer, Object> getVars() {
-		return vars;
-	}
-	public void setVars(Map<Integer, Object> vars) {
-		this.vars = vars;
-	}
-	public String getStreamIdent() {
-		return streamIdent;
-	}
-	public void setStreamIdent(String streamIdent) {
-		this.streamIdent = streamIdent;
-	}
-	public int getTypeid() {
-		return typeid;
-	}
-	public void setTypeid(int typeid) {
-		this.typeid = typeid;
-	} 
 	
+
+
 	
 	
 	
