@@ -155,6 +155,12 @@ public class DunkNetImpl implements DunkNet, DKafkaByteHandler2 {
 		return extensions;
 	}
 
+	
+	
+	@Override
+	public void extension(Object extension) throws DunkNetException {
+		extensions.addExtension(extension);
+	}
 
 
 	@Override
@@ -168,9 +174,15 @@ public class DunkNetImpl implements DunkNet, DKafkaByteHandler2 {
 		if(descriptor.getId().equals(getId())) { 
 			return;
 		}
+		if(logger.isTraceEnabled()) { 
+			logger.trace(marker, "Node Ping ID {} Profiles {}",descriptor.getId(),descriptor.getProfiles().toString());
+		}
 		DunkNetNode node = nodes.get(descriptor.getId());
 		if(node == null) { 
 			try {
+				if(logger.isDebugEnabled()) { 
+					logger.debug(marker, "Adding Node {}", descriptor.getId());
+				}
 				node = new DunkNetNodeImpl(this, descriptor);	
 				nodes.put(descriptor.getId(), node);
 				EDunkNodeNodeOnline event = new EDunkNodeNodeOnline(node);
@@ -239,7 +251,7 @@ public class DunkNetImpl implements DunkNet, DKafkaByteHandler2 {
 			}
 		}
 		if(serviceNode == null) { 
-			throw new DunkNetException("No channel handler found on any nodes for input " + payload.getClass().getName());
+			throw new DunkNetException("No handler found on any nodes for input " + payload.getClass().getName());
 		}
 		
 		DunkNetServiceRequest req = getController().nodeServiceRequest(serviceNode, payload);
