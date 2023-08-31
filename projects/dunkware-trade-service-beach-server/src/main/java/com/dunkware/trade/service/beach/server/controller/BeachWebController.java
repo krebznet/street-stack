@@ -48,49 +48,7 @@ public class BeachWebController {
 		//Flux<List<DataGridUpdate>> results = grid.getUpdates();
 		//results = results.subscribeOn(Schedulers.boundedElastic());
 		
-		results.subscribe(new Subscriber<List<DataGridUpdate>>() {
-
-			private Subscription sub;
-			@Override
-			public void onSubscribe(Subscription s) {
-				this.sub = s;
-				sub.request(1);;
-			}
-
-			@Override
-			public void onNext(List<DataGridUpdate> t) {
-				try {
-					logger.debug("on next " + DJson.serialize(t));	
-				} catch (Exception e) {
-					e.printStackTrace();
-					// TODO: handle exception
-				}
-				sub.request(1);
-				
-				
-			}
-
-			@Override
-			public void onError(Throwable t) {
-				sub.cancel();
-				if(logger.isDebugEnabled() ) { 
-					logger.debug("one error dispposing mocked broker list" + t.toString());
-				}
-				//list.dispose();
-			}
-
-			@Override
-			public void onComplete() {
-				sub.cancel();
-				if(logger.isDebugEnabled() ) { 
-					logger.debug("disposing mocked broker list");
-				}
-			//	list.dispose();
-				
-				
-			} 
-			
-		});
+		
 		return results;
 	
 	
@@ -102,50 +60,6 @@ public class BeachWebController {
 		Flux<List<DataGridUpdate>> results = grid.getUpdates();
 		//Flux<List<DataGridUpdate>> results = grid.getUpdates();
 		//results = results.subscribeOn(Schedulers.boundedElastic());
-		
-		results.subscribe(new Subscriber<List<DataGridUpdate>>() {
-
-			private Subscription sub;
-			@Override
-			public void onSubscribe(Subscription s) {
-				this.sub = s;
-				sub.request(1);;
-			}
-
-			@Override
-			public void onNext(List<DataGridUpdate> t) {
-				try {
-					logger.debug("on next " + DJson.serialize(t));	
-				} catch (Exception e) {
-					e.printStackTrace();
-					// TODO: handle exception
-				}
-				sub.request(1);
-				
-				
-			}
-
-			@Override
-			public void onError(Throwable t) {
-				sub.cancel();
-				if(logger.isDebugEnabled() ) { 
-					logger.debug("one error dispposing mocked broker list" + t.toString());
-				}
-				//list.dispose();
-			}
-
-			@Override
-			public void onComplete() {
-				sub.cancel();
-				if(logger.isDebugEnabled() ) { 
-					logger.debug("disposing mocked broker list");
-				}
-			//	list.dispose();
-				
-				
-			} 
-			
-		});
 		return results;
 	
 	
