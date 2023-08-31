@@ -6,13 +6,10 @@ import org.apache.kafka.clients.consumer.ConsumerRecord;
 
 import com.dunkware.common.kafka.consumer.DKafkaByteConsumer2;
 import com.dunkware.common.kafka.consumer.DKafkaByteHandler2;
-import com.dunkware.common.kafka.properties.DKafkaProperties;
 import com.dunkware.common.spec.kafka.DKafkaByteConsumer2Spec;
 import com.dunkware.common.spec.kafka.DKafkaByteConsumer2Spec.ConsumerType;
 import com.dunkware.common.spec.kafka.DKafkaByteConsumer2Spec.OffsetType;
 import com.dunkware.common.spec.kafka.DKafkaByteConsumer2SpecBuilder;
-import com.dunkware.common.util.properties.DProperties;
-import com.dunkware.common.util.properties.DPropertiesBuilder;
 
 public class DKafkaByteConsumer2Test {
 

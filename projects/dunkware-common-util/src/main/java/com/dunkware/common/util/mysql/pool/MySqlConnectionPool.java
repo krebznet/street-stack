@@ -42,7 +42,7 @@ public class MySqlConnectionPool {
 		this.userName = userName;
 		this.password = password;
 	//	databaseUrl = "jdbc:mysql://" + dbHost + ":" + String.valueOf(dbPort) + "/" + dbName + "?rewriteBatchedStatements=true";
-		databaseUrl = "jdbc:mysql://" + dbHost + ":" + String.valueOf(dbPort) + "/" + dbName  + "?verifyServerCertificate=FALSE&serverTimezone=UTC&useSSL=false&rewriteBatchedStatements=true&allowPublicKeyRetrieval=true&autoReconnect=true";
+		databaseUrl = "jdbc:mysql://" + dbHost + ":" + String.valueOf(dbPort) + "/" + dbName  + "?verifyServerCertificate=FALSE&useServerPrepStmts=false&serverTimezone=UTC&useSSL=false&rewriteBatchedStatements=true&allowPublicKeyRetrieval=true&autoReconnect=true";
 		
 		initialize();
 	}

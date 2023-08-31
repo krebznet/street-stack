@@ -49,7 +49,7 @@ public class DKafkaProperties {
 		// if 
 		props.put("max.poll.records", 10000);
 		props.put("enable.auto.commit", "true");
-		props.put("auto.commit.interval.ms", "5000");
+		props.put("auto.commit.interval.ms", "100");
 		
 		
 		
@@ -59,7 +59,7 @@ public class DKafkaProperties {
 		if(props.containsKey(CLIENT_ID_CONFIG) == false) { 
 			props.put(CLIENT_ID_CONFIG, DUUID.randomUUID(5));
 		}
-		props.put("enable.auto.commit", "true");
+		props.put("enable.auto.commit", true);
 		props.put("key.deserializer", "org.apache.kafka.common.serialization.StringDeserializer");
 		props.put("value.deserializer", "org.apache.kafka.common.serialization.ByteArrayDeserializer");
 

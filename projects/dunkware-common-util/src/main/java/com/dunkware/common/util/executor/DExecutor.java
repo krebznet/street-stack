@@ -5,18 +5,20 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
 import java.util.concurrent.LinkedBlockingQueue;
 import java.util.concurrent.ScheduledExecutorService;
-import java.util.concurrent.ScheduledFuture;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicLong;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.slf4j.Marker;
+import org.slf4j.MarkerFactory;
 
 import com.dunkware.common.util.concurrency.ReusableCountDownLatch;
 
 public class DExecutor {
 
 	private Logger logger = LoggerFactory.getLogger(getClass());	
+	private Marker marker = MarkerFactory.getMarker("Executor");
 	private final Queue<Task> awaitingTasks;
 	private final ScheduledExecutorService executor;
 	private final int corePoolSize;
@@ -151,7 +153,7 @@ public class DExecutor {
 					public void run() {
 						if (!taskHandler.isDone()) {
 							taskHandler.cancel(true);
-							logger.error("Executor task time out " + nextTask.task.getClass().getName() );
+							logger.error(marker, "Executor task time out " + nextTask.task.getClass().getName() );
 							completedCount.decrementAndGet();
 							timeoutCount.incrementAndGet();
 							phaser.decrement();
