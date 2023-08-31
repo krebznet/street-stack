@@ -18,6 +18,8 @@ public interface DunkNet {
 	
 	public String getId(); 
 	
+	public void extension(Object extension) throws DunkNetException;
+	
 	public void event(Object payplaod) throws DunkNetException;
 	
 	public DunkNetNodeDescriptor getDescriptor();
