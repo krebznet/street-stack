@@ -148,6 +148,16 @@ public class DunkNetImpl implements DunkNet, DKafkaByteHandler2 {
 		
 		
 	}
+	
+	
+
+
+	@Override
+	public int getNodeCount() {
+		return nodes.values().size();
+	}
+
+
 
 
 	@Override

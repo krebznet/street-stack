@@ -1,10 +1,11 @@
 package com.dunkware.trade.net.data.server.stream.ingestors;
 
-import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
+import com.dunkware.common.util.dtime.DDate;
 import com.dunkware.common.util.dtime.DDateTime;
 import com.dunkware.trade.service.data.json.stream.writer.DataStreamSignalWriterSessionStats;
 import com.dunkware.trade.service.data.model.domain.EntitySignal;
@@ -41,8 +42,8 @@ public class EntitySignalIngestorMetrics {
 		stats.setSignalWriteCount(signalWriteCount);
 		stats.setSignalConsumeCount(signalConsumeCount);
 		if(lastWriteSignal != null) { 
-			LocalDateTime lastTime = lastWriteSignal.getTime();
-			stats.setLastSignalWriteTime(DDateTime.from(lastTime));
+			LocalTime lastTime = lastWriteSignal.getTime();
+			//stats.setLastSignalWriteTime(DDateTime.of(DDate.now(),lastTime);
 		}
 		return stats;
 	}

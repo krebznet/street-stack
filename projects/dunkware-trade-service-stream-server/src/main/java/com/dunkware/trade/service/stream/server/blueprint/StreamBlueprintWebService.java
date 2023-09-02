@@ -31,6 +31,9 @@ public class StreamBlueprintWebService {
 	
 	//| curl -H "Content-Type: application/json" -H "Transfer-Encoding: chunked" -X GET -d @- http://localhost:8086/stream/v1/blueprint/dash/signals?stream=us_equity
 // curl -v -H  "http://localhost:8086/stream/v1/blueprint/dash/signals?stream=us_equity"
+	
+	
+	
 	@Autowired
 	private ExecutorService executorService; 
 	

@@ -14,6 +14,8 @@ import com.dunkware.spring.cluster.protocol.descriptors.DunkNetDescriptors;
 import com.dunkware.spring.cluster.protocol.descriptors.DunkNetEventDescriptor;
 import com.dunkware.spring.cluster.protocol.descriptors.DunkNetServiceDescriptor;
 
+import ch.qos.logback.classic.Logger;
+
 public class DunkNetExtensions {
 
 	private List<DunkNetExtension> extensions = new ArrayList<DunkNetExtension>();
@@ -43,6 +45,24 @@ public class DunkNetExtensions {
 		extensions.add(ext);
 	}
 
+	
+	public boolean hasServiceMethod(Object input) { 
+		try {
+			for (DunkNetExtension ext : extensions) {
+				for (ComponentMethod method : ext.getServices()) {
+					if (method.getParamType().isInstance(input)) {
+						return true;
+					}
+				}
+			}	
+		} catch (Exception e) {
+			return false;
+		}
+		return false;
+	}
+	
+	
+	
 	public ComponentMethod getSerivceMethod(Object input) throws DunkNetException {
 		for (DunkNetExtension ext : extensions) {
 			for (ComponentMethod method : ext.getServices()) {

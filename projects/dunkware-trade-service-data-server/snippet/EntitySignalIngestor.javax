@@ -24,7 +24,7 @@ import com.dunkware.common.util.stopwatch.DStopWatch;
 import com.dunkware.common.util.uuid.DUUID;
 import com.dunkware.trade.net.data.server.config.ServerConfig;
 import com.dunkware.trade.net.data.server.helpers.StreamDataHelper;
-import com.dunkware.trade.net.data.server.stream.StreamInstance;
+import com.dunkware.trade.net.data.server.stream.StreamData;
 import com.dunkware.trade.service.data.json.stream.writer.DataStreamSignalWriterSessionStats;
 import com.dunkware.trade.service.data.model.domain.EntitySignal;
 import com.mongodb.WriteConcern;
@@ -51,7 +51,7 @@ public class EntitySignalIngestor implements DKafkaByteHandler2 {
 	private DTimeZone timeZone;
 
 
-	private StreamInstance streamService;
+	private StreamData streamService;
 
 	private String sessionIdentifier;
 
@@ -63,7 +63,7 @@ public class EntitySignalIngestor implements DKafkaByteHandler2 {
 
 	private Marker marker = MarkerFactory.getMarker("stream.session.capture");
 	
-	public void startSession(StreamInstance streamData) throws Exception {
+	public void startSession(StreamData streamData) throws Exception {
 
 		this.streamService = streamData;
 		
@@ -92,9 +92,7 @@ public class EntitySignalIngestor implements DKafkaByteHandler2 {
 				 signalCollection.createIndex(Indexes.ascending("timestamp"));
 				 signalCollection.createIndex(Indexes.ascending("entity"));
 				 signalCollection.createIndex(Indexes.ascending("type"));
-			} else { 
-				signalCollection = mongoDatabase.getCollection("stream_" + streamData.getDescriptor().getIdentifier() + "_signals");	
-			}
+			} 
 			
 		} catch (Exception e) {
 		
@@ -179,7 +177,7 @@ public class EntitySignalIngestor implements DKafkaByteHandler2 {
 		return writeQueue.size();
 	}
 	
-	public StreamInstance getStreamService() { 
+	public StreamData getStreamService() { 
 		return streamService;
 	}
 	

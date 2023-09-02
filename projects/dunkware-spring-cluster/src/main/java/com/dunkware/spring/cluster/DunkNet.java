@@ -28,6 +28,8 @@ public interface DunkNet {
 	
 	public Future<Object> serviceFuure(Object payload);
 	
+	public int getNodeCount();
+	
 	public DunkNetServiceRequest service(Object payload) throws DunkNetException;
 	
 	public DunkNetChannelRequest channel(Object payload) throws DunkNetException;
