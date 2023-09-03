@@ -247,9 +247,9 @@ public class BeachService {
 			logger.debug("Broker initialized event " + event.getBroker().getIdentifier());
 		}
 		brokers.put(event.getBroker().getId(),event.getBroker());
-		brokerBeans.getReadWriteLock().writeLock().lock();
-		brokerBeans.add(event.getBroker().getBean());
-		brokerBeans.getReadWriteLock().writeLock().unlock();
+		//brokerBeans.getReadWriteLock().writeLock().lock();
+		//brokerBeans.add(event.getBroker().getBean());
+		//brokerBeans.getReadWriteLock().writeLock().unlock();
 	}
 
 	@ADEventMethod

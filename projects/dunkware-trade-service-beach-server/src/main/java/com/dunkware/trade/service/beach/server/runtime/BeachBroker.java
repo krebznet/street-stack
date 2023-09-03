@@ -1,6 +1,5 @@
 package com.dunkware.trade.service.beach.server.runtime;
 
-import java.awt.dnd.DragGestureEvent;
 import java.util.Collection;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
@@ -11,10 +10,11 @@ import javax.transaction.Transactional;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.slf4j.Marker;
+import org.slf4j.MarkerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 
-import com.dunkware.common.util.events.DEvent;
 import com.dunkware.common.util.events.DEventNode;
 import com.dunkware.common.util.events.anot.ADEventMethod;
 import com.dunkware.common.util.helpers.DRandom;
@@ -56,6 +56,7 @@ public class BeachBroker {
 	private ApplicationContext ac;
 
 	private Logger logger = LoggerFactory.getLogger(getClass());
+	private Marker marker = MarkerFactory.getMarker("beachbroker");
 	private BeachBrokerEnt entity;
 	private Map<Long, BeachAccount> accounts = new ConcurrentHashMap<Long, BeachAccount>();
 
@@ -107,6 +108,15 @@ public class BeachBroker {
 		bean.setName(ent.getIdentifier());
 		bean.setStatus(status.name());
 		try {
+			beachService.getBrokerBeans().getReadWriteLock().writeLock().lock();
+			beachService.getBrokerBeans().add(bean);
+		} catch (Exception e) {
+			logger.error(marker, "Exception adding beach broker bean");
+		} finally { 
+			beachService.getBrokerBeans().getReadWriteLock().writeLock().unlock();
+		}
+		
+		try {
 			brokerType = (TwsBrokerType) DJson.getObjectMapper().readValue(entity.getType(), BrokerType.class);
 			brokerType.setConnectionId(DRandom.getRandom(0, 200));
 		} catch (Exception e) {
@@ -131,7 +141,7 @@ public class BeachBroker {
 		}
 		try {
 			broker.connect(brokerType, getEventNode().createChild(broker), runtime.getExecutor());
-			bean.setStatus("Connected Inovked");
+			bean.setStatus("Connected Inovked"); // Connect Loop
 			bean.notifyUpdate();
 		} catch (Exception e) {
 			bean.setStatus("Disconnected");
