@@ -154,6 +154,7 @@ public class DEventNode {
 	 * @param event
 	 */
 	public void event(final DEvent event) {
+		
 		Runnable runnable = new Runnable() {
 
 			@Override
