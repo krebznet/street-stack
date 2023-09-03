@@ -62,7 +62,7 @@ public class TwsConnectorSocket implements EWrapper, EReaderSignal {
 
 	private int _twsConnectionId;
 	
-	ExecutorService _pool;
+//	ExecutorService _pool;
 
 	private List<TwsSocketReader> connectorHandlers = new ArrayList<TwsSocketReader>();
 
@@ -74,7 +74,7 @@ public class TwsConnectorSocket implements EWrapper, EReaderSignal {
 
 
 	public TwsConnectorSocket() {
-		_pool = Executors.newFixedThreadPool(10);
+		//_pool = Executors.newFixedThreadPool(10);
 
 
 	}
@@ -219,7 +219,7 @@ public class TwsConnectorSocket implements EWrapper, EReaderSignal {
 					+ e.toString());
 		}
 		_logger.error("Exception Error " + e.toString());
-		_pool.execute(new Runnable() {
+		broker.getExecutor().execute(new Runnable() {
 
 			@Override
 			public void run() {
@@ -241,7 +241,7 @@ public class TwsConnectorSocket implements EWrapper, EReaderSignal {
 
 	@Override
 	public void error(final String str) {
-		_pool.execute(new Runnable() {
+		broker.getExecutor().execute(new Runnable() {
 
 			@Override
 			public void run() {
@@ -268,7 +268,7 @@ public class TwsConnectorSocket implements EWrapper, EReaderSignal {
 		if (_logger.isDebugEnabled()) {
 			_logger.debug("positionEnd()");
 		}
-		_pool.execute(new Runnable() {
+		broker.getExecutor().execute(new Runnable() {
 
 			@Override
 			public void run() {
@@ -296,7 +296,7 @@ public class TwsConnectorSocket implements EWrapper, EReaderSignal {
 			_logger.debug("accountSummary(" + "," + reqId + "," + account + ","
 					+ tag + "," + value + "," + currency + ")");
 		}
-		_pool.execute(new Runnable() {
+		broker.getExecutor().execute(new Runnable() {
 
 			@Override
 			public void run() {
@@ -323,7 +323,7 @@ public class TwsConnectorSocket implements EWrapper, EReaderSignal {
 		if (_logger.isDebugEnabled()) {
 			_logger.debug("accountSummaryEnd()");
 		}
-		_pool.execute(new Runnable() {
+		broker.getExecutor().execute(new Runnable() {
 
 			@Override
 			public void run() {
@@ -358,7 +358,7 @@ public class TwsConnectorSocket implements EWrapper, EReaderSignal {
 		if (_logger.isDebugEnabled()) {
 			_logger.debug("nextValidId(" + "," + orderId + ")");
 		}
-		_pool.execute(new Runnable() {
+		broker.getExecutor().execute(new Runnable() {
 
 			@Override
 			public void run() {
@@ -387,7 +387,7 @@ public class TwsConnectorSocket implements EWrapper, EReaderSignal {
 			_logger.debug("tickGeneric(" + tickerId + "." + tickType + ","
 					+ value + ")" + " " + TickType.getField(tickType));
 		}
-		_pool.execute(new Runnable() {
+		broker.getExecutor().execute(new Runnable() {
 
 			@Override
 			public void run() {
@@ -415,7 +415,7 @@ public class TwsConnectorSocket implements EWrapper, EReaderSignal {
 			_logger.debug("tickString(" + tickerId + "," + tickType + ","
 					+ value + ")");
 		}
-		_pool.execute(new Runnable() {
+		broker.getExecutor().execute(new Runnable() {
 
 			@Override
 			public void run() {
@@ -455,7 +455,7 @@ public class TwsConnectorSocket implements EWrapper, EReaderSignal {
 					+ impliedFuture + "," + holdDays + "," + futureExpiry + ","
 					+ dividendImpact + "," + dividendsToExpiry + ")");
 		}
-		_pool.execute(new Runnable() {
+		broker.getExecutor().execute(new Runnable() {
 
 			@Override
 			public void run() {
@@ -487,7 +487,7 @@ public class TwsConnectorSocket implements EWrapper, EReaderSignal {
 			_logger.debug("openOrder(" + orderId + "," + contract.symbol()
 					+ "," + order.orderId() + "," + orderState.toString() + ")");
 		}
-		_pool.execute(new Runnable() {
+		broker.getExecutor().execute(new Runnable() {
 
 			@Override
 			public void run() {
@@ -513,7 +513,7 @@ public class TwsConnectorSocket implements EWrapper, EReaderSignal {
 		if (_logger.isDebugEnabled()) {
 			_logger.debug("openOrderEnd()");
 		}
-		_pool.execute(new Runnable() {
+		broker.getExecutor().execute(new Runnable() {
 
 			@Override
 			public void run() {
@@ -541,7 +541,7 @@ public class TwsConnectorSocket implements EWrapper, EReaderSignal {
 			_logger.debug("updateAccountValue(" + key + "," + value + ","
 					+ currency + "," + accountName + ")");
 		}
-		_pool.execute(new Runnable() {
+		broker.getExecutor().execute(new Runnable() {
 
 			@Override
 			public void run() {
@@ -569,7 +569,7 @@ public class TwsConnectorSocket implements EWrapper, EReaderSignal {
 		if (_logger.isDebugEnabled()) {
 			_logger.debug("updateAccountTime(" + timeStamp + ")");
 		}
-		_pool.execute(new Runnable() {
+		broker.getExecutor().execute(new Runnable() {
 
 			@Override
 			public void run() {
@@ -594,7 +594,7 @@ public class TwsConnectorSocket implements EWrapper, EReaderSignal {
 		if (_logger.isDebugEnabled()) {
 			_logger.debug("accountDownloadEnd(" + accountName + ")");
 		}
-		_pool.execute(new Runnable() {
+		broker.getExecutor().execute(new Runnable() {
 
 			@Override
 			public void run() {
@@ -621,7 +621,7 @@ public class TwsConnectorSocket implements EWrapper, EReaderSignal {
 			_logger.debug("contractDetails(" + reqId + ","
 					+ contractDetails.underSymbol() + ")");
 		}
-		_pool.execute(new Runnable() {
+		broker.getExecutor().execute(new Runnable() {
 
 			@Override
 			public void run() {
@@ -649,7 +649,7 @@ public class TwsConnectorSocket implements EWrapper, EReaderSignal {
 			_logger.debug("bondContractDetails(" + reqId + ","
 					+ contractDetails.underSymbol() + ")");
 		}
-		_pool.execute(new Runnable() {
+		broker.getExecutor().execute(new Runnable() {
 
 			@Override
 			public void run() {
@@ -674,7 +674,7 @@ public class TwsConnectorSocket implements EWrapper, EReaderSignal {
 		if (_logger.isDebugEnabled()) {
 			_logger.debug("contractDetailsEnd()");
 		}
-		_pool.execute(new Runnable() {
+		broker.getExecutor().execute(new Runnable() {
 
 			@Override
 			public void run() {
@@ -701,7 +701,7 @@ public class TwsConnectorSocket implements EWrapper, EReaderSignal {
 			_logger.debug("execDetails(" + reqId + "," + contract.symbol()
 					+ "," + execution.orderId() + ")");
 		}
-		_pool.execute(new Runnable() {
+		broker.getExecutor().execute(new Runnable() {
 
 			@Override
 			public void run() {
@@ -726,7 +726,7 @@ public class TwsConnectorSocket implements EWrapper, EReaderSignal {
 		if (_logger.isDebugEnabled()) {
 			_logger.debug("execDetailsEnd(" + reqId + ")");
 		}
-		_pool.execute(new Runnable() {
+		broker.getExecutor().execute(new Runnable() {
 
 			@Override
 			public void run() {
@@ -756,7 +756,7 @@ public class TwsConnectorSocket implements EWrapper, EReaderSignal {
 			_logger.debug("updateNewsBulletin()");
 			
 		}
-		_pool.execute(new Runnable() {
+		broker.getExecutor().execute(new Runnable() {
 
 			@Override
 			public void run() {
@@ -783,7 +783,7 @@ public class TwsConnectorSocket implements EWrapper, EReaderSignal {
 
 			_logger.debug("managedAccounts(" + accountsList +")");
 		}
-		_pool.execute(new Runnable() {
+		broker.getExecutor().execute(new Runnable() {
 
 			@Override
 			public void run() {
@@ -808,7 +808,7 @@ public class TwsConnectorSocket implements EWrapper, EReaderSignal {
 		if (_logger.isDebugEnabled()) {
 			_logger.debug("recieveFA(" + faDataType + "," + xml + ")");
 		}
-		_pool.execute(new Runnable() {
+		broker.getExecutor().execute(new Runnable() {
 
 			@Override
 			public void run() {
@@ -835,7 +835,7 @@ public class TwsConnectorSocket implements EWrapper, EReaderSignal {
 		if (_logger.isDebugEnabled()) {
 			_logger.debug("scannerParameters(" + xml + ")");
 		}
-		_pool.execute(new Runnable() {
+		broker.getExecutor().execute(new Runnable() {
 
 			@Override
 			public void run() {
@@ -864,7 +864,7 @@ public class TwsConnectorSocket implements EWrapper, EReaderSignal {
 		if (_logger.isDebugEnabled()) {
 			_logger.debug("scannerData(" + reqId + "," +  rank + "," +  contractDetails.underSymbol() + "," +  distance + "," +  benchmark + "," +  projection + "," +  legsStr + ")");
 		}
-		_pool.execute(new Runnable() {
+		broker.getExecutor().execute(new Runnable() {
 
 			@Override
 			public void run() {
@@ -890,7 +890,7 @@ public class TwsConnectorSocket implements EWrapper, EReaderSignal {
 		if (_logger.isDebugEnabled()) {
 			_logger.debug("scannerDataEnd(" +  reqId + ")");
 		}
-		_pool.execute(new Runnable() {
+		broker.getExecutor().execute(new Runnable() {
 
 			@Override
 			public void run() {
@@ -917,7 +917,7 @@ public class TwsConnectorSocket implements EWrapper, EReaderSignal {
 		if (_logger.isDebugEnabled()) {
 			_logger.debug("currentTime(" + time + ")");
 		}
-		_pool.execute(new Runnable() {
+		broker.getExecutor().execute(new Runnable() {
 
 			@Override
 			public void run() {
@@ -942,7 +942,7 @@ public class TwsConnectorSocket implements EWrapper, EReaderSignal {
 		if (_logger.isDebugEnabled()) {
 			_logger.debug("fundamentalData(" + reqId + "," +  data + ")");
 		}
-		_pool.execute(new Runnable() {
+		broker.getExecutor().execute(new Runnable() {
 
 			@Override
 			public void run() {
@@ -971,7 +971,7 @@ public class TwsConnectorSocket implements EWrapper, EReaderSignal {
 		if (_logger.isDebugEnabled()) {
 			_logger.debug("tickSnapshotEnd(" + reqId + ")");
 		}
-		_pool.execute(new Runnable() {
+		broker.getExecutor().execute(new Runnable() {
 
 			@Override
 			public void run() {
@@ -997,7 +997,7 @@ public class TwsConnectorSocket implements EWrapper, EReaderSignal {
 		if (_logger.isDebugEnabled()) {
 			_logger.debug("marketDataType(" + reqId + "," +  marketDataType + ")");
 		}
-		_pool.execute(new Runnable() {
+		broker.getExecutor().execute(new Runnable() {
 
 			@Override
 			public void run() {
@@ -1023,7 +1023,7 @@ public class TwsConnectorSocket implements EWrapper, EReaderSignal {
 		if (_logger.isDebugEnabled()) {
 			_logger.debug("comissionReport(" + "comission=" + commissionReport.commission() + "," +  commissionReport.execId() + ")");
 		}
-		_pool.execute(new Runnable() {
+		broker.getExecutor().execute(new Runnable() {
 
 			@Override
 			public void run() {
@@ -1045,7 +1045,7 @@ public class TwsConnectorSocket implements EWrapper, EReaderSignal {
 
 	@Override
 	public void tickPrice(int tickerId, int field, double price, TickAttrib attrib) {
-		_pool.execute(new Runnable() {
+		broker.getExecutor().execute(new Runnable() {
 
 			@Override
 			public void run() {
@@ -1067,7 +1067,7 @@ public class TwsConnectorSocket implements EWrapper, EReaderSignal {
 
 	@Override
 	public void tickSize(int tickerId, int field, Decimal size) {
-		_pool.execute(new Runnable() {
+		broker.getExecutor().execute(new Runnable() {
 
 			@Override
 			public void run() {
@@ -1091,7 +1091,7 @@ public class TwsConnectorSocket implements EWrapper, EReaderSignal {
 	@Override
 	public void tickOptionComputation(int tickerId, int field, int tickAttrib, double impliedVol, double delta,
 			double optPrice, double pvDividend, double gamma, double vega, double theta, double undPrice) {
-		_pool.execute(new Runnable() {
+		broker.getExecutor().execute(new Runnable() {
 
 			@Override
 			public void run() {
@@ -1114,7 +1114,7 @@ public class TwsConnectorSocket implements EWrapper, EReaderSignal {
 	@Override
 	public void orderStatus(int orderId, String status, Decimal filled, Decimal remaining, double avgFillPrice,
 			int permId, int parentId, double lastFillPrice, int clientId, String whyHeld, double mktCapPrice) {
-		_pool.execute(new Runnable() {
+		broker.getExecutor().execute(new Runnable() {
 
 			@Override
 			public void run() {
@@ -1138,7 +1138,7 @@ public class TwsConnectorSocket implements EWrapper, EReaderSignal {
 	@Override
 	public void updatePortfolio(Contract contract, Decimal position, double marketPrice, double marketValue,
 			double averageCost, double unrealizedPNL, double realizedPNL, String accountName) {
-		_pool.execute(new Runnable() {
+		broker.getExecutor().execute(new Runnable() {
 
 			@Override
 			public void run() {
@@ -1161,7 +1161,7 @@ public class TwsConnectorSocket implements EWrapper, EReaderSignal {
 
 	@Override
 	public void updateMktDepth(int tickerId, int position, int operation, int side, double price, Decimal size) {
-		_pool.execute(new Runnable() {
+		broker.getExecutor().execute(new Runnable() {
 
 			@Override
 			public void run() {
@@ -1185,7 +1185,7 @@ public class TwsConnectorSocket implements EWrapper, EReaderSignal {
 	@Override
 	public void updateMktDepthL2(int tickerId, int position, String marketMaker, int operation, int side, double price,
 			Decimal size, boolean isSmartDepth) {
-		_pool.execute(new Runnable() {
+		broker.getExecutor().execute(new Runnable() {
 
 			@Override
 			public void run() {
@@ -1208,7 +1208,7 @@ public class TwsConnectorSocket implements EWrapper, EReaderSignal {
 
 	@Override
 	public void historicalData(int reqId, Bar bar) {
-		_pool.execute(new Runnable() {
+		broker.getExecutor().execute(new Runnable() {
 
 			@Override
 			public void run() {
@@ -1232,7 +1232,7 @@ public class TwsConnectorSocket implements EWrapper, EReaderSignal {
 	@Override
 	public void realtimeBar(int reqId, long time, double open, double high, double low, double close, Decimal volume,
 			Decimal wap, int count) {
-		_pool.execute(new Runnable() {
+		broker.getExecutor().execute(new Runnable() {
 
 			@Override
 			public void run() {
@@ -1255,7 +1255,7 @@ public class TwsConnectorSocket implements EWrapper, EReaderSignal {
 
 	@Override
 	public void deltaNeutralValidation(int reqId, DeltaNeutralContract deltaNeutralContract) {
-		_pool.execute(new Runnable() {
+		broker.getExecutor().execute(new Runnable() {
 
 			@Override
 			public void run() {
@@ -1278,7 +1278,7 @@ public class TwsConnectorSocket implements EWrapper, EReaderSignal {
 
 	@Override
 	public void position(String account, Contract contract, Decimal pos, double avgCost) {
-		_pool.execute(new Runnable() {
+		broker.getExecutor().execute(new Runnable() {
 
 			@Override
 			public void run() {
@@ -1301,7 +1301,7 @@ public class TwsConnectorSocket implements EWrapper, EReaderSignal {
 
 	@Override
 	public void verifyMessageAPI(String apiData) {
-		_pool.execute(new Runnable() {
+		broker.getExecutor().execute(new Runnable() {
 
 			@Override
 			public void run() {
@@ -1324,7 +1324,7 @@ public class TwsConnectorSocket implements EWrapper, EReaderSignal {
 
 	@Override
 	public void verifyCompleted(boolean isSuccessful, String errorText) {
-		_pool.execute(new Runnable() {
+		broker.getExecutor().execute(new Runnable() {
 
 			@Override
 			public void run() {
@@ -1347,7 +1347,7 @@ public class TwsConnectorSocket implements EWrapper, EReaderSignal {
 
 	@Override
 	public void verifyAndAuthMessageAPI(String apiData, String xyzChallenge) {
-		_pool.execute(new Runnable() {
+		broker.getExecutor().execute(new Runnable() {
 
 			@Override
 			public void run() {
@@ -1370,7 +1370,7 @@ public class TwsConnectorSocket implements EWrapper, EReaderSignal {
 
 	@Override
 	public void verifyAndAuthCompleted(boolean isSuccessful, String errorText) {
-		_pool.execute(new Runnable() {
+		broker.getExecutor().execute(new Runnable() {
 
 			@Override
 			public void run() {
@@ -1393,7 +1393,7 @@ public class TwsConnectorSocket implements EWrapper, EReaderSignal {
 
 	@Override
 	public void displayGroupList(int reqId, String groups) {
-		_pool.execute(new Runnable() {
+		broker.getExecutor().execute(new Runnable() {
 
 			@Override
 			public void run() {
@@ -1416,7 +1416,7 @@ public class TwsConnectorSocket implements EWrapper, EReaderSignal {
 
 	@Override
 	public void displayGroupUpdated(int reqId, String contractInfo) {
-		_pool.execute(new Runnable() {
+		broker.getExecutor().execute(new Runnable() {
 
 			@Override
 			public void run() {
@@ -1439,7 +1439,7 @@ public class TwsConnectorSocket implements EWrapper, EReaderSignal {
 
 	@Override
 	public void error(int id, int errorCode, String errorMsg, String advancedOrderRejectJson) {
-		_pool.execute(new Runnable() {
+		broker.getExecutor().execute(new Runnable() {
 
 			@Override
 			public void run() {
@@ -1461,7 +1461,7 @@ public class TwsConnectorSocket implements EWrapper, EReaderSignal {
 
 	@Override
 	public void connectAck() {
-		_pool.execute(new Runnable() {
+		broker.getExecutor().execute(new Runnable() {
 
 			@Override
 			public void run() {
@@ -1485,7 +1485,7 @@ public class TwsConnectorSocket implements EWrapper, EReaderSignal {
 	@Override
 	public void positionMulti(int reqId, String account, String modelCode, Contract contract, Decimal pos,
 			double avgCost) {
-		_pool.execute(new Runnable() {
+		broker.getExecutor().execute(new Runnable() {
 
 			@Override
 			public void run() {
@@ -1508,7 +1508,7 @@ public class TwsConnectorSocket implements EWrapper, EReaderSignal {
 
 	@Override
 	public void positionMultiEnd(int reqId) {
-		_pool.execute(new Runnable() {
+		broker.getExecutor().execute(new Runnable() {
 
 			@Override
 			public void run() {
@@ -1532,7 +1532,7 @@ public class TwsConnectorSocket implements EWrapper, EReaderSignal {
 	@Override
 	public void accountUpdateMulti(int reqId, String account, String modelCode, String key, String value,
 			String currency) {
-		_pool.execute(new Runnable() {
+		broker.getExecutor().execute(new Runnable() {
 
 			@Override
 			public void run() {
@@ -1555,7 +1555,7 @@ public class TwsConnectorSocket implements EWrapper, EReaderSignal {
 
 	@Override
 	public void accountUpdateMultiEnd(int reqId) {
-		_pool.execute(new Runnable() {
+		broker.getExecutor().execute(new Runnable() {
 
 			@Override
 			public void run() {
@@ -1579,7 +1579,7 @@ public class TwsConnectorSocket implements EWrapper, EReaderSignal {
 	@Override
 	public void securityDefinitionOptionalParameter(int reqId, String exchange, int underlyingConId,
 			String tradingClass, String multiplier, Set<String> expirations, Set<Double> strikes) {
-		_pool.execute(new Runnable() {
+		broker.getExecutor().execute(new Runnable() {
 
 			@Override
 			public void run() {
@@ -1602,7 +1602,7 @@ public class TwsConnectorSocket implements EWrapper, EReaderSignal {
 
 	@Override
 	public void securityDefinitionOptionalParameterEnd(int reqId) {
-		_pool.execute(new Runnable() {
+		broker.getExecutor().execute(new Runnable() {
 
 			@Override
 			public void run() {
@@ -1625,7 +1625,7 @@ public class TwsConnectorSocket implements EWrapper, EReaderSignal {
 
 	@Override
 	public void softDollarTiers(int reqId, SoftDollarTier[] tiers) {
-		_pool.execute(new Runnable() {
+		broker.getExecutor().execute(new Runnable() {
 
 			@Override
 			public void run() {
@@ -1648,7 +1648,7 @@ public class TwsConnectorSocket implements EWrapper, EReaderSignal {
 
 	@Override
 	public void familyCodes(FamilyCode[] familyCodes) {
-		_pool.execute(new Runnable() {
+		broker.getExecutor().execute(new Runnable() {
 
 			@Override
 			public void run() {
@@ -1671,7 +1671,7 @@ public class TwsConnectorSocket implements EWrapper, EReaderSignal {
 
 	@Override
 	public void symbolSamples(int reqId, ContractDescription[] contractDescriptions) {
-		_pool.execute(new Runnable() {
+		broker.getExecutor().execute(new Runnable() {
 
 			@Override
 			public void run() {
@@ -1694,7 +1694,7 @@ public class TwsConnectorSocket implements EWrapper, EReaderSignal {
 
 	@Override
 	public void historicalDataEnd(int reqId, String startDateStr, String endDateStr) {
-		_pool.execute(new Runnable() {
+		broker.getExecutor().execute(new Runnable() {
 
 			@Override
 			public void run() {
@@ -1716,7 +1716,7 @@ public class TwsConnectorSocket implements EWrapper, EReaderSignal {
 
 	@Override
 	public void mktDepthExchanges(DepthMktDataDescription[] depthMktDataDescriptions) {
-		_pool.execute(new Runnable() {
+		broker.getExecutor().execute(new Runnable() {
 
 			@Override
 			public void run() {
@@ -1740,7 +1740,7 @@ public class TwsConnectorSocket implements EWrapper, EReaderSignal {
 	@Override
 	public void tickNews(int tickerId, long timeStamp, String providerCode, String articleId, String headline,
 			String extraData) {
-		_pool.execute(new Runnable() {
+		broker.getExecutor().execute(new Runnable() {
 
 			@Override
 			public void run() {
@@ -1763,7 +1763,7 @@ public class TwsConnectorSocket implements EWrapper, EReaderSignal {
 
 	@Override
 	public void smartComponents(int reqId, Map<Integer, Entry<String, Character>> theMap) {
-		_pool.execute(new Runnable() {
+		broker.getExecutor().execute(new Runnable() {
 
 			@Override
 			public void run() {
@@ -1786,7 +1786,7 @@ public class TwsConnectorSocket implements EWrapper, EReaderSignal {
 
 	@Override
 	public void tickReqParams(int tickerId, double minTick, String bboExchange, int snapshotPermissions) {
-		_pool.execute(new Runnable() {
+		broker.getExecutor().execute(new Runnable() {
 
 			@Override
 			public void run() {
@@ -1809,7 +1809,7 @@ public class TwsConnectorSocket implements EWrapper, EReaderSignal {
 
 	@Override
 	public void newsProviders(NewsProvider[] newsProviders) {
-		_pool.execute(new Runnable() {
+		broker.getExecutor().execute(new Runnable() {
 
 			@Override
 			public void run() {
@@ -1832,7 +1832,7 @@ public class TwsConnectorSocket implements EWrapper, EReaderSignal {
 
 	@Override
 	public void newsArticle(int requestId, int articleType, String articleText) {
-		_pool.execute(new Runnable() {
+		broker.getExecutor().execute(new Runnable() {
 
 			@Override
 			public void run() {
@@ -1855,7 +1855,7 @@ public class TwsConnectorSocket implements EWrapper, EReaderSignal {
 
 	@Override
 	public void historicalNews(int requestId, String time, String providerCode, String articleId, String headline) {
-		_pool.execute(new Runnable() {
+		broker.getExecutor().execute(new Runnable() {
 
 			@Override
 			public void run() {
@@ -1878,7 +1878,7 @@ public class TwsConnectorSocket implements EWrapper, EReaderSignal {
 
 	@Override
 	public void historicalNewsEnd(int requestId, boolean hasMore) {
-		_pool.execute(new Runnable() {
+		broker.getExecutor().execute(new Runnable() {
 
 			@Override
 			public void run() {
@@ -1900,7 +1900,7 @@ public class TwsConnectorSocket implements EWrapper, EReaderSignal {
 
 	@Override
 	public void headTimestamp(int reqId, String headTimestamp) {
-		_pool.execute(new Runnable() {
+		broker.getExecutor().execute(new Runnable() {
 
 			@Override
 			public void run() {
@@ -1922,7 +1922,7 @@ public class TwsConnectorSocket implements EWrapper, EReaderSignal {
 
 	@Override
 	public void histogramData(int reqId, List<HistogramEntry> items) {
-		_pool.execute(new Runnable() {
+		broker.getExecutor().execute(new Runnable() {
 
 			@Override
 			public void run() {
@@ -1945,7 +1945,7 @@ public class TwsConnectorSocket implements EWrapper, EReaderSignal {
 
 	@Override
 	public void historicalDataUpdate(int reqId, Bar bar) {
-		_pool.execute(new Runnable() {
+		broker.getExecutor().execute(new Runnable() {
 
 			@Override
 			public void run() {
@@ -1967,7 +1967,7 @@ public class TwsConnectorSocket implements EWrapper, EReaderSignal {
 
 	@Override
 	public void rerouteMktDataReq(int reqId, int conId, String exchange) {
-		_pool.execute(new Runnable() {
+		broker.getExecutor().execute(new Runnable() {
 
 			@Override
 			public void run() {
@@ -1989,7 +1989,7 @@ public class TwsConnectorSocket implements EWrapper, EReaderSignal {
 
 	@Override
 	public void rerouteMktDepthReq(int reqId, int conId, String exchange) {
-		_pool.execute(new Runnable() {
+		broker.getExecutor().execute(new Runnable() {
 
 			@Override
 			public void run() {
@@ -2011,7 +2011,7 @@ public class TwsConnectorSocket implements EWrapper, EReaderSignal {
 
 	@Override
 	public void marketRule(int marketRuleId, PriceIncrement[] priceIncrements) {
-		_pool.execute(new Runnable() {
+		broker.getExecutor().execute(new Runnable() {
 
 			@Override
 			public void run() {
@@ -2033,7 +2033,7 @@ public class TwsConnectorSocket implements EWrapper, EReaderSignal {
 
 	@Override
 	public void pnl(int reqId, double dailyPnL, double unrealizedPnL, double realizedPnL) {
-		_pool.execute(new Runnable() {
+		broker.getExecutor().execute(new Runnable() {
 
 			@Override
 			public void run() {
@@ -2057,7 +2057,7 @@ public class TwsConnectorSocket implements EWrapper, EReaderSignal {
 	@Override
 	public void pnlSingle(int reqId, Decimal pos, double dailyPnL, double unrealizedPnL, double realizedPnL,
 			double value) {
-		_pool.execute(new Runnable() {
+		broker.getExecutor().execute(new Runnable() {
 
 			@Override
 			public void run() {
@@ -2081,7 +2081,7 @@ public class TwsConnectorSocket implements EWrapper, EReaderSignal {
 
 	@Override
 	public void historicalTicks(int reqId, List<HistoricalTick> ticks, boolean done) {
-		_pool.execute(new Runnable() {
+		broker.getExecutor().execute(new Runnable() {
 
 			@Override
 			public void run() {
@@ -2103,7 +2103,7 @@ public class TwsConnectorSocket implements EWrapper, EReaderSignal {
 
 	@Override
 	public void historicalTicksBidAsk(int reqId, List<HistoricalTickBidAsk> ticks, boolean done) {
-		_pool.execute(new Runnable() {
+		broker.getExecutor().execute(new Runnable() {
 
 			@Override
 			public void run() {
@@ -2125,7 +2125,7 @@ public class TwsConnectorSocket implements EWrapper, EReaderSignal {
 
 	@Override
 	public void historicalTicksLast(int reqId, List<HistoricalTickLast> ticks, boolean done) {
-		_pool.execute(new Runnable() {
+		broker.getExecutor().execute(new Runnable() {
 
 			@Override
 			public void run() {
@@ -2148,7 +2148,7 @@ public class TwsConnectorSocket implements EWrapper, EReaderSignal {
 	@Override
 	public void tickByTickAllLast(int reqId, int tickType, long time, double price, Decimal size,
 			TickAttribLast tickAttribLast, String exchange, String specialConditions) {
-		_pool.execute(new Runnable() {
+		broker.getExecutor().execute(new Runnable() {
 
 			@Override
 			public void run() {
@@ -2171,7 +2171,7 @@ public class TwsConnectorSocket implements EWrapper, EReaderSignal {
 	@Override
 	public void tickByTickBidAsk(int reqId, long time, double bidPrice, double askPrice, Decimal bidSize,
 			Decimal askSize, TickAttribBidAsk tickAttribBidAsk) {
-		_pool.execute(new Runnable() {
+		broker.getExecutor().execute(new Runnable() {
 
 			@Override
 			public void run() {
@@ -2193,7 +2193,7 @@ public class TwsConnectorSocket implements EWrapper, EReaderSignal {
 
 	@Override
 	public void tickByTickMidPoint(int reqId, long time, double midPoint) {
-		_pool.execute(new Runnable() {
+		broker.getExecutor().execute(new Runnable() {
 
 			@Override
 			public void run() {
@@ -2215,7 +2215,7 @@ public class TwsConnectorSocket implements EWrapper, EReaderSignal {
 
 	@Override
 	public void orderBound(long orderId, int apiClientId, int apiOrderId) {
-		_pool.execute(new Runnable() {
+		broker.getExecutor().execute(new Runnable() {
 
 			@Override
 			public void run() {
@@ -2237,7 +2237,7 @@ public class TwsConnectorSocket implements EWrapper, EReaderSignal {
 
 	@Override
 	public void completedOrder(Contract contract, TwsOrder order, TwsOrderState orderState) {
-		_pool.execute(new Runnable() {
+		broker.getExecutor().execute(new Runnable() {
 
 			@Override
 			public void run() {
@@ -2259,7 +2259,7 @@ public class TwsConnectorSocket implements EWrapper, EReaderSignal {
 
 	@Override
 	public void completedOrdersEnd() {
-		_pool.execute(new Runnable() {
+		broker.getExecutor().execute(new Runnable() {
 
 			@Override
 			public void run() {
@@ -2282,7 +2282,7 @@ public class TwsConnectorSocket implements EWrapper, EReaderSignal {
 
 	@Override
 	public void replaceFAEnd(int reqId, String text) {
-		_pool.execute(new Runnable() {
+		broker.getExecutor().execute(new Runnable() {
 
 			@Override
 			public void run() {
@@ -2304,7 +2304,7 @@ public class TwsConnectorSocket implements EWrapper, EReaderSignal {
 
 	@Override
 	public void wshMetaData(int reqId, String dataJson) {
-		_pool.execute(new Runnable() {
+		broker.getExecutor().execute(new Runnable() {
 
 			@Override
 			public void run() {
@@ -2327,7 +2327,7 @@ public class TwsConnectorSocket implements EWrapper, EReaderSignal {
 
 	@Override
 	public void wshEventData(int reqId, String dataJson) {
-		_pool.execute(new Runnable() {
+		broker.getExecutor().execute(new Runnable() {
 
 			@Override
 			public void run() {
@@ -2351,7 +2351,7 @@ public class TwsConnectorSocket implements EWrapper, EReaderSignal {
 	@Override
 	public void historicalSchedule(int reqId, String startDateTime, String endDateTime, String timeZone,
 			List<HistoricalSession> sessions) {
-		_pool.execute(new Runnable() {
+		broker.getExecutor().execute(new Runnable() {
 
 			@Override
 			public void run() {
@@ -2374,7 +2374,7 @@ public class TwsConnectorSocket implements EWrapper, EReaderSignal {
 
 	@Override
 	public void userInfo(int reqId, String whiteBrandingId) {
-		_pool.execute(new Runnable() {
+		broker.getExecutor().execute(new Runnable() {
 
 			@Override
 			public void run() {
