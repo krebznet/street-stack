@@ -1,4 +1,4 @@
-package com.dunkware.xstream.core.stats.builders;
+package com.dunkware.xstream.stats.builders;
 
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.atomic.AtomicInteger;
@@ -12,9 +12,9 @@ import com.dunkware.xstream.api.XStreamEntity;
 import com.dunkware.xstream.api.XStreamEntityListener;
 import com.dunkware.xstream.api.XStreamRowSignal;
 import com.dunkware.xstream.api.XStreamEntityVar;
-import com.dunkware.xstream.core.stats.StreamStatsExt;
-import com.dunkware.xstream.model.stats.EntityStatsSession;
 import com.dunkware.xstream.model.stats.EntityStatsSessionVar;
+import com.dunkware.xstream.model.stats.session.EntitySessionStats;
+import com.dunkware.xstream.stats.StreamSessionStatsExt;
 import com.dunkware.xstream.util.XStreamHelper;
 import com.dunkware.xstream.xScript.SignalType;
 
@@ -22,18 +22,18 @@ public class EntityStatsBuilder implements XStreamEntityListener {
 
 	private Logger logger = LoggerFactory.getLogger(getClass());
 
-	public static EntityStatsBuilder newInstance(StreamStatsExt ext, XStreamEntity row) {
+	public static EntityStatsBuilder newInstance(StreamSessionStatsExt ext, XStreamEntity row) {
 		return new EntityStatsBuilder(ext, row);
 	}
 
 	private ConcurrentHashMap<String, EntityVarStatsBuilder> varStats = new ConcurrentHashMap<String, EntityVarStatsBuilder>();
-	private EntityStatsSession stats = new EntityStatsSession();
+	private EntitySessionStats stats = new EntitySessionStats();
 	private XStream stream;
 	private XStreamEntity row;
 	
 	private ConcurrentHashMap<SignalType,AtomicInteger> signalCounts = new ConcurrentHashMap<SignalType,AtomicInteger>();
 
-	private EntityStatsBuilder(StreamStatsExt ext, XStreamEntity row) {
+	private EntityStatsBuilder(StreamSessionStatsExt ext, XStreamEntity row) {
 		this.stream = row.getStream();
 		this.row = row;
 		stats.setDate(row.getStream().getClock().getLocalDateTime().toLocalDate());
@@ -67,7 +67,7 @@ public class EntityStatsBuilder implements XStreamEntityListener {
 	 * This will call dispose on all the var stat builders and also remove its
 	 * listener resources
 	 */
-	public EntityStatsSession dispose() {
+	public EntitySessionStats dispose() {
 		
 		for (EntityVarStatsBuilder builder : varStats.values()) {
 			EntityStatsSessionVar varStats = builder.dispose();

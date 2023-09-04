@@ -123,7 +123,7 @@ public class XStreamRowImpl implements XStreamEntity, XStreamEntityVarListener {
 		}
 
 		DTime time = stream.getClock().getTime();
-		XStreamRowSnapshot snapshot = new XStreamRowSnapshot(getId(), time, varMap);
+		XStreamRowSnapshot snapshot = new XStreamRowSnapshot(getId(),getIdentifier(), time, varMap);
 		return snapshot;
 	}
 

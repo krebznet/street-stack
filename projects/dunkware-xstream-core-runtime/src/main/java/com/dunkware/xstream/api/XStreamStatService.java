@@ -2,10 +2,10 @@ package com.dunkware.xstream.api;
 
 import java.util.concurrent.Future;
 
-import com.dunkware.xstream.model.stats.EntityStatBulkReq;
-import com.dunkware.xstream.model.stats.EntityStatBulkResp;
-import com.dunkware.xstream.model.stats.EntityStatReq;
-import com.dunkware.xstream.model.stats.EntityStatResp;
+import com.dunkware.xstream.model.stats.proto.EntityStatBulkReq;
+import com.dunkware.xstream.model.stats.proto.EntityStatBulkResp;
+import com.dunkware.xstream.model.stats.proto.EntityStatReq;
+import com.dunkware.xstream.model.stats.proto.EntityStatResp;
 
 public interface XStreamStatService {
 	

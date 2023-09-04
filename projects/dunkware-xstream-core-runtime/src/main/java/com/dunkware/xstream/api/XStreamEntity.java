@@ -6,8 +6,6 @@ import java.util.List;
 
 import com.dunkware.common.tick.stream.TickStream;
 import com.dunkware.xstream.model.metrics.XStreamRowMetrics;
-import com.dunkware.xstream.model.stats.EntityStatsSession;
-import com.dunkware.xstream.util.XStreamEntityStatsResolver;
 import com.dunkware.xstream.xScript.SignalType;
 
 public interface XStreamEntity {

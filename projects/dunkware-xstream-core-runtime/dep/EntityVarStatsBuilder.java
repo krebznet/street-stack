@@ -1,4 +1,4 @@
-package com.dunkware.xstream.core.stats.builders;
+package com.dunkware.xstream.stats.builders;
 
 import java.time.LocalDateTime;
 import java.time.LocalTime;
@@ -12,8 +12,8 @@ import com.dunkware.common.util.data.DataHelper;
 import com.dunkware.common.util.dtime.DTimeZone;
 import com.dunkware.xstream.api.XStreamEntityVar;
 import com.dunkware.xstream.api.XStreamEntityVarListener;
-import com.dunkware.xstream.core.stats.StreamStatsHelper;
 import com.dunkware.xstream.model.stats.EntityStatsSessionVar;
+import com.dunkware.xstream.stats.StreamSessionStatsHelper;
 
 public class EntityVarStatsBuilder implements XStreamEntityVarListener {
 
@@ -48,7 +48,7 @@ public class EntityVarStatsBuilder implements XStreamEntityVarListener {
 	 */
 	@Override
 	public void varUpdate(XStreamEntityVar var) {
-		if (!StreamStatsHelper.isNumeric(var)) {
+		if (!StreamSessionStatsHelper.isNumeric(var)) {
 			return;
 		}
 		if (var.getSize() == 0) {

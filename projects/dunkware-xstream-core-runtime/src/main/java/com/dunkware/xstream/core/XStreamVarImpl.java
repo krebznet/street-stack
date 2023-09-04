@@ -10,22 +10,19 @@ import java.util.Collection;
 import java.util.List;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.Semaphore;
-import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.atomic.AtomicLong;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.slf4j.MarkerFactory;
 
-import com.dunkware.xstream.api.XStreamExpression;
-import com.dunkware.xstream.api.XStreamExpressionListener;
-import com.dunkware.xstream.api.XStreamResolveException;
 import com.dunkware.xstream.api.XStreamEntity;
-import com.dunkware.xstream.api.XStreamRuntimeException;
 import com.dunkware.xstream.api.XStreamEntityVar;
 import com.dunkware.xstream.api.XStreamEntityVarListener;
+import com.dunkware.xstream.api.XStreamExpression;
+import com.dunkware.xstream.api.XStreamExpressionListener;
+import com.dunkware.xstream.api.XStreamRuntimeException;
 import com.dunkware.xstream.model.metrics.XStreamVarMetrics;
-import com.dunkware.xstream.model.stats.EntityStatsSessionVar;
 import com.dunkware.xstream.xScript.DataType;
 import com.dunkware.xstream.xScript.VarType;
 

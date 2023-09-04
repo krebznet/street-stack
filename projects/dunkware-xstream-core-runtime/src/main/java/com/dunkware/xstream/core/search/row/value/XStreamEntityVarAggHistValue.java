@@ -6,7 +6,7 @@ import com.dunkware.xstream.api.XStreamQueryException;
 import com.dunkware.xstream.api.XStreamResolveException;
 import com.dunkware.xstream.model.query.XStreamEntityValueModel;
 import com.dunkware.xstream.model.query.XStreamEntityVarAggHistType;
-import com.dunkware.xstream.model.stats.EntityStatBulkResp;
+import com.dunkware.xstream.model.stats.proto.EntityStatBulkResp;
 
 public class XStreamEntityVarAggHistValue implements XStreamEntityQueryValue {
 

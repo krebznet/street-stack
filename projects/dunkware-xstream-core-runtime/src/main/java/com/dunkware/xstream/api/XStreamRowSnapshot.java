@@ -8,11 +8,13 @@ public class XStreamRowSnapshot {
 	
 	public DTime time;
 	private String rowId; 
+	private int numericId;
 	private Map<String,Object> varMap;
 	
-	public XStreamRowSnapshot(String rowId, DTime time, Map<String,Object> varMap) { 
+	public XStreamRowSnapshot(String rowId, int numericId, DTime time, Map<String,Object> varMap) { 
 		this.time = time; 
 		this.rowId = rowId; 
+		this.numericId = numericId;
 		this.varMap = varMap;
 	}
 	
@@ -34,6 +36,16 @@ public class XStreamRowSnapshot {
 	public void setVarMap(Map<String, Object> varMap) {
 		this.varMap = varMap;
 	}
+
+	public int getNumericId() {
+		return numericId;
+	}
+
+	public void setNumericId(int numericId) {
+		this.numericId = numericId;
+	}
+	
+	
 	
 	
 

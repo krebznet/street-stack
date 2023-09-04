@@ -1,10 +1,10 @@
-package com.dunkware.xstream.core.stats;
+package com.dunkware.xstream.stats;
 
 import com.dunkware.xstream.api.XStreamEntityVar;
 import com.dunkware.xstream.xScript.DataType;
 import com.dunkware.xstream.xScript.VarType;
 
-public class StreamStatsHelper {
+public class StreamSessionStatsHelper {
 
 	public static boolean isNumeric(XStreamEntityVar var) {
 		VarType type = var.getVarType();

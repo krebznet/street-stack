@@ -3,10 +3,8 @@ package com.dunkware.xstream.api;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.Collection;
-import java.util.List;
 
 import com.dunkware.xstream.model.metrics.XStreamVarMetrics;
-import com.dunkware.xstream.model.stats.EntityStatsSessionVar;
 import com.dunkware.xstream.xScript.VarType;
 
 public interface XStreamEntityVar {
