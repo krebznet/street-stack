@@ -1,6 +1,6 @@
 package com.dunkware.trade.net.service.streamstats.client.proto;
 
-import com.dunkware.xstream.model.stats.EntityStatResp;
+import com.dunkware.xstream.model.stats.proto.EntityStatResp;
 
 public class StreamStatsResponse {
 	

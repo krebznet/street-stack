@@ -1,12 +1,12 @@
 package com.dunkware.trade.service.stream.json.stats;
 
-import com.dunkware.xstream.model.stats.EntityStatsSession;
+import com.dunkware.xstream.model.stats.session.EntitySessionStats;
 
 public class EntityStatsSessionResp {
 	
 	private boolean resolved = true; 
 	private String resolveError = null;
-	private EntityStatsSession session;
+	private EntitySessionStats session;
 	public boolean isResolved() {
 		return resolved;
 	}
@@ -19,10 +19,10 @@ public class EntityStatsSessionResp {
 	public void setResolveError(String resolveError) {
 		this.resolveError = resolveError;
 	}
-	public EntityStatsSession getSession() {
+	public EntitySessionStats getSession() {
 		return session;
 	}
-	public void setSession(EntityStatsSession session) {
+	public void setSession(EntitySessionStats session) {
 		this.session = session;
 	}
 

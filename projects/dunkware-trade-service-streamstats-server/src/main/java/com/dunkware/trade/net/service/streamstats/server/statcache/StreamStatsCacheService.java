@@ -24,18 +24,18 @@ import com.dunkware.common.mongo.DMongoClient;
 import com.dunkware.common.mongo.DMongoCollection;
 import com.dunkware.common.mongo.DMongoDatabase;
 import com.dunkware.common.util.stopwatch.DStopWatch;
-import com.dunkware.xstream.model.stats.EntityStatBulkReq;
-import com.dunkware.xstream.model.stats.EntityStatBulkResp;
-import com.dunkware.xstream.model.stats.EntityStatReq;
-import com.dunkware.xstream.model.stats.EntityStatResp;
-import com.dunkware.xstream.model.stats.EntityStatRespBuilder;
+import com.dunkware.xstream.model.stats.proto.EntityStatBulkReq;
+import com.dunkware.xstream.model.stats.proto.EntityStatBulkResp;
+import com.dunkware.xstream.model.stats.proto.EntityStatReq;
+import com.dunkware.xstream.model.stats.proto.EntityStatResp;
+import com.dunkware.xstream.model.stats.proto.EntityStatRespBuilder;
 import com.mongodb.BasicDBObject;
 import com.mongodb.client.MongoCursor;
 import com.mongodb.client.model.Filters;
 
 @Profile("SatCache")
 @Service
-public class StreamStatCacheService {
+public class StreamStatsCacheService {
 
 	private DMongoClient mongoClient;
 	private DMongoDatabase mongoDatabase;
@@ -45,9 +45,9 @@ public class StreamStatCacheService {
 
 	private Marker marker = MarkerFactory.getMarker("statscache");
 	private Marker statsload = MarkerFactory.getMarker("statsload");
-	private Map<String,StreamStatCache> streamStats = new ConcurrentHashMap<String,StreamStatCache>();
+	private Map<String,StreamStatsCache> streamStats = new ConcurrentHashMap<String,StreamStatsCache>();
 
-	private StreamStatCacheServiceBean bean;
+	private StreamStatsCacheServiceBean bean;
 	
 	
 	public static void main(String[] args) {
@@ -63,7 +63,7 @@ public class StreamStatCacheService {
 		
 		
 		logger.info("Can you see me?");
-		bean = new StreamStatCacheServiceBean();
+		bean = new StreamStatsCacheServiceBean();
 		bean.setLoaded(false);
 		
 		int batchSize = Integer.valueOf(System.getProperty("batchsize"));
@@ -124,9 +124,9 @@ public class StreamStatCacheService {
 					
 					try {
 					String streamIdent = doc.getString("stream");
-					StreamStatCache streamCache = streamStats.get(doc.get("stream"));
+					StreamStatsCache streamCache = streamStats.get(doc.get("stream"));
 					if(streamCache == null) { 
-						streamCache = new StreamStatCache();
+						streamCache = new StreamStatsCache();
 						streamStats.put(streamIdent,streamCache);
 					}
 					
@@ -150,13 +150,13 @@ public class StreamStatCacheService {
 	}
 	
 	
-	public StreamStatCacheServiceBean getBean() { 
+	public StreamStatsCacheServiceBean getBean() { 
 		return bean;
 	}
 	
 	
-	public StreamStatCache getStream(String stream) throws Exception { 
-		StreamStatCache cache = streamStats.get(stream);
+	public StreamStatsCache getStream(String stream) throws Exception { 
+		StreamStatsCache cache = streamStats.get(stream);
 		if(cache == null) { 
 			throw new Exception("Stream Stat Cache Not Found For Stream " + stream);
 		}
@@ -165,7 +165,7 @@ public class StreamStatCacheService {
 	
 	
 	public EntityStatBulkResp entityBulkStat(EntityStatBulkReq req) { 
-		StreamStatCache cache = streamStats.get(req.getStream());
+		StreamStatsCache cache = streamStats.get(req.getStream());
 		if(cache == null) { 
 			EntityStatBulkResp resp = new EntityStatBulkResp();
 			resp.setSuccess(false);
@@ -176,7 +176,7 @@ public class StreamStatCacheService {
 	}
 	
 	public EntityStatResp entityStat(EntityStatReq req) { 
-		StreamStatCache cache = streamStats.get(req.getStream());
+		StreamStatsCache cache = streamStats.get(req.getStream());
 		if(cache == null) { 
 			return EntityStatRespBuilder.newInstance().exception("Stream stat cache not found for stream " + req.getStream()).build();
 		}

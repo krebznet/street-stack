@@ -16,8 +16,8 @@ import org.springframework.web.server.ResponseStatusException;
 import com.dunkware.common.util.stopwatch.DStopWatch;
 import com.dunkware.spring.cluster.DunkNet;
 import com.dunkware.spring.cluster.core.request.DunkNetServiceRequest;
-import com.dunkware.xstream.model.stats.EntityStatReq;
-import com.dunkware.xstream.model.stats.EntityStatResp;
+import com.dunkware.xstream.model.stats.proto.EntityStatReq;
+import com.dunkware.xstream.model.stats.proto.EntityStatResp;
 
 @RestController
 public class TestController {

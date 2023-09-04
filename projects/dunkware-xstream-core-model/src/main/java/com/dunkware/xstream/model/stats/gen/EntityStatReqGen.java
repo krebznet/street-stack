@@ -3,7 +3,7 @@ package com.dunkware.xstream.model.stats.gen;
 import java.time.LocalDate;
 
 import com.dunkware.common.util.json.DJson;
-import com.dunkware.xstream.model.stats.EntityStatReqBuilder;
+import com.dunkware.xstream.model.stats.proto.EntityStatReqBuilder;
 
 public class EntityStatReqGen {
 

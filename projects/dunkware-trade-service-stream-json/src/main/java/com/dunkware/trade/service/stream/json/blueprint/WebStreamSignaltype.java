@@ -34,6 +34,7 @@ public class WebStreamSignaltype {
 
 				WebStreamSignaltype type = DJson.getObjectMapper().readValue(json, WebStreamSignaltype.class);
 						type.getName();
+						System.out.println(type.toString());
 			} catch (Exception e) {
 				e.printStackTrace();
 				// TODO: handle exception

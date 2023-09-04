@@ -8,7 +8,7 @@ import com.dunkware.common.util.helpers.DRandom;
 import com.dunkware.common.util.uuid.DUUID;
 import com.dunkware.trade.net.service.streamstats.client.proto.StreamStatsRequest;
 import com.dunkware.trade.net.service.streamstats.client.proto.StreamStatsResponse;
-import com.dunkware.xstream.model.stats.EntityStatRespType;
+import com.dunkware.xstream.model.stats.proto.EntityStatRespType;
 
 public class StreamStatsClientTest {
 

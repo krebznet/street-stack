@@ -3,8 +3,8 @@ package com.dunkware.trade.net.service.streamstats.server.apigen;
 import java.time.LocalDate;
 
 import com.dunkware.common.util.json.DJson;
-import com.dunkware.xstream.model.stats.EntityStatReq;
-import com.dunkware.xstream.model.stats.EntityStatReqType;
+import com.dunkware.xstream.model.stats.proto.EntityStatReq;
+import com.dunkware.xstream.model.stats.proto.EntityStatReqType;
 
 public class EntityStatGenReq1 {
 	

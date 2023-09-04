@@ -19,7 +19,7 @@ public class StreamDescriptor {
 	
 	
 	
-	private List<StreamDescriptorEntityVar> entityVars;
+	private List<StreamSignalDescriptor> entityVars;
 
 
 	public int getId() {
@@ -92,12 +92,12 @@ public class StreamDescriptor {
 	}
 
 
-	public List<StreamDescriptorEntityVar> getEntityVars() {
+	public List<StreamSignalDescriptor> getEntityVars() {
 		return entityVars;
 	}
 
 
-	public void setEntityVars(List<StreamDescriptorEntityVar> entityVars) {
+	public void setEntityVars(List<StreamSignalDescriptor> entityVars) {
 		this.entityVars = entityVars;
 	}
 

@@ -14,63 +14,61 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.dunkware.common.util.time.DunkTime;
-import com.dunkware.xstream.model.stats.model.VarStat;
+import com.dunkware.xstream.model.stats.entity.EntityStats;
 
 @Profile("StreamStore")
 @RestController
-public class StreamStatStoreController {
+public class StreamStatsStoreService {
 
 	@Autowired
-	StreamStatStore store;
+	StreamStatsStore store;
 
 	@GetMapping(path = "/streamstats/v1/store/delete")
-	public double deleteVarStats() throws Exception { 
+	public double deleteVarStats() throws Exception {
 		return store.deleteVarStats();
-		
+
 	}
-	
+
 	@GetMapping(path = "/streamstats/v1/store/querytest")
-	public double queryTest() throws Exception { 
-		return store.getVarStatesForDate(LocalDate.parse("230801",DateTimeFormatter.ofPattern(DunkTime.YYMMDD)));
-		
+	public double queryTest() throws Exception {
+		return store.getVarStatesForDate(LocalDate.parse("230801", DateTimeFormatter.ofPattern(DunkTime.YYMMDD)));
+
 	}
-	
-	
+
 	@GetMapping(path = "/streamstats/v1/store/bulktest")
-	public double testBulkInsert(@RequestParam() int entities, @RequestParam() int vars, @RequestParam() int stats, @RequestParam() String from, @RequestParam() String to) throws Exception {
-		
+	public double testBulkInsert(@RequestParam() int entities, @RequestParam() int vars, @RequestParam() int stats,
+			@RequestParam() String from, @RequestParam() String to) throws Exception {
+
 		LocalDate start = LocalDate.parse(from, DateTimeFormatter.ofPattern(DunkTime.YYMMDD));
 		LocalDate end = LocalDate.parse(from, DateTimeFormatter.ofPattern(DunkTime.YYMMDD));
-		
+
 		List<Integer> enttityList = new ArrayList<Integer>();
 		int i = 0;
-		while(i < entities) {
+		while (i < entities) {
 			enttityList.add(Integer.valueOf(i));
 			i++;
 		}
 		i = 0;
 		List<Integer> varList = new ArrayList<Integer>();
-		while(i < vars) { 
+		while (i < vars) {
 			varList.add(Integer.valueOf(i));
 			i++;
 		}
 		List<Integer> statList = new ArrayList<Integer>();
 		i = 0;
-		while(i < stats) { 
+		while (i < stats) {
 			statList.add(Integer.valueOf(i));
 			i++;
 		}
-		List<VarStat> results = StreamStatStoreHelper.creatMockVarStats(start, end, enttityList,varList,statList);
-		
+		List<EntityStats> results = StreamStatsStoreHelper.creatMockVarStats(start, end, enttityList, varList, statList);
+
 		try {
-			
+
 			return store.insertVarStats(results);
-			
-			
+
 		} catch (Exception e) {
 			throw e;
 		}
-		
-		
+
 	}
 }

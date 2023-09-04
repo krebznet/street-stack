@@ -4,8 +4,8 @@ import java.time.LocalDate;
 
 import com.dunkware.common.util.uuid.DUUID;
 import com.dunkware.trade.net.service.streamstats.client.StreamStatsClientException;
-import com.dunkware.xstream.model.stats.EntityStatReq;
-import com.dunkware.xstream.model.stats.EntityStatReqType;
+import com.dunkware.xstream.model.stats.proto.EntityStatReq;
+import com.dunkware.xstream.model.stats.proto.EntityStatReqType;
 
 public class StreamStatsRequest {
 

@@ -10,6 +10,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.slf4j.Marker;
 import org.slf4j.MarkerFactory;
+import org.springframework.beans.factory.annotation.Value;
 
 import com.dunkware.common.util.dtime.DDate;
 import com.dunkware.common.util.dtime.DTimeZone;
@@ -92,6 +93,10 @@ public class StreamSessionNodeImpl implements StreamSessionNode, DunkNetChannelH
 	
 	private boolean startingInitiazed = false; 
 	private boolean stoppingInitiazed = false; 
+	
+	@Value("${dunknet.brokers}")
+	private String kafkaBrokers; 
+	
 
 	@Override
 	public void start(StreamSessionNodeInput input) {
@@ -136,7 +141,7 @@ public class StreamSessionNodeImpl implements StreamSessionNode, DunkNetChannelH
 				startReq.setSessionId(input.getSession().getSessionId());
 				startReq.setStreamBundle(streamBundle);
 				startReq.setNodeId(input.getNode().getId());
-				
+				startReq.setKafkaBrokers(kafkaBrokers);
 
 				try {
 					StreamSessionWorkerCreateReq req = new StreamSessionWorkerCreateReq();

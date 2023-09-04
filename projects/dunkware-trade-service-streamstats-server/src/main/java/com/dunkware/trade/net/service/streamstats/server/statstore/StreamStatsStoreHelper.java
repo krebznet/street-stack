@@ -8,17 +8,15 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
-import org.springframework.stereotype.Service;
-
 import com.dunkware.common.util.helpers.DRandom;
-import com.dunkware.xstream.model.stats.model.VarStat;
+import com.dunkware.xstream.model.stats.entity.EntityStats;
 
 
-public class StreamStatStoreHelper {
+public class StreamStatsStoreHelper {
 	
 	
 	public static String createVarStatTable(String ident) { 
-		return "CREATE TABLE `stream_stats_vars` (\n"
+		return "CREATE TABLE" +  "`" + ident + "_session_var_stats` (\n"
 				+ "  `id` int NOT NULL,\n"
 				+ "  `date` datetime NOT NULL,\n"
 				+ "  `ent` int NOT NULL,\n"
@@ -26,9 +24,14 @@ public class StreamStatStoreHelper {
 				+ "  `stat` int NOT NULL,\n"
 				+ "  `vale` decimal(10,2) NOT NULL,\n"
 				+ "  `time` datetime DEFAULT NULL,\n"
-				+ "  PRIMARY KEY (`date`,`ent`,`id`)\n"
+				+ "  PRIMARY KEY (`date`,`ent`,`id`),\n"
+				+ "  INDEX (`date`, `ent`)\n"
 				+ ") ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;\n"
 				+ "";
+	}
+	
+	public static String varStatTableName(String streamIdent) { 
+		return streamIdent + "_session_var_stats";
 	}
 	
 	public static Time toSqlTime(LocalTime localTime) { 
@@ -53,8 +56,8 @@ public class StreamStatStoreHelper {
 	}
 	
 	
-	public static List<VarStat> creatMockVarStats(LocalDate from, LocalDate to, List<Integer> identities, List<Integer> vars, List<Integer> statTypes) { 
-		List<VarStat> stats = new ArrayList<VarStat>();
+	public static List<EntityStats> creatMockVarStats(LocalDate from, LocalDate to, List<Integer> identities, List<Integer> vars, List<Integer> statTypes) { 
+		List<EntityStats> stats = new ArrayList<EntityStats>();
 		long days = ChronoUnit.DAYS.between(from, to);
 		long index = 0;
 		LocalDate currentDate = from;
@@ -66,16 +69,16 @@ public class StreamStatStoreHelper {
 			for (Integer ident : identities) {
 				for (Integer statType : statTypes) {
 					for (int var : vars) {
-						VarStat stat = new VarStat();
-						stat.setType(statType);
-						stat.setEntity(ident);
-						stat.setValue(var);
-						stat.setDate(currentDate);
-						stat.setValue(rangeMin + (rangeMax - rangeMin) * r.nextDouble());
+						EntityStats stat = new EntityStats();
+					//	stat.setType(statType);
+					//	stat.setEntity(ident);
+						//stat.setValue(var);
+						//stat.setDate(currentDate);
+						//stat.setValue(rangeMin + (rangeMax - rangeMin) * r.nextDouble());
 						int hour = DRandom.getRandom(2, 22);
 						int minute = DRandom.getRandom(3, 59);
 						int second = DRandom.getRandom(0, 59);
-						stat.setTime(LocalTime.of(hour, minute,second));
+						//stat.setTime(LocalTime.of(hour, minute,second));
 						stats.add(stat);
 				}
 			}

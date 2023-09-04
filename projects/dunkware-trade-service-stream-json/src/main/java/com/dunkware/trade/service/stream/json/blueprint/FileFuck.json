@@ -1,59 +1,55 @@
 {
-    "name": "string",
-    "description": "string",
-    "isEnableSymbolThrottle": true,
-    "symbolThrottle": 3,
-    "isEnableSymbolLimit": true,
-    "symbolLimit": 4,
-    "isActiveTimeWindow": true,
-    "afterTime": "time",
-    "beforeTime": "time",
-    "queries": [
-      {
-        "type": "Value Compare Filter",
-        "compareFunction": "Percent Change",
-        "condition": "Greater Than",
-        "conditionValue": 2,
-        "value": [
-          {
-            "valueType": "Field Current Value",
-            "identifier": "SmaRoc1x2min",
-            "timeRange": "",
-            "time": "",
-            "timeUnit": "",
-            "startTime": "",
-            "stopTime": "",
-            "sessionAggregation": "",
-          },
-          {
-            "valueType": "Field Aggregation (Historical)",
-            "identifier": "SmaRoc1x2min",
-            "timeRange": "Relative",
-            "time": 30,
-            "timeUnit": "Days",
-            "startTime": "",
-            "stopTime": "",
-            "sessionAggregation": "High",
-          },
-        ],
-      },
-      {
-        "type": "Value Compare Filter",
-        "compareFunction": "Percent Change",
-        "condition": "Greater Than",
-        "conditionValue": 2,
-        "value": [
-          {
-            "valueType": "Field Current Value",
-            "identifier": "SmaRoc1x2min",
-            "timeRang"e: "",
-            "time": "",
-            "timeUnit": "",
-            "startTime": "",
-            "stopTime": "",
-            "sessionAggregation": "",
-          },
-        ],
-      },
-    ],
-  }
+	"name": "",
+	"description": "",
+	"isEnableSymbolThrottle": false,
+	"symbolThrottle": 0,
+	"isEnableSymbolLimit": false,
+	"symbolLimit": 0,
+	"isActiveTimeWindow": false,
+	"afterTime": "",
+	"beforeTime": "",
+	"queries": [{
+			"type": "Value Compare Filter",
+			"compareFunction": "",
+			"condition": "",
+			"conditionValue": 0,
+			"value": [{
+					"valueType": "",
+					"identifier": "",
+					"timeRange": "",
+					"time": "",
+					"timeUnit": "",
+					"startTime": "",
+					"stopTime": "",
+					"sessionAggregation": ""
+				},
+				{
+					"valueType": "",
+					"identifier": "",
+					"timeRange": "",
+					"time": 0,
+					"timeUnit": "",
+					"startTime": "",
+					"stopTime": "",
+					"sessionAggregation": ""
+				}
+			]
+		},
+		{
+			"type": "Value Filter",
+			"compareFunction": "",
+			"condition": "",
+			"conditionValue": 0,
+			"value": [{
+				"valueType": "",
+				"identifier": "",
+				"timeRange": "",
+				"time": "",
+				"timeUnit": "",
+				"startTime": "",
+				"stopTime": "",
+				"sessionAggregation": ""
+			}]
+		}
+	]
+}

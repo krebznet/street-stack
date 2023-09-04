@@ -17,21 +17,21 @@ import org.slf4j.Marker;
 import org.slf4j.MarkerFactory;
 
 import com.dunkware.common.util.dtime.DDate;
-import com.dunkware.xstream.model.stats.EntityStatReq;
-import com.dunkware.xstream.model.stats.EntityStatReqType;
-import com.dunkware.xstream.model.stats.EntityStatResp;
-import com.dunkware.xstream.model.stats.EntityStatRespBuilder;
 import com.dunkware.xstream.model.stats.EntityStatsAgg;
 import com.dunkware.xstream.model.stats.EntityStatsAggVar;
+import com.dunkware.xstream.model.stats.proto.EntityStatReq;
+import com.dunkware.xstream.model.stats.proto.EntityStatReqType;
+import com.dunkware.xstream.model.stats.proto.EntityStatResp;
+import com.dunkware.xstream.model.stats.proto.EntityStatRespBuilder;
 
-public class StreamEntityStatCache {
+public class StreamEntityStatsCache {
 	
 	private Logger logger = LoggerFactory.getLogger(getClass());
 	private Marker marker = MarkerFactory.getMarker("streamcache");
 	
 	private String ident; 
-	private Map<String,StreamEntityVarStatCache> varCache = new ConcurrentHashMap<String,StreamEntityVarStatCache>();
-	private Map<LocalDate,StreamEntityVarStatCache> varCacheIndex = new ConcurrentHashMap<LocalDate, StreamEntityVarStatCache>();
+	private Map<String,StreamEntityVarStatsSessionCache> varCache = new ConcurrentHashMap<String,StreamEntityVarStatsSessionCache>();
+	private Map<LocalDate,StreamEntityVarStatsSessionCache> varCacheIndex = new ConcurrentHashMap<LocalDate, StreamEntityVarStatsSessionCache>();
 	private EntityStatsAgg agg; 
 	private boolean aggInitialized = false;
 	
@@ -50,7 +50,7 @@ public class StreamEntityStatCache {
 	
 	public EntityStatsAgg getAgg() {
 		List<EntityStatsAggVar> varAggs = new ArrayList<EntityStatsAggVar>();
-		for (StreamEntityVarStatCache var : varCache.values()) {
+		for (StreamEntityVarStatsSessionCache var : varCache.values()) {
 			varAggs.add(var.getAgg());
 		}
 		agg.setVars(varAggs);
@@ -58,8 +58,8 @@ public class StreamEntityStatCache {
 	}
 	
 	
-	public StreamEntityVarStatCache getVar(String ident) throws Exception { 
-		StreamEntityVarStatCache var = varCache.get(ident);
+	public StreamEntityVarStatsSessionCache getVar(String ident) throws Exception { 
+		StreamEntityVarStatsSessionCache var = varCache.get(ident);
 		if(var == null) { 
 			throw new Exception("Stream Var Not Found " + ident);
 		}
@@ -108,9 +108,9 @@ public class StreamEntityStatCache {
 			if(varNames.contains(ident)) { 
 			
 			}
-			StreamEntityVarStatCache statCache = varCache.get(ident);
+			StreamEntityVarStatsSessionCache statCache = varCache.get(ident);
 			if(statCache == null) { 
-				statCache = new StreamEntityVarStatCache(ident);
+				statCache = new StreamEntityVarStatsSessionCache(ident);
 				varCache.put(ident, statCache);
 				varCacheIndex.put(hmm, statCache);
 			}
@@ -126,13 +126,13 @@ public class StreamEntityStatCache {
 		
 		EntityStatRespBuilder builder = EntityStatRespBuilder.newInstance();
 		if(req.getType() == EntityStatReqType.VarHighRelative || req.getType() == EntityStatReqType.VarLowRleative) { 
-			StreamEntityVarStatCache varStats = varCache.get(req.getTarget());
+			StreamEntityVarStatsSessionCache varStats = varCache.get(req.getTarget());
 			if(varStats == null) { 
 				return builder.exception("Entity variable " + req.getTarget() + " not found").build();
 			}
 			if(req.getType() == EntityStatReqType.VarHighRelative) {
 				try {
-					StreamEntityVarSession session = varStats.resolveRelativeHigh(DDate.from(req.getDate()), 
+					StreamEntityVarStatsSession session = varStats.resolveRelativeHigh(DDate.from(req.getDate()), 
 							req.getRelativeDays());
 					return builder.resolved(session.getHigh(), session.getDate(), session.getHighTIme()).build();
 				} catch (StreamStatResolveException e) {

@@ -9,18 +9,18 @@ import org.springframework.stereotype.Service;
 import com.dunkware.spring.cluster.DunkNet;
 import com.dunkware.spring.cluster.DunkNetComponent;
 import com.dunkware.spring.cluster.anot.ADunkNetService;
-import com.dunkware.xstream.model.stats.EntityStatBulkReq;
-import com.dunkware.xstream.model.stats.EntityStatBulkResp;
-import com.dunkware.xstream.model.stats.EntityStatReq;
-import com.dunkware.xstream.model.stats.EntityStatResp;
+import com.dunkware.xstream.model.stats.proto.EntityStatBulkReq;
+import com.dunkware.xstream.model.stats.proto.EntityStatBulkResp;
+import com.dunkware.xstream.model.stats.proto.EntityStatReq;
+import com.dunkware.xstream.model.stats.proto.EntityStatResp;
 
 @Profile("StatCache")
 @Service
-public class StreamStatCacheNetService extends DunkNetComponent {
+public class StreamStatsCacheNetService extends DunkNetComponent {
 	
 	
 	@Autowired
-	private StreamStatCacheService cache;
+	private StreamStatsCacheService cache;
 	
 	@Autowired
 	DunkNet dunkNet;

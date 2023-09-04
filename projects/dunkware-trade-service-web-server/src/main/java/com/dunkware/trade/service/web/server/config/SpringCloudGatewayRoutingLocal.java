@@ -8,7 +8,6 @@ import org.springframework.context.annotation.Profile;
 import org.springframework.web.bind.annotation.CrossOrigin;
 
 @Configuration
-@CrossOrigin("*")
 @Profile("local")
 public class SpringCloudGatewayRoutingLocal {
 

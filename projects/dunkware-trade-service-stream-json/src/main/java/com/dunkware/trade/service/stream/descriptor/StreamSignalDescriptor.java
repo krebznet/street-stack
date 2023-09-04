@@ -2,7 +2,7 @@ package com.dunkware.trade.service.stream.descriptor;
 
 import com.dunkware.common.util.data.DataType;
 
-public class StreamDescriptorEntityVar {
+public class StreamSignalDescriptor {
 
 	private int id; 
 	private String identifier; 

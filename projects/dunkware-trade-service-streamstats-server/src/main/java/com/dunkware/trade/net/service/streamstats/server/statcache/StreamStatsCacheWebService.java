@@ -9,18 +9,18 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.dunkware.xstream.model.stats.EntityStatReq;
-import com.dunkware.xstream.model.stats.EntityStatResp;
 import com.dunkware.xstream.model.stats.EntityStatsAgg;
 import com.dunkware.xstream.model.stats.EntityStatsAggVar;
+import com.dunkware.xstream.model.stats.proto.EntityStatReq;
+import com.dunkware.xstream.model.stats.proto.EntityStatResp;
 
 @Profile("StatCache")
 @RestController
-public class StreamStatCacheWebService {
+public class StreamStatsCacheWebService {
 
 	
 	@Autowired
-	private StreamStatCacheService cacheService;
+	private StreamStatsCacheService cacheService;
 	
 	
 	@PostMapping(path = "/streamstats/v1/entitystat")
@@ -47,7 +47,7 @@ public class StreamStatCacheWebService {
 	}
 	
 	@GetMapping(path = "/streamstats/v1/service/stats")
-	public @ResponseBody() StreamStatCacheServiceBean serviceBean() { 
+	public @ResponseBody() StreamStatsCacheServiceBean serviceBean() { 
 		return cacheService.getBean();
 	}
 }

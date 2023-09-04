@@ -2,9 +2,9 @@ package com.dunkware.xstream.model.stats.comparator;
 
 import java.util.Comparator;
 
-import com.dunkware.xstream.model.stats.EntityStatsSession;
+import com.dunkware.xstream.model.stats.session.EntitySessionStats;
 
-public class EntityStatsSessionDateComparator implements Comparator<EntityStatsSession> {
+public class EntityStatsSessionDateComparator implements Comparator<EntitySessionStats> {
 
 	private static EntityStatsSessionDateComparator instance = null;
 	
@@ -16,7 +16,7 @@ public class EntityStatsSessionDateComparator implements Comparator<EntityStatsS
 	}
 	
 	@Override
-	public int compare(EntityStatsSession o1, EntityStatsSession o2) {
+	public int compare(EntitySessionStats o1, EntitySessionStats o2) {
 		if(o1.getDate().isEqual(o2.getDate())) { 
 			return 0;
 		}

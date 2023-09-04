@@ -8,27 +8,27 @@ import java.util.concurrent.ConcurrentHashMap;
 
 import org.bson.Document;
 
-import com.dunkware.xstream.model.stats.EntityStatBulkReq;
-import com.dunkware.xstream.model.stats.EntityStatBulkResp;
-import com.dunkware.xstream.model.stats.EntityStatReq;
-import com.dunkware.xstream.model.stats.EntityStatResp;
-import com.dunkware.xstream.model.stats.EntityStatRespBuilder;
-import com.dunkware.xstream.model.stats.EntityStatRespType;
+import com.dunkware.xstream.model.stats.proto.EntityStatBulkReq;
+import com.dunkware.xstream.model.stats.proto.EntityStatBulkResp;
+import com.dunkware.xstream.model.stats.proto.EntityStatReq;
+import com.dunkware.xstream.model.stats.proto.EntityStatResp;
+import com.dunkware.xstream.model.stats.proto.EntityStatRespBuilder;
+import com.dunkware.xstream.model.stats.proto.EntityStatRespType;
 
-public class StreamStatCache {
+public class StreamStatsCache {
 	
 	private String stream; 
 	
-	private Map<String,StreamEntityStatCache> entities = new ConcurrentHashMap<String,StreamEntityStatCache>();
+	private Map<String,StreamEntityStatsCache> entities = new ConcurrentHashMap<String,StreamEntityStatsCache>();
 	
 	public void init(String stream) { 
 		this.stream = stream;
 	}
 	
 	public void consumeEntitySession(Document document) { 
-		StreamEntityStatCache entityCache = entities.get(document.getString("ident"));
+		StreamEntityStatsCache entityCache = entities.get(document.getString("ident"));
 		if(entityCache == null) { 
-			entityCache = new StreamEntityStatCache();
+			entityCache = new StreamEntityStatsCache();
 			entityCache.init(document.getString("ident"));
 			entities.put(entityCache.getIdent(), entityCache);
 		}
@@ -36,7 +36,7 @@ public class StreamStatCache {
 	}
 	
 	public EntityStatBulkResp getBulkStat(EntityStatBulkReq req) {
-		List<StreamEntityStatCache> resolvedEntities = new ArrayList<StreamEntityStatCache>();
+		List<StreamEntityStatsCache> resolvedEntities = new ArrayList<StreamEntityStatsCache>();
 		
 		List<String> unresolvedEntities = new ArrayList<String>();
 		if(req.getEntities() == null) { 
@@ -46,7 +46,7 @@ public class StreamStatCache {
 			return resp;
 		}
 		for (String string : req.getEntities()) {
-			StreamEntityStatCache cache  = entities.get(string);
+			StreamEntityStatsCache cache  = entities.get(string);
 			if(cache == null) { 
 				unresolvedEntities.add(string);
 			} else {
@@ -64,7 +64,7 @@ public class StreamStatCache {
 		statReq.setType(req.getType());
 		statReq.setTarget(req.getTarget());
 		
-		for (StreamEntityStatCache ent : resolvedEntities) {
+		for (StreamEntityStatsCache ent : resolvedEntities) {
 			EntityStatResp resp = ent.getStat(statReq);
 			if(resp.getType() == EntityStatRespType.Exception) { 
 				statExceptions.put(ent.getIdent(), resp.getException());
@@ -90,15 +90,15 @@ public class StreamStatCache {
 	
 	public EntityStatResp getStat(EntityStatReq req) {
 		EntityStatRespBuilder builder = EntityStatRespBuilder.newInstance();
-		StreamEntityStatCache ent = entities.get(req.getEntity());
+		StreamEntityStatsCache ent = entities.get(req.getEntity());
 		if(ent == null) { 
 			return builder.exception("Entity " + req.getTarget() + " not found on stream " + stream).build();
 		}
 		return ent.getStat(req);
 	}
 	
-	public StreamEntityStatCache getEntity(String ident) throws Exception { 
-		StreamEntityStatCache entity = entities.get(ident);
+	public StreamEntityStatsCache getEntity(String ident) throws Exception { 
+		StreamEntityStatsCache entity = entities.get(ident);
 		if(entity == null) { 
 			throw new Exception("Stream Entity " + ident + " not found on stream " + stream);
 		}

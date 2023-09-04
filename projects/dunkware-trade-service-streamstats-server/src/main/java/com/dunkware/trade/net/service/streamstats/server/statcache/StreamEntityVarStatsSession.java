@@ -5,7 +5,7 @@ import java.time.LocalDate;
 import com.dunkware.common.util.dtime.DDate;
 import com.dunkware.common.util.dtime.DTime;
 
-public class StreamEntityVarSession {
+public class StreamEntityVarStatsSession {
 	
 	private DDate date; 
 	private Number high; 

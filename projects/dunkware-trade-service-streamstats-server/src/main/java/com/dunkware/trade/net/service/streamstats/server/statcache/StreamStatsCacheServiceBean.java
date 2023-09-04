@@ -1,6 +1,6 @@
 package com.dunkware.trade.net.service.streamstats.server.statcache;
 
-public class StreamStatCacheServiceBean {
+public class StreamStatsCacheServiceBean {
 	
 	private long loadTime; 
 	private boolean loaded; 

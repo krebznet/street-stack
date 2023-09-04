@@ -23,7 +23,7 @@ import com.dunkware.common.util.helpers.DNumberHelper;
 import com.dunkware.common.util.time.DunkTime;
 import com.dunkware.xstream.model.stats.EntityStatsAggVar;
 
-public class StreamEntityVarStatCache {
+public class StreamEntityVarStatsSessionCache {
 	
 	private Logger logger = LoggerFactory.getLogger(getClass());
 	private Marker marker = MarkerFactory.getMarker("statcache");
@@ -33,8 +33,8 @@ public class StreamEntityVarStatCache {
 	
 	private String ident;
 	
-	private List<StreamEntityVarSession> sessions = new ArrayList<StreamEntityVarSession>();
-	private Map<DDate, StreamEntityVarSession> sessionIndex = new ConcurrentHashMap<DDate,StreamEntityVarSession>();
+	private List<StreamEntityVarStatsSession> sessions = new ArrayList<StreamEntityVarStatsSession>();
+	private Map<DDate, StreamEntityVarStatsSession> sessionIndex = new ConcurrentHashMap<DDate,StreamEntityVarStatsSession>();
 	private boolean sorted = false; 
 	
 	private EntityStatsAggVar agg;
@@ -42,10 +42,10 @@ public class StreamEntityVarStatCache {
 	private boolean aggInitialized = false;
 	private static EntityVarSessionComparator sessionComparator = new EntityVarSessionComparator();
 	
-	private static class EntityVarSessionComparator implements Comparator<StreamEntityVarSession> {
+	private static class EntityVarSessionComparator implements Comparator<StreamEntityVarStatsSession> {
 
 		@Override
-		public int compare(StreamEntityVarSession o1, StreamEntityVarSession o2) {
+		public int compare(StreamEntityVarStatsSession o1, StreamEntityVarStatsSession o2) {
 			if(o1.getDate().get().isBefore(o2.getDate().get())) { 
 				return -1;
 			}
@@ -58,7 +58,7 @@ public class StreamEntityVarStatCache {
 		
 	}
 	
-	public StreamEntityVarStatCache(String ident) { 
+	public StreamEntityVarStatsSessionCache(String ident) { 
 		this.ident = ident;
 		agg = new EntityStatsAggVar();
 		agg.setIdent(ident);;
@@ -69,9 +69,9 @@ public class StreamEntityVarStatCache {
 		return ident;
 	}
 	
-	public StreamEntityVarSession getSession(DDate date) { 
+	public StreamEntityVarStatsSession getSession(DDate date) { 
 		
-		for (StreamEntityVarSession streamEntityVarSession : sessions) {
+		for (StreamEntityVarStatsSession streamEntityVarSession : sessions) {
 			if(streamEntityVarSession.getDate().equals(date)) { 
 				return streamEntityVarSession;
 			}
@@ -89,14 +89,14 @@ public class StreamEntityVarStatCache {
  			logger.warn(marker, "consuming var stat session for existing date " + date.toMMDDYY());
 			return;
 		}
-		StreamEntityVarSession session = new StreamEntityVarSession();
+		StreamEntityVarStatsSession session = new StreamEntityVarStatsSession();
 		String highTime = doc.getString("highTimeString");
 		String lowTime = doc.getString("lowTimeString");
 		String low = doc.getString("low");
 		String high = doc.getString("high");
 		int dataType = doc.getInteger("dataType");
-		session.setHigh(StreamStatCacheHelper.stringToNumber(high, dataType));
-		session.setLow(StreamStatCacheHelper.stringToNumber(low, dataType));
+		session.setHigh(StreamStatsCacheHelper.stringToNumber(high, dataType));
+		session.setLow(StreamStatsCacheHelper.stringToNumber(low, dataType));
 		session.setHighTIme(DTime.from(LocalDateTime.parse(highTime,DateTimeFormatter.ofPattern(DunkTime.YYYY_MM_DD_HH_MM_SS)).toLocalTime()));
 		session.setLowTIme(DTime.from(LocalDateTime.parse(lowTime,DateTimeFormatter.ofPattern(DunkTime.YYYY_MM_DD_HH_MM_SS)).toLocalTime()));
 		session.setDate(date);
@@ -141,18 +141,18 @@ public class StreamEntityVarStatCache {
 	
 	
 	
-	public StreamEntityVarSession resolveRelativeHigh(DDate date, int days) throws StreamStatResolveException { 
+	public StreamEntityVarStatsSession resolveRelativeHigh(DDate date, int days) throws StreamStatResolveException { 
 		checkSort();
-		StreamEntityVarSession startSession = getFirstRelativeSession(date);
+		StreamEntityVarStatsSession startSession = getFirstRelativeSession(date);
 		int startIndex = sessions.indexOf(startSession);
 		if((((startIndex + 1) + days) < sessions.size())) { 
 			throw new StreamStatResolveException("Not enugh session for days " + days);
 		}
-		StreamEntityVarSession highSession = sessions.get(startIndex);
+		StreamEntityVarStatsSession highSession = sessions.get(startIndex);
 		int index = startIndex; 
 		int count = days;
 		while(count != 0) { 
-			StreamEntityVarSession session = sessions.get(index);
+			StreamEntityVarStatsSession session = sessions.get(index);
 			if(DNumberHelper.isFirstGreater(session.getHigh(), highSession.getHigh())) { 
 				highSession = session;
 			}
@@ -163,11 +163,11 @@ public class StreamEntityVarStatCache {
 	}
 	
 	
-	private StreamEntityVarSession getFirstRelativeSession(DDate date) throws StreamStatResolveException { 
+	private StreamEntityVarStatsSession getFirstRelativeSession(DDate date) throws StreamStatResolveException { 
 
-		StreamEntityVarSession minDaysApartSession = null;
+		StreamEntityVarStatsSession minDaysApartSession = null;
 		long minDaysApart = Long.MAX_VALUE;
-		for (StreamEntityVarSession session : sessions) {
+		for (StreamEntityVarStatsSession session : sessions) {
 			if(session.getDate().isSameDay(date)) { 
 				return session;
 			}

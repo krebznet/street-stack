@@ -1,6 +1,6 @@
 package com.dunkware.trade.net.service.streamstats.server.statcache;
 
-public class StreamStatCacheHelper {
+public class StreamStatsCacheHelper {
 	
 	public static final int DATA_TYPE_LONG = 1; 
 	public static final int DATA_TYPE_DOUBLE = 2; 
