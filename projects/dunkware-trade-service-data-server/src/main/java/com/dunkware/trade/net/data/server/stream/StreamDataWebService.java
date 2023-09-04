@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.dunkware.trade.service.data.model.domain.EntitySignal;
 
 @RestController
-public class StreamDataRuntime {
+public class StreamDataWebService {
 
 	
 	@Autowired
@@ -21,7 +21,7 @@ public class StreamDataRuntime {
 	
 	@PostMapping(path = "/v1/data/signal/insert")
 	public void insertSignal(@RequestBody() EntitySignal signal, @RequestParam() int stream) throws Exception  { 
-		StreamData streamData = dataService.getStreamData(stream);
+		StreamDataController streamData = dataService.getStreamData(stream);
 		streamData.insertSignal(signal);
 		
 	}
@@ -29,7 +29,7 @@ public class StreamDataRuntime {
 	
 	@GetMapping(path = "/v1/data/signal/all")
 	public void getSignals() throws Exception { 
-		StreamData data = dataService.getStreamData(1);
+		StreamDataController data = dataService.getStreamData(1);
 		data.getSignals();
 		
 	}

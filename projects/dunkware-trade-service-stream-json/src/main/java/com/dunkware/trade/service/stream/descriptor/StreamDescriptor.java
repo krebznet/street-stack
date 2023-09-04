@@ -16,6 +16,8 @@ public class StreamDescriptor {
 	private DTimeZone timeZone; 
 	private String mongoDatabase; 
 	private String mongoURL; 
+	private String snapshotDatabase; 
+	private String snapshotURL;
 	
 	
 	
@@ -130,6 +132,27 @@ public class StreamDescriptor {
 	public void setMongoURL(String mongoURL) {
 		this.mongoURL = mongoURL;
 	}
+
+
+	public String getSnapshotDatabase() {
+		return snapshotDatabase;
+	}
+
+
+	public void setSnapshotDatabase(String snapshotDatabase) {
+		this.snapshotDatabase = snapshotDatabase;
+	}
+
+
+	public String getSnapshotURL() {
+		return snapshotURL;
+	}
+
+
+	public void setSnapshotURL(String snapshotURL) {
+		this.snapshotURL = snapshotURL;
+	}
+	
 	
 	
 	

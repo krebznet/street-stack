@@ -14,13 +14,14 @@ import com.mongodb.client.MongoDatabase;
 import com.mongodb.client.model.Indexes;
 
 /**
- * Manages Data Ingestion/Searching/Aggregations For a specific stream
+ * A Stream data service is in scope of a single stream in the cluster. it only works with one stream
+ * it setsup the snapshot and entity consumers it will provide other data services. 
  * 
  * @author duncankrebs
  *
  */
 
-public class StreamData {
+public class StreamDataController implements IStreamDataController {
 
 	@Autowired
 	private MongoProvider mongoProvider;
@@ -53,7 +54,15 @@ public class StreamData {
 			// TODO: handle exception
 		}
 	}
-	
+
+
+	@Override
+	public StreamDescriptor getDescriptor() {
+		return descriptor;
+	}
+
+
+
 	public List<EntitySignal> getSignals() { 
 		try {
 			MongoCursor<Document> documents = signalCollection.find().batchSize(5).cursor();

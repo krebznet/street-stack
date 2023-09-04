@@ -38,8 +38,9 @@ public class StreamDataService {
 	@Autowired
 	private ApplicationContext ac;
 	
-	private Map<Integer,StreamData> streams = new ConcurrentHashMap<Integer,StreamData>();
+	private Map<Integer,StreamDataController> streams = new ConcurrentHashMap<Integer,StreamDataController>();
 	
+	private StreamDataConfig config; 
 
 	//@Autowired
 	//private DunkNet dunkNet;
@@ -50,16 +51,17 @@ public class StreamDataService {
 		StreamDescriptor descriptor = new StreamDescriptor();
 		descriptor.setIdentifier("us_equity");
 		descriptor.setId(1);
-		StreamData streamData = new StreamData();
+		StreamDataController streamData = new StreamDataController();
 		ac.getAutowireCapableBeanFactory().autowireBean(streamData);
 		streamData.init(descriptor);
 		streams.put(descriptor.getId(), streamData);
 		 
 	}
 	
+
 	
-	public StreamData getStreamData(int streamId) throws Exception { 
-		StreamData data = streams.get(streamId);
+	public StreamDataController getStreamData(int streamId) throws Exception { 
+		StreamDataController data = streams.get(streamId);
 		if(data == null) { 
 			throw new Exception("Stream " + streamId + " not found");
 		}
