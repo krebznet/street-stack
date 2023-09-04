@@ -6,23 +6,10 @@ import java.util.Map;
 
 public class EntitySnapshot {
 	
-	private int StreamId; 
 	private LocalDateTime timestamp;
 	private int entityId; 
 	private Map<Integer,Object> vars = new HashMap<Integer,Object>();
 	
-	public int getStreamId() {
-		return StreamId;
-	}
-	public void setStreamId(int streamId) {
-		StreamId = streamId;
-	}
-	public LocalDateTime getTimestamp() {
-		return timestamp;
-	}
-	public void setTimestamp(LocalDateTime timestamp) {
-		this.timestamp = timestamp;
-	}
 	public int getEntityId() {
 		return entityId;
 	}
@@ -35,6 +22,14 @@ public class EntitySnapshot {
 	public void setVars(Map<Integer, Object> vars) {
 		this.vars = vars;
 	}
+	public LocalDateTime getTimestamp() {
+		return timestamp;
+	}
+	public void setTimestamp(LocalDateTime timestamp) {
+		this.timestamp = timestamp;
+	}
+	
+	
 	
 	
 
