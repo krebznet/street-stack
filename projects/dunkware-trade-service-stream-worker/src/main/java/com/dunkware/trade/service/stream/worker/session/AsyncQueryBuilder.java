@@ -22,8 +22,8 @@ import com.dunkware.xstream.model.query.XStreamEntityCriteriaType;
 import com.dunkware.xstream.model.query.XStreamEntityQueryModel;
 import com.dunkware.xstream.model.query.XStreamEntityValueModel;
 import com.dunkware.xstream.model.query.XStreamEntityValueType;
-import com.dunkware.xstream.model.stats.EntityStatBulkReq;
-import com.dunkware.xstream.model.stats.EntityStatBulkResp;
+import com.dunkware.xstream.model.stats.proto.EntityStatBulkReq;
+import com.dunkware.xstream.model.stats.proto.EntityStatBulkResp;
 
 import io.vertx.core.CompositeFuture;
 import io.vertx.core.Future;

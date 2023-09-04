@@ -2,8 +2,8 @@ package com.dunkware.trade.service.stream.worker.session;
 
 import com.dunkware.spring.cluster.DunkNet;
 import com.dunkware.xstream.api.XStreamQueryException;
-import com.dunkware.xstream.model.stats.EntityStatReq;
-import com.dunkware.xstream.model.stats.EntityStatResp;
+import com.dunkware.xstream.model.stats.proto.EntityStatReq;
+import com.dunkware.xstream.model.stats.proto.EntityStatResp;
 
 public class StreamWorkerStatService {
 

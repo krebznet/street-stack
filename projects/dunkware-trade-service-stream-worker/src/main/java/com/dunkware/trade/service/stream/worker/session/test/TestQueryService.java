@@ -16,8 +16,8 @@ import com.dunkware.xstream.core.search.row.criteria.XStreamEntityPredicate;
 import com.dunkware.xstream.model.query.XStreamEntityQueryModel;
 import com.dunkware.xstream.model.query.XStreamEntityQueryModelBuilder;
 import com.dunkware.xstream.model.query.XStreamOperator;
-import com.dunkware.xstream.model.stats.EntityStatBulkReq;
-import com.dunkware.xstream.model.stats.EntityStatReqType;
+import com.dunkware.xstream.model.stats.proto.EntityStatBulkReq;
+import com.dunkware.xstream.model.stats.proto.EntityStatReqType;
 
 import io.vertx.core.AsyncResult;
 import io.vertx.core.Future;

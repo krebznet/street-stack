@@ -7,9 +7,9 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.dunkware.common.util.json.DJson;
-import com.dunkware.xstream.model.stats.EntityStatBulkReq;
-import com.dunkware.xstream.model.stats.EntityStatBulkResp;
-import com.dunkware.xstream.model.stats.EntityStatReqType;
+import com.dunkware.xstream.model.stats.proto.EntityStatBulkReq;
+import com.dunkware.xstream.model.stats.proto.EntityStatBulkResp;
+import com.dunkware.xstream.model.stats.proto.EntityStatReqType;
 
 import io.vertx.core.AsyncResult;
 import io.vertx.core.Future;

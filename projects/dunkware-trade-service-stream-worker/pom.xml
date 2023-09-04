@@ -28,7 +28,7 @@
 		<lombok.version>1.18.20</lombok.version>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
-		
+
 		<grpc.version>1.32.1</grpc.version>
 		<spring-cloud.version>Hoxton.SR6</spring-cloud.version>
 	</properties>
@@ -42,6 +42,14 @@
 			<artifactId>spring-boot-starter-web</artifactId> </exclusion> <exclusion> 
 			<groupId>org.springframework.boot</groupId> <artifactId>spring-boot-starter-data-jpa</artifactId> 
 			</exclusion> </exclusions> </dependency> -->
+	
+
+	<dependency>
+			<groupId>com.dunkware.trade.service</groupId>
+		<artifactId>dunkware-trade-service-data-model</artifactId>
+		<version>1.1.0-SNAPSHOT</version>
+	
+	</dependency>
 		<dependency>
 
 
@@ -87,7 +95,7 @@
 
 		<!-- Dunkware Dependencies -->
 
-		
+
 		<dependency>
 			<groupId>org.reflections</groupId>
 			<artifactId>reflections</artifactId>
@@ -97,8 +105,8 @@
 
 
 
-	
-		
+
+
 		<dependency>
 			<groupId>com.dunkware.common</groupId>
 			<artifactId>dunkware-common-util</artifactId>
@@ -126,7 +134,7 @@
 			<scope>test</scope>
 		</dependency>
 
-		
+
 		<dependency>
 			<groupId>javax.annotation</groupId>
 			<artifactId>javax.annotation-api</artifactId>
@@ -134,7 +142,7 @@
 		</dependency>
 
 
-		
+
 		<dependency>
 			<groupId>com.google.inject</groupId>
 			<artifactId>guice</artifactId>
@@ -147,7 +155,7 @@
 
 
 	</dependencies>
-	
+
 
 	<build>
 		<pluginManagement>

@@ -61,6 +61,8 @@ public class StreamWorkerChannel implements DunkNetChannelHandler {
 	private StreamSessionWorkerStatus status = StreamSessionWorkerStatus.Pending;
 
 	private Timer statTimer = null;
+	
+	private StreamWorkerSnapshotPublisher snapshotPublisher; 
 
 	//private XStreamSignalService signalService;
 
@@ -70,6 +72,10 @@ public class StreamWorkerChannel implements DunkNetChannelHandler {
 	public void init() {
 		
 	}
+	
+	public StreamSessionWorkerStartReq getStartReq() { 
+		return req; 
+	}
 
 	@Override
 	public void channelInit(DunkNetChannel channel) throws DunkNetException {
@@ -77,6 +83,11 @@ public class StreamWorkerChannel implements DunkNetChannelHandler {
 		this.channel.addExtension(this);
 		
 		
+	}
+	
+	
+	public XStream getXStream() { 
+		return stream;
 	}
 	
 
@@ -93,7 +104,7 @@ public class StreamWorkerChannel implements DunkNetChannelHandler {
 		logger.info(stopMarker, "Stop Stream Message Recieved on Node {} worker {}", dunkNet.getId(),req.getWorkerId());
 		stopInvoked = false;
 		new StopTimeoutMonitor().start();
-		
+		preStop();
 		statTimer.cancel();
 		StreamSessionWorkerStopResp resp = new StreamSessionWorkerStopResp();
 		resp.setStoppingTime(DTime.now(input.getTimeZone()));
@@ -236,6 +247,18 @@ public class StreamWorkerChannel implements DunkNetChannelHandler {
 	private void postStart() { 
 		statTimer = new Timer();
 		statTimer.scheduleAtFixedRate(new StatPublisher(), 0, 1000);
+		snapshotPublisher  = new StreamWorkerSnapshotPublisher();
+		try {
+			snapshotPublisher.init(this);
+			snapshotPublisher.streamStart(stream);
+		} catch (Exception e) {
+			logger.error(marker, "Exception starting snapshot publisher on node {} worker id {} exception {}",dunkNet.getId(), req.getWorkerId(),e.toString());
+		}
+	}
+	
+	
+	private void preStop() { 
+		snapshotPublisher.streamStop();
 	}
 	
 	
