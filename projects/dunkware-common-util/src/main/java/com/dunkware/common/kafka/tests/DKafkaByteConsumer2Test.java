@@ -9,25 +9,58 @@ import com.dunkware.common.kafka.consumer.DKafkaByteHandler2;
 import com.dunkware.common.spec.kafka.DKafkaByteConsumer2Spec;
 import com.dunkware.common.spec.kafka.DKafkaByteConsumer2Spec.ConsumerType;
 import com.dunkware.common.spec.kafka.DKafkaByteConsumer2Spec.OffsetType;
+import com.dunkware.common.util.json.DJson;
+import com.dunkware.common.util.stopwatch.DStopWatch;
 import com.dunkware.common.spec.kafka.DKafkaByteConsumer2SpecBuilder;
 
 public class DKafkaByteConsumer2Test {
+	
+	public static int myCounter = 0;
+	public static int countBatch = 0; 
+	public static DStopWatch stopWatch = DStopWatch.create();
+	
 
 	public static void main(String[] args) {
 	//	DProperties props = DPropertiesBuilder.newBuilder()
 		//		.addProperty("topics", "fuckpoop")
 		//.addProperty(DKafkaProperties.BOOTSTRAP_SERVERS, " 172.16.16.55:31090").build();
+		
+		
 		DKafkaByteConsumer2 consumer = null;
 		try {
-			DKafkaByteConsumer2Spec spec = DKafkaByteConsumer2SpecBuilder.newBuilder(ConsumerType.Auto, OffsetType.Earliest).addBroker("172.16.16.55:31090").setClientAndGroup("dd", "ff")
-					.addTopic("fuckpoop").build();
+			DKafkaByteConsumer2Spec spec = DKafkaByteConsumer2SpecBuilder.newBuilder(ConsumerType.Auto, OffsetType.Latest).addBroker("172.16.16.55:31090").setClientAndGroup("dd", "ff")
+					.addTopic("stream_us_equity_session_snapshot").build();
 				consumer = DKafkaByteConsumer2.newInstance(spec);
+				stopWatch.start();
 				consumer.addStreamHandler(new DKafkaByteHandler2() {
+					
 					
 					@Override
 					public void record(ConsumerRecord<String, byte[]> record) {
-						System.out.println("recieved byte[] messsage");
-						System.out.println("received record " + String.valueOf(record));
+						try {
+							myCounter++;
+							countBatch++;
+							EntitySnapshot snapshot = DJson.getObjectMapper().readValue(record.value(), EntitySnapshot.class);
+							if(countBatch == 1000) { 
+								stopWatch.stop();
+								try {
+									//System.out.println(DJson.serializePretty(snapshot));
+								} catch (Exception e) {
+									e.printStackTrace();
+									// TODO: handle exception
+								}
+								System.out.println("Recieved 1K Snapshots in " + stopWatch.getCompletedSeconds() + " seconds " + " Total " + myCounter);
+								stopWatch.start();
+								countBatch = 0; 
+								
+							}
+							//
+						
+						} catch (Exception e) {
+							e.printStackTrace();
+							// TODO: handle exception
+						}
+
 					}
 				});
 				consumer.start();
