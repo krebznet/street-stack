@@ -4,6 +4,7 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
+import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.Semaphore;
 import java.util.concurrent.atomic.AtomicInteger;
@@ -109,6 +110,14 @@ public class MockXStreamEntity implements XStreamEntity {
 	public void signal(SignalType type) {
 		// TODO Auto-generated method stub
 		
+	}
+	
+	
+
+	@Override
+	public Map<Integer, Object> varValues() {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 	@Override

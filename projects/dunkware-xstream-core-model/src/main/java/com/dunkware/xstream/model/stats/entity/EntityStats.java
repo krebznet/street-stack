@@ -1,13 +1,13 @@
 package com.dunkware.xstream.model.stats.entity;
 
-import java.util.Map;
-import java.util.concurrent.ConcurrentHashMap;
+import java.util.ArrayList;
+import java.util.List;
 
 public class EntityStats {
 
 	private int entityId; 
 	private String entityIdentifier; 
-	private Map<Integer,EntityStat> sats = new ConcurrentHashMap<Integer,EntityStat>();
+	private List<EntityStat> stats = new ArrayList<EntityStat>();
 	
 	public int getEntityId() {
 		return entityId;
@@ -21,13 +21,15 @@ public class EntityStats {
 	public void setEntityIdentifier(String entityIdentifier) {
 		this.entityIdentifier = entityIdentifier;
 	}
-	public Map<Integer, EntityStat> getSats() {
-		return sats;
+	public List<EntityStat> getStats() {
+		return stats;
 	}
-	public void setSats(Map<Integer, EntityStat> sats) {
-		this.sats = sats;
+	public void setStats(List<EntityStat> stats) {
+		this.stats = stats;
 	}
-
+	
+	
+	
 	
 
 }

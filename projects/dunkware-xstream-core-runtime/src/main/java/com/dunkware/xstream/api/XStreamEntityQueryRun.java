@@ -24,6 +24,7 @@ public interface XStreamEntityQueryRun {
 	
 	public List<XStreamEntity> getEntities();
 	
+	public String getLastException();
 	
 	
 }

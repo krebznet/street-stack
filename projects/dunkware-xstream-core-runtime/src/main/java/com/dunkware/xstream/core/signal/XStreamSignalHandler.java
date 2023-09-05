@@ -1,44 +1,92 @@
 package com.dunkware.xstream.core.signal;
 
+import java.time.LocalTime;
+import java.util.List;
+import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.slf4j.Marker;
+import org.slf4j.MarkerFactory;
+
+import com.dunkware.common.util.time.DunkTime;
 import com.dunkware.xstream.api.XStream;
+import com.dunkware.xstream.api.XStreamEntity;
 import com.dunkware.xstream.api.XStreamEntityQuery;
-import com.dunkware.xstream.model.signal.XStreamSignalModel;
+import com.dunkware.xstream.api.XStreamEntityQueryRun;
+import com.dunkware.xstream.model.signal.type.XStreamSignalType;
 
 public class XStreamSignalHandler {
 
-	private XStream stream; 
-	private XStreamSignalModel model; 
-	private XStreamEntityQuery query; 
+	private Logger logger = LoggerFactory.getLogger(getClass());
+	private Marker marker = MarkerFactory.getMarker("SignalHandler");
 	
-	public void init(XStream stream, XStreamSignalModel model) throws Exception { 
+	private XStream stream; 
+	private XStreamSignalType signalType; 
+	private XStreamEntityQuery query; 
+	private XStreamSignalsImpl signals;
+	
+	private int errorLogCount = 0; 
+	
+	private Map<Integer,LocalTime> lastTriggers = new ConcurrentHashMap<Integer,LocalTime>();
+	
+	private QueryRunner queryRunner; 
+	
+	public void start(XStreamSignalsImpl signals, XStream stream, XStreamEntityQuery query, XStreamSignalType signalType) throws Exception { 
 		this.stream = stream;
-		//this.type = type;
-		// this will happen in the start thread of xsream 
-		// okay so this is created is is it initialized? 
-		//stream.createRowQuery(type.getQuery());
-		//stream.getExecutor().
-		// so this thing needs a runnable
-		// so it needs to be scheduled basd on the type settings
-		// how do we schedule recurring things 
-		//stream.getClock().scheduleRunnable(new Runner(), type.getRunInterva());
-		
+		this.signalType = signalType;
+		this.query = query;
+		this.signals  = signals;
+		queryRunner = new QueryRunner();
+		stream.getClock().scheduleRunnable(queryRunner,signalType.getRunInterval());
 	}
 	
+	public void stop() { 
+		stream.getClock().unscheduleRunnable(queryRunner);
+	}
 	
-	private class Runner implements Runnable {
+	public XStreamSignalType getType() { 
+		return signalType;
+	}
+	
+	private class QueryRunner implements Runnable {
 
 		@Override
 		public void run() {
-			
-			// TODO Auto-generated method stub
-			// goign to execute query against all shit 
-			// for results look at symbol limit; 
-			//stream.getClock().getLocalTime()
-			
+			XStreamEntityQueryRun queryRun = query.execute();
+			if(queryRun.getReturnCode() == XStreamEntityQueryRun.ERRORS) {
+				errorLogCount++;
+				if(errorLogCount < 10) { 
+					StringBuilder errors = new StringBuilder();
+					for (String error : queryRun.getExceptions()) {
+						errors.append(":");
+						errors.append(error);
+					}
+					stream.runtimeError("SignalHandler", "Signal ID " + signalType.getId() + " Query Run Exception Count " + queryRun.getExceptionCount() + " errors " + errors.toString());			
+				}
+				return;
+			}
+			List<XStreamEntity> results = queryRun.getEntities();
+			LocalTime time = stream.getClock().getLocalTime();
+			for (XStreamEntity entity : results) {
+				if(signalType.isEnableEntityThrottle()) { 
+					LocalTime lastTrigger = lastTriggers.get(entity.getIdentifier());
+					if(lastTrigger != null) { 
+						long difference = DunkTime.secondsBetween(lastTrigger,time );
+						if(difference > signalType.getEntityThrottle()) {
+							lastTriggers.put(entity.getIdentifier(), time);
+							signals.entitySignal(XStreamSignalHandler.this, entity);
+						}
+					} else { 
+						lastTriggers.put(entity.getIdentifier(), time);
+						signals.entitySignal(XStreamSignalHandler.this, entity);
+					}
+				}
+			}
 		} 
 		
 		
-		
-		
 	}
+	
 }

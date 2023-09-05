@@ -1,101 +1,38 @@
 package com.dunkware.trade.net.data.server.stream;
 
-import java.util.List;
-
-import org.bson.Document;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
 
-import com.dunkware.trade.net.data.server.config.MongoProvider;
-import com.dunkware.trade.service.data.model.domain.EntitySignal;
-import com.dunkware.trade.service.stream.descriptor.StreamDescriptor;
-import com.mongodb.client.MongoCollection;
-import com.mongodb.client.MongoCursor;
-import com.mongodb.client.MongoDatabase;
-import com.mongodb.client.model.Indexes;
+import com.dunkware.xstream.model.signal.StreamEntitySignal;
 
-/**
- * A Stream data service is in scope of a single stream in the cluster. it only works with one stream
- * it setsup the snapshot and entity consumers it will provide other data services. 
- * 
- * @author duncankrebs
- *
- */
+@RestController
+public class StreamDataController {
 
-public class StreamDataController implements IStreamDataController {
-
+	
 	@Autowired
-	private MongoProvider mongoProvider;
+	private StreamDataService dataService; 
+	
 
 	
-	private MongoDatabase mongoDatabase;
-	private MongoCollection<Document> signalCollection;
-
-	private StreamDescriptor descriptor;
-
-	public void init(StreamDescriptor descriptor) {
-		try {
-			this.descriptor = descriptor;
-			String collectionname = descriptor.getIdentifier() + "_data_signal";
-			mongoDatabase = mongoProvider.getDatabase("dunkstreet");
-			for (String col : mongoDatabase.listCollectionNames()) {
-				if (col.equals(collectionname)) {
-					this.signalCollection = mongoDatabase.getCollection(collectionname);
-				}
-			}
-			if (signalCollection == null) {
-				mongoDatabase.createCollection(collectionname);
-				signalCollection = mongoDatabase.getCollection(collectionname);
-				signalCollection.createIndex(Indexes.ascending("date"));
-				signalCollection.createIndex(Indexes.ascending("entity"));
-				signalCollection.createIndex(Indexes.ascending("type"));
-			}
-
-		} catch (Exception e) {
-			// TODO: handle exception
-		}
-	}
-
-
-	@Override
-	public StreamDescriptor getDescriptor() {
-		return descriptor;
-	}
-
-
-
-	public List<EntitySignal> getSignals() { 
-		try {
-			MongoCursor<Document> documents = signalCollection.find().batchSize(5).cursor();
-			while(documents.hasNext()) { 
-				Document doc = documents.next();
-				// this is the hard part converting doc vars to map 
-				
-				Object date = doc.getDate("date");
-				// convert a Date to a LocalDate? 
-				
-			}
-		} catch (Exception e) {
-			// TODO: handle exception
-		}
-		return null;
+	@PostMapping(path = "/v1/data/signal/insert")
+	public void insertSignal(@RequestBody() StreamEntitySignal signal, @RequestParam() int stream) throws Exception  { 
+		StreamData streamData = dataService.getStreamData(stream);
+		streamData.insertSignal(signal);
+		
 	}
 	
-	public void insertSignal(EntitySignal signal) throws Exception { 
-		Document document = new Document();
-		document.append("date", signal.getDate());
-		document.append("time", signal.getTime());
-		document.append("type", signal.getType());
-		document.append("entity", signal.getEntity());
-		Document varDoc = new Document();
-		for (Integer varKey : signal.getVars().keySet()) {
-			varDoc.append(String.valueOf(varKey), signal.getVars().get(varKey));
-		}
-		document.append("vars", varDoc);
-		try {
-			signalCollection.insertOne(document);
-		} catch (Exception e) {
-			throw e;
-		}
+	
+	@GetMapping(path = "/v1/data/signal/all")
+	public void getSignals() throws Exception { 
+		StreamData data = dataService.getStreamData(1);
+		data.getSignals();
+		
 	}
-
+	
+	
+	
 }

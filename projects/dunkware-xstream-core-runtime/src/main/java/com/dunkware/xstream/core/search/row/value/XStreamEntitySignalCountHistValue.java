@@ -4,16 +4,16 @@ import com.dunkware.xstream.api.XStream;
 import com.dunkware.xstream.api.XStreamEntity;
 import com.dunkware.xstream.api.XStreamQueryException;
 import com.dunkware.xstream.api.XStreamResolveException;
-import com.dunkware.xstream.model.query.XStreamEntityValueModel;
+import com.dunkware.xstream.model.entity.query.type.XStreamEntityValueType;
 
 public class XStreamEntitySignalCountHistValue implements XStreamEntityQueryValue {
 
 	
-	private XStreamEntityValueModel model; 
+	private XStreamEntityValueType model; 
 	private XStream stream; 
 	private String varIdent; 
 	
-	public void init(XStreamEntityValueModel model, XStream stream) throws XStreamQueryException {
+	public void init(XStreamEntityValueType model, XStream stream) throws XStreamQueryException {
 		this.model = model;
 		this.stream = stream; 
 	}

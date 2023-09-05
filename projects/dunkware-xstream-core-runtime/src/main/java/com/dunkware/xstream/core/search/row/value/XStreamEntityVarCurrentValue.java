@@ -5,15 +5,15 @@ import com.dunkware.xstream.api.XStreamEntity;
 import com.dunkware.xstream.api.XStreamEntityVar;
 import com.dunkware.xstream.api.XStreamQueryException;
 import com.dunkware.xstream.api.XStreamResolveException;
-import com.dunkware.xstream.model.query.XStreamEntityValueModel;
+import com.dunkware.xstream.model.entity.query.type.XStreamEntityValueType;
 
 public class XStreamEntityVarCurrentValue implements XStreamEntityQueryValue {
 
-	private XStreamEntityValueModel model; 
+	private XStreamEntityValueType model; 
 	private XStream stream;
 	
 	
-	public void init(XStreamEntityValueModel model, XStream stream)   {
+	public void init(XStreamEntityValueType model, XStream stream)   {
 		this.model = model;
 		this.stream  = stream;
 	}

@@ -4,8 +4,8 @@ import java.util.List;
 
 import org.slf4j.Marker;
 
+import com.dunkware.xstream.model.entity.query.type.XStreamEntityQueryType;
 import com.dunkware.xstream.model.metrics.XStreamMetrics;
-import com.dunkware.xstream.model.query.XStreamEntityQueryModel;
 
 import io.vertx.core.Future;
 
@@ -132,13 +132,13 @@ public interface XStream {
 	 * adds a signal listener
 	 * @param list
 	 */
-	public void addSignalListener(XStreamSignalListener list);
+	public void addSignalListener(XStreamRowSignalListener list);
 	
 	/**
 	 * removes a signal listener 
 	 * @param list
 	 */
-	public void removeSignalListener(XStreamSignalListener list);
+	public void removeSignalListener(XStreamRowSignalListener list);
 	
 	
 	public XStreamExtension getExtension(Class clazz) throws XStreamException;
@@ -149,8 +149,27 @@ public interface XStream {
 	 * @return
 	 * @throws XStreamQueryException
 	 */
-	public Future<XStreamEntityQuery> buildEntityQuery(XStreamEntityQueryModel model) throws XStreamQueryException;
+	public Future<XStreamEntityQuery> buildEntityQuery(XStreamEntityQueryType model);
 		
+	/***
+	 * Logs a runtime error 
+	 * @param type
+	 * @param message
+	 */
+	public void runtimeError(String type, String message);
+	
+	/***
+	 * Adds a runtime error listener. 
+	 * @param listener
+	 */
+	public void addRuntimeErrorListener(XStreamRuntimeErrorListener listener); 
+	
+	
+	/**
+	 * Revmoes a runtime error listener. 
+	 * @param listener
+	 */
+	public void removeRuntimeErrorListener(XStreamRuntimeErrorListener listener);
 	
 }
 

@@ -1,6 +1,6 @@
 package com.dunkware.trade.service.beach.server.runtime;
 
-import com.dunkware.xstream.model.signal.StreamSignal;
+import com.dunkware.xstream.model.signal.StreamEntitySignal;
 
 /**
  * Wraps a stream signal, extracts the symbol, last price and volume from the 
@@ -15,7 +15,7 @@ public class BeachSignal {
 	private String signal; 
 	private double last; 
 	private long volume;
-	private StreamSignal streamSignal; 
+	private StreamEntitySignal streamSignal; 
 	private String symbol;
 	
 	public String getStream() {
@@ -42,10 +42,11 @@ public class BeachSignal {
 	public void setVolume(long volume) {
 		this.volume = volume;
 	}
-	public StreamSignal getStreamSignal() {
+	
+	public StreamEntitySignal getStreamSignal() {
 		return streamSignal;
 	}
-	public void setStreamSignal(StreamSignal streamSignal) {
+	public void setStreamSignal(StreamEntitySignal streamSignal) {
 		this.streamSignal = streamSignal;
 	}
 	public String getSymbol() {

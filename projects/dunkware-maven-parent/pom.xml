@@ -12,7 +12,6 @@
 	<packaging>pom</packaging>
 
 
-
 	<scm>
 		<connection>scm:git:ssh://git@github.com/krebznet/dunkware-maven-parent.git</connection>
 		<developerConnection>scm:git:ssh://git@github.com/krebznet/dunkware-maven-parent.git</developerConnection>
@@ -62,6 +61,7 @@
 	<properties>
 		<test.dir>src/test/java</test.dir>
 		<testSourceDirectory>/src/test/java</testSourceDirectory>
+<project.build.testSourceDirectory>src/test/java</project.build.testSourceDirectory>
 
 		<src.dir>src/main/java</src.dir>
 		<jdk.version>11</jdk.version>

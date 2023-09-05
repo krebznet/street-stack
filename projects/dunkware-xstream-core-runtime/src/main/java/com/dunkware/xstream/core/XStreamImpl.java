@@ -22,16 +22,16 @@ import com.dunkware.xstream.api.XStreamExecutor;
 import com.dunkware.xstream.api.XStreamExtension;
 import com.dunkware.xstream.api.XStreamInput;
 import com.dunkware.xstream.api.XStreamListener;
-import com.dunkware.xstream.api.XStreamQueryException;
 import com.dunkware.xstream.api.XStreamRowSignal;
+import com.dunkware.xstream.api.XStreamRowSignalListener;
+import com.dunkware.xstream.api.XStreamRuntimeErrorListener;
 import com.dunkware.xstream.api.XStreamRuntimeException;
 import com.dunkware.xstream.api.XStreamService;
-import com.dunkware.xstream.api.XStreamSignalListener;
 import com.dunkware.xstream.api.XStreamStatService;
 import com.dunkware.xstream.api.XStreamStatus;
 import com.dunkware.xstream.api.XStreamTickRouter;
+import com.dunkware.xstream.model.entity.query.type.XStreamEntityQueryType;
 import com.dunkware.xstream.model.metrics.XStreamMetrics;
-import com.dunkware.xstream.model.query.XStreamEntityQueryModel;
 import com.dunkware.xstream.util.XStreamStatsBuilder;
 import com.dunkware.xstream.xproject.model.XStreamExtensionType;
 
@@ -59,7 +59,7 @@ public class XStreamImpl implements XStream {
 	private Semaphore rowListenerLock = new Semaphore(1);
 	private RowListener rowListener = new RowListener();
 
-	private List<XStreamSignalListener> signalListeners = new ArrayList<XStreamSignalListener>();
+	private List<XStreamRowSignalListener> signalListeners = new ArrayList<XStreamRowSignalListener>();
 	private Semaphore signalListenerLock = new Semaphore(1);
 
 	// Extensions & Services
@@ -71,11 +71,17 @@ public class XStreamImpl implements XStream {
 	private String sessionId;
 
 	private List<String> rowIdentifiers = new ArrayList<String>();
+	
+	private List<XStreamRuntimeErrorListener> errorListeners =  new ArrayList<XStreamRuntimeErrorListener>();
+	private Semaphore errorListenerLock = new Semaphore(1);
 
 	@Override
 	public void start(XStreamInput input) throws XStreamException {
 		if (logger.isDebugEnabled()) {
 			logger.debug("{} Starting", input.getIdentifier());
+		}
+		if(input.getQueryBuilder() == null) { 
+			throw new XStreamException("Entity Query Builder not set on XStream");
 		}
 
 		this.input = input;
@@ -291,7 +297,7 @@ public class XStreamImpl implements XStream {
 	}
 
 	@Override
-	public void addSignalListener(final XStreamSignalListener list) {
+	public void addSignalListener(final XStreamRowSignalListener list) {
 		Runnable me = new Runnable() {
 
 			@Override
@@ -311,7 +317,7 @@ public class XStreamImpl implements XStream {
 	}
 
 	@Override
-	public void removeSignalListener(final XStreamSignalListener list) {
+	public void removeSignalListener(final XStreamRowSignalListener list) {
 		Runnable me = new Runnable() {
 
 			@Override
@@ -402,10 +408,70 @@ public class XStreamImpl implements XStream {
 	}
 
 	@Override
-	public Future<XStreamEntityQuery> buildEntityQuery(XStreamEntityQueryModel model) throws XStreamQueryException {
-		return null;
-		// hook this up to the worker query builder
+	public Future<XStreamEntityQuery> buildEntityQuery(XStreamEntityQueryType model)  {
+		return input.getQueryBuilder().build(this,model);
 	}
+	
+	
+
+	@Override
+	public void runtimeError(String type, String message) {
+		final XStreamRuntimeErrorImpl error = new XStreamRuntimeErrorImpl(type, message, clock.getLocalTime());
+		executor.execute(new Runnable() {
+			
+			@Override
+			public void run() {
+				try {
+					errorListenerLock.acquire();
+					for (XStreamRuntimeErrorListener listener : errorListeners) {
+						listener.onError(XStreamImpl.this, error);
+					}
+				} catch (Exception e) {
+					// TODO: handle exception
+				} finally { 
+					errorListenerLock.release();
+				}
+			}
+		});
+	}
+
+	@Override
+	public void addRuntimeErrorListener(XStreamRuntimeErrorListener listener) {
+		executor.execute(new Runnable() {
+			
+			@Override
+			public void run() {
+				try {
+					errorListenerLock.acquire();
+					errorListeners.add(listener);
+				} catch (Exception e) {
+					// TODO: handle exception
+				} finally { 
+					errorListenerLock.release();
+				}
+			}
+		});
+	}
+
+	@Override
+	public void removeRuntimeErrorListener(XStreamRuntimeErrorListener listener) {
+	executor.execute(new Runnable() {
+			
+			@Override
+			public void run() {
+				try {
+					errorListenerLock.acquire();
+					errorListeners.remove(listener);
+				} catch (Exception e) {
+					// TODO: handle exception
+				} finally { 
+					errorListenerLock.release();
+				}
+			}
+		});
+	}
+
+
 
 	/**
 	 * RowListener for routing stream row events to RowListeners registered on the
@@ -417,7 +483,7 @@ public class XStreamImpl implements XStream {
 		public void rowSignal(XStreamEntity row, XStreamRowSignal signal) {
 			try {
 				signalListenerLock.acquire();
-				for (XStreamSignalListener list : signalListeners) {
+				for (XStreamRowSignalListener list : signalListeners) {
 					list.onSignal(signal);
 				}
 			} catch (Exception e) {

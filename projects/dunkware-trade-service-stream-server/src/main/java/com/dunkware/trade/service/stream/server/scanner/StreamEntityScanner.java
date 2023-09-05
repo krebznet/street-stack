@@ -9,12 +9,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import com.dunkware.common.util.datagrid.DataGridUpdate;
 import com.dunkware.common.util.uuid.DUUID;
-import com.dunkware.trade.service.stream.json.query.WebStreamQuery;
 import com.dunkware.trade.service.stream.json.worker.scanner.StreamEntityScannerReq;
 import com.dunkware.trade.service.stream.server.controller.StreamControllerService;
 import com.dunkware.trade.service.stream.server.controller.session.StreamSession;
 import com.dunkware.trade.service.stream.server.controller.session.StreamSessionNode;
-import com.dunkware.trade.service.util.XStreamQueryConverter;
+import com.dunkware.xstream.model.entity.query.type.StreamEntityQueryType;
+import com.dunkware.xstream.model.util.XStreamConverter;
 
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Sinks;
@@ -29,10 +29,10 @@ public class StreamEntityScanner {
 	private Flux<List<DataGridUpdate>> flux;
 	
 	
-	public void start(WebStreamQuery query, List<String> fields, StreamSession session, int scanInterval) throws Exception { 
+	public void start(StreamEntityQueryType query, List<String> fields, StreamSession session, int scanInterval) throws Exception { 
 		StreamEntityScannerReq req = new StreamEntityScannerReq();
 		req.setFields(fields);
-		req.setQuery(XStreamQueryConverter.toXStreamQuery(query));
+		req.setQuery(XStreamConverter.toXStreamEntityQueryType(query));
 		req.setScanInterval(scanInterval);
 		req.setScannerId(DUUID.randomUUID(5));
 		for (StreamSessionNode node : session.getNodes()) {

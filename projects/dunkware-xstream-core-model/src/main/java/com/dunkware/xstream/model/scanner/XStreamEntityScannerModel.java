@@ -2,18 +2,18 @@ package com.dunkware.xstream.model.scanner;
 
 import java.util.List;
 
-import com.dunkware.xstream.model.query.XStreamEntityQueryModel;
+import com.dunkware.xstream.model.entity.query.type.XStreamEntityQueryType;
 
 public class XStreamEntityScannerModel {
 	
-	private XStreamEntityQueryModel queryModel;
+	private XStreamEntityQueryType queryModel;
 	private int updateInterval = 1; 
 	private String scannerId;
 	
-	public XStreamEntityQueryModel getQueryModel() {
+	public XStreamEntityQueryType getQueryModel() {
 		return queryModel;
 	}
-	public void setQueryModel(XStreamEntityQueryModel queryModel) {
+	public void setQueryModel(XStreamEntityQueryType queryModel) {
 		this.queryModel = queryModel;
 	}
 	public int getUpdateInterval() {

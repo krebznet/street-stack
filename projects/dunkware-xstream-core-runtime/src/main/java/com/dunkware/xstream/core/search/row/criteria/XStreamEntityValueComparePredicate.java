@@ -8,10 +8,10 @@ import com.dunkware.xstream.api.XStreamEntityQueryRun;
 import com.dunkware.xstream.core.search.XStreamSearchHelper;
 import com.dunkware.xstream.core.search.row.XStreamEntityQueryRunImpl;
 import com.dunkware.xstream.core.search.row.value.XStreamEntityQueryValue;
-import com.dunkware.xstream.model.query.XStreamCriteriaCompareFunc;
-import com.dunkware.xstream.model.query.XStreamCriteriaModel;
-import com.dunkware.xstream.model.query.XStreamEntityValueModel;
-import com.dunkware.xstream.model.query.XStreamOperator;
+import com.dunkware.xstream.model.entity.query.type.XStreamCriteriaCompareFunc;
+import com.dunkware.xstream.model.entity.query.type.XStreamEntityCriteriaType;
+import com.dunkware.xstream.model.entity.query.type.XStreamEntityValueType;
+import com.dunkware.xstream.model.entity.query.type.XStreamOperator;
 
 public class XStreamEntityValueComparePredicate implements XStreamEntityPredicate  {
 
@@ -23,7 +23,7 @@ public class XStreamEntityValueComparePredicate implements XStreamEntityPredicat
 	
 	private XStreamEntityQueryRunImpl queryRun; 
 	
-	public void init(XStreamEntityQueryValue value1, XStreamEntityQueryValue value2, XStreamCriteriaModel model) throws XStreamQueryException { 
+	public void init(XStreamEntityQueryValue value1, XStreamEntityQueryValue value2, XStreamEntityCriteriaType model) throws XStreamQueryException { 
 		this.value1 = value1; 
 		this.value2 = value2; 
 		this.compareFunc = model.getCompareFunc();
@@ -56,7 +56,7 @@ public class XStreamEntityValueComparePredicate implements XStreamEntityPredicat
 	}
 
 	@Override
-	public XStreamCriteriaModel getModel() {
+	public XStreamEntityCriteriaType getModel() {
 		// TODO Auto-generated method stub
 		return null;
 	}

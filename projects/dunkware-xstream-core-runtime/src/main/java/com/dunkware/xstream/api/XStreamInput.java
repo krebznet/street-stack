@@ -6,8 +6,7 @@ import java.util.List;
 import com.dunkware.common.util.dtime.DDate;
 import com.dunkware.common.util.dtime.DTimeZone;
 import com.dunkware.common.util.executor.DExecutor;
-import com.dunkware.xstream.model.signal.XStreamSignalModel;
-import com.dunkware.xstream.model.signal.XStreamSignalType;
+import com.dunkware.xstream.model.signal.type.XStreamSignalType;
 import com.dunkware.xstream.xproject.XScriptProject;
 import com.dunkware.xstream.xproject.model.XStreamExtensionType;
 
@@ -21,8 +20,9 @@ public class XStreamInput {
 	private String identifier;
 	private String sessionId;
 	private DTimeZone timeZone; 
-	private List<XStreamSignalModel> signalModels = new ArrayList<XStreamSignalModel>();
+	private List<XStreamSignalType> signalTypes = new ArrayList<XStreamSignalType>();
 	private XStreamStatService statProvider;
+	private XStreamEntityQueryBuilder queryBuilder;
 	
 	// here we need to somehow provide a stat provider and not put the bullshit in memeory here. 
 	public List<XStreamExtensionType> getExtensions() {
@@ -78,11 +78,12 @@ public class XStreamInput {
 		this.sessionId = sessionId;
 	}
 	
-	public List<XStreamSignalModel> getSignalModels() {
-		return signalModels;
+	
+	public List<XStreamSignalType> getSignalTypes() {
+		return signalTypes;
 	}
-	public void setSignalModels(List<XStreamSignalModel> signalModels) {
-		this.signalModels = signalModels;
+	public void setSignalTypes(List<XStreamSignalType> signalTypes) {
+		this.signalTypes = signalTypes;
 	}
 	public XStreamStatService getStatProvider() {
 		return statProvider;
@@ -90,6 +91,14 @@ public class XStreamInput {
 	public void setStatProvider(XStreamStatService statProvider) {
 		this.statProvider = statProvider;
 	}
+	public XStreamEntityQueryBuilder getQueryBuilder() {
+		return queryBuilder;
+	}
+	public void setQueryBuilder(XStreamEntityQueryBuilder queryBuilder) {
+		this.queryBuilder = queryBuilder;
+	}
+	
+	
 	
 	
 	

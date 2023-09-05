@@ -118,5 +118,10 @@ public class DunkTime {
 		 long result = ChronoUnit.DAYS.between(from, to);
 		 return result;
 	}
+	
+	public static long secondsBetween(LocalTime from, LocalTime to) { 
+		long result = ChronoUnit.SECONDS.between(from, to);
+		return result;
+	}
 
 }

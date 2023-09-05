@@ -31,8 +31,8 @@ import com.dunkware.common.util.stopwatch.DStopWatch;
 import com.dunkware.common.util.time.DunkTime;
 import com.dunkware.common.util.uuid.DUUID;
 import com.dunkware.trade.net.data.server.stream.IStreamDataController;
-import com.dunkware.trade.net.data.server.stream.helpers.MongoHelper;
-import com.dunkware.trade.service.data.model.domain.EntitySnapshot;
+import com.dunkware.trade.net.data.server.stream.helpers.MongoStreamConverter;
+import com.dunkware.xstream.model.entity.StreamEntitySnapshot;
 import com.mongodb.WriteConcern;
 import com.mongodb.client.MongoClient;
 import com.mongodb.client.MongoClients;
@@ -46,7 +46,7 @@ import com.mongodb.client.model.TimeSeriesOptions;
 /**
  * What we are going to do is consume those snapshots from the kafaka topic.
  * this class is scoped on a single topic/stream context. we will deserialize
- * into EntitySnapshot convert to a Mongo Document and then we will bulk insert
+ * into StreamEntitySnapshot convert to a Mongo Document and then we will bulk insert
  * into a mongo collection. and if the collection for the stream does not exist,
  * we will explicitly create it to get the right indexes for searching. we will
  * pause or throttle the kafka consumer if the write queue reaches a certain
@@ -80,7 +80,7 @@ public class SnapshotWriter implements DKafkaByteHandler2 {
 
 	private SnapshotWriterMetrics metrics;
 
-	private BlockingQueue<EntitySnapshot> writeQueue = new LinkedBlockingQueue<EntitySnapshot>();
+	private BlockingQueue<StreamEntitySnapshot> writeQueue = new LinkedBlockingQueue<StreamEntitySnapshot>();
 
 	private MongoClient mongoClient;
 	private MongoDatabase mongoDatabase;
@@ -182,9 +182,9 @@ public class SnapshotWriter implements DKafkaByteHandler2 {
 
 	@Override
 	public void record(ConsumerRecord<String, byte[]> record) {
-		EntitySnapshot snapshot = null;
+		StreamEntitySnapshot snapshot = null;
 		try {
-			snapshot = DJson.getObjectMapper().readValue(record.value(), EntitySnapshot.class);
+			snapshot = DJson.getObjectMapper().readValue(record.value(), StreamEntitySnapshot.class);
 			metrics.snapshotConsume(snapshot);
 			writeQueue.put(snapshot);
 
@@ -289,7 +289,7 @@ public class SnapshotWriter implements DKafkaByteHandler2 {
 
 		private DStopWatch sw = DStopWatch.create();
 		private List<InsertOneModel<Document>> pendingWrites = new ArrayList<InsertOneModel<Document>>();
-		private List<EntitySnapshot> pendingWriteSnapshots = new ArrayList<EntitySnapshot>();
+		private List<StreamEntitySnapshot> pendingWriteSnapshots = new ArrayList<StreamEntitySnapshot>();
 
 		public void writePendingSnapshots() {
 
@@ -312,7 +312,7 @@ public class SnapshotWriter implements DKafkaByteHandler2 {
 
 		public void run() {
 			while (!interrupted()) {
-				EntitySnapshot snapshot = null;
+				StreamEntitySnapshot snapshot = null;
 				try {
 					snapshot = writeQueue.poll(15, TimeUnit.SECONDS);
 					if (snapshot == null && pendingWrites.size() > 0) {
@@ -339,7 +339,7 @@ public class SnapshotWriter implements DKafkaByteHandler2 {
 				}
 				try {
 
-					Document document = MongoHelper.toSnapshotDocument(snapshot,
+					Document document = MongoStreamConverter.snapshotToDocument(snapshot,
 							controller.getDescriptor().getTimeZone());
 					if (entities.get(snapshot.getEntityId()) == null) {
 						entities.put(snapshot.getEntityId(), new AtomicInteger(1));

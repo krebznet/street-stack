@@ -18,10 +18,12 @@ public class XStreamEntityQueryRunImpl implements XStreamEntityQueryRun {
 	private int returnCode = XStreamEntityQueryRun.SUCCESS;
 	private List<XStreamEntity> entities = null;
 	private List<String> exceptions = new ArrayList<String>();
+	private String lastException = null;
 	
 	public void addException(String exception) { 
 		this.exceptionCount++;
 		this.exceptions.add(exception);
+		this.lastException = exception;
 		returnCode = XStreamEntityQueryRun.ERRORS;
 	}
 	
@@ -29,6 +31,13 @@ public class XStreamEntityQueryRunImpl implements XStreamEntityQueryRun {
 		resolvedCount++;
 	}
 	
+	
+	
+	@Override
+	public String getLastException() {
+		return lastException;
+	}
+
 	@Override
 	public int getResolvedCount() {
 		return resolvedCount;

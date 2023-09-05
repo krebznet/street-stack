@@ -17,7 +17,7 @@ import org.springframework.web.server.ResponseStatusException;
 import com.dunkware.common.util.datagrid.DataGridUpdate;
 import com.dunkware.common.util.glazed.GlazedDataGrid;
 import com.dunkware.spring.runtime.services.ExecutorService;
-import com.dunkware.trade.service.stream.json.blueprint.WebStreamSignaltype;
+import com.dunkware.xstream.model.signal.type.StreamSignalType;
 
 import reactor.core.publisher.Flux;
 
@@ -57,7 +57,7 @@ public class StreamBlueprintWebService {
 	
 	
 	@PostMapping( path = "/stream/v1/blueprint/signal/add")
-	public void addSignalType(@RequestBody WebStreamSignaltype model, @RequestParam String stream) { 
+	public void addSignalType(@RequestBody StreamSignalType model, @RequestParam String stream) { 
 		StreamBlueprint blueprint = null;
 		try {
 			blueprint = blueprintService.getBlueprint(stream);

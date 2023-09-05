@@ -12,7 +12,7 @@ import com.dunkware.xstream.api.XStreamQueryException;
 import com.dunkware.xstream.api.XStreamResolveException;
 import com.dunkware.xstream.core.search.row.criteria.XStreamEntityPredicate;
 import com.dunkware.xstream.core.search.row.criteria.XStreamEntityResolvablePredicate;
-import com.dunkware.xstream.model.query.XStreamEntityQueryModel;
+import com.dunkware.xstream.model.entity.query.type.XStreamEntityQueryType;
 
 public class XStreamEntityQueryImpl implements XStreamEntityQuery   {
 

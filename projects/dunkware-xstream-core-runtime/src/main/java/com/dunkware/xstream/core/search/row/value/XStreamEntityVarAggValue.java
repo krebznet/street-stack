@@ -3,17 +3,17 @@ package com.dunkware.xstream.core.search.row.value;
 import com.dunkware.xstream.api.XStream;
 import com.dunkware.xstream.api.XStreamQueryException;
 import com.dunkware.xstream.api.XStreamResolveException;
+import com.dunkware.xstream.model.entity.query.type.XStreamEntityValueType;
+import com.dunkware.xstream.model.entity.query.type.XStreamEntityVarAggType;
+import com.dunkware.xstream.model.entity.query.type.XStreamSessionTimeRange;
 import com.dunkware.xstream.api.XStreamEntity;
 import com.dunkware.xstream.api.XStreamEntityVar;
-import com.dunkware.xstream.model.query.XStreamEntityValueModel;
-import com.dunkware.xstream.model.query.XStreamEntityVarAggType;
-import com.dunkware.xstream.model.query.XStreamSessionTimeRange;
 
 import ca.odell.glazedlists.matchers.SetMatcherEditor.Mode;
 
 public class XStreamEntityVarAggValue implements XStreamEntityQueryValue {
 
-	private XStreamEntityValueModel model;
+	private XStreamEntityValueType model;
 	private XStream stream;
 	
 	private XStreamEntityVarAggType aggType; 
@@ -21,7 +21,7 @@ public class XStreamEntityVarAggValue implements XStreamEntityQueryValue {
 	private String varIdent; 
 	
 	
-	public void init(XStreamEntityValueModel model, XStream stream) throws XStreamQueryException  {
+	public void init(XStreamEntityValueType model, XStream stream) throws XStreamQueryException  {
 		this.model = model; 
 		this.stream = stream; 
 		this.aggType = model.getSessionAgg();

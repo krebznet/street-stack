@@ -3,7 +3,7 @@ package com.dunkware.trade.service.stream.json.worker.stream;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.dunkware.xstream.model.signal.XStreamSignalModel;
+import com.dunkware.xstream.model.signal.type.XStreamSignalType;
 import com.dunkware.xstream.xproject.model.XStreamBundle;
 
 public class StreamSessionWorkerStartReq {
@@ -13,7 +13,7 @@ public class StreamSessionWorkerStartReq {
 	private int numericId;
 	private String workerId;
 	private String sessionId; 
-	private List<XStreamSignalModel> signals = new ArrayList<XStreamSignalModel>();
+	private List<XStreamSignalType> signals = new ArrayList<XStreamSignalType>();
 	private String nodeId;
 	private String kafkaBrokers;
 	
@@ -64,11 +64,13 @@ public class StreamSessionWorkerStartReq {
 		this.workerId = workerId;
 	}
 
-	public List<XStreamSignalModel> getSignals() {
+	
+
+	public List<XStreamSignalType> getSignals() {
 		return signals;
 	}
 
-	public void setSignals(List<XStreamSignalModel> signals) {
+	public void setSignals(List<XStreamSignalType> signals) {
 		this.signals = signals;
 	}
 

@@ -109,6 +109,21 @@ public class XStreamRowImpl implements XStreamEntity, XStreamEntityVarListener {
 	public TickStream getTickStream() {
 		return tickStream;
 	}
+	
+	
+
+	@Override
+	public Map<Integer, Object> varValues() {
+		Map<Integer, Object> varMap = new HashMap<Integer, Object>();
+		for (String key : vars.keySet()) {
+			XStreamEntityVar var = vars.get(key);
+			if (var.getSize() > 0) {
+				varMap.put(var.getVarType().getCode(), var.getValue(0));
+			}
+		}
+		return varMap;
+			
+	}
 
 	@Override
 	public XStreamRowSnapshot snapshot() {

@@ -2,9 +2,9 @@ package com.dunkware.trade.service.stream.worker.session;
 
 public interface StreamWorkerExtension {
 
-	void init(StreamWorkerChannel worker);
+	void init(StreamWorker worker) throws Exception;
 	
-	void start();
+	void start() throws Exception;
 	
-	void stop();
+	void stop() throws Exception;
 }

@@ -6,6 +6,7 @@ import org.requirementsascode.moonwlker.MoonwlkerModule;
 
 import com.dunkware.common.util.executor.DExecutor;
 import com.dunkware.xstream.api.XStream;
+import com.dunkware.xstream.api.XStreamEntityQueryBuilder;
 import com.dunkware.xstream.api.XStreamException;
 import com.dunkware.xstream.api.XStreamInput;
 import com.dunkware.xstream.api.XStreamRegistry;
@@ -33,7 +34,7 @@ public class XStreamCore {
 		return new XStreamImpl();
 	}
 	
-	public static XStreamInput createInput(XStreamBundle bundle, DExecutor executor) throws XStreamException { 
+	public static XStreamInput createInput(XStreamBundle bundle, DExecutor executor, XStreamEntityQueryBuilder entityQueryBuilder) throws XStreamException { 
 		try {
 			if(bundle.getScriptBundle() == null) { 
 				throw new XStreamException("XScript Bundle is not set on xstream bundle");

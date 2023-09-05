@@ -5,7 +5,7 @@ import java.util.List;
 import com.dunkware.xstream.api.XStreamEntity;
 import com.dunkware.xstream.api.XStreamEntityQueryRun;
 import com.dunkware.xstream.core.search.row.XStreamEntityQueryRunImpl;
-import com.dunkware.xstream.model.query.XStreamCriteriaModel;
+import com.dunkware.xstream.model.entity.query.type.XStreamEntityCriteriaType;
 
 /**
  * This is run first to validate that all the other predicates can resolve against
@@ -37,7 +37,7 @@ public class XStreamEntityResolvablePredicate implements XStreamEntityPredicate 
 	}
 
 	@Override
-	public XStreamCriteriaModel getModel() {
+	public XStreamEntityCriteriaType getModel() {
 		return null;
 	}
 

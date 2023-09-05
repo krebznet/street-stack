@@ -2,7 +2,7 @@ package com.dunkware.xstream.core.search;
 
 import com.dunkware.common.util.helpers.DNumberHelper;
 import com.dunkware.xstream.api.XStreamQueryException;
-import com.dunkware.xstream.model.query.XStreamOperator;
+import com.dunkware.xstream.model.entity.query.type.XStreamOperator;
 
 public class XStreamSearchHelper {
 

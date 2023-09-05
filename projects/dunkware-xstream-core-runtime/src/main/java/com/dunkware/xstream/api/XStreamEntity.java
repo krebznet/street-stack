@@ -3,6 +3,7 @@ package com.dunkware.xstream.api;
 import java.time.LocalDateTime;
 import java.util.Collection;
 import java.util.List;
+import java.util.Map;
 
 import com.dunkware.common.tick.stream.TickStream;
 import com.dunkware.xstream.model.metrics.XStreamRowMetrics;
@@ -35,6 +36,9 @@ public interface XStreamEntity {
 	 * @return
 	 */
 	public XStreamRowSnapshot snapshot();
+	
+	
+	public Map<Integer,Object> varValues();
 	
 	/**
 	 * Returns the row stats at the current point in time

@@ -3,19 +3,19 @@ package com.dunkware.trade.service.stream.json.worker.scanner;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.dunkware.xstream.model.query.XStreamEntityQueryModel;
+import com.dunkware.xstream.model.entity.query.type.XStreamEntityQueryType;
 
 public class StreamEntityScannerReq {
 
-	private XStreamEntityQueryModel query;
+	private XStreamEntityQueryType query;
 	private List<String> fields = new ArrayList<String>();
 	private int scanInterval; 
 	private String scannerId;
 	
-	public XStreamEntityQueryModel getQuery() {
+	public XStreamEntityQueryType getQuery() {
 		return query;
 	}
-	public void setQuery(XStreamEntityQueryModel query) {
+	public void setQuery(XStreamEntityQueryType query) {
 		this.query = query;
 	}
 	public List<String> getFields() {

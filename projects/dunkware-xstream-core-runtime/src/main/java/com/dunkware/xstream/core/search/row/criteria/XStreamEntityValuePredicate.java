@@ -4,19 +4,19 @@ import com.dunkware.xstream.api.XStreamEntity;
 import com.dunkware.xstream.api.XStreamEntityQueryRun;
 import com.dunkware.xstream.core.search.row.XStreamEntityQueryRunImpl;
 import com.dunkware.xstream.core.search.row.value.XStreamEntityQueryValue;
-import com.dunkware.xstream.model.query.XStreamCriteriaModel;
-import com.dunkware.xstream.model.query.XStreamOperator;
+import com.dunkware.xstream.model.entity.query.type.XStreamEntityCriteriaType;
+import com.dunkware.xstream.model.entity.query.type.XStreamOperator;
 
 public class XStreamEntityValuePredicate implements XStreamEntityPredicate {
 
 	private XStreamEntityPredicate predicate;
-	private XStreamCriteriaModel model;
+	private XStreamEntityCriteriaType model;
 	private XStreamEntityQueryValue value; 
 	private XStreamOperator operator; 
 	
 	private XStreamEntityQueryRunImpl queryRun;
 	
-	public void init(XStreamCriteriaModel model, XStreamEntityQueryValue value) {
+	public void init(XStreamEntityCriteriaType model, XStreamEntityQueryValue value) {
 		this.model = model;
 		this.value = value;
 	}
@@ -51,7 +51,7 @@ public class XStreamEntityValuePredicate implements XStreamEntityPredicate {
 
 
 	@Override
-	public XStreamCriteriaModel getModel() {
+	public XStreamEntityCriteriaType getModel() {
 		return model;
 	}
 

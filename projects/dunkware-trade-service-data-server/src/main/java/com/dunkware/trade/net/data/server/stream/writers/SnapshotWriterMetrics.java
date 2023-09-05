@@ -9,7 +9,7 @@ import java.util.concurrent.atomic.AtomicLong;
 
 import com.dunkware.common.util.dtime.DDateTime;
 import com.dunkware.common.util.stopwatch.DStopWatch;
-import com.dunkware.trade.service.data.model.domain.EntitySnapshot;
+import com.dunkware.xstream.model.entity.StreamEntitySnapshot;
 import com.google.common.util.concurrent.AtomicDouble;
 
 public class SnapshotWriterMetrics {
@@ -18,7 +18,7 @@ public class SnapshotWriterMetrics {
 	private AtomicLong snapshots = new AtomicLong();
 	private int lastInsertSize = 0; 
 	private double lastInsertSeconds;
-	private EntitySnapshot lastInsertEntity = null;
+	private StreamEntitySnapshot lastInsertEntity = null;
 	private AtomicInteger insertCount = new AtomicInteger(0);
 	private AtomicInteger consumeCount = new AtomicInteger(0);
 	private AtomicDouble pauseTime = new AtomicDouble();
@@ -41,15 +41,15 @@ public class SnapshotWriterMetrics {
 		this.errors.add(error);
 	}
 
-	public void snapshotConsume(EntitySnapshot snapshot) {
+	public void snapshotConsume(StreamEntitySnapshot snapshot) {
 		this.consumeCount.incrementAndGet();
 
 	}
 
 	
-	public void snapshotInsert(List<EntitySnapshot> snapshots, int size, double seconds) {
+	public void snapshotInsert(List<StreamEntitySnapshot> snapshots, int size, double seconds) {
 		this.insertCount.addAndGet(snapshots.size());
-		for (EntitySnapshot snapshot : snapshots) {
+		for (StreamEntitySnapshot snapshot : snapshots) {
 			if(entitySnapshots.get(snapshot.getEntityId()) == null) {
 				entitySnapshots.put(snapshot.getEntityId(), new AtomicInteger(1));
 				

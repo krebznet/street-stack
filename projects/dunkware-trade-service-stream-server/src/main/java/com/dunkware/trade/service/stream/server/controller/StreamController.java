@@ -48,7 +48,7 @@ import com.dunkware.trade.service.stream.server.spring.ConfigService;
 import com.dunkware.trade.service.stream.server.tick.StreamTickService;
 import com.dunkware.trade.tick.model.ticker.TradeTickerSpec;
 import com.dunkware.trade.tick.service.protocol.ticker.spec.TradeTickerListSpec;
-import com.dunkware.xstream.model.signal.StreamSignalListener;
+import com.dunkware.xstream.model.signal.StreamEntitySignalListener;
 import com.dunkware.xstream.xproject.XScriptProject;
 import com.dunkware.xstream.xproject.bundle.XscriptBundleHelper;
 import com.dunkware.xstream.xproject.model.XScriptBundle;
@@ -118,7 +118,7 @@ public class StreamController {
 
 	private LocalTime statsCacheTimestamp = null;
 
-	private List<StreamSignalListener> signalListeners = new ArrayList<StreamSignalListener>();
+	private List<StreamEntitySignalListener> signalListeners = new ArrayList<StreamEntitySignalListener>();
 	
 	private Semaphore signalListenerSemaphore = new Semaphore(1);
 

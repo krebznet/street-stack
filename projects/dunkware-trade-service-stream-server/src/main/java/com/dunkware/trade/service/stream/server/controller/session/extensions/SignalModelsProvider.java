@@ -13,15 +13,17 @@ import com.dunkware.trade.service.stream.server.controller.session.anot.AStreamS
 public class SignalModelsProvider implements StreamSessionExtension {
 
 	
-	@Autowired
-	private StreamBlueprintService bluePrintService;
 	
 	private StreamBlueprint bluePrint;
 
 	private StreamSession session; 
 	@Override
-	public void sessionStarting(StreamSession session) {
+	public void sessionStarting(StreamSession session)  {
 		try {
+			bluePrint = session.getStream().getBlueprint();
+			if(bluePrint == null) { 
+				
+			}
 		//	kkbluePrint = bluePrintService.getBlueprint(session.getStream().getName());
 			// get the fuckin singlas yes 
 			

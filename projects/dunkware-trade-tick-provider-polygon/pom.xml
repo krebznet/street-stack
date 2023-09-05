@@ -32,26 +32,7 @@
 		</dependency>
 		<!-- Active Tick Libs -->
 
-		<dependency>
-			<groupId>com.dunkware.trade.tick</groupId>
-			<artifactId>dunkware-trade-tick-provider-atick-javax-security</artifactId>
-			<version>1.0.0</version>
-		</dependency>
-		<dependency>
-			<groupId>com.dunkware.trade.tick</groupId>
-			<artifactId>dunkware-trade-tick-provider-atick-javax-crypto</artifactId>
-			<version>2.0.0</version>
-		</dependency>
-		<dependency>
-			<groupId>com.dunkware.trade.tick</groupId>
-			<artifactId>dunkware-trade-tick-provider-atick-gnu-crypto</artifactId>
-			<version>2.0.0</version>
-		</dependency>
-		<dependency>
-			<groupId>com.dunkware.trade.tick</groupId>
-			<artifactId>dunkware-trade-tick-provider-atick-api</artifactId>
-			<version>2.0.0</version>
-		</dependency>
+	
 		<dependency>
 			<groupId>com.dunkware.common</groupId>
 			<artifactId>dunkware-common-util</artifactId>

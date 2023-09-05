@@ -17,13 +17,12 @@ import com.dunkware.common.util.dtime.DTimeZone;
 import com.dunkware.common.util.events.DEventNode;
 import com.dunkware.common.util.json.DJson;
 import com.dunkware.common.util.observable.ObservableBeanListConnector;
-import com.dunkware.common.util.time.DunkTime;
-import com.dunkware.trade.service.stream.json.blueprint.WebStreamSignaltype;
 import com.dunkware.trade.service.stream.server.blueprint.event.EStreamBlueprintSignalCreated;
 import com.dunkware.trade.service.stream.server.repository.StreamBlueprintSignalEntity;
 import com.dunkware.trade.service.stream.server.repository.StreamBlueprintSignalRepo;
 import com.dunkware.trade.service.stream.server.repository.StreamBlueprintSignalStatus;
 import com.dunkware.trade.service.stream.server.repository.StreamEntity;
+import com.dunkware.xstream.model.signal.type.StreamSignalType;
 
 import ca.odell.glazedlists.BasicEventList;
 import ca.odell.glazedlists.GlazedLists;
@@ -48,7 +47,7 @@ public class StreamBlueprint {
 
 	private ObservableElementList<StreamBlueprintSignalBean> signalBeans = null;
 
-	private WebStreamSignaltype model;
+	private StreamSignalType signalType;
 	// Thing
 	// symbol
 	// variable
@@ -68,33 +67,11 @@ public class StreamBlueprint {
 		for (StreamBlueprintSignalEntity entity : signalRepo.findAll()) {
 			if (entity.getStreamId() == stream.getId()) {
 				StreamBlueprintSignal signal = new StreamBlueprintSignal();
-				try {
-					model = DJson.getObjectMapper().readValue(entity.getModel(), WebStreamSignaltype.class);
-				} catch (Exception e) {
-					logger.error("Exception parsing signal blueprint mode");
-				}
 				ac.getAutowireCapableBeanFactory().autowireBean(signal);
 				try {
 					signal.init(entity, this);
 					signals.add(signal);
-					StreamBlueprintSignalBean tb = new StreamBlueprintSignalBean();
-					try {
-						tb.setCreated(DunkTime.format(entity.getCreated(), DunkTime.YYYY_MM_DD_HH_MM_SS));
-						tb.setName(model.getName());
-						if (model.getDescription() != null) {
-							tb.setDescription(model.getDescription());
-						} else { 
-							tb.setDescription(model.getName());
-						}
-
-						tb.setGroup("Default");
-						tb.setStatus("Active");
-						tb.setId(entity.getId());
-						signalBeans.add(tb);
-
-					} catch (Exception e) {
-						logger.error(marker, "Exception creating the fuckin bean get it together " + e.toString());
-					}
+					signalBeans.add(signal.getBean());
 				} catch (Exception e) {
 					logger.error("Exception init stream blueprint signal " + e.toString());
 
@@ -127,9 +104,9 @@ public class StreamBlueprint {
 
 	}
 
-	public void addSignal(WebStreamSignaltype model) throws Exception {
+	public void addSignal(StreamSignalType model) throws Exception {
 		for (StreamBlueprintSignal signal : signals) {
-			if (signal.getModel().getName().equalsIgnoreCase(model.getName())) {
+			if (signal.getSignalType().getName().equalsIgnoreCase(model.getName())) {
 				throw new Exception("Signal name " + model.getName() + " already exists");
 			}
 		}
@@ -151,17 +128,8 @@ public class StreamBlueprint {
 		try {
 			signal.init(fuck, this);
 			signals.add(signal);
-
-			StreamBlueprintSignalBean tb = new StreamBlueprintSignalBean();
-
-			tb.setCreated(DunkTime.format(fuck.getCreated(), DunkTime.YYYY_MM_DD_HH_MM_SS));
-			tb.setName(model.getName());
-			tb.setDescription(model.getDescription());
-			tb.setGroup("Default");
-			tb.setStatus("Active");
-			tb.setId(fuck.getId());
 			logger.info(marker, "Singal bean added");
-			signalBeans.add(tb);
+			signalBeans.add(signal.getBean());
 			eventNode.event(new EStreamBlueprintSignalCreated(this, signal));
 		} catch (Exception e) {
 			logger.error("Exception init stream blueprint signal " + e.toString());

@@ -4,20 +4,20 @@ import com.dunkware.xstream.api.XStream;
 import com.dunkware.xstream.api.XStreamEntity;
 import com.dunkware.xstream.api.XStreamQueryException;
 import com.dunkware.xstream.api.XStreamResolveException;
-import com.dunkware.xstream.model.query.XStreamEntityValueModel;
-import com.dunkware.xstream.model.query.XStreamEntityVarAggHistType;
+import com.dunkware.xstream.model.entity.query.type.XStreamEntityValueType;
+import com.dunkware.xstream.model.entity.query.type.XStreamEntityVarAggHistType;
 import com.dunkware.xstream.model.stats.proto.EntityStatBulkResp;
 
 public class XStreamEntityVarAggHistValue implements XStreamEntityQueryValue {
 
-	private XStreamEntityValueModel model; 
+	private XStreamEntityValueType model; 
 	private XStream stream; 
 	
 	private XStreamEntityVarAggHistType aggType; 
 	
 	private EntityStatBulkResp statResponse;
 	
-	public void init(XStreamEntityValueModel model, XStream stream, EntityStatBulkResp statResp) throws XStreamQueryException {
+	public void init(XStreamEntityValueType model, XStream stream, EntityStatBulkResp statResp) throws XStreamQueryException {
 		this.model = model;
 		this.stream = stream; 
 		this.statResponse = statResp;

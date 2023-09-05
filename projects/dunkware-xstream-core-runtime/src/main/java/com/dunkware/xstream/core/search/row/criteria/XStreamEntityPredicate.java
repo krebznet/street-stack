@@ -4,7 +4,7 @@ import java.util.function.Predicate;
 
 import com.dunkware.xstream.api.XStreamEntity;
 import com.dunkware.xstream.api.XStreamEntityQueryRun;
-import com.dunkware.xstream.model.query.XStreamCriteriaModel;
+import com.dunkware.xstream.model.entity.query.type.XStreamEntityCriteriaType;
 
 public interface XStreamEntityPredicate extends Predicate<XStreamEntity> {
 	
@@ -12,7 +12,7 @@ public interface XStreamEntityPredicate extends Predicate<XStreamEntity> {
 	
 	boolean isResolvable(XStreamEntity entity);
 	
-	public XStreamCriteriaModel getModel();
+	public XStreamEntityCriteriaType getModel();
 	
 	public void setQueryRun(XStreamEntityQueryRun run);
 

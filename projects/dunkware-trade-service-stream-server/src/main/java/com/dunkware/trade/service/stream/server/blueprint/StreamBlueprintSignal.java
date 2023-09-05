@@ -4,15 +4,16 @@ import java.time.LocalDate;
 
 import com.dunkware.common.util.events.DEventNode;
 import com.dunkware.common.util.json.DJson;
-import com.dunkware.trade.service.stream.json.blueprint.WebStreamSignaltype;
+import com.dunkware.common.util.time.DunkTime;
 import com.dunkware.trade.service.stream.server.repository.StreamBlueprintSignalEntity;
 import com.dunkware.trade.service.stream.server.repository.StreamBlueprintSignalStatus;
+import com.dunkware.xstream.model.signal.type.StreamSignalType;
 
 public class StreamBlueprintSignal {
 
 	private StreamBlueprintSignalEntity entity; 
 	
-	private WebStreamSignaltype  model;
+	private StreamSignalType  model;
 	
 	private StreamBlueprint blueprint;
 	
@@ -27,10 +28,21 @@ public class StreamBlueprintSignal {
 			this.entity = entity;
 			this.blueprint = blueprint;
 			eventNode = blueprint.getEventNode().createChild(this);
-			model = DJson.getObjectMapper().readValue(entity.getModel(), WebStreamSignaltype.class);
+			model = DJson.getObjectMapper().readValue(entity.getModel(), StreamSignalType.class);
 		} catch (Exception e) {
 			throw new Exception("Web signal model deserialize exeception " + e.toString());
 		}
+		bean.setCreated(DunkTime.format(entity.getCreated(), DunkTime.YYYY_MM_DD_HH_MM_SS));
+		bean.setName(model.getName());
+		if (model.getDescription() != null) {
+			bean.setDescription(model.getDescription());
+		} else { 
+			bean.setDescription(model.getName());
+		}
+
+		bean.setGroup("Default");
+		bean.setStatus("Active");
+		bean.setId(entity.getId());
 		bean.setName(model.getName());
 		bean.setDescription(model.getDescription());
 		bean.setId(entity.getId());
@@ -65,7 +77,11 @@ public class StreamBlueprintSignal {
 		return entity.getEffective();
 	}
 	
-	public WebStreamSignaltype getModel() { 
+	public String getName() { 
+		return model.getName();
+	}
+	
+	public StreamSignalType getSignalType() { 
 		return model;
 	}
 }

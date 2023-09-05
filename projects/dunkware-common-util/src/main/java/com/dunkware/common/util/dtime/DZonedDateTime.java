@@ -2,12 +2,12 @@ package com.dunkware.common.util.dtime;
 
 import java.time.ZonedDateTime;
 
-import com.dunkware.common.util.dtime.json.DZonedDateTimeSerialized;
+import com.dunkware.common.util.dtime.json.DZonedDateTimeSerializer;
 import com.dunkware.common.util.dtime.json.DZonedDatedTimeDeserializer;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 
-@JsonSerialize(using = DZonedDateTimeSerialized.class)
+@JsonSerialize(using = DZonedDateTimeSerializer.class)
 @JsonDeserialize(using = DZonedDatedTimeDeserializer.class)
 public class DZonedDateTime {
 	

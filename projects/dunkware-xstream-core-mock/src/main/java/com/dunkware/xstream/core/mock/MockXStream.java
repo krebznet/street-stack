@@ -24,14 +24,15 @@ import com.dunkware.xstream.api.XStreamListener;
 import com.dunkware.xstream.api.XStreamQueryException;
 import com.dunkware.xstream.api.XStreamRowSignal;
 import com.dunkware.xstream.api.XStreamService;
-import com.dunkware.xstream.api.XStreamSignalListener;
+import com.dunkware.xstream.api.XStreamRowSignalListener;
+import com.dunkware.xstream.api.XStreamRuntimeErrorListener;
 import com.dunkware.xstream.api.XStreamStatService;
 import com.dunkware.xstream.api.XStreamStatus;
 import com.dunkware.xstream.api.XStreamTickRouter;
 import com.dunkware.xstream.core.XStreamClockImpl;
 import com.dunkware.xstream.core.XStreamTickRouterImpl;
+import com.dunkware.xstream.model.entity.query.type.XStreamEntityQueryType;
 import com.dunkware.xstream.model.metrics.XStreamMetrics;
-import com.dunkware.xstream.model.query.XStreamEntityQueryModel;
 import com.dunkware.xstream.util.XStreamStatsBuilder;
 
 import io.vertx.core.Future;
@@ -58,7 +59,7 @@ public class MockXStream implements XStream {
 	private Semaphore rowListenerLock = new Semaphore(1);
 	private RowListener rowListener = new RowListener();
 
-	private List<XStreamSignalListener> signalListeners = new ArrayList<XStreamSignalListener>();
+	private List<XStreamRowSignalListener> signalListeners = new ArrayList<XStreamRowSignalListener>();
 	private Semaphore signalListenerLock = new Semaphore(1);
 
 	// Extensions & Services
@@ -202,7 +203,7 @@ public class MockXStream implements XStream {
 	}
 
 	@Override
-	public void addSignalListener(final XStreamSignalListener list) {
+	public void addSignalListener(final XStreamRowSignalListener list) {
 		Runnable me = new Runnable() {
 
 			@Override
@@ -222,7 +223,7 @@ public class MockXStream implements XStream {
 	}
 
 	@Override
-	public void removeSignalListener(final XStreamSignalListener list) {
+	public void removeSignalListener(final XStreamRowSignalListener list) {
 		Runnable me = new Runnable() {
 
 			@Override
@@ -311,7 +312,7 @@ public class MockXStream implements XStream {
 	
 
 	@Override
-	public Future<XStreamEntityQuery> buildEntityQuery(XStreamEntityQueryModel model) throws XStreamQueryException {
+	public Future<XStreamEntityQuery> buildEntityQuery(XStreamEntityQueryType model)   {
 		// TODO Auto-generated method stub
 		return null;
 	}
@@ -326,7 +327,7 @@ public class MockXStream implements XStream {
 		public void rowSignal(XStreamEntity row, XStreamRowSignal signal) {
 			try {
 				signalListenerLock.acquire();
-				for (XStreamSignalListener list : signalListeners) {
+				for (XStreamRowSignalListener list : signalListeners) {
 					list.onSignal(signal);
 				}
 			} catch (Exception e) {
@@ -356,5 +357,24 @@ public class MockXStream implements XStream {
 		return null;
 	}
 
+	@Override
+	public void runtimeError(String type, String message) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void addRuntimeErrorListener(XStreamRuntimeErrorListener listener) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void removeRuntimeErrorListener(XStreamRuntimeErrorListener listener) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	
 	
 }

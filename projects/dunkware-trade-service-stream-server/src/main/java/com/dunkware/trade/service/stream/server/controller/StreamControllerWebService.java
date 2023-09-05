@@ -37,11 +37,8 @@ import com.dunkware.trade.service.stream.json.controller.spec.StreamControllerSp
 import com.dunkware.trade.service.stream.json.controller.spec.StreamControllerStats;
 import com.dunkware.trade.service.stream.resources.StreamResource;
 import com.dunkware.trade.service.stream.resources.VariableResource;
-import com.dunkware.trade.service.stream.server.controller.util.StreamSpecBuilder;
 import com.dunkware.trade.service.stream.server.tick.StreamTickService;
 import com.dunkware.trade.tick.model.ticker.TradeTickerSpec;
-import com.dunkware.xstream.model.spec.StreamSpec;
-import com.dunkware.xstream.model.spec.StreamSpecList;
 import com.dunkware.xstream.xScript.VarType;
 
 
@@ -239,40 +236,6 @@ public class StreamControllerWebService {
 		}
 	}
 	
-	
-
-	@GetMapping(path = "/stream/core/specs")
-	public @ResponseBody List<StreamSpec> getSpecs() throws Exception { 
-		List<StreamSpec> specs = new ArrayList<StreamSpec>();
-		try {
-			for (StreamController stream : service.getStreams()) {
-				specs.add(StreamSpecBuilder.build(stream));
-			}	
-		} catch (Exception e) {
-			logger.error("Exception building stream specs " + e.toString());;
-			throw e;
-		}
-		
-		return specs;
-		
-	}
-	
-	@GetMapping(path = "/stream/core/speclist")
-	public @ResponseBody StreamSpecList getSpecList() throws Exception { 
-		List<StreamSpec> specs = new ArrayList<StreamSpec>();
-		try {
-			for (StreamController stream : service.getStreams()) {
-				specs.add(StreamSpecBuilder.build(stream));
-			}	
-		} catch (Exception e) {
-			logger.error("Exception building stream specs " + e.toString());;
-			throw e;
-		}
-		StreamSpecList list = new StreamSpecList();
-		list.setSpecs(specs);
-		return list;
-		
-	}
 	
 	@GetMapping(path = "/stream/dash/stats")
 	public @ResponseBody StreamDashStats streamFuckMe(@RequestParam String ident) throws Exception { 

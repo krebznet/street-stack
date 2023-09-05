@@ -1,20 +1,15 @@
 package com.dunkware.trade.net.data.server.stream;
 
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
 import javax.annotation.PostConstruct;
 
-import org.bson.Document;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.springframework.stereotype.Service;
 
-import com.dunkware.trade.service.data.model.domain.EntitySignal;
 import com.dunkware.trade.service.stream.descriptor.StreamDescriptor;
-import com.mongodb.client.model.InsertOneModel;
 
 
 /**
@@ -38,7 +33,7 @@ public class StreamDataService {
 	@Autowired
 	private ApplicationContext ac;
 	
-	private Map<Integer,StreamDataController> streams = new ConcurrentHashMap<Integer,StreamDataController>();
+	private Map<Integer,StreamData> streams = new ConcurrentHashMap<Integer,StreamData>();
 	
 	private StreamDataConfig config; 
 
@@ -51,7 +46,7 @@ public class StreamDataService {
 		StreamDescriptor descriptor = new StreamDescriptor();
 		descriptor.setIdentifier("us_equity");
 		descriptor.setId(1);
-		StreamDataController streamData = new StreamDataController();
+		StreamData streamData = new StreamData();
 		ac.getAutowireCapableBeanFactory().autowireBean(streamData);
 		streamData.init(descriptor);
 		streams.put(descriptor.getId(), streamData);
@@ -60,8 +55,8 @@ public class StreamDataService {
 	
 
 	
-	public StreamDataController getStreamData(int streamId) throws Exception { 
-		StreamDataController data = streams.get(streamId);
+	public StreamData getStreamData(int streamId) throws Exception { 
+		StreamData data = streams.get(streamId);
 		if(data == null) { 
 			throw new Exception("Stream " + streamId + " not found");
 		}
@@ -69,12 +64,6 @@ public class StreamDataService {
 	}
 	
 	
-	public void testInsert(EntitySignal signal, int count) {
-		//private List<InsertOneModel<Document>> pendingWrites = new ArrayList<InsertOneModel<Document>>();
-		
-		
-		
-		
-	}
+	
 
 }

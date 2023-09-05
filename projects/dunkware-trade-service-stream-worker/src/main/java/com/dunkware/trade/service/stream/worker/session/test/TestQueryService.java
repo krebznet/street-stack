@@ -7,15 +7,15 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.dunkware.spring.cluster.DunkNet;
-import com.dunkware.trade.service.stream.worker.session.AsyncQueryBuilder;
-import com.dunkware.trade.service.stream.worker.session.AsyncQueryContext;
+import com.dunkware.trade.service.stream.worker.session.query.AsyncQueryBuilder;
+import com.dunkware.trade.service.stream.worker.session.query.AsyncQueryContext;
 import com.dunkware.xstream.api.XStream;
 import com.dunkware.xstream.api.XStreamEntityQuery;
 import com.dunkware.xstream.core.mock.MockXStream;
 import com.dunkware.xstream.core.search.row.criteria.XStreamEntityPredicate;
-import com.dunkware.xstream.model.query.XStreamEntityQueryModel;
-import com.dunkware.xstream.model.query.XStreamEntityQueryModelBuilder;
-import com.dunkware.xstream.model.query.XStreamOperator;
+import com.dunkware.xstream.model.entity.query.type.XStreamEntityQueryModelBuilder;
+import com.dunkware.xstream.model.entity.query.type.XStreamEntityQueryType;
+import com.dunkware.xstream.model.entity.query.type.XStreamOperator;
 import com.dunkware.xstream.model.stats.proto.EntityStatBulkReq;
 import com.dunkware.xstream.model.stats.proto.EntityStatReqType;
 
@@ -50,7 +50,7 @@ public class TestQueryService {
 	 */
 	public void test1() { 
 
-		XStreamEntityQueryModel model = XStreamEntityQueryModelBuilder.query(XStreamEntityQueryModelBuilder
+		XStreamEntityQueryType model = XStreamEntityQueryModelBuilder.query(XStreamEntityQueryModelBuilder
 				.valueCritiera(XStreamOperator.GreaterThan, 2, XStreamEntityQueryModelBuilder.currentVarValue("Last")));
 		
 		model = XStreamEntityQueryModelBuilder.currentHistoricalCompare("TickLast", 3, "JPM", true, 4);

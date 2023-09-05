@@ -1,12 +1,10 @@
 package com.dunkware.trade.service.stream.server.controller.session;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import com.dunkware.spring.cluster.DunkNetNode;
 import com.dunkware.trade.service.stream.server.controller.StreamController;
 import com.dunkware.trade.tick.model.ticker.TradeTickerSpec;
-import com.dunkware.xstream.model.signal.XStreamSignalModel;
 import com.dunkware.xstream.xproject.model.XStreamBundle;
 
 public class StreamSessionNodeInput {
@@ -16,7 +14,6 @@ public class StreamSessionNodeInput {
 	private List<TradeTickerSpec> tickers;
 	private DunkNetNode node;
 	private List<StreamSessionExtension> extensionTypes;
-	private List<XStreamSignalModel> signalModels = new ArrayList<XStreamSignalModel>();
 	private StreamSession session;
 	private StreamController stream; 
 	private int numericId;
@@ -60,9 +57,7 @@ public class StreamSessionNodeInput {
 		return streamBundle;
 	}
 
-	public List<XStreamSignalModel> getSignalModels() {
-		return signalModels;
-	}
+	
 
 	public int getNumericId() {
 		return numericId;
