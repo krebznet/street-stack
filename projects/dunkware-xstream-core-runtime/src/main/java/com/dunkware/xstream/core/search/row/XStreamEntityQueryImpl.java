@@ -41,16 +41,18 @@ public class XStreamEntityQueryImpl implements XStreamEntityQuery   {
 
 	@Override
 	public XStreamEntityQueryRun execute() {
+		return execute(stream.getRows());
+	}
+
+
+	@Override
+	public synchronized XStreamEntityQueryRun execute(List<XStreamEntity> entities) {
 		XStreamEntityQueryRunImpl run = new XStreamEntityQueryRunImpl();
 		DStopWatch timer = DStopWatch.create();
 		for (XStreamEntityPredicate pre : predicates) {
 			pre.setQueryRun(run);
 		}
 		queryPredicates.setQueryRun(run);
-		if(!isRunnable()) { 
-			run.addException("Query is not runnable");
-			return run;
-		}
 		timer.start();
 		List<XStreamEntity> results = stream.getRows().stream().filter(queryPredicates).collect(Collectors.toList());
 		timer.stop();
@@ -58,27 +60,8 @@ public class XStreamEntityQueryImpl implements XStreamEntityQuery   {
 		run.setResults(results);
 		
 		return run;
+		
 	}
-
-
-	@Override
-	public XStreamEntityQueryRun execute(List<XStreamEntity> entities) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-
-	@Override
-	public boolean isRunnable() {
-		for (XStreamEntityPredicate predicate : predicates) {
-			if(!predicate.isRunnable()) { 
-				return false; 
-			}
-		}
-		return true;
-	}
-
-
 
 
 

@@ -40,13 +40,5 @@ public class XStreamEntityVarCurrentValue implements XStreamEntityQueryValue {
 		throw new XStreamQueryException("Resolving variable value that is not instance of Number " + value.getClass().getName());
 	}
 
-	@Override
-	public boolean isRunnable(XStreamEntity entity) throws XStreamQueryException {
-		return true;
-	}
-
-
-	
-
 	
 }

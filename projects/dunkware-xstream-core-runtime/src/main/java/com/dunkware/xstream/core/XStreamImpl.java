@@ -126,14 +126,16 @@ public class XStreamImpl implements XStream {
 		Thread signalStarter = new Thread() {
 
 			public void run() {
-				while (!interrupted()) {
-					try {
-						Thread.sleep(1000);
-					} catch (Exception e) {
-						// TODO: handle exception
-					}
+				try {
+					Thread.sleep(1000);
 					signals.start(XStreamImpl.this);
+				} catch (Exception e) {
+					logger.error("Signal Starter Exception ! " + e.toString());
 				}
+				
+
+				
+
 			}
 		};
 		signalStarter.start();

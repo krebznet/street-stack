@@ -28,16 +28,17 @@
 	</appender>
 
 	<root level="INFO">
+	<appender-ref ref="FLUENT" additivity="false"/>
 
 		<appender-ref ref="CONSOLE" additivity="false" />
 	</root>
 
 
-	<logger name="com.dunkware" level="DEBUG">
+	<logger name="com.dunkware" level="INFO">
  <appender-ref ref="FLUENT" />
 		<appender-ref ref="CONSOLE" additivity="false"/>
 	</logger>
-<logger name="com.dunkware.spring.cluster" level="TRACE">
+<logger name="com.dunkware.spring.cluster" level="ERROR">
  
 		<appender-ref ref="CONSOLE" additivity="false"/>
 	</logger>

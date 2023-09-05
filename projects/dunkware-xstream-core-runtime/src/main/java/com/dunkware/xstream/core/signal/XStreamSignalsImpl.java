@@ -35,11 +35,12 @@ public class XStreamSignalsImpl implements XStreamSignals  {
 	private Semaphore listenerLock = new Semaphore(1);
 	
 	private List<StreamEntitySignal> signals = new ArrayList<StreamEntitySignal>();
-	private Semaphore signalLock; 
+	private Semaphore signalLock = new Semaphore(1);
 	
 	public void start(XStream stream)  { 
 		this.stream = stream; 
 		for (XStreamSignalType signalType : stream.getInput().getSignalTypes()) {
+			
 			handleSignalStart(signalType);
 		}
 	
@@ -118,12 +119,20 @@ public class XStreamSignalsImpl implements XStreamSignals  {
 	
 	
 	private void handleSignalStart(XStreamSignalType signalType) { 
+		if(logger.isDebugEnabled()) { 
+			
+			logger.debug(builders,"Handling Start Signal Type {} ", signalType);
+		}
 		XStreamSignalHandlerBuilder builder = new XStreamSignalHandlerBuilder();
 		Future<XStreamSignalHandler> future = builder.build(this, stream, signalType);
 		future.onComplete(new Handler<AsyncResult<XStreamSignalHandler>>() {
 			
 			@Override
 			public void handle(AsyncResult<XStreamSignalHandler> event) {
+				if(logger.isDebugEnabled()) { 
+					logger.debug(builders,"Handling Start Callback event failed {} ", event.failed());
+				}
+				
 				if(event.failed()) { 
 					// xst
 					if(logger.isInfoEnabled()) { 
@@ -134,6 +143,7 @@ public class XStreamSignalsImpl implements XStreamSignals  {
 				}
 				if(event.succeeded()) { 
 					XStreamSignalHandler handler = event.result();
+					
 					
 					handlers.put((int)handler.getType().getId(), handler);
 					if(logger.isDebugEnabled()) { 

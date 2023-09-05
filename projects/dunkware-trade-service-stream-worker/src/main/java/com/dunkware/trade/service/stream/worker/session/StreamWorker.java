@@ -300,6 +300,7 @@ public class StreamWorker implements DunkNetChannelHandler {
 					Thread.sleep(1000);
 					if(stopComplete) { 
 						logger.info(stopMarker, "Stop Monitor Detected Stop Complete on node {} worker {}",dunkNet.getId(),req.getWorkerId());
+						return;
 					}
 					count++;
 					if(count > 20) { 

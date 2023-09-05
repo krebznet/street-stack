@@ -28,10 +28,8 @@ public class XStreamEntityVarAggValue implements XStreamEntityQueryValue {
 		this.varIdent = model.getVarIdent();
 		this.timeRange = model.getSessionTimeRange();
 	}
-	@Override
-	public boolean isRunnable(XStreamEntity entity) throws XStreamQueryException {
-		return true;
-	}
+	
+	
 	@Override
 	public boolean isResolvable(XStreamEntity row) throws XStreamQueryException {
 		// TODO Auto-generated method stub
@@ -43,6 +41,8 @@ public class XStreamEntityVarAggValue implements XStreamEntityQueryValue {
 		// TODO Auto-generated method stub
 		return null;
 	}
+
+
 	
 
 	

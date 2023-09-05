@@ -39,12 +39,6 @@ public interface XStreamEntityQuery {
 	 */
 	public XStreamEntityQueryRun execute(List<XStreamEntity> entities);
 	
-	/**
-	 * Returns true if all criteria predicates are runnable, some might not be 
-	 * if for example agg data request is not available based on time range
-	 * @return
-	 */
-	public boolean isRunnable();
 	
 }
 

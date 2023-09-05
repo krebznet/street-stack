@@ -40,7 +40,8 @@ public class XStreamConverter {
 		XStreamEntityQueryType xQueryType = new XStreamEntityQueryType();
 		for (StreamEntityCriteriaType ct : type.getCriterias()) {
 			if(ct.getType().equals("Value Compare Filter") == false) {
-				ct.getValue().remove(1);
+				if(ct.getValue().size() > 1) 
+					ct.getValue().remove(1);
 			}
 		}
 		List<XStreamEntityCriteriaType> xCriterias = toXStreamCriterias(type.getCriterias());

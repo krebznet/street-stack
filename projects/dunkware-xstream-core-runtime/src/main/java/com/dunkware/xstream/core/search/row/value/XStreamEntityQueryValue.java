@@ -6,9 +6,6 @@ import com.dunkware.xstream.api.XStreamResolveException;
 
 public interface XStreamEntityQueryValue {
 	
-	
-	public boolean isRunnable(XStreamEntity entity) throws XStreamQueryException;
-	
 	public boolean isResolvable(XStreamEntity row) throws XStreamQueryException;
 	
 	public Number resolve(XStreamEntity row) throws XStreamResolveException, XStreamQueryException;

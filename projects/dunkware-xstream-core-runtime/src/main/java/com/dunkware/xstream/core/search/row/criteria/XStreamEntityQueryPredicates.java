@@ -46,11 +46,7 @@ public class XStreamEntityQueryPredicates implements XStreamEntityPredicate {
 		return null;
 	}
 
-	@Override
-	public boolean isRunnable() {
-		return true;
-	}
-
+	
 	@Override
 	public boolean isResolvable(XStreamEntity entity) {
 		return true;

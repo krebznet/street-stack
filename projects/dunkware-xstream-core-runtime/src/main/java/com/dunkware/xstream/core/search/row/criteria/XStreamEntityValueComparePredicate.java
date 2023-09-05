@@ -36,10 +36,7 @@ public class XStreamEntityValueComparePredicate implements XStreamEntityPredicat
 		return false;
 	}
 	
-	@Override
-	public boolean isRunnable() {
-		return true;
-	}
+	
 
 	@Override
 	public boolean isResolvable(XStreamEntity entity) {

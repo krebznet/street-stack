@@ -18,14 +18,6 @@ public class XStreamEntitySignalCountHistValue implements XStreamEntityQueryValu
 		this.stream = stream; 
 	}
 
-
-	@Override
-	public boolean isRunnable(XStreamEntity entity) throws XStreamQueryException {
-		// TODO Auto-generated method stub
-		return false;
-	}
-
-
 	@Override
 	public boolean isResolvable(XStreamEntity row) throws XStreamQueryException {
 		// TODO Auto-generated method stub

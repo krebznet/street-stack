@@ -29,6 +29,7 @@ public class StreamBlueprintSignal {
 			this.blueprint = blueprint;
 			eventNode = blueprint.getEventNode().createChild(this);
 			model = DJson.getObjectMapper().readValue(entity.getModel(), StreamSignalType.class);
+			model.setId(entity.getId());
 		} catch (Exception e) {
 			throw new Exception("Web signal model deserialize exeception " + e.toString());
 		}

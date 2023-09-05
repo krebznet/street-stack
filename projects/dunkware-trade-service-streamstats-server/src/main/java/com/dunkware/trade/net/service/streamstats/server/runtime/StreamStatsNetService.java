@@ -8,4 +8,7 @@ public class StreamStatsNetService {
 	public EntityStatResp statReq(EntityStatReq req) { 
 		return null;
 	}
+	
+	
+	
 }

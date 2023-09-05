@@ -6,11 +6,6 @@ import com.dunkware.xstream.api.XStreamResolveException;
 
 public class XStreamEntitySignalCountValue implements XStreamEntityQueryValue {
 
-	@Override
-	public boolean isRunnable(XStreamEntity entity) throws XStreamQueryException {
-		// TODO Auto-generated method stub
-		return false;
-	}
 
 	@Override
 	public boolean isResolvable(XStreamEntity row) throws XStreamQueryException {

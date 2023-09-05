@@ -81,11 +81,16 @@ public class XStreamSignalHandler {
 							lastTriggers.put(entity.getIdentifier(), time);
 							signals.entitySignal(XStreamSignalHandler.this, entity);
 						}
+						continue;
 					} else { 
 						lastTriggers.put(entity.getIdentifier(), time);
 						signals.entitySignal(XStreamSignalHandler.this, entity);
 					}
 				}
+				if(signalType.isEnableEntityLimit()) { 
+					// TODO: 
+				}
+				signals.entitySignal(XStreamSignalHandler.this, entity);
 			}
 		} 
 		

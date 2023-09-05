@@ -27,23 +27,18 @@ public class XStreamEntityVarAggHistValue implements XStreamEntityQueryValue {
 	
 
 	@Override
-	public boolean isRunnable(XStreamEntity entity) throws XStreamQueryException {
+	public boolean isResolvable(XStreamEntity entity) throws XStreamQueryException {
 		String exception = statResponse.getExceptionStats().get(entity.getId());
 		if(exception != null) { 
 			throw new XStreamQueryException("Entity " + entity.getId() + " var agg stat exception " + exception);
 		}
+		
 		if(statResponse.getResolvedStats().containsKey(entity.getId())) { 
 			return true;
 		}
 		
 		return false; 
-	}
-
-
-
-	@Override
-	public boolean isResolvable(XStreamEntity row) throws XStreamQueryException {
-		return isRunnable(row);
+		
 	}
 
 

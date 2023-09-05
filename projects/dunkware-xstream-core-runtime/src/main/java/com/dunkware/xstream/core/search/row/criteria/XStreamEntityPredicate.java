@@ -8,8 +8,6 @@ import com.dunkware.xstream.model.entity.query.type.XStreamEntityCriteriaType;
 
 public interface XStreamEntityPredicate extends Predicate<XStreamEntity> {
 	
-	boolean isRunnable();
-	
 	boolean isResolvable(XStreamEntity entity);
 	
 	public XStreamEntityCriteriaType getModel();
