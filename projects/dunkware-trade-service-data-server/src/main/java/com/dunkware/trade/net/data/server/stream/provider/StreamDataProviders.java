@@ -11,10 +11,12 @@ import org.slf4j.LoggerFactory;
 import org.slf4j.Marker;
 import org.slf4j.MarkerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.ApplicationContext;
 import org.springframework.stereotype.Service;
 
 import com.dunkware.spring.cluster.DunkNet;
 import com.dunkware.stream.cluster.proto.controller.GetStreamDescriptors;
+import com.dunkware.trade.service.stream.descriptor.StreamDescriptor;
 import com.dunkware.trade.service.stream.descriptor.StreamDescriptors;
 
 @Service
@@ -25,6 +27,9 @@ public class StreamDataProviders {
 	
 	@Autowired
 	private DunkNet dunkNet; 
+	
+	@Autowired
+	private ApplicationContext ac; 
 	
 	private Map<String,StreamDataProvider> dataProviders = new ConcurrentHashMap<String,StreamDataProvider>();
 	
@@ -43,7 +48,7 @@ public class StreamDataProviders {
 					try {
 						Thread.sleep(1000);
 						count++;
-						if(count > 20) { 
+						if(count > 50) { 
 							// 20 seconds no one picking up fuck it throw it a day. 
 							logger.error(marker, "Exception getting stream descriptors " + e.toString());
 							System.exit(-1);
@@ -55,6 +60,13 @@ public class StreamDataProviders {
 			}
 		} catch (Exception e) {
 			logger.error(marker, "WTF INIT " + e.toString());
+		}
+		
+		for (StreamDescriptor d : descriptors.getDescriptors()) {
+			StreamDataProvider provider = new StreamDataProvider();
+			ac.getAutowireCapableBeanFactory().autowireBean(provider);
+			provider.init(d);
+			dataProviders.put(d.getIdentifier(), provider);
 		}
 	}
 	

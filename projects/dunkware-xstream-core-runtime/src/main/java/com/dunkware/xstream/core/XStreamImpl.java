@@ -190,8 +190,7 @@ public class XStreamImpl implements XStream {
 
 	@Override
 	public XStreamSignals getSignals() {
-		// TODO Auto-generated method stub
-		return null;
+		return signals;
 	}
 
 	@Override

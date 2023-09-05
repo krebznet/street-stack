@@ -37,7 +37,12 @@ public class StreamCaptureService {
 		Thread runner = new Thread() { 
 			
 			public void run() { 
+				try {
+					Thread.sleep(10000);	
+				} catch (Exception e) {
+					// TODO: handle exception
 				
+				}
 				for (StreamDataProvider provider : dataProviders.getProviders()) {
 					StreamCapture capture = new StreamCapture(); 
 					logger.info(marker, "Starting Stream {} Capture ", provider.getDescriptor().getIdentifier());
