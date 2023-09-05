@@ -31,7 +31,9 @@ public class XStreamEntityQueryRunImpl implements XStreamEntityQueryRun {
 		resolvedCount++;
 	}
 	
-	
+	public void setResults(List<XStreamEntity> results) { 
+		this.entities = results;
+	}
 	
 	@Override
 	public String getLastException() {
@@ -49,7 +51,8 @@ public class XStreamEntityQueryRunImpl implements XStreamEntityQueryRun {
 	}
 
 	@Override
-	public List<XStreamEntity> getEntities() {
+	public List<XStreamEntity> getResults() {
+		this.returnCode = SUCCESS;
 		return entities;
 	}
 
@@ -64,6 +67,7 @@ public class XStreamEntityQueryRunImpl implements XStreamEntityQueryRun {
 		this.queryCount = queryCount;
 	}
 
+	
 	@Override
 	public double getTime() {
 		return time;

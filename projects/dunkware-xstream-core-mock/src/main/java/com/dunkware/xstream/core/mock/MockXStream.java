@@ -24,6 +24,7 @@ import com.dunkware.xstream.api.XStreamListener;
 import com.dunkware.xstream.api.XStreamQueryException;
 import com.dunkware.xstream.api.XStreamRowSignal;
 import com.dunkware.xstream.api.XStreamService;
+import com.dunkware.xstream.api.XStreamSignals;
 import com.dunkware.xstream.api.XStreamRowSignalListener;
 import com.dunkware.xstream.api.XStreamRuntimeErrorListener;
 import com.dunkware.xstream.api.XStreamStatService;
@@ -97,6 +98,14 @@ public class MockXStream implements XStream {
 	@Override
 	public XStreamStatus getStatus() {
 		return status;
+	}
+	
+	
+
+	@Override
+	public XStreamSignals getSignals() {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 	@Override

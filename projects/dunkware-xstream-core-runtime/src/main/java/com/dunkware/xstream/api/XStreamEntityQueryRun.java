@@ -22,7 +22,7 @@ public interface XStreamEntityQueryRun {
 	
 	public List<String> getExceptions();
 	
-	public List<XStreamEntity> getEntities();
+	public List<XStreamEntity> getResults();
 	
 	public String getLastException();
 	

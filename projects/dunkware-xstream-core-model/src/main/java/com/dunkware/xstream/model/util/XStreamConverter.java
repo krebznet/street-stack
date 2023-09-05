@@ -1,5 +1,8 @@
 package com.dunkware.xstream.model.util;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import com.dunkware.xstream.model.entity.query.type.StreamEntityCriteriaType;
 import com.dunkware.xstream.model.entity.query.type.StreamEntityQueryType;
 import com.dunkware.xstream.model.entity.query.type.StreamEntityQueryValueType;
@@ -34,7 +37,16 @@ public class XStreamConverter {
 		xType.setIdentifier(type.getName());
 		xType.setRunInterval(2);
 		xType.setRunIntervalTimeUnit(XStreamTimeUnit.Seconds);
-		xType.setQuery(toXStreamEntityQueryType(type.getQuery()));
+		XStreamEntityQueryType xQueryType = new XStreamEntityQueryType();
+		for (StreamEntityCriteriaType ct : type.getCriterias()) {
+			if(ct.getType().equals("Value Compare Filter") == false) {
+				ct.getValue().remove(1);
+			}
+		}
+		List<XStreamEntityCriteriaType> xCriterias = toXStreamCriterias(type.getCriterias());
+	
+		xQueryType.setCriterias(xCriterias);
+		xType.setQuery(xQueryType);
 		return xType;
 	}
 	
@@ -46,6 +58,14 @@ public class XStreamConverter {
 			model.getCriterias().add(criteriaModel);
 		}
 		return model;
+	}
+	
+	private static List<XStreamEntityCriteriaType> toXStreamCriterias(List<StreamEntityCriteriaType> input) throws Exception { 
+		List<XStreamEntityCriteriaType> results = new ArrayList<XStreamEntityCriteriaType>();
+		for (StreamEntityCriteriaType sc : input) {
+			results.add(toXStreamCriteria(sc));
+		}
+		return results;
 	}
 	
 	private static XStreamEntityCriteriaType toXStreamCriteria(StreamEntityCriteriaType web) throws Exception { 

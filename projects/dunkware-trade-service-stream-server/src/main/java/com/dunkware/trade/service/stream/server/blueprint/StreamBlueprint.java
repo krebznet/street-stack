@@ -23,6 +23,8 @@ import com.dunkware.trade.service.stream.server.repository.StreamBlueprintSignal
 import com.dunkware.trade.service.stream.server.repository.StreamBlueprintSignalStatus;
 import com.dunkware.trade.service.stream.server.repository.StreamEntity;
 import com.dunkware.xstream.model.signal.type.StreamSignalType;
+import com.dunkware.xstream.model.signal.type.XStreamSignalType;
+import com.dunkware.xstream.model.util.XStreamConverter;
 
 import ca.odell.glazedlists.BasicEventList;
 import ca.odell.glazedlists.GlazedLists;
@@ -55,6 +57,8 @@ public class StreamBlueprint {
 	// version --> Blueprint Version;
 
 	// also have the tickers -->
+	
+	
 
 	public void init(StreamEntity stream, StreamBlueprintService service) throws Exception {
 		signalBeans = new ObservableElementList<StreamBlueprintSignalBean>(
@@ -85,6 +89,20 @@ public class StreamBlueprint {
 		return signalBeans;
 	}
 
+	public List<XStreamSignalType> getXStreamSignalTypes() throws Exception { 
+		List<XStreamSignalType> types = new ArrayList<XStreamSignalType>();
+		for (StreamBlueprintSignal signal : signals) {
+			try {
+				XStreamSignalType type = XStreamConverter.toXStreamSignalType(signal.getSignalType());
+				types.add(type);
+			} catch (Exception e) {
+				logger.error(marker, "Exception converting singal type, bad signal type should not be in system " + e.toString());
+				throw e;
+			}
+		}
+		return types;
+	}
+	
 	public StreamBlueprintSignal getSignal(long id) throws Exception {
 		for (StreamBlueprintSignal sig : signals) {
 			try {

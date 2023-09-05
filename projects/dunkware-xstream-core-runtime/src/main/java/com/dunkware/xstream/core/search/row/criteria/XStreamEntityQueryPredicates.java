@@ -15,7 +15,7 @@ import com.dunkware.xstream.model.entity.query.type.XStreamEntityCriteriaType;
  * @author duncankrebs
  *
  */
-public class XStreamEntityResolvablePredicate implements XStreamEntityPredicate {
+public class XStreamEntityQueryPredicates implements XStreamEntityPredicate {
 
 	private List<XStreamEntityPredicate> predicates;
 	private XStreamEntityQueryRunImpl queryRun = null;
@@ -33,6 +33,11 @@ public class XStreamEntityResolvablePredicate implements XStreamEntityPredicate 
 			}
 		}
 		queryRun.incrementResolvedCount();
+		for (XStreamEntityPredicate xStreamEntityPredicate : predicates) {
+			if(!xStreamEntityPredicate.test(t)) { 
+				return false;
+			}
+		}
 		return true; 
 	}
 

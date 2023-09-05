@@ -16,7 +16,6 @@ import com.dunkware.trade.service.web.server.model.User;
 import com.dunkware.trade.service.web.server.storage.service.StorageService;
 
 @RestController
-@CrossOrigin("*")
 @RequestMapping("/v1/api/user")
 public class UserController {
 

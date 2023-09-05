@@ -37,7 +37,7 @@ public class XStreamSignalsImpl implements XStreamSignals  {
 	private List<StreamEntitySignal> signals = new ArrayList<StreamEntitySignal>();
 	private Semaphore signalLock; 
 	
-	public void start(XStream stream) throws Exception { 
+	public void start(XStream stream)  { 
 		this.stream = stream; 
 		for (XStreamSignalType signalType : stream.getInput().getSignalTypes()) {
 			handleSignalStart(signalType);

@@ -47,6 +47,7 @@ public class XStreamCore {
 			
 		}
 		XStreamInput input = new XStreamInput();
+		input.setQueryBuilder(entityQueryBuilder);
 		input.setDate(bundle.getDate());
 		input.setExecutor(executor);
 		input.setRegistry(getRegistry());

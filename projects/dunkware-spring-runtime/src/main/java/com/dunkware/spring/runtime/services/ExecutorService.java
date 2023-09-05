@@ -15,7 +15,7 @@ public class ExecutorService {
 	 @Value("${runtime.executor.pool.size:10}")
 	 private int coreSize; 
 	 
-	 @Value("${runtime.executor.task.timeout:60}")
+	 @Value("${runtime.executor.task.timeout:600}")
 	 private long timeout; 
 	 
 

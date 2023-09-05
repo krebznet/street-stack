@@ -66,8 +66,7 @@ public class StreamWorker implements DunkNetChannelHandler {
 	private StreamSessionWorkerStatus status = StreamSessionWorkerStatus.Pending;
 
 	private Timer statTimer = null;
-	
-	private StreamWorkerSnapshotPublisher snapshotPublisher; 
+
 
 	//private XStreamSignalService signalService;
 	
@@ -182,6 +181,7 @@ public class StreamWorker implements DunkNetChannelHandler {
 			StreamWorkerEntityQueryBuilder queryBuilder = new StreamWorkerEntityQueryBuilder();
 			queryBuilder.init(this);
 			this.input = XStreamCore.createInput(req.getStreamBundle(), executorService.get(),queryBuilder);
+			this.input.setSignalTypes(req.getSignals());
 		} catch (Exception e) {
 			logger.error(marker, "Exception starting stream session worker {} " + req.getWorkerId(), e.toString());
 			resp.setError(e.toString());
@@ -218,13 +218,7 @@ public class StreamWorker implements DunkNetChannelHandler {
 		}
 		statTimer = new Timer();
 		statTimer.scheduleAtFixedRate(new StatPublisher(), 0, 1000);
-		snapshotPublisher  = new StreamWorkerSnapshotPublisher();
-		try {
-			snapshotPublisher.init(this);
-			snapshotPublisher.streamStart(stream);
-		} catch (Exception e) {
-			logger.error(marker, "Exception starting snapshot publisher on node {} worker id {} exception {}",dunkNet.getId(), req.getWorkerId(),e.toString());
-		}
+		
 		resp.setCode("OK");
 		return resp;
 	}
@@ -293,7 +287,7 @@ public class StreamWorker implements DunkNetChannelHandler {
 	
 	
 	private void preStop() { 
-		snapshotPublisher.streamStop();
+	
 	}
 	
 	

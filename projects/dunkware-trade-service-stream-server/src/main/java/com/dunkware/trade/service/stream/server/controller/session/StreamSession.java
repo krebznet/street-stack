@@ -33,6 +33,8 @@ public interface StreamSession {
 	public StreamController getStream();
 
 	public String getSessionId();
+	
+	public StreamSessionInput getInput();
 
 	public List<StreamSessionExtension> getExtensions();
 

@@ -171,5 +171,11 @@ public interface XStream {
 	 */
 	public void removeRuntimeErrorListener(XStreamRuntimeErrorListener listener);
 	
+	/**
+	 * okay here we go. 
+	 * @return
+	 */
+	public XStreamSignals getSignals();
+	
 }
 

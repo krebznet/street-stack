@@ -27,9 +27,11 @@ import com.dunkware.xstream.api.XStreamRowSignalListener;
 import com.dunkware.xstream.api.XStreamRuntimeErrorListener;
 import com.dunkware.xstream.api.XStreamRuntimeException;
 import com.dunkware.xstream.api.XStreamService;
+import com.dunkware.xstream.api.XStreamSignals;
 import com.dunkware.xstream.api.XStreamStatService;
 import com.dunkware.xstream.api.XStreamStatus;
 import com.dunkware.xstream.api.XStreamTickRouter;
+import com.dunkware.xstream.core.signal.XStreamSignalsImpl;
 import com.dunkware.xstream.model.entity.query.type.XStreamEntityQueryType;
 import com.dunkware.xstream.model.metrics.XStreamMetrics;
 import com.dunkware.xstream.util.XStreamStatsBuilder;
@@ -68,11 +70,13 @@ public class XStreamImpl implements XStream {
 
 	private XStreamExecutor executor;
 
+	private XStreamSignalsImpl signals;
+
 	private String sessionId;
 
 	private List<String> rowIdentifiers = new ArrayList<String>();
-	
-	private List<XStreamRuntimeErrorListener> errorListeners =  new ArrayList<XStreamRuntimeErrorListener>();
+
+	private List<XStreamRuntimeErrorListener> errorListeners = new ArrayList<XStreamRuntimeErrorListener>();
 	private Semaphore errorListenerLock = new Semaphore(1);
 
 	@Override
@@ -80,11 +84,14 @@ public class XStreamImpl implements XStream {
 		if (logger.isDebugEnabled()) {
 			logger.debug("{} Starting", input.getIdentifier());
 		}
-		if(input.getQueryBuilder() == null) { 
+		if (input.getQueryBuilder() == null) {
 			throw new XStreamException("Entity Query Builder not set on XStream");
 		}
 
 		this.input = input;
+
+		signals = new XStreamSignalsImpl();
+
 		sessionId = input.getIdentifier() + DUUID.randomUUID(5);
 		executor = new XStreamExecutorImpl(input.getExecutor());
 		clock = new XStreamClockImpl(this);
@@ -116,6 +123,21 @@ public class XStreamImpl implements XStream {
 			ext.start();
 		}
 
+		Thread signalStarter = new Thread() {
+
+			public void run() {
+				while (!interrupted()) {
+					try {
+						Thread.sleep(1000);
+					} catch (Exception e) {
+						// TODO: handle exception
+					}
+					signals.start(XStreamImpl.this);
+				}
+			}
+		};
+		signalStarter.start();
+
 		status = XStreamStatus.Running;
 	}
 
@@ -141,7 +163,7 @@ public class XStreamImpl implements XStream {
 		for (XStreamService service : services) {
 			logger.info(stopMarker, "Service Predispose Start {} ", service.getClass().getName());
 			service.preDispose();
-						logger.info(stopMarker, "Service Predispose Done {} ", service.getClass().getName());
+			logger.info(stopMarker, "Service Predispose Done {} ", service.getClass().getName());
 		}
 
 		for (XStreamExtension ext : extensions) {
@@ -150,9 +172,9 @@ public class XStreamImpl implements XStream {
 			logger.info(stopMarker, "Ext Dispose Donet {} ", ext.getClass().getName());
 		}
 		for (XStreamService service : services) {
-						logger.info(stopMarker, "Service Dispose Start {} ", service.getClass().getName());
+			logger.info(stopMarker, "Service Dispose Start {} ", service.getClass().getName());
 			service.dispose();
-						logger.info(stopMarker, "Service Dispose Done {} ", service.getClass().getName());
+			logger.info(stopMarker, "Service Dispose Done {} ", service.getClass().getName());
 		}
 
 		logger.info(stopMarker, "Entities Dispose Start");
@@ -162,6 +184,12 @@ public class XStreamImpl implements XStream {
 		logger.info(stopMarker, "Entities Dispose Done");
 		logger.info(stopMarker, "XStream Disposed");
 		status = XStreamStatus.Disposed;
+	}
+
+	@Override
+	public XStreamSignals getSignals() {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 	@Override
@@ -408,17 +436,15 @@ public class XStreamImpl implements XStream {
 	}
 
 	@Override
-	public Future<XStreamEntityQuery> buildEntityQuery(XStreamEntityQueryType model)  {
-		return input.getQueryBuilder().build(this,model);
+	public Future<XStreamEntityQuery> buildEntityQuery(XStreamEntityQueryType model) {
+		return input.getQueryBuilder().build(this, model);
 	}
-	
-	
 
 	@Override
 	public void runtimeError(String type, String message) {
 		final XStreamRuntimeErrorImpl error = new XStreamRuntimeErrorImpl(type, message, clock.getLocalTime());
 		executor.execute(new Runnable() {
-			
+
 			@Override
 			public void run() {
 				try {
@@ -428,7 +454,7 @@ public class XStreamImpl implements XStream {
 					}
 				} catch (Exception e) {
 					// TODO: handle exception
-				} finally { 
+				} finally {
 					errorListenerLock.release();
 				}
 			}
@@ -438,7 +464,7 @@ public class XStreamImpl implements XStream {
 	@Override
 	public void addRuntimeErrorListener(XStreamRuntimeErrorListener listener) {
 		executor.execute(new Runnable() {
-			
+
 			@Override
 			public void run() {
 				try {
@@ -446,7 +472,7 @@ public class XStreamImpl implements XStream {
 					errorListeners.add(listener);
 				} catch (Exception e) {
 					// TODO: handle exception
-				} finally { 
+				} finally {
 					errorListenerLock.release();
 				}
 			}
@@ -455,8 +481,8 @@ public class XStreamImpl implements XStream {
 
 	@Override
 	public void removeRuntimeErrorListener(XStreamRuntimeErrorListener listener) {
-	executor.execute(new Runnable() {
-			
+		executor.execute(new Runnable() {
+
 			@Override
 			public void run() {
 				try {
@@ -464,14 +490,12 @@ public class XStreamImpl implements XStream {
 					errorListeners.remove(listener);
 				} catch (Exception e) {
 					// TODO: handle exception
-				} finally { 
+				} finally {
 					errorListenerLock.release();
 				}
 			}
 		});
 	}
-
-
 
 	/**
 	 * RowListener for routing stream row events to RowListeners registered on the

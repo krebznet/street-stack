@@ -1,24 +1,22 @@
 package com.dunkware.xstream.core.search.row;
 
-import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import com.dunkware.common.util.stopwatch.DStopWatch;
 import com.dunkware.xstream.api.XStream;
 import com.dunkware.xstream.api.XStreamEntity;
 import com.dunkware.xstream.api.XStreamEntityQuery;
 import com.dunkware.xstream.api.XStreamEntityQueryRun;
-import com.dunkware.xstream.api.XStreamQueryException;
-import com.dunkware.xstream.api.XStreamResolveException;
 import com.dunkware.xstream.core.search.row.criteria.XStreamEntityPredicate;
-import com.dunkware.xstream.core.search.row.criteria.XStreamEntityResolvablePredicate;
-import com.dunkware.xstream.model.entity.query.type.XStreamEntityQueryType;
+import com.dunkware.xstream.core.search.row.criteria.XStreamEntityQueryPredicates;
 
 public class XStreamEntityQueryImpl implements XStreamEntityQuery   {
 
 	private XStream stream; 
 	private List<XStreamEntityPredicate> predicates;
 	private double buildTime; 
+	private XStreamEntityQueryPredicates queryPredicates;
 	
 	public XStreamEntityQueryImpl() { 
 		
@@ -27,16 +25,14 @@ public class XStreamEntityQueryImpl implements XStreamEntityQuery   {
 
 	@Override
 	public void init(List<XStreamEntityPredicate> predicates, XStream stream, double buildTime) {
-		XStreamEntityResolvablePredicate resolvable = new XStreamEntityResolvablePredicate();
-		resolvable.init(predicates);
-		List<XStreamEntityPredicate> updated = new ArrayList<XStreamEntityPredicate>();
-		updated.add(resolvable);
-		updated.addAll(predicates);
-		this.predicates = updated;
+		queryPredicates = new XStreamEntityQueryPredicates();
+		queryPredicates.init(predicates);
+		this.predicates = predicates;
 		this.buildTime = buildTime;
 		this.stream = stream;
 	}
 
+	
 
 	@Override
 	public double getBuildTime() {
@@ -45,13 +41,22 @@ public class XStreamEntityQueryImpl implements XStreamEntityQuery   {
 
 	@Override
 	public XStreamEntityQueryRun execute() {
-		XStreamEntityQueryRun run = new XStreamEntityQueryRunImpl();
+		XStreamEntityQueryRunImpl run = new XStreamEntityQueryRunImpl();
 		DStopWatch timer = DStopWatch.create();
 		for (XStreamEntityPredicate pre : predicates) {
 			pre.setQueryRun(run);
 		}
+		queryPredicates.setQueryRun(run);
+		if(!isRunnable()) { 
+			run.addException("Query is not runnable");
+			return run;
+		}
+		timer.start();
+		List<XStreamEntity> results = stream.getRows().stream().filter(queryPredicates).collect(Collectors.toList());
+		timer.stop();
+		run.setTime(timer.getCompletedSeconds());
+		run.setResults(results);
 		
-		//stream.getRows().stream()
 		return run;
 	}
 

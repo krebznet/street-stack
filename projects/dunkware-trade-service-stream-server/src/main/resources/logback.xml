@@ -32,7 +32,10 @@
 		<appender-ref ref="CONSOLE" additivity="false" />
 	</root>
 
-
+<logger name="org.apache.kafka" level="ERROR">
+		  <appender-ref ref="FLUENT" />
+		<appender-ref ref="CONSOLE" additivity="false"/>
+</logger>
 	<logger name="com.dunkware" level="DEBUG">
 		  <appender-ref ref="FLUENT" />
 		<appender-ref ref="CONSOLE" additivity="false"/>

@@ -10,7 +10,6 @@ import org.slf4j.Logger;
 import org.slf4j.Marker;
 import org.slf4j.MarkerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.ApplicationContext;
 
 import com.dunkware.common.spec.locale.DCountry;
@@ -34,13 +33,8 @@ import com.dunkware.trade.service.stream.server.controller.session.StreamSession
 import com.dunkware.trade.service.stream.server.controller.session.StreamSessionFactory;
 import com.dunkware.trade.service.stream.server.controller.session.StreamSessionInput;
 import com.dunkware.trade.service.stream.server.controller.session.events.EStreamSessionEvent;
-import com.dunkware.trade.service.stream.server.controller.session.events.EStreamSessionException;
 import com.dunkware.trade.service.stream.server.controller.session.events.EStreamSessionStartException;
-import com.dunkware.trade.service.stream.server.controller.session.events.EStreamSessionStarted;
-import com.dunkware.trade.service.stream.server.controller.session.events.EStreamSessionStarting;
-import com.dunkware.trade.service.stream.server.controller.session.events.EStreamSessionStopException;
 import com.dunkware.trade.service.stream.server.controller.session.events.EStreamSessionStopped;
-import com.dunkware.trade.service.stream.server.controller.session.events.EStreamSessionStopping;
 import com.dunkware.trade.service.stream.server.repository.StreamEntity;
 import com.dunkware.trade.service.stream.server.repository.StreamRepo;
 import com.dunkware.trade.service.stream.server.repository.StreamVersionEntity;
@@ -49,6 +43,7 @@ import com.dunkware.trade.service.stream.server.tick.StreamTickService;
 import com.dunkware.trade.tick.model.ticker.TradeTickerSpec;
 import com.dunkware.trade.tick.service.protocol.ticker.spec.TradeTickerListSpec;
 import com.dunkware.xstream.model.signal.StreamEntitySignalListener;
+import com.dunkware.xstream.model.signal.type.XStreamSignalType;
 import com.dunkware.xstream.xproject.XScriptProject;
 import com.dunkware.xstream.xproject.bundle.XscriptBundleHelper;
 import com.dunkware.xstream.xproject.model.XScriptBundle;
@@ -269,11 +264,18 @@ public class StreamController {
 			throw new StreamSessionException("Cannot start stream in state " + getState());
 		}
 		logger.info(marker, "Starting {}", getName());
-		stats.setState(StreamState.Starting);
 		session = StreamSessionFactory.createSession();
 		ac.getAutowireCapableBeanFactory().autowireBean(session);
+		List<XStreamSignalType> signalTypes = null;
+		try {
+			signalTypes = blueprint.getXStreamSignalTypes();
+		} catch (Exception e) {
+			throw new StreamSessionException("Exception building XStreamSignalTypes " + e.toString());
+		}
+		stats.setState(StreamState.Starting);
 		try {
 			StreamSessionInput input = new StreamSessionInput();
+			input.setSignalTypes(signalTypes);
 			input.setTickers(tickers);
 			input.setController(this);
 			Vector<DunkNetNode> nodes = dunkNet.getNodes("StreamWorker");

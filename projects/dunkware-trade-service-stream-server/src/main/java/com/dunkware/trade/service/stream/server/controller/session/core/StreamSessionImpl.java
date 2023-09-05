@@ -112,8 +112,15 @@ public class StreamSessionImpl implements StreamSession {
 	public StreamState getState() {
 		return status.getState();
 	}
+	
+	
 
 
+
+	@Override
+	public StreamSessionInput getInput() {
+		return input;
+	}
 
 	@Override
 	public void startSession(StreamSessionInput input) throws StreamSessionException {

@@ -39,7 +39,10 @@ public class XStreamSignalHandler {
 		this.query = query;
 		this.signals  = signals;
 		queryRunner = new QueryRunner();
-		stream.getClock().scheduleRunnable(queryRunner,signalType.getRunInterval());
+		Thread thread = new Thread(queryRunner); 
+		thread.start();
+				
+		//stream.getClock().scheduleRunnable(queryRunner,signalType.getRunInterval());
 	}
 	
 	public void stop() { 
@@ -67,7 +70,7 @@ public class XStreamSignalHandler {
 				}
 				return;
 			}
-			List<XStreamEntity> results = queryRun.getEntities();
+			List<XStreamEntity> results = queryRun.getResults();
 			LocalTime time = stream.getClock().getLocalTime();
 			for (XStreamEntity entity : results) {
 				if(signalType.isEnableEntityThrottle()) { 

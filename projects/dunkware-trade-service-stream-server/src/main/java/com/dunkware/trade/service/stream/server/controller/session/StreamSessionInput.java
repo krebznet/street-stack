@@ -7,12 +7,14 @@ import java.util.Vector;
 import com.dunkware.spring.cluster.DunkNetNode;
 import com.dunkware.trade.service.stream.server.controller.StreamController;
 import com.dunkware.trade.tick.model.ticker.TradeTickerSpec;
+import com.dunkware.xstream.model.signal.type.XStreamSignalType;
 
 public class StreamSessionInput {
 	
 	private List<TradeTickerSpec> tickers = new ArrayList<TradeTickerSpec>();
 	private StreamController controller; 
 	private Vector<DunkNetNode> workerNodes = new Vector<DunkNetNode>();
+	private List<XStreamSignalType> signalTypes = new ArrayList<XStreamSignalType>();
 	
 	public List<TradeTickerSpec> getTickers() {
 		return tickers;
@@ -32,6 +34,14 @@ public class StreamSessionInput {
 	public void setWorkerNodes(Vector<DunkNetNode> workerNodes) {
 		this.workerNodes = workerNodes;
 	}
+	public List<XStreamSignalType> getSignalTypes() {
+		return signalTypes;
+	}
+	public void setSignalTypes(List<XStreamSignalType> signalTypes) {
+		this.signalTypes = signalTypes;
+	}
+	
+	
 	
 	
 	
