@@ -1,12 +1,10 @@
-package com.dunkware.trade.service.data.model.cluster;
+package com.dunkware.trade.service.stream.descriptor;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import com.dunkware.trade.service.stream.descriptor.StreamDescriptor;
-
-public class StreamDescriptorsResp {
-
+public class StreamDescriptors {
+	
 	private List<StreamDescriptor> descriptors = new ArrayList<StreamDescriptor>();
 
 	public List<StreamDescriptor> getDescriptors() {
@@ -16,7 +14,7 @@ public class StreamDescriptorsResp {
 	public void setDescriptors(List<StreamDescriptor> descriptors) {
 		this.descriptors = descriptors;
 	}
+	
+	
 
-	
-	
 }

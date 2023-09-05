@@ -6,7 +6,6 @@ import java.util.List;
 
 import javax.annotation.PostConstruct;
 
-import org.hibernate.annotations.NaturalId;
 import org.slf4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -15,6 +14,9 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.dunkware.common.util.json.DJson;
+import com.dunkware.spring.cluster.DunkNet;
+import com.dunkware.trade.service.stream.descriptor.StreamDescriptor;
+import com.dunkware.trade.service.stream.descriptor.StreamDescriptors;
 import com.dunkware.trade.service.stream.json.controller.spec.StreamControllerSpec;
 import com.dunkware.trade.service.stream.server.blueprint.StreamBlueprintService;
 import com.dunkware.trade.service.stream.server.repository.StreamEntity;
@@ -49,7 +51,9 @@ public class StreamControllerService {
 	@Value("${streams.schedule.enable}")
 	private boolean enableSchedule = true; 
 	
-
+	@Autowired
+	private DunkNet dunkNet; 
+	
 	@PostConstruct
 	private void load() {
 		logger.info("Starting Stream Controller Servie");
@@ -77,8 +81,15 @@ public class StreamControllerService {
 		};
 		runner.start();
 	}
-
 	
+	public StreamDescriptors getStreamDescriptors() { 
+		StreamDescriptors desc = new StreamDescriptors();
+		for (StreamController streamController : controllers) {
+			desc.getDescriptors().add(streamController.getDescriptor());
+		}
+		return desc;
+	}
+
 	@Transactional
 	public StreamController addStream(StreamControllerSpec spec) throws Exception {
 		StreamEntity ent = new StreamEntity();
@@ -180,5 +191,8 @@ public class StreamControllerService {
 		
 
 	}
+	
+	
+	
 
 }

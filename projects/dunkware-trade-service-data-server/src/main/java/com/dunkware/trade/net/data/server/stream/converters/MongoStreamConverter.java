@@ -1,4 +1,4 @@
-package com.dunkware.trade.net.data.server.stream.helpers;
+package com.dunkware.trade.net.data.server.stream.converters;
 
 import org.bson.Document;
 
@@ -13,9 +13,10 @@ public class MongoStreamConverter {
 		return null;
 	}
 	
-	public Document signalToDocument(StreamEntitySignal signal, DTimeZone timeZone) { 
+	public static Document signalToDocument(StreamEntitySignal signal, DTimeZone timeZone) { 
 		return null;
 	}
+	
 	
 	public StreamEntitySignal documentToSignal(Document document) { 
 		return null;

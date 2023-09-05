@@ -1,4 +1,4 @@
-package com.dunkware.trade.net.data.server.stream.writers;
+package com.dunkware.trade.net.data.server.stream.capture.writers;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -33,7 +33,7 @@ public class SnapshotWriterMetrics {
 	
 	public void start(SnapshotWriter writer) {
 		this.writer = writer;
-		startTime = DDateTime.now(writer.getController().getDescriptor().getTimeZone());
+		startTime = DDateTime.now(writer.getDescriptor().getTimeZone());
 
 	}
 

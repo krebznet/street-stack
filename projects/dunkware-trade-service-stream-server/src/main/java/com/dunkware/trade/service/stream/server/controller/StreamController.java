@@ -22,6 +22,7 @@ import com.dunkware.spring.cluster.DunkNet;
 import com.dunkware.spring.cluster.DunkNetNode;
 import com.dunkware.spring.runtime.services.EventService;
 import com.dunkware.spring.runtime.services.ExecutorService;
+import com.dunkware.trade.service.stream.descriptor.StreamDescriptor;
 import com.dunkware.trade.service.stream.json.controller.session.StreamSessionNodeBean;
 import com.dunkware.trade.service.stream.json.controller.spec.StreamControllerSpec;
 import com.dunkware.trade.service.stream.json.controller.spec.StreamControllerStats;
@@ -119,6 +120,8 @@ public class StreamController {
 
 	private ObservableElementList<StreamSessionNodeBean> sessionNodeBeans = null;
 
+	
+	
 	public StreamController() throws Exception {
 
 	}
@@ -209,6 +212,10 @@ public class StreamController {
 
 	public StreamEntity getEntity() {
 		return ent;
+	}
+	
+	public StreamDescriptor getDescriptor() { 
+		return buildDescriptor();
 	}
 
 	public String getName() {
@@ -346,6 +353,20 @@ public class StreamController {
 	}
 
 	
+	private StreamDescriptor buildDescriptor() { 
+		StreamDescriptor descriptor = new StreamDescriptor();
+		descriptor.setId(ent.getId());
+		descriptor.setCoreDatabase(config.getCoreDatabase());
+		descriptor.setCoreDatabaseURL(config.getCoreDatabaseURL());
+		descriptor.setWarehouseDatabase(config.getWarehouseDatabase());
+		descriptor.setWarehouseURL(config.getWarehouseURL());
+		descriptor.setIdentifier(getName());
+		descriptor.setKafkaBrokers(config.getKafkaBrokers());
+		descriptor.setTimeZone(getTimeZone());
+		return descriptor;
+	}
+	
+	
 	/**
 	 * Notify when session is stopped
 	 * 
@@ -380,4 +401,7 @@ public class StreamController {
 	private void setState(StreamState state) { 
 		this.stats.setState(state);;
 	}
+	
+	
+	
 }

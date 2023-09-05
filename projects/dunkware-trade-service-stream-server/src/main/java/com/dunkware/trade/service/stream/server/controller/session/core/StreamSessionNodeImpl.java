@@ -143,6 +143,7 @@ public class StreamSessionNodeImpl implements StreamSessionNode, DunkNetChannelH
 				startReq.setNodeId(input.getNode().getId());
 				startReq.setKafkaBrokers(kafkaBrokers);
 				startReq.setSignals(input.getSession().getInput().getSignalTypes());
+				startReq.setStreamDescriptor(input.getSession().getStream().getDescriptor());
 
 				try {
 					StreamSessionWorkerCreateReq req = new StreamSessionWorkerCreateReq();

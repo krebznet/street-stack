@@ -39,10 +39,10 @@ public class XStreamSignalHandler {
 		this.query = query;
 		this.signals  = signals;
 		queryRunner = new QueryRunner();
-		Thread thread = new Thread(queryRunner); 
-		thread.start();
+	//Thread thread = new Thread(queryRunner); 
+	//	thread.start();
 				
-		//stream.getClock().scheduleRunnable(queryRunner,signalType.getRunInterval());
+		stream.getClock().scheduleRunnable(queryRunner,signalType.getRunInterval());
 	}
 	
 	public void stop() { 

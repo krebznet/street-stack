@@ -10,9 +10,10 @@ import org.springframework.stereotype.Service;
 import com.dunkware.common.util.dtime.DTimeZone;
 import com.dunkware.spring.cluster.DunkNet;
 import com.dunkware.spring.cluster.anot.ADunkNetService;
-import com.dunkware.trade.service.data.model.cluster.StreamDescriptorsReq;
-import com.dunkware.trade.service.data.model.cluster.StreamDescriptorsResp;
+import com.dunkware.stream.cluster.proto.controller.GetStreamDescriptors;
 import com.dunkware.trade.service.stream.descriptor.StreamDescriptor;
+import com.dunkware.trade.service.stream.descriptor.StreamDescriptors;
+import com.google.protobuf.Descriptors.Descriptor;
 
 @Service
 public class StreamMockService {
@@ -35,20 +36,21 @@ public class StreamMockService {
 	
 	
 	@ADunkNetService(label = "Stream Descriptors Service")
-	public StreamDescriptorsResp getStreamDescriptors(StreamDescriptorsReq req) {
+	public StreamDescriptors getStreamDescriptors(GetStreamDescriptors get) {
+		StreamDescriptors descriptors = new StreamDescriptors();
 		StreamDescriptor descriptor = new StreamDescriptor();
-		descriptor.setEntityCount(4);
 		descriptor.setKafkaBrokers("localhost:29092");
-		descriptor.setSignalTopic("test_signal");
-		descriptor.setMongoURL("mongodb://localhost:27017");
-		descriptor.setMongoDatabase("dunkstreet");
+		
+		descriptor.setCoreDatabaseURL("mongodb://localhost:27017");
+		descriptor.setCoreDatabase("dunklight");
+		descriptor.setWarehouseDatabase("dunkhouse");
+		descriptor.setWarehouseURL(descriptor.getCoreDatabaseURL());
+		descriptor.setId(3);
 		descriptor.setIdentifier("test");
-		descriptor.setSignalTopic("test_topic");
 		descriptor.setTimeZone(DTimeZone.NewYork);
 		
-		StreamDescriptorsResp resp = new StreamDescriptorsResp();
-		resp.setDescriptors(Arrays.asList(descriptor));
-		return resp;
+		descriptors.getDescriptors().add(descriptor);
+		return descriptors;
 
 		
 	

@@ -22,6 +22,7 @@ import com.dunkware.spring.cluster.DunkNetChannelHandler;
 import com.dunkware.spring.cluster.DunkNetException;
 import com.dunkware.spring.cluster.anot.ADunkNetService;
 import com.dunkware.spring.runtime.services.ExecutorService;
+import com.dunkware.trade.service.stream.descriptor.StreamDescriptor;
 import com.dunkware.trade.service.stream.json.worker.stream.StreamSessionWorkerCancelReq;
 import com.dunkware.trade.service.stream.json.worker.stream.StreamSessionWorkerCancelResp;
 import com.dunkware.trade.service.stream.json.worker.stream.StreamSessionWorkerStartReq;
@@ -82,22 +83,16 @@ public class StreamWorker implements DunkNetChannelHandler {
 	public StreamSessionWorkerStartReq getStartReq() { 
 		return req; 
 	}
+	
+	public StreamDescriptor getStreamDescriptor() { 
+		return req.getStreamDescriptor();
+	}
 
 	@Override
 	public void channelInit(DunkNetChannel channel) throws DunkNetException {
 		this.channel = channel;
 		this.channel.addExtension(this);
-		Set<Class<?>> classes = DAnotHelper.getClassesAnnotedWith(AStreamWorkerExtension.class);
-		for (Class<?> class1 : classes) {
-			try {
-				StreamWorkerExtension ext = (StreamWorkerExtension)class1.newInstance();
-				ext.init(this);
-				workerExtensions.add(ext);
-			} catch (Exception e) {
-				logger.error(marker, "Exception init extension " + e.toString());
-				throw new DunkNetException("Worker Extension " + class1.getName() + " init exception " + e.toString());
-			}
-		}
+		
 	}
 	
 	
@@ -119,6 +114,7 @@ public class StreamWorker implements DunkNetChannelHandler {
 	
 	@ADunkNetService(label = "Stop Session Worker Stream")
 	public StreamSessionWorkerStopResp stopStream(StreamSessionWorkerStopReq req) {
+		
 		logger.info(stopMarker, "Stop Stream Message Recieved on Node {} worker {}", dunkNet.getId(),req.getWorkerId());
 		stopInvoked = false;
 		new StopTimeoutMonitor().start();
@@ -167,6 +163,17 @@ public class StreamWorker implements DunkNetChannelHandler {
 	@ADunkNetService(label = "Start Session Worker Stream")
 	public StreamSessionWorkerStartResp startStream(StreamSessionWorkerStartReq req) { 
 		this.req = req;
+		Set<Class<?>> classes = DAnotHelper.getClassesAnnotedWith(AStreamWorkerExtension.class);
+		for (Class<?> class1 : classes) {
+			try {
+				StreamWorkerExtension ext = (StreamWorkerExtension)class1.newInstance();
+				ext.init(this);
+				workerExtensions.add(ext);
+			} catch (Exception e) {
+				logger.error(marker, "Exception init extension " + e.toString());
+		
+			}
+		}
 		stats.setNodeId(dunkNet.getId());
 		stats.setStream(req.getStream());
 		stats.setStatus(status.name());

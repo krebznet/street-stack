@@ -1,4 +1,4 @@
-package com.dunkware.trade.net.data.server.stream.writers;
+package com.dunkware.trade.net.data.server.stream.capture.writers;
 
 import java.time.LocalDateTime;
 import java.time.ZoneId;
@@ -28,10 +28,9 @@ import com.dunkware.common.util.dtime.DDateTime;
 import com.dunkware.common.util.dtime.DTimeZone;
 import com.dunkware.common.util.json.DJson;
 import com.dunkware.common.util.stopwatch.DStopWatch;
-import com.dunkware.common.util.time.DunkTime;
 import com.dunkware.common.util.uuid.DUUID;
-import com.dunkware.trade.net.data.server.stream.IStreamDataController;
-import com.dunkware.trade.net.data.server.stream.helpers.MongoStreamConverter;
+import com.dunkware.trade.net.data.server.stream.converters.MongoStreamConverter;
+import com.dunkware.trade.service.stream.descriptor.StreamDescriptor;
 import com.dunkware.xstream.model.entity.StreamEntitySnapshot;
 import com.mongodb.WriteConcern;
 import com.mongodb.client.MongoClient;
@@ -58,7 +57,7 @@ import com.mongodb.client.model.TimeSeriesOptions;
  */
 public class SnapshotWriter implements DKafkaByteHandler2 {
 
-	private IStreamDataController controller;
+	private StreamDescriptor descriptor;
 
 	private Logger logger = LoggerFactory.getLogger(getClass());
 	private Marker marker = MarkerFactory.getMarker("EntitySnapshotConsumer");
@@ -92,26 +91,25 @@ public class SnapshotWriter implements DKafkaByteHandler2 {
 	private boolean writerClosed = false;
 
 //	private IStreamDataController 
-	public void start(IStreamDataController controller) throws Exception {
+	public void start(StreamDescriptor descriptor) throws Exception {
 		logger.info("Starting Data Snapshot writer");
-		this.controller = controller;
-		marker = MarkerFactory.getMarker("snapshot_writer_" + controller.getDescriptor().getIdentifier());
+		this.descriptor = descriptor;
+		marker = MarkerFactory.getMarker("snapsho_capture_" + descriptor.getIdentifier());
 		metrics = new SnapshotWriterMetrics();
 		metrics.start(this);
 
-		logger.info(marker, "Starting Snapshot Writer on stream {}", controller.getDescriptor().getIdentifier());
-		timeZone = DTimeZone.toZoneId(controller.getDescriptor().getTimeZone());
+		logger.info(marker, "Starting Snapshot Writer on stream {}", descriptor.getIdentifier());
+		timeZone = DTimeZone.toZoneId(descriptor.getTimeZone());
 		try {
 
-			mongoClient = MongoClients.create(controller.getDescriptor().getSnapshotURL());
+			mongoClient = MongoClients.create(descriptor.getWarehouseDatabase());
 
 			WriteConcern wc = new WriteConcern(0).withJournal(false);
-			mongoDatabase = mongoClient.getDatabase(controller.getDescriptor().getSnapshotDatabase());
+			mongoDatabase = mongoClient.getDatabase(descriptor.getWarehouseDatabase());
 
 			// check if the database exists
-			LocalDateTime dt = LocalDateTime.now(DTimeZone.toZoneId(controller.getDescriptor().getTimeZone()));
-			String Timestamp = DunkTime.format(dt, DunkTime.YYMMDD);
-			String mongoCollectionName = "snapshot_" + controller.getDescriptor().getIdentifier() + "_" + Timestamp;
+			LocalDateTime dt = LocalDateTime.now(DTimeZone.toZoneId(descriptor.getTimeZone()));
+			String mongoCollectionName = descriptor.getSnapshotMongoCollection();
 			boolean exists = false;
 			for (String colName : mongoDatabase.listCollectionNames()) {
 				if (colName.equals(mongoCollectionName)) {
@@ -148,10 +146,11 @@ public class SnapshotWriter implements DKafkaByteHandler2 {
 			logger.error("Exception Connecting Snapshot writer " + e.toString());
 			throw new Exception("Mongo Setup/Connection Exception " + e.getLocalizedMessage(), e);
 		}
-		String snapshotTopic = "stream_" + controller.getDescriptor().getIdentifier() + "_event_snapshot";
+		String snapshotTopic = descriptor.getSnapshotEventTopic();
 
 		DKafkaByteConsumer2Spec spec = DKafkaByteConsumer2SpecBuilder.newBuilder(ConsumerType.Auto, OffsetType.Latest)
-				.setBrokerString(controller.getDescriptor().getKafkaBrokers()).addTopic(snapshotTopic)
+				.setBrokerString(descriptor.getKafkaBrokers()).addTopic(snapshotTopic)
+				// probbably should change this to keep the same id 
 				.setClientAndGroup("d" + DUUID.randomUUID(5), "d" + DUUID.randomUUID(6)).build();
 		logger.info(marker, "Consuming snapshot topics from " + snapshotTopic);
 		try {
@@ -172,10 +171,9 @@ public class SnapshotWriter implements DKafkaByteHandler2 {
 		queueMonitor.start();
 	}
 
-	public IStreamDataController getController() {
-		return controller;
+	public StreamDescriptor getDescriptor() { 
+		return  descriptor;
 	}
-
 	public int getQueueSize() {
 		return writeQueue.size();
 	}
@@ -280,7 +278,7 @@ public class SnapshotWriter implements DKafkaByteHandler2 {
 		mongoWriter.interrupt();
 		mongoWriter.writePendingSnapshots();
 		queueMonitor.interrupt();
-		metrics.setStopTime(DDateTime.now(controller.getDescriptor().getTimeZone()));
+		metrics.setStopTime(DDateTime.now(descriptor.getTimeZone()));
 		kafkaConsumer.dispose();
 		writerClosed = true;
 	}
@@ -340,7 +338,7 @@ public class SnapshotWriter implements DKafkaByteHandler2 {
 				try {
 
 					Document document = MongoStreamConverter.snapshotToDocument(snapshot,
-							controller.getDescriptor().getTimeZone());
+							descriptor.getTimeZone());
 					if (entities.get(snapshot.getEntityId()) == null) {
 						entities.put(snapshot.getEntityId(), new AtomicInteger(1));
 					
