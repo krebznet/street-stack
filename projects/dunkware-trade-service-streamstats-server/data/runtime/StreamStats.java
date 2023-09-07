@@ -1,11 +1,11 @@
 package com.dunkware.trade.net.service.streamstats.server.runtime;
 
 import com.dunkware.trade.net.service.streamstats.server.statcache2.StreamStatsCache;
-import com.dunkware.trade.net.service.streamstats.server.statstore.StreamStatsStore;
+import com.dunkware.trade.net.service.streamstats.server.statstore.StreamEntityStats;
 
 public interface StreamStats {
 
-	StreamStatsStore getStore();
+	StreamEntityStats getStore();
 	
 	StreamStatsCache getCache();
 	

@@ -9,6 +9,8 @@ import java.time.LocalDate;
 import java.util.Collection;
 import java.util.Iterator;
 
+import javax.annotation.PostConstruct;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.slf4j.Marker;
@@ -19,12 +21,11 @@ import org.springframework.stereotype.Service;
 
 import com.dunkware.common.util.mysql.pool.MySqlConnectionPool;
 import com.dunkware.common.util.stopwatch.DStopWatch;
-import com.dunkware.trade.net.service.streamstats.server.runtime.impl.StreamStatsImpl;
 import com.dunkware.xstream.model.stats.entity.EntityStats;
 
 @Profile("StreamStore")
 @Service()
-public class StreamStatsStore {
+public class StreamEntityStats {
 
 	public static final int BATCH_INSERT_SIZE = 3500;
 
@@ -44,11 +45,11 @@ public class StreamStatsStore {
 
 	private MySqlConnectionPool pool;
 
-	private StreamStatsImpl streamStats;
 
-	public void init(StreamStatsImpl streamStats) throws Exception {
+	@PostConstruct
+	public void init( ) throws Exception {
 		try {
-			this.streamStats = streamStats;
+			
 			pool = new MySqlConnectionPool(dbHost, dbName, dbPort, dbUsername, dbPassword, 5);
 			createTables();
 		} catch (Exception e) {
@@ -62,13 +63,13 @@ public class StreamStatsStore {
 		try {
 			 cn = pool.getConnectionFromPool();
 			DatabaseMetaData md = cn.getMetaData();
-			ResultSet rs = md.getTables(null, null,StreamStatsStoreHelper.createVarStatTable(streamStats.getStreamIdentifier()), null);
+			ResultSet rs = md.getTables(null, null,EntityStatsHelper.createVarStatTable(streamStats.getStreamIdentifier()), null);
 			if(!rs.next()) { 
-				logger.info(marker, "Creating Stream Var Stat Table for " + streamStats.getStreamIdentifier());
+				logger.info(marker, "Creating Stream Entity Stat Table for " + streamStats.getStreamIdentifier());
 				Statement st = null;
 				try {
 					st = cn.createStatement();
-					st.execute(StreamStatsStoreHelper.createVarStatTable(streamStats.getStreamIdentifier()));	
+					st.execute(EntityStatsHelper.createVarStatTable(streamStats.getStreamIdentifier()));	
 					
 				} catch (Exception e) {
 					logger.error(marker, "Exception creating var stats table " + e.toString());;
@@ -95,7 +96,7 @@ public class StreamStatsStore {
 		}
 	}
 
-	public double deleteVarStats() throws Exception {
+	public double deleteEntityStats() throws Exception {
 		try {
 			DStopWatch timer = DStopWatch.create();
 

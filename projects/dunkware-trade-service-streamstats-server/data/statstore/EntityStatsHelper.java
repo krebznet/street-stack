@@ -12,22 +12,33 @@ import com.dunkware.common.util.helpers.DRandom;
 import com.dunkware.xstream.model.stats.entity.EntityStats;
 
 
-public class StreamStatsStoreHelper {
+public class EntityStatsHelper {
 	
 	
 	public static String createVarStatTable(String ident) { 
-		return "CREATE TABLE" +  "`" + ident + "_session_var_stats` (\n"
-				+ "  `id` int NOT NULL,\n"
+		
+		String table = "CREATE TABLE `stream_" + ident + "_stats_session_entity` (\n"
+				+ "  `id` int NOT NULL AUTO_INCREMENT,\n"
 				+ "  `date` datetime NOT NULL,\n"
 				+ "  `ent` int NOT NULL,\n"
-				+ "  `var` int NOT NULL,\n"
-				+ "  `stat` int NOT NULL,\n"
-				+ "  `vale` decimal(10,2) NOT NULL,\n"
-				+ "  `time` datetime DEFAULT NULL,\n"
-				+ "  PRIMARY KEY (`date`,`ent`,`id`),\n"
-				+ "  INDEX (`date`, `ent`)\n"
-				+ ") ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;\n"
-				+ "";
+				+ "  `target` int NOT NULL,\n"
+				+ "  `type` int NOT NULL,\n"
+				+ "  `value` decimal(10,2) NOT NULL,\n"
+				+ "  `time` time DEFAULT NULL,\n"
+				+ "  PRIMARY KEY (`id`)\n"
+				+ "  INDEX (`date`, `ent`)\\n\""
+				+ ") ENGINE=InnoDB AUTO_INCREMENT=6425263 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;";
+		return table;
+		
+		/*
+		 * return "CREATE TABLE" + "`" + ident + "_stats_session_entity` (\n" +
+		 * "  `id` int NOT NULL,\n" + "  `date` datetime NOT NULL,\n" +
+		 * "  `ent` int NOT NULL,\n" + "  `var` int NOT NULL,\n" +
+		 * "  `stat` int NOT NULL,\n" + "  `vale` decimal(10,2) NOT NULL,\n" +
+		 * "  `time` datetime DEFAULT NULL,\n" + "  PRIMARY KEY (`id`),\n" +
+		 * "  INDEX (`date`, `ent`)\n" +
+		 * ") ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;\n" + "";
+		 */
 	}
 	
 	public static String varStatTableName(String streamIdent) { 

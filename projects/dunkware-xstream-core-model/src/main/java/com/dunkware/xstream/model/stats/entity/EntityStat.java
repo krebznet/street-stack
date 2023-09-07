@@ -5,18 +5,13 @@ import java.time.LocalTime;
 
 public class EntityStat {
 	
-	private int type; 
+	private int stat; 
 	private LocalDate date; 
 	private Number value; 
-	private int target;; 
+	private int element;
+	private int entity;
 	private LocalTime time;
 	
-	public int getType() {
-		return type;
-	}
-	public void setType(int type) {
-		this.type = type;
-	}
 	public LocalDate getDate() {
 		return date;
 	}
@@ -29,18 +24,33 @@ public class EntityStat {
 	public void setValue(Number value) {
 		this.value = value;
 	}
-	public int getTarget() {
-		return target;
-	}
-	public void setTarget(int target) {
-		this.target = target;
-	}
+
 	public LocalTime getTime() {
 		return time;
 	}
 	public void setTime(LocalTime time) {
 		this.time = time;
+	}
+	public int getStat() {
+		return stat;
+	}
+	public void setStat(int stat) {
+		this.stat = stat;
+	}
+	public int getElement() {
+		return element;
+	}
+	public void setElement(int element) {
+		this.element = element;
+	}
+	public int getEntity() {
+		return entity;
+	}
+	public void setEntity(int entity) {
+		this.entity = entity;
 	} 
+	
+	
 	
 	
 

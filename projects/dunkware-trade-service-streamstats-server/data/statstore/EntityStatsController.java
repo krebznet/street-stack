@@ -18,14 +18,14 @@ import com.dunkware.xstream.model.stats.entity.EntityStats;
 
 @Profile("StreamStore")
 @RestController
-public class StreamStatsStoreService {
+public class EntityStatsController {
 
 	@Autowired
-	StreamStatsStore store;
+	StreamEntityStats store;
 
 	@GetMapping(path = "/streamstats/v1/store/delete")
 	public double deleteVarStats() throws Exception {
-		return store.deleteVarStats();
+		return store.deleteEntityStats();
 
 	}
 
@@ -60,7 +60,7 @@ public class StreamStatsStoreService {
 			statList.add(Integer.valueOf(i));
 			i++;
 		}
-		List<EntityStats> results = StreamStatsStoreHelper.creatMockVarStats(start, end, enttityList, varList, statList);
+		List<EntityStats> results = EntityStatsHelper.creatMockVarStats(start, end, enttityList, varList, statList);
 
 		try {
 

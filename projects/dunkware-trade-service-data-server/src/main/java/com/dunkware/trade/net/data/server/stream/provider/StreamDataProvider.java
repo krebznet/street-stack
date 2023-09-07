@@ -10,6 +10,7 @@ import org.slf4j.MarkerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import com.dunkware.trade.net.data.server.config.MongoProvider;
+import com.dunkware.trade.net.data.server.stream.converters.MongoStreamConverter;
 import com.dunkware.trade.service.stream.descriptor.StreamDescriptor;
 import com.dunkware.xstream.model.signal.StreamEntitySignal;
 import com.mongodb.client.MongoClient;
@@ -62,9 +63,9 @@ public class StreamDataProvider   {
 			if (signalCollection == null) {
 				coreDatabase.createCollection(collectionname);
 				signalCollection = coreDatabase.getCollection(collectionname);
-				signalCollection.createIndex(Indexes.ascending("date"));
+				signalCollection.createIndex(Indexes.ascending("dateTime"));
 				signalCollection.createIndex(Indexes.ascending("entity"));
-				signalCollection.createIndex(Indexes.ascending("type"));
+				signalCollection.createIndex(Indexes.ascending("id"));
 			}
 			initialized = true; 
 		} catch (Exception e) {
@@ -99,15 +100,7 @@ public class StreamDataProvider   {
 	}
 	
 	public void insertSignal(StreamEntitySignal signal) throws Exception { 
-		Document document = new Document();
-		document.append("timestamp", signal.getDateTime());
-		document.append("type", signal.getType());
-		document.append("entity", signal.getEntity());
-		Document varDoc = new Document();
-		for (Integer varKey : signal.getVars().keySet()) {
-			varDoc.append(String.valueOf(varKey), signal.getVars().get(varKey));
-		}
-		document.append("vars", varDoc);
+		Document document = MongoStreamConverter.signalToDocument(signal, descriptor.getTimeZone());
 		try {
 			signalCollection.insertOne(document);
 		} catch (Exception e) {

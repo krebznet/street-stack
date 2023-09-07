@@ -297,7 +297,7 @@ public class SignalWriter implements DKafkaByteHandler2 {
 			while (!interrupted()) {
 				StreamEntitySignal snapshot = null;
 				try {
-					snapshot = writeQueue.poll(15, TimeUnit.SECONDS);
+					snapshot = writeQueue.poll(5, TimeUnit.SECONDS);
 					if (snapshot == null && pendingWrites.size() > 0) {
 						// write pending writes if no snapshot received for 15 seconds;
 						sw.start();
@@ -310,7 +310,6 @@ public class SignalWriter implements DKafkaByteHandler2 {
 						continue;
 					}
 					if (snapshot == null) {
-						//
 						continue;
 					}
 

@@ -2,6 +2,7 @@ package com.dunkware.xstream.core.signal;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
@@ -50,8 +51,17 @@ public class XStreamSignalsImpl implements XStreamSignals  {
 		StreamEntitySignal signal = new StreamEntitySignal();
 		signal.setDateTime(stream.getClock().getLocalDateTime());
 		signal.setEntity(entity.getIdentifier());
-		signal.setType((int)handler.getType().getId());
-		signal.setVars(entity.varValues());
+		signal.setId((int)handler.getType().getId());
+		Map<Integer,Object> varValues = entity.varValues();
+		Map<Integer,Number> numValues = new HashMap<Integer,Number>();
+		for (Integer varId : varValues.keySet()) {
+			Object var = varValues.get(varId);
+			if (var instanceof Number) {
+				Number varValue = (Number) var;
+				numValues.put(varId, varValue);
+			}
+		}
+		signal.setVars(numValues);
 		try {
 			signalLock.acquire();
 			signals.add(signal);

@@ -14,7 +14,7 @@ import com.dunkware.trade.net.service.streamstats.server.statstore.StreamStatsSt
 import io.vertx.core.Future;
 import io.vertx.core.Promise;
 
-public class StreamStatsImpl {
+public class StreamStats {
 	
 	private Logger logger = LoggerFactory.getLogger(getClass());
 	private Marker marker = MarkerFactory.getMarker("streamstats");
