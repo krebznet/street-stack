@@ -1,6 +1,7 @@
 package com.dunkware.xstream.api;
 
 import java.util.Collection;
+import java.util.List;
 
 import com.dunkware.xstream.model.signal.type.XStreamSignalType;
 
@@ -16,6 +17,6 @@ public interface XStreamSignals {
 	
 	public void stopSignalType(int id) throws Exception; 
 	
-	
+	public List<XStreamSignal> search(XStreamSignalSearch search);
 
 }

@@ -3,6 +3,8 @@ package com.dunkware.xstream.model.stats.entity;
 import java.time.LocalDate;
 import java.time.LocalTime;
 
+import com.dunkware.common.util.time.DunkTime;
+
 public class EntityStat {
 	
 	private int stat; 
@@ -48,7 +50,9 @@ public class EntityStat {
 	}
 	public void setEntity(int entity) {
 		this.entity = entity;
-	} 
+	}
+	
+	
 	
 	
 	

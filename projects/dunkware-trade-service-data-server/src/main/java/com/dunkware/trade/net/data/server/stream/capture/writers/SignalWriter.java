@@ -57,7 +57,7 @@ public class SignalWriter implements DKafkaByteHandler2 {
 	private MongoWriter mongoWriter;
 	private QueueMonitor queueMonitor;
 
-	private int bucketBatchSize = 15000;
+	private int bucketBatchSize = 5;
 	
 	private boolean terminated = false;
 

@@ -1,4 +1,4 @@
-package com.dunkware.trade.net.service.streamstats.server.entity.impl.stream;
+package com.dunkware.trade.net.data.server.stream.entitystats.impl;
 
 import java.sql.Connection;
 import java.sql.Statement;
@@ -11,9 +11,10 @@ import org.slf4j.MarkerFactory;
 
 import com.dunkware.common.util.mysql.pool.MySqlConnectionPool;
 import com.dunkware.common.util.stopwatch.DStopWatch;
-import com.dunkware.trade.net.service.streamstats.server.entity.EntityStatsService;
-import com.dunkware.trade.net.service.streamstats.server.entity.EntityStreamStats;
-import com.dunkware.trade.net.service.streamstats.server.entity.EntityStreamStatsBean;
+import com.dunkware.trade.net.data.server.stream.entitystats.EntityStatsService;
+import com.dunkware.trade.net.data.server.stream.entitystats.EntityStreamStats;
+import com.dunkware.trade.net.data.server.stream.entitystats.EntityStreamStatsBean;
+import com.dunkware.trade.service.stream.descriptor.StreamDescriptor;
 import com.dunkware.xstream.model.stats.entity.EntityStat;
 
 public class EntityStreamStatsImpl implements EntityStreamStats {
@@ -22,19 +23,26 @@ public class EntityStreamStatsImpl implements EntityStreamStats {
 	private Marker marker = MarkerFactory.getMarker("EntityStats");
 	
 	private EntityStatsService entityStatsService; 
-	private String streamIdentifier; 
-	private int streamId; 
-	
+
 	private EntityStreamStatsBean bean; 
 	
 	private EntityStreamStatsIngestor injestor; 
 	
-	public void init(int streamId, String streamIdentifier, EntityStatsService entityStatsService) throws Exception { 
-		bean = new EntityStreamStatsBean();
+	private MySqlConnectionPool connectionPool;
+	private StreamDescriptor descriptor;
+	
+	public void init(StreamDescriptor descriptor, EntityStatsService entityStatsService) throws Exception { 
+		this.descriptor = descriptor;
 		this.entityStatsService = entityStatsService;
-		this.streamId = streamId;
-		this.streamIdentifier = streamIdentifier;
-		EntityStreamStatsHelper.initTables(streamIdentifier,entityStatsService.getConnectionPool());
+		try {
+			connectionPool = new MySqlConnectionPool(descriptor.getStatDbHost(), descriptor.getStatDbName(), descriptor.getStatDbPort(), descriptor.getStatDbUser(), descriptor.getStatDbPass(), descriptor.getStatDbPoolSize());
+			
+		} catch (Exception e) {
+			throw new Exception("Could not create mysql connection pool for entity stream stats " + e.toString());
+		}
+		bean = new EntityStreamStatsBean();
+	
+		EntityStreamStatsHelper.initTables(descriptor.getIdentifier(),getConnectionPool());
 		injestor = new EntityStreamStatsIngestor();
 		injestor.init(this);
 	}
@@ -65,20 +73,25 @@ public class EntityStreamStatsImpl implements EntityStreamStats {
 	
 	@Override
 	public String getStreamIdentifier() {
-		return streamIdentifier;
+		return descriptor.getIdentifier();
 	}
 	
 	
 
 	@Override
+	public StreamDescriptor getStreamDescriptor() {
+		return descriptor;
+	}
+
+	@Override
 	public MySqlConnectionPool getConnectionPool() {
-		return entityStatsService.getConnectionPool();
+		return connectionPool;
 	}
 
 
 	@Override
 	public int getStreamId() {
-		return streamId;
+		return (int)descriptor.getId();
 	}
 	
 	

@@ -1,4 +1,4 @@
-package com.dunkware.trade.net.service.streamstats.server.entity.impl.stream;
+package com.dunkware.trade.net.data.server.stream.entitystats.impl;
 
 import java.time.LocalDate;
 

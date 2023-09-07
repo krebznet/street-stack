@@ -29,6 +29,22 @@ public class ConfigService {
 	
 	@Value("${streams.schedule.enable}")
 	private boolean scheduleStreams;
+	
+
+	@Value("${config.stats.db.host}")
+	private String statsDbHost;
+	@Value("${config.stats.db.schema}")
+	private String statsDbName;
+	@Value("${config.stats.db.port}")
+	private int statsDbPort;
+	@Value("${config.stats.db.user}")
+	private String statsDbUser;
+	@Value("${config.stats.db.pass}")
+	private String statsDbPass;
+	@Value("${config.stats.db.pool.size}")
+	private int statsDbPoolSize;
+	
+	
 	public String getKafkaBrokers() {
 		return kafkaBrokers;
 	}
@@ -95,6 +111,40 @@ public class ConfigService {
 	public void setScheduleStreams(boolean scheduleStreams) {
 		this.scheduleStreams = scheduleStreams;
 	}
+
+
+	public String getStatsDbHost() {
+		return statsDbHost;
+	}
+
+
+	public String getStatsDbName() {
+		return statsDbName;
+	}
+
+	
+
+	public int getStatsDbPort() {
+		return statsDbPort;
+	}
+
+
+	public String getStatsDbUser() {
+		return statsDbUser;
+	}
+
+
+	public String getStatsDbPass() {
+		return statsDbPass;
+	}
+
+
+	public int getStatsDbPoolSize() {
+		return statsDbPoolSize;
+	}
+	
+	
+	
 
 	
 	

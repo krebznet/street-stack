@@ -7,6 +7,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.Semaphore;
+import java.util.stream.Collectors;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -15,7 +16,9 @@ import org.slf4j.MarkerFactory;
 
 import com.dunkware.xstream.api.XStream;
 import com.dunkware.xstream.api.XStreamEntity;
+import com.dunkware.xstream.api.XStreamSignal;
 import com.dunkware.xstream.api.XStreamSignalListener;
+import com.dunkware.xstream.api.XStreamSignalSearch;
 import com.dunkware.xstream.api.XStreamSignals;
 import com.dunkware.xstream.model.signal.StreamEntitySignal;
 import com.dunkware.xstream.model.signal.type.XStreamSignalType;
@@ -32,10 +35,12 @@ public class XStreamSignalsImpl implements XStreamSignals  {
 	private Logger logger = LoggerFactory.getLogger(getClass());
 	private Marker builders = MarkerFactory.getMarker("SignalHandlerBuilders");
 	
+	
+	
 	private List<XStreamSignalListener> listeners = new ArrayList<XStreamSignalListener>();
 	private Semaphore listenerLock = new Semaphore(1);
 	
-	private List<StreamEntitySignal> signals = new ArrayList<StreamEntitySignal>();
+	private List<XStreamSignal> signals = new ArrayList<XStreamSignal>();
 	private Semaphore signalLock = new Semaphore(1);
 	
 	public void start(XStream stream)  { 
@@ -47,6 +52,26 @@ public class XStreamSignalsImpl implements XStreamSignals  {
 	
 	}
 	
+	
+	
+	@Override
+	public List<XStreamSignal> search(XStreamSignalSearch search) {
+		try {
+			signalLock.acquire();
+			return signals.stream().filter(search).collect(Collectors.toList());
+		} catch (Exception e) {
+			logger.error("Fuck here search exception on signals " + e.toString());
+			return new ArrayList<XStreamSignal>();
+		} finally { 
+			signalLock.release();
+		}
+	}
+
+
+
+
+
+
 	public void entitySignal(XStreamSignalHandler handler, XStreamEntity entity) { 
 		StreamEntitySignal signal = new StreamEntitySignal();
 		signal.setDateTime(stream.getClock().getLocalDateTime());
@@ -62,21 +87,25 @@ public class XStreamSignalsImpl implements XStreamSignals  {
 			}
 		}
 		signal.setVars(numValues);
+		XStreamSignalImpl sig = new XStreamSignalImpl();
+		sig.setEntity(entity);
+		sig.setSignal(signal);
 		try {
 			signalLock.acquire();
-			signals.add(signal);
+			
+			signals.add(sig);
 		} catch (Exception e) {
 			// TODO: handle exception
 		} finally { 
 			signalLock.release();
 		}
-		stream.getExecutor().execute(new SignalEmitter(signal, entity));
+		stream.getExecutor().execute(new SignalEmitter(sig));
 		
 	}
 
 	@Override
 	public Collection<XStreamSignalType> getSiganlTypes() {
-		return getSiganlTypes();
+		return signalTypes;
 	}
 
 	@Override
@@ -167,11 +196,9 @@ public class XStreamSignalsImpl implements XStreamSignals  {
 	
 	private class SignalEmitter implements Runnable { 
 		
-		private XStreamEntity entity; 
-		private StreamEntitySignal signal;
+		private XStreamSignal signal; 
 		
-		public SignalEmitter(StreamEntitySignal signal, XStreamEntity entity) { 
-			this.entity = entity; 
+		public SignalEmitter(XStreamSignal signal) { 
 			this.signal = signal;
 		}
 		
@@ -180,7 +207,7 @@ public class XStreamSignalsImpl implements XStreamSignals  {
 				 
 				signalLock.acquire(); 
 				for (XStreamSignalListener xStreamSignalListener : listeners) {
-					xStreamSignalListener.onSignal(signal, entity);
+					xStreamSignalListener.onSignal(signal);
 				}
 			} catch (Exception e) {
 				// TODO: handle exception

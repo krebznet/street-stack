@@ -14,17 +14,20 @@ import com.dunkware.trade.service.stream.worker.session.anot.AStreamWorkerExtens
 import com.dunkware.xstream.api.XStream;
 import com.dunkware.xstream.api.XStreamEntity;
 import com.dunkware.xstream.api.XStreamListener;
+import com.dunkware.xstream.model.stats.entity.EntityStat;
 import com.dunkware.xstream.model.stats.entity.EntityStats;
 
 @AStreamWorkerExtension()
 public class StreamWorkerStatsExtension implements StreamWorkerExtension, XStreamListener {
-
+	
 	private StreamWorker worker; 
 	private Logger logger = LoggerFactory.getLogger(getClass());
-	private Marker marker  = MarkerFactory.getMarker("StreamWorker");
+	private Marker marker  = MarkerFactory.getMarker("StreamWorkerEntityStats");
 	
 	private List<StreamEntityStatsBuilder> statsBuilders = new ArrayList<StreamEntityStatsBuilder>();
 	private XStream stream; 
+	
+	private List<EntityStat> stat = new ArrayList<EntityStat>();
 	@Override
 	public void init(StreamWorker worker) {
 		this.worker = worker; 
@@ -35,7 +38,7 @@ public class StreamWorkerStatsExtension implements StreamWorkerExtension, XStrea
 		stream = worker.getStream();
 		for (XStreamEntity entity : stream.getRows()) {
 			StreamEntityStatsBuilder builder = new StreamEntityStatsBuilder();
-			builder.start(entity);
+			builder.start(entity,worker.getStream().getSignals());
 			statsBuilders.add(builder);
 		}
 		stream.addStreamListener(this);
@@ -43,16 +46,23 @@ public class StreamWorkerStatsExtension implements StreamWorkerExtension, XStrea
 
 	@Override
 	public void stop() {
-		// fun right --> fuck man 
+		List<EntityStat> stats = new ArrayList<EntityStat>();
+		for (StreamEntityStatsBuilder builder : statsBuilders) {
+			builder.collectStats(stats);
+		}
+		logger.info(marker, "Collected " + stats.size() + " sats");
+		StreamWorkerEntityStatsDumper publisher = new StreamWorkerEntityStatsDumper(stats, stream.getInput().getIdentifier(), worker.getDunkNet().getConfig().getServerBrokers());
+		publisher.start();
 		
-		EntityStats stats = new EntityStats();
-		stats.setEntityId(0);
+		
 	}
+	
+	
 
 	@Override
 	public void rowInsert(XStreamEntity row) {
 		StreamEntityStatsBuilder builder = new StreamEntityStatsBuilder();
-		builder.start(row);
+		builder.start(row,worker.getStream().getSignals());
 		statsBuilders.add(builder);
 	}
 	

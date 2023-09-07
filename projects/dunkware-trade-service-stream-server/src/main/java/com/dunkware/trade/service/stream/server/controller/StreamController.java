@@ -363,6 +363,13 @@ public class StreamController {
 		descriptor.setIdentifier(getName());
 		descriptor.setKafkaBrokers(config.getKafkaBrokers());
 		descriptor.setTimeZone(getTimeZone());
+		descriptor.setStatDbHost(exception);
+		descriptor.setStatDbHost(config.getStatsDbHost());
+		descriptor.setStatDbName(config.getStatsDbName());
+		descriptor.setStatDbUser(config.getStatsDbUser());
+		descriptor.setStatDbPass(config.getStatsDbPass());
+		descriptor.setStatDbPort(config.getStatsDbPort());
+		descriptor.setStatDbPoolSize(config.getStatsDbPoolSize());;
 		return descriptor;
 	}
 	

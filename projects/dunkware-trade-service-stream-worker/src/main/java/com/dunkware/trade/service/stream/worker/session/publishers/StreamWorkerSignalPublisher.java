@@ -15,6 +15,7 @@ import com.dunkware.trade.service.stream.worker.session.StreamWorkerExtension;
 import com.dunkware.trade.service.stream.worker.session.anot.AStreamWorkerExtension;
 import com.dunkware.xstream.api.XStream;
 import com.dunkware.xstream.api.XStreamEntity;
+import com.dunkware.xstream.api.XStreamSignal;
 import com.dunkware.xstream.api.XStreamSignalListener;
 import com.dunkware.xstream.model.entity.StreamEntitySnapshot;
 import com.dunkware.xstream.model.signal.StreamEntitySignal;
@@ -56,8 +57,8 @@ public class StreamWorkerSignalPublisher implements StreamWorkerExtension, XStre
 	}
 
 	@Override
-	public void onSignal(StreamEntitySignal signal, XStreamEntity entity) {
-		snapshots.add(signal);
+	public void onSignal(XStreamSignal signal) {
+		snapshots.add(signal.getSignal());
 
 	}
 

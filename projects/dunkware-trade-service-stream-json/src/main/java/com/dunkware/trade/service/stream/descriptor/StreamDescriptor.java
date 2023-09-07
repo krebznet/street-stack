@@ -12,6 +12,12 @@ public class StreamDescriptor {
 	private String warehouseURL; 
 	private String coreDatabase; 
 	private String coreDatabaseURL; 
+	private String statDbHost; 
+	private String statDbUser;
+	private String statDbPass; 
+	private String statDbName; 
+	private int statDbPort; 
+	private int statDbPoolSize;
 	
 	
 	public long getId() {
@@ -93,7 +99,58 @@ public class StreamDescriptor {
 	public String getSignalMongoCollection() { 
 		return "stream_" + getIdentifier() + "_signal_repo";
 	}
+
+	public String getStatDbHost() {
+		return statDbHost;
+	}
+
+	public void setStatDbHost(String statDbHost) {
+		this.statDbHost = statDbHost;
+	}
+
+	public String getStatDbUser() {
+		return statDbUser;
+	}
+
+	public void setStatDbUser(String statDbUser) {
+		this.statDbUser = statDbUser;
+	}
+
+	public String getStatDbPass() {
+		return statDbPass;
+	}
+
+	public void setStatDbPass(String statDbPass) {
+		this.statDbPass = statDbPass;
+	}
+
+	public String getStatDbName() {
+		return statDbName;
+	}
+
+	public void setStatDbName(String statDbName) {
+		this.statDbName = statDbName;
+	}
+
+	public int getStatDbPort() {
+		return statDbPort;
+	}
+
+	public void setStatDbPort(int statDbPort) {
+		this.statDbPort = statDbPort;
+	}
+
+	public int getStatDbPoolSize() {
+		return statDbPoolSize;
+	}
+
+	public void setStatDbPoolSize(int statDbPoolSize) {
+		this.statDbPoolSize = statDbPoolSize;
+	}
 	
+	
+
+
 	
 	
 	

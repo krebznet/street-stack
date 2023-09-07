@@ -1,6 +1,7 @@
 package com.dunkware.trade.service.stream.worker.session.stats.builder;
 
 import java.time.LocalTime;
+import java.util.List;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -12,9 +13,8 @@ import com.dunkware.xstream.api.XStreamEntityVar;
 import com.dunkware.xstream.api.XStreamEntityVarListener;
 import com.dunkware.xstream.model.stats.entity.EntityStat;
 import com.dunkware.xstream.model.stats.entity.EntityStatType;
-import com.dunkware.xstream.model.stats.entity.EntityStats;
 
-public class EntityVarStatCollector implements XStreamEntityVarListener {
+public class EntityVarStatsCollector implements XStreamEntityVarListener {
 
 	private Logger logger = LoggerFactory.getLogger(getClass());
 	private Marker marker = MarkerFactory.getMarker("StreamWorker");
@@ -63,6 +63,7 @@ public class EntityVarStatCollector implements XStreamEntityVarListener {
 	
 	private void computeLow(XStreamEntityVar var) { 
 		if(!lowInit) { 
+			
 			lowTime = var.getRow().getStream().getClock().getLocalTime();
 			lowValue = var.getNumber(0);
 			lowInit = true;
@@ -79,20 +80,28 @@ public class EntityVarStatCollector implements XStreamEntityVarListener {
 		}
 	}
 	
-	public void collectStats(EntityStats stats) { 
-		EntityStat stat = new EntityStat();
-		stat.setDate(var.getRow().getStream().getInput().getDate().get());
-		stat.setElement(var.getVarType().getCode());
-		stat.setTime(highTime);
-		stat.setValue(highValue);
-		stat.setStat(EntityStatType.VAR_HIGH);
-		stats.getStats().add(stat);
-		EntityStat low = new EntityStat();
-		low.setDate(var.getRow().getStream().getInput().getDate().get());
-		low.setElement(var.getVarType().getCode());
-		low.setTime(lowTime);
-		low.setValue(lowValue);
-		low.setStat(EntityStatType.VAR_LOW);
-		stats.getStats().add(low);
+	public void collectStats(List<EntityStat> stats) { 
+		if(highValue != null && highTime != null) { 
+			EntityStat stat = new EntityStat();
+			stat.setDate(var.getRow().getStream().getInput().getDate().get());
+			stat.setElement(var.getVarType().getCode());
+			stat.setTime(highTime);
+			stat.setValue(highValue);
+			stat.setStat(EntityStatType.VAR_HIGH);
+			stat.setEntity(var.getRow().getIdentifier());
+			stats.add(stat);	
+		}
+		if(lowValue != null && lowTime != null) { 
+			EntityStat low = new EntityStat();
+			low.setDate(var.getRow().getStream().getInput().getDate().get());
+			low.setElement(var.getVarType().getCode());
+			low.setTime(lowTime);
+			low.setValue(lowValue);
+			low.setStat(EntityStatType.VAR_LOW);
+			low.setEntity(var.getRow().getIdentifier());
+			stats.add(low);	
+		}
+		
+		
 	}
 }

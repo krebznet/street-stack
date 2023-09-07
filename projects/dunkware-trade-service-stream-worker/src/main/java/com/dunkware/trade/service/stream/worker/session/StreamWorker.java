@@ -189,6 +189,7 @@ public class StreamWorker implements DunkNetChannelHandler {
 			queryBuilder.init(this);
 			this.input = XStreamCore.createInput(req.getStreamBundle(), executorService.get(),queryBuilder);
 			this.input.setSignalTypes(req.getSignals());
+			this.input.setIdentifier(req.getStream());
 		} catch (Exception e) {
 			logger.error(marker, "Exception starting stream session worker {} " + req.getWorkerId(), e.toString());
 			resp.setError(e.toString());
