@@ -82,17 +82,17 @@ public class EntityVarStatCollector implements XStreamEntityVarListener {
 	public void collectStats(EntityStats stats) { 
 		EntityStat stat = new EntityStat();
 		stat.setDate(var.getRow().getStream().getInput().getDate().get());
-		stat.setTarget(var.getVarType().getCode());
+		stat.setElement(var.getVarType().getCode());
 		stat.setTime(highTime);
 		stat.setValue(highValue);
-		stat.setType(EntityStatType.VAR_HIGH);
+		stat.setStat(EntityStatType.VAR_HIGH);
 		stats.getStats().add(stat);
 		EntityStat low = new EntityStat();
 		low.setDate(var.getRow().getStream().getInput().getDate().get());
-		low.setTarget(var.getVarType().getCode());
+		low.setElement(var.getVarType().getCode());
 		low.setTime(lowTime);
 		low.setValue(lowValue);
-		low.setType(EntityStatType.VAR_LOW);
+		low.setStat(EntityStatType.VAR_LOW);
 		stats.getStats().add(low);
 	}
 }
