@@ -133,7 +133,7 @@ public class DunkNetController {
 		try {
 			switch (message.getType()) {
 			case DunkNetMessage.TYPE_CHANNEL_CLIENT_INIT:
-				logger.info("Handling client channel init message");
+				
 				handleChannelClientInit(message);
 				return true;
 			case DunkNetMessage.TYPE_CHANNEL_CLOSE:
@@ -143,7 +143,7 @@ public class DunkNetController {
 				handleChannelRequest(message);
 				return true;
 			case DunkNetMessage.TYPE_CHANNEL_RESPONSE:
-				logger.info("Handling client channel response message");
+				
 				handleChannelResponse(message);
 				return true;
 			case DunkNetMessage.TYPE_CHANNEL_CLIENT_INIT_ERROR:

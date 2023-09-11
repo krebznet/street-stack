@@ -8,6 +8,7 @@ import java.time.OffsetDateTime;
 import java.time.OffsetTime;
 import java.time.ZoneId;
 import java.time.ZoneOffset;
+import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
 import java.time.temporal.ChronoUnit;
 import java.util.Date;
@@ -25,13 +26,70 @@ public class DunkTime {
 	public static final String YYMMDD = "yyMMdd";
     public static final String ISO_FORMAT = "yyyy-MM-dd'T'HH:mm:ssZ";
     
-    public static void main(String[] args) {
-		LocalDate dt = LocalDate.now(DTimeZone.toZoneId(DTimeZone.NewYork));
-		LocalDate dt30 = dt.plusDays(30);
-		System.out.println("Days Between " + DunkTime.daysBetween(dt, dt30));
+    public static void main2(String[] args) {
+		
+		// 1970-01-01T00:00:00Z
+		// I think you have it right - we need to set the java.util.Date object 
+		
+		
+		// #1. we need to bet setting/getting java.util.Date objects 
+		// on the mongo documents. 
+		
+		// #2. Does date capture any timezone? // 1970-01-01T00:00:00Z
+		LocalDate easternLocalDate = LocalDate.now(DTimeZone.toZoneId(DTimeZone.NewYork));
+		LocalDate myTimeZoneLocalDate = LocalDate.now();
+		Instant instant = Instant.ofEpochMilli(myTimeZoneLocalDate.toEpochDay());
+		Date myDate = Date.from(instant);
+		
+		LocalDateTime ldt = LocalDateTime.now();
+		ZoneOffset offset = ZoneOffset.ofHours( -5 ); 
+		OffsetDateTime odt = ldt.atOffset( offset );
+		myDate = Date.from(odt.toInstant());
+		
+		// now when we save this in Mongo, does it capture the offset? 
+		
+		//System.out.println(myDate.toString());
+		
 		
 		
 	}
+    
+    
+    public static void main(String[] args) {
+    	ZonedDateTime zonedDateTimeSameEst = ZonedDateTime.of(LocalDateTime.parse("2022-01-01T01:00:00.000000000"), ZoneId.of("America/New_York"));
+        ZonedDateTime zonedDateTimeSamePak = ZonedDateTime.of(LocalDateTime.parse("2022-01-01T01:00:00.000000000"), ZoneId.of("Asia/Karachi"));
+        System.out.println("Dates coming into the system with timezone known");
+        System.out.println(zonedDateTimeSameEst + "||" + zonedDateTimeSamePak);
+
+        Date dateEstAdjusted = Date.from(zonedDateTimeSameEst.toInstant());
+        Date datePakAdjusted = Date.from(zonedDateTimeSamePak.toInstant());
+        System.out.println("Dates stored in Mongo as per UTC equal");
+        System.out.println(dateEstAdjusted + "||" + datePakAdjusted);
+        System.out.println("They actually look different, since they are same date time, but coming in from different time zones");
+
+        System.out.println();
+        ZonedDateTime reversedEst = dateEstAdjusted.toInstant().atZone(ZoneId.of("America/New_York"));
+        ZonedDateTime reversedPak = dateEstAdjusted.toInstant().atZone(ZoneId.of("Asia/Karachi"));
+        System.out.println("Reverse conversions and results");
+        System.out.println(reversedEst + "||" + reversedPak);
+        System.out.println("Awesome they are same as original");
+
+        System.out.println();
+        System.out.println("Lets have the est time changed to pak time to see what it looks like in the other timezone as an additional case");
+        ZonedDateTime reversedEstAsPak = dateEstAdjusted.toInstant().atZone(ZoneId.of("Asia/Karachi"));
+        System.out.println(reversedEstAsPak);
+	}
+    
+    
+    public static Date toDateWithOffset(LocalDateTime date, DTimeZone timeZone) { 
+    	ZoneId zoneId = DTimeZone.toZoneId(timeZone);
+    	Instant instant = Instant.from(date);
+    	ZoneOffset zoneOffset = zoneId.getRules().getOffset(instant);
+    	OffsetDateTime odt = OffsetDateTime.of(date, zoneOffset);
+    	Date results = Date.from(odt.toInstant());
+    	return results;
+    	
+    }
     
     public static String toStringDateStamp(LocalDate date) { 
     	return format(date, YYYY_MM_DD);
@@ -89,10 +147,16 @@ public class DunkTime {
 	      dateToConvert.getTime()).toLocalDateTime();
 	}
 
+	
 	public static Date toDate(LocalDateTime dateToConvert) {
 	    return java.sql.Timestamp.valueOf(dateToConvert);
 	}
 	
+	public static LocalDate toLocalDate(Date dateToConvert) {
+		 return dateToConvert.toInstant()
+			      .atZone(DTimeZone.toZoneId(DTimeZone.NewYork))
+			      .toLocalDate();
+	}
 	public static LocalDateTime toLocalDateTime(Timestamp ts, DTimeZone timezone) {
 		return Instant.ofEpochSecond(ts.getSeconds(), ts.getNanos()).atZone(DTimeZone.toZoneId(timezone))
 				.toLocalDateTime();

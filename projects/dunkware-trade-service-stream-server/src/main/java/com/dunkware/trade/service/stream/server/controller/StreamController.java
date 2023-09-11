@@ -1,10 +1,12 @@
 package com.dunkware.trade.service.stream.server.controller;
 
+import java.time.DayOfWeek;
 import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Vector;
 import java.util.concurrent.Semaphore;
+import java.util.concurrent.TimeUnit;
 
 import org.slf4j.Logger;
 import org.slf4j.Marker;
@@ -13,7 +15,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 
 import com.dunkware.common.spec.locale.DCountry;
+import com.dunkware.common.util.concurrency.ReusableCountDownLatch;
+import com.dunkware.common.util.dtime.DTime;
 import com.dunkware.common.util.dtime.DTimeZone;
+import com.dunkware.common.util.dtime.DZonedClock;
+import com.dunkware.common.util.dtime.DZonedClockListener;
+import com.dunkware.common.util.dtime.DZonedClockUpdater;
+import com.dunkware.common.util.dtime.DZonedDateTime;
 import com.dunkware.common.util.events.DEventNode;
 import com.dunkware.common.util.events.anot.ADEventMethod;
 import com.dunkware.common.util.json.DJson;
@@ -42,6 +50,7 @@ import com.dunkware.trade.service.stream.server.repository.StreamVersionEntity;
 import com.dunkware.trade.service.stream.server.spring.ConfigService;
 import com.dunkware.trade.service.stream.server.tick.StreamTickService;
 import com.dunkware.trade.tick.model.ticker.TradeTickerSpec;
+import com.dunkware.trade.tick.model.ticker.TradeTickerType;
 import com.dunkware.trade.tick.service.protocol.ticker.spec.TradeTickerListSpec;
 import com.dunkware.xstream.model.signal.StreamEntitySignalListener;
 import com.dunkware.xstream.model.signal.type.XStreamSignalType;
@@ -118,6 +127,8 @@ public class StreamController {
 	
 	private Semaphore signalListenerSemaphore = new Semaphore(1);
 
+	private StreamSchedule schedule;
+	
 	private ObservableElementList<StreamSessionNodeBean> sessionNodeBeans = null;
 
 	
@@ -175,7 +186,55 @@ public class StreamController {
 			stats.setStreamException("Exception Building XScript Bundle " + e.toString());
 			throw new Exception("Exception parsing stream version script bundle from entity " + e.toString());
 		}
+		
+		if (config.isScheduleStreams()) {
+			schedule = new StreamSchedule();
+			logger.info("Starting Stream  {} controller scheudle",ent.getName());
+			Runnable runner = new Runnable() {
 
+				@Override
+				public void run() {
+					try {
+						Thread.sleep(1000);
+						schedule.start();
+
+					} catch (Exception e) {
+						logger.error("Exception starting schedule in runnable " + e.toString(), e);
+					}
+
+				}
+			};
+
+			if (config.isScheduleStreams()) {
+
+				Thread runnerThread = new Thread(runner);
+				runnerThread.start();
+			} else {
+
+			}
+		}
+
+	}
+	
+	public void setTickers(String...tickers) throws Exception {
+		
+		List<TradeTickerSpec> specs = new ArrayList<TradeTickerSpec>();
+		
+		for (String ticker : tickers) {
+			TradeTickerSpec spec = new TradeTickerSpec();
+			spec.setId(-1);
+			spec.setSymbol(ticker);
+			spec.setName(ticker);
+			spec.setType(TradeTickerType.Equity);
+			spec.setAvgVolume(0);
+			specs.add(spec);
+		}
+		TradeTickerListSpec fuck = new TradeTickerListSpec();
+		fuck.setId(-1);
+		fuck.setName("Override");
+		fuck.setSize(tickers.length);
+		fuck.setTickers(specs);
+		this.tickerList = fuck; 
 	}
 
 	public StreamBlueprint getBlueprint() {
@@ -407,6 +466,183 @@ public class StreamController {
 	
 	private void setState(StreamState state) { 
 		this.stats.setState(state);;
+	}
+	
+	private class StreamSchedule extends Thread implements DZonedClockListener {
+
+		private List<DayOfWeek> days = new ArrayList<DayOfWeek>();
+		private DZonedDateTime lastDateTime;
+		private volatile boolean inSession = false;
+		private volatile boolean isSessionDay = false;
+
+		private DTime stopTime;
+		private DTime startTime;
+		// come on dude! last fuckin piece
+		
+		private Marker marker = MarkerFactory.getMarker("stream.controller.schedule");
+
+		private ReusableCountDownLatch latch = new ReusableCountDownLatch();
+
+		private DZonedClockUpdater clockUpdater;
+		private DZonedClock clock;
+
+		public StreamSchedule() throws Exception {
+			// populate days of week
+			String[] ids = spec.getDays().split(",");
+			for (String id : ids) {
+				days.add(DayOfWeek.of(Integer.valueOf(id)));
+			} // StreamHookWebService /sream/hook/session/start
+				///
+				// set start and stop time
+			startTime = spec.getStartTime();
+			stopTime = spec.getStopTime();
+
+		}
+
+		public void specUpdate() {
+			latch.increment();
+			// set the new start/stop time
+			this.stopTime = spec.getStopTime();
+			this.startTime = spec.getStartTime();
+			// set the new market days
+			String[] ids = spec.getDays().split(",");
+			days.clear();
+			for (String id : ids) {
+				days.add(DayOfWeek.of(Integer.valueOf(id)));
+			}
+			boolean wasSessionDay = isSessionDay;
+			newDay();
+			// if not session day but in session need to stopSession();
+			if (wasSessionDay && !isSessionDay) {
+				if (inSession) {
+					inSession = false;
+					try {
+						logger.info("Schedule Stopping Stram {} Session",getName());
+						stopSession();
+					} catch (Exception e) {
+						logger.error("Exception Stopping Session In Schedule Spec Update " + e.toString(), e);
+					}
+
+				}
+			}
+			latch.decrement();
+		}
+
+		public void run() {
+			clockUpdater = DZonedClockUpdater.now(spec.getTimeZone(), 1, TimeUnit.SECONDS);
+			clock = clockUpdater.getClock();
+			lastDateTime = clockUpdater.getClock().getDateTime();
+			newDay();
+			if (isSessionDay) {
+				// do we start a half baked session ? 
+				if (clock.isAfterLocalTime(startTime) && clock.isBeforeLocalTime(stopTime)) {
+					try {
+						if (logger.isInfoEnabled()) {
+							logger.info("Stream Session Schedule Starting Stream {}", ent.getName());
+						}
+						logger.info("Schedule Starting Stream Session for Stream " + getName());
+						startSession();
+						inSession = true;
+					} catch (Exception e) {
+						logger.error(marker,"{}Stream Session Schedule Starting Stream Exception " + e.toString(),
+								ent.getName(), e);
+					}
+
+				} else {
+					if (logger.isDebugEnabled()) {
+						logger.debug(marker,"{} Schedule Starting, after start/stop time for day", ent.getName());
+					}
+				}
+			} else {
+				logger.debug("Starting Scheudle on no session day");
+			}
+			clock.addListener(this);
+		}
+
+		/**
+		 * Updates boolean flag isSessionDay
+		 */
+		private void newDay() {
+			isSessionDay = false;
+			DayOfWeek today = clockUpdater.getClock().getDayOfWeek();
+			
+			if (days.contains(today)) {
+				if (logger.isDebugEnabled()) {
+					logger.debug(marker,"{} Scheduler New Day Set Session Day True", ent.getName());
+				}
+				if(today == DayOfWeek.SATURDAY || today == DayOfWeek.SUNDAY) { 
+					logger.error("In Session Day But Today is Saturday Or Sunday WTF");
+				}
+				isSessionDay = true;
+			} else {
+				if (logger.isDebugEnabled()) {
+					logger.debug(marker,"{} Scheudler New Day Set Session Day False", ent.getName());
+
+				}
+			}
+		}
+		
+		@Override
+		public void clockUpdate(DZonedClock clock) {
+			try {
+				latch.waitTillZero();
+			} catch (Exception e) {
+				// interrupted so what?
+			}
+			if (clock.getDateTime().toLocalDate().isAfter(lastDateTime.toLocalDate())) {
+				newDay();
+			}
+			if (inSession) {
+				if (clock.getDateTime().toLocalTime().get().isAfter(stopTime.get())) {
+					// STOP SESSIOn:
+					try {
+						
+						inSession = false;
+						logger.info(marker,"Schedule Stopping Stream {} Session", getName());
+						stopSession();
+					} catch (Exception e) {
+						logger.error(marker,"Stream Schedule Stopping {} Exception {}", ent.getName(), e.toString(), e);
+					}
+				}
+			} else { // else not in session
+				if(!isSessionDay) {
+					// DUMB FUCK HERE IS BUG 
+					return;
+				}
+				// not in session look for start if its after start time and before stop time
+				if (clock.isAfterLocalTime(startTime) && clock.isBeforeLocalTime(stopTime)) {
+					
+					try {
+						if (getStats().getState() != StreamState.Starting || getStats().getState()!= StreamState.Running) {
+							logger.info(
+									marker,"Starting session on clock update where current time is between start/stop time and status is not running or starting");
+							startSession();
+							inSession = true;
+							logger.error(marker,"Fart Bug, clock update is calling start session while session is in "
+									+ getStats().getName());
+							return;
+						}
+					} catch (Exception e) {
+						logger.error("{} Exception Starting Session In Schedule " + e.toString(), ent.getName(), e);
+					}
+
+				}
+			}
+
+		}
+
+		public void dispose() {
+			// TODO: delete a stream controller ?
+			if (schedule != null) {
+				schedule.interrupt();
+			}
+			if (logger.isDebugEnabled()) {
+				logger.debug("Stream Session Schedule Disposing {}", ent.getName());
+			}
+			clockUpdater.getClock().removeListener(this);
+			clockUpdater.dispose();
+		}
+
 	}
 	
 	

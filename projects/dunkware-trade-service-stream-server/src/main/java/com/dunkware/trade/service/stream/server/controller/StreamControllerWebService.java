@@ -95,6 +95,16 @@ public class StreamControllerWebService {
 	}
 	
 	
+	@GetMapping(path = "/steam/core/override/tickers")
+	public void setTickers(@RequestParam() String stream, @RequestParam() String symbols) throws Exception { 
+		String[] parsed = symbols.split(",");
+		StreamController controller = service.getStreamByName(stream);
+		controller.setTickers(parsed);
+		
+	}
+		
+	
+	
 	@GetMapping(path = "/stream/core/start") 
 	public @ResponseBody()StartStreamResp startStream(@RequestParam(name = "stream")String stream) {
 		StartStreamResp resp = new StartStreamResp();
