@@ -4,7 +4,7 @@ import java.time.LocalDate;
 
 public class EntityAggReq {
 	
-	private static EntityAggTimeRange reqType; 
+	
 	
 	// used for relative req type 
 	private LocalDate relativeDate;

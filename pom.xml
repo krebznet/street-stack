@@ -66,16 +66,10 @@
   <module> projects/dunkware-maven-parent</module>
       <module>projects/dunkware-common-util</module>
 
-      <module>projects/dunkware-trade-tick-model</module>
-      <module>projects/dunkware-trade-tick-api</module>
-      <module>projects/dunkware-trade-tick-provider-atick</module>
 		<module>projects/dunkware-xstream-script</module>
 			<module>projects/dunkware-xstream-core-model</module>
       <module>projects/dunkware-xstream-core-runtime</module>
       <module>projects/dunkware-xstream-core-mock</module>
-      <module>projects/dunkware-trade-service-tick-protocol</module>
-      <module>projects/dunkware-trade-service-tick-client</module>
-      <module>projects/dunkware-trade-service-tick-server</module>
       <module>projects/dunkware-trade-service-stream-json</module>
       <module>projects/dunkware-trade-service-stream-server</module>
 			<module>projects/dunkware-trade-service-stream-worker</module>
@@ -84,10 +78,7 @@
       <module>projects/dunkware-trade-service-web-server</module>
 			<module>projects/dunkware-trade-service-web-mock</module>
 			<module>projects/dunkware-trade-service-web-json</module>
-
 			<module>projects/dunkware-trade-service-worker-server</module>
-
-
 			<module>projects/dunkware-trade-sdk-core-model</module>
 			<module>projects/dunkware-trade-sdk-core-runtime</module>
       <module>projects/dunkware-trade-sdk-lib-model</module>
@@ -95,24 +86,12 @@
 			<module>projects/dunkware-trade-service-beach-server</module>
 			<module>projects/dunkware-trade-service-beach-protocol</module>
 			<module>projects/dunkware-trade-service-beach-web</module>
-
-
-
-
 			<module>projects/dunkware-spring-cluster</module>
 			<module>projects/dunkware-spring-runtime</module>
 			<module>projects/dunkware-spring-test-model</module>
 			<module>projects/dunkware-spring-test-server</module>
 			<module>projects/dunkware-spring-test-client</module>
-			<module>/projects/dunkware-trade-service-streamstats-server</module>
-			<module>projects/dunkware-trade-service-streamstats-client</module>
-			<module>projects/dunkware-trade-service-data-server</module>
-			<module>projects/dunkware-trade-service-data-model</module>
-			<module>projects/dunkware-trade-service-data-tester</module>
-
-
-
-
+		
   </modules>
 	<build>
     <!-- To define the plugin version in your parent POM -->

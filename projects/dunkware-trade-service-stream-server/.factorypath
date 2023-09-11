@@ -1,4 +1,6 @@
 <factorypath>
+    <factorypathentry kind="VARJAR" id="M2_REPO/com/dunkware/spring/dunkware-spring-messaging/1.0.0-SNAPSHOT/dunkware-spring-messaging-1.0.0-SNAPSHOT.jar" enabled="true" runInBatchMode="false"/>
+    <factorypathentry kind="VARJAR" id="M2_REPO/org/springframework/spring-webmvc/5.3.21/spring-webmvc-5.3.21.jar" enabled="true" runInBatchMode="false"/>
     <factorypathentry kind="VARJAR" id="M2_REPO/junit/junit/4.13.2/junit-4.13.2.jar" enabled="true" runInBatchMode="false"/>
     <factorypathentry kind="VARJAR" id="M2_REPO/org/hamcrest/hamcrest-core/2.2/hamcrest-core-2.2.jar" enabled="true" runInBatchMode="false"/>
     <factorypathentry kind="VARJAR" id="M2_REPO/com/google/protobuf/protobuf-java/3.13.0/protobuf-java-3.13.0.jar" enabled="true" runInBatchMode="false"/>
@@ -86,6 +88,7 @@
     <factorypathentry kind="VARJAR" id="M2_REPO/org/springframework/spring-beans/5.3.21/spring-beans-5.3.21.jar" enabled="true" runInBatchMode="false"/>
     <factorypathentry kind="VARJAR" id="M2_REPO/org/springframework/spring-expression/5.3.21/spring-expression-5.3.21.jar" enabled="true" runInBatchMode="false"/>
     <factorypathentry kind="VARJAR" id="M2_REPO/org/mapstruct/mapstruct/1.4.2.Final/mapstruct-1.4.2.Final.jar" enabled="true" runInBatchMode="false"/>
+    <factorypathentry kind="VARJAR" id="M2_REPO/com/dunkware/trade/service/dunkware-trade-service-data-model/1.1.0-SNAPSHOT/dunkware-trade-service-data-model-1.1.0-SNAPSHOT.jar" enabled="true" runInBatchMode="false"/>
     <factorypathentry kind="VARJAR" id="M2_REPO/org/springframework/boot/spring-boot-devtools/2.7.1/spring-boot-devtools-2.7.1.jar" enabled="true" runInBatchMode="false"/>
     <factorypathentry kind="VARJAR" id="M2_REPO/org/springframework/boot/spring-boot-autoconfigure/2.7.1/spring-boot-autoconfigure-2.7.1.jar" enabled="true" runInBatchMode="false"/>
     <factorypathentry kind="VARJAR" id="M2_REPO/com/glazedlists/glazedlists/1.11.0/glazedlists-1.11.0.jar" enabled="true" runInBatchMode="false"/>
@@ -124,7 +127,6 @@
     <factorypathentry kind="VARJAR" id="M2_REPO/com/zaxxer/HikariCP/4.0.3/HikariCP-4.0.3.jar" enabled="true" runInBatchMode="false"/>
     <factorypathentry kind="VARJAR" id="M2_REPO/org/springframework/boot/spring-boot-starter-data-rest/2.7.1/spring-boot-starter-data-rest-2.7.1.jar" enabled="true" runInBatchMode="false"/>
     <factorypathentry kind="VARJAR" id="M2_REPO/org/springframework/boot/spring-boot-starter-web/2.7.1/spring-boot-starter-web-2.7.1.jar" enabled="true" runInBatchMode="false"/>
-    <factorypathentry kind="VARJAR" id="M2_REPO/org/springframework/spring-webmvc/5.3.21/spring-webmvc-5.3.21.jar" enabled="true" runInBatchMode="false"/>
     <factorypathentry kind="VARJAR" id="M2_REPO/org/springframework/data/spring-data-rest-webmvc/3.7.1/spring-data-rest-webmvc-3.7.1.jar" enabled="true" runInBatchMode="false"/>
     <factorypathentry kind="VARJAR" id="M2_REPO/org/springframework/data/spring-data-rest-core/3.7.1/spring-data-rest-core-3.7.1.jar" enabled="true" runInBatchMode="false"/>
     <factorypathentry kind="VARJAR" id="M2_REPO/org/springframework/hateoas/spring-hateoas/1.5.1/spring-hateoas-1.5.1.jar" enabled="true" runInBatchMode="false"/>
@@ -161,9 +163,12 @@
     <factorypathentry kind="VARJAR" id="M2_REPO/org/eclipse/xtext/org.eclipse.xtext.common.types/2.31.0/org.eclipse.xtext.common.types-2.31.0.jar" enabled="true" runInBatchMode="false"/>
     <factorypathentry kind="VARJAR" id="M2_REPO/org/ow2/asm/asm/9.5/asm-9.5.jar" enabled="true" runInBatchMode="false"/>
     <factorypathentry kind="VARJAR" id="M2_REPO/io/github/classgraph/classgraph/4.8.149/classgraph-4.8.149.jar" enabled="true" runInBatchMode="false"/>
+    <factorypathentry kind="VARJAR" id="M2_REPO/com/dunkware/trade/tick/dunkware-trade-tick-api/1.2.0-SNAPSHOT/dunkware-trade-tick-api-1.2.0-SNAPSHOT.jar" enabled="true" runInBatchMode="false"/>
+    <factorypathentry kind="VARJAR" id="M2_REPO/com/dunkware/trade/tick/dunkware-trade-tick-model/1.1.0-SNAPSHOT/dunkware-trade-tick-model-1.1.0-SNAPSHOT.jar" enabled="true" runInBatchMode="false"/>
+    <factorypathentry kind="VARJAR" id="M2_REPO/com/dunkware/trade/service/dunkware-trade-service-tick-client/1.2.0-SNAPSHOT/dunkware-trade-service-tick-client-1.2.0-SNAPSHOT.jar" enabled="true" runInBatchMode="false"/>
     <factorypathentry kind="VARJAR" id="M2_REPO/org/projectreactor/reactor-spring/1.0.1.RELEASE/reactor-spring-1.0.1.RELEASE.jar" enabled="true" runInBatchMode="false"/>
     <factorypathentry kind="VARJAR" id="M2_REPO/org/projectreactor/reactor-core/1.0.1.RELEASE/reactor-core-1.0.1.RELEASE.jar" enabled="true" runInBatchMode="false"/>
     <factorypathentry kind="VARJAR" id="M2_REPO/com/lmax/disruptor/3.2.0/disruptor-3.2.0.jar" enabled="true" runInBatchMode="false"/>
     <factorypathentry kind="VARJAR" id="M2_REPO/org/springframework/spring-context-support/5.3.21/spring-context-support-5.3.21.jar" enabled="true" runInBatchMode="false"/>
-    <factorypathentry kind="VARJAR" id="M2_REPO/com/dunkware/spring/dunkware-spring-messaging/1.0.0-SNAPSHOT/dunkware-spring-messaging-1.0.0-SNAPSHOT.jar" enabled="true" runInBatchMode="false"/>
+    <factorypathentry kind="VARJAR" id="M2_REPO/com/dunkware/trade/service/dunkware-trade-service-tick-protocol/1.2.0-SNAPSHOT/dunkware-trade-service-tick-protocol-1.2.0-SNAPSHOT.jar" enabled="true" runInBatchMode="false"/>
 </factorypath>

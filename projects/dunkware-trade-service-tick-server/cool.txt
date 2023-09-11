@@ -1,8 +1,0 @@
-   stage("k8s"){
-            steps{
-                sshagent (credentials : ['mradmin-jenkins-ssh']) {
-                // this is going to dunkweb1 -- hmmm how about some dns 
-                    sh 'ssh -o StrictHostKeyChecking=no -p 8232 mradmin@96.81.62.58 kubectl rollout restart deployment -n genesis'
-                }
-            }
-        }
