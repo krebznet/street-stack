@@ -44,9 +44,10 @@ public class DunkNetPingPublisher implements DKafkaByteHandler2 {
 		
 		try {
 			String pingTopic = "dunknet." + dunkNet.getConfig().getClusterId() + ".node.ping";
-			pingConsumer = DKafkaByteConsumer2.newInstance(DKafkaByteConsumer2SpecBuilder.newBuilder(ConsumerType.Auto, OffsetType.Latest).setClientAndGroup(dunkNet.getConfig().getNodeId() + DUUID.randomUUID(4), dunkNet.getConfig().getNodeId()).addBroker(dunkNet.getConfig().getServerBrokers()).addTopic(pingTopic).build());
-			pingConsumer.addStreamHandler(this);
+			pingConsumer = DKafkaByteConsumer2.newInstance(DKafkaByteConsumer2SpecBuilder.newBuilder(ConsumerType.Auto, OffsetType.Latest).setClientAndGroup(dunkNet.getConfig().getNodeId() + 1, dunkNet.getConfig().getNodeId() + 1).addBroker(dunkNet.getConfig().getServerBrokers()).addTopic(pingTopic).build());
 			pingConsumer.start();
+			pingConsumer.addStreamHandler(this);
+			
 			
 		} catch (Exception e) {
 			logger.error(marker, "Exception creating ping consumer");

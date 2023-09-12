@@ -1,5 +1,6 @@
 package com.dunkware.common.kafka.tests;
 
+import java.nio.charset.StandardCharsets;
 import java.util.concurrent.atomic.AtomicInteger;
 
 import org.apache.kafka.clients.consumer.ConsumerRecord;
@@ -9,9 +10,9 @@ import com.dunkware.common.kafka.consumer.DKafkaByteHandler2;
 import com.dunkware.common.spec.kafka.DKafkaByteConsumer2Spec;
 import com.dunkware.common.spec.kafka.DKafkaByteConsumer2Spec.ConsumerType;
 import com.dunkware.common.spec.kafka.DKafkaByteConsumer2Spec.OffsetType;
-import com.dunkware.common.util.json.DJson;
-import com.dunkware.common.util.stopwatch.DStopWatch;
 import com.dunkware.common.spec.kafka.DKafkaByteConsumer2SpecBuilder;
+import com.dunkware.common.util.stopwatch.DStopWatch;
+import com.dunkware.common.util.uuid.DUUID;
 
 public class DKafkaByteConsumer2Test {
 	
@@ -21,15 +22,15 @@ public class DKafkaByteConsumer2Test {
 	
 
 	public static void main(String[] args) {
-	//	DProperties props = DPropertiesBuilder.newBuilder()
-		//		.addProperty("topics", "fuckpoop")
+		//DProperties props = DPropertiesBuilder.newBuilder()
+		//	.addProperty("topics", "fuckpoop")
 		//.addProperty(DKafkaProperties.BOOTSTRAP_SERVERS, " 172.16.16.55:31090").build();
 		
 		
 		DKafkaByteConsumer2 consumer = null;
 		try {
-			DKafkaByteConsumer2Spec spec = DKafkaByteConsumer2SpecBuilder.newBuilder(ConsumerType.Auto, OffsetType.Latest).addBroker("172.16.16.55:31090").setClientAndGroup("dd", "ff")
-					.addTopic("stream_us_equity_session_snapshot").build();
+			DKafkaByteConsumer2Spec spec = DKafkaByteConsumer2SpecBuilder.newBuilder(ConsumerType.Auto, OffsetType.Latest).addBroker("172.16.16.55:31090").setClientAndGroup("dd" + DUUID.randomUUID(5), "ff" + DUUID.randomUUID(3))
+					.addTopic("dunknet.testrock.node.ping").build();
 				consumer = DKafkaByteConsumer2.newInstance(spec);
 				stopWatch.start();
 				consumer.addStreamHandler(new DKafkaByteHandler2() {
@@ -40,7 +41,8 @@ public class DKafkaByteConsumer2Test {
 						try {
 							myCounter++;
 							countBatch++;
-							EntitySnapshot snapshot = DJson.getObjectMapper().readValue(record.value(), EntitySnapshot.class);
+							  String s = new String(record.value(), StandardCharsets.UTF_8);
+							  System.out.println(s);
 							if(countBatch == 1000) { 
 								stopWatch.stop();
 								try {

@@ -107,6 +107,9 @@ public class StreamSessionNodeImpl implements StreamSessionNode, DunkNetChannelH
 		bean.setNodeId(input.getNode().getId());
 		bean.setStatus(state.name());
 		bean.setSignalCount(0);
+		input.getSession().getStream().getSessionNodeBeans().getReadWriteLock().writeLock().lock();
+		input.getSession().getStream().getSessionNodeBeans().add(bean);
+		input.getSession().getStream().getSessionNodeBeans().getReadWriteLock().writeLock().unlock();
 		
 		eventNode = input.getSession().getEventNode().createChild(this);
 
@@ -247,6 +250,9 @@ public class StreamSessionNodeImpl implements StreamSessionNode, DunkNetChannelH
 		bean.setTasksExpired(stats.getTimeoutTaskCount());
 		bean.notifyUpdate();
 		this.workerStats = stats;
+		
+		
+		// okay here mother fucker think about it -> 
 	}
 
 	@Override

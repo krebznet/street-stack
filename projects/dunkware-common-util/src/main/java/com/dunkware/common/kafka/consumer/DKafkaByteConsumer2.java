@@ -1,5 +1,6 @@
 package com.dunkware.common.kafka.consumer;
 
+import java.time.Duration;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -69,8 +70,22 @@ public class DKafkaByteConsumer2 {
 
 	}
 
+	private class ShutdownHook extends Thread { 
+		
+		public void run() { 
+			if(!disposed) { 
+				hookDispose();
+			}
+		}
+	}
+	
+	private ShutdownHook hook = null;
+	
 	public void start() throws DKafkaException {
 
+		hook = new ShutdownHook();
+		Runtime.getRuntime().addShutdownHook(hook);
+		
 		// init throttling
 		if (spec.getThrottleType() != null) {
 			if (spec.getThrottleType() == ThrottleType.Manual) {
@@ -94,13 +109,14 @@ public class DKafkaByteConsumer2 {
 		if (spec.getOffsetType() == OffsetType.Latest)
 			props.put("auto.offset.reset", "latest");
 		// manual we don't set this?
-		props.put("heartbeat.interval.ms", "2500");
+		props.put("heartbeat.interval.ms", "100");
 		props.put("max.poll.records", 1000);
 		props.put("enable.auto.commit", "true");
 		props.put("auto.commit.interval.ms", "100");
 		//props.put("session.timeout.ms", "3000");
 		props.put("buffer.memory", 835544323);
-		props.put("fetch.max.wait.ms", 100);
+		props.put("fetch.max.wait.ms", 500);
+		props.put("fetch.min.bytes", 1);
 		props.put("key.deserializer", "org.apache.kafka.common.serialization.StringDeserializer");
 		props.put("value.deserializer", "org.apache.kafka.common.serialization.ByteArrayDeserializer");
 		status = DKafkaByteConsumerStatus.Connecting;
@@ -122,13 +138,7 @@ public class DKafkaByteConsumer2 {
 
 		if (spec.getConsumerType() == ConsumerType.Auto) {
 			consumer.subscribe(Arrays.asList(spec.getTopics()));
-			// add our dynamically assigned partitions
-
-			/// just create topic partitions from partioninfos
-			for (PartitionInfo info : partitionInfos) {
-				TopicPartition p = new TopicPartition(info.topic(), info.partition());
-				this.topicPartitions.add(p);
-			}
+			
 
 		}
 
@@ -209,12 +219,21 @@ public class DKafkaByteConsumer2 {
 		}
 	}
 
+	private void hookDispose() { 
+		if (status == DKafkaByteConsumerStatus.Connected) {
+			inerrupted.set(true);
+			consumerThread.dispose();
+			status = DKafkaByteConsumerStatus.Disconnected;
+		}
+	}
 	public void dispose() {
 		if (status == DKafkaByteConsumerStatus.Connected) {
 			inerrupted.set(true);
 			consumerThread.dispose();
 			status = DKafkaByteConsumerStatus.Disconnected;
 		}
+		Runtime.getRuntime().removeShutdownHook(hook);
+	
 
 	}
 
@@ -332,7 +351,8 @@ public class DKafkaByteConsumer2 {
 						consumerPaused = false;
 					}
 
-					ConsumerRecords<String, byte[]> records = consumer.poll(500);
+					ConsumerRecords<String, byte[]> records = consumer.poll(Duration.ofSeconds(1));
+				
 					if (printPoolCount) {
 						System.out.println("Consumer consumed " + records.count());
 						printPoolCount = false;

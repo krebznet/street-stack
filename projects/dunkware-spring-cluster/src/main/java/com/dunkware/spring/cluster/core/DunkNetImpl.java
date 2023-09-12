@@ -124,7 +124,7 @@ public class DunkNetImpl implements DunkNet, DKafkaByteHandler2 {
 			try {
 				String nodeTopic = "dunknet." + getConfig().getClusterId() + ".node." + getId();
 				System.out.println(nodeTopic);
-				DKafkaByteConsumer2Spec spec = DKafkaByteConsumer2SpecBuilder.newBuilder(ConsumerType.Auto, OffsetType.Latest).addBroker(config.getServerBrokers()).setClientAndGroup(getId() +  DUUID.randomUUID(5) ,getId() +  DUUID.randomUUID(5)).addTopic(nodeTopic).build();
+				DKafkaByteConsumer2Spec spec = DKafkaByteConsumer2SpecBuilder.newBuilder(ConsumerType.AllPartitions, OffsetType.Latest).addBroker(config.getServerBrokers()).setClientAndGroup(getId() +  DUUID.randomUUID(5) ,getId() +  DUUID.randomUUID(5)).addTopic(nodeTopic).build();
 				messageConsumer = DKafkaByteConsumer2.newInstance(spec);
 				messageConsumer.addStreamHandler(this);
 				messageConsumer.start();
@@ -134,9 +134,16 @@ public class DunkNetImpl implements DunkNet, DKafkaByteHandler2 {
 			}
 	
 			
-		DunkNetPingPublisher publisher = new DunkNetPingPublisher();
-		ac.getAutowireCapableBeanFactory().autowireBean(publisher);
-		publisher.init(this);
+			Thread runner = new Thread() { 
+				public void run() {
+					DunkNetPingPublisher publisher = new DunkNetPingPublisher();
+					ac.getAutowireCapableBeanFactory().autowireBean(publisher);
+					publisher.init(DunkNetImpl.this);					
+				}
+			};
+			runner.start();
+					
+
 		
 		int routers = 0;
 		while(routers < 3) { 
