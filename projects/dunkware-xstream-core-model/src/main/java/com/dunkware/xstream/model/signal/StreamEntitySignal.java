@@ -1,6 +1,7 @@
 package com.dunkware.xstream.model.signal;
 
 import java.time.LocalDateTime;
+import java.time.ZoneId;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -8,7 +9,8 @@ public class StreamEntitySignal {
 	
 	private int entity;
 	private int id;
-	LocalDateTime dateTime;
+	private LocalDateTime dateTime;
+	private ZoneId zoneId;
 	
 	private Map<Integer, Number> vars = new HashMap<Integer,Number>();
 
@@ -20,8 +22,6 @@ public class StreamEntitySignal {
 	public void setEntity(int entity) {
 		this.entity = entity;
 	}
-
-	
 
 	public Map<Integer, Number> getVars() {
 		return vars;
@@ -47,23 +47,12 @@ public class StreamEntitySignal {
 		this.dateTime = dateTime;
 	}
 
-	
-	
-	
+	public ZoneId getZoneId() {
+		return zoneId;
+	}
 
-	
-	
-	
-	
-
-
-	
-	
-	
-	
-	
-	
-	
-	
+	public void setZoneId(ZoneId zoneId) {
+		this.zoneId = zoneId;
+	}
 
 }
