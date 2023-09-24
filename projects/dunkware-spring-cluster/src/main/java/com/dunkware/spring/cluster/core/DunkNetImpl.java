@@ -3,6 +3,8 @@ package com.dunkware.spring.cluster.core;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.Properties;
+import java.util.Set;
 import java.util.Vector;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.ConcurrentHashMap;
@@ -11,7 +13,13 @@ import java.util.concurrent.TimeUnit;
 
 import javax.annotation.PostConstruct;
 
+import org.apache.kafka.clients.admin.AdminClient;
+import org.apache.kafka.clients.admin.AdminClientConfig;
+import org.apache.kafka.clients.admin.ListTopicsOptions;
+import org.apache.kafka.clients.admin.ListTopicsResult;
+import org.apache.kafka.clients.admin.TopicListing;
 import org.apache.kafka.clients.consumer.ConsumerRecord;
+import org.apache.kafka.common.config.TopicConfig;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.slf4j.Marker;
@@ -21,6 +29,9 @@ import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Service;
 
+import com.dunkware.common.kafka.DKafkaException;
+import com.dunkware.common.kafka.admin.DKafkaAdminClient;
+import com.dunkware.common.kafka.admin.model.DKafkaNewTopic;
 import com.dunkware.common.kafka.consumer.DKafkaByteConsumer2;
 import com.dunkware.common.kafka.consumer.DKafkaByteHandler2;
 import com.dunkware.common.kafka.producer.DKafkaByteProducer;
@@ -40,7 +51,6 @@ import com.dunkware.spring.cluster.DunkNetConfig;
 import com.dunkware.spring.cluster.DunkNetException;
 import com.dunkware.spring.cluster.DunkNetExtensions;
 import com.dunkware.spring.cluster.DunkNetNode;
-import com.dunkware.spring.cluster.DunkNetServiceResponse;
 import com.dunkware.spring.cluster.core.controllers.DunkNetController;
 import com.dunkware.spring.cluster.core.controllers.DunkNetPingPublisher;
 import com.dunkware.spring.cluster.core.controllers.DunkNetState;
@@ -110,10 +120,36 @@ public class DunkNetImpl implements DunkNet, DKafkaByteHandler2 {
 		bean.setStartTime(DDateTime.now());
 		bean.setId(config.getNodeId());
 		// initialize components 
+		// lets validate we have a ping topic created
+		String pingTopic = "dunknet." + getConfig().getClusterId() + ".node.ping";
+		DKafkaAdminClient client = null;
+		try {
+			client = createAdminClient();
+			if(client.topicExists(pingTopic) == false) { 
+				logger.info(marker, "Creating Topic " + pingTopic);
+				client.createTopic(DKafkaNewTopic.builder().name(pingTopic).cleanupPolicy(TopicConfig.CLEANUP_POLICY_DELETE)
+				.replicas((short)1).paritions(1).retentionTime(120, TimeUnit.SECONDS).build());
+			}
+			logger.info("Created topic " + pingTopic);
+		} catch (Exception e) {
+			logger.error(marker, "Excepton creating ping topic, might as well crash or look to see if it exists");
+			try {
+				if(!client.topicExists(pingTopic) == false) { 
+					throw new DunkNetException("Exception creating new topics " + e.toString());
+				}	
+			} catch (Exception e2) {
+				throw new DunkNetException("Exception double checking ping topic poste xcption "+  e.toString());
+			}
+			
+			// TODO: handle exception
+		}
+		
+		
+		
 		descriptor = new DunkNetNodeDescriptor();
 			
 			try {
-				String pingTopic = "dunknet." + getConfig().getClusterId() + ".node.ping";
+				
 				messageProducer = DKafkaByteProducer.newInstance(config.getServerBrokers(),pingTopic,getId());
 				
 			} catch (Exception e) {
@@ -124,13 +160,13 @@ public class DunkNetImpl implements DunkNet, DKafkaByteHandler2 {
 			try {
 				String nodeTopic = "dunknet." + getConfig().getClusterId() + ".node." + getId();
 				System.out.println(nodeTopic);
-				DKafkaByteConsumer2Spec spec = DKafkaByteConsumer2SpecBuilder.newBuilder(ConsumerType.AllPartitions, OffsetType.Latest).addBroker(config.getServerBrokers()).setClientAndGroup(getId() +  DUUID.randomUUID(5) ,getId() +  DUUID.randomUUID(5)).addTopic(nodeTopic).build();
+				DKafkaByteConsumer2Spec spec = DKafkaByteConsumer2SpecBuilder.newBuilder(ConsumerType.Auto, OffsetType.Latest).addBroker(config.getServerBrokers()).setClientAndGroup(getId() +  DUUID.randomUUID(5) ,getId() +  DUUID.randomUUID(5)).addTopic(nodeTopic).build();
 				messageConsumer = DKafkaByteConsumer2.newInstance(spec);
 				messageConsumer.addStreamHandler(this);
 				messageConsumer.start();
 			} catch (Exception e) {
 				logger.error("Exception starting dunk net topic consumer " + e.toString());
-				System.exit(-1);
+				//System.exit(-1);
 			}
 	
 			
@@ -156,7 +192,19 @@ public class DunkNetImpl implements DunkNet, DKafkaByteHandler2 {
 		
 	}
 	
-	
+	@Override
+	public DKafkaAdminClient createAdminClient() throws DunkNetException {
+		try {
+			return DKafkaAdminClient.newInstance(config.getServerBrokers());
+		} catch (Exception e) {
+			throw new DunkNetException("Exceptin creting adminclinet " + e.toString());
+			// TODO: handle exception
+		}
+		
+	}
+
+
+
 
 
 	@Override

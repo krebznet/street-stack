@@ -59,6 +59,9 @@ public class DunkNetPingPublisher implements DKafkaByteHandler2 {
 	public void record(ConsumerRecord<String, byte[]> record) {
 		try {
 			DunkNetNodeDescriptor ping = DJson.getObjectMapper().readValue(record.value(), DunkNetNodeDescriptor.class);
+			if(logger.isDebugEnabled()) { 
+				logger.debug("Recieved Ping on node {} from Node {} with profiles {}",dunkNet.getId(),ping.getId(),ping.getProfiles());
+			}
 			dunkNet.nodeDescriptor(ping);
 		} catch (Exception e) {
 			logger.error(marker, "Exception consuming ping " + e.toString());

@@ -2,6 +2,9 @@ package com.dunkware.spring.cluster;
 
 import java.util.Vector;
 
+import org.apache.kafka.clients.admin.AdminClient;
+
+import com.dunkware.common.kafka.admin.DKafkaAdminClient;
 import com.dunkware.common.util.events.DEventNode;
 import com.dunkware.common.util.executor.DExecutor;
 import com.dunkware.spring.cluster.core.controllers.DunkNetController;
@@ -16,7 +19,9 @@ public interface DunkNet {
 	
 	public DEventNode getEventNode();
 	
-	public String getId(); 
+	public String getId();
+	
+	public DKafkaAdminClient createAdminClient() throws DunkNetException;
 	
 	public void extension(Object extension) throws DunkNetException;
 	
