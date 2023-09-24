@@ -2,10 +2,7 @@ package com.dunkware.xstream.core.extensions;
 
 import com.dunkware.common.kafka.consumer.DKafkaByteConsumer;
 import com.dunkware.common.kafka.consumer.DKafkaByteHandler;
-import com.dunkware.common.kafka.properties.DKafkaProperties;
-import com.dunkware.common.tick.proto.TickProto;
 import com.dunkware.common.tick.proto.TickProto.Tick;
-import com.dunkware.common.util.properties.DPropertiesBuilder;
 import com.dunkware.xstream.api.XStream;
 import com.dunkware.xstream.api.XStreamException;
 import com.dunkware.xstream.api.XStreamExtension;
