@@ -11,106 +11,106 @@ import com.dunkware.common.spec.kafka.DKafkaByteConsumer2Spec;
 import com.dunkware.common.spec.kafka.DKafkaByteConsumer2Spec.ConsumerType;
 import com.dunkware.common.spec.kafka.DKafkaByteConsumer2Spec.OffsetType;
 import com.dunkware.common.spec.kafka.DKafkaByteConsumer2SpecBuilder;
+import com.dunkware.common.util.json.DJson;
 import com.dunkware.common.util.stopwatch.DStopWatch;
 import com.dunkware.common.util.uuid.DUUID;
 
 public class DKafkaByteConsumer2Test {
-	
+
 	public static int myCounter = 0;
-	public static int countBatch = 0; 
+	public static int countBatch = 0;
 	public static DStopWatch stopWatch = DStopWatch.create();
-	
 
 	public static void main(String[] args) {
-		//DProperties props = DPropertiesBuilder.newBuilder()
-		//	.addProperty("topics", "fuckpoop")
-		//.addProperty(DKafkaProperties.BOOTSTRAP_SERVERS, " 172.16.16.55:31090").build();
-		
-		
+		// DProperties props = DPropertiesBuilder.newBuilder()
+		// .addProperty("topics", "fuckpoop")
+		// .addProperty(DKafkaProperties.BOOTSTRAP_SERVERS, "
+		// 172.16.16.55:31090").build();
+
 		DKafkaByteConsumer2 consumer = null;
+
 		try {
-			DKafkaByteConsumer2Spec spec = DKafkaByteConsumer2SpecBuilder.newBuilder(ConsumerType.Auto, OffsetType.Latest).addBroker("172.16.16.55:31090").setClientAndGroup("dd" + DUUID.randomUUID(5), "ff" + DUUID.randomUUID(3))
-					.addTopic("dunknet.testrock.node.ping").build();
-				consumer = DKafkaByteConsumer2.newInstance(spec);
-				stopWatch.start();
-				consumer.addStreamHandler(new DKafkaByteHandler2() {
-					
-					
-					@Override
-					public void record(ConsumerRecord<String, byte[]> record) {
-						try {
-							myCounter++;
-							countBatch++;
-							  String s = new String(record.value(), StandardCharsets.UTF_8);
-							  System.out.println(s);
-							if(countBatch == 1000) { 
-								stopWatch.stop();
-								try {
-									//System.out.println(DJson.serializePretty(snapshot));
-								} catch (Exception e) {
-									e.printStackTrace();
-									// TODO: handle exception
-								}
-								System.out.println("Recieved 1K Snapshots in " + stopWatch.getCompletedSeconds() + " seconds " + " Total " + myCounter);
-								stopWatch.start();
-								countBatch = 0; 
-								
+			DKafkaByteConsumer2Spec spec = DKafkaByteConsumer2SpecBuilder
+					.newBuilder(ConsumerType.AllPartitions, OffsetType.Earliest).addBroker("172.16.16.55:30100")
+					.setClientAndGroup("dd" + DUUID.randomUUID(5), "ff" + DUUID.randomUUID(3)).addTopic("67108864")
+					.build();
+			consumer = DKafkaByteConsumer2.newInstance(spec);
+			stopWatch.start();
+			consumer.addStreamHandler(new DKafkaByteHandler2() {
+
+				@Override
+				public void record(ConsumerRecord<String, byte[]> record) {
+					try {
+						myCounter++;
+						countBatch++;
+						String s = new String(record.value(), StandardCharsets.UTF_8);
+						System.out.println(s);
+						if (countBatch == 10000) {
+							stopWatch.stop();
+							System.out.print("bach size" + countBatch);
+							stopWatch.start();
+							try {
+								System.out.println(DJson.serializePretty(s));
+							} catch (Exception e) {
+								e.printStackTrace();
+								// TODO: handle exception
 							}
-							//
-						
-						} catch (Exception e) {
-							e.printStackTrace();
-							// TODO: handle exception
+							System.out.println("Recieved 1K Snapshots in " + stopWatch.getCompletedSeconds()
+									+ " seconds " + " Total " + myCounter);
+							stopWatch.start();
+							countBatch = 0;
+
 						}
 
+					} catch (Exception e) {
+						e.printStackTrace();
+						// TODO: handle exception
+
 					}
-				});
-				consumer.start();
+				}
+			});
+			consumer.start();
 		} catch (Exception e) {
 			e.printStackTrace();
 			System.exit(1);
 			// TODO: handle exception
 		}
-		
+
 		try {
 			AtomicInteger counter = new AtomicInteger(0);
-			
+
 			consumer.addStreamHandler(new DKafkaByteHandler2() {
-				
-				
+
 				@Override
 				public void record(ConsumerRecord<String, byte[]> record) {
-					counter.incrementAndGet();	
+					counter.incrementAndGet();
 				}
 
-				
 			});
-			
-			class RecordsPerSecond extends Thread { 
-				
-				public void run() { 
+
+			class RecordsPerSecond extends Thread {
+
+				public void run() {
 					try {
-						while(true) { 
+						while (true) {
 							Thread.sleep(1000);
 							System.out.println("Consumer2" + counter.get());
-							counter.incrementAndGet();	
+							counter.incrementAndGet();
 						}
-						
+
 					} catch (Exception e) {
-						
+
 					}
 				}
 			}
-			
+
 			RecordsPerSecond per = new RecordsPerSecond();
 			per.start();
-			
-			
-			
+
 		} catch (Exception e) {
 			System.out.println(e.toString());
-			//System.err.println(e.toString());
-			//e.printStackTrace();
+			// System.err.println(e.toString());
+			// e.printStackTrace();
 		}
 	}
 }

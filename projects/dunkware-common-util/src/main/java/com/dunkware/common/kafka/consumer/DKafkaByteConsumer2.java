@@ -103,16 +103,17 @@ public class DKafkaByteConsumer2 {
 		props.put("topics", topics);
 		props.put("client.id", spec.getConsumerId());
 		props.put("group.id", spec.getConsumerGroup());
-		props.put("batch.size", 200);
+		props.put("batch.size", 1);
 		if (spec.getOffsetType() == OffsetType.Earliest)
 			props.put("auto.offset.reset", "earliest");
 		if (spec.getOffsetType() == OffsetType.Latest)
 			props.put("auto.offset.reset", "latest");
 		// manual we don't set this?
 		props.put("heartbeat.interval.ms", "100");
-		props.put("max.poll.records", 1000);
+		props.put("max.poll.records", 5);
 		props.put("enable.auto.commit", "true");
-		props.put("auto.commit.interval.ms", "100");
+		props.put("auto.commit.interval.ms", "500");
+		props.put("client.dns.lookup", "use_all_dns_ips");
 		//props.put("session.timeout.ms", "3000");
 		props.put("buffer.memory", 835544323);
 		props.put("fetch.max.wait.ms", 500);
@@ -136,19 +137,19 @@ public class DKafkaByteConsumer2 {
 		}
 		int sleepCount = 0;
 
-		if (spec.getConsumerType() == ConsumerType.Auto) {
+	if (spec.getConsumerType() == ConsumerType.Auto) {
 			consumer.subscribe(Arrays.asList(spec.getTopics()));
 			
 
 		}
 
-		if (spec.getConsumerType() == ConsumerType.AllPartitions) {
-			for (PartitionInfo info : partitionInfos) {
-				TopicPartition part = new TopicPartition(info.topic(), info.partition());
-				topicPartitions.add(part);
-			}
-			consumer.assign(topicPartitions);
-		}
+		//if (spec.getConsumerType() == ConsumerType.AllPartitions) {
+		//	for (PartitionInfo info : partitionInfos) {
+		//		TopicPartition part = new TopicPartition(info.topic(), info.partition());
+		//		topicPartitions.add(part);
+		//	}
+		//	consumer.assign(topicPartitions);
+		//}
 
 		if (spec.getConsumerType() == ConsumerType.Manual) {
 			// assuming single topic here validated in spec builder
@@ -351,7 +352,7 @@ public class DKafkaByteConsumer2 {
 						consumerPaused = false;
 					}
 
-					ConsumerRecords<String, byte[]> records = consumer.poll(Duration.ofSeconds(1));
+					ConsumerRecords<String, byte[]> records = consumer.poll(Duration.ofSeconds(10));
 				
 					if (printPoolCount) {
 						System.out.println("Consumer consumed " + records.count());

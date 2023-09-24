@@ -1,6 +1,5 @@
 package com.dunkware.common.kafka.consumer;
 
-import java.time.Duration;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -48,7 +47,9 @@ public class DKafkaByteConsumer {
 			throw new DKafkaException("Consumer Spec must have brokers and topics defined");
 		}
 		
+		
 		Properties props = new Properties();
+		
 		props.put(DKafkaProperties.BOOTSTRAP_SERVERS, spec.getBrokers());
 		props.put(DKafkaProperties.TOPICS, spec.getTopics());
 		if(spec.getConsumerId() != null) 
