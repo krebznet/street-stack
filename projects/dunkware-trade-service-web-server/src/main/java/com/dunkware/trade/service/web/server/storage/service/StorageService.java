@@ -1,6 +1,9 @@
 package com.dunkware.trade.service.web.server.storage.service;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
@@ -19,6 +22,15 @@ public class StorageService {
 	@Autowired
 	private UserRepository userRepository;
 
+	
+	public Collection<User> userList() { 
+		List<User> results = new ArrayList<User>();
+		Iterable<UserEntity> iter = userRepository.findAll();
+		return null; 
+		// help me here Adar! //TODO: ADAR
+		// iterate and create user model and add id field on user model
+	}
+	
 	public User getUserById(Optional<Long> id, Optional<String> email, Optional<String> password) {
 
 		Optional<UserEntity> userData = Optional.empty();

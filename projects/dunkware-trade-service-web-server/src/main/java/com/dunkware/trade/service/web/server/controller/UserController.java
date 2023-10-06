@@ -1,9 +1,9 @@
 package com.dunkware.trade.service.web.server.controller;
 
+import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -35,4 +35,13 @@ public class UserController {
     public void addUser(@RequestBody User user) {
         this.storageService.addUser(user);
     }
+    
+    @GetMapping(path = "/list")
+    public List<User> userList() { 
+    	// TODO: ADAR // help me here needs to call the new method on storageService
+    	return  null;
+    }
+    
+    
+    // TODO: ADAR help me here api to delete a user 
 }

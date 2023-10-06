@@ -12,6 +12,21 @@ public class User {
     private String address;
     private LocalDateTime createdOn;
     private LocalDateTime updatedOn;
+    
+    public static void main(String[] args) {
+		User user = new User();
+		user.setPassword("test");
+		user.setFirstName("Alpha");
+		user.setLastName("Krebs");
+		user.setEmail("alpha@dunkware.com");
+		user.setAddress("102 Dunkstreet, New York, New York");
+		user.setCreatedOn(LocalDateTime.now());
+		try {
+			
+		} catch (Exception e) {
+			// TODO: handle exception
+		}
+	}
 
     public Long getUserId() {
         return userId;

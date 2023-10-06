@@ -1,0 +1,347 @@
+{
+	"info": {
+		"_postman_id": "b43b4584-309c-425f-b4ea-55ef9ebbdd0e",
+		"name": "Data Service Local",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "2424532",
+		"_collection_link": "https://galactic-space-937055.postman.co/workspace/My-Street~1daa0106-401d-45bf-986b-fe532e0218ca/collection/2424532-b43b4584-309c-425f-b4ea-55ef9ebbdd0e?action=share&source=collection_link&creator=2424532"
+	},
+	"item": [
+		{
+			"name": "Stream Entity Stats Bean",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8071/data/v1/stream/entity/stats/bean?stream=us_equity",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8071",
+					"path": [
+						"data",
+						"v1",
+						"stream",
+						"entity",
+						"stats",
+						"bean"
+					],
+					"query": [
+						{
+							"key": "stream",
+							"value": "us_equity"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Stream Entity Stats Gen",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8071/data/v1/stream/entity/stats/gen?stream=us_equity&date=230901&days=10&entities=8000&vars=50&varStats=2&signals=20",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8071",
+					"path": [
+						"data",
+						"v1",
+						"stream",
+						"entity",
+						"stats",
+						"gen"
+					],
+					"query": [
+						{
+							"key": "stream",
+							"value": "us_equity"
+						},
+						{
+							"key": "date",
+							"value": "230901"
+						},
+						{
+							"key": "days",
+							"value": "10"
+						},
+						{
+							"key": "entities",
+							"value": "8000"
+						},
+						{
+							"key": "vars",
+							"value": "50"
+						},
+						{
+							"key": "varStats",
+							"value": "2"
+						},
+						{
+							"key": "signals",
+							"value": "20"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Stream Entity Stat Req",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8071/data/v1/stream/entity/stat/request?stream=us_equity&date=230911&entity=1&element=3&stat=1",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8071",
+					"path": [
+						"data",
+						"v1",
+						"stream",
+						"entity",
+						"stat",
+						"request"
+					],
+					"query": [
+						{
+							"key": "stream",
+							"value": "us_equity"
+						},
+						{
+							"key": "date",
+							"value": "230911"
+						},
+						{
+							"key": "entity",
+							"value": "1"
+						},
+						{
+							"key": "element",
+							"value": "3"
+						},
+						{
+							"key": "stat",
+							"value": "1"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Stream Entity Stat Agg",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8071/data/v1/stream/entity/agg/request?stream=us_equity&date=230901&lookback=10&entity=3&stat=1&element=2",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8071",
+					"path": [
+						"data",
+						"v1",
+						"stream",
+						"entity",
+						"agg",
+						"request"
+					],
+					"query": [
+						{
+							"key": "stream",
+							"value": "us_equity"
+						},
+						{
+							"key": "date",
+							"value": "230901"
+						},
+						{
+							"key": "lookback",
+							"value": "10"
+						},
+						{
+							"key": "entity",
+							"value": "3"
+						},
+						{
+							"key": "stat",
+							"value": "1"
+						},
+						{
+							"key": "element",
+							"value": "2"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Stream Signal Insert",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"entity\" : 5,\n  \"id\" : 1,\n  \"dateTime\" : \"2023-09-05T09:30:00\",\n  \"zoneId\" : \"America/New_York\",\n  \"vars\" : {\n    \"1\" : 23.23,\n    \"2\" : 32.2,\n    \"3\" : 2222.2\n  }\n}\n",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8071/data/v1/stream/signal/insert?stream=us_equity",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8071",
+					"path": [
+						"data",
+						"v1",
+						"stream",
+						"signal",
+						"insert"
+					],
+					"query": [
+						{
+							"key": "stream",
+							"value": "us_equity"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Signal Search",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"searchRangeStart\" : \"2023-09-05\",\n    \"searchRangeStop\" : \"2023-09-06\",\n    \"signalTypes\" : [1,2],\n    \"entities\" : [1,2,3],\n    \"limit\" : 20\n}\n",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8071/data/v1/stream/signal/search?stream=us_equity",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8071",
+					"path": [
+						"data",
+						"v1",
+						"stream",
+						"signal",
+						"search"
+					],
+					"query": [
+						{
+							"key": "stream",
+							"value": "us_equity"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Signal Entity Count",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"searchRangeStart\" : \"2023-09-05\",\n    \"searchRangeStop\" : \"2023-09-06\",\n    // \"signalTypes\" : [1],\n    \"entityId\" : 3\n}\n",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8071/data/v1/stream/signal/entity/count?stream=us_equity",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8071",
+					"path": [
+						"data",
+						"v1",
+						"stream",
+						"signal",
+						"entity",
+						"count"
+					],
+					"query": [
+						{
+							"key": "stream",
+							"value": "us_equity"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Stream Signal Dump",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"entity\" : 5,\n  \"id\" : 1,\n  \"dateTime\" : \"2023-09-05T09:30:00\",\n  \"vars\" : {\n    \"1\" : 23.23,\n    \"2\" : 32.2,\n    \"3\" : 2222.2\n  }\n}\n",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8071/data/v1/stream/signal/dump?stream=us_equity",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8071",
+					"path": [
+						"data",
+						"v1",
+						"stream",
+						"signal",
+						"dump"
+					],
+					"query": [
+						{
+							"key": "stream",
+							"value": "us_equity"
+						}
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
