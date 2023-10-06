@@ -58,7 +58,7 @@ public class WebFluxSecurityConfig {
         configuration.setExposedHeaders(Arrays.asList("*"));
        configuration.setAllowedHeaders(Arrays.asList("*"));
         configuration.setAllowedMethods(Arrays.asList("*"));
-        configuration.setAllowedOrigins(Arrays.asList("http://localhost:3000","https://api.dunkstreet.com"));
+     configuration.setAllowedOrigins(Arrays.asList("http://localhost:3000", "https://dunkstreet.com" , "https://dunkstreet.com:443", "https://api.dunkstreet.com"));
 
        configuration.setMaxAge((long)30);
        configuration.setAllowCredentials(true);

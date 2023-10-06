@@ -21,12 +21,26 @@ public class StreamWebController {
 	@Autowired
 	private StreamWebService webService; 
 	
-	@GetMapping(path = "/stream/v1/web/stream/dash/nodes", produces = MediaType.APPLICATION_STREAM_JSON_VALUE)
-	public Flux<List<DataGridUpdate>> entityScanner(@RequestParam() String stream) throws Exception {
+							
+	@GetMapping(path = "/stream/v1/web/stream/grid/session/nodes", produces = MediaType.APPLICATION_STREAM_JSON_VALUE)
+	public Flux<List<DataGridUpdate>> streamSessionNodes(@RequestParam() String stream) throws Exception {
 		ObservableElementList<StreamSessionNodeBean> nodes = webService.getStreamNodes(stream);
 		GlazedDataGrid grid = GlazedDataGrid.newInstance(nodes, webService.getExecutor(), "getId");
 		grid.start();
 		return grid.getUpdates();
 	}
+	
+	
+	@GetMapping(path = "/stream/v1/web/stream/grid/signals", produces = MediaType.APPLICATION_STREAM_JSON_VALUE)
+	public Flux<List<DataGridUpdate>> streamSessionSignals(@RequestParam() String stream) throws Exception {
+		ObservableElementList<StreamSessionNodeBean> nodes = webService.getStreamNodes(stream);
+		GlazedDataGrid grid = GlazedDataGrid.newInstance(nodes, webService.getExecutor(), "getId");
+		grid.start();
+		return grid.getUpdates();
+	}
+	
+	
+	
+	
 
 }

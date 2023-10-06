@@ -14,9 +14,9 @@ public class DKafkaAdmin2Test {
 	
 	public static void main(String[] args) {
 		try {
-			DKafkaAdminClient admin = DKafkaAdminClient.newInstance("172.16.16.55:30100");
+			DKafkaAdminClient admin = DKafkaAdminClient.newInstance("172.16.16.55:30102");
 			DKafkaNewTopic newTopic = 
-			DKafkaNewTopic.builder().name("dunkware_pjkijng_me_babjy").cleanupPolicy(TopicConfig.CLEANUP_POLICY_DELETE).
+			DKafkaNewTopic.builder().name("topics-auto-creates").cleanupPolicy(TopicConfig.CLEANUP_POLICY_DELETE).
 			replicas((short)1).retentionSize(5).retentionTime(60, TimeUnit.SECONDS).paritions(1).build();
 			DKafkaNewTopicResult result = admin.createTopic(newTopic);
 			if(result.isException()) { 

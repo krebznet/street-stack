@@ -359,6 +359,7 @@ public class StreamController {
 			}
 			if (nodes.size() == 0) {
 				logger.error(marker, "Exception Starting Stream {} Session, available worker nodes is 0", getName());
+				logger.error(marker, "Exxception did return {} nodes total" + nodes.size());
 				stats.setState(StreamState.StartException);
 				stats.setStartException("0 Workers Node Discovered");
 				session = null;

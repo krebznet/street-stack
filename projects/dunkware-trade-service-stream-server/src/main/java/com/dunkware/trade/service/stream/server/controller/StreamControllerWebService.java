@@ -20,6 +20,7 @@ import org.springframework.web.server.ResponseStatusException;
 
 import com.dunkware.common.util.helpers.DRandom;
 import com.dunkware.common.util.json.DJson;
+import com.dunkware.trade.service.stream.descriptor.StreamDescriptors;
 import com.dunkware.trade.service.stream.json.controller.AddStreamReq;
 import com.dunkware.trade.service.stream.json.controller.AddStreamResp;
 import com.dunkware.trade.service.stream.json.controller.GetStreamSpecResp;
@@ -244,6 +245,12 @@ public class StreamControllerWebService {
 			resp.setError("Exception Getting Stream " + e.toString());
 			return resp;
 		}
+	}
+	
+	
+	@GetMapping(path = "/stream/v1/admin/stream/descriptors")
+	public @ResponseBody() StreamDescriptors getStreamDescriptors() { 
+		return service.getStreamDescriptors();
 	}
 	
 	

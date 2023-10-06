@@ -74,24 +74,18 @@
       <module>projects/dunkware-trade-service-stream-server</module>
 			<module>projects/dunkware-trade-service-stream-worker</module>
 			<module>projects/dunkware-trade-service-stream-cluster</module>
-			<module>projects/dunkware-trade-sdk-tws-runtime</module>
       <module>projects/dunkware-trade-service-web-server</module>
 			<module>projects/dunkware-trade-service-web-mock</module>
 			<module>projects/dunkware-trade-service-web-json</module>
 			<module>projects/dunkware-trade-service-worker-server</module>
-			<module>projects/dunkware-trade-sdk-core-model</module>
-			<module>projects/dunkware-trade-sdk-core-runtime</module>
-      <module>projects/dunkware-trade-sdk-lib-model</module>
-			<module>projects/dunkware-trade-sdk-lib-runtime</module>
-			<module>projects/dunkware-trade-service-beach-server</module>
-			<module>projects/dunkware-trade-service-beach-protocol</module>
-			<module>projects/dunkware-trade-service-beach-web</module>
 			<module>projects/dunkware-spring-cluster</module>
 			<module>projects/dunkware-spring-runtime</module>
 			<module>projects/dunkware-spring-test-model</module>
 			<module>projects/dunkware-spring-test-server</module>
 			<module>projects/dunkware-spring-test-client</module>
-		
+			<module>projects/dunkware-street-beach</module>
+			<module>projects/dunkware-street-data</module>
+			<module>projects/dunkware-street-tick</module>
   </modules>
 	<build>
     <!-- To define the plugin version in your parent POM -->
