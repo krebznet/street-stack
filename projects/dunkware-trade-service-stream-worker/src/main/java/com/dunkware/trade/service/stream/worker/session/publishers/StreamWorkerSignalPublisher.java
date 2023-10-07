@@ -72,12 +72,18 @@ public class StreamWorkerSignalPublisher implements StreamWorkerExtension, XStre
 						if (e instanceof InterruptedException) {
 							return;
 						}
+						if(e instanceof org.apache.kafka.common.errors.InterruptException) {
+							return;
+						}
 						logger.error(marker, "Exception publishing snapshot {}", e.toString());
 					}
 
 				}
 			} catch (Exception e) {
 				if (e instanceof InterruptedException) {
+					return;
+				}
+				if(e instanceof org.apache.kafka.common.errors.InterruptException) {
 					return;
 				}
 				logger.error(marker, "Exception publishing snapshot {}", e.toString());
