@@ -105,12 +105,9 @@ public class StreamSessionNodeImpl implements StreamSessionNode, DunkNetChannelH
 		this.dunkNode = input.getNode();
 		bean.setWorkerId(input.getWorkerId());
 		bean.setNodeId(input.getNode().getId());
+		bean.setId(input.getNumericId());
 		bean.setStatus(state.name());
 		bean.setSignalCount(0);
-		input.getSession().getStream().getSessionNodeBeans().getReadWriteLock().writeLock().lock();
-		input.getSession().getStream().getSessionNodeBeans().add(bean);
-		input.getSession().getStream().getSessionNodeBeans().getReadWriteLock().writeLock().unlock();
-		
 		eventNode = input.getSession().getEventNode().createChild(this);
 
 		for (TradeTickerSpec tickerSpec : input.getTickers()) {

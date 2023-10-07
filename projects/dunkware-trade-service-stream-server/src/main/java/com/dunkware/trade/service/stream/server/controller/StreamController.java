@@ -367,6 +367,7 @@ public class StreamController {
 			}
 			input.setWorkerNodes(nodes);
 			logger.info("Stream {} Session Starting", getName());
+			
 			sessionNodeBeans.clear();
 			session.startSession(input);
 			session.getEventNode().addEventHandler(this);

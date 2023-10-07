@@ -172,7 +172,12 @@ public class StreamSessionImpl implements StreamSession {
 			StreamSessionNodeInput nodeInput = new StreamSessionNodeInput(numericId, workerId,
 					nodeTickers.get(nodeIndex), node, extensionTypes, this, input.getController());
 			StreamSessionNodeImpl sessionNode = new StreamSessionNodeImpl();
+			if(logger.isDebugEnabled()) {
+				logger.debug(marker, "Adding Stream Session Node Bean to controller " + sessionNode.getBean().getNodeId() + " "  + sessionNode.getBean().getWorkerId());
+			}
+			input.getController().getSessionNodeBeans().getReadWriteLock().writeLock().lock();
 			input.getController().getSessionNodeBeans().add(sessionNode.getBean());
+			input.getController().getSessionNodeBeans().getReadWriteLock().writeLock().unlock();
 			ac.getAutowireCapableBeanFactory().autowireBean(sessionNode);
 			sessionNode.start(nodeInput);
 			logger.info(marker, "Started {} Session Worker {} on node {}", getStream().getName(), workerId,
