@@ -132,7 +132,8 @@ public class StreamSignalIngestor implements DKafkaByteHandler2 {
 					"Created mongo client to " + mongoDatabase + " " + mongoCollectionName);
 			;
 
-		} catch (Exception e) {
+		} catch
+		(Exception e) {
 
 			logger.error("Exception Connecting Signal writer " + e.toString());
 			throw new Exception("Mongo Setup/Connection Exception " + e.getLocalizedMessage(), e);
