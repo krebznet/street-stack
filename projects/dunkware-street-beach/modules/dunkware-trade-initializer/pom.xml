@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+   <!-- uip sure we can do this, do we do miss out on inheriting parent pom properties, can it be a spring boot
+   atti without parent to spring boot starter but our parent pom ? -->
+    <parent>
+        <groupId>org.springframework.boot</groupId>
+        <artifactId>spring-boot-starter-parent</artifactId>
+        <version>2.7.1</version>
+        <relativePath /> <!-- lookup parent from repository -->
+    </parent>
+
+    <modelVersion>4.0.0</modelVersion>
+    <groupId>com.dunkware.trade.beach</groupId>
+    <artifactId>dunkware-trade-initializer</artifactId>
+    <version>1.0.0-SNAPSHOT</version>
+    <properties>
+        <spring.boot.version>2.7.1</spring.boot.version>
+        <maven.compiler.source>11</maven.compiler.source>
+        <maven.compiler.target>11</maven.compiler.target>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    </properties>
+
+    <dependencies>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-web</artifactId>
+
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-test</artifactId>
+
+            <scope>test</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>com.dunkware.trade.beach</groupId>
+            <artifactId>trade-assets</artifactId>
+            <version>1.0.0-SNAPSHOT</version>
+        </dependency>
+          <dependency>
+            <groupId>com.dunkware.trade.beach</groupId>
+            <artifactId>trade-brokers</artifactId>
+            <version>1.0.0-SNAPSHOT</version>
+        </dependency>
+          <dependency>
+            <groupId>com.dunkware.trade.beach</groupId>
+            <artifactId>trade-domain</artifactId>
+            <version>1.0.0-SNAPSHOT</version>
+        </dependency>
+          <dependency>
+            <groupId>com.dunkware.trade.beach</groupId>
+            <artifactId>trade-persistence</artifactId>
+            <version>1.0.0-SNAPSHOT</version>
+        </dependency>
+          <dependency>
+            <groupId>com.dunkware.trade.beach</groupId>
+            <artifactId>trade-web</artifactId>
+            <version>1.0.0-SNAPSHOT</version>
+        </dependency>
+
+    </dependencies>
+
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-maven-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <goals>
+                            <goal>repackage</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-deploy-plugin</artifactId>
+            </plugin>
+        </plugins>
+    </build>
+</project>
