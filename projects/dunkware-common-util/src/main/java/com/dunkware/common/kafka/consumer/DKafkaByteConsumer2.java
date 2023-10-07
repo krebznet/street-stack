@@ -70,22 +70,22 @@ public class DKafkaByteConsumer2 {
 
 	}
 
-	private class ShutdownHook extends Thread { 
-		
-		public void run() { 
-			if(!disposed) { 
+	private class ShutdownHook extends Thread {
+
+		public void run() {
+			if (!disposed) {
 				hookDispose();
 			}
 		}
 	}
-	
+
 	private ShutdownHook hook = null;
-	
+
 	public void start() throws DKafkaException {
 
 		hook = new ShutdownHook();
 		Runtime.getRuntime().addShutdownHook(hook);
-		
+
 		// init throttling
 		if (spec.getThrottleType() != null) {
 			if (spec.getThrottleType() == ThrottleType.Manual) {
@@ -110,11 +110,11 @@ public class DKafkaByteConsumer2 {
 			props.put("auto.offset.reset", "latest");
 		// manual we don't set this?
 		props.put("heartbeat.interval.ms", "100");
-		props.put("max.poll.records", 5);
+		props.put("max.poll.records", 50000);
 		props.put("enable.auto.commit", "true");
 		props.put("auto.commit.interval.ms", "500");
 		props.put("client.dns.lookup", "use_all_dns_ips");
-		//props.put("session.timeout.ms", "3000");
+		// props.put("session.timeout.ms", "3000");
 		props.put("buffer.memory", 835544323);
 		props.put("fetch.max.wait.ms", 500);
 		props.put("fetch.min.bytes", 1);
@@ -129,27 +129,23 @@ public class DKafkaByteConsumer2 {
 		}
 
 		// build the partition info list from all topics we are consuming
-		for (String top : spec.getTopics()) {
-			List<PartitionInfo> parts = consumer.partitionsFor(top);
-			for (PartitionInfo partitionInfo : parts) {
-				this.partitionInfos.add(partitionInfo);
-			}
-		}
+		// okay duncan why the fuck are yuou even doing this is you are not
+		// dpoig this 
+		
 		int sleepCount = 0;
 
-	if (spec.getConsumerType() == ConsumerType.Auto) {
+		if (spec.getConsumerType() == ConsumerType.Auto) {
 			consumer.subscribe(Arrays.asList(spec.getTopics()));
-			
 
 		}
 
-		//if (spec.getConsumerType() == ConsumerType.AllPartitions) {
-		//	for (PartitionInfo info : partitionInfos) {
-		//		TopicPartition part = new TopicPartition(info.topic(), info.partition());
-		//		topicPartitions.add(part);
-		//	}
-		//	consumer.assign(topicPartitions);
-		//}
+		// if (spec.getConsumerType() == ConsumerType.AllPartitions) {
+		// for (PartitionInfo info : partitionInfos) {
+		// TopicPartition part = new TopicPartition(info.topic(), info.partition());
+		// topicPartitions.add(part);
+		// }
+		// consumer.assign(topicPartitions);
+		// }
 
 		if (spec.getConsumerType() == ConsumerType.Manual) {
 			// assuming single topic here validated in spec builder
@@ -220,13 +216,14 @@ public class DKafkaByteConsumer2 {
 		}
 	}
 
-	private void hookDispose() { 
+	private void hookDispose() {
 		if (status == DKafkaByteConsumerStatus.Connected) {
 			inerrupted.set(true);
 			consumerThread.dispose();
 			status = DKafkaByteConsumerStatus.Disconnected;
 		}
 	}
+
 	public void dispose() {
 		if (status == DKafkaByteConsumerStatus.Connected) {
 			inerrupted.set(true);
@@ -234,7 +231,6 @@ public class DKafkaByteConsumer2 {
 			status = DKafkaByteConsumerStatus.Disconnected;
 		}
 		Runtime.getRuntime().removeShutdownHook(hook);
-	
 
 	}
 
@@ -353,7 +349,7 @@ public class DKafkaByteConsumer2 {
 					}
 
 					ConsumerRecords<String, byte[]> records = consumer.poll(Duration.ofSeconds(10));
-				
+
 					if (printPoolCount) {
 						System.out.println("Consumer consumed " + records.count());
 						printPoolCount = false;
