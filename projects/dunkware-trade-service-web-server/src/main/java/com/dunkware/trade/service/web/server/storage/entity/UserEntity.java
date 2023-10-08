@@ -1,6 +1,9 @@
 package com.dunkware.trade.service.web.server.storage.entity;
 
 
+import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.UpdateTimestamp;
+
 import java.time.LocalDateTime;
 
 import javax.persistence.Column;
@@ -34,9 +37,11 @@ public class UserEntity {
     @Column(name = "address")
     private String address;
 
+    @CreationTimestamp
     @Column(name = "createdOn")
     private LocalDateTime createdOn;
 
+    @UpdateTimestamp
     @Column(name = "updatedOn")
     private LocalDateTime updatedOn;
 

@@ -1,47 +1,63 @@
 package com.dunkware.trade.service.web.server.controller;
 
-import java.util.List;
-import java.util.Optional;
-
+import com.dunkware.trade.service.web.server.exception.EmailAlreadyExistsException;
+import com.dunkware.trade.service.web.server.exception.PasswordMismatchException;
+import com.dunkware.trade.service.web.server.model.UserCreationRequest;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
 
-import com.dunkware.trade.service.web.server.model.User;
-import com.dunkware.trade.service.web.server.storage.service.StorageService;
+import com.dunkware.trade.service.web.server.storage.service.UserService;
+
+import javax.persistence.EntityNotFoundException;
+import javax.validation.Valid;
 
 @RestController
 @RequestMapping("/v1/api/user")
 public class UserController {
 
     @Autowired
-    StorageService storageService;
+    UserService userService;
 
     @GetMapping(path = "/echo")
     public @ResponseBody() String echo() {
     	return "hello";
     }
-    @GetMapping()
-    public User geUser(@RequestParam(name = "userId", required = false) Optional<Long> userId, @RequestParam(name = "username", required = false) Optional<String> email, @RequestParam(name = "password", required = false) Optional<String> password) {
-      return this.storageService.getUserById(userId, email, password);
+
+    @GetMapping("/log-in")
+    public ResponseEntity logIn(@RequestParam(name = "username") String email,
+                                 @RequestParam String password) {
+        try {
+            return new ResponseEntity<>(this.userService.logIn(email, password),
+                    HttpStatus.OK);
+        } catch (EntityNotFoundException | PasswordMismatchException ex) {
+            return new ResponseEntity<>(ex.getMessage(),
+                    HttpStatus.FORBIDDEN);
+        }
     }
 
-    @PostMapping
-    public void addUser(@RequestBody User user) {
-        this.storageService.addUser(user);
+    @PostMapping("/sign-up")
+    public ResponseEntity signUp(@Valid @RequestBody UserCreationRequest request) {
+        try {
+            return new ResponseEntity<>(this.userService.signUp(request),
+                    HttpStatus.OK);
+        } catch (EmailAlreadyExistsException ex) {
+            return new ResponseEntity<>(ex.getMessage(),
+                    HttpStatus.NOT_ACCEPTABLE);
+        }
     }
-    
-    @GetMapping(path = "/list")
-    public List<User> userList() { 
-    	// TODO: ADAR // help me here needs to call the new method on storageService
-    	return  null;
+
+    @GetMapping(path = "/find-all")
+    public ResponseEntity findAll() {
+    	return new ResponseEntity<>(this.userService.findAll(),
+                HttpStatus.OK);
     }
-    
-    
-    // TODO: ADAR help me here api to delete a user 
+
+    @DeleteMapping("/{userId}")
+    public ResponseEntity deleteById(@PathVariable Long userId) {
+        this.userService.deleteById(userId);
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
+
 }
