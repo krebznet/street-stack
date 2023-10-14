@@ -1,0 +1,10 @@
+version: '3.7'
+services:
+  testrock_mongo:
+    image: mongo-express
+
+    environment:
+      - ME_CONFIG_MONGODB_URL=mongodb://192.168.23.101:27017/dunkstreet
+    ports:
+      - "8081:8069"
+    restart: on-failure
