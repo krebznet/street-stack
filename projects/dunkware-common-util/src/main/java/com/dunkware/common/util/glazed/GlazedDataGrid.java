@@ -68,6 +68,9 @@ public class GlazedDataGrid implements ListEventListener<Object> {
 		try {
 			
 			logger.debug(marker, "registered glazed data grid to service");
+			try {
+				
+			
 			list.getReadWriteLock().readLock().lock();
 			if(list.size() == 0) { 
 				DataGridUpdate update  = new DataGridUpdate();
@@ -86,6 +89,12 @@ public class GlazedDataGrid implements ListEventListener<Object> {
 					
 				}
 				
+			}
+			} catch (Exception e2) {
+				// TODO: handle exception
+			}
+			finally {
+				 list.getReadWriteLock().readLock().unlock();
 			}
 			running = true;
 			
@@ -108,7 +117,7 @@ public class GlazedDataGrid implements ListEventListener<Object> {
 			logger.error(marker, "Exception strarting glazed lists " + e.toString());
 
 		} finally {
-			list.getReadWriteLock().readLock().unlock();
+			
 		}
 
 		
@@ -184,6 +193,12 @@ public class GlazedDataGrid implements ListEventListener<Object> {
 	}
 
 	public void start() {
+		if(list.size() == 0) { 
+			DataGridUpdate update  = new DataGridUpdate();
+			update.setType("INIT");
+			update.setId(-1);
+			addUpdate(update);
+		}
 	
 	}
 
