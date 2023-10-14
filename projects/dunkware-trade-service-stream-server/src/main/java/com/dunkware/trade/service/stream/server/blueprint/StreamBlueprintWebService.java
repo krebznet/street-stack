@@ -51,7 +51,7 @@ public class StreamBlueprintWebService {
 		}
 		GlazedDataGrid grid = GlazedDataGrid.newInstance(bp.getSignalBeans(),executorService.get(),"getId");
 		Flux<List<DataGridUpdate>> results = grid.getUpdates();
-	
+		grid.start();
 		return results;
 	
 	}
