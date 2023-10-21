@@ -27,6 +27,7 @@ public class WebFluxSecurityConfig {
                 .username("dunkware")
                 .password("{noop}dunkStreet@2022")
                 .roles("ADMIN")
+            
                 .build();
         return new MapReactiveUserDetailsService(user);
     }
@@ -34,13 +35,16 @@ public class WebFluxSecurityConfig {
     @Bean
     public SecurityWebFilterChain springSecurityFilterChain(ServerHttpSecurity http) {
    http.csrf().disable();
+  // http.authorizeExchange().pathMatchers("/d)
    http.authorizeExchange().pathMatchers(HttpMethod.OPTIONS, "/**").permitAll();
+  
    
    
         http.cors().disable();
         http
             .authorizeExchange(exchanges -> exchanges
                 .anyExchange().authenticated()
+                
                 
             )
             

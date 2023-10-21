@@ -1,0 +1,40 @@
+pipeline {
+    agent any
+
+    options {
+     disableConcurrentBuilds()
+     buildDiscarder logRotator(artifactDaysToKeepStr: '', artifactNumToKeepStr: '', daysToKeepStr: '', numToKeepStr: '5')
+   
+   }
+
+   triggers { 
+      snapshotDependencies()    
+      pollSCM '* * * * * '
+      githubPush()
+   }
+
+    stages {
+    
+        stage('Build') {
+            steps {
+                script{
+                 // pull from github
+
+                    git branch: '1.0.0',
+                    credentialsId: 'krebznet-github',
+                    url: 'git@github.com:krebznet/dunkware-trade-sdk-tws-runtime.git'
+            }
+            
+           withMaven(globalMavenSettingsConfig: 'dunkware-settings', maven: '3.8.1', options: [pipelineGraphPublisher(includeReleaseVersions: true),pipelineGraphPublisher(lifecycleThreshold: 'install')]) {
+ 			sh 'mvn clean deploy'
+}
+        }}
+
+    
+
+      
+        }
+    }
+
+
+

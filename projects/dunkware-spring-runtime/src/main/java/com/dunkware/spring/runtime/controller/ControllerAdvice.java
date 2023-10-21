@@ -11,6 +11,19 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 
 @RestControllerAdvice
 public class ControllerAdvice {
+	
+	
+	@ExceptionHandler(UserException.class)
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+	public ResponseEntity<ControllerError> gobalUserExceptionHandler(UserException ex) { 
+		ControllerError message = new ControllerError(
+                HttpStatus.BAD_REQUEST.value(),
+                LocalDateTime.now(),
+                ex.getMessage(),
+                ex.getMessage());
+
+        return new ResponseEntity<ControllerError>(message, HttpStatus.BAD_REQUEST);
+	}
     @ExceptionHandler(Exception.class)
     @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
     public ResponseEntity<ControllerError> globalExceptionHandler(Exception ex) {

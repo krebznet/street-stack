@@ -1,0 +1,12 @@
+       {
+  "name": "Test",
+  "account": "Account 001",
+  "allocatedCapital": 90000;
+
+  "enabled": true,
+
+  "activeTradeLimit": 9,
+  "activeSymbolLimit": 0,
+  "tradeThrottle": 9,
+  "symbolThrottle": 0
+}

@@ -134,8 +134,8 @@ public class StreamController {
 	
 	
 	public StreamController() throws Exception {
-
-	}
+		
+	}	
 
 	public StreamState getState() {
 		return stats.getState();

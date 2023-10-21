@@ -147,6 +147,7 @@
     <factorypathentry kind="VARJAR" id="M2_REPO/org/springframework/spring-webflux/5.3.21/spring-webflux-5.3.21.jar" enabled="true" runInBatchMode="false"/>
     <factorypathentry kind="VARJAR" id="M2_REPO/org/requirementsascode/moonwlker/0.0.7/moonwlker-0.0.7.jar" enabled="true" runInBatchMode="false"/>
     <factorypathentry kind="VARJAR" id="M2_REPO/com/google/code/gson/gson/2.9.0/gson-2.9.0.jar" enabled="true" runInBatchMode="false"/>
+    <factorypathentry kind="VARJAR" id="M2_REPO/com/dunkware/xstream/script/com.dunkware.xstream.script/1.5.0-SNAPSHOT/com.dunkware.xstream.script-1.5.0-SNAPSHOT.jar" enabled="true" runInBatchMode="false"/>
     <factorypathentry kind="VARJAR" id="M2_REPO/org/eclipse/xtext/org.eclipse.xtext/2.31.0/org.eclipse.xtext-2.31.0.jar" enabled="true" runInBatchMode="false"/>
     <factorypathentry kind="VARJAR" id="M2_REPO/org/eclipse/xtend/org.eclipse.xtend.lib/2.31.0/org.eclipse.xtend.lib-2.31.0.jar" enabled="true" runInBatchMode="false"/>
     <factorypathentry kind="VARJAR" id="M2_REPO/org/eclipse/xtext/org.eclipse.xtext.xbase.lib/2.31.0/org.eclipse.xtext.xbase.lib-2.31.0.jar" enabled="true" runInBatchMode="false"/>

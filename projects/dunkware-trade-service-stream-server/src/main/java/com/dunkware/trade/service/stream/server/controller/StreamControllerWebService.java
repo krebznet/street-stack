@@ -20,6 +20,7 @@ import org.springframework.web.server.ResponseStatusException;
 
 import com.dunkware.common.util.helpers.DRandom;
 import com.dunkware.common.util.json.DJson;
+import com.dunkware.spring.runtime.controller.UserException;
 import com.dunkware.trade.service.stream.descriptor.StreamDescriptors;
 import com.dunkware.trade.service.stream.json.controller.AddStreamReq;
 import com.dunkware.trade.service.stream.json.controller.AddStreamResp;
@@ -36,6 +37,7 @@ import com.dunkware.trade.service.stream.json.controller.session.StreamDashStats
 import com.dunkware.trade.service.stream.json.controller.session.StreamSessionStats;
 import com.dunkware.trade.service.stream.json.controller.spec.StreamControllerSpec;
 import com.dunkware.trade.service.stream.json.controller.spec.StreamControllerStats;
+import com.dunkware.trade.service.stream.json.controller.spec.StreamState;
 import com.dunkware.trade.service.stream.resources.StreamResource;
 import com.dunkware.trade.service.stream.resources.VariableResource;
 import com.dunkware.trade.service.stream.server.tick.StreamTickService;
@@ -107,64 +109,71 @@ public class StreamControllerWebService {
 	
 	
 	@GetMapping(path = "/stream/core/start") 
-	public @ResponseBody()StartStreamResp startStream(@RequestParam(name = "stream")String stream) {
-		StartStreamResp resp = new StartStreamResp();
+	public void startStream(@RequestParam(name = "stream")String stream) throws Exception {
 		StreamController controller = null;
 		try {
 			controller = service.getStreamByName(stream);
 		} catch (Exception e) {
-			resp.setCode("ERROR");
-			resp.setError("Get stream exception " + e.toString());
-			return resp;
+			throw new UserException("Stream " + stream +  " not found");
 		}
 		try {
+			if(controller.getState() == StreamState.Running) { 
+				throw new UserException("Stream cannot be started when Running");
+			}
 			controller.startSession();
-			resp.setCode("SUCCESS");
-			return resp;
+			
 		} catch (Exception e) {
-			resp.setError("Internal " + e.toString());
-			resp.setCode("ERROR");
-			return resp;
+			throw new Exception("Internal Exception Starting Stream " 	 + e.toString());
 		}
 		
 	}
 	
 	@GetMapping(path = "/stream/core/kill") 
-	public @ResponseBody()String streamKill(@RequestParam(name = "stream")String stream) {
+	public void streamKill(@RequestParam(name = "stream")String stream) throws Exception {
 		StartStreamResp resp = new StartStreamResp();
 		StreamController controller = null;
 		try {
 			controller = service.getStreamByName(stream);
 		} catch (Exception e) {
-			return e.toString();
+			throw e;
 		}
 		try {
-			return controller.killSession();
+			 controller.killSession();
 		} catch (Exception e) {
-			return e.toString();
+			throw e;
 		}
 		
 	}
 	
 	
 	@GetMapping(path = "/stream/core/stop") 
-	public @ResponseBody()StopStreamResp stopStream(@RequestParam(name = "stream")String stream) {
+	public  void stopStream(@RequestParam(name = "stream")String stream) throws Exception {
 		StopStreamResp resp = new StopStreamResp();
 		StreamController controller = null;
 		try {
 			controller = service.getStreamByName(stream);
 		} catch (Exception e) {
-			resp.setCode("ERROR");
-			resp.setError("Get stream exception " + e.toString());
-			return resp;
+			throw new UserException("Stream " + stream +  " not found");
+			
 		}
 		try {
 			controller.stopSession();
-			return resp;
+			
 		} catch (Exception e) {
-			resp.setError("Internal " + e.toString());
-			resp.setCode("ERROR");
-			return resp;
+			throw new UserException(e.toString());
+		}
+		
+	}
+	
+	
+	@GetMapping(path = "/stream/core/state") 
+	public @ResponseBody()String sreamState(@RequestParam(name = "stream")String stream) throws Exception {
+		
+		try {
+			return service.getStreamByName(stream).getState().name();
+		} catch (Exception e) {
+		
+			throw new Exception("Exception interla getting state on stream " + e.toString());
 		}
 		
 	}
@@ -343,8 +352,7 @@ public class StreamControllerWebService {
 	
 	
 	
-	
-	
+
 	public static void main(String[] args) {
 		List<StreamDashNode> results = new ArrayList<StreamDashNode>();
 		int i = 0; 

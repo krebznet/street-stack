@@ -1,9 +1,11 @@
 package com.dunkware.trade.service.data.model.search;
 
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
+
+import com.dunkware.common.util.json.DJson;
 
 //SD21-GIFT-02 We added a REST API where we expect the HTTP request body to deserialize to this, its like what we would in GraphQL except shema's and all that shit is ovekill
 public class SignalSearchRequest {
@@ -11,6 +13,24 @@ public class SignalSearchRequest {
 	private String stream; 
 	
 	//SD21-GIFT-04 You will understand the other fields as we go through the next gifts.  
+	
+	public static void main(String[] args) {
+		SignalSearchRequest req = new SignalSearchRequest();
+		List<Integer> signalTypes = new ArrayList<Integer>();
+		signalTypes.add(4);
+		req.setSignalTypes(signalTypes);
+		req.setEntities(Arrays.asList(2,3,4));
+		req.setStream("us_equity");
+		req.setSearchRangeStart(LocalDate.now().minusDays(3));
+		req.setSearchRangeStop(LocalDate.now().plusDays(4));
+		try {
+			System.out.println(DJson.serializePretty(req));
+		} catch (Exception e) {
+			e.printStackTrace();
+			// TODO: handle exception
+		}
+	}
+	
 	/**
 	 * If not null we restrict or add filter on mongo query where the signal types are wrapped
 	 * in a or with the ids in array. 

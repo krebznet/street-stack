@@ -1,0 +1,26 @@
+{
+  "trade" : {
+    "capital" : 10000.0,
+    "ticker" : {
+      "id" : 0,
+      "symbol" : "GME",
+      "avgVolume" : 0,
+      "type" : "Equity"
+    },
+    "entry" : {
+      "@type" : "com.dunkware.trade.sdk.lib.model.MarketEntryType"
+    },
+    "exit" : {
+      "@type" : "com.dunkware.trade.sdk.lib.model.smart.SmartExitType",
+      "rules" : [ {
+        "@type" : "com.dunkware.trade.sdk.lib.model.smart.rules.GainLossRuleType",
+        "trigger" : -1.0
+      }, {
+        "@type" : "com.dunkware.trade.sdk.lib.model.smart.rules.GainLossRuleType",
+        "trigger" : 1.5
+      } ]
+    },
+    "side" : "LONG"
+  },
+  "pool" : "Test"
+}
