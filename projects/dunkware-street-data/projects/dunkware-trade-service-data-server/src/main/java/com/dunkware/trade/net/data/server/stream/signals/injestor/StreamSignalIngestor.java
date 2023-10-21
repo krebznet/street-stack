@@ -375,6 +375,8 @@ public class StreamSignalIngestor implements DKafkaByteHandler2 {
 				}
 				try {
 
+					ZoneId zoneId = DTimeZone.toZoneId(descriptor.getTimeZone());
+					snapshot.setZoneId(zoneId);
 					Document document = MongoStreamConverter.signalToDocument(snapshot);
 					
 					pendingWrites.add(new InsertOneModel<Document>(document));
