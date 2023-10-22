@@ -35,7 +35,7 @@ public class StreamEntityStatsImpl implements StreamEntityStats {
 
 	private StreamEntityStatsBean bean;
 
-	private StreamEntityStatsIngestor injestor;
+	private StreamEntityStatsIngestorMySql injestor;
 
 	private MySqlConnectionPool connectionPool;
 	private StreamDescriptor descriptor;
@@ -57,10 +57,10 @@ public class StreamEntityStatsImpl implements StreamEntityStats {
 		bean = new StreamEntityStatsBean();
 
 		StreamEntityStatsHelper.initTables(descriptor.getIdentifier(), getConnectionPool());
-		injestor = new StreamEntityStatsIngestor();
+		injestor = new StreamEntityStatsIngestorMySql();
 		injestor.init(this);
-		StatCacheLoader cacheBuilder = new StatCacheLoader(this);
-		cacheBuilder.start();
+		//StatCacheLoader cacheBuilder = new StatCacheLoader(this);
+		//cacheBuilder.start();
 	}
 
 	public double deleteAll() throws Exception {

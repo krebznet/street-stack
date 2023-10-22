@@ -27,7 +27,7 @@ import com.dunkware.common.util.time.DunkTime;
 import com.dunkware.trade.service.stream.descriptor.StreamDescriptor;
 import com.dunkware.xstream.model.stats.entity.EntityStat;
 
-public class StreamEntityStatsIngestor implements DKafkaByteHandler2 {
+public class StreamEntityStatsIngestorFile implements DKafkaByteHandler2 {
 
 	private Logger logger = LoggerFactory.getLogger(getClass());
 	private Marker marker = MarkerFactory.getMarker("EntityStatIngestor");

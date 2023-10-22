@@ -61,9 +61,8 @@ public class StreamDataProvider   {
 			if (signalCollection == null) {
 				coreDatabase.createCollection(collectionname);
 				signalCollection = coreDatabase.getCollection(collectionname);
-				signalCollection.createIndex(Indexes.ascending("dateTime"));
-				signalCollection.createIndex(Indexes.ascending("entity"));
-				signalCollection.createIndex(Indexes.ascending("id"));
+				signalCollection.createIndex(Indexes.ascending("id", "ident","dateTime"));
+				
 			}
 			initialized = true; 
 		} catch (Exception e) {

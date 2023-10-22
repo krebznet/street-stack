@@ -55,7 +55,7 @@ public class StreamCaptureService {
 			}
 		};
 		
-		runner.start();
+	//	runner.start();
 	}
 	
 }

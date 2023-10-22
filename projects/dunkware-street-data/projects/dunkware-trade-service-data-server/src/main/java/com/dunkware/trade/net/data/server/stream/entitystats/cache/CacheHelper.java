@@ -11,4 +11,8 @@ public class CacheHelper {
 		return  ChronoUnit.DAYS.between(start, date);
 		
 	}
+	
+	public static LocalDate date(long key) { 
+		return start.plusDays(key);
+	}
 }
