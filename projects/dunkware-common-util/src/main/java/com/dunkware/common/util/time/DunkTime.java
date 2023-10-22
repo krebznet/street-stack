@@ -191,5 +191,16 @@ public class DunkTime {
 		long result = ChronoUnit.SECONDS.between(from, to);
 		return result;
 	}
+	
+
+	public static long toLocalTimeLong(LocalTime time) {
+
+		return time.toSecondOfDay();
+
+	}
+
+	public static LocalTime toLocalTime(long value) {
+		return LocalTime.ofSecondOfDay(value);
+	}
 
 }
