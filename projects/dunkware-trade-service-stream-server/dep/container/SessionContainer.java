@@ -42,7 +42,7 @@ public class SessionContainer implements DKafkaByteHandler2 {
 	@Autowired
 	private Cluster cluster;
 
-	@Value("${kafka.brokers}")
+	@Value("${dunknet.brokers}")
 	private String kafkaBrokers;
 
 	@Value("${stream.container.worker.nodes}")

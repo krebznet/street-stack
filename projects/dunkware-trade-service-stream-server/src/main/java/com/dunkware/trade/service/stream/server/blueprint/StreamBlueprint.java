@@ -48,7 +48,8 @@ public class StreamBlueprint {
 	private StreamEntity streamEntity;
 
 	private ObservableElementList<StreamBlueprintSignalBean> signalBeans = null;
-
+	private ObservableElementList<StreamBlueprintVarBean> varBeans = null;
+	
 	private StreamSignalType signalType;
 	// Thing
 	// symbol
@@ -64,6 +65,10 @@ public class StreamBlueprint {
 		signalBeans = new ObservableElementList<StreamBlueprintSignalBean>(
 				GlazedLists.threadSafeList(new BasicEventList<StreamBlueprintSignalBean>()),
 				new ObservableBeanListConnector<StreamBlueprintSignalBean>());
+		varBeans = new ObservableElementList<StreamBlueprintVarBean>(
+				GlazedLists.threadSafeList(new BasicEventList<StreamBlueprintVarBean>()),
+				new ObservableBeanListConnector<StreamBlueprintVarBean>());
+		
 		this.streamEntity = stream;
 		eventNode = service.getEventNode().createChild(this);
 		eventNode.addEventHandler(this);
@@ -85,6 +90,9 @@ public class StreamBlueprint {
 
 	}
 
+	public ObservableElementList<StreamBlueprintVarBean> getVarBeans() { 
+		return varBeans;
+	}
 	public ObservableElementList<StreamBlueprintSignalBean> getSignalBeans() {
 		return signalBeans;
 	}

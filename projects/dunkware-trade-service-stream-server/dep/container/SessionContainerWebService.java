@@ -39,7 +39,7 @@ public class SessionContainerWebService implements StreamingListener {
 	@Autowired
 	private Cluster cluster;
 
-	@Value("${kafka.brokers}")
+	@Value("${dunknet.brokers}")
 	private String kafkaBrokers;
 	
 	private Logger logger = LoggerFactory.getLogger(getClass());

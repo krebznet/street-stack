@@ -12,4 +12,5 @@ import java.lang.annotation.Target;
 public @interface ADunkNetService {
 
 	String label();
+	int activeRequestLimit() default 100;
 }

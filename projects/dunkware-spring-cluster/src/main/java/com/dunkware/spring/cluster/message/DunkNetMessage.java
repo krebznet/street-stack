@@ -263,6 +263,7 @@ public class DunkNetMessage {
 	public static final int TYPE_CHANNEL_SERVER_START_ERROR = 10;
 	
 	
+	
 
 	private Object payload;
 	private Map<String, Object> headers = new ConcurrentHashMap<String, Object>();

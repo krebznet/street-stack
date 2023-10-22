@@ -14,7 +14,6 @@ import org.springframework.web.reactive.config.EnableWebFlux;
 public class WebService {
 
     public static void main(String[] args) {
-    	System.out.println("FUCK YOU");
         SpringApplication.run(WebService.class, args);
     }
 

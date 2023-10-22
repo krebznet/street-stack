@@ -25,8 +25,10 @@ import com.dunkware.common.util.dtime.DTimeZone;
 import com.dunkware.common.util.events.DEventNode;
 import com.dunkware.common.util.events.anot.ADEventMethod;
 import com.dunkware.common.util.time.DunkTime;
+import com.dunkware.spring.cluster.DunkNet;
 import com.dunkware.spring.cluster.DunkNetNode;
 import com.dunkware.spring.runtime.services.ExecutorService;
+import com.dunkware.stream.cluster.proto.controller.messages.StreamSessionStopping;
 import com.dunkware.trade.service.stream.json.controller.model.StreamSessionSpec;
 import com.dunkware.trade.service.stream.json.controller.session.StreamSessionNodeBean;
 import com.dunkware.trade.service.stream.json.controller.session.StreamSessionStats;
@@ -78,6 +80,9 @@ public class StreamSessionImpl implements StreamSession {
 
 	@Autowired
 	private StreamSessionRepo sessionRepo;
+	
+	@Autowired
+	private DunkNet dunkNet;
 
 	private StreamSessionEntity sessionEntity;
 
@@ -209,6 +214,20 @@ public class StreamSessionImpl implements StreamSession {
 		if (!(status.getState() == StreamState.Running)) {
 			throw new StreamSessionException("Session is not running, how do you want to stop it?");
 		}
+		StreamSessionStopping netMessage = new StreamSessionStopping();
+		netMessage.setId(getStream().getEntity().getId());
+		netMessage.setIdentifier(getStream().getName());
+		netMessage.setStartTime(this.getEntity().getStartDateTime());
+		netMessage.setStopTime(LocalDateTime.now(DTimeZone.toZoneId(getStream().getTimeZone())));
+		netMessage.setSessionId(getEntity().getId());
+		try {
+			this.dunkNet.event(netMessage);	
+		} catch (Exception e) {
+			logger.error(marker, "Stopping Session Message not sent " + e.toString());
+		}
+		
+		
+		
 		logger.info(marker, "Stopping {} Session", getStream().getName());
 		EStreamSessionStopping stopping = new EStreamSessionStopping(this);
 		eventNode.event(stopping);

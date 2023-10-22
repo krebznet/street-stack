@@ -21,7 +21,7 @@ public class ConfigService {
 	private String coreDatabaseURL; 
 	
 
-	@Value("${kafka.brokers}")
+	@Value("${dunknet.brokers}")
 	private String kafkaBrokers; 
 	
 	@Value("${tick.service.endpoint}")

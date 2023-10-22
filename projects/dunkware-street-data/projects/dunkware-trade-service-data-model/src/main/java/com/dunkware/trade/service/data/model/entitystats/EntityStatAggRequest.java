@@ -1,15 +1,17 @@
 package com.dunkware.trade.service.data.model.entitystats;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
 
 public class EntityStatAggRequest {
 	
 	
-	
+	private String request; 
 	private EntityStatAggType aggType;  
 	private LocalDate date;
 	private int daysBack; 
-	private int entity; 
+	private List<Integer> entities = new ArrayList<Integer>();
 	private int element; 
 	private int stat; 
 	
@@ -39,13 +41,16 @@ public class EntityStatAggRequest {
 		this.daysBack = daysBack;
 	}
 
-	public int getEntity() {
-		return entity;
+	
+	public List<Integer> getEntities() {
+		return entities;
 	}
 
-	public void setEntity(int entity) {
-		this.entity = entity;
+
+	public void setEntities(List<Integer> entities) {
+		this.entities = entities;
 	}
+
 
 	public int getElement() {
 		return element;
@@ -72,6 +77,18 @@ public class EntityStatAggRequest {
 	public void setAggType(EntityStatAggType aggType) {
 		this.aggType = aggType;
 	}
+
+
+	public String getRequest() {
+		return request;
+	}
+
+
+	public void setRequest(String request) {
+		this.request = request;
+	}
+	
+	
 	
 	
 	

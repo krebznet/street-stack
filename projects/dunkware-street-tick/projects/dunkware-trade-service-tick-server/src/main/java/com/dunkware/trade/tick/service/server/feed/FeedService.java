@@ -65,10 +65,9 @@ public class FeedService {
 	@Autowired
 	private ApplicationContext ac;
 
-	@Value("${kafka.brokers}")
+	@Value("${dunknet.brokers}")
 	private String propKafkaBrokes;
-	@Value("${kafka.zookeepers}")
-	private String zookeepers;
+	
 
 	
 	
@@ -173,35 +172,25 @@ public class FeedService {
 		}
 		
 
-		// clean up stream topics
-		DKafkaAdminClient admin = null;
-		try {
-			try {
-				logger.info("Deleting Old Feed Topics");
-				admin = DKafkaAdminClient.newInstance(getKafkaBrokers());
-				try {
-					Collection<TopicListing> topics = new ArrayList<TopicListing>();
-					List<String> deletes = new ArrayList<String>();
-					for (TopicListing topicListing : topics) {
-						if (topicListing.name().startsWith("street_feed")) {
-							
-							deletes.add(topicListing.name());
-						}
-					}
-					if (deletes.size() > 0) {
-					//	admin.deleteTopics(deletes.toArray(new String[deletes.size()]));
-						logger.info("Deleted " + deletes.size() + " Feed Topics");
-					}
-				} catch (Exception e) {
-					logger.error("Exception Deleting Old Feed Topics " + e.toString());
-				}
-			} catch (Exception e) {
-				logger.error("Exception creating DKafkaAdmin from ZooKeepers {}", zookeepers);
-			}
-
-		} catch (Exception e) {
-			logger.error("Exception connecting to KafkaAdmin to delete feed topics " + e.toString() + " url " + zookeepers);
-		}
+		/*
+		 * // clean up stream topics DKafkaAdminClient admin = null; try { try {
+		 * logger.info("Deleting Old Feed Topics"); admin =
+		 * DKafkaAdminClient.newInstance(getKafkaBrokers()); try {
+		 * Collection<TopicListing> topics = new ArrayList<TopicListing>(); List<String>
+		 * deletes = new ArrayList<String>(); for (TopicListing topicListing : topics) {
+		 * if (topicListing.name().startsWith("street_feed")) {
+		 * 
+		 * deletes.add(topicListing.name()); } } if (deletes.size() > 0) { //
+		 * admin.deleteTopics(deletes.toArray(new String[deletes.size()]));
+		 * logger.info("Deleted " + deletes.size() + " Feed Topics"); } } catch
+		 * (Exception e) { logger.error("Exception Deleting Old Feed Topics " +
+		 * e.toString()); } } catch (Exception e) {
+		 * logger.error("Exception creating DKafkaAdmin from ZooKeepers {}",
+		 * zookeepers); }
+		 */
+		//} catch (Exception e) {
+		//	logger.error("Exception connecting to KafkaAdmin to delete feed topics " + e.toString() + " url " + zookeepers);
+		//}
 		
 	}
 	
@@ -277,9 +266,6 @@ public class FeedService {
 		return propKafkaBrokes;
 	}
 
-	public String getZookeepers() {
-		return zookeepers;
-	}
 	
 	public List<TradeTickerSpec> getInvalidatedSubscriptions() { 
 		return null;

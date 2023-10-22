@@ -32,10 +32,7 @@ public class StreamEntityStatsController {
 		System.out.println("stop here");
 	}
 	
-	@GetMapping(path = "/data/v1/stream/entity/stats/bean")
-	public @ResponseBody StreamEntityStatsBean getStreamStatsBean(@RequestParam() String stream) throws Exception { 
-		return service.getStream(stream).getBean();
-	}
+	
 	
 	@GetMapping(path = "/data/v1/stream/entity/stats/gen")
 	public @ResponseBody() int statsGen(@RequestParam() String stream, @RequestParam() String date, @RequestParam() int days, @RequestParam() int entities, @RequestParam() int vars, @RequestParam() int varStats, @RequestParam() int signals) throws Exception  { 
@@ -49,7 +46,7 @@ public class StreamEntityStatsController {
 		bean.setSignalCount(signals);
 		bean.setDayCount(days);
 		List<EntityStat> stat = EntityStatGenFactory.build(bean);
-		stats.persist(stat);
+		//stats.persist(stat);
 		return stat.size();	
 	}
 	
@@ -72,16 +69,7 @@ public class StreamEntityStatsController {
 	public @ResponseBody() EntityStatAggResponse statAggRequest(@RequestParam() String stream, @RequestParam() String date, @RequestParam() int lookback,
 			@RequestParam() int entity, @RequestParam() int stat, @RequestParam int element) throws Exception { 
 		// create the request from the params 
-		EntityStatAggRequest request = new EntityStatAggRequest();
-		LocalDate dateParsed = LocalDate.parse(date, DateTimeFormatter.ofPattern(DunkTime.YYMMDD));
-		request.setDate(dateParsed);
-		request.setEntity(entity);
-		request.setElement(element);
-		request.setStat(stat);
-		request.setDaysBack(lookback);
-		
-		// now the service to do this for us.... 
-		return this.service.getStream(stream).statAgg(request);
+		throw new Exception("Not handled");
 		
 		
 	}

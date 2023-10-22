@@ -1,6 +1,7 @@
 package com.dunkware.trade.service.stream.server.blueprint;
 
-import com.dunkware.common.util.json.DJson;
+import java.time.LocalTime;
+
 import com.dunkware.common.util.observable.ObservableBean;
 
 public class StreamBlueprintSignalBean extends ObservableBean {
@@ -11,6 +12,10 @@ public class StreamBlueprintSignalBean extends ObservableBean {
 	private String status; 
 	private String group;
 	private long id; 
+	
+	private int sessionSignalCount;
+	private LocalTime sessionSignalLastTime;
+	private String sessionSignalLastEntity; 				
 	
 	public String getName() {
 		return name;

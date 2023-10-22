@@ -1,41 +1,45 @@
 package com.dunkware.trade.service.data.model.entitystats;
 
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.time.LocalTime;
+import java.util.ArrayList;
+import java.util.List;
 
 public class EntityStatAggResponse {
 
 	// did we have enough days of data? 
-	private boolean resolved; 
-	private Number value; 
-	private LocalTime time;
-	private LocalDate date; 
+	private String requestId; 
+	private List<EntityStatAgg> aggs = new ArrayList<EntityStatAgg>();
+	private int unresolvedCount; 
+	private int errorCount;
 	
-	public boolean isResolved() {
-		return resolved;
+	public String getRequestId() {
+		return requestId;
 	}
-	public void setResolved(boolean resolved) {
-		this.resolved = resolved;
+	public void setRequestId(String requestId) {
+		this.requestId = requestId;
 	}
-	public Number getValue() {
-		return value;
+	public List<EntityStatAgg> getAggs() {
+		return aggs;
 	}
-	public void setValue(Number value) {
-		this.value = value;
+	public void setAggs(List<EntityStatAgg> aggs) {
+		this.aggs = aggs;
 	}
-	public LocalTime getTime() {
-		return time;
+	public int getUnresolvedCount() {
+		return unresolvedCount;
 	}
-	public void setTime(LocalTime time) {
-		this.time = time;
+	public void setUnresolvedCount(int unresolvedCount) {
+		this.unresolvedCount = unresolvedCount;
 	}
-	public LocalDate getDate() {
-		return date;
+	public int getErrorCount() {
+		return errorCount;
 	}
-	public void setDate(LocalDate date) {
-		this.date = date;
-	}
+	public void setErrorCount(int errorCount) {
+		this.errorCount = errorCount;
+	} 
+	
+	
+	
 	
 	
 	

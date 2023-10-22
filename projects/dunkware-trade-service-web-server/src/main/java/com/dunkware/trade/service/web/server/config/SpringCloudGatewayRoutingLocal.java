@@ -23,8 +23,8 @@ public class SpringCloudGatewayRoutingLocal {
 		  
 		  return builder.routes().route("stream", r -> r.path("/stream/**").uri("http://127.0.0.1:8086")) // static
 					.route("trade", r -> r.path("/trade/**").uri("http://127.0.0.1:8032"))
-					.route("tick", r -> r.path("/tick/**").uri("http://172.16.16.55:31890"))
-					.route("feed", r -> r.path("/feed/**").uri("http://172.16.16.55:31890"))
+					.route("tick", r -> r.path("/tick/**").uri("http://127.0.0.1:8987"))
+					.route("feed", r -> r.path("/feed/**").uri("http://127.0.0.1:8987"))
 					.route("data", r -> r.path("/data/**").uri("http://127.0.0.1:8071"))
 						.build();
 		  }

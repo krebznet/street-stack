@@ -57,6 +57,24 @@ public class StreamBlueprintWebService {
 	}
 	
 	
+	@GetMapping(path = "/stream/v1/blueprint/dash/vars", produces = MediaType.APPLICATION_STREAM_JSON_VALUE)
+    public Flux<List<DataGridUpdate>> blueprintVars(@RequestParam() String stream) {
+		StreamBlueprint bp = null;
+		try {
+			bp = blueprintService.getBlueprint(stream);
+			
+		} catch (Exception e) {
+			throw new ResponseStatusException(
+			           HttpStatus.BAD_REQUEST, "Stream blueprint not found for " + stream);
+		}
+		GlazedDataGrid grid = GlazedDataGrid.newInstance(bp.getVarBeans(),executorService.get(),"getId");
+		Flux<List<DataGridUpdate>> results = grid.getUpdates();
+		grid.start();
+		return results;
+	
+	}
+	
+	
 	@PostMapping( path = "/stream/v1/blueprint/signal/add")
 	public void addSignalType(@RequestBody StreamSignalType model, @RequestParam String stream) { 
 		StreamBlueprint blueprint = null;
