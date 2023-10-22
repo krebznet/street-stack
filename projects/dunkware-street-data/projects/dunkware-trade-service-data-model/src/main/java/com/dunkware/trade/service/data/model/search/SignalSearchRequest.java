@@ -17,7 +17,7 @@ public class SignalSearchRequest {
 	public static void main(String[] args) {
 		SignalSearchRequest req = new SignalSearchRequest();
 		List<Integer> signalTypes = new ArrayList<Integer>();
-		signalTypes.add(4);
+		signalTypes.add(9);
 		req.setSignalTypes(signalTypes);
 		req.setEntities(Arrays.asList(2,3,4));
 		req.setStream("us_equity");
