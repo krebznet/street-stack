@@ -24,8 +24,11 @@ public class EntityStatsEnt {
 	private LocalDate date; 
 	private LocalDateTime startDateTime;
 	private LocalDateTime stopDateTime; 
-	private String sessionFile; 
-	
+	private String sessionFile;
+	private String sessionFileDirectory;
+	private boolean exception = false;
+	private String exceptionMessage = null; 
+	private int insertCount; 
 	public long getId() {
 		return id;
 	}
@@ -74,6 +77,33 @@ public class EntityStatsEnt {
 	public void setSessionFile(String sessionFile) {
 		this.sessionFile = sessionFile;
 	}
+	public String getSessionFileDirectory() {
+		return sessionFileDirectory;
+	}
+	public void setSessionFileDirectory(String sessionFileDirectory) {
+		this.sessionFileDirectory = sessionFileDirectory;
+	}
+	public boolean isException() {
+		return exception;
+	}
+	public void setException(boolean exception) {
+		this.exception = exception;
+	}
+	public String getExceptionMessage() {
+		return exceptionMessage;
+	}
+	public void setExceptionMessage(String exceptionMessage) {
+		this.exceptionMessage = exceptionMessage;
+	}
+	public int getInsertCount() {
+		return insertCount;
+	}
+	public void setInsertCount(int insertCount) {
+		this.insertCount = insertCount;
+	}
+	
+	
+	
 	
 	
 	

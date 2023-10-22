@@ -25,7 +25,7 @@ public class DunkTime {
 	public final static String HH_MMM_SS = "HH:mm:ss";
 	public static final String YYMMDD = "yyMMdd";
     public static final String ISO_FORMAT = "yyyy-MM-dd'T'HH:mm:ssZ";
-    
+    public static final String YYMMDDHHMMSS =  "YYMMDDHHmmss";
     public static void main2(String[] args) {
 		
 		// 1970-01-01T00:00:00Z
@@ -56,6 +56,9 @@ public class DunkTime {
     
     
     public static void main(String[] args) {
+    	LocalDateTime d = LocalDateTime.now();
+    	System.out.println(DunkTime.format(d, YYMMDDHHMMSS));
+    	if(1 == 1) { return; }
     	ZonedDateTime zonedDateTimeSameEst = ZonedDateTime.of(LocalDateTime.parse("2022-01-01T01:00:00.000000000"), ZoneId.of("America/New_York"));
         ZonedDateTime zonedDateTimeSamePak = ZonedDateTime.of(LocalDateTime.parse("2022-01-01T01:00:00.000000000"), ZoneId.of("Asia/Karachi"));
         System.out.println("Dates coming into the system with timezone known");

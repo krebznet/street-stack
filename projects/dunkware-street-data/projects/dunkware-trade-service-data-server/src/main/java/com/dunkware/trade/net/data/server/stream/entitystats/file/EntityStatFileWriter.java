@@ -83,6 +83,9 @@ public class EntityStatFileWriter {
 	
 	public void close() { 
 		try {
+			pw.flush();
+			bwr.flush();
+			writer.flush();
 			pw.close();
 			bwr.close();
 			writer.close();	

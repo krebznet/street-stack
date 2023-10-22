@@ -3,6 +3,7 @@ package com.dunkware.trade.net.data.server.stream.entitystats;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.Statement;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -15,6 +16,7 @@ import org.springframework.beans.factory.annotation.Value;
 
 import com.dunkware.common.util.mysql.pool.MySqlConnectionPool;
 import com.dunkware.common.util.stopwatch.DStopWatch;
+import com.dunkware.common.util.time.DunkTime;
 import com.dunkware.spring.cluster.DunkNet;
 import com.dunkware.spring.cluster.anot.ADunkNetEvent;
 import com.dunkware.stream.cluster.proto.controller.messages.StreamSessionStopping;
@@ -46,7 +48,6 @@ public class StreamEntityStatsImpl implements StreamEntityStats {
 	@Autowired
 	private DunkNet dunkNet;
 
-	//private StreamEntityStatsIngestorMySql injestor;
 
 	private MySqlConnectionPool connectionPool;
 	private StreamDescriptor descriptor;
@@ -74,8 +75,18 @@ public class StreamEntityStatsImpl implements StreamEntityStats {
 		bean = new StreamEntityStatsBean();
 
 		// so lets load the sessions
-		repo.findByStreamIdent(descriptor.getIdentifier());
+		this.sessionstatRecords = repo.findByStreamIdent(descriptor.getIdentifier());
 		
+	}
+	
+	
+	public boolean statsRecordExistsForDate(LocalDate date) { 
+		for (EntityStatsEnt entityStatsEnt : sessionstatRecords) {
+			if(entityStatsEnt.getDate().isEqual(date)) { 
+				return true; 
+			}
+		}
+		return false; 
 	}
 	
 	
@@ -88,9 +99,51 @@ public class StreamEntityStatsImpl implements StreamEntityStats {
 			Thread runner = new Thread() { 
 				
 				public void run() { 
+				//	if(statsRecordExistsForDate(stopping.getStartTime().toLocalDate())) { 
+					//	logger.info(marker, "Skipping Entity Stats Session File Write Because Session Stats File Exists for same date ");
+					//}
+					// 
+					EntityStatsEnt record = new EntityStatsEnt();
+					record.setDate(stopping.getStartTime().toLocalDate());
+					record.setSessionId(stopping.getSessionId());
+					record.setStreamIdent(stopping.getIdentifier());
+					record.setStreamId(stopping.getId());
+					record.setStartDateTime(stopping.getStartTime());;
+					record.setStopDateTime(stopping.getStopTime());
+					record.setSessionFileDirectory(entitySatsDirectory);
+					String startTimeFormat = DunkTime.format(record.getStartDateTime(), DunkTime.YYMMDDHHMMSS);
+					String stopTimeFormat = DunkTime.format(record.getStopDateTime(), DunkTime.YYMMDDHHMMSS);
+					String fileName = descriptor.getIdentifier().toUpperCase() + "_" + startTimeFormat + "_" + stopTimeFormat + ".csv";
+					record.setSessionFile(fileName);;
 					
+					
+					try {
+						repo.save(record);
+					} catch (Exception e) {
+						logger.error(marker, "Exception saving StreamStatsEnt record " + e.toString());
+						
+					}
+					
+					StreamEntityStatsFileWriter writer = new StreamEntityStatsFileWriter();
+					writer.init(record, StreamEntityStatsImpl.this, new StreamEntityStatsFileWriterListener() {
+						
+						@Override
+						public void onException(StreamEntityStatsFileWriter writer) {
+							logger.error(marker, "Exception Writing Entity Stats " + writer.getError());
+							record.setException(true);
+							record.setExceptionMessage(writer.getError());
+							repo.save(record);
+						}
+						
+						@Override
+						public void onComplete(StreamEntityStatsFileWriter writer) {
+							record.setException(false);
+							record.setInsertCount(writer.getInsertCount());
+						}
+					});
 				}
 			};
+			runner.start();
 		}
 	}
 

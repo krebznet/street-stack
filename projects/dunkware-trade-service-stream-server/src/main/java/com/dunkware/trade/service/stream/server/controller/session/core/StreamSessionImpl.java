@@ -104,6 +104,9 @@ public class StreamSessionImpl implements StreamSession {
 
 	private AtomicInteger nodeStartEventCount = new AtomicInteger(0);
 	private AtomicInteger nodeStopEventCount = new AtomicInteger(0);
+	
+	
+	private LocalDateTime startTime; 
 
 	// put the stream session capture in here?
 
@@ -217,7 +220,7 @@ public class StreamSessionImpl implements StreamSession {
 		StreamSessionStopping netMessage = new StreamSessionStopping();
 		netMessage.setId(getStream().getEntity().getId());
 		netMessage.setIdentifier(getStream().getName());
-		netMessage.setStartTime(this.getEntity().getStartDateTime());
+		netMessage.setStartTime(startTime);
 		netMessage.setStopTime(LocalDateTime.now(DTimeZone.toZoneId(getStream().getTimeZone())));
 		netMessage.setSessionId(getEntity().getId());
 		try {
@@ -442,6 +445,7 @@ public class StreamSessionImpl implements StreamSession {
 	}
 
 	private void handleSessionSart() {
+		startTime = LocalDateTime.now(DTimeZone.toZoneId(getStream().getTimeZone()));
 		logger.info(marker, "Handling Stream {} Session Start", getStream().getName());
 		if (nodeStartFailures.get() > 0) {
 			this.status.setState(StreamState.StartException);
