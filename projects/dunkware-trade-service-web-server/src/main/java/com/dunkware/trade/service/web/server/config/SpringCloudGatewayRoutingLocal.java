@@ -25,6 +25,7 @@ public class SpringCloudGatewayRoutingLocal {
 					.route("trade", r -> r.path("/trade/**").uri("http://127.0.0.1:8032"))
 					.route("tick", r -> r.path("/tick/**").uri("http://172.16.16.55:31890"))
 					.route("feed", r -> r.path("/feed/**").uri("http://172.16.16.55:31890"))
+					.route("data", r -> r.path("/data/**").uri("http://127.0.0.1:8071"))
 						.build();
 		  }
 	 
