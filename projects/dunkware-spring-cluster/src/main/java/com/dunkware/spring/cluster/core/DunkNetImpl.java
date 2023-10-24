@@ -125,11 +125,12 @@ public class DunkNetImpl implements DunkNet, DKafkaByteHandler2 {
 		DKafkaAdminClient client = null;
 		try {
 			client = createAdminClient();
-			if(client.topicExists(pingTopic) == false) { 
-				logger.info(marker, "Creating Topic " + pingTopic);
-				client.createTopic(DKafkaNewTopic.builder().name(pingTopic).cleanupPolicy(TopicConfig.CLEANUP_POLICY_DELETE)
-				.replicas((short)1).paritions(1).retentionTime(120, TimeUnit.SECONDS).build());
-			}
+			
+			//if(client.topicExists(pingTopic) == false) { 
+			//	logger.info(marker, "Creating Topic " + pingTopic);
+			//	client.createTopic(DKafkaNewTopic.builder().name(pingTopic).cleanupPolicy(TopicConfig.CLEANUP_POLICY_DELETE)
+			//	.replicas((short)1).paritions(1).retentionTime(120, TimeUnit.SECONDS).build());
+			//}
 			logger.info("Created topic " + pingTopic);
 		} catch (Exception e) {
 			logger.error(marker, "Excepton creating ping topic, might as well crash or look to see if it exists");
@@ -384,6 +385,7 @@ public class DunkNetImpl implements DunkNet, DKafkaByteHandler2 {
 	@Override
 	public void event(Object payload)  {
 		try {
+			logger.warn(marker, "sending Messgae Payload on node {} of type {}",getId(),payload.getClass().getName());
 			DunkNetMessageTransport transport = DunkNetMessage.builder().event(payload).buildTransport(getId());
 			DunkNetEventDispatcher dispatch = new DunkNetEventDispatcher();
 			dispatch.set(this, transport,payload);

@@ -55,9 +55,11 @@ public class StreamEntityStatsFileWriter implements DKafkaByteHandler2 {
 	private String error; 
 
 	public void init(EntityStatsEnt entity, StreamEntityStatsImpl statsImpl, StreamEntityStatsFileWriterListener listener)   {
+		logger.info(marker, "Starting Stream Entity Stats Writer"	);
 		this.entity = entity;
 		this.statsImpl = statsImpl;
 		this.listener = listener;
+		this.streamStats = statsImpl;
 		inserter = new Inserter();
 		inserter.start();
 		this.descriptor = statsImpl.getStreamDescriptor();
@@ -65,6 +67,7 @@ public class StreamEntityStatsFileWriter implements DKafkaByteHandler2 {
 			fileWriter = EntityStatFileWriter.newInstance(entity.getSessionFileDirectory(), entity.getSessionFile(),
 					true);
 		} catch (Exception e) {
+			logger.error(marker, "Exception creating file writer " + e.toString(),e);
 			error = "Exception creating file writer " + e.toString();
 			listener.onException(this);
 		}
@@ -80,6 +83,7 @@ public class StreamEntityStatsFileWriter implements DKafkaByteHandler2 {
 			kafkaConsumer.addStreamHandler(this);
 			kafkaConsumer.start();
 		} catch (Exception e) {
+			logger.error(marker, "Excepton connecing to kafka");;
 			this.error = "Exception connecting to kafka " + e.toString();
 			logger.error(marker, "Exception starting kafka consumer " + e.toString());
 			listener.onException(this);
@@ -117,10 +121,12 @@ public class StreamEntityStatsFileWriter implements DKafkaByteHandler2 {
 	@Override
 	public void record(ConsumerRecord<String, byte[]> record) {
 		try {
+			
 			EntityStat stat = DJson.getObjectMapper().readValue(record.value(), EntityStat.class);
 			kafkaConsumeCount++;
 			this.insertQueue.add(stat);
 		} catch (Exception e) {
+			logger.error(marker, "Exception pulling kafka record " + e.toString());;
 			kafkaConsumer.dispose();
 			error = "Exception pulling kafka record " + e.toString();
 			listener.onException(this);
@@ -167,6 +173,7 @@ public class StreamEntityStatsFileWriter implements DKafkaByteHandler2 {
 				
 				
 				catch (Exception e) {
+					logger.error(marker, "Write error " + e.toString());;
 					error = "outer write error  " + e.toString()	;
 					listener.onException(StreamEntityStatsFileWriter.this);
 					logger.error(marker, "Exception outer exception in writer thread  " + e.toString());

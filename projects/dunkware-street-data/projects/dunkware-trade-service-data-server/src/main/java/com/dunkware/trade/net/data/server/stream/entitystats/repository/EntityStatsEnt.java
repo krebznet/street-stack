@@ -29,6 +29,8 @@ public class EntityStatsEnt {
 	private boolean exception = false;
 	private String exceptionMessage = null; 
 	private int insertCount; 
+	private double insertTime; 
+	
 	public long getId() {
 		return id;
 	}
@@ -101,6 +103,14 @@ public class EntityStatsEnt {
 	public void setInsertCount(int insertCount) {
 		this.insertCount = insertCount;
 	}
+	public double getInsertTime() {
+		return insertTime;
+	}
+	public void setInsertTime(double insertTime) {
+		this.insertTime = insertTime;
+	}
+	
+	
 	
 	
 	

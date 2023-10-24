@@ -10,6 +10,7 @@ import org.slf4j.MarkerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 
+import com.dunkware.common.util.json.DJson;
 import com.dunkware.common.util.uuid.DUUID;
 import com.dunkware.spring.cluster.DunkNet;
 import com.dunkware.spring.cluster.DunkNetChannel;
@@ -169,7 +170,7 @@ public class DunkNetController {
 				return true;
 			}
 			
-			logger.error(marker, "Message not handled type {} on node {}", message.getType(), net.getId());
+			logger.error(marker, "Message not handled type {} on node {} payload {}", message.getType(), net.getId(),DJson.serializePretty(message.getPayload()));
 			return false;
 		} catch (Exception e) {
 			logger.error(marker, "Thrown Exception in message handler switch {}",e.toString(),e);
@@ -637,6 +638,7 @@ public class DunkNetController {
 	}
 
 	private void handleEvent(DunkNetMessage message) {
+		System.out.println("handle event " + message.getPayload().getClass().getName());;
 		if(message.getChannel() != null) { 
 			handleChannelEvent(message);
 			return;

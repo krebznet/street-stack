@@ -16,7 +16,7 @@ public class StreamWorkerEntityStatsDumper extends Thread {
 
 	private Logger logger = LoggerFactory.getLogger(getClass());
 	private Marker marker = MarkerFactory.getMarker("StreamStatsPublisher");
-	
+	Marker stop = MarkerFactory.getMarker("SessionStop");
 	private List<EntityStat> stats;
 	private String streamIdent; 
 	private String brokers; 
@@ -31,6 +31,7 @@ public class StreamWorkerEntityStatsDumper extends Thread {
 		try {
 			DStopWatch timer = DStopWatch.create();
 			timer.start();
+			logger.info(stop,"Sending stat messages");
 			logger.info(marker, "Starting Stream Stats Publisher With " + stats.size() + " Entity Stats");
 			String topicName = "stream_" + streamIdent + "_feed_entitystats";
 			DKafkaByteProducer producer = DKafkaByteProducer.newInstance(brokers,topicName,streamIdent + 1);
@@ -38,6 +39,8 @@ public class StreamWorkerEntityStatsDumper extends Thread {
 				producer.sendBytes(DJson.serialize(entityStat).getBytes());
 			}
 			timer.stop();
+			logger.info(stop,"sent stat messages " + stats.size());
+
 			logger.info(marker, "Finished Stream Stats Publisher With " + stats.size() + " Entity Stats in {} seconds", timer.getCompletedSeconds());
 			producer.dispose();
 		} catch (Exception e) {
