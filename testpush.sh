@@ -9,7 +9,7 @@ cd /Users/duncankrebs/dunkworld/street/cloud/branches/main/street-cloud/projects
 ./test.sh
 echo "dat server"
 cd /Users/duncankrebs/dunkworld/street/cloud/branches/main/street-cloud/projects/dunkware-street-data/projects/dunkware-trade-service-data-server/
-test.sh
+./test.sh
 echo "tick server"
 cd /Users/duncankrebs/dunkworld/street/cloud/branches/main/street-cloud/projects/dunkware-street-tick/projects/dunkware-trade-service-tick-server/
 ./test.sh
