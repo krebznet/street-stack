@@ -238,9 +238,7 @@ public class StreamSessionImpl implements StreamSession {
 				
 				try {
 					
-					logger.info(marker, "Sending stop session " + DJson.serializePretty(netMessage));
-					
-					StreamSessionImpl.this.dunkNet.event(netMessage);	
+					logger.info(marker, "Sending stop session " + DJson.serializePretty(netMessage));	
 				} catch (Exception e) {
 					logger.error(marker, "Stopping Session Message not sent " + e.toString());
 				}

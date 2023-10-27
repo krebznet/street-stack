@@ -34,7 +34,7 @@ public class StreamEntityStatsFileWriter implements DKafkaByteHandler2 {
 
 	private volatile int insertCountLastSecond = 0;
 	private volatile int insertCountMaxSecond = 0;
-	private int insertCount = 0;
+	private volatile int insertCount = 0;
 	private int kafkaConsumeCount = 0;
 
 	private Inserter inserter;
@@ -93,6 +93,10 @@ public class StreamEntityStatsFileWriter implements DKafkaByteHandler2 {
 	public String getError() { 
 		return error; 
 	}
+	
+	public EntityStatsEnt getRecord() { 
+		return entity;
+	}
 
 	public void insert(EntityStat stat) throws Exception {
 		insertQueue.add(stat);
@@ -137,6 +141,7 @@ public class StreamEntityStatsFileWriter implements DKafkaByteHandler2 {
 	
 	public void complete() { 
 		kafkaConsumer.dispose();
+		listener.onComplete(this);
 		
 	}
 
@@ -158,13 +163,23 @@ public class StreamEntityStatsFileWriter implements DKafkaByteHandler2 {
 						emptyPoolCount++;
 						if(emptyPoolCount > 3) { 
 							fileWriter.close();
-							complete();
+							try {
+								complete();	
+							} catch (Exception e) {
+								logger.error(" on complete exception " + e.toString(),e);
+							}
+							
 							return;
 						}
 						continue;
 					} else { 
-						fileWriter.writeStat(stat);;
-						insertCount++;
+						try {
+							fileWriter.writeStat(stat);;
+							insertCount++;	
+						} catch (Exception e) {
+							logger.error(marker, "Exception writing stat " + e.toString() + " stat to string " + stat.toString() );
+						}
+						
 					}
 				}
 				catch(InterruptedException e1) { 

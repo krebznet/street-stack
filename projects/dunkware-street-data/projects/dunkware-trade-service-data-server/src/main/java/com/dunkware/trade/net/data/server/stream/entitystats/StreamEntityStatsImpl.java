@@ -6,6 +6,7 @@ import java.sql.Statement;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.atomic.AtomicInteger;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -31,6 +32,9 @@ import com.dunkware.trade.service.stream.descriptor.StreamDescriptor;
 import com.dunkware.xstream.model.stats.entity.EntityStat;
 
 public class StreamEntityStatsImpl implements StreamEntityStats {
+	
+	public static AtomicInteger sessionStopMessageCount = new AtomicInteger(0); 
+	
 	private Marker stop = MarkerFactory.getMarker("SessionStop");
 	private Logger logger = LoggerFactory.getLogger(getClass());
 	private Marker marker = MarkerFactory.getMarker("EntityStats");
@@ -100,7 +104,10 @@ public class StreamEntityStatsImpl implements StreamEntityStats {
 	
 	@ADunkNetEvent()
 	public void onStreamSessionStopping(StreamSessionStopping stopping) { 
-		logger.info(stop, "handling session stopping");
+		sessionStopMessageCount.incrementAndGet();
+		System.err.println("okay what the fuck on stream session stopping count " + sessionStopMessageCount.get());
+		
+		logger.info(stop, "handling session stopping counter " + sessionStopMessageCount.get());
 		if(stopping.getIdentifier().equals(getStreamDescriptor().getIdentifier())) { 
 			Thread runner = new Thread() { 
 				
@@ -109,7 +116,7 @@ public class StreamEntityStatsImpl implements StreamEntityStats {
 					//	logger.info(marker, "Skipping Entity Stats Session File Write Because Session Stats File Exists for same date ");
 					//}
 					// 
-					logger.info(stop, "Creating entitystats record");;
+					logger.info(stop, "Creating entitystats record fuck" + sessionStopMessageCount.get());;
 					EntityStatsEnt record = new EntityStatsEnt();
 					record.setDate(stopping.getStartTime().toLocalDate());
 					record.setSessionId(stopping.getSessionId());
@@ -125,32 +132,36 @@ public class StreamEntityStatsImpl implements StreamEntityStats {
 					
 					
 					try {
-						repo.save(record);
+						record = repo.save(record);
 					} catch (Exception e) {
 						logger.error(marker, "Exception saving StreamStatsEnt record " + e.toString());
 						
 					}
 					
 					DStopWatch timer = DStopWatch.create();
+					timer.start();
 					StreamEntityStatsFileWriter writer = new StreamEntityStatsFileWriter();
 					writer.init(record, StreamEntityStatsImpl.this, new StreamEntityStatsFileWriterListener() {
 						
 						@Override
 						public void onException(StreamEntityStatsFileWriter writer) {
-							logger.error(marker, "Exception Writing Entity Stats " + writer.getError());
-							record.setException(true);
-							record.setExceptionMessage(writer.getError());
-							repo.save(record);
+							logger.error(marker, "Exception Writing Entity Stats " + writer.getError() + " " +  sessionStopMessageCount.get());
+							EntityStatsEnt existingRecord = writer.getRecord();
+							existingRecord.setException(true);
+							existingRecord.setExceptionMessage(writer.getError());
+							repo.save(existingRecord);
+							
 						}
 						
 						@Override
 						public void onComplete(StreamEntityStatsFileWriter writer) {
-							logger.info(stop,"on complete");
-							record.setException(false);
-							record.setInsertCount(writer.getInsertCount());
+							logger.info(stop,"on complete " + sessionStopMessageCount.get());
+							EntityStatsEnt existingRecord = writer.getRecord();
+							existingRecord.setException(false);
+							existingRecord.setInsertCount(writer.getInsertCount());
 							timer.stop();
-							record.setInsertTime(timer.getCompletedSeconds());;
-							repo.save(record);
+							existingRecord.setInsertTime(timer.getCompletedSeconds());;
+							repo.save(existingRecord);
 						}
 					});
 				}

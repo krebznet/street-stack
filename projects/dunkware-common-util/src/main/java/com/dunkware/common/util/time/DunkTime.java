@@ -25,7 +25,7 @@ public class DunkTime {
 	public final static String HH_MMM_SS = "HH:mm:ss";
 	public static final String YYMMDD = "yyMMdd";
     public static final String ISO_FORMAT = "yyyy-MM-dd'T'HH:mm:ssZ";
-    public static final String YYMMDDHHMMSS =  "YYMMDDHHmmss";
+    public static final String YYMMDDHHMMSS =  "YYMMddHHmmss";
     public static void main2(String[] args) {
 		
 		// 1970-01-01T00:00:00Z
