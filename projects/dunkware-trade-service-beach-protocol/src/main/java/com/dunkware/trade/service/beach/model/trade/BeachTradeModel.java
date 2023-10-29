@@ -8,6 +8,8 @@ public class BeachTradeModel {
 	private String systemIdentifier; 
 	private long systemId; 
 	
+	private List<String> tags = new ArrayList<String>();
+	
 	private String symbol; 
 	
 	private double capital; 
@@ -24,7 +26,7 @@ public class BeachTradeModel {
 	private boolean enableStop; 
 	private double stopPercent; 
 	
-	private List<BeachExitTriggerModel> exits = new ArrayList<BeachExitTriggerModel>();
+	private List<BeachTradeModelExitTrigger> exits = new ArrayList<BeachTradeModelExitTrigger>();
 
 	public String getSystemIdentifier() {
 		return systemIdentifier;
@@ -138,11 +140,11 @@ public class BeachTradeModel {
 		this.stopPercent = stopPercent;
 	}
 
-	public List<BeachExitTriggerModel> getExits() {
+	public List<BeachTradeModelExitTrigger> getExits() {
 		return exits;
 	}
 
-	public void setExits(List<BeachExitTriggerModel> exits) {
+	public void setExits(List<BeachTradeModelExitTrigger> exits) {
 		this.exits = exits;
 	}
 	

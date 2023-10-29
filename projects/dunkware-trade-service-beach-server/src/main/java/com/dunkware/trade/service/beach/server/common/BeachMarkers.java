@@ -8,4 +8,8 @@ public class BeachMarkers {
 	public static Marker events() {
 		return MarkerFactory.getMarker("beach.events");
 	}
+	
+	public static Marker systemException() { 
+		return MarkerFactory.getMarker("SystemException");
+	}
 }

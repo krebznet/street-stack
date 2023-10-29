@@ -29,10 +29,14 @@ public class StreamEntityStatsController {
 	
 	@PostConstruct
 	public void fuckMan() { 
-		System.out.println("stop here");
+		System.out.println("please me here");
 	}
 	
-	
+	@GetMapping(path = "/data/v1/hi")
+	public String hi() { 
+		return "hi";
+		
+	}
 	
 	@GetMapping(path = "/data/v1/stream/entity/stats/gen")
 	public @ResponseBody() int statsGen(@RequestParam() String stream, @RequestParam() String date, @RequestParam() int days, @RequestParam() int entities, @RequestParam() int vars, @RequestParam() int varStats, @RequestParam() int signals) throws Exception  { 

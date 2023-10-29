@@ -5,13 +5,14 @@ import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Set;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
 import java.util.concurrent.Semaphore;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.slf4j.Marker;
+import org.slf4j.MarkerFactory;
 
+import com.dunkware.common.util.executor.DExecutor;
 import com.dunkware.trade.broker.tws.TwsBroker;
 import com.ib.client.Bar;
 import com.ib.client.CommissionReport;
@@ -53,6 +54,7 @@ import com.ib.client.TwsOrderState;
 public class TwsConnectorSocket implements EWrapper, EReaderSignal {
 
 	private Logger _logger = LoggerFactory.getLogger(getClass());
+	private Marker _marker = MarkerFactory.getMarker("TwsBroker");
 
 	private EClientSocket client = null;
 
@@ -62,8 +64,11 @@ public class TwsConnectorSocket implements EWrapper, EReaderSignal {
 
 	private int _twsConnectionId;
 	
-	ExecutorService _pool;
+	//ExecutorService _pool;
 
+	DExecutor _pool;
+	
+	
 	private List<TwsSocketReader> connectorHandlers = new ArrayList<TwsSocketReader>();
 
 	private Semaphore _handlersSemaphore = new Semaphore(1);
@@ -73,8 +78,8 @@ public class TwsConnectorSocket implements EWrapper, EReaderSignal {
 	private EReaderSignal readerSignal;
 
 
-	public TwsConnectorSocket() {
-		_pool = Executors.newFixedThreadPool(10);
+	public TwsConnectorSocket(DExecutor executor) {
+		this._pool = executor;
 
 
 	}
@@ -97,15 +102,15 @@ public class TwsConnectorSocket implements EWrapper, EReaderSignal {
 	        System.out.println("Connecting to TWS API...");
 	        readerSignal = new EJavaSignal();
 	        client = new EClientSocket(this, readerSignal);
-
+	        
 
 	        // Pause here for connection to complete
 	        try {
 	            while (!(client.isConnected())) {
+	                client.eConnect(_twsHost, _twsPort, _twsConnectionId);
 	                Thread.sleep(500);
-	                client.eConnect("127.0.0.1", _twsPort, _twsConnectionId);
 	            }
-	            System.out.println("Connected!");
+	            // okay we are connected then what? 
 
 	            final EReader reader = new EReader(client, readerSignal);
 	            reader.start();
@@ -118,15 +123,14 @@ public class TwsConnectorSocket implements EWrapper, EReaderSignal {
 	                    try {
 	                        reader.processMsgs();
 	                    } catch (Exception e) {
-	                        e.printStackTrace();
-	                        System.out.println("Error in reader: " + e.getMessage());
+	                       _logger.error(_marker, "Exception in make connnection thread handle this " + e.toString());
 	                    }
 	                }
 	            }).start();
 
 
 	        } catch (Exception eas) {
-	        	System.out.println(eas.toString());
+	        	_logger.error(_marker, "Exception in make connection handle this " + eas.toString());
 	        }
 
 	    }

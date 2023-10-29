@@ -61,7 +61,7 @@ public class TwsConnector implements TwsSocketReader {
 	private BrokerStatus status = BrokerStatus.Pending;
 	
 	public TwsConnector() {
-		_connectorSocket = new TwsConnectorSocket();
+		
 	}
 	
 	public void setEventNode(DEventNode eventNode) { 
@@ -78,17 +78,19 @@ public class TwsConnector implements TwsSocketReader {
 	}
 
 	public void startConnector(TwsBroker broker, String connectorHost, int connectorPort, int connectionId)   {
+		
+		
 		this.connectionId =connectionId;
 		this.broker = broker;
 		this.connectionHost = connectorHost;
 		this.connectionPort = connectorPort;
 		
 		// add this we should get a error on callback?
-
+		_connectorSocket = new TwsConnectorSocket(broker.getExecutor());
 		_connectorSocket.addSocketReader(this);
 		try {
 		//	_connectorSocket.connect(this, connectorHost, connectorPort, connectionId);	
-			status = BrokerStatus.Connected;
+		//	status = BrokerStatus.Connected;
 			connectTime = ZonedDateTime.now(DTimeZone.toZoneId(DTimeZone.NewYork));
 		
 		} catch (Exception e) {
@@ -100,21 +102,7 @@ public class TwsConnector implements TwsSocketReader {
 
 	}
 
-	/**
-	 * This called whenever we are connected
-	 * @author duncankrebs
-	 *
-	 */
-	private class ConnectHandler implements Runnable, TwsSocketReader { 
-		
-		public void run() { 
-			// we need to get next valid id 
-			// 
-			
-		}
-		
-		
-	}
+	
 	
 	
 	

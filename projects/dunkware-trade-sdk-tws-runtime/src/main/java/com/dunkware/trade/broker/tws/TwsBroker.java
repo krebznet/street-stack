@@ -41,6 +41,13 @@ import com.ib.client.ContractDetails;
 import com.ib.client.EClientErrors;
 import com.ib.client.EClientSocket;
 
+/**
+ * Little funky on connection status. 
+ * in TwsConnectorSocket we loop and try to connect 
+ * while in "Connecting State" -> once connected
+ * @author duncankrebs
+ *
+ */
 @ABroker(type = TwsBrokerType.class)
 public class TwsBroker extends BrokerImpl implements TwsSocketReader {
 
@@ -126,7 +133,7 @@ public class TwsBroker extends BrokerImpl implements TwsSocketReader {
 			eventNode.event(new EBrokerException(this, "Cast Type " + e.toString()));
 			return;
 		}
-		_connectorSocket = new TwsConnectorSocket();
+		_connectorSocket = new TwsConnectorSocket(executor);
 		_connectorSocket.addSocketReader(this);
 		setStatus(BrokerStatus.Connecting);
 		pendingConnect = true;
@@ -210,28 +217,7 @@ public class TwsBroker extends BrokerImpl implements TwsSocketReader {
 	}
 
 	/**
-	 * Keeps trying to connect every few seconds while not connected.
-	 * 
-	 * @author duncankrebs
-	 *
-	 */
-	private class ConnectLoop extends Thread {
-
-		public void run() {
-			while (!interrupted()) {
-				try {
-					Thread.sleep(4000);
-					if (_connectorSocket.getClientSocket().isConnected() == false) {
-
-					}
-				} catch (Exception e) {
-					// TODO: handle exception
-				}
-			}
-
-		}
-	}
-
+	
 	/**
 	 * Event Handler Methods
 	 */

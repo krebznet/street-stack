@@ -1,7 +1,7 @@
 package com.dunkware.trade.service.beach.server.event;
 
 import com.dunkware.common.util.events.DEvent;
-import com.dunkware.trade.service.beach.server.runtime.BeachBroker;
+import com.dunkware.trade.service.beach.server.broker.BeachBroker;
 
 public class EBeachBrokerUpdate extends DEvent {
 

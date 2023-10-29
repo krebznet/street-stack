@@ -41,18 +41,18 @@ public class BeachRepo {
 	
 	
 
-	public List<BeachBrokerEnt> getBrokers()   {
-		List<BeachBrokerEnt> results = em.createQuery("SELECT e FROM BeachBrokerEnt e", BeachBrokerEnt.class)
+	public List<BeachBrokerEnttity> getBrokers()   {
+		List<BeachBrokerEnttity> results = em.createQuery("SELECT e FROM BeachBrokerEntity e", BeachBrokerEnttity.class)
 				.getResultList();
 		return results;
 
 		
 	}
 
-	public BeachAccountEnt getAccount(String identifier) {
-		List<BeachAccountEnt> act = em
-				.createQuery("SELECT e FROM BeachAccountEnt e where e.identifier ='" + identifier + "'",
-						BeachAccountEnt.class)
+	public BeachBrokerAccountEntity getAccount(String identifier) {
+		List<BeachBrokerAccountEntity> act = em
+				.createQuery("SELECT e FROM BeachBrokerAccountEntity e where e.identifier ='" + identifier + "'",
+						BeachBrokerAccountEntity.class)
 				.getResultList();
 		if (act.size() > 0) {
 			return act.get(0);

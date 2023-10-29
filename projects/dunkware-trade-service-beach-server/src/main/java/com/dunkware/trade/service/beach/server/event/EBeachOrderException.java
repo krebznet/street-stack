@@ -1,10 +1,10 @@
 package com.dunkware.trade.service.beach.server.event;
 
-import com.dunkware.trade.service.beach.server.runtime.BeachOrder;
+import com.dunkware.trade.service.beach.server.session.BeachSessionTradeOrder;
 
-public class EBeachOrderException extends EBeachOrderEvent {
+public class EBeachOrderException extends EBeachSessionOrderEvent {
 
-	public EBeachOrderException(BeachOrder order) {
+	public EBeachOrderException(BeachSessionTradeOrder order) {
 		super(order);
 	}
 	
