@@ -6,6 +6,7 @@ public class VarMetaData {
 	private String identifier;
 	private String name; 
 	private String group;
+	private String expression;
 	
 	public int getId() {
 		return id;
@@ -31,6 +32,14 @@ public class VarMetaData {
 	public void setGroup(String group) {
 		this.group = group;
 	}
+	public String getExpression() {
+		return expression;
+	}
+	public void setExpression(String expression) {
+		this.expression = expression;
+	}
+	
+	
 	
 	
 	

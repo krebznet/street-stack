@@ -1,5 +1,6 @@
 package com.dunkware.trade.service.stream.server.blueprint;
 
+import java.io.File;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -18,10 +19,13 @@ import com.dunkware.common.util.events.DEventNode;
 import com.dunkware.common.util.json.DJson;
 import com.dunkware.common.util.observable.ObservableBeanListConnector;
 import com.dunkware.trade.service.stream.server.blueprint.event.EStreamBlueprintSignalCreated;
+import com.dunkware.trade.service.stream.server.blueprint.varmeta.VarMetaData;
+import com.dunkware.trade.service.stream.server.blueprint.varmeta.VarMetaDataRegistry;
 import com.dunkware.trade.service.stream.server.repository.StreamBlueprintSignalEntity;
 import com.dunkware.trade.service.stream.server.repository.StreamBlueprintSignalRepo;
 import com.dunkware.trade.service.stream.server.repository.StreamBlueprintSignalStatus;
 import com.dunkware.trade.service.stream.server.repository.StreamEntity;
+import com.dunkware.trade.service.stream.server.spring.ResourceService;
 import com.dunkware.xstream.model.signal.type.StreamSignalType;
 import com.dunkware.xstream.model.signal.type.XStreamSignalType;
 import com.dunkware.xstream.model.util.XStreamConverter;
@@ -43,6 +47,11 @@ public class StreamBlueprint {
 	@Autowired
 	private ApplicationContext ac;
 
+	
+	@Autowired
+	private ResourceService resourceService; 
+	
+	
 	private DEventNode eventNode;
 
 	private StreamEntity streamEntity;
@@ -51,23 +60,43 @@ public class StreamBlueprint {
 	private ObservableElementList<StreamBlueprintVarBean> varBeans = null;
 	
 	private StreamSignalType signalType;
-	// Thing
-	// symbol
-	// variable
-	//
-	// version --> Blueprint Version;
+	
+	
+	private VarMetaDataRegistry varMetaData; 
+	
 
-	// also have the tickers -->
-	
-	
 
 	public void init(StreamEntity stream, StreamBlueprintService service) throws Exception {
+		// load meta dat registry 
+		try {
+			File file = resourceService.getResourceFile("/streamblueprint/varmetadata.txt");
+			varMetaData = new VarMetaDataRegistry();
+			varMetaData.load(file);
+		} catch (Exception e) {
+			throw new Exception("Could not load var metadata registry exception " + e.toString());
+		}
+		
+		
+		
 		signalBeans = new ObservableElementList<StreamBlueprintSignalBean>(
 				GlazedLists.threadSafeList(new BasicEventList<StreamBlueprintSignalBean>()),
 				new ObservableBeanListConnector<StreamBlueprintSignalBean>());
 		varBeans = new ObservableElementList<StreamBlueprintVarBean>(
 				GlazedLists.threadSafeList(new BasicEventList<StreamBlueprintVarBean>()),
 				new ObservableBeanListConnector<StreamBlueprintVarBean>());
+		
+		// fore the varBeans just from the metadata
+		varBeans.getReadWriteLock().writeLock().lock();
+		for (VarMetaData metaData : varMetaData.getVarMetaData()) {
+			StreamBlueprintVarBean bean = new StreamBlueprintVarBean();
+			bean.setExpresion(metaData.getExpression());
+			bean.setGroup(metaData.getGroup());
+			bean.setId(metaData.getId());
+			bean.setIdentifier(metaData.getIdentifier());
+			bean.setName(metaData.getName());
+			varBeans.add(bean);
+		}
+		varBeans.getReadWriteLock().writeLock().unlock();
 		
 		this.streamEntity = stream;
 		eventNode = service.getEventNode().createChild(this);

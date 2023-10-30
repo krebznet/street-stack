@@ -10,6 +10,7 @@ import com.dunkware.spring.cluster.DunkNetChannelHandler;
 import com.dunkware.spring.cluster.DunkNetException;
 import com.dunkware.stream.cluster.proto.controller.blueprint.StreamBlueprintEntityDescriptor;
 import com.dunkware.stream.cluster.proto.controller.blueprint.StreamBlueprintSignalDescriptor;
+import com.dunkware.stream.cluster.proto.controller.blueprint.StreamBlueprintVarDescriptor;
 import com.dunkware.trade.service.stream.server.controller.StreamController;
 import com.dunkware.trade.service.stream.server.controller.StreamControllerService;
 import com.dunkware.trade.tick.model.ticker.TradeTickerSpec;
@@ -73,17 +74,19 @@ public class StreamBlueprintChannel implements DunkNetChannelHandler {
 		}
 		// now we need the variable descriptors; 
 		
-		// for now whatever you hvave to do
-		//for (/ streamBlueprintEntityDescriptor : entityDescriptors) {
-			
-		//}stream.getScriptProject().getStreamVars()
+		List<StreamBlueprintVarDescriptor> varDescriptors = new ArrayList<StreamBlueprintVarDescriptor>();
+		for (StreamBlueprintVarBean varBean : blueprint.getVarBeans()) {
+			StreamBlueprintVarDescriptor descriptor = new  StreamBlueprintVarDescriptor();
+			descriptor.setGroup(varBean.getGroup());
+			descriptor.setId((int)varBean.getId());
+			descriptor.setName(varBean.getName());;
+			descriptor.setIdent(varBean.getIdentifier());
+			varDescriptors.add(descriptor);
+		}
 		
-		
-		
-		
-		// okay now what about entities 
-		
-		
+		for (StreamBlueprintVarDescriptor streamBlueprintVarDescriptor : varDescriptors) {
+			channel.event(streamBlueprintVarDescriptor);
+		}
 		
 	}
 
