@@ -1,6 +1,6 @@
-package com.dunkware.stream.cluster.proto.controller.descriptor;
+package com.dunkware.stream.cluster.proto.controller.blueprint;
 
-public class DescriptorChannelRequest {
+public class StreamBlueprintChannelRequest {
 	
 	private String streamIdentifier;
 

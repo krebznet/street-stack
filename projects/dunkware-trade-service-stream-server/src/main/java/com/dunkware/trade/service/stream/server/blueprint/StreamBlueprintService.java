@@ -13,7 +13,10 @@ import org.springframework.stereotype.Service;
 
 import com.dunkware.common.util.events.DEventNode;
 import com.dunkware.common.util.events.DEventTree;
+import com.dunkware.spring.cluster.DunkNet;
+import com.dunkware.spring.cluster.anot.ADunkNetChannel;
 import com.dunkware.spring.runtime.services.ExecutorService;
+import com.dunkware.stream.cluster.proto.controller.blueprint.StreamBlueprintChannelRequest;
 import com.dunkware.trade.service.stream.server.repository.StreamEntity;
 import com.dunkware.trade.service.stream.server.repository.StreamRepo;
 
@@ -34,6 +37,9 @@ public class StreamBlueprintService  {
 	
 	@Autowired
 	private ApplicationContext ac;
+	
+	@Autowired
+	private DunkNet dunkNet; 
 	
 	@Autowired
 	private ExecutorService executorService; 
@@ -68,12 +74,23 @@ public class StreamBlueprintService  {
 				} catch (Exception e) {
 					logger.error("Exception init stream blueprint " + e.toString(),e);
 				}
-			}		
+			}	
+			
+			dunkNet.extensions().addExtension(this);;
 			
 		} catch (Exception e) {
 			logger.error("this");
 		}
-		
+	
+	}
+	
+	
+	
+	@ADunkNetChannel(label = "Stream Blueprint Channel")
+	public StreamBlueprintChannel blueprintChannel(StreamBlueprintChannelRequest request) throws Exception { 
+		StreamBlueprint blueprint = getBlueprint(request.getStreamIdentifier());
+		StreamBlueprintChannel channel = new StreamBlueprintChannel(blueprint);
+		return channel;
 	}
 	
 	

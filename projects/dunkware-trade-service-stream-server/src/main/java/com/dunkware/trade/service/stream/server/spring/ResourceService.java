@@ -1,5 +1,6 @@
 package com.dunkware.trade.service.stream.server.spring;
 
+import java.io.File;
 import java.io.InputStreamReader;
 import java.io.Reader;
 
@@ -20,6 +21,13 @@ public class ResourceService {
 	
 	@PostConstruct
 	private void init() { 
+		
+	}
+	
+	
+	public File getResourceFile(String path) throws Exception { 
+		final Resource resource = resourceLoader.getResource("classpath:" + path);
+		return resource.getFile();
 		
 	}
 	

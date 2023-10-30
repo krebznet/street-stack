@@ -21,6 +21,13 @@ import com.dunkware.xstream.model.signal.StreamEntitySignal;
 public class StreamSignalsController {
 
 	
+	// 3 things here 
+	
+	// Signal Type Grid 
+	// Signal Grid -- but reusable its gonig to be a query 
+	
+	
+	
 	@Autowired
 	private StreamSignalsProvider signalsProvider; 
 	
@@ -35,13 +42,7 @@ public class StreamSignalsController {
 	}
 	
 	
-	@GetMapping(path = "/data/v1/stream/signal/dump")
-	public List<StreamEntitySignal> signalDump(@RequestParam() String stream) throws Exception { 
-		return signalsProvider.getStreamSignals(stream).signalDump(400);
 		
-	}
-	
-	
 	@GetMapping(path = "/data/v1/stream/signa/session/beans")
 	public @ResponseBody() StreamSessionSignalTypeBeans sessionSignalypeBeans(@RequestParam() String stream) throws Exception { 
 		return signalsProvider.getStreamSignals(stream).getSessionSignals().getSignalTypeBeans();

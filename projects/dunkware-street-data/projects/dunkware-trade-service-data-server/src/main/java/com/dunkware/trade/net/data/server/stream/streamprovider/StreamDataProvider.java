@@ -1,13 +1,20 @@
 package com.dunkware.trade.net.data.server.stream.streamprovider;
 
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 import org.bson.Document;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.slf4j.Marker;
 import org.slf4j.MarkerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 
+import com.dunkware.spring.cluster.DunkNet;
+import com.dunkware.spring.cluster.DunkNetChannel;
+import com.dunkware.spring.cluster.core.request.DunkNetChannelRequest;
+import com.dunkware.stream.cluster.proto.controller.blueprint.StreamBlueprintChannelClient;
+import com.dunkware.stream.cluster.proto.controller.blueprint.StreamBlueprintChannelRequest;
 import com.dunkware.trade.net.data.server.stream.converters.MongoStreamConverter;
 import com.dunkware.trade.service.stream.descriptor.StreamDescriptor;
 import com.dunkware.xstream.model.signal.StreamEntitySignal;
@@ -38,6 +45,11 @@ public class StreamDataProvider   {
 	private MongoCollection<Document> signalCollection;
 
 	private StreamDescriptor descriptor;
+	
+	private StreamBlueprintChannelClient blueprint;
+	
+	@Autowired
+	private DunkNet dunkNet; 
 
 	private boolean initialized = false; 
 	
@@ -68,6 +80,20 @@ public class StreamDataProvider   {
 		} catch (Exception e) {
 			logger.error(marker, "Excpption init Stream Data Provider " + e.toString());
 		}
+		
+		// 
+		StreamBlueprintChannelRequest req = new StreamBlueprintChannelRequest();;
+		req.setStreamIdentifier(descriptor.getIdentifier());
+		try {
+			DunkNetChannelRequest channelRequest = dunkNet.channel(req);
+			DunkNetChannel channel = channelRequest.get(15, TimeUnit.SECONDS);
+			
+			
+		} catch (Exception e) {
+			
+		}
+		
+		
 	}
 	
 	public StreamDescriptor getDescriptor() { 

@@ -1,6 +1,6 @@
-package com.dunkware.stream.cluster.proto.controller.descriptor;
+package com.dunkware.stream.cluster.proto.controller.blueprint;
 
-public class SignalDescriptorMessage {
+public class StreamBlueprintSignalDescriptor {
 	
 	private Integer id; 
 	private String name;

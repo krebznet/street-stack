@@ -1,6 +1,6 @@
-package com.dunkware.stream.cluster.proto.controller.descriptor;
+package com.dunkware.stream.cluster.proto.controller.blueprint;
 
-public class EntityDescriptorMessage {
+public class StreamBlueprintEntityDescriptor {
 	
 	private Integer id; 
 	private String ident; 

@@ -96,6 +96,10 @@ public class StreamBlueprint {
 	public ObservableElementList<StreamBlueprintSignalBean> getSignalBeans() {
 		return signalBeans;
 	}
+	
+	public String getStreamIdentifier() { 
+		return streamEntity.getName();
+	}
 
 	public List<XStreamSignalType> getXStreamSignalTypes() throws Exception { 
 		List<XStreamSignalType> types = new ArrayList<XStreamSignalType>();

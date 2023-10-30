@@ -1,6 +1,6 @@
-package com.dunkware.stream.cluster.proto.controller.descriptor;
+package com.dunkware.stream.cluster.proto.controller.blueprint;
 
-public class VariableDescriptorMessage {
+public class StreamBlueprintVarDescriptor {
 
 	private Integer id; 
 	private String ident; 
