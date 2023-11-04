@@ -1,0 +1,94 @@
+package com.dunkware.trade.service.data.model.signals.bean;
+
+import java.time.LocalDateTime;
+
+import com.dunkware.common.util.json.DJson;
+import com.dunkware.common.util.observable.ObservableBean;
+
+public class StreamSignalBean extends ObservableBean {
+	
+	private int signalId; 
+	private String signalName; 
+	private String signalGroup; 
+	private int entityId; 
+	private String entityIdentifier; 
+	private String entityName; 
+	private double signalPrice; 
+	private LocalDateTime dateTime;
+	
+	
+	public static void main(String[] args) {
+		StreamSignalBean b = new StreamSignalBean();
+		b.setSignalGroup("Hello");
+		b.setSignalId(1);;
+		b.setEntityId(3);
+		b.setEntityIdentifier("AAPL");
+		b.setEntityName("Apple Corporation");
+		
+		try {
+			String serialized = DJson.serializePretty(b);
+			System.out.println(serialized);
+			StreamSignalBean bb = DJson.getObjectMapper().readValue(serialized, StreamSignalBean.class);
+			System.out.println(bb.getSignalGroup());
+		} catch (Exception e) {
+			e.printStackTrace();
+			// TODO: handle exception
+		}
+	}
+	
+	
+	public int getSignalId() {
+		return signalId;
+	}
+	public void setSignalId(int signalId) {
+		this.signalId = signalId;
+	}
+	public String getSignalName() {
+		return signalName;
+	}
+	public void setSignalName(String signalName) {
+		this.signalName = signalName;
+	}
+
+	public String getSignalGroup() {
+		return signalGroup;
+	}
+	public void setSignalGroup(String signalGroup) {
+		this.signalGroup = signalGroup;
+	}
+	public int getEntityId() {
+		return entityId;
+	}
+	public void setEntityId(int entityId) {
+		this.entityId = entityId;
+	}
+	public String getEntityIdentifier() {
+		return entityIdentifier;
+	}
+	public void setEntityIdentifier(String entityIdentifier) {
+		this.entityIdentifier = entityIdentifier;
+	}
+	public String getEntityName() {
+		return entityName;
+	}
+	public void setEntityName(String entityName) {
+		this.entityName = entityName;
+	}
+	public double getSignalPrice() {
+		return signalPrice;
+	}
+	public void setSignalPrice(double signalPrice) {
+		this.signalPrice = signalPrice;
+	}
+	public LocalDateTime getDateTime() {
+		return dateTime;
+	}
+	public void setDateTime(LocalDateTime dateTime) {
+		this.dateTime = dateTime;
+	} 
+	
+	
+	
+	
+
+}

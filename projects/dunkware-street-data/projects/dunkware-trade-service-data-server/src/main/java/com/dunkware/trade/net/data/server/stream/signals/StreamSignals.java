@@ -2,8 +2,8 @@ package com.dunkware.trade.net.data.server.stream.signals;
 
 import java.util.List;
 
-import com.dunkware.trade.net.data.server.stream.signals.injestor.StreamSignalIngestor;
-import com.dunkware.trade.net.data.server.stream.signals.session.StreamSessionSignals;
+import com.dunkware.stream.cluster.proto.controller.blueprint.StreamBlueprintChannelClient;
+import com.dunkware.trade.net.data.server.stream.signals.sessionn.StreamSignalsSessionImpl;
 import com.dunkware.trade.net.data.server.stream.streamprovider.StreamDataProvider;
 import com.dunkware.trade.service.data.model.search.EntitySignalCountRequest;
 import com.dunkware.trade.service.data.model.search.EntitySignalCountResponse;
@@ -53,7 +53,7 @@ public interface StreamSignals {
 	 * okay returns the shit here. 
 	 * @return
 	 */
-	public StreamSessionSignals getSessionSignals();
+	public StreamSignalsSessionImpl getSessionSignals();
 	
 	//SD21-GIFT-05 sorry incremented accidentely but here is step 6!
 	//SD21-GIFT-06 SreamSignals interface, if we have 3 sreams in the cluster we have 
@@ -66,6 +66,14 @@ public interface StreamSignals {
 	 * @throws Exception
 	 */
 	public SignalSearchResponse signalSearch(SignalSearchRequest request) throws Exception;
+	
+	
+	/***
+	 * Returns the blueprint channel
+	 * @return
+	 * @throws Exception
+	 */
+	public StreamBlueprintChannelClient getStreamBlueprint() throws Exception;
 	
 	
 	/**

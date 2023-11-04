@@ -4,8 +4,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.Semaphore;
 
-import org.reactivestreams.Subscriber;
-import org.reactivestreams.Subscription;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.slf4j.Marker;
@@ -14,7 +12,6 @@ import org.slf4j.MarkerFactory;
 import com.dunkware.common.util.datagrid.DataGrid;
 import com.dunkware.common.util.datagrid.DataGridUpdate;
 import com.dunkware.common.util.executor.DExecutor;
-import com.dunkware.common.util.json.DJson;
 import com.dunkware.common.util.uuid.DUUID;
 
 import ca.odell.glazedlists.ObservableElementList;
@@ -37,6 +34,10 @@ public class GlazedDataGrid implements ListEventListener<Object> {
 	private Flux<List<DataGridUpdate>> flux;
 	private String id = DUUID.randomUUID(5);
 	private boolean running = false;
+	
+	
+	private List<GlazedDataGridListener> listeners = new ArrayList<GlazedDataGridListener>();
+	private Semaphore listenerLock = new Semaphore(1);
 
 	public static GlazedDataGrid newInstance(ObservableElementList<?> list, DExecutor executor, String idMethod) { 
 		return new GlazedDataGrid(list, executor, idMethod);
@@ -213,6 +214,59 @@ public class GlazedDataGrid implements ListEventListener<Object> {
 		}
 
 	}
+	
+	
+	public void addListener(GlazedDataGridListener listener) { 
+		try {
+			listenerLock.acquire();
+			this.listeners.add(listener);
+		} catch (Exception e) {
+			logger.error(marker, "Exception adding listener " + e.toString());;
+		} finally { 
+			listenerLock.release();
+		}
+	}
+	
+	public void removeListener(GlazedDataGridListener listener) { 
+		try {
+			listenerLock.acquire();
+			this.listeners.remove(listener);
+		} catch (Exception e) {
+			logger.error(marker, "Exception removing listener " + e.toString());;
+		} finally { 
+			listenerLock.release();
+		}
+	}
+	
+	
+	private void notifyDispose() { 
+		try {
+			listenerLock.acquire();
+			for (GlazedDataGridListener glazedDataGridListener : listeners) {
+				glazedDataGridListener.onGridDispose(this);;
+			}
+		} catch (Exception e) {
+			logger.error(marker, "Exception adding listener " + e.toString());;
+		} finally { 
+			listenerLock.release();
+		}
+	}
+	
+	
+	private void notifyInit() { 
+		try {
+			listenerLock.acquire();
+			for (GlazedDataGridListener glazedDataGridListener : listeners) {
+				glazedDataGridListener.onGridInit(this);
+			}
+		} catch (Exception e) {
+			logger.error(marker, "Exception adding listener " + e.toString());;
+		} finally { 
+			listenerLock.release();
+		}
+	}
+	
+	
 
 	@Override
 	public void listChanged(ListEvent<Object> listChanges) {

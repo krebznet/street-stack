@@ -76,7 +76,7 @@ public class StreamDataProvider   {
 				signalCollection.createIndex(Indexes.ascending("id", "ident","dateTime"));
 				
 			}
-			initialized = true; 
+			 
 		} catch (Exception e) {
 			logger.error(marker, "Excpption init Stream Data Provider " + e.toString());
 		}
@@ -86,14 +86,21 @@ public class StreamDataProvider   {
 		req.setStreamIdentifier(descriptor.getIdentifier());
 		try {
 			DunkNetChannelRequest channelRequest = dunkNet.channel(req);
-			DunkNetChannel channel = channelRequest.get(15, TimeUnit.SECONDS);
-			
+			DunkNetChannel channel = channelRequest.get(35, TimeUnit.SECONDS);
+			this.blueprint = new  StreamBlueprintChannelClient();
+			channel.setHandler(blueprint);
 			
 		} catch (Exception e) {
-			
+			logger.error(marker, "Exception creating stream blueprint channel " + e.toString());
+			return;
 		}
+		initialized = true;
 		
 		
+	}
+	
+	public StreamBlueprintChannelClient getBlueprint() { 
+		return blueprint;
 	}
 	
 	public StreamDescriptor getDescriptor() { 

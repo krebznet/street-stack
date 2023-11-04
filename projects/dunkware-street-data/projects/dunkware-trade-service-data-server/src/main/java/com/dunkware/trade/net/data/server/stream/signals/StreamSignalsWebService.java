@@ -1,24 +1,19 @@
 package com.dunkware.trade.net.data.server.stream.signals;
 
-import java.util.List;
-
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.dunkware.trade.service.data.model.search.EntitySignalCountResponse;
 import com.dunkware.trade.service.data.model.search.EntitySignalCountRequest;
+import com.dunkware.trade.service.data.model.search.EntitySignalCountResponse;
 import com.dunkware.trade.service.data.model.search.SignalSearchRequest;
 import com.dunkware.trade.service.data.model.search.SignalSearchResponse;
-import com.dunkware.trade.service.data.model.signals.StreamSessionSignalTypeBeans;
 import com.dunkware.xstream.model.signal.StreamEntitySignal;
 
 @RestController
-public class StreamSignalsController {
+public class StreamSignalsWebService {
 
 	
 	// 3 things here 
@@ -29,7 +24,7 @@ public class StreamSignalsController {
 	
 	
 	@Autowired
-	private StreamSignalsProvider signalsProvider; 
+	private StreamSignalsService signalsProvider; 
 	
 	/**
 	 * Inserts a signal 
@@ -42,12 +37,7 @@ public class StreamSignalsController {
 	}
 	
 	
-		
-	@GetMapping(path = "/data/v1/stream/signa/session/beans")
-	public @ResponseBody() StreamSessionSignalTypeBeans sessionSignalypeBeans(@RequestParam() String stream) throws Exception { 
-		return signalsProvider.getStreamSignals(stream).getSessionSignals().getSignalTypeBeans();
-	}
-	
+
 	//SD21-GIFT-01 start here man, this is the end point we need this is what will get 
 	// ui going. 
 	@PostMapping(path = "/data/v1/stream/signal/search")

@@ -1,4 +1,4 @@
-package com.dunkware.trade.net.data.server.stream.signals.injestor;
+package com.dunkware.trade.net.data.server.stream.signals;
 
 import java.time.LocalDateTime;
 import java.time.ZoneId;
@@ -30,8 +30,6 @@ import com.dunkware.common.util.json.DJson;
 import com.dunkware.common.util.stopwatch.DStopWatch;
 import com.dunkware.common.util.uuid.DUUID;
 import com.dunkware.trade.net.data.server.stream.converters.MongoStreamConverter;
-import com.dunkware.trade.net.data.server.stream.signals.StreamSignalListener;
-import com.dunkware.trade.net.data.server.stream.signals.StreamSignals;
 import com.dunkware.trade.net.data.server.stream.streamprovider.StreamDataProvider;
 import com.dunkware.trade.service.stream.descriptor.StreamDescriptor;
 import com.dunkware.xstream.model.signal.StreamEntitySignal;
@@ -79,7 +77,7 @@ public class StreamSignalIngestor implements DKafkaByteHandler2 {
 	private boolean writerClosed = false;
 	private StreamDataProvider dataProvider; 
 	
-	private List<StreamSignalListener> signalListeners = new ArrayList<StreamSignalListener>();
+	private List<StreamSignalIngestorListener> signalListeners = new ArrayList<StreamSignalIngestorListener>();
 	private Semaphore signalListenerLock = new Semaphore(1);
 	
 
@@ -277,7 +275,7 @@ public class StreamSignalIngestor implements DKafkaByteHandler2 {
 	
 	
 	
-	public void addSignalListener(StreamSignalListener listener) {
+	public void addSignalListener(StreamSignalIngestorListener listener) {
 		try {
 			signalListenerLock.acquire();
 			signalListeners.add(listener);
@@ -291,7 +289,7 @@ public class StreamSignalIngestor implements DKafkaByteHandler2 {
 
 
 
-	public void removeSignalListener(StreamSignalListener listener) {
+	public void removeSignalListener(StreamSignalIngestorListener listener) {
 		try {
 			signalListenerLock.acquire();
 			signalListeners.remove(listener);
@@ -307,7 +305,7 @@ public class StreamSignalIngestor implements DKafkaByteHandler2 {
 		// notify listeners in the thread we can double down here 
 		try {
 			signalListenerLock.acquire();
-			for (StreamSignalListener streamSignalListener : signalListeners) {
+			for (StreamSignalIngestorListener streamSignalListener : signalListeners) {
 				streamSignalListener.onSignal(signal);
 			}
 			

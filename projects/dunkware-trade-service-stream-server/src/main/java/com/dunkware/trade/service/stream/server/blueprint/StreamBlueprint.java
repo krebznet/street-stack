@@ -69,9 +69,9 @@ public class StreamBlueprint {
 	public void init(StreamEntity stream, StreamBlueprintService service) throws Exception {
 		// load meta dat registry 
 		try {
-			File file = resourceService.getResourceFile("/streamblueprint/varmetadata.txt");
+			
 			varMetaData = new VarMetaDataRegistry();
-			varMetaData.load(file);
+			varMetaData.load();
 		} catch (Exception e) {
 			throw new Exception("Could not load var metadata registry exception " + e.toString());
 		}

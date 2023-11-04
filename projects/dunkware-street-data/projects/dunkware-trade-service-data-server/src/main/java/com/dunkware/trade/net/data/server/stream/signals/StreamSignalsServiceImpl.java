@@ -1,4 +1,4 @@
-package com.dunkware.trade.net.data.server.stream.signals.impl;
+package com.dunkware.trade.net.data.server.stream.signals;
 
 import java.util.Collection;
 import java.util.Map;
@@ -14,14 +14,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.springframework.stereotype.Service;
 
-import com.dunkware.trade.net.data.server.stream.signals.StreamSignals;
-import com.dunkware.trade.net.data.server.stream.signals.StreamSignalsProvider;
 import com.dunkware.trade.net.data.server.stream.streamprovider.StreamDataProvider;
 import com.dunkware.trade.net.data.server.stream.streamprovider.StreamDataProviders;
 import com.dunkware.trade.service.stream.descriptor.StreamDescriptor;
 
 @Service
-public class StreamSignalsProviderImpl implements StreamSignalsProvider {
+public class StreamSignalsServiceImpl implements StreamSignalsService {
 	
 	private Logger logger = LoggerFactory.getLogger(getClass());
 	private Marker marker = MarkerFactory.getMarker("StreamSignals");

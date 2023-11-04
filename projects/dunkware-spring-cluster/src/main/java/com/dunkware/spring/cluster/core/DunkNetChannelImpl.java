@@ -167,9 +167,7 @@ public class DunkNetChannelImpl implements DunkNetChannel {
 	@Override
 	public void event(Object payload) throws DunkNetException {
 		checkOpen();
-		DunkNetMessage message = DunkNetMessage.builder().event(payload, getChannelId()).buildMessage();
-				
-		node.message(DunkNetMessage.builder(channelId).event(payload).buildMessage());
+		node.message(DunkNetMessage.builder(channelId).event(payload,channelId).buildMessage());
 	}
 	
 	

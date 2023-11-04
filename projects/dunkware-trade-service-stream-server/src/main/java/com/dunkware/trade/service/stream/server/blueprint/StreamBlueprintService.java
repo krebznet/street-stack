@@ -90,6 +90,7 @@ public class StreamBlueprintService  {
 	public StreamBlueprintChannel blueprintChannel(StreamBlueprintChannelRequest request) throws Exception { 
 		StreamBlueprint blueprint = getBlueprint(request.getStreamIdentifier());
 		StreamBlueprintChannel channel = new StreamBlueprintChannel(blueprint);
+		ac.getAutowireCapableBeanFactory().autowireBean(channel);
 		return channel;
 	}
 	

@@ -1,10 +1,9 @@
-package com.dunkware.trade.net.data.server.stream.signals.impl;
+package com.dunkware.trade.net.data.server.stream.signals;
 
 import java.time.ZoneId;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.dunkware.trade.service.data.model.search.*;
 import org.bson.Document;
 import org.bson.conversions.Bson;
 import org.slf4j.Logger;
@@ -16,11 +15,16 @@ import org.springframework.context.ApplicationContext;
 
 import com.dunkware.common.util.dtime.DTimeZone;
 import com.dunkware.common.util.stopwatch.DStopWatch;
+import com.dunkware.stream.cluster.proto.controller.blueprint.StreamBlueprintChannelClient;
+import com.dunkware.stream.cluster.proto.controller.blueprint.StreamBlueprintChannelException;
 import com.dunkware.trade.net.data.server.stream.converters.MongoStreamConverter;
-import com.dunkware.trade.net.data.server.stream.signals.StreamSignals;
-import com.dunkware.trade.net.data.server.stream.signals.injestor.StreamSignalIngestor;
-import com.dunkware.trade.net.data.server.stream.signals.session.StreamSessionSignals;
+import com.dunkware.trade.net.data.server.stream.signals.sessionn.StreamSignalsSessionImpl;
 import com.dunkware.trade.net.data.server.stream.streamprovider.StreamDataProvider;
+import com.dunkware.trade.service.data.model.search.EntitySignalCount;
+import com.dunkware.trade.service.data.model.search.EntitySignalCountRequest;
+import com.dunkware.trade.service.data.model.search.EntitySignalCountResponse;
+import com.dunkware.trade.service.data.model.search.SignalSearchRequest;
+import com.dunkware.trade.service.data.model.search.SignalSearchResponse;
 import com.dunkware.trade.service.stream.descriptor.StreamDescriptor;
 import com.dunkware.xstream.model.signal.StreamEntitySignal;
 import com.mongodb.client.MongoCursor;
@@ -38,7 +42,7 @@ public class StreamSignalsImpl implements StreamSignals {
 	private StreamDataProvider dataProvider;
 	private StreamDescriptor descriptor;
 
-	private StreamSessionSignals sessionSignals;
+	private StreamSignalsSessionImpl sessionSignals;
 
 	public void init(StreamDataProvider dataProvider) throws Exception {
 		logger.info(marker, "StreamSignals Impl");
@@ -56,10 +60,19 @@ public class StreamSignalsImpl implements StreamSignals {
 		signalIngestor = new StreamSignalIngestor();
 		signalIngestor.start(this);
 
-		sessionSignals = new StreamSessionSignals();
+		sessionSignals = new StreamSignalsSessionImpl();
 		ac.getAutowireCapableBeanFactory().autowireBean(sessionSignals);
 		sessionSignals.init(this);
 	}
+	
+	
+
+	@Override
+	public StreamBlueprintChannelClient getStreamBlueprint() throws StreamBlueprintChannelException {
+		return dataProvider.getBlueprint();
+	}
+
+
 
 	@Override
 	public String getStreamIdentifier() {
@@ -114,7 +127,7 @@ public class StreamSignalsImpl implements StreamSignals {
 	}
 
 	@Override
-	public StreamSessionSignals getSessionSignals() {
+	public StreamSignalsSessionImpl getSessionSignals() {
 		return sessionSignals;
 	}
 

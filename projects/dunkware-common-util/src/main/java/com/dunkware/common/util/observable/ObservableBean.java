@@ -2,8 +2,11 @@ package com.dunkware.common.util.observable;
 
 import java.util.Vector;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 public abstract class ObservableBean {
 
+	@JsonIgnore
 	private Vector<ObservableBeanListener> obs = new Vector<ObservableBeanListener>();
 
 	public void notifyUpdate() {
