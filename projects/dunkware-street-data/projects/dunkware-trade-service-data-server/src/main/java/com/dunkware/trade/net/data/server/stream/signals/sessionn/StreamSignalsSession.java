@@ -3,28 +3,33 @@ package com.dunkware.trade.net.data.server.stream.signals.sessionn;
 import java.util.List;
 
 import com.dunkware.trade.net.data.server.stream.signals.StreamSignals;
-import com.dunkware.trade.net.data.server.stream.signals.StreamSignalsSessionTypeBeans;
+import com.dunkware.trade.net.data.server.stream.signals.sessionn.query.SessionSignalQueryGrid;
+import com.dunkware.trade.net.data.server.stream.signals.sessionn.query.SessionSignalTypeQueryGrid;
 import com.dunkware.trade.service.data.model.signals.bean.StreamSignalBean;
-import com.dunkware.trade.service.data.model.signals.query.StreamSignalsSessionQuery;
+import com.dunkware.trade.service.data.model.signals.query.StreamSignalSessionQuery;
+import com.dunkware.trade.service.data.model.signals.query.StreamSignalTypeSessionQuery;
 
 public interface StreamSignalsSession {
 
 	/**
-	 * This will give us all the session signals can be for a signal type or for a signal type/entity or whatever. 
+	 * This is a session singal session streaming grid used for 
+	 * viewing all signals for when clicking on a signal type
+	 * when viewing on a signal type through an entity for all signals on an entity 
+	 * 
 	 * @param query
 	 * @return
 	 * @throws Exception
 	 */
- 	public StreamSignalsSessionBeans streamingSignalQuery(StreamSignalsSessionQuery query) throws Exception;
- 
- 	/**
- 	 * So this will give us a streaming grid of type beans can be for entity or for all signal types 
- 	 * @param query
- 	 * @return
- 	 * @throws Exception
- 	 */
- 	public StreamSignalsSessionTypeBeans streamingSignalTypeQuery(StreamSignalsSessionQuery query) throws Exception;
-
+	public SessionSignalQueryGrid querySignalGrid(StreamSignalSessionQuery query) throws Exception; 
+	
+	/**
+	 * Okay coming together this is s signal type session query stream grid 
+	 * @param query
+	 * @return
+	 * @throws Excepption
+	 */
+	public SessionSignalTypeQueryGrid querySignalTypeGrid(StreamSignalTypeSessionQuery query) throws Exception; 
+	
  	/**
  	 * Called when we indicate session is starting or stopping
  	 */

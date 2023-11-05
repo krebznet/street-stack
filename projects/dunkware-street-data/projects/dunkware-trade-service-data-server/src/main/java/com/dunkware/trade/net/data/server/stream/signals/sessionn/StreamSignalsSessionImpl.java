@@ -14,9 +14,11 @@ import org.slf4j.MarkerFactory;
 import com.dunkware.trade.net.data.server.stream.signals.StreamSignalIngestorListener;
 import com.dunkware.trade.net.data.server.stream.signals.StreamSignals;
 import com.dunkware.trade.net.data.server.stream.signals.StreamSignalsHelper;
-import com.dunkware.trade.net.data.server.stream.signals.StreamSignalsSessionTypeBeans;
+import com.dunkware.trade.net.data.server.stream.signals.sessionn.query.SessionSignalQueryGrid;
+import com.dunkware.trade.net.data.server.stream.signals.sessionn.query.SessionSignalTypeQueryGrid;
 import com.dunkware.trade.service.data.model.signals.bean.StreamSignalBean;
-import com.dunkware.trade.service.data.model.signals.query.StreamSignalsSessionQuery;
+import com.dunkware.trade.service.data.model.signals.query.StreamSignalSessionQuery;
+import com.dunkware.trade.service.data.model.signals.query.StreamSignalTypeSessionQuery;
 import com.dunkware.xstream.model.signal.StreamEntitySignal;
 
 /**
@@ -106,15 +108,6 @@ public class StreamSignalsSessionImpl implements StreamSignalsSession, StreamSig
 	}
 
 	
-
-	@Override
-	public StreamSignalsSessionBeans streamingSignalQuery(StreamSignalsSessionQuery query) throws Exception {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-
-
 	@Override
 	public void reset() {
 		// TODO Auto-generated method stub
@@ -127,10 +120,23 @@ public class StreamSignalsSessionImpl implements StreamSignalsSession, StreamSig
 		return null;
 	}
 
+	
+	
 	@Override
-	public StreamSignalsSessionTypeBeans streamingSignalTypeQuery(StreamSignalsSessionQuery query) throws Exception {
+	public SessionSignalQueryGrid querySignalGrid(StreamSignalSessionQuery query) throws Exception {
+		
 		// TODO Auto-generated method stub
 		return null;
 	}
 
+	@Override
+	public SessionSignalTypeQueryGrid querySignalTypeGrid(StreamSignalTypeSessionQuery query) throws Exception {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+
+	
+
+	
 }

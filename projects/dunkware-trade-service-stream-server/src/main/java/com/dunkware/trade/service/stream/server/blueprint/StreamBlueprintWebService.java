@@ -17,6 +17,7 @@ import org.springframework.web.server.ResponseStatusException;
 import com.dunkware.common.util.datagrid.DataGridUpdate;
 import com.dunkware.common.util.glazed.GlazedDataGrid;
 import com.dunkware.spring.runtime.services.ExecutorService;
+import com.dunkware.trade.service.stream.json.blueprint.WebSignalTypeDeleteResponse;
 import com.dunkware.xstream.model.signal.type.StreamSignalType;
 
 import reactor.core.publisher.Flux;
@@ -75,6 +76,33 @@ public class StreamBlueprintWebService {
 	
 	
 	public @ResponseBody List<StreamBlueprintSignalBean> signalBeans(@RequestParam() String stream) { 
+		return null;
+	}
+
+	
+	@PostMapping( path = "/stream/v1/blueprint/signal/delete")
+	public WebSignalTypeDeleteResponse deleteSignalType(@RequestParam() int signalId, @RequestParam String stream) { 
+		if(1 == 1) { 
+			WebSignalTypeDeleteResponse resp = new WebSignalTypeDeleteResponse();
+			resp.setHasConflicts(true);
+			resp.getConflicts().add("Please Get Duncan's Permission");
+			return resp;
+		}
+		StreamBlueprint blueprint = null;
+		try {
+			blueprint = blueprintService.getBlueprint(stream);
+		} catch (Exception e) {
+			throw new ResponseStatusException(
+			           HttpStatus.BAD_REQUEST, "Stream Ident not found " + stream);
+		}
+		
+		try {
+		//	blueprint.addSignal(model);
+		} catch (Exception e) {
+			throw new ResponseStatusException(
+			           HttpStatus.BAD_REQUEST, e.toString());
+
+		}
 		return null;
 	}
 	

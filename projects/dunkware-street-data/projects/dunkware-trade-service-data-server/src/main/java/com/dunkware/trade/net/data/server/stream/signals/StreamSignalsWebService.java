@@ -1,16 +1,23 @@
 package com.dunkware.trade.net.data.server.stream.signals;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.dunkware.common.util.datagrid.DataGridUpdate;
 import com.dunkware.trade.service.data.model.search.EntitySignalCountRequest;
 import com.dunkware.trade.service.data.model.search.EntitySignalCountResponse;
 import com.dunkware.trade.service.data.model.search.SignalSearchRequest;
 import com.dunkware.trade.service.data.model.search.SignalSearchResponse;
+import com.dunkware.trade.service.data.model.signals.query.StreamSignalSessionQuery;
+import com.dunkware.trade.service.data.model.signals.query.StreamSignalTypeSessionQuery;
 import com.dunkware.xstream.model.signal.StreamEntitySignal;
+
+import reactor.core.publisher.Flux;
 
 @RestController
 public class StreamSignalsWebService {
@@ -34,6 +41,24 @@ public class StreamSignalsWebService {
 	public void insertSignal(@RequestBody() StreamEntitySignal signal, @RequestParam() String stream) throws Exception { 
 		this.signalsProvider.getStreamSignals(stream).insertSignal(signal);
 		
+	}
+	
+	@PostMapping(path = "/data/v1/stream/signal/session/type/search/grid")
+	public Flux<List<DataGridUpdate>> sessionSignalTypeBeanSearch(@RequestBody() StreamSignalTypeSessionQuery query, @RequestParam String stream) throws Exception { 
+		//okay here we go. 
+		
+		return signalsProvider.getStreamSignals(stream).getSessionSignals().querySignalTypeGrid(query).getDataGrid().getUpdates();
+		
+	
+	}
+	
+	@PostMapping(path = "/data/v1/stream/signal/session/search/grid")
+	public Flux<List<DataGridUpdate>> sessionSignaleBeanSearch(@RequestBody() StreamSignalSessionQuery query, @RequestParam String stream) throws Exception { 
+		//okay here we go. 
+		
+		return signalsProvider.getStreamSignals(stream).getSessionSignals().querySignalGrid(query).getDataGrid().getUpdates();
+		
+	
 	}
 	
 	
