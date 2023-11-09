@@ -16,6 +16,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.slf4j.MarkerFactory;
 
+import com.dunkware.common.util.helpers.DNumberHelper;
 import com.dunkware.xstream.api.XStreamEntity;
 import com.dunkware.xstream.api.XStreamEntityVar;
 import com.dunkware.xstream.api.XStreamEntityVarListener;
@@ -59,7 +60,13 @@ public class XStreamVarImpl implements XStreamEntityVar, XStreamExpressionListen
 	private AtomicLong getCounter  = new AtomicLong(0);
 	
 	private volatile LocalTime lastUpdate = null;
-
+	
+	private boolean numeric = false; 
+	private Number high = 0;
+	private Number low = 0; 
+	private LocalTime highTime = LocalTime.NOON;
+	private LocalTime lowTime = LocalTime.NOON;
+	private boolean highLowInit = false; 
 
 	
 	@Override
@@ -69,6 +76,9 @@ public class XStreamVarImpl implements XStreamEntityVar, XStreamExpressionListen
 		this.dataType = varType.getType();
 		expression = row.getStream().getInput().getRegistry().createVarExpression(varType.getExpression());
 		expression.init(row, varType.getExpression());
+		if(varType.getType() == DataType.DUB || varType.getType() == dataType.INT || varType.getType() == DataType.LONG) {
+			numeric = true;
+		}
 	}
 
 	@Override
@@ -142,6 +152,9 @@ public class XStreamVarImpl implements XStreamEntityVar, XStreamExpressionListen
 
 	@Override
 	public void setValue(Object value) {
+		if(numeric) {
+			updateHighLow(value);
+		}
 		if(value == null) { 
 			if(logger.isDebugEnabled()) {
 				logger.debug(MarkerFactory.getMarker("NullVarValue"), "Var {} Session {}", varType.getName(), row.getStream().getInput().getSessionId());
@@ -190,6 +203,8 @@ public class XStreamVarImpl implements XStreamEntityVar, XStreamExpressionListen
 		return values.get(index);
 		
 	}
+	
+	
 
 	@Override
 	public void getValues(Object[] data, int startIndex, int endIndex) {
@@ -323,6 +338,66 @@ public class XStreamVarImpl implements XStreamEntityVar, XStreamExpressionListen
 		stats.setSetCount(updateCounter.get());
 		stats.setName(getVarType().getName());
 		return stats;
+	}
+	
+	
+
+	@Override
+	public boolean isNumeric() {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	@Override
+	public Number getHigh() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public LocalTime getHighTime() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public Number getLow() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public LocalTime getLowTime() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+	
+	
+	private void updateHighLow(Object input) {
+		Number value = 0;
+		try {
+			value = (Number)input;
+		} catch (Exception e) {
+			logger.error("Check your shitty code, updateHighLow on vaue type " + input.getClass().getName());
+			return;
+		}
+		if(!highLowInit) { 
+			high = value; 
+			low = value; 
+			lowTime = getRow().getStream().getClock().getLocalTime();
+			highTime = getRow().getStream().getClock().getLocalTime();
+			highLowInit = true;
+			return;
+		}
+		if(DNumberHelper.isFirstGreater(value, high)) {
+			high = value; 
+			highTime = getRow().getStream().getClock().getLocalTime();
+		}
+		if(DNumberHelper.isFirstGreater(low, value) ) { 
+			low = value; 
+			lowTime = getRow().getStream().getClock().getLocalTime();
+		}
+		
 	}
 
 	private Integer resolveIndex(int valueIndex) {

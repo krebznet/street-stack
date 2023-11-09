@@ -1,7 +1,9 @@
 package com.dunkware.xstream.api;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import com.dunkware.common.util.dtime.DDate;
 import com.dunkware.common.util.dtime.DTimeZone;
@@ -23,6 +25,7 @@ public class XStreamInput {
 	private List<XStreamSignalType> signalTypes = new ArrayList<XStreamSignalType>();
 	private XStreamStatService statProvider;
 	private XStreamEntityQueryBuilder queryBuilder;
+	private Map<String,String> properties = new HashMap<String,String>();
 	
 	// here we need to somehow provide a stat provider and not put the bullshit in memeory here. 
 	public List<XStreamExtensionType> getExtensions() {
@@ -97,6 +100,14 @@ public class XStreamInput {
 	public void setQueryBuilder(XStreamEntityQueryBuilder queryBuilder) {
 		this.queryBuilder = queryBuilder;
 	}
+	public Map<String, String> getProperties() {
+		return properties;
+	}
+	public void setProperties(Map<String, String> properties) {
+		this.properties = properties;
+	}
+	
+	
 	
 	
 	

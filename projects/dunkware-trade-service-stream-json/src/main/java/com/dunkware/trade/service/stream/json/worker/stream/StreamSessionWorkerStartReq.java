@@ -1,7 +1,9 @@
 package com.dunkware.trade.service.stream.json.worker.stream;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import com.dunkware.trade.service.stream.descriptor.StreamDescriptor;
 import com.dunkware.xstream.model.signal.type.XStreamSignalType;
@@ -11,6 +13,7 @@ public class StreamSessionWorkerStartReq {
 
 	private XStreamBundle streamBundle; 
 	private String stream; 
+	private long entitySessionId;
 	private int numericId;
 	private String workerId;
 	private String sessionId; 
@@ -18,7 +21,7 @@ public class StreamSessionWorkerStartReq {
 	private String nodeId;
 	private String kafkaBrokers;
 	private StreamDescriptor streamDescriptor;
-	
+	private Map<String,String> streamProperties = new HashMap<String,String>();
 	public StreamSessionWorkerStartReq() { 
 	
 	}
@@ -100,6 +103,26 @@ public class StreamSessionWorkerStartReq {
 	public void setKafkaBrokers(String kafkaBrokers) {
 		this.kafkaBrokers = kafkaBrokers;
 	}
+
+	public Map<String, String> getStreamProperties() {
+		return streamProperties;
+	}
+
+	public void setStreamProperties(Map<String, String> streamProperties) {
+		this.streamProperties = streamProperties;
+	}
+
+	public long getEntitySessionId() {
+		return entitySessionId;
+	}
+
+	public void setEntitySessionId(long entitySessionId) {
+		this.entitySessionId = entitySessionId;
+	}
+	
+	
+	
+	
 
 	
 	

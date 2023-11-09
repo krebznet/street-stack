@@ -31,6 +31,7 @@ public class StreamWorkerStatsExtension implements StreamWorkerExtension, XStrea
 	@Override
 	public void init(StreamWorker worker) {
 		this.worker = worker; 
+		
 	}
 
 	@Override
@@ -51,9 +52,19 @@ public class StreamWorkerStatsExtension implements StreamWorkerExtension, XStrea
 			builder.collectStats(stats);
 		}
 		logger.info(marker, "Collected " + stats.size() + " sats");
-		StreamWorkerEntityStatsDumper publisher = new StreamWorkerEntityStatsDumper(stats, stream.getInput().getIdentifier(), worker.getDunkNet().getConfig().getServerBrokers());
-		publisher.start();
-		
+		String topicName = null;
+		try {
+			topicName = worker.getStartReq().getStreamProperties().get("stats_topic");
+			if(topicName == null) { 
+				logger.error(marker, "Fucked up stats_topic property not set on start req ");
+				return;
+			}
+		} catch (Exception e) {
+			logger.error(marker, "Fucked up stats topic property get " + e.toString());
+			return;
+		}
+		StreamWorkerEntityStatsPublisher publisher = new StreamWorkerEntityStatsPublisher(stats,topicName,worker.getDunkNet());
+		publisher.run();
 		
 	}
 	

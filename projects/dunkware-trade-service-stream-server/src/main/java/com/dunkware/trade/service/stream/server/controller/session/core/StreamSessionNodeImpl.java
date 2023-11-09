@@ -47,8 +47,6 @@ import com.dunkware.xstream.xproject.model.XStreamBundle;
 
 public class StreamSessionNodeImpl implements StreamSessionNode, DunkNetChannelHandler {
 
-	
-
 	private Logger logger = LoggerFactory.getLogger(getClass());
     private Marker stopMarker = MarkerFactory.getMarker("StreamStop");
 	private XStreamBundle streamBundle;
@@ -144,7 +142,8 @@ public class StreamSessionNodeImpl implements StreamSessionNode, DunkNetChannelH
 				startReq.setKafkaBrokers(kafkaBrokers);
 				startReq.setSignals(input.getSession().getInput().getSignalTypes());
 				startReq.setStreamDescriptor(input.getSession().getStream().getDescriptor());
-
+				startReq.setStreamProperties(input.getSession().getInput().getProperties());;
+				startReq.setEntitySessionId(input.getSession().getEntity().getId());
 				try {
 					StreamSessionWorkerCreateReq req = new StreamSessionWorkerCreateReq();
 					req.setWorkerId(input.getWorkerId());

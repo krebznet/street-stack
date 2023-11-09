@@ -12,12 +12,15 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.springframework.stereotype.Service;
 
+import com.dunkware.common.util.observable.ObservableBeanListConnector;
 import com.dunkware.trade.service.beach.model.system.BeachSystemModel;
 import com.dunkware.trade.service.beach.server.broker.BeachBrokerService;
 import com.dunkware.trade.service.beach.server.system.BeachSystem;
 import com.dunkware.trade.service.beach.server.system.BeachSystemBean;
 import com.dunkware.trade.service.beach.server.system.BeachSystemService;
 
+import ca.odell.glazedlists.BasicEventList;
+import ca.odell.glazedlists.GlazedLists;
 import ca.odell.glazedlists.ObservableElementList;
 
 @Service
@@ -37,8 +40,18 @@ public class BeachSystemServiceImpl implements BeachSystemService  {
 	
 	@PostConstruct
 	private void init() { 
-		// find systems 
-		// then load the fuckers. 
+		beans = new ObservableElementList<BeachSystemBean>(
+				GlazedLists.threadSafeList(new BasicEventList<BeachSystemBean>()),
+				new ObservableBeanListConnector<BeachSystemBean>());
+	
+		// add a test one here
+		BeachSystemBean bean = new BeachSystemBean();
+		bean.setAccountId(1);
+		bean.setAccountName("Test");
+		bean.setStatus("Stopped");
+		bean.setSystemName("Test System");
+		bean.setId(1);
+		beans.add(bean);
 	}
 	
 	@Override
@@ -49,8 +62,7 @@ public class BeachSystemServiceImpl implements BeachSystemService  {
 
 	@Override
 	public ObservableElementList<BeachSystemBean> getBeans() {
-		// TODO Auto-generated method stub
-		return null;
+		return beans;
 	}
 
 	@Override

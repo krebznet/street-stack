@@ -18,7 +18,8 @@ public class BeachSessionEntity {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private long id; 
 	
-	private BeachSystemEntity system; 
+	//@ManyToOne()
+	//private BeachSystemEntity system; 
 	
 	private LocalDateTime startTime; 
 	
@@ -26,7 +27,7 @@ public class BeachSessionEntity {
 	
 	private LocalDateTime closedTime; 
 	
-	private List<BeachSessionTradeEntity> trades = new ArrayList<BeachSessionTradeEntity>();
+	//private List<BeachSessionTradeEntity> trades = new ArrayList<BeachSessionTradeEntity>();
 
 	public long getId() {
 		return id;
@@ -36,13 +37,7 @@ public class BeachSessionEntity {
 		this.id = id;
 	}
 
-	public BeachSystemEntity getSystem() {
-		return system;
-	}
-
-	public void setSystem(BeachSystemEntity system) {
-		this.system = system;
-	}
+	
 
 	public LocalDateTime getStartTime() {
 		return startTime;
@@ -68,14 +63,7 @@ public class BeachSessionEntity {
 		this.closedTime = closedTime;
 	}
 
-	public List<BeachSessionTradeEntity> getTrades() {
-		return trades;
-	}
 
-	public void setTrades(List<BeachSessionTradeEntity> trades) {
-		this.trades = trades;
-	}
-	
 	
 
 }

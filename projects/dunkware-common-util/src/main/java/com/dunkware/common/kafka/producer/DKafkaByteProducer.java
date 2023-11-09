@@ -38,11 +38,16 @@ public class DKafkaByteProducer {
 		prod.connect(props);
 		return prod;
 	}
+
 	
 	public static DKafkaByteProducer newInstance(DProperties props) throws DKafkaException { 
 		DKafkaByteProducer prod = new DKafkaByteProducer();
 		prod.connect(props);
 		return prod;
+	}
+	
+	public Producer<Integer, byte[]> getProducer() { 
+		return producer;
 	}
 
 	
@@ -53,7 +58,7 @@ public class DKafkaByteProducer {
 	private AtomicInteger sendCount = new AtomicInteger(0);
 	private AtomicInteger callbackCount = new AtomicInteger(0);
 	
-	private Producer<String, byte[]> producer;
+	private Producer<Integer, byte[]> producer;
 	private ProducerCallback producerCallback = new ProducerCallback();
 	
 	private boolean disposed = true;
@@ -87,8 +92,8 @@ public class DKafkaByteProducer {
 			throw new DKafkaException("Producer is disposed cannot send bytes");
 		}
 		for (String topic : topics) {
-			ProducerRecord<String, byte[]> record = new ProducerRecord<String, byte[]>(topic,
-					String.valueOf(sendCount.incrementAndGet()), bytes);	
+			ProducerRecord<Integer, byte[]> record = new ProducerRecord<Integer, byte[]>(topic,
+					sendCount.incrementAndGet(), bytes);	
 			producer.send(record,producerCallback);
 		}
 	}

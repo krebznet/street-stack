@@ -2,7 +2,7 @@ package com.dunkware.spring.cluster;
 
 import java.util.Vector;
 
-import org.apache.kafka.clients.admin.AdminClient;
+import org.apache.kafka.clients.producer.Producer;
 
 import com.dunkware.common.kafka.admin.DKafkaAdminClient;
 import com.dunkware.common.util.events.DEventNode;
@@ -58,6 +58,8 @@ public interface DunkNet {
 	public DunkNetState getState();
 	
 	public DunkNetController getController();
+	
+	public Producer<Integer, byte[]> getKafkaProducer();
 	
 }
 

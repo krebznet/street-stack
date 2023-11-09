@@ -103,7 +103,7 @@ public class GlazedDataGrid implements ListEventListener<Object> {
 				
 				public void run() {
 					try {
-						Thread.sleep(300);
+						Thread.sleep(100);
 						GlazedDataGridService.get().register(GlazedDataGrid.this);
 							
 					} catch (Exception e) {
@@ -216,6 +216,7 @@ public class GlazedDataGrid implements ListEventListener<Object> {
 	}
 	
 	
+
 	public void addListener(GlazedDataGridListener listener) { 
 		try {
 			listenerLock.acquire();

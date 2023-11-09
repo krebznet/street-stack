@@ -14,6 +14,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 
 import com.dunkware.common.util.dtime.DTimeZone;
+import com.dunkware.common.util.executor.DExecutor;
 import com.dunkware.common.util.stopwatch.DStopWatch;
 import com.dunkware.stream.cluster.proto.controller.blueprint.StreamBlueprintChannelClient;
 import com.dunkware.stream.cluster.proto.controller.blueprint.StreamBlueprintChannelException;
@@ -42,6 +43,9 @@ public class StreamSignalsImpl implements StreamSignals {
 	private StreamDataProvider dataProvider;
 	private StreamDescriptor descriptor;
 
+	@Autowired
+	private DExecutor executor;
+	
 	private StreamSignalsSessionImpl sessionSignals;
 
 	public void init(StreamDataProvider dataProvider) throws Exception {
@@ -83,6 +87,20 @@ public class StreamSignalsImpl implements StreamSignals {
 	public StreamDescriptor getStreamDescriptor() {
 		return descriptor;
 	}
+	
+	
+
+	public DExecutor getExecutor() {
+		return executor;
+	}
+
+
+
+	public void setExecutor(DExecutor executor) {
+		this.executor = executor;
+	}
+
+
 
 	@Override
 	public void insertSignal(StreamEntitySignal signal) throws Exception {

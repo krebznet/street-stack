@@ -19,7 +19,7 @@ public interface StreamSession {
 	public XScriptBundle getXScriptBundle();
 
 	public String killSession();
-
+	
 	public void startSession(StreamSessionInput input) throws StreamSessionException;
 
 	public void stopSession() throws StreamSessionException;

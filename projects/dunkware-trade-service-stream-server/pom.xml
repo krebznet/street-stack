@@ -71,7 +71,11 @@
 			<version>1.0.0-SNAPSHOT</version>
 		</dependency>
 
-
+		<dependency>
+			<groupId>com.dunkware.spring</groupId>
+			<artifactId>dunkware-spring-runtime</artifactId>
+			<version>1.0.0-SNAPSHOT</version>
+		</dependency>
 
 
 		<dependency>
@@ -90,6 +94,13 @@
 		<dependency>
 			<groupId>io.micrometer</groupId>
 			<artifactId>micrometer-registry-prometheus</artifactId>
+		</dependency>
+		
+		
+		<dependency>
+			<groupId>io.micrometer</groupId>
+			<artifactId>micrometer-registry-prometheus</artifactId>
+			<scope>runtime</scope>
 		</dependency>
 		<!-- Spring Boot Dev Tool - High Performance Development -->
 

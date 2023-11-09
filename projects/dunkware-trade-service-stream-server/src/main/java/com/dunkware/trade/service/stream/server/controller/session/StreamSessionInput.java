@@ -1,7 +1,9 @@
 package com.dunkware.trade.service.stream.server.controller.session;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Vector;
 
 import com.dunkware.spring.cluster.DunkNetNode;
@@ -15,6 +17,7 @@ public class StreamSessionInput {
 	private StreamController controller; 
 	private Vector<DunkNetNode> workerNodes = new Vector<DunkNetNode>();
 	private List<XStreamSignalType> signalTypes = new ArrayList<XStreamSignalType>();
+	private Map<String,String> properties = new HashMap<String,String>();
 	
 	public List<TradeTickerSpec> getTickers() {
 		return tickers;
@@ -39,6 +42,12 @@ public class StreamSessionInput {
 	}
 	public void setSignalTypes(List<XStreamSignalType> signalTypes) {
 		this.signalTypes = signalTypes;
+	}
+	public Map<String, String> getProperties() {
+		return properties;
+	}
+	public void setProperties(Map<String, String> properties) {
+		this.properties = properties;
 	}
 	
 	

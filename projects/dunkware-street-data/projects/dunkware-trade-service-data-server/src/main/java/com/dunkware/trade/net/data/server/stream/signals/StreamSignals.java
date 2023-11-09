@@ -2,6 +2,9 @@ package com.dunkware.trade.net.data.server.stream.signals;
 
 import java.util.List;
 
+import org.springframework.beans.factory.annotation.Autowired;
+
+import com.dunkware.common.util.executor.DExecutor;
 import com.dunkware.stream.cluster.proto.controller.blueprint.StreamBlueprintChannelClient;
 import com.dunkware.trade.net.data.server.stream.signals.sessionn.StreamSignalsSessionImpl;
 import com.dunkware.trade.net.data.server.stream.streamprovider.StreamDataProvider;
@@ -48,6 +51,8 @@ public interface StreamSignals {
 	public StreamDataProvider getDataProvider();
 	
 	public StreamSignalIngestor getSignalIngestor();
+	
+	public DExecutor getExecutor();
 	
 	/**
 	 * okay returns the shit here. 

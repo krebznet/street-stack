@@ -23,24 +23,24 @@
 	</properties>
 
 
-				<distributionManagement>
-					<snapshotRepository>
-						<uniqueVersion>false</uniqueVersion>
-						<id>dunkware-internal-snapshot</id>
-						<layout>default</layout>
-						<name>dunkware-internal-snapshot</name>
-						<url>https://nexus.dunkware.com/repository/dunkware-internal-snapshot/</url>
+	<distributionManagement>
+		<snapshotRepository>
+			<uniqueVersion>false</uniqueVersion>
+			<id>dunkware-internal-snapshot</id>
+			<layout>default</layout>
+			<name>dunkware-internal-snapshot</name>
+			<url>https://nexus.dunkware.com/repository/dunkware-internal-snapshot/</url>
 
-					</snapshotRepository>
-					<repository>
-						<uniqueVersion>false</uniqueVersion>
-						<id>dunkware-internal-release</id>
-						<layout>default</layout>
-						<name>dunkware-internal-release</name>
-						<url>https://nexus.dunkware.com/repository/dunkware-internal-release/</url>
+		</snapshotRepository>
+		<repository>
+			<uniqueVersion>false</uniqueVersion>
+			<id>dunkware-internal-release</id>
+			<layout>default</layout>
+			<name>dunkware-internal-release</name>
+			<url>https://nexus.dunkware.com/repository/dunkware-internal-release/</url>
 
-					</repository>
-				</distributionManagement>
+		</repository>
+	</distributionManagement>
 
 
 	<scm>
@@ -50,7 +50,7 @@
 		<tag>v1</tag>
 	</scm>
 	<dependencies>
-		<!-- <dependency> <groupId>org.springframework.boot</groupId> <artifactId>spring-boot-starter-data-jpa</artifactId>
+		<!-- <dependency> <groupId>org.springframework.boot</groupId> <artifactId>spring-boot-starter-data-jpa</artifactId> 
 			</dependency> -->
 
 
@@ -63,12 +63,12 @@
 			<artifactId>spring-boot-starter-test</artifactId>
 			<scope>test</scope>
 		</dependency>
-		<!-- Spring Boot Actuator for Production Ready Features-->
+		<!-- Spring Boot Actuator for Production Ready Features -->
 		<dependency>
-		    <groupId>org.springframework.boot</groupId>
-		    <artifactId>spring-boot-starter-actuator</artifactId>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-actuator</artifactId>
 		</dependency>
-		<!-- Spring Boot Dev Tool - High Performance Development-->
+		<!-- Spring Boot Dev Tool - High Performance Development -->
 
 		<!-- https://mvnrepository.com/artifact/org.springframework.boot/spring-boot-starter-data-jpa -->
 		<dependency>
@@ -116,29 +116,26 @@
 		<!-- Metrics/Prometheus -->
 
 
-	<!--	<dependency>
-			<groupId>org.springframework.boot</groupId>
-			<artifactId>spring-boot-starter-actuator</artifactId>
-		</dependency>
-
-		<dependency>
-			<groupId>io.micrometer</groupId>
-			<artifactId>micrometer-registry-prometheus</artifactId>
-			<scope>runtime</scope>
-		</dependency>-->
+		<!-- <dependency> <groupId>org.springframework.boot</groupId> <artifactId>spring-boot-starter-actuator</artifactId> 
+			</dependency> <dependency> <groupId>io.micrometer</groupId> <artifactId>micrometer-registry-prometheus</artifactId> 
+			<scope>runtime</scope> </dependency> -->
 
 
 		<!-- Dunkware Dependnecies -->
 
 
-	
+		<dependency>
+			<groupId>io.micrometer</groupId>
+			<artifactId>micrometer-registry-prometheus</artifactId>
+			<scope>runtime</scope>
+		</dependency>
 		<dependency>
 			<groupId>com.dunkware.trade.tick</groupId>
 			<artifactId>dunkware-trade-tick-provider-atick</artifactId>
 			<version>1.3.0-SNAPSHOT</version>
 		</dependency>
 
-	<dependency>
+		<dependency>
 			<groupId>com.dunkware.spring</groupId>
 			<artifactId>dunkware-spring-cluster</artifactId>
 			<version>1.0.0-SNAPSHOT</version>
@@ -161,19 +158,15 @@
 			<artifactId>dunkware-trade-service-tick-protocol</artifactId>
 			<version>1.2.0-SNAPSHOT</version>
 		</dependency>
-			<dependency>
+		<dependency>
 			<groupId>com.dunkware.spring</groupId>
 			<artifactId>dunkware-spring-cluster</artifactId>
 			<version>1.0.0-SNAPSHOT</version>
 		</dependency>
 
-		
-		<!--
-		<dependency>
-			<groupId>com.dunkware.trade.tools</groupId>
-			<artifactId>dunkware-trade-tools-scrape</artifactId>
-			<version>1.1.0</version>
-		</dependency>-->
+
+		<!-- <dependency> <groupId>com.dunkware.trade.tools</groupId> <artifactId>dunkware-trade-tools-scrape</artifactId> 
+			<version>1.1.0</version> </dependency> -->
 		<dependency>
 			<groupId>com.dunkware.common</groupId>
 			<artifactId>dunkware-common-util</artifactId>
@@ -181,12 +174,12 @@
 		</dependency>
 
 		<!-- https://mvnrepository.com/artifact/com.google.guava/guava -->
-<!-- https://mvnrepository.com/artifact/com.google.guava/guava -->
-<dependency>
-    <groupId>com.google.guava</groupId>
-    <artifactId>guava</artifactId>
-    <version>30.1-jre</version>
-</dependency>
+		<!-- https://mvnrepository.com/artifact/com.google.guava/guava -->
+		<dependency>
+			<groupId>com.google.guava</groupId>
+			<artifactId>guava</artifactId>
+			<version>30.1-jre</version>
+		</dependency>
 
 
 		<dependency>
@@ -199,8 +192,8 @@
 
 	<build>
 
-		<!-- <resources> <resource> <directory>src/main/resources</directory> <filtering>true</filtering>
-			<excludes> <exclude>**/application.properties</exclude> <exclude>**/logback.xml</exclude>
+		<!-- <resources> <resource> <directory>src/main/resources</directory> <filtering>true</filtering> 
+			<excludes> <exclude>**/application.properties</exclude> <exclude>**/logback.xml</exclude> 
 			</excludes> </resource> </resources> -->
 		<plugins>
 			<plugin>

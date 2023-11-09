@@ -23,7 +23,7 @@ public class DKafkaProperties {
 		props.put("batch.size", 2500);
 		props.put("linger.ms", 2);
 		props.put("buffer.memory", 335544323);
-		props.put("key.serializer", "org.apache.kafka.common.serialization.StringSerializer");
+		props.put("key.serializer", "org.apache.kafka.common.serialization.IntegerSerializer");
 		props.put("value.serializer", "org.apache.kafka.common.serialization.ByteArraySerializer");
 		props.put("enable.auto.commit", "true");
 		props.put("auto.commit.interval.ms", "5000");

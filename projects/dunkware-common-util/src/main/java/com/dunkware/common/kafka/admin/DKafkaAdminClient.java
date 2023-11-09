@@ -6,6 +6,7 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.TimeUnit;
 
@@ -18,12 +19,13 @@ import org.apache.kafka.clients.admin.ListTopicsResult;
 import org.apache.kafka.clients.admin.NewTopic;
 import org.apache.kafka.clients.admin.TopicListing;
 import org.apache.kafka.common.KafkaFuture;
+import org.apache.kafka.common.config.TopicConfig;
 
 import com.dunkware.common.kafka.DKafkaException;
-import com.dunkware.common.kafka.admin.model.DKafkaNewTopic;
-import com.dunkware.common.kafka.admin.model.DKafkaNewTopicResult;
 import com.dunkware.common.kafka.admin.model.DKafkaDeleteTopicResult;
 import com.dunkware.common.kafka.admin.model.DKafkaDeleteTopicResults;
+import com.dunkware.common.kafka.admin.model.DKafkaNewTopic;
+import com.dunkware.common.kafka.admin.model.DKafkaNewTopicResult;
 import com.dunkware.common.util.stopwatch.DStopWatch;
 
 public class DKafkaAdminClient {
@@ -64,6 +66,20 @@ public class DKafkaAdminClient {
 		}
 		
 		return false;
+	}
+	
+	
+	public DKafkaNewTopicResult createPersistentTopic(String topicName, int partitionCount, int replicaCount) {
+		Optional<Integer> pCount = Optional.of(partitionCount);
+		Optional<Short> rFactor = Optional.of((short)replicaCount);
+		NewTopic newTopic = new NewTopic(topicName, pCount, rFactor);
+		Map<String, String> configs = new HashMap<String,String>();
+		configs.put(TopicConfig.DELETE_RETENTION_MS_CONFIG, "100000000000");
+		configs.put(TopicConfig.RETENTION_MS_CONFIG, "100000000000");
+		DKafkaNewTopic dNewTopic = new DKafkaNewTopic(newTopic, configs);
+		return createTopic(dNewTopic);
+		
+		
 	}
 
 	public DKafkaNewTopicResult createTopic(DKafkaNewTopic dTopic) {
@@ -130,8 +146,55 @@ public class DKafkaAdminClient {
 		}
 
 	}
+	
+	public DKafkaDeleteTopicResults deleteTopics(Collection<String> topics) throws DKafkaException { 
+		DStopWatch timer = DStopWatch.create();
+		timer.start();
+		DeleteTopicsResult result = client.deleteTopics(topics);
+		DKafkaDeleteTopicResults returnResults = new DKafkaDeleteTopicResults();
+		Map<String, VoidFutureWrapper> callbacks = new ConcurrentHashMap<String, VoidFutureWrapper>();
+		Map<String, KafkaFuture<Void>> futures = result.values();
+		List<String> callbackTopics = new ArrayList<String>();
+		for (String string : futures.keySet()) {
+			callbacks.put(string, new VoidFutureWrapper(string, futures.get(string)));
+			callbackTopics.add(string);
+		}
+		boolean done = false;
+		long duration = 0;
+		while (!done) {
+			for (String key : callbacks.keySet()) {
+				if (callbackTopics.contains(key)) {
+					VoidFutureWrapper callback = callbacks.get(key);
+					if (callback.isDone()) {
+						DKafkaDeleteTopicResult deleteResult = callback.getResult();
+						returnResults.addResult(deleteResult);
+						callbackTopics.remove(key);
+					}
+					if (callbackTopics.size() == 0) {
+						return returnResults;
+					}
+					try {
+						Thread.sleep(250);
+					} catch (Exception e) {
+						throw new DKafkaException("Interrupted Exceptiond deleting topics");
+					}
+					duration = duration + 250;
+					if (TimeUnit.MILLISECONDS.toSeconds(duration) > 30) {
+						returnResults.setTime(timer.getRunningSeconds());
+						returnResults.setTimeout(true);
+						returnResults.setTimeoutTopics(callbackTopics);
+						return returnResults;
+					}
+				}
+			}
+		}
+		return returnResults;
+	}
+	
+	
+	
 
-	public DKafkaDeleteTopicResults deleteTopics(boolean deleteInternalTopics) throws DKafkaException {
+	public DKafkaDeleteTopicResults deleteTopicsDangerous(boolean deleteInternalTopics) throws DKafkaException {
 		DStopWatch timer = DStopWatch.create();
 		timer.start();
 		List<String> topics = getTopicNames(deleteInternalTopics);

@@ -19,9 +19,10 @@ public class StreamSignalBean extends ObservableBean {
 	
 	public static void main(String[] args) {
 		StreamSignalBean b = new StreamSignalBean();
-		b.setSignalGroup("Hello");
+		b.setSignalGroup("Acid Tests");
 		b.setSignalId(1);;
 		b.setEntityId(3);
+		b.setSignalName("Acid Test 1");
 		b.setEntityIdentifier("AAPL");
 		b.setEntityName("Apple Corporation");
 		

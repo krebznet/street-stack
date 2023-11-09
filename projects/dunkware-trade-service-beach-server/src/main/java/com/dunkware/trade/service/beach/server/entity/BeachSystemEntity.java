@@ -1,8 +1,5 @@
 package com.dunkware.trade.service.beach.server.entity;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -31,7 +28,7 @@ public class BeachSystemEntity {
 	private BeachBrokerAccountEntity account; // right it must reference an account; 
 									 // you can swap accounts if you want
 
-	private List<BeachSessionEntity> sessions = new ArrayList<BeachSessionEntity>();
+//	private List<BeachSessionEntity> sessions = new ArrayList<BeachSessionEntity>();
 	
 	public long getId() {
 		return id;

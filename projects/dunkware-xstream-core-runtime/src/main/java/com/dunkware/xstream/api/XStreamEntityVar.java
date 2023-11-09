@@ -1,5 +1,6 @@
 package com.dunkware.xstream.api;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.Collection;
@@ -22,6 +23,16 @@ public interface XStreamEntityVar {
 	public LocalTime getLastUpdate();
 	
 	public Object getValue(int index);
+	
+	public boolean isNumeric();
+	
+	public Number getHigh();
+	
+	public LocalTime getHighTime();
+	
+	public Number getLow();
+	
+	public LocalTime getLowTime();
 	
 	public Number getNumber(int index);
 		

@@ -32,7 +32,7 @@ public class SessionSignalQueryGrid implements GlazedDataGridListener {
 		beans =  new ObservableElementList<StreamSignalBean>(
 				GlazedLists.threadSafeList(new BasicEventList<StreamSignalBean>()),
 				new ObservableBeanListConnector<StreamSignalBean>());
-		
+	
 		
 		
 	}
@@ -54,6 +54,20 @@ public class SessionSignalQueryGrid implements GlazedDataGridListener {
 	public void onGridInit(GlazedDataGrid dataGrid) {
 		// TODO Auto-generated method stub
 		
+	}
+	
+	public class Fucker extends Thread { 
+		
+		public void run() { 
+			while(!interrupted()) { 
+				try {
+					//session.getStreamSignals().getSessionSignals().getStreamSignals().getSessionSignals().getStreamSignals()
+				   
+				} catch (Exception e) {
+					// TODO: handle exception
+				}
+			}
+		}
 	}
 
 	

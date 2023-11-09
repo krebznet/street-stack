@@ -118,7 +118,7 @@ public class DKafkaByteConsumer2 {
 		props.put("buffer.memory", 835544323);
 		props.put("fetch.max.wait.ms", 500);
 		props.put("fetch.min.bytes", 1);
-		props.put("key.deserializer", "org.apache.kafka.common.serialization.StringDeserializer");
+		props.put("key.deserializer", "org.apache.kafka.common.serialization.IntegerDeserializer");
 		props.put("value.deserializer", "org.apache.kafka.common.serialization.ByteArrayDeserializer");
 		status = DKafkaByteConsumerStatus.Connecting;
 		// try to connect to the consumer
@@ -217,9 +217,10 @@ public class DKafkaByteConsumer2 {
 	}
 
 	private void hookDispose() {
+		logger.info("Shutdown Hook on DKafkaConsumer Initiated " + properties.toJavaProperties().toString());
 		if (status == DKafkaByteConsumerStatus.Connected) {
 			inerrupted.set(true);
-			consumerThread.dispose();
+			dispose();
 			status = DKafkaByteConsumerStatus.Disconnected;
 		}
 	}
@@ -229,6 +230,7 @@ public class DKafkaByteConsumer2 {
 			inerrupted.set(true);
 			consumerThread.dispose();
 			status = DKafkaByteConsumerStatus.Disconnected;
+			consumer.close();
 		}
 		Runtime.getRuntime().removeShutdownHook(hook);
 
@@ -346,6 +348,7 @@ public class DKafkaByteConsumer2 {
 						System.out.println("consumer resumed");
 						printPoolCount = true;
 						consumerPaused = false;
+						
 					}
 
 					ConsumerRecords<String, byte[]> records = consumer.poll(Duration.ofSeconds(10));

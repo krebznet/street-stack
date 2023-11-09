@@ -19,6 +19,7 @@ import org.apache.kafka.clients.admin.ListTopicsOptions;
 import org.apache.kafka.clients.admin.ListTopicsResult;
 import org.apache.kafka.clients.admin.TopicListing;
 import org.apache.kafka.clients.consumer.ConsumerRecord;
+import org.apache.kafka.clients.producer.Producer;
 import org.apache.kafka.common.config.TopicConfig;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -475,6 +476,14 @@ public class DunkNetImpl implements DunkNet, DKafkaByteHandler2 {
 		
 		
 	}
+
+	@Override
+	public Producer<Integer, byte[]> getKafkaProducer() {
+		return messageProducer.getProducer();
+	}
+	
+	
+
 
 	
 }

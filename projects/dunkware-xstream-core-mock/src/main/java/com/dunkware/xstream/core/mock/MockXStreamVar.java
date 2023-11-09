@@ -24,6 +24,38 @@ public class MockXStreamVar implements XStreamEntityVar  {
 		// TODO Auto-generated method stub
 		
 	}
+	
+		
+
+	@Override
+	public boolean isNumeric() {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	@Override
+	public Number getHigh() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public LocalTime getHighTime() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public Number getLow() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public LocalTime getLowTime() {
+		// TODO Auto-generated method stub
+		return null;
+	}
 
 	@Override
 	public void dispose() {

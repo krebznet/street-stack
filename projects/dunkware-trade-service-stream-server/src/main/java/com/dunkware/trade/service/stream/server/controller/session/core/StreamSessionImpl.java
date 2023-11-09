@@ -129,6 +129,15 @@ public class StreamSessionImpl implements StreamSession {
 	public void startSession(StreamSessionInput input) throws StreamSessionException {
 		this.input = input;
 		status = new StreamSessionStats();
+		try {
+			createSessionEntity();
+		} catch (Exception e) {
+			logger.error(marker, "Exception creating Sesssion Entity " + e.toString(), e);
+			status.setState(StreamState.StartException);
+			status.setException(e.toString());
+			throw new StreamSessionException("Exception creating Session Entity " + e.toString(), e);
+		}
+		
 		status.setState(StreamState.Starting);
 		status.setStartingTime(DTime.from(LocalTime.now(DTimeZone.toZoneId(input.getController().getTimeZone()))));
 		nodeStartEventCount.set(0);
@@ -160,14 +169,7 @@ public class StreamSessionImpl implements StreamSession {
 			}
 			ext.sessionStarting(this);
 		}
-		try {
-			createSessionEntity();
-		} catch (Exception e) {
-			logger.error(marker, "Exception creating Sesssion Entity " + e.toString(), e);
-			status.setState(StreamState.StartException);
-			status.setException(e.toString());
-			throw new StreamSessionException("Exception creating Session Entity " + e.toString(), e);
-		}
+	
 		int numericId = 1;
 		int nodeIndex = 0;
 		for (DunkNetNode node : input.getWorkerNodes()) {

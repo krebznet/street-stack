@@ -16,7 +16,7 @@ import javax.persistence.Table;
 import org.hibernate.annotations.LazyCollection;
 import org.hibernate.annotations.LazyCollectionOption;
 
-@Entity(name = "BeachBrokerEnttity")
+@Entity(name = "BeachBrokerEntity")
 @Table(name = "trade_broker_connector")
 public class BeachBrokerEnttity {
 

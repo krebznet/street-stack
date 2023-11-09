@@ -2,14 +2,12 @@ package com.dunkware.trade.tick.service.server.feed;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
 import javax.annotation.PostConstruct;
 
-import org.apache.kafka.clients.admin.TopicListing;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.slf4j.Marker;
@@ -26,6 +24,7 @@ import com.dunkware.common.util.dtime.DTimeZone;
 import com.dunkware.common.util.executor.DExecutor;
 import com.dunkware.common.util.helpers.DConverter;
 import com.dunkware.common.util.json.DJson;
+import com.dunkware.spring.cluster.DunkNet;
 import com.dunkware.trade.tick.api.consumer.TickConsumer;
 import com.dunkware.trade.tick.api.feed.TickFeed;
 import com.dunkware.trade.tick.api.feed.TickFeedSubscription;
@@ -68,6 +67,9 @@ public class FeedService {
 	@Value("${dunknet.brokers}")
 	private String propKafkaBrokes;
 	
+	@Autowired
+	private DunkNet dunkNet;
+	
 
 	
 	
@@ -97,6 +99,32 @@ public class FeedService {
 		startTime = DDateTime.now(DTimeZone.NewYork);
 		dayChecker = new ResetDayChecker();
 		dayChecker.start();
+		logger.info("Checking for existing feed consumer topics" );
+		try {
+			DKafkaAdminClient admin = dunkNet.createAdminClient();
+			List<String> deleteTopics = new ArrayList<String>();
+			List<String> topicNames = admin.getTopicNames(false);
+			for (String string : topicNames) {
+				if(string.startsWith("street_tick_tick")) {
+					deleteTopics.add(string);
+				}
+			}
+			if(deleteTopics.size() > 0) {
+				try {
+				admin.deleteTopics(deleteTopics);
+				} catch (Exception e) {
+					logger.error("Exception creating existing consumer topics " + e.toString());
+				}
+				
+			}
+		} catch (Exception e) {
+			logger.error("Yes fuck you exception getting delete topic names " + e.toString());;
+		}
+		
+		
+		
+		
+		
 		logMarker = MarkerFactory.getMarker("FeedService");
 		List<FeedProviderDO> providers = providerRepo.getProviders();
 		for (FeedProviderDO tickProviderEntity : providers) {

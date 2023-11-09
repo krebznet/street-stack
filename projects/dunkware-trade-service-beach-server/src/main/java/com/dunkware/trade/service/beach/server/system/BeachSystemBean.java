@@ -8,6 +8,7 @@ public class BeachSystemBean extends ObservableBean {
 	private String accountName; 
 	private long accountId; 
 	private String status;
+	private String systemName;
 	
 	public long getId() {
 		return id;
@@ -32,7 +33,15 @@ public class BeachSystemBean extends ObservableBean {
 	}
 	public void setStatus(String status) {
 		this.status = status;
+	}
+	public String getSystemName() {
+		return systemName;
+	}
+	public void setSystemName(String systemName) {
+		this.systemName = systemName;
 	} 
+	
+	
 	
 	
 }
