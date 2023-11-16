@@ -44,7 +44,7 @@ public class StreamWorkerEntityStatsPublisher   {
 					continue;
 				}
 				try {
-					ProducerRecord<Integer, byte[]> record = new ProducerRecord<Integer, byte[]>(topicName, serialized);
+					ProducerRecord<Integer, byte[]> record = new ProducerRecord<Integer, byte[]>(topicName, entityStat.getEntity(),serialized);
 					dunkNet.getKafkaProducer().send(record);	
 				} catch (Exception e) {
 					logger.error("Fucked up sending stat kafka record " + e.toString());

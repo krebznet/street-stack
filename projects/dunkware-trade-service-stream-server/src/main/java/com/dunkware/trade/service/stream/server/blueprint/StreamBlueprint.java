@@ -1,6 +1,5 @@
 package com.dunkware.trade.service.stream.server.blueprint;
 
-import java.io.File;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -39,6 +38,7 @@ public class StreamBlueprint {
 	private Logger logger = LoggerFactory.getLogger(getClass());
 	private Marker marker = MarkerFactory.getMarker("streamblueprint");
 	private List<StreamBlueprintSignal> signals = new ArrayList<StreamBlueprintSignal>();
+	private List<StreamBlueprintEntity> entities = new ArrayList<StreamBlueprintEntity>();
 	private Semaphore signalLock = new Semaphore(1);
 
 	@Autowired
@@ -118,6 +118,8 @@ public class StreamBlueprint {
 		}
 
 	}
+	
+	
 
 	public ObservableElementList<StreamBlueprintVarBean> getVarBeans() { 
 		return varBeans;

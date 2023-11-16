@@ -50,11 +50,11 @@ public class SnapshotWriterMetrics {
 	public void snapshotInsert(List<StreamEntitySnapshot> snapshots, int size, double seconds) {
 		this.insertCount.addAndGet(snapshots.size());
 		for (StreamEntitySnapshot snapshot : snapshots) {
-			if(entitySnapshots.get(snapshot.getEntityId()) == null) {
-				entitySnapshots.put(snapshot.getEntityId(), new AtomicInteger(1));
+			if(entitySnapshots.get(snapshot.getId()) == null) {
+				entitySnapshots.put(snapshot.getId(), new AtomicInteger(1));
 				
 			} else { 
-				entitySnapshots.get(snapshot.getEntityId()).incrementAndGet();
+				entitySnapshots.get(snapshot.getId()).incrementAndGet();
 			}
 		}
 	}

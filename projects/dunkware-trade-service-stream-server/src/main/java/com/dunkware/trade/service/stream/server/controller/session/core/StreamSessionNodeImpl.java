@@ -26,6 +26,7 @@ import com.dunkware.spring.cluster.core.request.DunkNetServiceRequest;
 import com.dunkware.spring.cluster.core.request.DunkNetServiceRequestListener;
 import com.dunkware.trade.service.stream.json.controller.session.StreamSessionNodeBean;
 import com.dunkware.trade.service.stream.json.controller.spec.StreamState;
+import com.dunkware.trade.service.stream.json.worker.service.StreamEntitySnapshotReq;
 import com.dunkware.trade.service.stream.json.worker.stream.StreamSessionWorkerCancelReq;
 import com.dunkware.trade.service.stream.json.worker.stream.StreamSessionWorkerCreateReq;
 import com.dunkware.trade.service.stream.json.worker.stream.StreamSessionWorkerStartReq;
@@ -43,6 +44,7 @@ import com.dunkware.trade.service.stream.server.controller.session.events.EStrea
 import com.dunkware.trade.service.stream.server.controller.session.events.EStreamSessionNodeStopException;
 import com.dunkware.trade.service.stream.server.controller.session.events.EStreamSessionNodeStopped;
 import com.dunkware.trade.tick.model.ticker.TradeTickerSpec;
+import com.dunkware.xstream.model.entity.StreamEntitySnapshot;
 import com.dunkware.xstream.xproject.model.XStreamBundle;
 
 public class StreamSessionNodeImpl implements StreamSessionNode, DunkNetChannelHandler {
@@ -173,6 +175,25 @@ public class StreamSessionNodeImpl implements StreamSessionNode, DunkNetChannelH
 	@Override
 	public boolean isStarting() {
 		return starting;
+	}
+	
+	
+
+	@Override
+	public StreamEntitySnapshot entitySnapshot(int entityId) throws Exception {
+		StreamEntitySnapshotReq req = new StreamEntitySnapshotReq();
+		req.setEntityId(entityId);
+		try {
+			Object result = channel.serviceBlocking(req);			
+			try {
+				StreamEntitySnapshot snapshot = (StreamEntitySnapshot)result;
+				return snapshot;
+			} catch (Exception e) {
+				throw new Exception("exception casting entity snapshot service result to correct class type " + result.getClass().getName());
+			}
+		} catch (Exception e) {
+			throw new Exception("exception calling entity snapshot service on worker " + e.toString());
+		}
 	}
 
 	@Override

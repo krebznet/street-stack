@@ -7,19 +7,15 @@ import java.util.Map;
 public class StreamEntitySnapshot {
 	
 	private LocalDateTime dateTime;
-	private int entityId; 
-	private Map<Integer,Object> vars = new HashMap<Integer,Object>();
+	private int id;
+	private String identifier; 
+	private Map<Integer,StreamEntitySnapshotVar> vars = new HashMap<Integer,StreamEntitySnapshotVar>();
 	
-	public int getEntityId() {
-		return entityId;
-	}
-	public void setEntityId(int entityId) {
-		this.entityId = entityId;
-	}
-	public Map<Integer, Object> getVars() {
+ 	
+	public Map<Integer, StreamEntitySnapshotVar> getVars() {
 		return vars;
 	}
-	public void setVars(Map<Integer, Object> vars) {
+	public void setVars(Map<Integer, StreamEntitySnapshotVar> vars) {
 		this.vars = vars;
 	}
 	public LocalDateTime getDateTime() {
@@ -28,6 +24,20 @@ public class StreamEntitySnapshot {
 	public void setDateTime(LocalDateTime dateTime) {
 		this.dateTime = dateTime;
 	}
+	public int getId() {
+		return id;
+	}
+	public void setId(int id) {
+		this.id = id;
+	}
+	public String getIdentifier() {
+		return identifier;
+	}
+	public void setIdentifier(String identifier) {
+		this.identifier = identifier;
+	}
+	
+	
 	
 
 }

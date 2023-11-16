@@ -65,7 +65,7 @@ public class StreamWorkerSnapshotPublisher implements XStreamClockListener  {
 			List<XStreamEntity> ents = stream.getRows();
 			for (XStreamEntity ent : ents) {
 				StreamEntitySnapshot snap = new StreamEntitySnapshot();
-				snap.setEntityId(ent.getIdentifier());
+				//snap.setEntityId(ent.getIdentifier());
 				snap.setDateTime(clock.getLocalDateTime());
 				Map<Integer,Object> vars = new HashMap<Integer,Object>();
 				for (XStreamEntityVar var :ent.getVars()) {
@@ -75,7 +75,7 @@ public class StreamWorkerSnapshotPublisher implements XStreamClockListener  {
 						vars.put(var.getVarType().getCode(), var.getValue(0));
 					}
 				}
-				snap.setVars(vars);
+				//snap.setVars(vars);
 				snapshots.add(snap);
 			}
 		} catch (Exception e) {

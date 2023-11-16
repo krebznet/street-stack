@@ -124,6 +124,7 @@ public class DKafkaByteConsumer2 {
 		// try to connect to the consumer
 		try {
 			consumer = new KafkaConsumer<String, byte[]>(props);
+			
 		} catch (KafkaException e) {
 			throw new DKafkaException("Excepton creating kafka consumer " + e.toString());
 		}
@@ -137,6 +138,10 @@ public class DKafkaByteConsumer2 {
 		if (spec.getConsumerType() == ConsumerType.Auto) {
 			consumer.subscribe(Arrays.asList(spec.getTopics()));
 
+		}
+		
+		if (spec.getOffsetType() == OffsetType.Latest) { 
+			//consumer.
 		}
 
 		// if (spec.getConsumerType() == ConsumerType.AllPartitions) {

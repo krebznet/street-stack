@@ -26,6 +26,7 @@ import com.dunkware.common.util.events.DEventNode;
 import com.dunkware.common.util.events.anot.ADEventMethod;
 import com.dunkware.common.util.json.DJson;
 import com.dunkware.common.util.observable.ObservableBeanListConnector;
+import com.dunkware.common.util.time.DunkTime;
 import com.dunkware.spring.cluster.DunkNet;
 import com.dunkware.spring.cluster.DunkNetNode;
 import com.dunkware.spring.runtime.services.EventService;
@@ -66,6 +67,7 @@ public class StreamController {
 
 	private Logger logger = org.slf4j.LoggerFactory.getLogger(getClass());
 	private Marker marker = MarkerFactory.getMarker("StreamController");
+	private Marker scheduleMarker = MarkerFactory.getMarker("StreamSchedule");
 
 	private StreamEntity ent;
 
@@ -271,6 +273,15 @@ public class StreamController {
 
 	public StreamEntity getEntity() {
 		return ent;
+	}
+	
+	public int getTickerId(String ident) throws Exception { 
+		for (TradeTickerSpec spec : tickers) {
+			if(spec.getSymbol().equalsIgnoreCase(ident)) {
+				return spec.getId();
+			}
+		}
+		throw new Exception("Trade ticker ident " + ident + " not found on stream controller");
 	}
 	
 	public StreamDescriptor getDescriptor() { 
@@ -519,7 +530,7 @@ public class StreamController {
 				if (inSession) {
 					inSession = false;
 					try {
-						logger.info("Schedule Stopping Stram {} Session",getName());
+						logger.info(scheduleMarker,"Schedule Stopping Stram {} Session",getName());
 						stopSession();
 					} catch (Exception e) {
 						logger.error("Exception Stopping Session In Schedule Spec Update " + e.toString(), e);
@@ -540,9 +551,8 @@ public class StreamController {
 				if (clock.isAfterLocalTime(startTime) && clock.isBeforeLocalTime(stopTime)) {
 					try {
 						if (logger.isInfoEnabled()) {
-							logger.info("Stream Session Schedule Starting Stream {}", ent.getName());
+							logger.info(scheduleMarker,"Starting Stream after start time of {} current time is {} stream is {}",startTime.toHHmmSS(),DunkTime.format(lastDateTime.dateTime().toLocalDateTime(), DunkTime.YYMMDDHHMMSS), ent.getName());
 						}
-						logger.info("Schedule Starting Stream Session for Stream " + getName());
 						startSession();
 						inSession = true;
 					} catch (Exception e) {
@@ -600,10 +610,10 @@ public class StreamController {
 					try {
 						
 						inSession = false;
-						logger.info(marker,"Schedule Stopping Stream {} Session", getName());
+						logger.info(scheduleMarker,"Schedule Stopping Stream {} Session", getName());
 						stopSession();
 					} catch (Exception e) {
-						logger.error(marker,"Stream Schedule Stopping {} Exception {}", ent.getName(), e.toString(), e);
+						logger.error(scheduleMarker,"Stream Schedule Stopping {} Exception {}", ent.getName(), e.toString(), e);
 					}
 				}
 			} else { // else not in session
@@ -617,11 +627,9 @@ public class StreamController {
 					try {
 						if (getStats().getState() != StreamState.Starting || getStats().getState()!= StreamState.Running) {
 							logger.info(
-									marker,"Starting session on clock update where current time is between start/stop time and status is not running or starting");
+									scheduleMarker,"Starting session on clock update where current time is between start/stop time and status is not running or starting");
 							startSession();
 							inSession = true;
-							logger.error(marker,"Fart Bug, clock update is calling start session while session is in "
-									+ getStats().getName());
 							return;
 						}
 					} catch (Exception e) {

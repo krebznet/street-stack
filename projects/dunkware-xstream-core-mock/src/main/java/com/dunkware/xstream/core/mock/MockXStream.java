@@ -75,6 +75,13 @@ public class MockXStream implements XStream {
 	
 	
 	
+	
+
+	@Override
+	public XStreamEntity getRow(int entityid) {
+		// TODO Auto-generated method stub
+		return null;
+	}
 
 	@Override
 	public void start(XStreamInput input) throws XStreamException {

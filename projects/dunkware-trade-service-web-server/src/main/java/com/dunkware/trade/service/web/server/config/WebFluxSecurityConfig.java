@@ -35,9 +35,12 @@ public class WebFluxSecurityConfig {
     @Bean
     public SecurityWebFilterChain springSecurityFilterChain(ServerHttpSecurity http) {
    http.csrf().disable();
+   
   // http.authorizeExchange().pathMatchers("/d)
+   
    http.authorizeExchange().pathMatchers(HttpMethod.OPTIONS, "/**").permitAll();
-  
+  http.authorizeExchange().pathMatchers(HttpMethod.GET,"/actuator/**").permitAll();
+  http.authorizeExchange().pathMatchers(HttpMethod.GET,"/health").permitAll();
    
    
         http.cors().disable();
@@ -47,6 +50,7 @@ public class WebFluxSecurityConfig {
                 
                 
             )
+   
             
             .httpBasic(Customizer.withDefaults());
         return http.build();

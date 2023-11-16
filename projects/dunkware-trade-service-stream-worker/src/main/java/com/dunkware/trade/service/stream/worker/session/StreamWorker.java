@@ -23,6 +23,7 @@ import com.dunkware.spring.cluster.DunkNetException;
 import com.dunkware.spring.cluster.anot.ADunkNetService;
 import com.dunkware.spring.runtime.services.ExecutorService;
 import com.dunkware.trade.service.stream.descriptor.StreamDescriptor;
+import com.dunkware.trade.service.stream.json.worker.service.StreamEntitySnapshotReq;
 import com.dunkware.trade.service.stream.json.worker.stream.StreamSessionWorkerCancelReq;
 import com.dunkware.trade.service.stream.json.worker.stream.StreamSessionWorkerCancelResp;
 import com.dunkware.trade.service.stream.json.worker.stream.StreamSessionWorkerStartReq;
@@ -32,13 +33,17 @@ import com.dunkware.trade.service.stream.json.worker.stream.StreamSessionWorkerS
 import com.dunkware.trade.service.stream.json.worker.stream.StreamSessionWorkerStopReq;
 import com.dunkware.trade.service.stream.json.worker.stream.StreamSessionWorkerStopResp;
 import com.dunkware.trade.service.stream.worker.session.anot.AStreamWorkerExtension;
-import com.dunkware.trade.service.stream.worker.session.publishers.StreamWorkerSnapshotPublisher;
 import com.dunkware.trade.service.stream.worker.session.query.StreamWorkerEntityQueryBuilder;
 import com.dunkware.xstream.api.XStream;
+import com.dunkware.xstream.api.XStreamEntity;
+import com.dunkware.xstream.api.XStreamEntityVar;
 import com.dunkware.xstream.api.XStreamInput;
+import com.dunkware.xstream.api.XStreamRuntimeException;
 import com.dunkware.xstream.api.XStreamStatus;
 import com.dunkware.xstream.core.XStreamCore;
 import com.dunkware.xstream.core.XStreamImpl;
+import com.dunkware.xstream.model.entity.StreamEntitySnapshot;
+import com.dunkware.xstream.model.entity.StreamEntitySnapshotVar;
 
 public class StreamWorker implements DunkNetChannelHandler {
 
@@ -46,13 +51,13 @@ public class StreamWorker implements DunkNetChannelHandler {
 
 	private Logger logger = LoggerFactory.getLogger(getClass());
 	private Marker marker = MarkerFactory.getMarker("StreamSessionWorker");
-    private Marker stopMarker = MarkerFactory.getMarker("StreamStop");
+	private Marker stopMarker = MarkerFactory.getMarker("StreamStop");
 	private DunkNetChannel channel;
 
 	private XStreamInput input = new XStreamInput();
-	
-	private boolean stopInvoked = false; 
-	private volatile boolean stopComplete = false; 
+
+	private boolean stopInvoked = false;
+	private volatile boolean stopComplete = false;
 
 	@Autowired
 	private DunkNet dunkNet;
@@ -68,23 +73,22 @@ public class StreamWorker implements DunkNetChannelHandler {
 
 	private Timer statTimer = null;
 
+	// private XStreamSignalService signalService;
 
-	//private XStreamSignalService signalService;
-	
 	private List<StreamWorkerExtension> workerExtensions = new ArrayList<StreamWorkerExtension>();
 
 	@Autowired
 	private ExecutorService executorService;
 
 	public void init() {
-		
+
 	}
-	
-	public StreamSessionWorkerStartReq getStartReq() { 
-		return req; 
+
+	public StreamSessionWorkerStartReq getStartReq() {
+		return req;
 	}
-	
-	public StreamDescriptor getStreamDescriptor() { 
+
+	public StreamDescriptor getStreamDescriptor() {
 		return req.getStreamDescriptor();
 	}
 
@@ -92,30 +96,30 @@ public class StreamWorker implements DunkNetChannelHandler {
 	public void channelInit(DunkNetChannel channel) throws DunkNetException {
 		this.channel = channel;
 		this.channel.addExtension(this);
-		
+
 	}
-	
-	
-	public XStream getXStream() { 
+
+	public XStream getXStream() {
 		return stream;
 	}
-	
-	public DunkNet getDunkNet() { 
+
+	public DunkNet getDunkNet() {
 		return dunkNet;
 	}
 
 	/**
-	 * Here we will start the stream 
+	 * Here we will start the stream
 	 */
 	@Override
 	public void channelStart() throws DunkNetException {
-		// don't really care 
+		// don't really care
 	}
-	
+
 	@ADunkNetService(label = "Stop Session Worker Stream")
 	public StreamSessionWorkerStopResp stopStream(StreamSessionWorkerStopReq req) {
-		
-		logger.info(stopMarker, "Stop Stream Message Recieved on Node {} worker {}", dunkNet.getId(),req.getWorkerId());
+
+		logger.info(stopMarker, "Stop Stream Message Recieved on Node {} worker {}", dunkNet.getId(),
+				req.getWorkerId());
 		stopInvoked = false;
 		new StopTimeoutMonitor().start();
 		preStop();
@@ -126,32 +130,33 @@ public class StreamWorker implements DunkNetChannelHandler {
 			try {
 				ext.stop();
 			} catch (Exception e) {
-				logger.error(marker, "Exception stopping wroker extension {} error {}",ext.getClass().getName(),e.toString());
+				logger.error(marker, "Exception stopping wroker extension {} error {}", ext.getClass().getName(),
+						e.toString());
 			}
 		}
 		try {
 			stream.dispose();
 			resp.setStopTime(DTime.now(input.getTimeZone()));
 			resp.setCode("OK");
-			logger.info(stopMarker, "Stopped Stream {} Session Worker Node {}",input.getSessionId(),req.getWorkerId());
+			logger.info(stopMarker, "Stopped Stream {} Session Worker Node {}", input.getSessionId(),
+					req.getWorkerId());
 			stopComplete = true;
 			return resp;
 		} catch (Exception e) {
 			resp.setStopTime(DTime.now(input.getTimeZone()));
 			resp.setCode("ERROR");
 			resp.setError(e.toString());
-			logger.error(stopMarker, "Exception stopping stream session node {} and worker {} " + e.toString(),dunkNet.getId(),req.getWorkerId());
+			logger.error(stopMarker, "Exception stopping stream session node {} and worker {} " + e.toString(),
+					dunkNet.getId(), req.getWorkerId());
 			stopComplete = true;
 			return resp;
 		}
 
 	}
-	
-	
-	
+
 	@ADunkNetService(label = "Cancel Session Worker Stream")
-	public StreamSessionWorkerCancelResp cancelStream(StreamSessionWorkerCancelReq req) { 
-		if(stream.getStatus() == XStreamStatus.Running) { 
+	public StreamSessionWorkerCancelResp cancelStream(StreamSessionWorkerCancelReq req) {
+		if (stream.getStatus() == XStreamStatus.Running) {
 			stream.cancel();
 		}
 		setStatus(StreamSessionWorkerStatus.Cancelled);
@@ -161,17 +166,17 @@ public class StreamWorker implements DunkNetChannelHandler {
 	}
 
 	@ADunkNetService(label = "Start Session Worker Stream")
-	public StreamSessionWorkerStartResp startStream(StreamSessionWorkerStartReq req) { 
+	public StreamSessionWorkerStartResp startStream(StreamSessionWorkerStartReq req) {
 		this.req = req;
 		Set<Class<?>> classes = DAnotHelper.getClassesAnnotedWith(AStreamWorkerExtension.class);
 		for (Class<?> class1 : classes) {
 			try {
-				StreamWorkerExtension ext = (StreamWorkerExtension)class1.newInstance();
+				StreamWorkerExtension ext = (StreamWorkerExtension) class1.newInstance();
 				ext.init(this);
 				workerExtensions.add(ext);
 			} catch (Exception e) {
 				logger.error(marker, "Exception init extension " + e.toString());
-		
+
 			}
 		}
 		stats.setNodeId(dunkNet.getId());
@@ -187,7 +192,7 @@ public class StreamWorker implements DunkNetChannelHandler {
 		try {
 			StreamWorkerEntityQueryBuilder queryBuilder = new StreamWorkerEntityQueryBuilder();
 			queryBuilder.init(this);
-			this.input = XStreamCore.createInput(req.getStreamBundle(), executorService.get(),queryBuilder);
+			this.input = XStreamCore.createInput(req.getStreamBundle(), executorService.get(), queryBuilder);
 			this.input.setSignalTypes(req.getSignals());
 			this.input.setIdentifier(req.getStream());
 		} catch (Exception e) {
@@ -201,7 +206,8 @@ public class StreamWorker implements DunkNetChannelHandler {
 		try {
 			stream = new XStreamImpl();
 			stream.start(input);
-			logger.info(marker, "Started Stream {} Session Worker {} on Node {}",input.getSessionId(),req.getWorkerId(),req.getNodeId());
+			logger.info(marker, "Started Stream {} Session Worker {} on Node {}", input.getSessionId(),
+					req.getWorkerId(), req.getNodeId());
 			setStatus(StreamSessionWorkerStatus.Running);
 		} catch (Exception e) {
 			logger.error(marker, "Exception starting stream session worker {} " + req.getWorkerId(), e.toString());
@@ -212,37 +218,36 @@ public class StreamWorker implements DunkNetChannelHandler {
 			return resp;
 		}
 		for (StreamWorkerExtension ext : workerExtensions) {
-				try {
-					ext.start();		
-				} catch (Exception e) {
-					logger.error(marker, "Exception starting worker extension {}  error {}",ext.getClass().getName(),e.toString());
-					stream.cancel();
-					resp.setCode("ERROR");
-					resp.setError("Worker Extension " + ext.getClass().getName() + " exception " + e.toString());
-					return resp;
-					
-				}
-			
+			try {
+				ext.start();
+			} catch (Exception e) {
+				logger.error(marker, "Exception starting worker extension {}  error {}", ext.getClass().getName(),
+						e.toString());
+				stream.cancel();
+				resp.setCode("ERROR");
+				resp.setError("Worker Extension " + ext.getClass().getName() + " exception " + e.toString());
+				return resp;
+
+			}
+
 		}
 		statTimer = new Timer();
 		statTimer.scheduleAtFixedRate(new StatPublisher(), 0, 1000);
-		
+
 		resp.setCode("OK");
 		return resp;
 	}
-	
-
 
 	@Override
 	public void channelClose() {
-		logger.info(stopMarker, "Channel Closed invoked on Worker {} Node {}",req.getWorkerId(),dunkNet.getId());
+		logger.info(stopMarker, "Channel Closed invoked on Worker {} Node {}", req.getWorkerId(), dunkNet.getId());
 
 	}
 
 	public XStream getStream() {
 		return stream;
 	}
-	
+
 	public void setStatus(StreamSessionWorkerStatus status) {
 		this.status = status;
 		this.stats.setStatus(status.name());
@@ -258,28 +263,64 @@ public class StreamWorker implements DunkNetChannelHandler {
 			stats.setSystemTime(DTime.now(stream.getInput().getTimeZone()));
 			stats.setStreamTime(stream.getClock().getTime());
 			stats.setTickCount(stream.getTickRouter().getTickCount());
-	//		stats.setSignalCount(signalService.getSignalCount());
-			stats.setLastDataTickTime(stream.getTickRouter().getLastDataTickTime());	
+			// stats.setSignalCount(signalService.getSignalCount());
+			stats.setLastDataTickTime(stream.getTickRouter().getLastDataTickTime());
 		} catch (Exception e) {
 			logger.error(marker, "Exception update stats " + e.toString());
-			
+
 		}
-		
+
 	}
-	
+
+	@ADunkNetService(label = "Entity Snapshot Request")
+	public StreamEntitySnapshot entitySnapshot(StreamEntitySnapshotReq req) throws Exception {
+		if (this.getXStream() == null) {
+			throw new Exception("XStream is null");
+		}
+		XStream stream = getXStream();
+		XStreamEntity ent = null; 
+		try {
+			ent = stream.getRow(req.getEntityId());			
+		} catch (XStreamRuntimeException e) {
+			throw new Exception("Entity ID not found on worker stream " + req.getEntityId());
+		}
+
+		StreamEntitySnapshot snap = new StreamEntitySnapshot();
+		snap.setDateTime(stream.getClock().getLocalDateTime());
+		snap.setId(ent.getIdentifier());
+		snap.setIdentifier(ent.getId());
+		for (XStreamEntityVar var : ent.getVars()) {
+			StreamEntitySnapshotVar snapVar = new StreamEntitySnapshotVar();
+			snapVar.setId(var.getVarType().getCode());
+			snapVar.setIdentifier(var.getVarType().getName());
+			snapVar.setUpdateCount(var.getValueCount());
+			if (var.getSize() > 0) {
+				snapVar.setLastUpdate(var.getLastUpdate());
+				;
+				snapVar.setValue(var.getValue(0));
+			}
+			snap.getVars().put(snapVar.getId(), snapVar);
+
+		}
+		return snap;
+
+	}
+
 	private class StatPublisher extends TimerTask {
 
 		public void run() {
 			try {
-				if( stopInvoked) { 
-					logger.error(stopMarker, "Stop Invokved Stats Publisher still running worker {} node {}",req.getWorkerId(),dunkNet.getId());
+				if (stopInvoked) {
+					logger.error(stopMarker, "Stop Invokved Stats Publisher still running worker {} node {}",
+							req.getWorkerId(), dunkNet.getId());
 					return;
 				}
 				updateStats();
 				
+
 				channel.event(stats);
 			} catch (Exception e) {
-				if(e instanceof InterruptedException) {
+				if (e instanceof InterruptedException) {
 					return;
 				}
 				StreamWorker.this.statTimer.cancel();
@@ -292,41 +333,36 @@ public class StreamWorker implements DunkNetChannelHandler {
 	public void channelStartError(String exception) {
 		logger.error(marker, "Channel Start Exception on worker " + exception);
 	}
-	
-	
-	private void preStop() { 
-	
+
+	private void preStop() {
+
 	}
-	
-	
-	private class StopTimeoutMonitor extends Thread { 
-		
-		public void run() { 
+
+	private class StopTimeoutMonitor extends Thread {
+
+		public void run() {
 			int count = 0;
-			while(true) { 
+			while (true) {
 				try {
 					Thread.sleep(1000);
-					if(stopComplete) { 
-						logger.info(stopMarker, "Stop Monitor Detected Stop Complete on node {} worker {}",dunkNet.getId(),req.getWorkerId());
+					if (stopComplete) {
+						logger.info(stopMarker, "Stop Monitor Detected Stop Complete on node {} worker {}",
+								dunkNet.getId(), req.getWorkerId());
 						return;
 					}
 					count++;
-					if(count > 20) { 
-						logger.error(stopMarker, "Stop Monitor detected 20 seconds without stop complete node {} worker {}", dunkNet.getId(), req.getWorkerId());
+					if (count > 20) {
+						logger.error(stopMarker,
+								"Stop Monitor detected 20 seconds without stop complete node {} worker {}",
+								dunkNet.getId(), req.getWorkerId());
 						return;
 					}
 				} catch (Exception e) {
 					// TODO: handle exception
 				}
 			}
-			
+
 		}
 	}
-	
-	
-	
-	
-	
-	
 
 }

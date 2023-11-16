@@ -339,11 +339,11 @@ public class SnapshotWriter implements DKafkaByteHandler2 {
 
 					Document document = MongoStreamConverter.snapshotToDocument(snapshot,
 							descriptor.getTimeZone());
-					if (entities.get(snapshot.getEntityId()) == null) {
-						entities.put(snapshot.getEntityId(), new AtomicInteger(1));
+					if (entities.get(snapshot.getId()) == null) {
+						entities.put(snapshot.getId(), new AtomicInteger(1));
 					
 					} else {
-						entities.get(snapshot.getEntityId()).incrementAndGet();
+						entities.get(snapshot.getId()).incrementAndGet();
 					}
 
 					pendingWrites.add(new InsertOneModel<Document>(document));

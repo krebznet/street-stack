@@ -44,7 +44,7 @@ public class XStreamImpl implements XStream {
 	private Logger logger = LoggerFactory.getLogger(getClass());
 	private Marker stopMarker = MarkerFactory.getMarker("XStreamStop");
 	private volatile ConcurrentHashMap<String, XStreamEntity> rows = new ConcurrentHashMap<String, XStreamEntity>();
-
+	private volatile ConcurrentHashMap<Integer,String> rowIdMappings = new ConcurrentHashMap<Integer,String>();
 	private XStreamStatus status = XStreamStatus.Created;
 
 	// Components
@@ -216,6 +216,16 @@ public class XStreamImpl implements XStream {
 		}
 		return rows.get(id);
 	}
+	
+
+	@Override
+	public XStreamEntity getRow(int entityid) {
+		String ident = rowIdMappings.get(entityid);
+		if(ident == null) { 
+			throw new XStreamRuntimeException("Hey can't find a row mapping with entity id " +  entityid);
+		}
+		return rows.get(ident);
+	}
 
 	@Override
 	public List<XStreamEntity> getRows() {
@@ -235,6 +245,7 @@ public class XStreamImpl implements XStream {
 		XStreamRowImpl row = new XStreamRowImpl();
 		row.start(rowId, rowIdentifier, this);
 		row.addRowListener(rowListener);
+		rowIdMappings.put(rowIdentifier, rowId);
 		rows.put(rowId, row);
 		try {
 			streamListenerLock.acquire();
@@ -251,6 +262,7 @@ public class XStreamImpl implements XStream {
 		} finally {
 			streamListenerLock.release();
 		}
+		
 		rowIdentifiers.add(rowId);
 		return row;
 	}

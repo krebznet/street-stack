@@ -26,6 +26,9 @@ public interface XStream {
 	 * @return
 	 */
 	XStreamEntity getRow(String id);
+
+	XStreamEntity getRow(int entityid);
+
 	
 	List<String> getRowIdentifiers();
 	
