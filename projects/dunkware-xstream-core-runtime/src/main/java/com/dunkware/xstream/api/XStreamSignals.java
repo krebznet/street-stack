@@ -18,5 +18,7 @@ public interface XStreamSignals {
 	public void stopSignalType(int id) throws Exception; 
 	
 	public List<XStreamSignal> search(XStreamSignalSearch search);
+	
+	
 
 }

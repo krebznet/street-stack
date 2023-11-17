@@ -5,6 +5,7 @@ import java.math.MathContext;
 import java.math.RoundingMode;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
+import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
@@ -16,7 +17,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.slf4j.MarkerFactory;
 
-import com.dunkware.common.util.helpers.DNumberHelper;
+import com.dunkware.common.stats.GenericNumber;
 import com.dunkware.xstream.api.XStreamEntity;
 import com.dunkware.xstream.api.XStreamEntityVar;
 import com.dunkware.xstream.api.XStreamEntityVarListener;
@@ -62,12 +63,10 @@ public class XStreamVarImpl implements XStreamEntityVar, XStreamExpressionListen
 	private volatile LocalTime lastUpdate = null;
 	
 	private boolean numeric = false; 
-	private Number high = 0;
-	private Number low = 0; 
-	private LocalTime highTime = LocalTime.NOON;
-	private LocalTime lowTime = LocalTime.NOON;
-	private boolean highLowInit = false; 
 
+	
+	private List<GenericNumber> numericValueHistory = new ArrayList<GenericNumber>();
+	private Semaphore numericValueLock = new Semaphore(1);
 	
 	@Override
 	public void init(XStreamEntity row, VarType varType) {
@@ -153,7 +152,18 @@ public class XStreamVarImpl implements XStreamEntityVar, XStreamExpressionListen
 	@Override
 	public void setValue(Object value) {
 		if(numeric) {
-			updateHighLow(value);
+			try {
+				numericValueLock.acquire();
+				LocalTime localTime = row.getLocalDateTime().toLocalTime();
+				localTime = localTime.truncatedTo(ChronoUnit.SECONDS);
+				GenericNumber number = new GenericNumber((Number)value, localTime);
+				numericValueHistory.add(number);
+			} catch (Exception e) {
+				logger.error("Exception creating numeric value " + e.toString() + " on var " + varType.getName());
+			} finally { 
+				numericValueLock.release();
+			}
+
 		}
 		if(value == null) { 
 			if(logger.isDebugEnabled()) {
@@ -205,6 +215,11 @@ public class XStreamVarImpl implements XStreamEntityVar, XStreamExpressionListen
 	}
 	
 	
+
+	@Override
+	public List<GenericNumber> getNumericValues() {
+		return numericValueHistory;
+	}
 
 	@Override
 	public void getValues(Object[] data, int startIndex, int endIndex) {
@@ -344,61 +359,11 @@ public class XStreamVarImpl implements XStreamEntityVar, XStreamExpressionListen
 
 	@Override
 	public boolean isNumeric() {
-		// TODO Auto-generated method stub
-		return false;
+		return numeric;
 	}
 
-	@Override
-	public Number getHigh() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public LocalTime getHighTime() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public Number getLow() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public LocalTime getLowTime() {
-		// TODO Auto-generated method stub
-		return null;
-	}
 	
-	
-	private void updateHighLow(Object input) {
-		Number value = 0;
-		try {
-			value = (Number)input;
-		} catch (Exception e) {
-			logger.error("Check your shitty code, updateHighLow on vaue type " + input.getClass().getName());
-			return;
-		}
-		if(!highLowInit) { 
-			high = value; 
-			low = value; 
-			lowTime = getRow().getStream().getClock().getLocalTime();
-			highTime = getRow().getStream().getClock().getLocalTime();
-			highLowInit = true;
-			return;
-		}
-		if(DNumberHelper.isFirstGreater(value, high)) {
-			high = value; 
-			highTime = getRow().getStream().getClock().getLocalTime();
-		}
-		if(DNumberHelper.isFirstGreater(low, value) ) { 
-			low = value; 
-			lowTime = getRow().getStream().getClock().getLocalTime();
-		}
-		
-	}
+
 
 	private Integer resolveIndex(int valueIndex) {
 		if (updateCounter.get() - 1 < maxSize) {

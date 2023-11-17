@@ -1,10 +1,11 @@
 package com.dunkware.xstream.api;
 
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.Collection;
+import java.util.List;
 
+import com.dunkware.common.stats.GenericNumber;
 import com.dunkware.xstream.model.metrics.XStreamVarMetrics;
 import com.dunkware.xstream.xScript.VarType;
 
@@ -26,14 +27,6 @@ public interface XStreamEntityVar {
 	
 	public boolean isNumeric();
 	
-	public Number getHigh();
-	
-	public LocalTime getHighTime();
-	
-	public Number getLow();
-	
-	public LocalTime getLowTime();
-	
 	public Number getNumber(int index);
 		
 	public void getValues(Object[] data, int startIndex, int endIndex);
@@ -53,6 +46,8 @@ public interface XStreamEntityVar {
 	public XStreamEntity getRow();
 	
 	public void addDownStreamVar(XStreamEntityVar var);
+	
+	public List<GenericNumber> getNumericValues();
 	
 	public void setMaxSizeEnabled(boolean value);
 	

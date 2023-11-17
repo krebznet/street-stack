@@ -3,7 +3,9 @@ package com.dunkware.xstream.core.mock;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.Collection;
+import java.util.List;
 
+import com.dunkware.common.stats.GenericNumber;
 import com.dunkware.xstream.api.XStreamEntity;
 import com.dunkware.xstream.api.XStreamEntityVar;
 import com.dunkware.xstream.api.XStreamEntityVarListener;
@@ -33,26 +35,10 @@ public class MockXStreamVar implements XStreamEntityVar  {
 		return false;
 	}
 
-	@Override
-	public Number getHigh() {
-		// TODO Auto-generated method stub
-		return null;
-	}
+	
 
 	@Override
-	public LocalTime getHighTime() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public Number getLow() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public LocalTime getLowTime() {
+	public List<GenericNumber> getNumericValues() {
 		// TODO Auto-generated method stub
 		return null;
 	}
