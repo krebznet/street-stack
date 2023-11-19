@@ -12,7 +12,7 @@ import javax.persistence.Id;
 // data_enttiy_stat_file_entity
 // data_entity_stat_file_stattype
 // Data_dentity_stat_file_signals
-@Entity(name = "data_stream_entity_stats_session")
+@Entity(name = "data_entity_stats_session")
 public class EntityStatsEnt {
 	
 	@Id
@@ -30,6 +30,7 @@ public class EntityStatsEnt {
 	private String exceptionMessage = null; 
 	private int insertCount; 
 	private double insertTime; 
+	private String kafkaTopic; 
 	
 	public long getId() {
 		return id;
@@ -109,6 +110,13 @@ public class EntityStatsEnt {
 	public void setInsertTime(double insertTime) {
 		this.insertTime = insertTime;
 	}
+	public String getKafkaTopic() {
+		return kafkaTopic;
+	}
+	public void setKafkaTopic(String kafkaTopic) {
+		this.kafkaTopic = kafkaTopic;
+	}
+	
 	
 	
 	

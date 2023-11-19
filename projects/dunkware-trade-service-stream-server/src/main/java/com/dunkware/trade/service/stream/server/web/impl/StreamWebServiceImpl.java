@@ -55,6 +55,9 @@ public class StreamWebServiceImpl implements StreamWebService  {
 
 	@Override
 	public EntitySessionVarGrid getEntitySessionVarGrid(int entityId) throws Exception {
+		
+		
+		
 		return  null;
 	}
 

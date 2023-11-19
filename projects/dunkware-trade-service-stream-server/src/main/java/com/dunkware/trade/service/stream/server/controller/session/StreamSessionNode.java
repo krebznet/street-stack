@@ -66,6 +66,11 @@ public interface StreamSessionNode {
 	
 	public boolean isStopping();
 	
+	public boolean isStopException();
+	
+	public StreamSessionNodeStopState getStopState();
+	
+	
 	
 	
 	

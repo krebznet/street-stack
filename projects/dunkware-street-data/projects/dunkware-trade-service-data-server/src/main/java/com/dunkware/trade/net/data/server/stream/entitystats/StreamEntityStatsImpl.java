@@ -20,6 +20,7 @@ import com.dunkware.common.util.stopwatch.DStopWatch;
 import com.dunkware.common.util.time.DunkTime;
 import com.dunkware.spring.cluster.DunkNet;
 import com.dunkware.spring.cluster.anot.ADunkNetEvent;
+import com.dunkware.stream.cluster.proto.controller.messages.StreamSessionStopped;
 import com.dunkware.stream.cluster.proto.controller.messages.StreamSessionStopping;
 import com.dunkware.trade.net.data.server.stream.entitystats.cache.StatCache;
 import com.dunkware.trade.net.data.server.stream.entitystats.repository.EntityStatsEnt;
@@ -101,8 +102,78 @@ public class StreamEntityStatsImpl implements StreamEntityStats {
 	
 	// jps data_entity_stats_capture
 	
-	
 	@ADunkNetEvent()
+	public void onStreamSessionStopped(StreamSessionStopped stopping) { 
+		sessionStopMessageCount.incrementAndGet();
+		System.err.println("okay what the fuck on stream session stopping count " + sessionStopMessageCount.get());
+		
+		logger.info(stop, "handling session stopping counter " + sessionStopMessageCount.get());
+		if(stopping.getIdentifier().equals(getStreamDescriptor().getIdentifier())) { 
+			Thread runner = new Thread() { 
+				
+				public void run() { 
+				//	if(statsRecordExistsForDate(stopping.getStartTime().toLocalDate())) { 
+					//	logger.info(marker, "Skipping Entity Stats Session File Write Because Session Stats File Exists for same date ");
+					//}
+					// 
+					logger.info(stop, "Creating entitystats record fuck" + sessionStopMessageCount.get());;
+					EntityStatsEnt record = new EntityStatsEnt();
+					record.setDate(stopping.getStartTime().toLocalDate());
+					record.setSessionId(stopping.getSessionId());
+					record.setStreamIdent(stopping.getIdentifier());
+					record.setStreamId(stopping.getId());
+					record.setStartDateTime(stopping.getStartTime());;
+					record.setStopDateTime(stopping.getStopTime());
+					record.setSessionFileDirectory(entitySatsDirectory);
+					record.setKafkaTopic(stopping.getProperties().get("stats_topic"));
+					String startTimeFormat = DunkTime.format(record.getStartDateTime(), DunkTime.YYMMDDHHMMSS);
+					String stopTimeFormat = DunkTime.format(record.getStopDateTime(), DunkTime.YYMMDDHHMMSS);
+					String fileName = descriptor.getIdentifier().toUpperCase() + "_" + startTimeFormat + "_" + stopTimeFormat + ".csv";
+					
+					record.setSessionFile(fileName);;
+					
+					
+					try {
+						record = repo.save(record);
+					} catch (Exception e) {
+						logger.error(marker, "Exception saving StreamStatsEnt record " + e.toString());
+						
+					}
+					
+					DStopWatch timer = DStopWatch.create();
+					timer.start();
+					StreamEntityStatsFileWriter writer = new StreamEntityStatsFileWriter();
+					writer.init(record, StreamEntityStatsImpl.this, new StreamEntityStatsFileWriterListener() {
+						
+						@Override
+						public void onException(StreamEntityStatsFileWriter writer) {
+							logger.error(marker, "Exception Writing Entity Stats " + writer.getError() + " " +  sessionStopMessageCount.get());
+							EntityStatsEnt existingRecord = writer.getRecord();
+							existingRecord.setException(true);
+							existingRecord.setExceptionMessage(writer.getError());
+							repo.save(existingRecord);
+							
+						}
+						
+						@Override
+						public void onComplete(StreamEntityStatsFileWriter writer) {
+							logger.info(stop,"on complete " + sessionStopMessageCount.get());
+							EntityStatsEnt existingRecord = writer.getRecord();
+							existingRecord.setException(false);
+							existingRecord.setInsertCount(writer.getInsertCount());
+							timer.stop();
+							existingRecord.setInsertTime(timer.getCompletedSeconds());;
+							repo.save(existingRecord);
+						}
+					});
+				}
+			};
+			runner.start();
+		}
+	}
+	
+	
+	
 	public void onStreamSessionStopping(StreamSessionStopping stopping) { 
 		sessionStopMessageCount.incrementAndGet();
 		System.err.println("okay what the fuck on stream session stopping count " + sessionStopMessageCount.get());

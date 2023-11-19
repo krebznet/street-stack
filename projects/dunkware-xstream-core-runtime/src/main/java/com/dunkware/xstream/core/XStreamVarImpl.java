@@ -28,6 +28,9 @@ import com.dunkware.xstream.model.metrics.XStreamVarMetrics;
 import com.dunkware.xstream.xScript.DataType;
 import com.dunkware.xstream.xScript.VarType;
 
+import ca.odell.glazedlists.EventList;
+import ca.odell.glazedlists.GlazedLists;
+
 public class XStreamVarImpl implements XStreamEntityVar, XStreamExpressionListener, XStreamEntityVarListener {
 
 	private XStreamEntity row;
@@ -65,8 +68,8 @@ public class XStreamVarImpl implements XStreamEntityVar, XStreamExpressionListen
 	private boolean numeric = false; 
 
 	
-	private List<GenericNumber> numericValueHistory = new ArrayList<GenericNumber>();
-	private Semaphore numericValueLock = new Semaphore(1);
+	private EventList<GenericNumber> numericValueHistory = GlazedLists.eventList(new ArrayList<GenericNumber>());
+
 	
 	@Override
 	public void init(XStreamEntity row, VarType varType) {
@@ -153,15 +156,23 @@ public class XStreamVarImpl implements XStreamEntityVar, XStreamExpressionListen
 	public void setValue(Object value) {
 		if(numeric) {
 			try {
-				numericValueLock.acquire();
+			
 				LocalTime localTime = row.getLocalDateTime().toLocalTime();
 				localTime = localTime.truncatedTo(ChronoUnit.SECONDS);
 				GenericNumber number = new GenericNumber((Number)value, localTime);
-				numericValueHistory.add(number);
+				try {
+					numericValueHistory.getReadWriteLock().writeLock().lock();
+					numericValueHistory.add(number);
+				} catch (Exception e) {
+					logger.error("Exception locking numeric value history");
+				} finally { 
+					numericValueHistory.getReadWriteLock().writeLock().unlock();
+				}
+ 
 			} catch (Exception e) {
 				logger.error("Exception creating numeric value " + e.toString() + " on var " + varType.getName());
 			} finally { 
-				numericValueLock.release();
+			
 			}
 
 		}
@@ -217,7 +228,7 @@ public class XStreamVarImpl implements XStreamEntityVar, XStreamExpressionListen
 	
 
 	@Override
-	public List<GenericNumber> getNumericValues() {
+	public EventList<GenericNumber> getNumericValues() {
 		return numericValueHistory;
 	}
 

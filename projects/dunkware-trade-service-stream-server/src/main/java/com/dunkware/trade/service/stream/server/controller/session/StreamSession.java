@@ -27,7 +27,7 @@ public interface StreamSession {
 
 	public void stopSession() throws StreamSessionException;
 
-	public StreamSessionStats getStatus();
+	public StreamSessionStats getStats();
 
 	public Collection<StreamSessionNode> getNodes();
 

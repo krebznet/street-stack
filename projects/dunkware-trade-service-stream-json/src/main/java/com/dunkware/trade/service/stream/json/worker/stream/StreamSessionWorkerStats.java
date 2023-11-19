@@ -21,6 +21,7 @@ public class StreamSessionWorkerStats {
 	private long tickCount; 
 	private String workerId; 
 	private int numericId;
+	private StreamSessionWorkerStopState stopState;
 	
 	private String status;
 
@@ -196,6 +197,17 @@ public class StreamSessionWorkerStats {
 		this.startException = startException;
 	}
 
+
+	public StreamSessionWorkerStopState getStopState() {
+		return stopState;
+	}
+
+
+	public void setStopState(StreamSessionWorkerStopState stopState) {
+		this.stopState = stopState;
+	}
+
+	
 	
 
 	

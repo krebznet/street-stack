@@ -73,11 +73,11 @@ public class StreamEntityStatsFileWriter implements DKafkaByteHandler2 {
 		}
 
 		try {
-			String topicName = "stream_" + descriptor.getIdentifier() + "_feed_entitystats";
+			String topicName = entity.getKafkaTopic();
 			String consumerId = descriptor.getIdentifier() + "_entitystats_1";
 			String groupId = descriptor.getIdentifier() + "_entitystats_group";
 			DKafkaByteConsumer2Spec spec = DKafkaByteConsumer2SpecBuilder
-					.newBuilder(ConsumerType.Auto, OffsetType.Latest).addBroker(descriptor.getKafkaBrokers())
+					.newBuilder(ConsumerType.Auto, OffsetType.Earliest).addBroker(descriptor.getKafkaBrokers())
 					.addTopic(topicName).setClientAndGroup(consumerId, groupId).setThrottle(5000000).build();
 			kafkaConsumer = DKafkaByteConsumer2.newInstance(spec);
 			kafkaConsumer.addStreamHandler(this);

@@ -21,6 +21,12 @@ public class DunkNetConfig {
 	
 	@Value("${dunknet.cluster.id}")
 	private String clusterId;
+	
+	@Value("${dunknet.timeout:#{60}}")
+	private int timeout; 
+	
+	@Value("${dunknet.handler.threads:#{4}}")
+	private int handlerThreads;
 
 	public String getNodeId() {
 		return nodeId;
@@ -52,7 +58,25 @@ public class DunkNetConfig {
 
 	public void setClusterId(String clusterId) {
 		this.clusterId = clusterId;
+	}
+
+	public int getTimeout() {
+		return timeout;
+	}
+
+	public void setTimeout(int timeout) {
+		this.timeout = timeout;
+	}
+
+	public int getHandlerThreads() {
+		return handlerThreads;
+	}
+
+	public void setHandlerThreads(int handlerThreads) {
+		this.handlerThreads = handlerThreads;
 	} 
+	
+	
 	
 	
 	

@@ -181,7 +181,11 @@ public class DunkNetController {
 	}
 
 	public DunkNetChannel getChannel(String channelId) throws DunkNetException {
-		return activeChannels.get(channelId);
+		DunkNetChannel channel =  activeChannels.get(channelId);
+		if(channel == null) { 
+			throw new DunkNetException("channel id " + channelId + " not found");
+		}
+		return channel;
 	}
 
 	private void handleChannelRequest(DunkNetMessage message) throws DunkNetException {
@@ -486,11 +490,21 @@ public class DunkNetController {
 	private void handleChannelServiceRequest(DunkNetMessage message) {
 		ComponentMethod method = null;
 		DunkNetChannel channel = null;
-
 		try {
-
 			channel = getChannel(message.getChannel());
 		} catch (Exception e) {
+			DunkNetMessage response = DunkNetMessage.builder().channelServiceResponseError(message.getChannel(),message.getMessageId(), "Channel ID Not found").buildMessage();
+			try {
+				DunkNetNode node = net.getNode(message.getHeader(DunkNetMessage.KEY_SOURCE_NODE).toString());
+				if(node == null) { 
+					logger.error(marker, "Channel Service Request ID {} Service Input {} sender node not found, can't send response",message.getChannel(),message.getPayload().getClass().getName());
+				} else { 
+					node.message(response);
+				}
+			} catch (Exception e2) {
+				logger.error(marker, "Channel Service Request ID {} not found, exception sending response message on source  node {}",message.getPayload().getClass().getName(), e.toString());
+				return;
+			}
 			logger.error(marker, "Internal exception channel service request but not found");
 			return;
 		}
@@ -508,7 +522,7 @@ public class DunkNetController {
 			try {
 				channel.getNode().message(m);
 			} catch (Exception e2) {
-				logger.error(marker, "Exceptions sending channel service request error " + e.toString());
+				logger.error(marker, "Exceptions sending channel {} service request error " + e.toString(),message.getChannel());
 				return;
 			}
 		}
@@ -638,7 +652,6 @@ public class DunkNetController {
 	}
 
 	private void handleEvent(DunkNetMessage message) {
-		System.out.println("handle event " + message.getPayload().getClass().getName());;
 		if(message.getChannel() != null) { 
 			handleChannelEvent(message);
 			return;

@@ -48,6 +48,8 @@ public class StreamSessionStats {
 	@JsonInclude(Include.NON_NULL)
 	private List<StreamSessionNodeBean> nodes = new ArrayList<StreamSessionNodeBean>();
 	
+	private int nodeIssueCount; 
+	
 	public StreamSessionStats() { 
 		
 	}
@@ -261,6 +263,18 @@ public class StreamSessionStats {
 	public void setNodeStartErrors(List<String> nodeStartErrors) {
 		this.nodeStartErrors = nodeStartErrors;
 	}
+
+
+	public int getNodeIssueCount() {
+		return nodeIssueCount;
+	}
+
+
+	public void setNodeIssueCount(int nodeIssueCount) {
+		this.nodeIssueCount = nodeIssueCount;
+	}
+	
+	
 	
 	
 	

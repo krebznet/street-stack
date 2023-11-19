@@ -68,6 +68,7 @@ public class StreamController {
 	private Logger logger = org.slf4j.LoggerFactory.getLogger(getClass());
 	private Marker marker = MarkerFactory.getMarker("StreamController");
 	private Marker scheduleMarker = MarkerFactory.getMarker("StreamSchedule");
+	private Marker stopTrace = MarkerFactory.getMarker("StreamStopTrace");
 
 	private StreamEntity ent;
 
@@ -401,7 +402,7 @@ public class StreamController {
 	public StreamControllerStats getStats() {
 		if (session != null) {
 
-			stats.setSession(session.getStatus());
+			stats.setSession(session.getStats());
 			stats.setName(getSession().getSessionId());
 		}
 

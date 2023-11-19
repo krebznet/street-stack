@@ -6,6 +6,8 @@ import java.util.List;
 import com.dunkware.xstream.model.signal.type.XStreamSignalType;
 
 public interface XStreamSignals {
+
+	public int getSignalCount();
 	
 	public Collection<XStreamSignalType> getSiganlTypes();
 	

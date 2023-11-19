@@ -14,6 +14,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.springframework.stereotype.Service;
 
+import com.dunkware.spring.runtime.services.ExecutorService;
 import com.dunkware.trade.net.data.server.stream.streamprovider.StreamDataProvider;
 import com.dunkware.trade.net.data.server.stream.streamprovider.StreamDataProviders;
 import com.dunkware.trade.service.stream.descriptor.StreamDescriptor;
@@ -31,6 +32,9 @@ public class StreamSignalsServiceImpl implements StreamSignalsService {
 	private StreamDataProviders streamProviders; 
 	
 	private Map<String,StreamSignals> streamSignals = new ConcurrentHashMap<String,StreamSignals>();
+	
+	@Autowired
+	private ExecutorService executor;
 	
 	@PostConstruct
 	public void init() { 

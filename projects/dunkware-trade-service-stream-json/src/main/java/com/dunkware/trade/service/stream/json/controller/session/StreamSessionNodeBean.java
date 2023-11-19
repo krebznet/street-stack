@@ -1,9 +1,13 @@
 package com.dunkware.trade.service.stream.json.controller.session;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import com.dunkware.common.util.observable.ObservableBean;
 
 public class StreamSessionNodeBean extends ObservableBean {
 
+	
 	private String status; 
 	private String workerId; 
 	private String nodeId; 
@@ -16,6 +20,9 @@ public class StreamSessionNodeBean extends ObservableBean {
 	private String systemTime; 
 	private int entityCount;
 	private int id; 
+	private String stopState; 
+	private String stopError; 
+	private List<String> stopProblems = new ArrayList<String>();
 	
 	public String getStatus() {
 		return status;
@@ -88,7 +95,31 @@ public class StreamSessionNodeBean extends ObservableBean {
 	}
 	public void setId(int id) {
 		this.id = id;
+	}
+	public String getStopState() {
+		return stopState;
+	}
+	public void setStopState(String stopState) {
+		this.stopState = stopState;
+	}
+	public String getStopError() {
+		return stopError;
+	}
+	public void setStopError(String stopError) {
+		this.stopError = stopError;
+	}
+	public List<String> getStopProblems() {
+		return stopProblems;
+	}
+	public void setStopProblems(List<String> stopProblems) {
+		this.stopProblems = stopProblems;
 	} 
+	
+	
+	
+	
+	
+	
 	
 	
 	

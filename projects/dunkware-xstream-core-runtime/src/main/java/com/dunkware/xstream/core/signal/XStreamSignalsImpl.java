@@ -7,6 +7,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.Semaphore;
+import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.Collectors;
 
 import org.slf4j.Logger;
@@ -34,7 +35,7 @@ public class XStreamSignalsImpl implements XStreamSignals  {
 	private List<XStreamSignalType> signalTypes = new ArrayList<XStreamSignalType>();
 	private Logger logger = LoggerFactory.getLogger(getClass());
 	private Marker builders = MarkerFactory.getMarker("SignalHandlerBuilders");
-	
+	private AtomicInteger signalCount = new AtomicInteger(0);
 	
 	
 	private List<XStreamSignalListener> listeners = new ArrayList<XStreamSignalListener>();
@@ -56,6 +57,15 @@ public class XStreamSignalsImpl implements XStreamSignals  {
 	
 	
 	
+	
+	@Override
+	public int getSignalCount() {
+		return signalCount.get();
+	}
+
+
+
+
 	@Override
 	public List<XStreamSignal> search(XStreamSignalSearch search) {
 		try {
@@ -88,6 +98,7 @@ public class XStreamSignalsImpl implements XStreamSignals  {
 				numValues.put(varId, varValue);
 			}
 		}
+		signalCount.incrementAndGet();
 		signal.setVars(numValues);
 		XStreamSignalImpl sig = new XStreamSignalImpl();
 		sig.setEntity(entity);

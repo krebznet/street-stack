@@ -247,6 +247,7 @@ public class DunkNetMessage {
 	public static final String KEY_REQUEST_ID = "messageId";
 	public static final String KEY_RESPONSE_CODE = "respCode";
 	public static final String KEY_RESPONSE_ERROR = "respError";
+	public static final String KEY_SOURCE_NODE = "sourceNode";
 	
     public static final String KEY_ERROR = "error";
 	public static final int TYPE_PING = 1;
@@ -261,6 +262,7 @@ public class DunkNetMessage {
 	public static final int TYPE_CHANNEL_CLIENT_STARRT_ERROR = 14;
 	public static final int TYPE_CHANNEL_SERVER_START = 9;
 	public static final int TYPE_CHANNEL_SERVER_START_ERROR = 10;
+	
 	
 	
 	

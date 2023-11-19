@@ -20,6 +20,7 @@ import com.dunkware.common.util.dtime.DTimeZone;
 import com.dunkware.common.util.mysql.pool.MySqlConnectionPool;
 import com.dunkware.common.util.time.DunkTime;
 import com.dunkware.trade.service.data.model.entitystats.EntityStatRequest;
+import com.dunkware.trade.service.stream.descriptor.StreamDescriptor;
 import com.dunkware.xstream.model.stats.entity.EntityStat;
 
 public class StreamEntityStatsHelper {
@@ -120,6 +121,22 @@ public class StreamEntityStatsHelper {
 								+ " `element` = " + req.getElement() + "";
 		System.out.println(query);
 		return query;
+		
+	}
+	
+	public String getEntityStatsSessionTopicName(StreamDescriptor descritpor, LocalDate date, int sessionId) { 
+	
+			StringBuilder b = new StringBuilder();
+			b.append("stream_data_" + descritpor.getIdentifier());
+			b.append("_entity_stats");
+			DTimeZone zone = descritpor.getTimeZone();
+			LocalDate now = LocalDate.now(DTimeZone.toZoneId(zone));
+			DunkTime.format(now,DunkTime.YYMMDD);
+			b.append("_");
+			b.append(DunkTime.format(now,DunkTime.YYMMDD));
+			b.append("_");
+			b.append(sessionId);	
+			return b.toString();
 		
 	}
 	

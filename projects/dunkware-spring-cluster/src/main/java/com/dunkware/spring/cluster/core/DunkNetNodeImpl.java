@@ -111,6 +111,7 @@ public class DunkNetNodeImpl implements DunkNetNode {
 	
 	@Override
 	public void message(DunkNetMessage message) throws DunkNetException {
+		message.getHeaders().put(DunkNetMessage.KEY_SOURCE_NODE, net.getId());
 		try {
 			if(logger.isDebugEnabled()) { 
 				if(message.getPayload() != null) {
@@ -131,6 +132,7 @@ public class DunkNetNodeImpl implements DunkNetNode {
 	@Override
 	public void message(DunkNetMessageTransport transport) throws DunkNetException {
 		try {
+			transport.getHeaders().put(DunkNetMessage.KEY_SOURCE_NODE, net.getId());
 			if(logger.isDebugEnabled()) { 
 				logger.debug(marker, "Sending ransport on node {} to node {} serialized {} ",
 						net.getId(),getId(),DJson.serializePretty(transport));

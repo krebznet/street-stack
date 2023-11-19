@@ -81,7 +81,7 @@ public class DunkNetImpl implements DunkNet, DKafkaByteHandler2 {
 
 	private DKafkaByteConsumer2 messageConsumer;
 	private DKafkaByteProducer messageProducer;
-	private MessageRouter messageRouter; 
+	
 
 	private BlockingQueue<DunkNetMessage> messageQueue = new LinkedBlockingQueue<DunkNetMessage>();
 
@@ -120,40 +120,11 @@ public class DunkNetImpl implements DunkNet, DKafkaByteHandler2 {
 		eventNode = eventTree.getRoot().createChild(this);
 		bean.setStartTime(DDateTime.now());
 		bean.setId(config.getNodeId());
-		// initialize components 
-		// lets validate we have a ping topic created
 		String pingTopic = "dunknet." + getConfig().getClusterId() + ".node.ping";
-		DKafkaAdminClient client = null;
-		try {
-			client = createAdminClient();
-			
-			//if(client.topicExists(pingTopic) == false) { 
-			//	logger.info(marker, "Creating Topic " + pingTopic);
-			//	client.createTopic(DKafkaNewTopic.builder().name(pingTopic).cleanupPolicy(TopicConfig.CLEANUP_POLICY_DELETE)
-			//	.replicas((short)1).paritions(1).retentionTime(120, TimeUnit.SECONDS).build());
-			//}
-			logger.info("Created topic " + pingTopic);
-		} catch (Exception e) {
-			logger.error(marker, "Excepton creating ping topic, might as well crash or look to see if it exists");
-			try {
-				if(!client.topicExists(pingTopic) == false) { 
-					throw new DunkNetException("Exception creating new topics " + e.toString());
-				}	
-			} catch (Exception e2) {
-				throw new DunkNetException("Exception double checking ping topic poste xcption "+  e.toString());
-			}
-			
-			// TODO: handle exception
-		}
-		
-		
-		
 		descriptor = new DunkNetNodeDescriptor();
 			
 			try {
-				
 				messageProducer = DKafkaByteProducer.newInstance(config.getServerBrokers(),pingTopic,getId());
-				
 			} catch (Exception e) {
 				logger.error("Exception creating ping kafka producer " + e.toString());
 				System.exit(-1);
@@ -161,14 +132,21 @@ public class DunkNetImpl implements DunkNet, DKafkaByteHandler2 {
 			
 			try {
 				String nodeTopic = "dunknet." + getConfig().getClusterId() + ".node." + getId();
-				System.out.println(nodeTopic);
 				DKafkaByteConsumer2Spec spec = DKafkaByteConsumer2SpecBuilder.newBuilder(ConsumerType.Auto, OffsetType.Latest).addBroker(config.getServerBrokers()).setClientAndGroup(getId() +  DUUID.randomUUID(5) ,getId() +  DUUID.randomUUID(5)).addTopic(nodeTopic).build();
 				messageConsumer = DKafkaByteConsumer2.newInstance(spec);
 				messageConsumer.addStreamHandler(this);
 				messageConsumer.start();
 			} catch (Exception e) {
 				logger.error("Exception starting dunk net topic consumer " + e.toString());
-				//System.exit(-1);
+				System.exit(-1);
+			}
+			
+			int routers = 0;
+			while(routers < config.getHandlerThreads()) { 
+				MessageRouter router = new MessageRouter();
+				router.start();
+				messageRouters.add(router);
+				routers++;
 			}
 	
 			
@@ -180,18 +158,7 @@ public class DunkNetImpl implements DunkNet, DKafkaByteHandler2 {
 				}
 			};
 			runner.start();
-					
 
-		
-		int routers = 0;
-		while(routers < 3) { 
-			MessageRouter router = new MessageRouter();
-			router.start();
-			messageRouters.add(router);
-			routers++;
-		}
-		
-		
 	}
 	
 	@Override
@@ -200,13 +167,10 @@ public class DunkNetImpl implements DunkNet, DKafkaByteHandler2 {
 			return DKafkaAdminClient.newInstance(config.getServerBrokers());
 		} catch (Exception e) {
 			throw new DunkNetException("Exceptin creting adminclinet " + e.toString());
-			// TODO: handle exception
+	
 		}
 		
 	}
-
-
-
 
 
 	@Override
@@ -215,14 +179,11 @@ public class DunkNetImpl implements DunkNet, DKafkaByteHandler2 {
 	}
 
 
-
-
 	@Override
 	public DunkNetExtensions extensions() {
 		return extensions;
 	}
 
-	
 	
 	@Override
 	public void extension(Object extension) throws DunkNetException {
@@ -234,7 +195,6 @@ public class DunkNetImpl implements DunkNet, DKafkaByteHandler2 {
 	public DunkNetState getState() {
 		return state;
 	}
-
 
 
 	public void nodeDescriptor(DunkNetNodeDescriptor descriptor) { 
@@ -295,7 +255,7 @@ public class DunkNetImpl implements DunkNet, DKafkaByteHandler2 {
 		DunkNetServiceRequest sReq = service(payload);
 		boolean returned = false;
 		try {
-			 returned = sReq.await(60, TimeUnit.SECONDS);	
+			 returned = sReq.await(config.getTimeout(), TimeUnit.SECONDS);	
 		} catch (Exception e) {
 			throw new DunkNetException("Interrupted Exception");
 		}

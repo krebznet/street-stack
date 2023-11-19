@@ -16,6 +16,7 @@ import org.springframework.context.ApplicationContext;
 import com.dunkware.common.util.dtime.DTimeZone;
 import com.dunkware.common.util.executor.DExecutor;
 import com.dunkware.common.util.stopwatch.DStopWatch;
+import com.dunkware.spring.runtime.services.ExecutorService;
 import com.dunkware.stream.cluster.proto.controller.blueprint.StreamBlueprintChannelClient;
 import com.dunkware.stream.cluster.proto.controller.blueprint.StreamBlueprintChannelException;
 import com.dunkware.trade.net.data.server.stream.converters.MongoStreamConverter;
@@ -44,7 +45,7 @@ public class StreamSignalsImpl implements StreamSignals {
 	private StreamDescriptor descriptor;
 
 	@Autowired
-	private DExecutor executor;
+	private ExecutorService executor;
 	
 	private StreamSignalsSessionImpl sessionSignals;
 
@@ -91,16 +92,12 @@ public class StreamSignalsImpl implements StreamSignals {
 	
 
 	public DExecutor getExecutor() {
-		return executor;
+		return executor.get();
 	}
 
 
 
-	public void setExecutor(DExecutor executor) {
-		this.executor = executor;
-	}
-
-
+	
 
 	@Override
 	public void insertSignal(StreamEntitySignal signal) throws Exception {

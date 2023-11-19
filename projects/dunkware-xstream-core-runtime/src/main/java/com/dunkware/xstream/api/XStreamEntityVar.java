@@ -3,11 +3,12 @@ package com.dunkware.xstream.api;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.Collection;
-import java.util.List;
 
 import com.dunkware.common.stats.GenericNumber;
 import com.dunkware.xstream.model.metrics.XStreamVarMetrics;
 import com.dunkware.xstream.xScript.VarType;
+
+import ca.odell.glazedlists.EventList;
 
 public interface XStreamEntityVar {
 	
@@ -47,7 +48,7 @@ public interface XStreamEntityVar {
 	
 	public void addDownStreamVar(XStreamEntityVar var);
 	
-	public List<GenericNumber> getNumericValues();
+	public EventList<GenericNumber> getNumericValues();
 	
 	public void setMaxSizeEnabled(boolean value);
 	
