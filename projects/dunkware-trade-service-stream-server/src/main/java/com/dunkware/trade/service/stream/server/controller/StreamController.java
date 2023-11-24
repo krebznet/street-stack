@@ -405,6 +405,7 @@ public class StreamController {
 			stats.setSession(session.getStats());
 			stats.setName(getSession().getSessionId());
 		}
+		
 
 		return stats;
 
@@ -480,6 +481,17 @@ public class StreamController {
 	
 	private void setState(StreamState state) { 
 		this.stats.setState(state);;
+	}
+	
+	
+	public boolean inSession() { 
+		if(session == null) { 
+			return false; 
+		}
+		if(session.getState() == StreamState.Running || session.getState() == StreamState.Stopping) { 
+			return true;
+		}
+		return false;
 	}
 	
 	private class StreamSchedule extends Thread implements DZonedClockListener {
@@ -626,7 +638,8 @@ public class StreamController {
 				if (clock.isAfterLocalTime(startTime) && clock.isBeforeLocalTime(stopTime)) {
 					
 					try {
-						if (getStats().getState() != StreamState.Starting || getStats().getState()!= StreamState.Running) {
+						
+						if (!inSession()) {
 							logger.info(
 									scheduleMarker,"Starting session on clock update where current time is between start/stop time and status is not running or starting");
 							startSession();

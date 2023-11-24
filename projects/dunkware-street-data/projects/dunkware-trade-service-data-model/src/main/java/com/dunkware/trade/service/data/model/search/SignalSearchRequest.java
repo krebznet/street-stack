@@ -1,6 +1,7 @@
 package com.dunkware.trade.service.data.model.search;
 
-import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -21,8 +22,11 @@ public class SignalSearchRequest {
 		req.setSignalTypes(signalTypes);
 		req.setEntities(Arrays.asList(2,3,4));
 		req.setStream("us_equity");
-		req.setSearchRangeStart(LocalDate.now().minusDays(3));
-		req.setSearchRangeStop(LocalDate.now().plusDays(4));
+		req.setSearchRangeStart(LocalDateTime.now());
+		req.setSearchRangeStop(LocalDateTime.now().plusHours(3).truncatedTo(ChronoUnit.SECONDS));
+		
+		
+	
 		try {
 			System.out.println(DJson.serializePretty(req));
 		} catch (Exception e) {
@@ -41,8 +45,8 @@ public class SignalSearchRequest {
 	 * to one of the values in the list below;
 	 */
 	private List<Integer> entities  = new ArrayList<Integer>();
-	private LocalDate searchRangeStart = null;
-	private LocalDate searchRangeStop = null;
+	private LocalDateTime searchRangeStart = null;
+	private LocalDateTime searchRangeStop = null;
 	private Integer limit = 10000;
 	
 	public List<Integer> getSignalTypes() {
@@ -64,16 +68,18 @@ public class SignalSearchRequest {
 		this.stream = stream;
 	}
 
-	public LocalDate getSearchRangeStart() {
+	
+	
+	public LocalDateTime getSearchRangeStart() {
 		return searchRangeStart;
 	}
-	public void setSearchRangeStart(LocalDate searchRangeStart) {
+	public void setSearchRangeStart(LocalDateTime searchRangeStart) {
 		this.searchRangeStart = searchRangeStart;
 	}
-	public LocalDate getSearchRangeStop() {
+	public LocalDateTime getSearchRangeStop() {
 		return searchRangeStop;
 	}
-	public void setSearchRangeStop(LocalDate searchRangeStop) {
+	public void setSearchRangeStop(LocalDateTime searchRangeStop) {
 		this.searchRangeStop = searchRangeStop;
 	}
 	public Integer getLimit() {

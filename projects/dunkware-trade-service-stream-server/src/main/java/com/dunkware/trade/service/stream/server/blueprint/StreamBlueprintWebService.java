@@ -30,16 +30,16 @@ public class StreamBlueprintWebService {
 	@Autowired
 	private StreamBlueprintService blueprintService; 
 	
-	//| curl -H "Content-Type: application/json" -H "Transfer-Encoding: chunked" -X GET -d @- 'http://localhost:8086/stream/v1/blueprint/dash/vars?stream=us_equity'
+	//| curl -H "Content-Type: application/json" -H "Transfer-Encoding: chunked" -X GET -d @- 'http://testrock1.dunkware.net:32100/stream/v1/blueprint/dash/signals?stream=us_equity'
 // curl -v -H  "http://localhost:8032/trade/v1/dash/core/brokers"
-// curl -v -H  'http://testrock1.dunkware.net:32100/stream/v1/blueprint/dash/signals?stream=us_equity'
+// curl -v -H  "http://testrock1.dunkware.net:32100/stream/v1/blueprint/dash/signals?stream=us_equity"
 		
 	
 	
 	@Autowired
 	private ExecutorService executorService; 
 	
-	@GetMapping(path = "/stream/v1/blueprint/dash/signals", produces = MediaType.APPLICATION_STREAM_JSON_VALUE)
+	@GetMapping(path = "/stream/v1/blueprint/dash/signals", produces = MediaType.APPLICATION_NDJSON_VALUE)
     public Flux<List<DataGridUpdate>> blueprintSignals(@RequestParam() String stream) {
 		StreamBlueprint bp = null;
 		try {
@@ -50,14 +50,13 @@ public class StreamBlueprintWebService {
 			           HttpStatus.BAD_REQUEST, "Stream blueprint not found for " + stream);
 		}
 		GlazedDataGrid grid = GlazedDataGrid.newInstance(bp.getSignalBeans(),executorService.get(),"getId");
-		Flux<List<DataGridUpdate>> results = grid.getUpdates();
 		grid.start();
-		return results;
+		return grid.getUpdates();
 	
 	}
 	
 	
-	@GetMapping(path = "/stream/v1/blueprint/dash/vars", produces = MediaType.APPLICATION_STREAM_JSON_VALUE)
+	@GetMapping(path = "/stream/v1/blueprint/dash/vars", produces =  MediaType.APPLICATION_NDJSON_VALUE)
     public Flux<List<DataGridUpdate>> blueprintVars(@RequestParam() String stream) {
 		StreamBlueprint bp = null;
 		try {

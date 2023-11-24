@@ -9,6 +9,8 @@ import com.dunkware.trade.service.data.model.signals.bean.StreamSignalBean;
 import com.dunkware.trade.service.data.model.signals.query.StreamSignalSessionQuery;
 import com.dunkware.trade.service.data.model.signals.query.StreamSignalTypeSessionQuery;
 
+import io.vertx.core.Future;
+
 public interface StreamSignalsSession {
 
 	/**
@@ -47,6 +49,9 @@ public interface StreamSignalsSession {
  	 * @return
  	 */
  	public StreamSignals getStreamSignals();
+ 	
+ 	
+ 	public Future<List<StreamSignalBean>> signalQuery(StreamSignalSessionQuery query) throws Exception;
  	
 }
  	

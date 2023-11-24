@@ -21,6 +21,9 @@ import com.dunkware.trade.service.data.model.signals.query.StreamSignalSessionQu
 import com.dunkware.trade.service.data.model.signals.query.StreamSignalTypeSessionQuery;
 import com.dunkware.xstream.model.signal.StreamEntitySignal;
 
+import io.vertx.core.Future;
+import io.vertx.core.Promise;
+
 /**
  * Okay this gets created on startup, session stop will reset it
  * 
@@ -131,9 +134,21 @@ public class StreamSignalsSessionImpl implements StreamSignalsSession, StreamSig
 
 	@Override
 	public SessionSignalTypeQueryGrid querySignalTypeGrid(StreamSignalTypeSessionQuery query) throws Exception {
+		
+		
 		// TODO Auto-generated method stub
 		return null;
 	}
+
+	@Override
+	public Future<List<StreamSignalBean>> signalQuery(StreamSignalSessionQuery query) throws Exception {
+		Promise<List<StreamSignalBean>> promise = Promise.promise();
+		return null;
+		
+	}
+	
+	
+	
 
 
 	

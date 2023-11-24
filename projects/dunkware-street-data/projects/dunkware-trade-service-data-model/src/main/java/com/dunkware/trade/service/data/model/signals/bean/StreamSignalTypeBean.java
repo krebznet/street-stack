@@ -1,7 +1,10 @@
 package com.dunkware.trade.service.data.model.signals.bean;
 
 import java.time.LocalDateTime;
+import java.time.temporal.ChronoUnit;
+import java.time.temporal.TemporalUnit;
 
+import com.dunkware.common.util.json.DJson;
 import com.dunkware.common.util.observable.ObservableBean;
 
 public class StreamSignalTypeBean extends ObservableBean {
@@ -10,10 +13,27 @@ public class StreamSignalTypeBean extends ObservableBean {
 	private String signalName; 
 	private String signalGroup; 
 	private int signalCount; 
-	private LocalDateTime lastSignal; 
+	private LocalDateTime lastSignalTime;
 	private int lastEntityId; 
 	private String lastEntittyName; 
 	private String lastEntityIdentifier;
+	
+	public static void main(String[] args) {
+		StreamSignalTypeBean bean = new StreamSignalTypeBean();
+		bean.setSignalId(3);
+		bean.setSignalName("Breakout 1");
+		bean.setSignalGroup("Breakotus");
+		bean.setSignalCount(423);
+		bean.setLastSignalTime(LocalDateTime.now().truncatedTo(ChronoUnit.SECONDS));
+		bean.setLastEntittyName("Apple Corporation");
+		bean.setLastEntityIdentifier("AAPL");
+		bean.setLastEntityId(3);
+		try {
+			System.out.println(DJson.serializePretty(bean));
+		} catch (Exception e) {
+			// TODO: handle exception
+		}
+	}
 	
 	public int getSignalId() {
 		return signalId;
@@ -39,12 +59,16 @@ public class StreamSignalTypeBean extends ObservableBean {
 	public void setSignalCount(int signalCount) {
 		this.signalCount = signalCount;
 	}
-	public LocalDateTime getLastSignal() {
-		return lastSignal;
+	
+	
+	public LocalDateTime getLastSignalTime() {
+		return lastSignalTime;
 	}
-	public void setLastSignal(LocalDateTime lastSignal) {
-		this.lastSignal = lastSignal;
+
+	public void setLastSignalTime(LocalDateTime lastSignalTime) {
+		this.lastSignalTime = lastSignalTime;
 	}
+
 	public int getLastEntityId() {
 		return lastEntityId;
 	}

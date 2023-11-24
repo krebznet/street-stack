@@ -9,6 +9,7 @@ public class StreamDashStats {
 	private int nodes;
 	private long tickCount; 
 	private long entityCount;
+	private int signalCount;
 	
 	public String getStatus() {
 		return status;
@@ -51,7 +52,14 @@ public class StreamDashStats {
 	}
 	public void setEntityCount(long entityCount) {
 		this.entityCount = entityCount;
+	}
+	public int getSignalCount() {
+		return signalCount;
+	}
+	public void setSignalCount(int signalCount) {
+		this.signalCount = signalCount;
 	} 
+	
 	
 	
 	

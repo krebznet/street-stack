@@ -12,6 +12,7 @@ import com.dunkware.trade.service.data.model.search.EntitySignalCountRequest;
 import com.dunkware.trade.service.data.model.search.EntitySignalCountResponse;
 import com.dunkware.trade.service.data.model.search.SignalSearchRequest;
 import com.dunkware.trade.service.data.model.search.SignalSearchResponse;
+import com.dunkware.trade.service.data.model.signals.bean.StreamSignalBean;
 import com.dunkware.trade.service.stream.descriptor.StreamDescriptor;
 import com.dunkware.xstream.model.signal.StreamEntitySignal;
 
@@ -71,6 +72,9 @@ public interface StreamSignals {
 	 * @throws Exception
 	 */
 	public SignalSearchResponse signalSearch(SignalSearchRequest request) throws Exception;
+	
+	
+	public List<StreamSignalBean> signalBeanSearch(SignalSearchRequest request) throws Exception;
 	
 	
 	/***

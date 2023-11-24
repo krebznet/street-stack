@@ -39,9 +39,7 @@ public class WebFluxSecurityConfig {
   // http.authorizeExchange().pathMatchers("/d)
    
    http.authorizeExchange().pathMatchers(HttpMethod.OPTIONS, "/**").permitAll();
-  http.authorizeExchange().pathMatchers(HttpMethod.GET,"/actuator/**").permitAll();
-  http.authorizeExchange().pathMatchers(HttpMethod.GET,"/health").permitAll();
-   
+
    
         http.cors().disable();
         http

@@ -13,6 +13,7 @@ import com.dunkware.trade.service.data.model.search.EntitySignalCountRequest;
 import com.dunkware.trade.service.data.model.search.EntitySignalCountResponse;
 import com.dunkware.trade.service.data.model.search.SignalSearchRequest;
 import com.dunkware.trade.service.data.model.search.SignalSearchResponse;
+import com.dunkware.trade.service.data.model.signals.bean.StreamSignalBean;
 import com.dunkware.trade.service.data.model.signals.query.StreamSignalSessionQuery;
 import com.dunkware.trade.service.data.model.signals.query.StreamSignalTypeSessionQuery;
 import com.dunkware.xstream.model.signal.StreamEntitySignal;
@@ -66,12 +67,12 @@ public class StreamSignalsWebService {
 	//SD21-GIFT-01 start here man, this is the end point we need this is what will get 
 	// ui going. 
 	@PostMapping(path = "/data/v1/stream/signal/search")
-	public SignalSearchResponse signalSearch(@RequestBody() SignalSearchRequest req, @RequestParam() String stream) throws Exception { 
+	public List<StreamSignalBean> signalSearch(@RequestBody() SignalSearchRequest req, @RequestParam() String stream) throws Exception { 
 		// get a reference to the StreamSignals for this stream identiifer 
 		StreamSignals streamSignals = signalsProvider.getStreamSignals(stream);
 		
 		//SD21-GIFT-15 now you see it full ciricle, we get the stream a mongo collection, logic to conver to a mongo query, logic to convert document back into model get results here and set it on web response 
-		return streamSignals.signalSearch(req);
+		return streamSignals.signalBeanSearch(req);
 	
 	}
 	

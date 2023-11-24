@@ -9,6 +9,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -263,7 +264,7 @@ public class StreamControllerWebService {
 	}
 	
 	
-	@GetMapping(path = "/stream/dash/stats")
+	@GetMapping(path = "/stream/dash/stats",produces = MediaType.APPLICATION_JSON_VALUE)
 	public @ResponseBody StreamDashStats streamFuckMe(@RequestParam String ident) throws Exception { 
 		StreamController controller = service.getStreamByName("us_equity");
 		StreamControllerStats stats = controller.getStats();
@@ -278,6 +279,8 @@ public class StreamControllerWebService {
 			resp.setTasksExpired((int)session.getTimeoutTasks());
 			resp.setTasksPending((int)session.getPendingTasks());
 			resp.setTickCount(session.getTickCount());
+			resp.setSignalCount((int)session.getSignalCount());
+			
 			
 		} else { 
 			resp.setEntityCount(0);

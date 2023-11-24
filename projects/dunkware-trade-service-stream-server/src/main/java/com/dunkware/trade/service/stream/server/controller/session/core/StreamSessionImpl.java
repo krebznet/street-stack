@@ -314,7 +314,8 @@ public class StreamSessionImpl implements StreamSession {
 			timeoutTasks.addAndGet(bean.getTasksExpired());
 			signalCount.addAndGet(bean.getSignalCount());
 			nodeIssueCount.addAndGet(bean.getIssueCount());
-			
+			rowCount.addAndGet(bean.getEntityCount());
+			tickCount.addAndGet(bean.getTickCount());
 			status.getNodes().add(node.getBean());
 		}
 		status.setSignalCount(signalCount.get());
@@ -322,6 +323,7 @@ public class StreamSessionImpl implements StreamSession {
 		status.setTimeoutTasks(timeoutTasks.get());
 		status.setTickerCount(rowCount.get());
 		status.setTickCount(tickCount.get());
+		status.setSignalCount(signalCount.get());
 		status.setPendingTasks(pendingTasks.get());
 		status.setNodeIssueCount((int)nodeIssueCount.get());
 

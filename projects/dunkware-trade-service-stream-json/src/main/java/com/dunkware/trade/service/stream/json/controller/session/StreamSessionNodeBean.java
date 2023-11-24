@@ -11,6 +11,7 @@ public class StreamSessionNodeBean extends ObservableBean {
 	private String status; 
 	private String workerId; 
 	private String nodeId; 
+	private int tickCount;
 	private long tasksCompleted; 
 	private long tasksPending;
 	private long tasksExpired; 
@@ -113,7 +114,15 @@ public class StreamSessionNodeBean extends ObservableBean {
 	}
 	public void setStopProblems(List<String> stopProblems) {
 		this.stopProblems = stopProblems;
+	}
+	public int getTickCount() {
+		return tickCount;
+	}
+	public void setTickCount(int tickCount) {
+		this.tickCount = tickCount;
 	} 
+	
+	
 	
 	
 	

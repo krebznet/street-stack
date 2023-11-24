@@ -1,11 +1,11 @@
 package com.dunkware.trade.service.data.model.signals.query;
 
 import java.time.LocalTime;
+import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.List;
 
 import com.dunkware.common.util.json.DJson;
-import com.dunkware.trade.service.stream.json.controller.session.StreamSessionNodeBean;
 
 /**
  * Okay so this will be used as a query from UI or wherever to get a streaming data grid of session signals it can be in the following form
@@ -27,6 +27,12 @@ public class StreamSignalSessionQuery {
 			StreamSignalSessionQuery q = DJson.getObjectMapper().readValue("{}",StreamSignalSessionQuery.class);
 			System.out.println(q.toString());
 			System.out.println(DJson.serialize(new StreamSignalSessionQuery()));	
+			q.getEntities().add(3);
+			q.getSignalTypes().add(12);
+			q.setStartTime(LocalTime.now().minusHours(3).truncatedTo(ChronoUnit.SECONDS));
+			q.setStopTime(LocalTime.now().truncatedTo(ChronoUnit.SECONDS));
+			
+			System.out.println(DJson.serializePretty(q));
 		} catch (Exception e) {
 			e.printStackTrace();
 			// TODO: handle exception

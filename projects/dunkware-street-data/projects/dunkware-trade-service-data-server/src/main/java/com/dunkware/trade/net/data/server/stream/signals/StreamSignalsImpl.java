@@ -27,6 +27,7 @@ import com.dunkware.trade.service.data.model.search.EntitySignalCountRequest;
 import com.dunkware.trade.service.data.model.search.EntitySignalCountResponse;
 import com.dunkware.trade.service.data.model.search.SignalSearchRequest;
 import com.dunkware.trade.service.data.model.search.SignalSearchResponse;
+import com.dunkware.trade.service.data.model.signals.bean.StreamSignalBean;
 import com.dunkware.trade.service.stream.descriptor.StreamDescriptor;
 import com.dunkware.xstream.model.signal.StreamEntitySignal;
 import com.mongodb.client.MongoCursor;
@@ -146,6 +147,17 @@ public class StreamSignalsImpl implements StreamSignals {
 		return sessionSignals;
 	}
 
+	
+	public List<StreamSignalBean> signalBeanSearch(SignalSearchRequest request) throws Exception {
+		SignalSearchResponse response = signalSearch(request);
+		List<StreamSignalBean> beans = new ArrayList<StreamSignalBean>();
+		for (StreamEntitySignal entitySignal : response.getResults()) {
+			StreamSignalBean bean = StreamSignalsHelper.entitySignalToBean(entitySignal, getStreamBlueprint());
+			beans.add(bean);
+		}
+		return beans;
+	}
+	
 	//SD21-GIFT-07 overried the new method this is where fun starts 
 	@Override
 	public SignalSearchResponse signalSearch(SignalSearchRequest request) throws Exception {

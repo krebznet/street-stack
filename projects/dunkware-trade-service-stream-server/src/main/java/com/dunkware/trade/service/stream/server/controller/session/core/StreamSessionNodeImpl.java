@@ -274,6 +274,7 @@ public class StreamSessionNodeImpl implements StreamSessionNode, DunkNetChannelH
 		bean.setTasksCompleted(stats.getCompletedTaskCount());
 		bean.setTasksPending(stats.getPendingTaskCount());
 		bean.setTasksExpired(stats.getTimeoutTaskCount());
+		bean.setTickCount((int)stats.getTickCount());
 		bean.notifyUpdate();
 		this.workerStats = stats;
 		
@@ -479,7 +480,7 @@ public class StreamSessionNodeImpl implements StreamSessionNode, DunkNetChannelH
 			public void onServiceReqDone(DunkNetServiceRequest req) {
 				try {
 					StreamSessionWorkerStartResp resp = (StreamSessionWorkerStartResp)req.getResponse();
-					startingTimer.stop();
+				
 					starting = false;
 					if(resp.getCode().equals("ERROR")) { 
 						startException = resp.getError();

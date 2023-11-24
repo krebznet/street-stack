@@ -1,6 +1,7 @@
 package com.dunkware.trade.service.data.model.search;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -10,8 +11,8 @@ public class EntitySignalCountRequest {
 	private Integer entityId;
 	private String Stream; 
 	// check for null, if both null then we search all 
-	private LocalDate searchRangeStart = null;
-	private LocalDate searchRangeStop = null;
+	private LocalDateTime searchRangeStart = null;
+	private LocalDateTime searchRangeStop = null;
 	
 	// if empty then we return a list of EntitySignalCount for each 
 	// signal type
@@ -29,19 +30,21 @@ public class EntitySignalCountRequest {
 	public void setStream(String stream) {
 		Stream = stream;
 	}
-	public LocalDate getSearchRangeStart() {
+	
+	
+	
+	public LocalDateTime getSearchRangeStart() {
 		return searchRangeStart;
 	}
-	public void setSearchRangeStart(LocalDate searchRangeStart) {
+	public void setSearchRangeStart(LocalDateTime searchRangeStart) {
 		this.searchRangeStart = searchRangeStart;
 	}
-	public LocalDate getSearchRangeStop() {
+	public LocalDateTime getSearchRangeStop() {
 		return searchRangeStop;
 	}
-	public void setSearchRangeStop(LocalDate searchRangeStop) {
+	public void setSearchRangeStop(LocalDateTime searchRangeStop) {
 		this.searchRangeStop = searchRangeStop;
 	}
-
 	public List<Integer> getSignalTypes() {
 		return signalTypes;
 	}

@@ -1,23 +1,29 @@
 package com.dunkware.trade.net.data.server.stream.converters;
 
-import java.time.*;
+import java.time.Duration;
+import java.time.LocalDateTime;
+import java.time.ZoneId;
+import java.time.ZoneOffset;
+import java.time.ZonedDateTime;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
+import java.util.TimeZone;
 
-import com.dunkware.trade.service.data.model.search.EntitySignalCount;
-import com.mongodb.client.model.Accumulators;
-import com.mongodb.client.model.Aggregates;
-import com.mongodb.client.model.Sorts;
 import org.bson.Document;
 import org.bson.conversions.Bson;
 
 import com.dunkware.common.util.dtime.DTimeZone;
+import com.dunkware.trade.service.data.model.search.EntitySignalCount;
 import com.dunkware.trade.service.data.model.search.EntitySignalCountRequest;
 import com.dunkware.trade.service.stream.descriptor.StreamDescriptor;
 import com.dunkware.xstream.model.entity.StreamEntitySnapshot;
 import com.dunkware.xstream.model.signal.StreamEntitySignal;
+import com.mongodb.client.model.Accumulators;
+import com.mongodb.client.model.Aggregates;
 import com.mongodb.client.model.Filters;
+import com.mongodb.client.model.Sorts;
 
 public class MongoStreamConverter {
 
@@ -116,6 +122,17 @@ public class MongoStreamConverter {
 		return null;
 	}
 	
+	public static final ZoneOffset toOffset(ZoneId zoneId) {
+	    return Optional.ofNullable(zoneId)
+	            .map(TimeZone::getTimeZone)
+	            .map(TimeZone::getRawOffset)
+	            .map(Duration::ofMillis)
+	            .map(Duration::getSeconds)
+	            .map(Number::intValue)
+	            .map(ZoneOffset::ofTotalSeconds)
+	            .orElse(null);
+	}
+	
 	//SD21-GIFT-11 Start thinking how to build this query. 
 	/**
 	 * 		
@@ -124,7 +141,7 @@ public class MongoStreamConverter {
 	 * @param
 	 * @return
 	 */
-	public static Bson signalSearchToMongoQuery(List<Integer> signalTypes, List<Integer> entities, LocalDate date, LocalDate toDate, StreamDescriptor streamDescriptor) {
+	public static Bson signalSearchToMongoQuery(List<Integer> signalTypes, List<Integer> entities, LocalDateTime date, LocalDateTime toDate, StreamDescriptor streamDescriptor) {
 		ZoneId zoneId = DTimeZone.toZoneId(streamDescriptor.getTimeZone());
 
 		Bson query = Filters.empty();
@@ -133,12 +150,11 @@ public class MongoStreamConverter {
 					&& date != null) {
 			// date range filter
 			Date fromDateFinal = Date.from(
-					date.atStartOfDay(zoneId)
-							.toInstant()
+				
+					date.toInstant(toOffset(zoneId))
 			);
 			Date toDateFinal = Date.from(
-					toDate.atTime(LocalTime.MAX).atZone(zoneId)
-							.toInstant()
+					toDate.toInstant(toOffset(zoneId))
 			);
 			Bson dateRangeFilter = Filters.and(
 					Filters.gte("dateTime", fromDateFinal),
@@ -150,11 +166,9 @@ public class MongoStreamConverter {
 			// date exact match filter
 			Bson dateExactMatchFilter = Filters.and(
 					Filters.gte("dateTime", Date.from(
-							date.atStartOfDay(zoneId)
-											.toInstant())),
+							date.toInstant(toOffset(zoneId)))),
 					Filters.lte("dateTime", Date.from(
-							date.atTime(LocalTime.MAX).atZone(zoneId)
-									.toInstant()))
+							date.toInstant(toOffset(zoneId))))
 			);
 			query = Filters.and(query, dateExactMatchFilter);
 		}
@@ -179,7 +193,8 @@ public class MongoStreamConverter {
 
 	}
 
-	public static List<Bson> signalCountToMongoQuery(Integer entityId, List<Integer> signalTypes, LocalDate searchRangeStart, LocalDate searchRangeStop, StreamDescriptor descriptor) {
+	
+	public static List<Bson> signalCountToMongoQuery(Integer entityId, List<Integer> signalTypes, LocalDateTime searchRangeStart, LocalDateTime searchRangeStop, StreamDescriptor descriptor) {
 		Bson filter = MongoStreamConverter.signalSearchToMongoQuery(signalTypes, entityId==null ? null: List.of(entityId), searchRangeStart, searchRangeStop, descriptor);
 		Bson match = Aggregates.match(filter);
 		Bson sort = Aggregates.sort(Sorts.descending("dateTime"));

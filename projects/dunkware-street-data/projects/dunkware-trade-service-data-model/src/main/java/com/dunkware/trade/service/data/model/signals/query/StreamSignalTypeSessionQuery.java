@@ -1,6 +1,7 @@
 package com.dunkware.trade.service.data.model.signals.query;
 
 import java.time.LocalTime;
+import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -26,7 +27,11 @@ public class StreamSignalTypeSessionQuery {
 		try {
 			StreamSignalTypeSessionQuery q = DJson.getObjectMapper().readValue("{}",StreamSignalTypeSessionQuery.class);
 			System.out.println(q.toString());
-			System.out.println(DJson.serialize(new StreamSignalTypeSessionQuery()));	
+			q.getEntities().add(3);
+			q.setStartTime(LocalTime.now().truncatedTo(ChronoUnit.SECONDS));
+			q.setStopTime(LocalTime.now().plusHours(3).truncatedTo(ChronoUnit.SECONDS));
+			System.out.println(DJson.serializePretty(q));
+			
 		} catch (Exception e) {
 			e.printStackTrace();
 			// TODO: handle exception
