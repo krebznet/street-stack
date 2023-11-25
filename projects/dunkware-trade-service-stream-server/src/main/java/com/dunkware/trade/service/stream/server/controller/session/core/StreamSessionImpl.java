@@ -29,6 +29,7 @@ import com.dunkware.common.util.time.DunkTime;
 import com.dunkware.spring.cluster.DunkNet;
 import com.dunkware.spring.cluster.DunkNetNode;
 import com.dunkware.spring.runtime.services.ExecutorService;
+import com.dunkware.stream.cluster.proto.controller.messages.StreamSessionStarting;
 import com.dunkware.stream.cluster.proto.controller.messages.StreamSessionStopped;
 import com.dunkware.stream.cluster.proto.controller.messages.StreamSessionStopping;
 import com.dunkware.trade.service.stream.json.controller.model.StreamSessionSpec;
@@ -142,6 +143,23 @@ public class StreamSessionImpl implements StreamSession {
 		}
 
 		status.setState(StreamState.Starting);
+		Thread sender = new Thread() { 
+			
+			public void run() { 
+				StreamSessionStarting starting = new StreamSessionStarting();
+				starting.setIdentifier(getStream().getName());
+				starting.setStartingTime(getStream().getDateTime());
+				starting.setSessionId(sessionEntity.getId());
+				try {
+					dunkNet.event(starting);	
+				} catch (Exception e) {
+					logger.error(marker,"Exception sending stream starting event " + e.toString());;
+				}
+				
+			}
+		};
+		
+		sender.start();
 		status.setStartingTime(DTime.from(LocalTime.now(DTimeZone.toZoneId(input.getController().getTimeZone()))));
 		nodeStartEventCount.set(0);
 		logger.info(marker, "Starting Stream {} Session with {} workers ", input.getController().getName(),

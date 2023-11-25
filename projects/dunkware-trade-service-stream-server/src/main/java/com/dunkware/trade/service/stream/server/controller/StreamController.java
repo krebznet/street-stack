@@ -1,6 +1,7 @@
 package com.dunkware.trade.service.stream.server.controller;
 
 import java.time.DayOfWeek;
+import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -144,6 +145,11 @@ public class StreamController {
 		return stats.getState();
 	}
 
+	
+	public LocalDateTime getDateTime() { 
+		return LocalDateTime.now(DTimeZone.toZoneId(getTimeZone()));
+	}
+	
 	public void start(StreamEntity ent) throws Exception {
 		
 		sessionNodeBeans = new ObservableElementList<StreamSessionNodeBean>(
