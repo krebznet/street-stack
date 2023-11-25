@@ -1,4 +1,4 @@
-package com.dunkware.trade.net.data.server.stream.signals.sessionn.predicates;
+package com.dunkware.trade.service.data.model.signals.predicates;
 
 import java.util.HashMap;
 import java.util.List;
@@ -7,12 +7,12 @@ import java.util.function.Predicate;
 
 import com.dunkware.trade.service.data.model.signals.bean.StreamSignalBean;
 
-public class EntityIdPredicate implements Predicate<StreamSignalBean> {
+public class StreamSignalEntityPredicate implements Predicate<StreamSignalBean> {
 
 	private List<Integer> entityIds;
 	private Map<Integer,Integer> keyMap;
 
-	public EntityIdPredicate(List<Integer> entityIds) { 
+	public StreamSignalEntityPredicate(List<Integer> entityIds) { 
 		this.entityIds = entityIds;
 		keyMap = new HashMap<Integer,Integer>();
 		for (Integer integer : entityIds) {

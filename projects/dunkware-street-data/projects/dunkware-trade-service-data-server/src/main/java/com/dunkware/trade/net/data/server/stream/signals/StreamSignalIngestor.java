@@ -42,7 +42,6 @@ import com.mongodb.client.model.InsertOneModel;
 
 public class StreamSignalIngestor implements DKafkaByteHandler2 {
 	
-
 	private StreamDescriptor descriptor;
 
 	private Logger logger = LoggerFactory.getLogger(getClass());
@@ -63,13 +62,10 @@ public class StreamSignalIngestor implements DKafkaByteHandler2 {
 
 	private Map<Integer, AtomicInteger> entities = new ConcurrentHashMap<Integer, AtomicInteger>();
 
-//	private SnapshotWriterMetrics metrics;
-
 	private BlockingQueue<StreamEntitySignal> writeQueue = new LinkedBlockingQueue<StreamEntitySignal>();
 
 	private MongoClient mongoClient;
 	private MongoDatabase mongoDatabase;
-	private MongoCollection mongoCollection;
 	
 	private int queueSizeLimit = 50; 
 	private boolean paused = false; 
@@ -82,10 +78,10 @@ public class StreamSignalIngestor implements DKafkaByteHandler2 {
 	
 
 //	private IStreamDataController 
-	public void start(StreamSignals signals) throws Exception {
+	public void start(StreamSignalProvider signals) throws Exception {
 		logger.info("Starting Data Snapshot writer");
-		this.dataProvider = signals.getDataProvider();
-		this.descriptor = signals.getDataProvider().getDescriptor();
+		this.dataProvider = signals.dataProvider();
+		this.descriptor = signals.dataProvider().getDescriptor();
 		marker = MarkerFactory.getMarker("signal_capture_" + descriptor.getIdentifier());
 		logger.info(marker, "Starting Signal Writer on stream {}", descriptor.getIdentifier());
 		timeZone = DTimeZone.toZoneId(descriptor.getTimeZone());

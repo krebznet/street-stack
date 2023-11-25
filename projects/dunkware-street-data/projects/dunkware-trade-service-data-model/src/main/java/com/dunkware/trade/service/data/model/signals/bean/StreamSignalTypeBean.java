@@ -4,11 +4,13 @@ import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
 import java.time.temporal.TemporalUnit;
 
+import com.dunkware.common.util.helpers.DRandom;
 import com.dunkware.common.util.json.DJson;
 import com.dunkware.common.util.observable.ObservableBean;
 
 public class StreamSignalTypeBean extends ObservableBean {
 
+	private int rowId = DRandom.getRandom(1, 434343434);
 	private int signalId; 
 	private String signalName; 
 	private String signalGroup; 
@@ -86,7 +88,17 @@ public class StreamSignalTypeBean extends ObservableBean {
 	}
 	public void setLastEntityIdentifier(String lastEntityIdentifier) {
 		this.lastEntityIdentifier = lastEntityIdentifier;
+	}
+
+	public int getRowId() {
+		return rowId;
+	}
+
+	public void setRowId(int rowId) {
+		this.rowId = rowId;
 	} 
+	
+	
 	
 	
 }

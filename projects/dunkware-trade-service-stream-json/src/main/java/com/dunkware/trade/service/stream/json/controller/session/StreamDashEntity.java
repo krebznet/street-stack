@@ -7,6 +7,8 @@ public class StreamDashEntity {
 	private Number last; 
 	private Number volume; 
 	private Number tradeCount;
+	private int id; 
+	
 	public String getSymbol() {
 		return symbol;
 	}
@@ -36,7 +38,15 @@ public class StreamDashEntity {
 	}
 	public void setTradeCount(Number tradeCount) {
 		this.tradeCount = tradeCount;
+	}
+	public int getId() {
+		return id;
+	}
+	public void setId(int id) {
+		this.id = id;
 	} 
+	
+	
 	
 	
 }

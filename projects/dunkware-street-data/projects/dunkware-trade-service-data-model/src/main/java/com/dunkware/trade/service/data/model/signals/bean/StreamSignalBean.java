@@ -2,11 +2,14 @@ package com.dunkware.trade.service.data.model.signals.bean;
 
 import java.time.LocalDateTime;
 
+import com.dunkware.common.util.helpers.DRandom;
 import com.dunkware.common.util.json.DJson;
 import com.dunkware.common.util.observable.ObservableBean;
+import com.dunkware.common.util.time.DunkTime;
 
 public class StreamSignalBean extends ObservableBean {
 	
+	private int rowId = DRandom.getRandom(0, 3939493);
 	private int signalId; 
 	private String signalName; 
 	private String signalGroup; 
@@ -86,7 +89,48 @@ public class StreamSignalBean extends ObservableBean {
 	}
 	public void setDateTime(LocalDateTime dateTime) {
 		this.dateTime = dateTime;
+	}
+
+
+	public int getRowId() {
+		return rowId;
+	}
+
+
+	public void setRowId(int rowId) {
+		this.rowId = rowId;
+	}
+
+
+	@Override
+	public boolean equals(Object obj) {
+		if (obj instanceof StreamSignalBean) { 
+			StreamSignalBean bean = (StreamSignalBean)obj;
+			if(bean.getRowId() == getRowId()) { 
+				return true;
+			}
+			
+		}
+		return false; 
+	}
+
+
+	@Override
+	public String toString() {
+		StringBuilder builder = new StringBuilder();
+		builder.append("sign:");
+		builder.append(signalId);
+		builder.append("entity:");
+		builder.append(entityId);
+		builder.append("timestamp:");
+		builder.append(DunkTime.format(getDateTime(), DunkTime.YYYY_MM_DD_HH_MM_SS));
+		return builder.toString();
 	} 
+	
+	
+	
+	
+	
 	
 	
 	

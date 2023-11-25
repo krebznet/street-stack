@@ -1,5 +1,6 @@
 package com.dunkware.stream.cluster.proto.controller.blueprint;
 
+import java.util.Collection;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
@@ -20,6 +21,18 @@ public class StreamBlueprintChannelClient implements DunkNetChannelHandler {
 	
 	public StreamBlueprintChannelClient() throws Exception { 
 		
+	}
+	
+	public Collection<StreamBlueprintSignalDescriptor> signalDescriptors() {
+		return signalDescriptors.values();
+	}
+	
+	public Collection<StreamBlueprintVarDescriptor> varDescriptors() { 
+		return varDescriptors.values();
+	}
+	
+	public Collection<StreamBlueprintEntityDescriptor> entityDescriptors() { 
+		return entityDescriptors();
 	}
 
 	@Override

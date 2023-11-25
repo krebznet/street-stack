@@ -14,9 +14,9 @@ import com.dunkware.stream.cluster.proto.controller.blueprint.StreamBlueprintSig
 import com.dunkware.trade.service.data.model.signals.bean.StreamSignalBean;
 import com.dunkware.xstream.model.signal.StreamEntitySignal;
 
-public class StreamSignalsHelper {
+public class StreamSignalHelper {
 	
-	private static Logger logger = LoggerFactory.getLogger(StreamSignalsHelper.class);
+	private static Logger logger = LoggerFactory.getLogger(StreamSignalHelper.class);
 	
 	
 	public static StreamSignalBean entitySignalToBean(StreamEntitySignal signal, StreamBlueprintChannelClient blueprint) throws StreamBlueprintChannelException { 

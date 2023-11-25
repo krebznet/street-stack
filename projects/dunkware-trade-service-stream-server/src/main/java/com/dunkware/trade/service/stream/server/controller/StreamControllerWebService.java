@@ -307,6 +307,7 @@ public class StreamControllerWebService {
 			StreamDashEntity entity = new StreamDashEntity();
 			entity.setSymbol(spec.getSymbol());
 			entity.setName(spec.getName());
+			entity.setId(spec.getId());
 			entities.add(entity);
 		}
 		return entities;

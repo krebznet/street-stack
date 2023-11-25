@@ -20,7 +20,7 @@ import com.dunkware.trade.net.data.server.stream.streamprovider.StreamDataProvid
 import com.dunkware.trade.service.stream.descriptor.StreamDescriptor;
 
 @Service
-public class StreamSignalsServiceImpl implements StreamSignalsService {
+public class StreamSignalServiceImpl implements StreamSignalService {
 	
 	private Logger logger = LoggerFactory.getLogger(getClass());
 	private Marker marker = MarkerFactory.getMarker("StreamSignals");
@@ -31,7 +31,7 @@ public class StreamSignalsServiceImpl implements StreamSignalsService {
 	@Autowired
 	private StreamDataProviders streamProviders; 
 	
-	private Map<String,StreamSignals> streamSignals = new ConcurrentHashMap<String,StreamSignals>();
+	private Map<String,StreamSignalProvider> streamSignals = new ConcurrentHashMap<String,StreamSignalProvider>();
 	
 	@Autowired
 	private ExecutorService executor;
@@ -40,7 +40,7 @@ public class StreamSignalsServiceImpl implements StreamSignalsService {
 	public void init() { 
 		logger.info(marker, "Starting Stream Signals Provider");
 		for (StreamDataProvider dataProvider : streamProviders.getProviders()) {	
-			StreamSignalsImpl streamSignals = new StreamSignalsImpl();
+			StreamSignalProviderImpl streamSignals = new StreamSignalProviderImpl();
 			ac.getAutowireCapableBeanFactory().autowireBean(streamSignals);
 			try {
 				streamSignals.init(dataProvider);
@@ -55,8 +55,8 @@ public class StreamSignalsServiceImpl implements StreamSignalsService {
 	}
 
 	@Override
-	public StreamSignals getStreamSignals(String streamIdentifier) throws Exception {
-		StreamSignals signals = streamSignals.get(streamIdentifier);
+	public StreamSignalProvider getProvider(String streamIdentifier) throws Exception {
+		StreamSignalProvider signals = streamSignals.get(streamIdentifier);
 		if(signals == null) { 
 			throw new Exception("Stream Signals not found for stream idnentifier " + streamIdentifier);
 		}
@@ -64,7 +64,7 @@ public class StreamSignalsServiceImpl implements StreamSignalsService {
 	}
 
 	@Override
-	public Collection<StreamSignals> getStreams() {
+	public Collection<StreamSignalProvider> getProviders() {
 		return streamSignals.values();
 	}
 

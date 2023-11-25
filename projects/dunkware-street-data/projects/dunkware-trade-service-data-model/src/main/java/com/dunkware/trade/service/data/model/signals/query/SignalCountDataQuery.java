@@ -1,4 +1,4 @@
-package com.dunkware.trade.service.data.model.search;
+package com.dunkware.trade.service.data.model.signals.query;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -6,7 +6,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 //SD-33-01 - request api 
-public class EntitySignalCountRequest {
+public class SignalCountDataQuery {
 
 	private Integer entityId;
 	private String Stream; 

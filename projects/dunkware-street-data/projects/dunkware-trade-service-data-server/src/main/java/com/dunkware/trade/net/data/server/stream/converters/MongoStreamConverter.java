@@ -15,8 +15,7 @@ import org.bson.Document;
 import org.bson.conversions.Bson;
 
 import com.dunkware.common.util.dtime.DTimeZone;
-import com.dunkware.trade.service.data.model.search.EntitySignalCount;
-import com.dunkware.trade.service.data.model.search.EntitySignalCountRequest;
+import com.dunkware.trade.service.data.model.signals.query.SignalCountDataQuery;
 import com.dunkware.trade.service.stream.descriptor.StreamDescriptor;
 import com.dunkware.xstream.model.entity.StreamEntitySnapshot;
 import com.dunkware.xstream.model.signal.StreamEntitySignal;
@@ -78,24 +77,7 @@ public class MongoStreamConverter {
 		
 	}
 
-	/**
-	 * Mongo - Java
-	 * @param document
-	 * @return
-	 */
-	public static EntitySignalCount documentToSignalCount(Document document)  {
-		EntitySignalCount signalCount = new EntitySignalCount();
-		signalCount.setEntity(document.getInteger("ent", -1));
-		signalCount.setSignal(document.getInteger("id", -1));
-		signalCount.setCount(document.getInteger("count", -1));
-
-		ZoneId zoneId = ZoneId.of(document.getString("zone"));
-		Date date = document.getDate("mostRecent");
-		signalCount.setLastDateTime(LocalDateTime.ofInstant(date.toInstant(), zoneId));
-
-		return signalCount;
-
-	}
+	
 
 	/**
 	 * We are not doign snapshots just yet
@@ -210,7 +192,7 @@ public class MongoStreamConverter {
 	}
 	
 	//SD-33-05 - method to build query like above
-	public Bson entitySignalCountSearchToMongoQuery(EntitySignalCountRequest req, StreamDescriptor streamDescriptor) {
+	public Bson entitySignalCountSearchToMongoQuery(SignalCountDataQuery req, StreamDescriptor streamDescriptor) {
 		// if signal list is empty then we need to get all signals for this entity on req
 		// iterate through the results here or in the service and from that
 		// make a list of SignalEntitycCount objects 

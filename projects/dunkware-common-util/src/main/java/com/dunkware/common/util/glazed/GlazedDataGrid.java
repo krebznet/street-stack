@@ -51,6 +51,7 @@ public class GlazedDataGrid implements ListEventListener<Object> {
 			if (logger.isDebugEnabled()) {
 				logger.debug("Flux onCancel invoked " + id);
 			}
+			
 			sink.tryEmitComplete();
 
 			try {
