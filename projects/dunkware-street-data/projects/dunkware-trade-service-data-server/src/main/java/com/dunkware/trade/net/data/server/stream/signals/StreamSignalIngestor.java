@@ -331,8 +331,6 @@ public class StreamSignalIngestor implements DKafkaByteHandler2 {
 				if (logger.isDebugEnabled()) {
 					logger.debug("Snapshot Write Size " + pendingWrites.size() + " time " + sw.getCompletedSeconds());
 				}
-				// metrics.bucketWriteBatch(pendingWrites.size(), bucketBatchSize);
-				//metrics.snapshotInsert(pendingWriteSnapshots, pendingWrites.size(), sw.getCompletedSeconds());
 				pendingWrites.clear();
 				pendingWriteSnapshots.clear();
 			}
