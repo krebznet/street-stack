@@ -3,6 +3,7 @@ package com.dunkware.trade.service.stream.server.controller.session;
 import java.util.List;
 
 import com.dunkware.spring.cluster.DunkNetNode;
+import com.dunkware.trade.service.stream.json.controller.session.StreamSessionNodeBean;
 import com.dunkware.trade.service.stream.server.controller.StreamController;
 import com.dunkware.trade.tick.model.ticker.TradeTickerSpec;
 import com.dunkware.xstream.xproject.model.XStreamBundle;
@@ -18,7 +19,7 @@ public class StreamSessionNodeInput {
 	private StreamController stream; 
 	private int numericId;
 	private String workerId;
-	
+	private StreamSessionNodeBean nodeBean = new StreamSessionNodeBean();
 	
 	public StreamSessionNodeInput(int numericId, String workerId, List<TradeTickerSpec> tickers, DunkNetNode node, List<StreamSessionExtension> extensionTypes, 
 			StreamSession session, StreamController stream) {
@@ -30,6 +31,10 @@ public class StreamSessionNodeInput {
 		this.session = session;
 		this.stream = stream;
 		
+	}
+	
+	public StreamSessionNodeBean getNodebean() { 
+		return nodeBean;
 	}
 
 	public List<TradeTickerSpec> getTickers() {
@@ -67,6 +72,16 @@ public class StreamSessionNodeInput {
 		return workerId;
 	}
 
+	public StreamSessionNodeBean getNodeBean() {
+		return nodeBean;
+	}
+
+	public void setNodeBean(StreamSessionNodeBean nodeBean) {
+		this.nodeBean = nodeBean;
+	}
+
+	
+	
 	
 	
 	

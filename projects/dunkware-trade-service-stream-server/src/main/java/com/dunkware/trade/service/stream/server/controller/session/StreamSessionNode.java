@@ -12,6 +12,8 @@ import com.dunkware.trade.tick.model.ticker.TradeTickerSpec;
 import com.dunkware.xstream.model.entity.StreamEntitySnapshot;
 import com.dunkware.xstream.xproject.model.XStreamBundle;
 
+import ca.odell.glazedlists.ObservableElementList;
+
 public interface StreamSessionNode {
 
 	XStreamBundle getStreamBundle();
@@ -23,6 +25,7 @@ public interface StreamSessionNode {
 	DunkNetNode getDunkNode();
 	
 	DunkNetChannel getChannel();
+	
 	
 	String getNodeId();
 	

@@ -92,7 +92,7 @@ public class StreamSessionNodeImpl implements StreamSessionNode, DunkNetChannelH
 
 	private StreamSessionWorkerStartReq startReq;
 	
-	private StreamSessionNodeBean bean = new StreamSessionNodeBean();
+	private StreamSessionNodeBean bean;
 	
 	private StreamSessionWorkerStats workerStats = null;
 	
@@ -109,6 +109,7 @@ public class StreamSessionNodeImpl implements StreamSessionNode, DunkNetChannelH
 	public void start(StreamSessionNodeInput input) {
 
 		this.input = input;
+		this.bean = input.getNodebean();
 		this.dunkNode = input.getNode();
 		bean.setWorkerId(input.getWorkerId());
 		bean.setNodeId(input.getNode().getId());
@@ -116,6 +117,7 @@ public class StreamSessionNodeImpl implements StreamSessionNode, DunkNetChannelH
 		bean.setStatus(state.name());
 		bean.setSignalCount(0);
 		bean.setStopState(stopState.name());
+		bean.notifyUpdate();
 		eventNode = input.getSession().getEventNode().createChild(this);
 
 		for (TradeTickerSpec tickerSpec : input.getTickers()) {
@@ -174,6 +176,8 @@ public class StreamSessionNodeImpl implements StreamSessionNode, DunkNetChannelH
 		};
 		starter.start();
 	}
+	
+	
 
 	@Override
 	public XStreamBundle getStreamBundle() {

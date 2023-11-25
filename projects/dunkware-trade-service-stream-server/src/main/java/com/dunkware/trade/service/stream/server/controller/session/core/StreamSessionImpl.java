@@ -112,6 +112,7 @@ public class StreamSessionImpl implements StreamSession {
 	private AtomicInteger nodeStopEventCount = new AtomicInteger(0);
 
 	private LocalDateTime startTime;
+	
 
 	// put the stream session capture in here?
 
@@ -198,10 +199,13 @@ public class StreamSessionImpl implements StreamSession {
 			StreamSessionNodeInput nodeInput = new StreamSessionNodeInput(numericId, workerId,
 					nodeTickers.get(nodeIndex), node, extensionTypes, this, input.getController());
 			StreamSessionNodeImpl sessionNode = new StreamSessionNodeImpl();
+			nodeInput.setNodeBean(new StreamSessionNodeBean());
+			
 			if (logger.isDebugEnabled()) {
 				logger.debug(marker, "Adding Stream Session Node Bean to controller "
 						+ sessionNode.getBean().getNodeId() + " " + sessionNode.getBean().getWorkerId());
 			}
+			
 			input.getController().getSessionNodeBeans().getReadWriteLock().writeLock().lock();
 			input.getController().getSessionNodeBeans().add(sessionNode.getBean());
 			input.getController().getSessionNodeBeans().getReadWriteLock().writeLock().unlock();

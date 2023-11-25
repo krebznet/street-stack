@@ -150,6 +150,10 @@ public class StreamController {
 		return LocalDateTime.now(DTimeZone.toZoneId(getTimeZone()));
 	}
 	
+	public ObservableElementList<StreamSessionNodeBean> getSessionNodeBeans() { 
+		return sessionNodeBeans;
+	}
+	
 	public void start(StreamEntity ent) throws Exception {
 		
 		sessionNodeBeans = new ObservableElementList<StreamSessionNodeBean>(
@@ -250,9 +254,7 @@ public class StreamController {
 		return blueprint;
 	}
 	
-	public ObservableElementList<StreamSessionNodeBean> getSessionNodeBeans() {
-		return sessionNodeBeans;
-	}
+
 
 	public XScriptBundle getScriptBundle() {
 		return scriptBundle;
@@ -347,6 +349,9 @@ public class StreamController {
 		if(!canStart()) { 
 			throw new StreamSessionException("Cannot start stream in state " + getState());
 		}
+		sessionNodeBeans.getReadWriteLock().writeLock().lock();
+		sessionNodeBeans.clear();
+		sessionNodeBeans.getReadWriteLock().writeLock().unlock();
 		logger.info(marker, "Starting {}", getName());
 		session = StreamSessionFactory.createSession();
 		ac.getAutowireCapableBeanFactory().autowireBean(session);
@@ -386,7 +391,7 @@ public class StreamController {
 			input.setWorkerNodes(nodes);
 			logger.info("Stream {} Session Starting", getName());
 			
-			sessionNodeBeans.clear();
+			
 			session.startSession(input);
 			session.getEventNode().addEventHandler(this);
 		} catch (StreamSessionException e) {
