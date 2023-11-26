@@ -53,8 +53,6 @@ public class XStreamClockImpl implements XStreamClock {
 	}
 	
 	
-	
-	
 	@Override
 	public LocalDateTime getLocalDateTime() {
 		return  LocalDateTime.of(date.get(), time.get());
@@ -64,8 +62,6 @@ public class XStreamClockImpl implements XStreamClock {
 
 
 	
-	
-
 	@Override
 	public LocalTime getLocalTime() {
 		return time.get();
@@ -130,8 +126,6 @@ public class XStreamClockImpl implements XStreamClock {
 		
 	}
 
-
-	
 	public static LocalDateTime convertToLocalDateTimeViaMilisecond(Date dateToConvert) {
 	    return Instant.ofEpochMilli(dateToConvert.getTime())
 	      .atZone(ZoneId.systemDefault())
@@ -151,16 +145,11 @@ public class XStreamClockImpl implements XStreamClock {
 		
 		
 	}
-
-
-
 	@Override
 	public DDate getDate() {
 		return date;
 	}
 
-
-	
 	private class ListenerRunnable implements Runnable {
 		
 		LocalDateTime time;

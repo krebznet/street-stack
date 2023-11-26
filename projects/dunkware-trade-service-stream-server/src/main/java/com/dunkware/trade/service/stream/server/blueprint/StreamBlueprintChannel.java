@@ -57,7 +57,6 @@ public class StreamBlueprintChannel implements DunkNetChannelHandler {
 							desc.setGroup(signal.getGroup());
 							desc.setName(signal.getName());
 							signalDescriptors.add(desc);
-							//desc.setGroup(signal.get);
 						}	
 						blueprint.getSignalBeans().getReadWriteLock().readLock().unlock();
 					} catch (Exception e) {
@@ -77,7 +76,7 @@ public class StreamBlueprintChannel implements DunkNetChannelHandler {
 					for (TradeTickerSpec tickerSpec : stream.getTickers()) {
 						StreamBlueprintEntityDescriptor desc = new  StreamBlueprintEntityDescriptor();
 						desc.setId(tickerSpec.getId());;
-						desc.setName(desc.getName());;
+						desc.setName(tickerSpec.getName());;
 						desc.setIdent(tickerSpec.getSymbol());
 						entityDescriptors.add(desc);
 					}

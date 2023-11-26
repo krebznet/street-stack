@@ -21,7 +21,7 @@ public class StreamSignalTypeStatsGrid implements GlazedDataGridListener {
 	private StreamSignalProvider provider; 
 	
 	public void start(StreamSignalTypeStatsList list, StreamSignalProvider provider) { 
-		dataGrid = GlazedDataGrid.newInstance(list.getList(), provider.getExecutor(),"rowId");
+		dataGrid = GlazedDataGrid.newInstance(list.getList(), provider.getExecutor(),"getRowId");
 		dataGrid.addListener(this);
 		this.provider = provider;
 		this.list = list;

@@ -3,15 +3,18 @@ package com.dunkware.trade.net.data.server.stream.signals;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.dunkware.common.util.datagrid.DataGridUpdate;
+import com.dunkware.common.util.glazed.GlazedDataGrid;
 import com.dunkware.spring.runtime.controller.UserException;
 import com.dunkware.trade.net.data.server.stream.signals.beangrids.StreamSignalGrid;
 import com.dunkware.trade.net.data.server.stream.signals.beangrids.StreamSignalTypeStatsGrid;
+import com.dunkware.trade.net.data.server.stream.signals.beanlists.StreamSignalTypeStatsList;
 import com.dunkware.trade.service.data.model.signals.bean.StreamSignalBean;
 import com.dunkware.trade.service.data.model.signals.query.StreamSignalQuery;
 import com.dunkware.trade.service.data.model.signals.query.StreamSignalTypeStatsQuery;
@@ -27,20 +30,24 @@ public class StreamSignalWebService {
 	
 	
 	
-	@PostMapping(path = "/data/v1/stream/signal/query/stats/grid")
+	@PostMapping(path = "/data/v1/stream/signal/query/stats/grid", produces = MediaType.APPLICATION_NDJSON_VALUE)
 	public Flux<List<DataGridUpdate>> sessionSignalTypeBeanSearch(@RequestBody() StreamSignalTypeStatsQuery query, @RequestParam String stream) throws Exception { 
 		StreamSignalProvider signalProvider = signalService.getProvider(stream);
 		if(signalProvider == null) { 
 			throw new UserException("Stream " + stream + " not found");
 		}
-		StreamSignalTypeStatsGrid grid = signalProvider.signalTypeSatsGrid(query);
-		grid.getDataGrid().start();
-		return grid.getDataGrid().getUpdates();
+		StreamSignalTypeStatsList list = signalProvider.signalTypeStatsList(query);
+		
+		GlazedDataGrid dataGrid = GlazedDataGrid.newInstance(list.getList(), signalProvider.getExecutor(), "getRowId");
+		dataGrid.addListener(list);
+		dataGrid.start();
+		return dataGrid.getUpdates();
+		
 	}
 	
 	
 	
-	@PostMapping(path = "/data/v1/stream/signal/query/grid")
+	@PostMapping(path = "/data/v1/stream/signal/query/grid", produces = MediaType.APPLICATION_NDJSON_VALUE)
 	public Flux<List<DataGridUpdate>> sessionSignaleBeanSearch(@RequestBody() StreamSignalQuery query, @RequestParam String stream) throws Exception { 
 		StreamSignalProvider signalProvider = signalService.getProvider(stream);
 		if(signalProvider == null) { 

@@ -76,13 +76,12 @@ public class StreamSignalProviderImpl implements StreamSignalProvider, StreamSig
 		try {
 			signalIngestor = new StreamSignalIngestor();
 			signalIngestor.start(this);
+			signalIngestor.addSignalListener(this);;
 		} catch (Exception e) {
 			logger.error(marker, "Exception starting stream signal ingjestor " + e.toString());
 			throw new Exception("cannot start signal ingestor " + e.toString());
 		}
-
-		signalIngestor = new StreamSignalIngestor();
-		signalIngestor.start(this);
+		
 
 	}
 

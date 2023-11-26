@@ -175,6 +175,7 @@ public class DunkNetController
 			return false;
 		} catch (Exception e) {
 			logger.error(marker, "Thrown Exception in message handler switch {}",e.toString(),e);
+			e.printStackTrace();
 			return false;
 
 		}
@@ -478,9 +479,26 @@ public class DunkNetController
 			return;
 		}
 		DunkNetNode node = getSenderNode(message);
+		// might be race condition that we have not consumed the ping yet of sender node
+		int counter = 0;
+		while(node == null) { 
+			try {
+				if(counter > 2000) { 
+					if(node == null) { 
+						logger.error(marker,"handleServiceRequest payload {} sender node {} is not registered on host {}",message.getPayload().getClass().getName(),message.getSenderId(),net.getId());
+						return;
+					}
+				}
+				Thread.sleep(250);
+				node = getSenderNode(message);
+				counter = counter + 250;
+			} catch (Exception e) {
+				// TODO: handle exception
+			}
+		}
 		if(logger.isDebugEnabled()) { 
 			logger.debug(marker, "Handling on-channel service request {} on node {} from node {} with input class type {}",
-					message.getRequestId(),net.getId(),node.getId(),message.getPayload().getClass().getName());
+					message.getMessageId(),net.getId(),node.getId(),message.getPayload().getClass().getName());
 		}
 		ComponentMethod method = null;
 		try {

@@ -51,7 +51,7 @@ public class GlazedDataGrid implements ListEventListener<Object> {
 			if (logger.isDebugEnabled()) {
 				logger.debug("Flux onCancel invoked " + id);
 			}
-			
+
 			sink.tryEmitComplete();
 
 			try {
@@ -121,6 +121,7 @@ public class GlazedDataGrid implements ListEventListener<Object> {
 	 */
 	public void emitUpdates() {
 		try {
+			System.out.println("emit updates size " + updates.size() );
 			if (!running) {
 				return;
 			}
@@ -144,42 +145,48 @@ public class GlazedDataGrid implements ListEventListener<Object> {
 	}
 
 	public Flux<List<DataGridUpdate>> getUpdates() {
-		
-		  flux.subscribe(new Subscriber<List<DataGridUpdate>>() {
-		  
-		  private Subscription sub;
-		  
-		  @Override public void onSubscribe(Subscription s) { this.sub = s;
-		  sub.request(1);; }
-		  
-		  @Override public void onNext(List<DataGridUpdate> t) { try {
-		  logger.debug("on next " + DJson.serialize(t)); } catch (Exception e) {
-		  e.printStackTrace(); // TODO: handle exception } sub.request(1);
-		  
-		  }
-		  }
-		  
-		  @Override public void onError(Throwable t) { 
-			  
-			  sub.cancel();
-			  
-		  	
-		  	
-		
-		  }
-		  
-		  
-		  
-		  @Override public void onComplete() { sub.cancel(); if(logger.isDebugEnabled()
-		  ) { logger.debug("disposing mocked broker list"); } // list.dispose();
-		  
-		  
-		  }});
-		 
-						  return flux;
-								 
-			
-	
+
+		flux.subscribe(new Subscriber<List<DataGridUpdate>>() {
+
+			private Subscription sub;
+
+			@Override
+			public void onSubscribe(Subscription s) {
+				this.sub = s;
+				sub.request(1);
+				;
+			}
+
+			@Override
+			public void onNext(List<DataGridUpdate> t) {
+				try {
+					logger.debug("on next " + DJson.serialize(t));
+					sub.request(1);
+				} catch (Exception e) {
+					e.printStackTrace(); // TODO: handle exception } sub.request(1);
+
+				}
+			}
+
+			@Override
+			public void onError(Throwable t) {
+
+				sub.cancel();
+
+			}
+
+			@Override
+			public void onComplete() {
+				sub.cancel();
+				if (logger.isDebugEnabled()) {
+					logger.debug("disposing mocked broker list");
+				} // list.dispose();
+
+			}
+		});
+
+		return flux;
+
 	}
 
 	public void start() {

@@ -37,6 +37,11 @@ public class DDate {
 	public static String echo(String input) { 
 		return input;
 	}
+	
+	public static DDate now(ZoneId zone) { 
+		return new DDate(LocalDate.now(zone));
+		
+	}
 
 	public static DDate now() {
 		return new DDate(LocalDate.now());

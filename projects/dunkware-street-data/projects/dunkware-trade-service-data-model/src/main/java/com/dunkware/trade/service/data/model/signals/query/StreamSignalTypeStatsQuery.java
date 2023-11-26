@@ -5,6 +5,8 @@ import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.dunkware.common.util.json.DJson;
+
 public class StreamSignalTypeStatsQuery {
 	
 	private List<Integer> signalTypes = new ArrayList<Integer>(); 
@@ -12,6 +14,17 @@ public class StreamSignalTypeStatsQuery {
 	private LocalDateTime timeRangeStart = null;
 	private LocalDateTime timeRangeEnd = null;
 	private boolean timeRangeSession = false;
+	
+	public static void main(String[] args) {
+		StreamSignalTypeStatsQuery q = new StreamSignalTypeStatsQuery();
+		q.setTimeRangeSession(true);
+		q.getEntities().add(4);
+		try {
+			System.out.println(DJson.serializePretty(q));
+		} catch (Exception e) {
+			// TODO: handle exception
+		}
+	}
 	
 	public List<Integer> getEntities() {
 		return entities;

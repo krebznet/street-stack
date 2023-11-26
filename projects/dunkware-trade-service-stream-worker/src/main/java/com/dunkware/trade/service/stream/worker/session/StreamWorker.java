@@ -185,10 +185,16 @@ public class StreamWorker implements DunkNetChannelHandler {
 
 	@ADunkNetService(label = "Start Session Worker Stream")
 	public StreamSessionWorkerStartResp startStream(StreamSessionWorkerStartReq req) {
+		if(logger.isDebugEnabled()) { 
+			logger.debug(marker, "Start Request Recieved on node {} ", dunkNet.getId());
+		}
 		this.req = req;
 		Set<Class<?>> classes = DAnotHelper.getClassesAnnotedWith(AStreamWorkerExtension.class);
 		for (Class<?> class1 : classes) {
 			try {
+				if(logger.isDebugEnabled()) { 
+					logger.debug(marker, "StreamWorkerExteension Init invoking on " + class1.getName());
+				}
 				StreamWorkerExtension ext = (StreamWorkerExtension) class1.newInstance();
 				ext.init(this);
 				workerExtensions.add(ext);
@@ -197,13 +203,18 @@ public class StreamWorker implements DunkNetChannelHandler {
 
 			}
 		}
-		stats.setNodeId(dunkNet.getId());
-		stats.setStream(req.getStream());
-		stats.setStatus(status.name());
-		stats.setCompletedTaskCount(0);
-		stats.setPendingTaskCount(0);
-		stats.setWorkerId(req.getWorkerId());
-		stats.setNumericId(req.getNumericId());
+		try {
+			stats.setNodeId(dunkNet.getId());
+			stats.setStream(req.getStream());
+			stats.setStatus(status.name());
+			stats.setCompletedTaskCount(0);
+			stats.setPendingTaskCount(0);
+			stats.setWorkerId(req.getWorkerId());
+			stats.setNumericId(req.getNumericId());	
+		} catch (Exception e) {
+			logger.error(marker, "Exception setting stats on startStream()  " + e.toString());;
+		}
+		
 		setStatus(StreamSessionWorkerStatus.Starting);
 		StreamSessionWorkerStartResp resp = new StreamSessionWorkerStartResp();
 		resp.setStartingTime(DTime.now(req.getStreamBundle().getTimeZone()));
@@ -237,6 +248,9 @@ public class StreamWorker implements DunkNetChannelHandler {
 		}
 		for (StreamWorkerExtension ext : workerExtensions) {
 			try {
+				if(logger.isDebugEnabled()) { 
+					logger.debug(marker,"starting stream worker extension " + ext.getClass().getName());
+				}
 				ext.start();
 			} catch (Exception e) {
 				logger.error(marker, "Exception starting worker extension {}  error {}", ext.getClass().getName(),
@@ -249,9 +263,16 @@ public class StreamWorker implements DunkNetChannelHandler {
 			}
 
 		}
-		statTimer = new Timer();
-		statTimer.scheduleAtFixedRate(new StatPublisher(), 0, 1000);
-
+		try {
+			statTimer = new Timer();
+			statTimer.scheduleAtFixedRate(new StatPublisher(), 0, 1000);	
+		} catch (Exception e) {
+			logger.error(marker, "Exception starting stat timer " + e.toString());
+		}
+		
+		if(logger.isDebugEnabled()) { 
+			logger.debug(marker, "Returning Start Response Okay");;
+		}
 		resp.setCode("OK");
 		
 		return resp;

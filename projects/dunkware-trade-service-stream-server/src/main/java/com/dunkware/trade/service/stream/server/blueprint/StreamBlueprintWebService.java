@@ -30,10 +30,8 @@ public class StreamBlueprintWebService {
 	@Autowired
 	private StreamBlueprintService blueprintService; 
 	
-	//| curl -H "Content-Type: application/json" -H "Transfer-Encoding: chunked" -X GET -d @- 'http://testrock1.dunkware.net:32100/stream/v1/blueprint/dash/signals?stream=us_equity'
-// curl -v -H  "http://localhost:8032/trade/v1/dash/core/brokers"
-// curl -v -H  "http://testrock1.dunkware.net:32100/stream/v1/blueprint/dash/signals?stream=us_equity"
-		
+	// FUCK YOU ONE THAT WORKS 
+	// -H "Content-Type: application/stream+json"  GET  'http://localhost:80/stream/v1/blueprint/dash/signals?stream=us_equity'
 	
 	
 	@Autowired

@@ -396,7 +396,7 @@ public class DunkNetImpl implements DunkNet, DKafkaByteHandler2 {
 							continue;
 						}
 					} catch (DunkNetException e) {
-							logger.error(marker, "Unhandled controlelr dunk net exception " + e.toString());
+							logger.error(marker, "Unhandled controlelr dunk net exception " + e.toString(),e);
 					}
 					
 				} catch (Exception e) {

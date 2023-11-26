@@ -1,5 +1,7 @@
 package com.dunkware.trade.net.data.server.stream.signals;
 
+import static org.hamcrest.CoreMatchers.instanceOf;
+
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Set;
@@ -28,18 +30,26 @@ public class StreamSignalHelper {
 			bean.setEntityId(signal.getEntity());
 			bean.setEntityIdentifier(entityDescriptor.getIdent());;
 			bean.setEntityName(entityDescriptor.getName());
+			bean.setSignalId(signalDescriptor.getId());
 			bean.setSignalName(signalDescriptor.getName());
 			Map<Integer,Number> varDoc = signal.getVars();;
 			Set<Entry<Integer,Number>> entries = varDoc.entrySet();
 			boolean priceSet = false; 
 			for (Entry<Integer, Number> entry : entries) {
 				Object key = entry.getKey();
-				String keyString = (String)key;
-				if(keyString.equals("2")) { 
-					bean.setSignalPrice(entry.getValue().doubleValue());
-					priceSet = true; 
+				if (key instanceof Integer) {
+					Integer intKey = (Integer) key;
+					bean.setSignalPrice((Double)entry.getValue());
 					break;
+				} else { 
+					String keyString = (String)key;
+					if(keyString.equals("2")) { 
+						bean.setSignalPrice(entry.getValue().doubleValue());
+						priceSet = true; 
+						break;
+					}	
 				}
+				
 			}
 			if(!priceSet) { 
 				bean.setSignalPrice(-1);
@@ -52,6 +62,7 @@ public class StreamSignalHelper {
 			StreamSignalBean bean = new StreamSignalBean();
 			bean.setDateTime(signal.getDateTime());;
 			bean.setEntityId(signal.getEntity());
+			bean.setSignalId(signal.getId());
 			bean.setEntityIdentifier("ERROR");
 			bean.setEntityName("ERROR");
 			bean.setSignalName("ERROR");
@@ -60,12 +71,20 @@ public class StreamSignalHelper {
 			Set<Entry<Integer,Number>> entries = varDoc.entrySet();
 			for (Entry<Integer, Number> entry : entries) {
 				Object key = entry.getKey();
-				String keyString = (String)key;
-				if(keyString.equals("2")) { 
-					bean.setSignalPrice(entry.getValue().doubleValue());
-					priceSet = true; 
-					break;
+				if (key instanceof Integer) {
+					Integer intKey = (Integer) key;
+					bean.setSignalPrice((Double)entry.getValue());
+					priceSet = true;
+				} else { 
+					String keyString = (String)key;
+					if(keyString.equals("2")) { 
+						bean.setSignalPrice(entry.getValue().doubleValue());
+						priceSet = true; 
+						break;
+					}	
 				}
+				
+				
 			}
 			if(!priceSet) { 
 				bean.setSignalPrice(-1);

@@ -34,11 +34,11 @@
 	</root>
 
 
-	<logger name="com.dunkware" level="INFO">
+	<logger name="com.dunkware" level="DEBUG">
  <appender-ref ref="FLUENT" />
 		<appender-ref ref="CONSOLE" additivity="false"/>
 	</logger>
-<logger name="com.dunkware.spring.cluster" level="ERROR">
+<logger name="com.dunkware.spring.cluster" level="DEBUG">
  
 		<appender-ref ref="CONSOLE" additivity="false"/>
 	</logger>

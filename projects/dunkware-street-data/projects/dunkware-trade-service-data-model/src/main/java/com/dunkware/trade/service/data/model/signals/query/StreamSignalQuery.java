@@ -5,13 +5,30 @@ import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.dunkware.common.util.json.DJson;
+
 public class StreamSignalQuery {
+	
 	
 	private List<Integer> entities = new ArrayList<Integer>();
 	private List<Integer> signalTypes = new ArrayList<Integer>();
 	private LocalDateTime timeRangeStart = null;
 	private LocalDateTime timeRangeEnd = null;
+	private boolean timeRangeSession = false; 
 	private int limit = 500; 
+	
+	public static void main(String[] args) {
+		StreamSignalQuery  q = new StreamSignalQuery();
+		q.getSignalTypes().add(4);
+		q.getEntities().add(4);
+		q.timeRangeSession = true;
+		try {
+			System.out.println(DJson.serializePretty(q));
+			
+		} catch (Exception e) {
+			// TODO: handle exception
+		}
+	}
 	
 	
 	private String stream;
@@ -62,6 +79,15 @@ public class StreamSignalQuery {
 	public void setLimit(int limit) {
 		this.limit = limit;
 	}
+
+	public boolean isTimeRangeSession() {
+		return timeRangeSession;
+	}
+
+	public void setTimeRangeSession(boolean timeRangeSession) {
+		this.timeRangeSession = timeRangeSession;
+	}
+	
 	
 	
 	

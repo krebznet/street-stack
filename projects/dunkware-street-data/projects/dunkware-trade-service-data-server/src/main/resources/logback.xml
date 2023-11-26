@@ -37,7 +37,7 @@
 
 		<appender-ref ref="CONSOLE" />
 	</logger>
-	<logger name="com.dunkware.spring" level="INFO">
+	<logger name="com.dunkware.spring" level="debug">
 		<appender-ref ref="FLUENT" />
 		<appender-ref ref="CONSOLE" additivity="false" />
 	</logger>

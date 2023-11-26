@@ -570,8 +570,8 @@ public class StreamSessionNodeImpl implements StreamSessionNode, DunkNetChannelH
 	private XStreamBundle createBundle() throws Exception {
 		XStreamBundle xstreamBundle = null;
 		xstreamBundle = new XStreamBundle();
-		xstreamBundle.setDate(DDate.now());
-		xstreamBundle.setTimeZone(DTimeZone.NewYork);
+		xstreamBundle.setDate(DDate.now(DTimeZone.toZoneId(input.getStream().getTimeZone())));
+		xstreamBundle.setTimeZone(input.getStream().getTimeZone());
 		try {
 			xstreamBundle.setScriptBundle(input.getSession().getStream().getScriptBundle());
 		} catch (Exception e) {

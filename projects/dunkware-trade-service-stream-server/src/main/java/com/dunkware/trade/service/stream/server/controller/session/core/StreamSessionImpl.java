@@ -203,7 +203,7 @@ public class StreamSessionImpl implements StreamSession {
 			
 			if (logger.isDebugEnabled()) {
 				logger.debug(marker, "Adding Stream Session Node Bean to controller "
-						+ sessionNode.getBean().getNodeId() + " " + sessionNode.getBean().getWorkerId());
+						+ nodeInput.getNode().getId() + " " + nodeInput.getWorkerId());
 			}
 			
 			input.getController().getSessionNodeBeans().getReadWriteLock().writeLock().lock();

@@ -15,6 +15,8 @@ import org.slf4j.LoggerFactory;
 import org.slf4j.Marker;
 import org.slf4j.MarkerFactory;
 
+import com.dunkware.common.util.glazed.GlazedDataGrid;
+import com.dunkware.common.util.glazed.GlazedDataGridListener;
 import com.dunkware.common.util.observable.ObservableBeanListConnector;
 import com.dunkware.stream.cluster.proto.controller.blueprint.StreamBlueprintSignalDescriptor;
 import com.dunkware.trade.net.data.server.stream.signals.StreamSignalProvider;
@@ -27,7 +29,7 @@ import com.dunkware.trade.service.data.model.signals.query.StreamSignalTypeStats
 import ca.odell.glazedlists.GlazedLists;
 import ca.odell.glazedlists.ObservableElementList;
 
-public class StreamSignalTypeStatsList {
+public class StreamSignalTypeStatsList implements GlazedDataGridListener {
 	
 	private Logger logger = LoggerFactory.getLogger(getClass());
 	private Marker marker = MarkerFactory.getMarker("StreamSignalStatsList");
@@ -42,7 +44,13 @@ public class StreamSignalTypeStatsList {
 	private StatsUpdater statsUpdater;
 
 	
-	public void start(StreamSignalTypeStatsQuery query, StreamSignalProvider provider) throws Exception { 
+	public void start(StreamSignalTypeStatsQuery query, StreamSignalProvider provider) throws Exception {
+		try {
+			this.signalProvider = provider;
+			statPredicate = StreamSignalQueryPredicateBuilder.build(query,signalProvider.streamDate());
+		} catch (Exception e) {
+			throw new Exception("Internal Exception Creating Stat Query Predicate " + e.toString());
+		}
 		beans = new ObservableElementList<StreamSignalTypeStatsBean>(GlazedLists.eventList(new ArrayList<StreamSignalTypeStatsBean>()),new ObservableBeanListConnector<>());
 		if(query.getSignalTypes() != null && query.getSignalTypes().size() > 0) {
 			for (Integer signalId : query.getSignalTypes()) {
@@ -63,17 +71,27 @@ public class StreamSignalTypeStatsList {
 				beans.add(stats);
 				beans.getReadWriteLock().writeLock().unlock();
 			}
-			
-			try {
-				statPredicate = StreamSignalQueryPredicateBuilder.build(query,signalProvider.streamDate());
-				beans.clear(); 
-				beans = null;
-			} catch (Exception e) {
-				throw new Exception("Internal Exception Creating Stat Query Predicate " + e.toString());
+		} else { 
+			for (StreamBlueprintSignalDescriptor sigDescriptor : signalProvider.streamBlueprint().signalDescriptors()) { 
+				StreamSignalTypeStatsBean stats = new StreamSignalTypeStatsBean();
+				stats.setSignalId(sigDescriptor.getId());
+				
+				try {
+					stats.setSignalGroup(sigDescriptor.getGroup());
+					stats.setSignalName(sigDescriptor.getName());					
+				} catch (Exception e) {
+					logger.error(marker, "Exception getting signal stats for signal id " + sigDescriptor.getId());
+					stats.setSignalGroup("N/A");
+					stats.setSignalName("N/A");
+				}
+				beans.getReadWriteLock().writeLock().lock();
+				beans.add(stats);
+				beans.getReadWriteLock().writeLock().unlock();
 			}
-			statsUpdater = new StatsUpdater();
-			statsUpdater.start();
 		}
+		
+		statsUpdater = new StatsUpdater();
+		statsUpdater.start();
 		
 	}
 	
@@ -103,6 +121,21 @@ public class StreamSignalTypeStatsList {
 		}
 	}
 	
+	
+	
+	@Override
+	public void onGridDispose(GlazedDataGrid dataGrid) {
+		dispose();
+	}
+
+	@Override
+	public void onGridInit(GlazedDataGrid dataGrid) {
+		// TODO Auto-generated method stub
+		
+	}
+
+
+
 	private class StatsUpdater extends Thread { 
 		
 		public StatsUpdater() { 
@@ -115,53 +148,68 @@ public class StreamSignalTypeStatsList {
 				Map<Integer,List<StreamSignalBean>> resultMap = new HashMap<Integer,List<StreamSignalBean>>();
 				List<StreamSignalBean> results = signalProvider.sessionSignalQuery(statPredicate);
 				for (StreamSignalBean streamSignalBean : results) {
-					List<StreamSignalBean> beans = resultMap.get(streamSignalBean.getSignalId());
-					if(beans == null) { 
-						beans = new ArrayList<StreamSignalBean>();
-						beans.add(streamSignalBean);
-						resultMap.put(streamSignalBean.getSignalId(), beans);
+					List<StreamSignalBean> signalTypeBeans = resultMap.get(streamSignalBean.getSignalId());
+					if(signalTypeBeans == null) { 
+						signalTypeBeans = new ArrayList<StreamSignalBean>();
+						signalTypeBeans.add(streamSignalBean);
+						resultMap.put(streamSignalBean.getSignalId(), signalTypeBeans);
 					} else { 
-						beans.add(streamSignalBean);
-						resultMap.put(streamSignalBean.getSignalId(), beans);
+						signalTypeBeans.add(streamSignalBean);
+						resultMap.put(streamSignalBean.getSignalId(), signalTypeBeans);
 					}
 				}
 				
 				try {
 					
-					for (StreamSignalBean streamSignalBean : results) {
-						List<StreamSignalBean> resultList = resultMap.get(streamSignalBean.getSignalId());
-						StreamSignalTypeStatsBean bean = null;
-						try {
-							bean = getStatsBean(streamSignalBean.getSignalId());
-						} catch (Exception e) {
-							logger.error("Problem, getting stats bean when predicate returned signal id ? ");;
-							continue;
-						}
+					beans.getReadWriteLock().readLock().lock();
+					StreamSignalTypeStatsBean[] beanCopies = new StreamSignalTypeStatsBean[beans.size()];
+					int i = 0;
+					for (StreamSignalTypeStatsBean streamSignalTypeStatsBean : beans) {
+						beanCopies[i] = streamSignalTypeStatsBean;
+						i++;
+					}
+					beans.getReadWriteLock().readLock().unlock();
+					for (StreamSignalTypeStatsBean statsBean : beanCopies) {
+						List<StreamSignalBean> resultList = resultMap.get(statsBean.getSignalId());
+						
 						if(resultList == null) { 
-							bean.setEntityCount(0);
-							bean.notifyUpdate();
+							statsBean.setEntityCount(0);
+							statsBean.notifyUpdate();
 						} else { 
 							 Collections.sort(resultList,StreamSignalDateTimeComparator.instance());
 							 StreamSignalBean lastSignal = results.get(0);
-							 bean.setLastSIgnalEntityId(lastSignal.getEntityId());
-							 bean.setLastSignalEntityIdent(lastSignal.getEntityIdentifier());
-							 bean.setLastSignalEntityName(lastSignal.getEntityName());
-							 bean.setLastSignalPrice(lastSignal.getSignalPrice());
-							 bean.notifyUpdate();
-							 
-							 
-							// comparable mother fucker man. 
+							 statsBean.setLastSIgnalEntityId(lastSignal.getEntityId());
+							 statsBean.setLastSignalEntityIdent(lastSignal.getEntityIdentifier());
+							 statsBean.setLastSignalEntityName(lastSignal.getEntityName());
+							 statsBean.setLastSignalPrice(lastSignal.getSignalPrice());
+							 statsBean.setEntityCount(resultList.size());
+							 statsBean.setSignalCount(resultList.size());
+							
+							 statsBean.setLastSignalTime(lastSignal.getDateTime());
+							 statsBean.notifyUpdate();
 						}
-						Thread.sleep(1000);
+						
+
+						
 						
 					}
+												
+					
 				} catch (Exception e) {
 					if (e instanceof InterruptedException) { 
 						return;
 					}
 					logger.error(marker, "Exception updating stat beans " + e.toString(),e);
+				} finally { 
+					
+					
 				}
-				
+				try {
+					System.out.println("Signal Type Stats List Size is " + beans.size());
+					Thread.sleep(1000);	
+				} catch (Exception e) {
+					// TODO: handle exception
+				}
 				
 				
 			}
