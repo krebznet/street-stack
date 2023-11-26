@@ -18,6 +18,7 @@ public class StreamSignalTypeStatsBean extends ObservableBean {
 	private String lastSignalEntityName; 
 	private LocalDateTime lastSignalTime;
 	private Number lastSignalPrice; 
+	private String lastSignalTimeString;
 	
 	
 	
@@ -87,7 +88,14 @@ public class StreamSignalTypeStatsBean extends ObservableBean {
 	}
 	public void setLastSignalPrice(Number lastSignalPrice) {
 		this.lastSignalPrice = lastSignalPrice;
+	}
+	public String getLastSignalTimeString() {
+		return lastSignalTimeString;
+	}
+	public void setLastSignalTimeString(String lastSignalTimeString) {
+		this.lastSignalTimeString = lastSignalTimeString;
 	} 
+	
 	
 	
 	

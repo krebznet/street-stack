@@ -1,14 +1,14 @@
 package com.dunkware.trade.net.data.server.stream.signals.beanlists;
 
-import static org.hamcrest.CoreMatchers.instanceOf;
-
+import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.function.Predicate;
-import java.util.stream.Collectors;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -18,6 +18,7 @@ import org.slf4j.MarkerFactory;
 import com.dunkware.common.util.glazed.GlazedDataGrid;
 import com.dunkware.common.util.glazed.GlazedDataGridListener;
 import com.dunkware.common.util.observable.ObservableBeanListConnector;
+import com.dunkware.common.util.time.DunkTime;
 import com.dunkware.stream.cluster.proto.controller.blueprint.StreamBlueprintSignalDescriptor;
 import com.dunkware.trade.net.data.server.stream.signals.StreamSignalProvider;
 import com.dunkware.trade.service.data.model.signals.bean.StreamSignalBean;
@@ -43,6 +44,7 @@ public class StreamSignalTypeStatsList implements GlazedDataGridListener {
 	
 	private StatsUpdater statsUpdater;
 
+	private StreamSignalDateTimeComparator signalDateTimeComparator = new StreamSignalDateTimeComparator();
 	
 	public void start(StreamSignalTypeStatsQuery query, StreamSignalProvider provider) throws Exception {
 		try {
@@ -136,6 +138,7 @@ public class StreamSignalTypeStatsList implements GlazedDataGridListener {
 
 
 
+	
 	private class StatsUpdater extends Thread { 
 		
 		public StatsUpdater() { 
@@ -144,10 +147,14 @@ public class StreamSignalTypeStatsList implements GlazedDataGridListener {
 		
 		
 		public void run() { 
+			Set<Integer> uniqueEntities = new HashSet<Integer>();
 			while(!interrupted()) { 
 				Map<Integer,List<StreamSignalBean>> resultMap = new HashMap<Integer,List<StreamSignalBean>>();
 				List<StreamSignalBean> results = signalProvider.sessionSignalQuery(statPredicate);
 				for (StreamSignalBean streamSignalBean : results) {
+					if(uniqueEntities.contains(streamSignalBean.getEntityId()) == false) { 
+						uniqueEntities.add(streamSignalBean.getEntityId());
+					}
 					List<StreamSignalBean> signalTypeBeans = resultMap.get(streamSignalBean.getSignalId());
 					if(signalTypeBeans == null) { 
 						signalTypeBeans = new ArrayList<StreamSignalBean>();
@@ -176,16 +183,16 @@ public class StreamSignalTypeStatsList implements GlazedDataGridListener {
 							statsBean.setEntityCount(0);
 							statsBean.notifyUpdate();
 						} else { 
-							 Collections.sort(resultList,StreamSignalDateTimeComparator.instance());
-							 StreamSignalBean lastSignal = results.get(0);
+							 Collections.sort(resultList,signalDateTimeComparator);
+							 StreamSignalBean lastSignal = resultList.get(0);
 							 statsBean.setLastSIgnalEntityId(lastSignal.getEntityId());
 							 statsBean.setLastSignalEntityIdent(lastSignal.getEntityIdentifier());
 							 statsBean.setLastSignalEntityName(lastSignal.getEntityName());
 							 statsBean.setLastSignalPrice(lastSignal.getSignalPrice());
-							 statsBean.setEntityCount(resultList.size());
+							 statsBean.setEntityCount(uniqueEntities.size());
 							 statsBean.setSignalCount(resultList.size());
-							
-							 statsBean.setLastSignalTime(lastSignal.getDateTime());
+							 statsBean.setLastSignalTime(lastSignal.getDateTime().truncatedTo(ChronoUnit.SECONDS));
+							 statsBean.setLastSignalTimeString(DunkTime.format(lastSignal.getDateTime(), DunkTime.YYYY_MM_DD_HH_MM_SS));
 							 statsBean.notifyUpdate();
 						}
 						
@@ -205,8 +212,7 @@ public class StreamSignalTypeStatsList implements GlazedDataGridListener {
 					
 				}
 				try {
-					System.out.println("Signal Type Stats List Size is " + beans.size());
-					Thread.sleep(1000);	
+					Thread.sleep(2000);	
 				} catch (Exception e) {
 					// TODO: handle exception
 				}

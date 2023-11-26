@@ -47,7 +47,7 @@ public class GlazedDataGrid implements ListEventListener<Object> {
 		this.list = list;
 		this.dataGrid = DataGrid.newInstance(idMethod);
 		flux = sink.asFlux().doOnCancel(() -> {
-			running = false;
+			
 			if (logger.isDebugEnabled()) {
 				logger.debug("Flux onCancel invoked " + id);
 			}
@@ -121,7 +121,7 @@ public class GlazedDataGrid implements ListEventListener<Object> {
 	 */
 	public void emitUpdates() {
 		try {
-			System.out.println("emit updates size " + updates.size() );
+		
 			if (!running) {
 				return;
 			}
@@ -214,15 +214,40 @@ public class GlazedDataGrid implements ListEventListener<Object> {
 	}
 
 	public void dispose() {
-		running = false;
-		list.removeListEventListener(this);
-		GlazedDataGridService.get().unregister(this);
+		Thread disposer = new Thread() { 
+		
+			public void run() { 
+				if(!running) { 
+					logger.error("calling dispose when not running");
+					return;
+					
+				}
+				running = false;
+				for (GlazedDataGridListener listener : listeners) {
+					try {
+						listener.onGridDispose(GlazedDataGrid.this);	
+					} catch (Exception e) {
+						logger.error(marker, "Dispose listener {} exceptopn {} ",listener.getClass().getName(),e.toString(),e);
 
-		dataGrid.dispose();
+					}
+					
+				}
+				list.getReadWriteLock().writeLock().lock();
+				list.removeListEventListener(GlazedDataGrid.this);
+				list.getReadWriteLock().readLock();
+				GlazedDataGridService.get().unregister(GlazedDataGrid.this);
+				
+				dataGrid.dispose();
 
-		if (logger.isDebugEnabled()) {
-			logger.debug("Disposed {} ", id);
-		}
+				if (logger.isDebugEnabled()) {
+					logger.debug("Disposed {} ", id);
+				}				
+			}
+		};
+		disposer.start();
+		
+		
+
 
 	}
 

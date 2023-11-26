@@ -40,6 +40,7 @@ public class StreamSignalHelper {
 				if (key instanceof Integer) {
 					Integer intKey = (Integer) key;
 					bean.setSignalPrice((Double)entry.getValue());
+					priceSet = true;
 					break;
 				} else { 
 					String keyString = (String)key;
