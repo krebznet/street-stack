@@ -158,27 +158,12 @@ public class StreamSignalProviderImpl implements StreamSignalProvider, StreamSig
 		return list;
 	}
 
-	@Override
-	public StreamSignalTypeStatsGrid signalTypeSatsGrid(StreamSignalTypeStatsQuery query) throws Exception {
-		StreamSignalTypeStatsList list = signalTypeStatsList(query);
-		StreamSignalTypeStatsGrid grid = new StreamSignalTypeStatsGrid();
-		grid.start(list, this);
-		return grid;
-
-	}
-
+	
 	@Override
 	public StreamSignalList signalList(StreamSignalQuery query) throws Exception {
 		StreamSignalList list = new StreamSignalList();
 		list.start(query, this);
 		return list;
-	}
-
-	@Override
-	public StreamSignalGrid signalGrid(StreamSignalQuery query) throws Exception {
-		StreamSignalGrid grid = new StreamSignalGrid();
-		grid.start(signalList(query), this);
-		return grid;
 	}
 
 	@Override

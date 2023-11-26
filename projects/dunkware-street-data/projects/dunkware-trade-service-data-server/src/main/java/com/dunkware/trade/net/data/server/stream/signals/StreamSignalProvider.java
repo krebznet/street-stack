@@ -86,16 +86,6 @@ public interface StreamSignalProvider {
 	
 	
 	
-	
-	/**
-	 * Gets the signal type stats grid from query
-	 * @param query
-	 * @return
-	 * @throws Exception
-	 */
-	public StreamSignalTypeStatsGrid signalTypeSatsGrid(StreamSignalTypeStatsQuery query) throws Exception;
-	
-	
 	/**
 	 * Creates a stream signal list 
 	 * @param query
@@ -103,14 +93,6 @@ public interface StreamSignalProvider {
 	 * @throws Exception
 	 */
 	public StreamSignalList signalList(StreamSignalQuery query) throws Exception;
-	
-	/**
-	 * Creates a Stream Signal Grid 
-	 * @param query
-	 * @return
-	 * @throws Exception
-	 */
-	public StreamSignalGrid signalGrid(StreamSignalQuery query) throws Exception; 
 	
 	
 	/***

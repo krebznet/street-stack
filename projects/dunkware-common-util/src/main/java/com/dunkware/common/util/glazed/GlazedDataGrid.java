@@ -3,6 +3,8 @@ package com.dunkware.common.util.glazed;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.Semaphore;
+import java.util.concurrent.atomic.AtomicInteger;
+import java.util.concurrent.atomic.AtomicInteger;
 
 import org.reactivestreams.Subscriber;
 import org.reactivestreams.Subscription;
@@ -38,6 +40,8 @@ public class GlazedDataGrid implements ListEventListener<Object> {
 
 	private List<GlazedDataGridListener> listeners = new ArrayList<GlazedDataGridListener>();
 	private Semaphore listenerLock = new Semaphore(1);
+	
+	private AtomicInteger pingCounter = new AtomicInteger(0);
 
 	public static GlazedDataGrid newInstance(ObservableElementList<?> list, DExecutor executor, String idMethod) {
 		return new GlazedDataGrid(list, executor, idMethod);
@@ -121,16 +125,24 @@ public class GlazedDataGrid implements ListEventListener<Object> {
 	 */
 	public void emitUpdates() {
 		try {
-		
+			updatesLock.acquire();
 			if (!running) {
 				return;
 			}
-			DataGridUpdate update = new DataGridUpdate();
-			update.setId(-1);
-			update.setType("PING");
+		
+			int pingCount = pingCounter.incrementAndGet();
+			if(pingCount > 10) { 
+				DataGridUpdate update = new DataGridUpdate();
+				update.setId(-1);
+				update.setType("PING");
+			
+				pingCounter.set(0);;
+				
+				updates.add(update);
+			}
+			
 
-			updatesLock.acquire();
-			updates.add(update);
+			
 			if (updates.size() == 0) {
 				return;
 			}
@@ -197,6 +209,7 @@ public class GlazedDataGrid implements ListEventListener<Object> {
 			update.setId(-1);
 			addUpdate(update);
 		}
+		
 		Thread register = new Thread() {
 
 			public void run() {
@@ -423,5 +436,9 @@ public class GlazedDataGrid implements ListEventListener<Object> {
 			updatesLock.release();
 		}
 	}
+	
+	
+	
+
 
 }

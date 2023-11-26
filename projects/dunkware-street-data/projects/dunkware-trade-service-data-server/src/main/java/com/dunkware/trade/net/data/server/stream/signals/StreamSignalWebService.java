@@ -14,6 +14,7 @@ import com.dunkware.common.util.glazed.GlazedDataGrid;
 import com.dunkware.spring.runtime.controller.UserException;
 import com.dunkware.trade.net.data.server.stream.signals.beangrids.StreamSignalGrid;
 import com.dunkware.trade.net.data.server.stream.signals.beangrids.StreamSignalTypeStatsGrid;
+import com.dunkware.trade.net.data.server.stream.signals.beanlists.StreamSignalList;
 import com.dunkware.trade.net.data.server.stream.signals.beanlists.StreamSignalTypeStatsList;
 import com.dunkware.trade.service.data.model.signals.bean.StreamSignalBean;
 import com.dunkware.trade.service.data.model.signals.query.StreamSignalQuery;
@@ -53,9 +54,11 @@ public class StreamSignalWebService {
 		if(signalProvider == null) { 
 			throw new UserException("Stream " + stream + " not found");
 		}
-		StreamSignalGrid grid = signalProvider.signalGrid(query);
-		grid.getDataGrid().start();
-		return grid.getDataGrid().getUpdates();
+		StreamSignalList list = signalProvider.signalList(query);
+		GlazedDataGrid dataGrid = GlazedDataGrid.newInstance(list.getList(), signalProvider.getExecutor(), "getRowId");
+		dataGrid.addListener(list);
+		dataGrid.start();
+		return dataGrid.getUpdates();
 	
 	}
 	

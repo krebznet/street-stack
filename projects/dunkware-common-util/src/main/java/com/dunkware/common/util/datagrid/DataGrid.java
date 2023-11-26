@@ -106,9 +106,21 @@ public class DataGrid {
 		
 		DataGridUpdate update = new DataGridUpdate();
 		try {
+			Number objectId = getObjectId(object);
 			update.setId(getObjectId(object));
-			//update.setJson(DJson.serialize(object));
 			update.setType("DELETE");
+			
+			try {
+				rowIdLock.acquire();
+				if(rowIds.contains(objectId)) { 
+					rowIds.remove(objectId);
+				}
+			} catch (Exception e) {
+				// TODO: handle exception
+			} finally { 
+				rowIdLock.release();
+			}
+			
 		} catch (Exception e) {
 			logger.error("error getting id on method " + idMethod + " " + e.toString());
 			throw new DataGridException(e.toString());

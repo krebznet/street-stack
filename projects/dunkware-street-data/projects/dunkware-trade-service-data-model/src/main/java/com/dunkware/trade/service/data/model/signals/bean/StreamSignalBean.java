@@ -6,6 +6,7 @@ import com.dunkware.common.util.helpers.DRandom;
 import com.dunkware.common.util.json.DJson;
 import com.dunkware.common.util.observable.ObservableBean;
 import com.dunkware.common.util.time.DunkTime;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 public class StreamSignalBean extends ObservableBean {
 	
@@ -126,6 +127,19 @@ public class StreamSignalBean extends ObservableBean {
 		builder.append(DunkTime.format(getDateTime(), DunkTime.YYYY_MM_DD_HH_MM_SS));
 		return builder.toString();
 	} 
+	
+	
+	@JsonIgnore
+	public static void copyProperties(StreamSignalBean source, StreamSignalBean target) { 
+		target.setDateTime(source.getDateTime());
+		target.setEntityId(source.getEntityId());
+		target.setEntityIdentifier(source.getEntityIdentifier());
+		target.setEntityName(source.getEntityName());
+		target.setSignalGroup(source.getSignalGroup());
+		target.setSignalId(source.getSignalId());
+		target.setSignalName(source.getSignalName());
+		target.setSignalPrice(source.getSignalPrice());
+	}
 	
 	
 	
