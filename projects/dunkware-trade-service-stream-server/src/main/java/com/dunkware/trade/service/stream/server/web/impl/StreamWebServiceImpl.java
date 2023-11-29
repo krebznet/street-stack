@@ -81,6 +81,7 @@ public class StreamWebServiceImpl implements StreamWebService  {
 					snapVar.setIdentifier(varBean.getIdentifier());
 					snapVar.setUpdateCount(0);
 					snapshot.getVars().put((int)varBean.getId(), snapVar);
+					///
 				}
 				return snapshot; 
 			} catch (Exception e) {

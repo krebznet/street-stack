@@ -46,18 +46,19 @@ public class StreamWorkerStatsExtension implements StreamWorkerExtension {
 		try {
 			DStopWatch watch = DStopWatch.create();
 			watch.start();
-			stats = statFactory.buildStreamStats(stream);			
+			stats = statFactory.buildEntityStats(stream);			
 			watch.stop();
 			logger.info(marker, "Generated Entity Stats in " + watch.getCompletedSeconds());
+			StreamWorkerEntityStatsPublisher publisher = new StreamWorkerEntityStatsPublisher(stats, topicName, worker.getDunkNet());
+			publisher.run();
 		} catch (Exception e) {
 			logger.error(marker, "Exception building entity stats " + e.toString());
 		}
 		
-	   StreamWorkerEntityStatsPublisher publisher = new StreamWorkerEntityStatsPublisher(stats,topicName,worker.getDunkNet());
-	   publisher.run();
-		
 	}
 	
+	
+	// MYSQLEntityStatWriter
 	
 
 

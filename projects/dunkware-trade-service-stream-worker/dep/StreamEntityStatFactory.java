@@ -35,7 +35,7 @@ public class StreamEntityStatFactory {
 	private Marker marker = MarkerFactory.getMarker("EntityStatFactory");
 	private Logger logger = LoggerFactory.getLogger(getClass());
 	
-	public static final int generatorCount = 10;
+	public static final int generatorCount = 5;
 	private List<EntityStat> factoryStats = new ArrayList<EntityStat>();
 	private Semaphore factoryStatsLock = new Semaphore(1);
 	
@@ -48,7 +48,7 @@ public class StreamEntityStatFactory {
 	
 	public StreamEntityStatFactory() {
 		int i = 0; 
-		while(i < generatorCount) { 
+		while(i < 5) { 
 			EntityVarStatGenerator gen = new EntityVarStatGenerator();
 			generators.add(gen);
 			i++;
@@ -57,7 +57,7 @@ public class StreamEntityStatFactory {
 		
 	}
 	
-	public List<EntityStat> buildEntityStats(XStream stream) throws Exception { 
+	public List<EntityStat> buildStreamStats(XStream stream) throws Exception { 
 		this.stream = stream;
 		date = stream.getClock().getLocalDateTime().toLocalDate();
 		for (XStreamEntity xStreamEntity : stream.getRows()) {
@@ -97,31 +97,74 @@ public class StreamEntityStatFactory {
 		public void run() { 
 			while(!interrupted()) { 
 				try {
-					XStreamEntity entity = entityQueue.poll(5, TimeUnit.SECONDS);
+					XStreamEntity entity = entityQueue.poll(3, TimeUnit.SECONDS);
 					if(entity == null) { 
 						completedGeneratorCount.incrementAndGet();
 						return; 
 					}
+					List<EntityStat> statCollector = new ArrayList<EntityStat>();
 					try {
 						for (XStreamEntityVar var : entity.getVars()) {
 							
 							if(var.getSize() > 0 && var.isNumeric()) { 
-								EntityStat stat = new EntityStat();
-								stat.setDate(stream.getInput().getDate().get());
-								stat.setEntity(entity.getIdentifier());
-								stat.setElement(var.getVarType().getCode());
-								stat.setStat(EntityStatType.VAR_HIGH);
-								stat.setValue(var.getHigh());
-								stat.setTime(var.getHighTime());
-								factoryStats.add(stat);
-								EntityStat low = new EntityStat();
-								low.setDate(stream.getInput().getDate().get());
-								low.setEntity(entity.getIdentifier());
-								low.setElement(var.getVarType().getCode());
-								low.setStat(EntityStatType.VAR_LOW);
-								low.setValue(var.getLow());
-								low.setTime(var.getLowTime());
-								factoryStats.add(low);
+								try {
+									EventList<GenericNumber> values = var.getNumericValues();
+									GenericStatistics stats = new GenericStatistics();
+									try {
+										stats.calculateStatistics(values);
+									} catch (Exception e) {
+										logger.error("Exception calcuating statics " + e.toString());;
+									}
+									EntityStat stat = new EntityStat();
+									try {
+
+										stat.setDate(date);
+										stat.setEntity(entity.getIdentifier());
+										stat.setStat(EntityStatType.VAR_HIGH);
+										stat.setValue(stats.getHigh());
+										stat.setTime(stats.getHighTime());
+										stat.setElement(var.getVarType().getCode());
+										statCollector.add(stat);
+										
+									} catch (Exception e) {
+										logger.error("exception creating / collectiing var stat high " + e.toString());;
+									}
+									
+									stat = new EntityStat();
+									stat.setDate(date);
+									stat.setEntity(entity.getIdentifier());
+									stat.setElement(var.getVarType().getCode());;
+									stat.setStat(EntityStatType.VAR_LOW);
+									stat.setValue(stats.getLow());
+									stat.setTime(stats.getLowTime());
+									statCollector.add(stat);
+									stat = new EntityStat();
+									stat.setDate(date);
+									stat.setEntity(entity.getIdentifier());
+									stat.setElement(var.getVarType().getCode());;
+									stat.setStat(EntityStatType.VAR_AVG);
+									stat.setValue(stats.getMean());
+									statCollector.add(stat);
+									stat = new EntityStat();
+									stat.setDate(date);
+									stat.setEntity(entity.getIdentifier());
+									stat.setElement(var.getVarType().getCode());;
+									stat.setStat(EntityStatType.VAR_VARIANCE);
+									stat.setValue(stats.getVariance());
+									statCollector.add(stat);
+									stat = new EntityStat();
+									stat.setDate(date);
+									stat.setElement(var.getVarType().getCode());
+									stat.setEntity(entity.getIdentifier());
+									stat.setStat(EntityStatType.VAR_STD);
+									stat.setValue(stats.getStdDev());
+									statCollector.add(stat);
+									
+								} catch (Exception e) {
+									logger.error("Exception in var EntityStat creation " + e.toString());;
+								}
+								
+
 							}
 						}
 						
@@ -147,8 +190,18 @@ public class StreamEntityStatFactory {
 							stat.setElement(signalTypeId);
 							stat.setStat(EntityStatType.SIGNAL_COUNT);
 							stat.setValue(atomic.get());
-							factoryStats.add(stat);
-						}				
+							statCollector.add(stat);
+						}
+					
+						try {
+							factoryStatsLock.acquire();
+							factoryStats.addAll(statCollector);
+						} catch (Exception e) {
+							logger.error(marker, "Exception adding stats collector items to stat factory list");
+						} finally { 
+							factoryStatsLock.release();
+						}
+								
 					} catch (Exception e) {
 						logger.error("Exception in signal stats creation " + e.toString());	
 					}

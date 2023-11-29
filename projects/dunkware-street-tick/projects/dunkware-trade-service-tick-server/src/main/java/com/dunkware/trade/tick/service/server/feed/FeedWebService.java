@@ -66,6 +66,7 @@ public class FeedWebService {
 			TickConsumerSession session = tickService.createConsumer(request.getSpec());
 			resp.setSession(session);
 			resp.setCode("SUCCESS");
+			logger.error("Exception tick/feedStats");
 			return resp;
 		} catch (Exception e) {
 			TickFeedStartResp resp = new TickFeedStartResp();

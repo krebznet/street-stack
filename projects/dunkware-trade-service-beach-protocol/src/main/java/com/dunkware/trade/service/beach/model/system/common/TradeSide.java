@@ -1,5 +1,5 @@
 package com.dunkware.trade.service.beach.model.system.common;
 
-public class StrategyOrderEntryModel {
-
+public enum TradeSide {
+LONG,SHORT
 }

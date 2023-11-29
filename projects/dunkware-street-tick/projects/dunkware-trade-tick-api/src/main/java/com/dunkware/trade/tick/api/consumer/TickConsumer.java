@@ -1,6 +1,8 @@
 package com.dunkware.trade.tick.api.consumer;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.BlockingQueue;
@@ -19,6 +21,7 @@ import com.dunkware.common.tick.proto.TickProto.Tick;
 import com.dunkware.common.tick.proto.TickProto.Tick.TickField;
 import com.dunkware.common.tick.proto.TickProto.Tick.TickFieldType;
 import com.dunkware.common.util.dtime.DTimeZone;
+import com.dunkware.common.util.time.DunkTime;
 import com.dunkware.common.util.uuid.DUUID;
 import com.dunkware.trade.tick.api.feed.TickFeed;
 import com.dunkware.trade.tick.api.feed.TickFeedSubscription;
@@ -46,10 +49,14 @@ public class TickConsumer {
 	private TickProducer tickProducer;
 
 	private LocalDateTime lastHeartbeat = null;
+	
+	private TickConsumerBean bean = new TickConsumerBean();
 
 	public TickConsumerSession start(TickConsumerSpec spec, TickFeed feed, String kafkaBrokers, String topicPrefix)
 			throws Exception {
 		session = new TickConsumerSession();
+		bean.setName(spec.getName());
+		
 		this.spec = spec;
 		this.kafkaBrokers = kafkaBrokers;
 		
@@ -62,8 +69,9 @@ public class TickConsumer {
 				session.setInactiveSubscriptions(session.getInactiveSubscriptions() + 1);
 			}
 		}
+		
 
-		String sessionid = ("tick_consumer" + "_" + DUUID.randomUUID(5));
+		String sessionid = ("tick_feed_" + spec.getName() + "_" + DUUID.randomUUID(4));
 		session.setSessionId(sessionid);
 		session.setKafkaBroker(kafkaBrokers);
 		session.setKafkaTopic(topicPrefix + "_" + sessionid);
@@ -128,6 +136,7 @@ public class TickConsumer {
 					if (e instanceof InterruptedException) {
 						return;
 					}
+					logger.error("Exception Sending Tick in Sender " + e.toString());
 					continue;
 					// log error
 				}

@@ -10,7 +10,7 @@ import com.dunkware.common.util.observable.ObservableBean;
 
 public class StreamSignalTypeBean extends ObservableBean {
 
-	private int rowId = DRandom.getRandom(1, 434343434);
+	private int id = DRandom.getRandom(1, 434343434);
 	private int signalId; 
 	private String signalName; 
 	private String signalGroup; 
@@ -23,6 +23,7 @@ public class StreamSignalTypeBean extends ObservableBean {
 	public static void main(String[] args) {
 		StreamSignalTypeBean bean = new StreamSignalTypeBean();
 		bean.setSignalId(3);
+		bean.getId();
 		bean.setSignalName("Breakout 1");
 		bean.setSignalGroup("Breakotus");
 		bean.setSignalCount(423);
@@ -90,14 +91,16 @@ public class StreamSignalTypeBean extends ObservableBean {
 		this.lastEntityIdentifier = lastEntityIdentifier;
 	}
 
-	public int getRowId() {
-		return rowId;
+	public int getId() {
+		return id;
 	}
 
-	public void setRowId(int rowId) {
-		this.rowId = rowId;
-	} 
+	public void setId(int id) {
+		this.id = id;
+	}
 	
+	
+
 	
 	
 	

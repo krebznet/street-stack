@@ -77,8 +77,8 @@ public class XStreamClockImpl implements XStreamClock {
 
 	@Override
 	public void setTime(DTime time) {
-		if(logger.isTraceEnabled()) { 
-			logger.trace("Time Set {}",time.getHour() + ":" + time.getMinute() + ":" + time.getSecond());
+		if(logger.isDebugEnabled()) { 
+			logger.debug("Time Set {}",time.getHour() + ":" + time.getMinute() + ":" + time.getSecond());
 		}
 		this.time = time; 
 		// in the same thread invoke listeners and schedulers
@@ -92,6 +92,7 @@ public class XStreamClockImpl implements XStreamClock {
 		} catch (Exception e) {
 			// TODO: handle exception
 		} finally {
+			
 			listenerLock.release();
 		}
 		for (ScheduledRunnable scheduled : scheduledRunnables.values()) {

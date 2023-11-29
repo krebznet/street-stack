@@ -1,5 +1,5 @@
 package com.dunkware.trade.service.beach.model.system.common;
 
-public class StrategyOrderExitModel {
-
+public enum TradeType {
+MARKET,PEGGED
 }

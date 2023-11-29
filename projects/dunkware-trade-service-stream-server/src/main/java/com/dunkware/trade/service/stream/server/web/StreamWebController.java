@@ -23,8 +23,8 @@ public class StreamWebController {
 	@Autowired
 	private StreamWebService webService; 
 	
-							
-	@GetMapping(path = "/stream/v1/web/stream/grid/session/nodes", produces = MediaType.APPLICATION_NDJSON_VALUE)
+//	/stream/v1/web/stream/grid/session/nodes?stream=us_equity
+	@GetMapping(path = "/stream/v1/web/stream/grid/session/nodes", produces = MediaType.APPLICATION_STREAM_JSON_VALUE)
 	public Flux<List<DataGridUpdate>> streamSessionNodes(@RequestParam() String stream) throws Exception {
 		ObservableElementList<StreamSessionNodeBean> nodes = webService.getStreamNodes(stream);
 		GlazedDataGrid grid = GlazedDataGrid.newInstance(nodes, webService.getExecutor(), "getId");
@@ -33,7 +33,7 @@ public class StreamWebController {
 	}
 	
 	
-	@GetMapping(path = "/stream/v1/web/stream/grid/signals", produces = MediaType.APPLICATION_NDJSON_VALUE)
+	@GetMapping(path = "/stream/v1/web/stream/grid/signals", produces = MediaType.APPLICATION_STREAM_JSON_VALUE)
 	public Flux<List<DataGridUpdate>> streamSessionSignals(@RequestParam() String stream) throws Exception {
 		ObservableElementList<StreamSessionNodeBean> nodes = webService.getStreamNodes(stream);
 		GlazedDataGrid grid = GlazedDataGrid.newInstance(nodes, webService.getExecutor(), "getId");
@@ -45,6 +45,8 @@ public class StreamWebController {
 	
 	@GetMapping(path = "/stream/v1/web/stream/session/entity/vars/grid", produces = MediaType.APPLICATION_STREAM_JSON_VALUE)
 	public Flux<DataGridUpdate> entitySessionVars(@RequestParam String stream, @RequestParam int entityId) { 
+		// VarSnapshot - ID - IDENT - value -
+		//webService.getEntitySessionVarGrid(entityId);
 		return null;
 	}
 	

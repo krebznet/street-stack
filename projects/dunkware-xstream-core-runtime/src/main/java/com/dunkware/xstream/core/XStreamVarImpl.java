@@ -18,6 +18,7 @@ import org.slf4j.LoggerFactory;
 import org.slf4j.MarkerFactory;
 
 import com.dunkware.common.stats.GenericNumber;
+import com.dunkware.common.util.helpers.DNumberHelper;
 import com.dunkware.xstream.api.XStreamEntity;
 import com.dunkware.xstream.api.XStreamEntityVar;
 import com.dunkware.xstream.api.XStreamEntityVarListener;
@@ -66,10 +67,14 @@ public class XStreamVarImpl implements XStreamEntityVar, XStreamExpressionListen
 	private volatile LocalTime lastUpdate = null;
 	
 	private boolean numeric = false; 
+	
+	private Number high = null;
+	private LocalTime highTime = null;
+	private Number low = null;
+	private LocalTime lowTime = null;
+	private boolean highLowInit = false; 
 
 	
-	private EventList<GenericNumber> numericValueHistory = GlazedLists.eventList(new ArrayList<GenericNumber>());
-
 	
 	@Override
 	public void init(XStreamEntity row, VarType varType) {
@@ -127,6 +132,27 @@ public class XStreamVarImpl implements XStreamEntityVar, XStreamExpressionListen
 	
 	
 	
+	
+
+	@Override
+	public Number getHigh() {
+		return high;
+	}
+
+	@Override
+	public LocalTime getHighTime() {
+		return highTime;
+	}
+
+	@Override
+	public Number getLow() {
+		return low;
+	}
+
+	@Override
+	public LocalTime getLowTime() {
+		return lowTime;
+	}
 
 	@Override
 	public LocalDateTime getLocalDateTime() throws XStreamRuntimeException {
@@ -154,34 +180,39 @@ public class XStreamVarImpl implements XStreamEntityVar, XStreamExpressionListen
 
 	@Override
 	public void setValue(Object value) {
-		if(numeric) {
-			try {
-			
-				LocalTime localTime = row.getLocalDateTime().toLocalTime();
-				localTime = localTime.truncatedTo(ChronoUnit.SECONDS);
-				GenericNumber number = new GenericNumber((Number)value, localTime);
-				try {
-					numericValueHistory.getReadWriteLock().writeLock().lock();
-					numericValueHistory.add(number);
-				} catch (Exception e) {
-					logger.error("Exception locking numeric value history");
-				} finally { 
-					numericValueHistory.getReadWriteLock().writeLock().unlock();
-				}
- 
-			} catch (Exception e) {
-				logger.error("Exception creating numeric value " + e.toString() + " on var " + varType.getName());
-			} finally { 
-			
-			}
-
-		}
 		if(value == null) { 
 			if(logger.isDebugEnabled()) {
 				logger.debug(MarkerFactory.getMarker("NullVarValue"), "Var {} Session {}", varType.getName(), row.getStream().getInput().getSessionId());
 				return;
 			}
 		}
+		if(numeric) {
+			Number numericValue = null;
+			try {
+				numericValue = (Number)value;
+			} catch (Exception e) {
+				logger.error("Exception casting numeric var value to NUmber " + e.toString());;
+			}
+			if(numericValue != null) { 
+				if(!highLowInit) { 
+					low = numericValue;
+					high = numericValue;
+					highTime = row.getStream().getClock().getLocalTime();
+					lowTime = highTime;
+					highLowInit = true;
+				} else { 
+					if(DNumberHelper.isFirstGreater(numericValue, high) ) { 
+						high = numericValue;
+						highTime = row.getStream().getClock().getLocalTime();
+					}
+					if(DNumberHelper.isFirstGreater(low, numericValue)) { 
+						low = numericValue;
+						lowTime = row.getStream().getClock().getLocalTime();
+					}
+				}
+			}
+		}
+		
 		if(dataType == DataType.DUB) {
 			BigDecimal bd = new BigDecimal(Double.toString((Double)value), MathContext.DECIMAL64);
 			bd.setScale(2, RoundingMode.UP);
@@ -225,12 +256,6 @@ public class XStreamVarImpl implements XStreamEntityVar, XStreamExpressionListen
 		
 	}
 	
-	
-
-	@Override
-	public EventList<GenericNumber> getNumericValues() {
-		return numericValueHistory;
-	}
 
 	@Override
 	public void getValues(Object[] data, int startIndex, int endIndex) {

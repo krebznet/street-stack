@@ -26,6 +26,14 @@ public interface XStreamEntityVar {
 	
 	public Object getValue(int index);
 	
+	public Number getHigh();
+	
+	public LocalTime getHighTime();
+	
+	public Number getLow();
+	
+	public LocalTime getLowTime();
+	
 	public boolean isNumeric();
 	
 	public Number getNumber(int index);
@@ -47,8 +55,6 @@ public interface XStreamEntityVar {
 	public XStreamEntity getRow();
 	
 	public void addDownStreamVar(XStreamEntityVar var);
-	
-	public EventList<GenericNumber> getNumericValues();
 	
 	public void setMaxSizeEnabled(boolean value);
 	

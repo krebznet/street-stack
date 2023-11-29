@@ -185,7 +185,7 @@ public class DunkNetChannelImpl implements DunkNetChannel {
 		DunkNetServiceRequest sReq = node.getNet().getController().channelServiceRequest(this, payload);
 		boolean returned = false;
 		try {
-			 returned = sReq.await(60, TimeUnit.SECONDS);	
+			 returned = sReq.await(260, TimeUnit.SECONDS);	
 		} catch (Exception e) {
 			throw new DunkNetException("Interrupted Exception");
 		}

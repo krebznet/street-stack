@@ -132,6 +132,9 @@ public class StreamSessionImpl implements StreamSession {
 
 	@Override
 	public void startSession(StreamSessionInput input) throws StreamSessionException {
+		if(logger.isInfoEnabled()) { 
+			logger.info("Starting stream session {}",input.getController().getName());
+		}
 		this.input = input;
 		status = new StreamSessionStats();
 		try {
@@ -156,7 +159,7 @@ public class StreamSessionImpl implements StreamSession {
 				} catch (Exception e) {
 					logger.error(marker,"Exception sending stream starting event " + e.toString());;
 				}
-				
+
 			}
 		};
 		

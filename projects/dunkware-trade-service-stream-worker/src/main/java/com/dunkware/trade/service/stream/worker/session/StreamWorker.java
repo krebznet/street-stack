@@ -51,7 +51,7 @@ public class StreamWorker implements DunkNetChannelHandler {
 	private StreamSessionWorkerStartReq req;
 
 	private Logger logger = LoggerFactory.getLogger(getClass());
-	private Marker marker = MarkerFactory.getMarker("StreamSessionWorker");
+	private Marker marker = MarkerFactory.getMarker("StreamWorker");
 	private Marker stopMarker = MarkerFactory.getMarker("StreamStop");
 	private Marker stopTrace = MarkerFactory.getMarker("StreamStopTrace");
 
@@ -85,7 +85,12 @@ public class StreamWorker implements DunkNetChannelHandler {
 	private ExecutorService executorService;
 
 	public void init() {
-
+		marker = MarkerFactory.getMarker("StreamWorker" + dunkNet.getId());
+	}
+	
+	
+	public Marker getMarker() { 
+		return marker; 
 	}
 
 	public StreamSessionWorkerStartReq getStartReq() {
@@ -98,9 +103,10 @@ public class StreamWorker implements DunkNetChannelHandler {
 
 	@Override
 	public void channelInit(DunkNetChannel channel) throws DunkNetException {
+		
 		this.channel = channel;
 		this.channel.addExtension(this);
-
+		logger.info(marker, "Channel Init invoked");
 	}
 
 	public XStream getXStream() {
@@ -122,8 +128,10 @@ public class StreamWorker implements DunkNetChannelHandler {
 	
 	@ADunkNetService(label = "Stop Session Worker Stream")
 	public StreamSessionWorkerStopResp stopStream(StreamSessionWorkerStopReq req) {
+		logger.info(marker, "Stop Stream Invoked");
 		StreamSessionWorkerStopResp resp = new StreamSessionWorkerStopResp();
 		if (stopState != StreamSessionWorkerStopState.StopPending) {
+			
 			logger.error(stopTrace, "Stop request on worker " + req.getWorkerId() + " invoked with stop state = " + stopState.name());
 			resp.setCode("ERROR");
 			resp.setError("Stop invoked with stop state set to " + stopState.name());
@@ -136,7 +144,9 @@ public class StreamWorker implements DunkNetChannelHandler {
 		resp.setStoppingTime(DTime.now(input.getTimeZone()));
 		for (StreamWorkerExtension ext : workerExtensions) {
 			try {
+				logger.info(marker, "Stopping extension " + ext.getClass().getName());
 				ext.stop();
+				logger.info(marker, "Stopped extension " + ext.getClass().getName());
 			} catch (Exception e) {
 				logger.error(stopTrace, "Exception stopping extension {} error {} worker {}",ext.getClass().getName(),e.toString(),req.getWorkerId());
 				logger.error(marker, "Exception stopping wroker extension {} error {}", ext.getClass().getName(),
@@ -144,14 +154,19 @@ public class StreamWorker implements DunkNetChannelHandler {
 				resp.getStopProblems().add("Exception stopping worker extension " + ext.getClass().getName() + " error " + e.toString() + " worker " + req.getWorkerId());
 			}
 		}
-		try {
+		try 
+		{
+			
 			statTimer.cancel();			
+			logger.info("stopped the stat publisher timer" );
 		} catch (Exception e2) {
 			resp.getStopProblems().add("Exception cancelling stat timer publisher " + e2.toString());
 		}
 
 		try {
+			logger.info(marker, "calling stream dispose");;
 			stream.dispose();
+			logger.info(marker, "stream disposed called");
 		} catch (Exception e) {
 			resp.getStopProblems().add("XStream dispose exception " + e.toString());
 			logger.error(stopTrace, "Exception stopping stream session node {} and worker {} exception {}", e.toString(),
@@ -166,6 +181,7 @@ public class StreamWorker implements DunkNetChannelHandler {
 			stopState = StreamSessionWorkerStopState.StopComplete;
 			logger.info(stopTrace, "Worker stop complete perfect worker {}",req.getWorkerId());
 		}
+		logger.info(marker, "Sending Stop Response Okay");
 		resp.setCode("OK");
 		stopComplete = true;
 		return resp;
@@ -280,6 +296,7 @@ public class StreamWorker implements DunkNetChannelHandler {
 
 	@Override
 	public void channelClose() {
+		logger.info(marker, "ChannedlClose() ");
 		logger.debug(stopTrace, "Stream worker channelClose() invoked on worker {}",req.getWorkerId());
 		logger.info(stopMarker, "Channel Closed invoked on Worker {} Node {}", req.getWorkerId(), dunkNet.getId());
 

@@ -43,8 +43,10 @@ import com.dunkware.trade.service.stream.server.controller.session.StreamSession
 import com.dunkware.trade.service.stream.server.controller.session.StreamSessionException;
 import com.dunkware.trade.service.stream.server.controller.session.StreamSessionFactory;
 import com.dunkware.trade.service.stream.server.controller.session.StreamSessionInput;
+import com.dunkware.trade.service.stream.server.controller.session.StreamSessionNode;
 import com.dunkware.trade.service.stream.server.controller.session.events.EStreamSessionEvent;
 import com.dunkware.trade.service.stream.server.controller.session.events.EStreamSessionStartException;
+import com.dunkware.trade.service.stream.server.controller.session.events.EStreamSessionStarted;
 import com.dunkware.trade.service.stream.server.controller.session.events.EStreamSessionStopped;
 import com.dunkware.trade.service.stream.server.repository.StreamEntity;
 import com.dunkware.trade.service.stream.server.repository.StreamRepo;
@@ -488,6 +490,21 @@ public class StreamController {
 	public void sessionEvent(EStreamSessionEvent event) {
 		setState(event.getSession().getState());
 	}
+	
+	@ADEventMethod
+	public void sessionStarted(EStreamSessionStarted started) { 
+		for (StreamSessionNode streamSessionNodeBean : session.getNodes()) {
+			try {
+				sessionNodeBeans.getReadWriteLock().writeLock().lock();
+				sessionNodeBeans.add(streamSessionNodeBean.getBean());
+			} catch (Exception e) {
+				// TODO: handle exception
+			} finally {
+				sessionNodeBeans.getReadWriteLock().writeLock().unlock();
+			}
+		}
+	}
+	
 
 	
 	private void setState(StreamState state) { 

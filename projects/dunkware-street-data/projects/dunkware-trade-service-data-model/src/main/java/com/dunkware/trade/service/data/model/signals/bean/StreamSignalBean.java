@@ -10,7 +10,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 
 public class StreamSignalBean extends ObservableBean {
 	
-	private int rowId = DRandom.getRandom(0, 3939493);
+	private int id = DRandom.getRandom(0, 3939493);
 	private int signalId; 
 	private String signalName; 
 	private String signalGroup; 
@@ -91,15 +91,17 @@ public class StreamSignalBean extends ObservableBean {
 	public void setDateTime(LocalDateTime dateTime) {
 		this.dateTime = dateTime;
 	}
+	
+	
 
 
-	public int getRowId() {
-		return rowId;
+	public int getId() {
+		return id;
 	}
 
 
-	public void setRowId(int rowId) {
-		this.rowId = rowId;
+	public void setId(int id) {
+		this.id = id;
 	}
 
 
@@ -107,7 +109,7 @@ public class StreamSignalBean extends ObservableBean {
 	public boolean equals(Object obj) {
 		if (obj instanceof StreamSignalBean) { 
 			StreamSignalBean bean = (StreamSignalBean)obj;
-			if(bean.getRowId() == getRowId()) { 
+			if(bean.getId() == getId()) { 
 				return true;
 			}
 			

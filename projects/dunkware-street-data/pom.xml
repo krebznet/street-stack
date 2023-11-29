@@ -53,7 +53,7 @@
 
   <modules>
 
-
+ <module>projects/dunkware-trade-service-data-common</module>
   <module>projects/dunkware-trade-service-data-server</module>
   <module>projects/dunkware-trade-service-data-model</module>
   <module>projects/dunkware-trade-service-data-tester</module>

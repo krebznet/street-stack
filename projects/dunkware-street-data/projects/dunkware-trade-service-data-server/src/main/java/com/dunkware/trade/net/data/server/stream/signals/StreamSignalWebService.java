@@ -39,13 +39,12 @@ public class StreamSignalWebService {
 		}
 		StreamSignalTypeStatsList list = signalProvider.signalTypeStatsList(query);
 		
-		GlazedDataGrid dataGrid = GlazedDataGrid.newInstance(list.getList(), signalProvider.getExecutor(), "getRowId");
+		GlazedDataGrid dataGrid = GlazedDataGrid.newInstance(list.getList(), signalProvider.getExecutor(), "getId");
 		dataGrid.addListener(list);
 		dataGrid.start();
 		return dataGrid.getUpdates();
 		
 	}
-	
 	
 	
 	@PostMapping(path = "/data/v1/stream/signal/query/grid", produces = MediaType.APPLICATION_NDJSON_VALUE)
@@ -55,7 +54,7 @@ public class StreamSignalWebService {
 			throw new UserException("Stream " + stream + " not found");
 		}
 		StreamSignalList list = signalProvider.signalList(query);
-		GlazedDataGrid dataGrid = GlazedDataGrid.newInstance(list.getList(), signalProvider.getExecutor(), "getRowId");
+		GlazedDataGrid dataGrid = GlazedDataGrid.newInstance(list.getList(), signalProvider.getExecutor(), "getId");
 		dataGrid.addListener(list);
 		dataGrid.start();
 		return dataGrid.getUpdates();

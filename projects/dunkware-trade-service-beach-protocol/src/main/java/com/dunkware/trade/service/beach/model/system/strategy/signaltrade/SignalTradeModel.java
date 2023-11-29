@@ -1,7 +1,6 @@
 package com.dunkware.trade.service.beach.model.system.strategy.signaltrade;
 
-import com.dunkware.trade.service.beach.model.system.common.StrategyExitTriggerModel;
-import com.dunkware.trade.service.beach.model.system.common.TradeConstraitsModel;
+import com.dunkware.trade.service.beach.model.system.common.TradeExitTrigger;
 
 public class SignalTradeModel {
 	
@@ -10,11 +9,10 @@ public class SignalTradeModel {
 	private int weight; 
 	
 	private SignalTradeSummary summaryData; 
-	private TradeConstraitsModel constrains; 
 	
 	private WebEntryOrderData entryOrderData; 
 	private WebExitOrderData exitOrderData; 
-	private StrategyExitTriggerModel[] exitTriggerData;
+	private TradeExitTrigger[] exitTriggerData;
 	
 	public SignalTradeSummary getSummaryData() {
 		return summaryData;
@@ -35,10 +33,10 @@ public class SignalTradeModel {
 	public void setExitOrderData(WebExitOrderData exitOrderData) {
 		this.exitOrderData = exitOrderData;
 	}
-	public StrategyExitTriggerModel[] getExitTriggerData() {
+	public TradeExitTrigger[] getExitTriggerData() {
 		return exitTriggerData;
 	}
-	public void setExitTriggerData(StrategyExitTriggerModel[] exitTriggerData) {
+	public void setExitTriggerData(TradeExitTrigger[] exitTriggerData) {
 		this.exitTriggerData = exitTriggerData;
 	} 
 	

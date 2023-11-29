@@ -13,6 +13,7 @@ public class TickStreamImpl implements TickStream {
 	private ConcurrentHashMap<TickHandler, TickRouterHandler> tickHandlers = new ConcurrentHashMap<TickHandler, TickStreamImpl.TickRouterHandler>();
 	private AtomicLong tickCounter = new AtomicLong(0);
 	
+
 	@Override
 	public void addTickHandler(TickHandler handler) {
 		TickRouterHandler streamHandler = new TickRouterHandler(handler);
