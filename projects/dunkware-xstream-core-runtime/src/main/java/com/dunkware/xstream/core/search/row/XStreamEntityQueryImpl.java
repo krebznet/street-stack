@@ -1,5 +1,6 @@
 package com.dunkware.xstream.core.search.row;
 
+import java.util.Collection;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -46,7 +47,7 @@ public class XStreamEntityQueryImpl implements XStreamEntityQuery   {
 
 
 	@Override
-	public synchronized XStreamEntityQueryRun execute(List<XStreamEntity> entities) {
+	public synchronized XStreamEntityQueryRun execute(Collection<XStreamEntity> entities) {
 		XStreamEntityQueryRunImpl run = new XStreamEntityQueryRunImpl();
 		DStopWatch timer = DStopWatch.create();
 		for (XStreamEntityPredicate pre : predicates) {

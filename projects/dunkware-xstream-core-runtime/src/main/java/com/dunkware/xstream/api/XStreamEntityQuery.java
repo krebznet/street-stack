@@ -1,5 +1,6 @@
 package com.dunkware.xstream.api;
 
+import java.util.Collection;
 import java.util.List;
 
 import com.dunkware.xstream.core.search.row.criteria.XStreamEntityPredicate;
@@ -37,7 +38,7 @@ public interface XStreamEntityQuery {
 	 * @param rows
 	 * @return
 	 */
-	public XStreamEntityQueryRun execute(List<XStreamEntity> entities);
+	public XStreamEntityQueryRun execute(Collection<XStreamEntity> entities);
 	
 	
 }

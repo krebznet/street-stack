@@ -32,7 +32,7 @@ import com.dunkware.xstream.xScript.VarType;
 import ca.odell.glazedlists.EventList;
 import ca.odell.glazedlists.GlazedLists;
 
-public class XStreamVarImpl implements XStreamEntityVar, XStreamExpressionListener, XStreamEntityVarListener {
+public class xstreamvarimpl implements XStreamEntityVar, XStreamExpressionListener, XStreamEntityVarListener {
 
 	private XStreamEntity row;
 	private VarType varType;

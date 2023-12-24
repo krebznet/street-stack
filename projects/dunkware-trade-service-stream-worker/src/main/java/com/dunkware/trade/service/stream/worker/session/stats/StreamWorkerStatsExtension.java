@@ -49,8 +49,17 @@ public class StreamWorkerStatsExtension implements StreamWorkerExtension {
 			stats = statFactory.buildEntityStats(stream);			
 			watch.stop();
 			logger.info(marker, "Generated Entity Stats in " + watch.getCompletedSeconds());
+			logger.info(marker, "Pushing stats " + stats.size());
+		//	StreamEntityStatsSQLWriter writer = new StreamEntityStatsSQLWriter();
+			
+			
+			
 			StreamWorkerEntityStatsPublisher publisher = new StreamWorkerEntityStatsPublisher(stats, topicName, worker.getDunkNet());
 			publisher.run();
+			logger.info("pushed stats");;
+			for (EntityStat entityStat : stats) {
+				logger.info(entityStat.toString());;
+			}
 		} catch (Exception e) {
 			logger.error(marker, "Exception building entity stats " + e.toString());
 		}

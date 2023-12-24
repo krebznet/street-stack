@@ -96,6 +96,12 @@ public interface XStreamEntity {
 	 */
 	void removeVarListener(XStreamEntityVarListener listener);
 	
+	/**
+	 * Returns a snapshot of variable values that are numeric type
+	 * key is the variable id number is the current value 
+	 * @return
+	 */
+	Map<Integer,Number> numericVarSnapshot();
 	
 
 	

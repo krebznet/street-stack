@@ -2,6 +2,8 @@ package com.dunkware.xstream.api;
 
 import java.util.Collection;
 import java.util.List;
+import java.util.Map;
+import java.util.concurrent.atomic.AtomicInteger;
 
 import com.dunkware.xstream.model.signal.type.XStreamSignalType;
 
@@ -21,6 +23,6 @@ public interface XStreamSignals {
 	
 	public List<XStreamSignal> search(XStreamSignalSearch search);
 	
-	
+	public Map<XStreamEntity,Map<Integer,AtomicInteger>> getEntitySignalCounts();
 
 }

@@ -57,6 +57,9 @@ public class MongoStreamConverter {
 		
 	}
 	
+	// responsible for putting stats in redddis cache 
+	// then the queries can do that - 
+	
 	
 
 	/**

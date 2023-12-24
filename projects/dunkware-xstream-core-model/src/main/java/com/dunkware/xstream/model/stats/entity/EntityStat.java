@@ -4,7 +4,7 @@ import java.lang.instrument.Instrumentation;
 import java.time.LocalDate;
 import java.time.LocalTime;
 
-import org.apache.kafka.common.utils.Java;
+import com.dunkware.common.util.time.DunkTime;
 
 public class EntityStat {
 	
@@ -68,6 +68,23 @@ public class EntityStat {
 	public void setEntity(int entity) {
 		this.entity = entity;
 	}
+
+	@Override
+	public String toString() {
+		StringBuilder builder = new StringBuilder();
+		builder.append(entity);
+		builder.append(",");
+		builder.append(DunkTime.formatHHMMSS(this.time));
+		builder.append(",");
+		builder.append(this.stat);
+		builder.append(",").append(this.element).append(",").append(this.value);
+		if(this.time != null) { 
+			builder.append(DunkTime.formatHHMMSS(this.time));
+		}
+		return builder.toString();
+	}
+	
+	
 	
 	
 	

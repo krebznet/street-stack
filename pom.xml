@@ -85,15 +85,6 @@
 			<module>projects/dunkware-spring-test-client</module>
 			<module>projects/dunkware-street-data</module>
 			<module>projects/dunkware-street-tick</module>
-			<module>projects/dunkware-trade-sdk-core-model</module>
-			<module>projects/dunkware-trade-sdk-core-runtime</module>
-			<module>projects/dunkware-trade-sdk-lib-model</module>
-			<module>projects/dunkware-trade-sdk-lib-runtime</module>
-			<module>projects/dunkware-trade-sdk-tws-runtime</module>
-			<module>projects/dunkware-trade-service-beach-protocol</module>
-			<module>projects/dunkware-trade-service-beach-server</module>
-			<module>projects/dunkware-trade-service-beach-web</module>
-
 
 
 

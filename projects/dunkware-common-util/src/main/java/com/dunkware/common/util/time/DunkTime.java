@@ -1,5 +1,6 @@
 package com.dunkware.common.util.time;
 
+import java.sql.Timestamp;
 import java.time.Instant;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -16,7 +17,6 @@ import java.util.TimeZone;
 import java.util.concurrent.TimeUnit;
 
 import com.dunkware.common.util.dtime.DTimeZone;
-import com.google.protobuf.Timestamp;
 
 public class DunkTime {
 
@@ -26,8 +26,16 @@ public class DunkTime {
 	public static final String YYMMDD = "yyMMdd";
     public static final String ISO_FORMAT = "yyyy-MM-dd'T'HH:mm:ssZ";
     public static final String YYMMDDHHMMSS =  "YYMMddHHmmss";
-    public static void main2(String[] args) {
+    public static void main(String[] args) {
 		
+    	
+    	
+    	LocalDateTime now = LocalDateTime.now();
+    	System.out.println(DunkTime.format(now, YYMMDDHHMMSS));
+    	if(1 == 1) {
+    		return;
+    	}
+    	
 		// 1970-01-01T00:00:00Z
 		// I think you have it right - we need to set the java.util.Date object 
 		
@@ -55,7 +63,7 @@ public class DunkTime {
 	}
     
     
-    public static void main(String[] args) {
+    public static void main2(String[] args) {
     	LocalDateTime d = LocalDateTime.now();
     	System.out.println(DunkTime.format(d, YYMMDDHHMMSS));
     	if(1 == 1) { return; }
@@ -154,6 +162,12 @@ public class DunkTime {
 	public static Date toDate(LocalDateTime dateToConvert) {
 	    return java.sql.Timestamp.valueOf(dateToConvert);
 	}
+	
+	public static long toMilliseconds(LocalDateTime dateTime) { 
+		Date date = toDate(dateTime);
+		return date.getTime();
+	}
+	
 	
 	public static LocalDate toLocalDate(Date dateToConvert) {
 		 return dateToConvert.toInstant()

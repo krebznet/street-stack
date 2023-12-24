@@ -37,7 +37,7 @@ public class StreamBlueprintWebService {
 	@Autowired
 	private ExecutorService executorService; 
 	
-	@GetMapping(path = "/stream/v1/blueprint/dash/signals", produces = MediaType.APPLICATION_NDJSON_VALUE)
+	@GetMapping(path = "/stream/v1/blueprint/dash/signals", produces = MediaType.APPLICATION_STREAM_JSON_VALUE)
     public Flux<List<DataGridUpdate>> blueprintSignals(@RequestParam() String stream) {
 		StreamBlueprint bp = null;
 		try {
@@ -54,7 +54,7 @@ public class StreamBlueprintWebService {
 	}
 	
 	
-	@GetMapping(path = "/stream/v1/blueprint/dash/vars", produces =  MediaType.APPLICATION_NDJSON_VALUE)
+	@GetMapping(path = "/stream/v1/blueprint/dash/vars", produces =  MediaType.APPLICATION_STREAM_JSON_VALUE)
     public Flux<List<DataGridUpdate>> blueprintVars(@RequestParam() String stream) {
 		StreamBlueprint bp = null;
 		try {

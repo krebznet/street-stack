@@ -22,7 +22,7 @@ public class DunkNetConfig {
 	@Value("${dunknet.cluster.id}")
 	private String clusterId;
 	
-	@Value("${dunknet.timeout:#{60}}")
+	@Value("${dunknet.timeout:#{150}}")
 	private int timeout; 
 	
 	@Value("${dunknet.handler.threads:#{4}}")

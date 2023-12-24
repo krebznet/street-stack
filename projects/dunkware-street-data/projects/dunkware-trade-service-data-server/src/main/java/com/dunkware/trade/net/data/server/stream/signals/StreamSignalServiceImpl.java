@@ -33,6 +33,7 @@ public class StreamSignalServiceImpl implements StreamSignalService {
 	
 	private Map<String,StreamSignalProvider> streamSignals = new ConcurrentHashMap<String,StreamSignalProvider>();
 	
+	
 	@Autowired
 	private ExecutorService executor;
 	

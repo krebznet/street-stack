@@ -10,7 +10,7 @@ public class StreamSignalTypeStatsBean extends ObservableBean {
 	private int signalId;
 	private String signalGroup;
 	private String signalName; 
-	private int rowId = DRandom.getRandom(0, 99944922); 
+	private int id = DRandom.getRandom(0, 99944922); 
 	private int signalCount; 
 	private int entityCount; 
 	private String lastSignalEntityIdent; 
@@ -41,12 +41,7 @@ public class StreamSignalTypeStatsBean extends ObservableBean {
 	public void setSignalName(String signalName) {
 		this.signalName = signalName;
 	}
-	public int getRowId() {
-		return rowId;
-	}
-	public void setRowId(int rowId) {
-		this.rowId = rowId;
-	}
+	
 	public int getSignalCount() {
 		return signalCount;
 	}
@@ -94,7 +89,15 @@ public class StreamSignalTypeStatsBean extends ObservableBean {
 	}
 	public void setLastSignalTimeString(String lastSignalTimeString) {
 		this.lastSignalTimeString = lastSignalTimeString;
+	}
+	public int getId() {
+		return id;
+	}
+	public void setId(int id) {
+		this.id = id;
 	} 
+	
+	
 	
 	
 	

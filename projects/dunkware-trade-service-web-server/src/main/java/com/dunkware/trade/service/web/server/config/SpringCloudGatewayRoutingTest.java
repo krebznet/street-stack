@@ -35,14 +35,16 @@ public class SpringCloudGatewayRoutingTest {
 	  @Bean public RouteLocator configureRoute(RouteLocatorBuilder builder) {
 	  //192.168.50.10:8032
 		  //
+		  
+		  System.out.println("mother fucker code here 31890");
 		  //http://172.16.16.55:32165
-	  return builder.routes().route("stream", r -> r.path("/stream/**").uri("http://172.16.16.55:32100")) // static
-				.route("trade", r -> r.path("/trade/**").uri("http://192.168.50.10:8032"))
-				.route("tick", r -> r.path("/tick/**").uri("http://172.16.16.55:31890"))
-				.route("feed", r -> r.path("/feed/**").uri("http://172.16.16.55:31890"))
-				.route("feed", r -> r.path("/streamstats/**").uri("http://172.16.16.55:32199"))
-				.route("data", r -> r.path("/data/**").uri("http://172.16.16.55:31681"))
+	  return builder.routes().route("stream", r -> r.path("/stream/**").uri("http://192.168.23.107:32100")) // static
+				.route("trade", r -> r.path("/trade/**").uri("http://192.168.23.107:8032"))
+				.route("tick", r -> r.path("/tick/**").uri("http://192.168.23.107:31890"))
+				.route("feed", r -> r.path("/feed/**").uri("http://192.168.23.107:31890"))
+				.route("streamstats", r -> r.path("/streamstats/**").uri("http://192.168.23.107:32199"))
+				.route("data", r -> r.path("/data/**").uri("http://192.168.23.107:31681"))
 					.build();
 	  }
 	 
-}
+}  // 30 seconds put in a thread and dunkware-spring-logger

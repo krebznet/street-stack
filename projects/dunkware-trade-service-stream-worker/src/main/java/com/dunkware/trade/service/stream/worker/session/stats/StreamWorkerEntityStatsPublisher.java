@@ -13,7 +13,7 @@ import com.dunkware.common.util.stopwatch.DStopWatch;
 import com.dunkware.spring.cluster.DunkNet;
 import com.dunkware.xstream.model.stats.entity.EntityStat;
 
-public class StreamWorkerEntityStatsPublisher   {
+public class StreamWorkerEntityStatsPublisher extends Thread   {
 
 	private Logger logger = LoggerFactory.getLogger(getClass());
 	private Marker marker = MarkerFactory.getMarker("StreamStatsPublisher");
@@ -34,7 +34,8 @@ public class StreamWorkerEntityStatsPublisher   {
 			timer.start();
 			logger.info(stop,"publishing  stat messages on worker");
 			logger.info(marker, "Starting Stream Stats Publisher With " + stats.size() + " Entity Stats");
-			
+		
+				
 			for (EntityStat entityStat : stats) {
 				byte[] serialized = null;
 				try {
@@ -53,6 +54,7 @@ public class StreamWorkerEntityStatsPublisher   {
 			}
 			timer.stop();
 			logger.info(stop,"sent stat messages " + stats.size());
+		
 		} catch (Exception e) {
 			logger.error(marker, "Execption Publishing Stream Entity Stats " + e.toString(),e);
 		}

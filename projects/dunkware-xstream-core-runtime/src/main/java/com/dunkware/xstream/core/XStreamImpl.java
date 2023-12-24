@@ -208,6 +208,7 @@ public class XStreamImpl implements XStream {
 		status = XStreamStatus.Cancelled;
 
 	}
+	
 
 	@Override
 	public XStreamEntity getRow(String id) {

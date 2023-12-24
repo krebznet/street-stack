@@ -17,7 +17,7 @@ import com.dunkware.common.util.mysql.model.MySqlConnection;
 public class MySqlConnectionPool {
 	
 
-	public static boolean DISABLED = true;
+	public static boolean DISABLED = false;
 	
 	private Logger _logger = LoggerFactory.getLogger(getClass());
 
@@ -29,7 +29,7 @@ public class MySqlConnectionPool {
 	int dbPort = 1;
 	int poolSize = 5;
 
-	Vector connectionPool = new Vector();
+	Vector<Connection> connectionPool = new Vector<Connection>();
 
 	public MySqlConnectionPool(MySqlConnection con, int poolSize) throws Exception { 
 		this(con.getHost(),con.getSchema(),con.getPort(), con.getUser(), con.getFuzz(), poolSize);
@@ -71,13 +71,26 @@ public class MySqlConnectionPool {
 
 		return true;
 	}
+	
+	public void close() { 
+		for (Object object : this.connectionPool) {
+			Connection cn =	(Connection)object;
+			try {
+				cn.close();				
+			} catch (Exception e) {
+				// TODO: handle exception
+			}
+
+			
+		}
+	}
 
 	// Creating a connection
 	private Connection createNewConnectionForPool() throws Exception {
 		Connection connection = null;
 
 		try {
-			
+						
 			  Class.forName("com.mysql.cj.jdbc.Driver");
 			  connection = DriverManager.getConnection(databaseUrl, userName, password);
 			  if(_logger.isDebugEnabled()) {

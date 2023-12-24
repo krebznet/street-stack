@@ -1,6 +1,8 @@
 package com.dunkware.xstream.api;
 
+import java.util.Collection;
 import java.util.List;
+import java.util.concurrent.Semaphore;
 
 import org.slf4j.Marker;
 
@@ -36,7 +38,7 @@ public interface XStream {
 	 * Returns a List of Rows -- can do better here. 
 	 * @return
 	 */
-	List<XStreamEntity> getRows();
+	Collection<XStreamEntity> getRows();
 	
 	/**
 	 * This will return the stats my friend and cache as needed.
