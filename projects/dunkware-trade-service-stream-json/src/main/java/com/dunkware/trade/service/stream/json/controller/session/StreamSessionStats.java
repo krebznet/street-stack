@@ -46,6 +46,10 @@ public class StreamSessionStats {
 	@JsonInclude(Include.NON_NULL)
 	private String exception; 
 	@JsonInclude(Include.NON_NULL)
+	private long varSnapshotWriteCount = 0;
+	private long varSnapshotWriteQueue = 0;
+	private long varSnapshotWriteSecond = 0;
+	
 	private List<StreamSessionNodeBean> nodes = new ArrayList<StreamSessionNodeBean>();
 	
 	private int nodeIssueCount; 
@@ -273,6 +277,37 @@ public class StreamSessionStats {
 	public void setNodeIssueCount(int nodeIssueCount) {
 		this.nodeIssueCount = nodeIssueCount;
 	}
+
+
+	public long getVarSnapshotWriteCount() {
+		return varSnapshotWriteCount;
+	}
+
+
+	public void setVarSnapshotWriteCount(long varSnapshotWriteCount) {
+		this.varSnapshotWriteCount = varSnapshotWriteCount;
+	}
+
+
+	public long getVarSnapshotWriteQueue() {
+		return varSnapshotWriteQueue;
+	}
+
+
+	public void setVarSnapshotWriteQueue(long varSnapshotWriteQueue) {
+		this.varSnapshotWriteQueue = varSnapshotWriteQueue;
+	}
+
+
+	public long getVarSnapshotWriteSecond() {
+		return varSnapshotWriteSecond;
+	}
+
+
+	public void setVarSnapshotWriteSecond(long varSnapshotWriteSecond) {
+		this.varSnapshotWriteSecond = varSnapshotWriteSecond;
+	}
+	
 	
 	
 	

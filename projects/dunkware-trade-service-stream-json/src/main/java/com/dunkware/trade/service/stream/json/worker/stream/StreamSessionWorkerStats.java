@@ -22,6 +22,10 @@ public class StreamSessionWorkerStats {
 	private String workerId; 
 	private int numericId;
 	private StreamSessionWorkerStopState stopState;
+	private long varSnapshotCount = 0; 
+	private long varSnapshotQueue = 0; 
+	private double varSnapshotSecondTime = 0.0;
+	private long varSnapshotSecondCount = 0;
 	
 	private String status;
 
@@ -207,6 +211,47 @@ public class StreamSessionWorkerStats {
 		this.stopState = stopState;
 	}
 
+
+	public long getVarSnapshotCount() {
+		return varSnapshotCount;
+	}
+
+
+	public void setVarSnapshotCount(long varSnapshotCount) {
+		this.varSnapshotCount = varSnapshotCount;
+	}
+
+
+	public long getVarSnapshotQueue() {
+		return varSnapshotQueue;
+	}
+
+
+	public void setVarSnapshotQueue(long varSnapshotQueue) {
+		this.varSnapshotQueue = varSnapshotQueue;
+	}
+
+
+	public double getVarSnapshotSecondTime() {
+		return varSnapshotSecondTime;
+	}
+
+
+	public void setVarSnapshotSecondTime(double varSnapshotSecondTime) {
+		this.varSnapshotSecondTime = varSnapshotSecondTime;
+	}
+
+
+	public long getVarSnapshotSecondCount() {
+		return varSnapshotSecondCount;
+	}
+
+
+	public void setVarSnapshotSecondCount(long varSnapshotSecondCount) {
+		this.varSnapshotSecondCount = varSnapshotSecondCount;
+	}
+
+	
 	
 	
 

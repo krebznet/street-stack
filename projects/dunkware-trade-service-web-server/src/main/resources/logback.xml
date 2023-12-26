@@ -38,12 +38,12 @@
 
 
 	
-	<logger name="org.springframework.cloud" level="debug" additivity="false">
+	<logger name="org.springframework.cloud" level="info" additivity="false">
 		<appender-ref ref="CONSOLE" additivity="false" />
 		
 	</logger>
 
-	<logger name="com.dunkware" level="debug" additivity="false">
+	<logger name="com.dunkware" level="info" additivity="false">
 		<appender-ref ref="CONSOLE" additivity="false" />
 		<appender-ref ref="FLUENT" />
 	</logger>

@@ -32,7 +32,7 @@ public class RedisVarSnapshotWriterTest {
 		long start = 1703565840;
 		
 	
-		new RedisVarSnapshotWriterTest("VSADD:VS:US_EQUITY:7534:40304", 1703583086000L,1703583229000L);
+		new RedisVarSnapshotWriterTest("VSADD:VS:US_EQUITY:7534:40304", 1703587995000L,1703588050000L);
 }
 	
 	
@@ -86,7 +86,6 @@ public class RedisVarSnapshotWriterTest {
 			System.out.println(keyName);	
 		}
 		for (String keyName : results.keySet()) {
-			if(keyName.equals("VS:US_EQUITY:7534:3")) {
 			System.out.println(keyName);
 			TSMRangeElements elements = results.get(keyName);
 			System.out.println(elements.getElements().size());
@@ -101,7 +100,7 @@ public class RedisVarSnapshotWriterTest {
 				System.out.println(DunkTime.format(dt, DunkTime.YYMMDDHHMMSS));
 				
 			}
-			}
+			
 			
 		}
 		

@@ -22,6 +22,7 @@ import com.dunkware.spring.cluster.DunkNetChannelHandler;
 import com.dunkware.spring.cluster.DunkNetException;
 import com.dunkware.spring.cluster.anot.ADunkNetService;
 import com.dunkware.spring.runtime.services.ExecutorService;
+import com.dunkware.stream.cluster.proto.controller.session.WorkerPersistStats;
 import com.dunkware.trade.service.stream.descriptor.StreamDescriptor;
 import com.dunkware.trade.service.stream.json.worker.stream.StreamSessionWorkerCancelReq;
 import com.dunkware.trade.service.stream.json.worker.stream.StreamSessionWorkerCancelResp;
@@ -33,6 +34,7 @@ import com.dunkware.trade.service.stream.json.worker.stream.StreamSessionWorkerS
 import com.dunkware.trade.service.stream.json.worker.stream.StreamSessionWorkerStopResp;
 import com.dunkware.trade.service.stream.json.worker.stream.StreamSessionWorkerStopState;
 import com.dunkware.trade.service.stream.worker.session.anot.AStreamWorkerExtension;
+import com.dunkware.trade.service.stream.worker.session.persist.StreamPersisterExt;
 import com.dunkware.trade.service.stream.worker.session.query.StreamWorkerEntityQueryBuilder;
 import com.dunkware.xstream.api.XStream;
 import com.dunkware.xstream.api.XStreamInput;
@@ -68,6 +70,8 @@ public class StreamWorker implements DunkNetChannelHandler {
 
 	private StreamSessionWorkerStatus status = StreamSessionWorkerStatus.Pending;
 	private StreamSessionWorkerStopState stopState = StreamSessionWorkerStopState.StopPending;
+	
+	private StreamPersisterExt persistExtension = null;
 
 	private Timer statTimer = null;
 
@@ -94,6 +98,10 @@ public class StreamWorker implements DunkNetChannelHandler {
 	public StreamDescriptor getStreamDescriptor() {
 		return req.getStreamDescriptor();
 		
+	}
+	
+	public DunkNetChannel getChannel() { 
+		return channel;
 	}
 
 	@Override
@@ -214,6 +222,9 @@ public class StreamWorker implements DunkNetChannelHandler {
 				StreamWorkerExtension ext = (StreamWorkerExtension) class1.newInstance();
 				ext.init(this);
 				workerExtensions.add(ext);
+				if(StreamPersisterExt.class.isInstance(ext)) { 
+					this.persistExtension = (StreamPersisterExt)ext;
+				}
 			} catch (Exception e) {
 				logger.error(marker, "Exception init extension " + e.toString());
 
@@ -328,6 +339,14 @@ public class StreamWorker implements DunkNetChannelHandler {
 			stats.setTickCount(stream.getTickRouter().getTickCount());
 			stats.setSignalCount(stream.getSignals().getSignalCount());
 			stats.setLastDataTickTime(stream.getTickRouter().getLastDataTickTime());
+			if(persistExtension != null) { 
+				WorkerPersistStats pstts = persistExtension.getPersistStats();
+				stats.setVarSnapshotCount(pstts.getVarSnapshotCount());
+				stats.setVarSnapshotQueue(pstts.getVarSnapshotQueue());
+				stats.setVarSnapshotSecondTime(pstts.getVarSnapshotSecondTime());
+				stats.setVarSnapshotSecondCount(pstts.getVarSnapshotSecondCount());
+			}
+			
 		} catch (Exception e) {
 			logger.error(marker, "Exception update stats " + e.toString());
 

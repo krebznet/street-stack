@@ -1,8 +1,6 @@
 package com.dunkware.trade.service.stream.worker.session.persist;
 
-import java.time.LocalDateTime;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.BlockingQueue;
@@ -18,8 +16,14 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.slf4j.Marker;
 import org.slf4j.MarkerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 
+import com.dunkware.common.util.stopwatch.DStopWatch;
 import com.dunkware.common.util.time.DunkTime;
+import com.dunkware.spring.cluster.DunkNet;
+import com.dunkware.spring.cluster.anot.ADunkNetService;
+import com.dunkware.stream.cluster.proto.controller.session.WorkerPersistStats;
+import com.dunkware.stream.cluster.proto.controller.session.WorkerPersistStatsReq;
 import com.dunkware.trade.service.stream.worker.session.StreamWorker;
 import com.dunkware.trade.service.stream.worker.session.StreamWorkerExtension;
 import com.dunkware.trade.service.stream.worker.session.anot.AStreamWorkerExtension;
@@ -35,7 +39,12 @@ import redis.clients.jedis.Pipeline;
 @AStreamWorkerExtension
 public class StreamPersisterExt implements StreamWorkerExtension, XStreamSignalListener {
 
-	public static final int SNAPSHOT_WRITER_COUNT = 1;
+	
+	
+	@Autowired
+	private DunkNet dunkNet;
+	
+	public static final int SNAPSHOT_WRITER_COUNT = 3;
 	
 	private Logger logger = LoggerFactory.getLogger(getClass());
 	private Marker marker = MarkerFactory.getMarker("VarSnapshotInsert");
@@ -56,7 +65,11 @@ public class StreamPersisterExt implements StreamWorkerExtension, XStreamSignalL
 	private List<VarSnapshotWriter> varSnapshotWriters = new ArrayList<StreamPersisterExt.VarSnapshotWriter>();
 	
 	private AtomicBoolean disposing = new AtomicBoolean(false);
+	private AtomicLong snapshotWriteCount = new AtomicLong(0);
 	private AtomicInteger returnedVarSnapshotWriers = new AtomicInteger(0);
+	
+	private StatsPublisher statsPublisher; 
+	private volatile WorkerPersistStats snapshotStats;
 	JedisPooled jedis = null;
 	
 	private StreamWorker worker;
@@ -64,6 +77,7 @@ public class StreamPersisterExt implements StreamWorkerExtension, XStreamSignalL
 	public void init(StreamWorker worker) throws Exception {
 		this.worker = worker;
 		try {
+			worker.getChannel().addExtension(this);
 			String redisHost = worker.getStartReq().getStreamProperties().get("redis.host");
 			Integer redisPort = Integer.valueOf(worker.getStartReq().getStreamProperties().get("redis.port"));
 			jedis = new JedisPooled(redisHost, redisPort);
@@ -86,11 +100,14 @@ public class StreamPersisterExt implements StreamWorkerExtension, XStreamSignalL
 		varSnapshotCollector = new VarSnapshotCollector();
 	
 		stream.getClock().scheduleRunnable(varSnapshotCollector, 1);
+		statsPublisher = new StatsPublisher();
+		statsPublisher.start();
 
 	}
 
 	@Override
 	public void stop() throws Exception {
+		statsPublisher.interrupt();
 		stream.getClock().unscheduleRunnable(varSnapshotCollector);
 		disposing.set(true);;
 		int count = 0;
@@ -111,6 +128,11 @@ public class StreamPersisterExt implements StreamWorkerExtension, XStreamSignalL
 	@Override
 	public void onSignal(XStreamSignal signal) {
 		signalInsertQueue.add(signal);
+	}
+	
+	
+	public WorkerPersistStats getPersistStats() { 
+		return snapshotStats;
 	}
 	
 	public class VarSnapshotInsert {
@@ -147,13 +169,7 @@ public class StreamPersisterExt implements StreamWorkerExtension, XStreamSignalL
 							List<XStreamEntityVar> numericVars = entity.getNumericVars();
 							for (XStreamEntityVar xStreamEntityVar : numericVars) {
 								// validate the key exists
-								boolean go = false;
-								if(xStreamEntityVar.getVarType().getCode() == 3 || xStreamEntityVar.getVarType().getCode() == 2) { 
-									go = true;
-								}
-								if(!go) { 
-									continue;
-								}
+							
 								String varSnapshotKey = StreamPersistHelper.getVarSnapshotKey(xStreamEntityVar,stream);
 								if(jedis.exists(varSnapshotKey) == false) { 
 									try {
@@ -171,7 +187,7 @@ public class StreamPersisterExt implements StreamWorkerExtension, XStreamSignalL
 										in.value = xStreamEntityVar.getNumber(0).doubleValue();
 										in.milliseconds = timestamp;
 										in.key = varSnapshotKey;
-									varSnapshotInsertQueue.add(in);		
+								     	varSnapshotInsertQueue.add(in);		
 									}
 								
 								}
@@ -212,6 +228,7 @@ public class StreamPersisterExt implements StreamWorkerExtension, XStreamSignalL
 						if(pendingSyncCount > 0) { 
 							try {
 								pipeline.sync();
+								snapshotWriteCount.addAndGet(pendingSyncCount);
 							} catch (Exception e) {
 									// todo;
 							}
@@ -243,8 +260,9 @@ public class StreamPersisterExt implements StreamWorkerExtension, XStreamSignalL
 						logger.trace("{}:{}",first,last);
 					}
 					pendingSyncCount++;
-					if(pendingSyncCount > 10) { 
+					if(pendingSyncCount > 50) { 
 						pipeline.sync();
+						snapshotWriteCount.addAndGet(50);
 						pendingSyncCount = 0;
 					}
 				} catch(InterruptedException e) {
@@ -257,6 +275,33 @@ public class StreamPersisterExt implements StreamWorkerExtension, XStreamSignalL
 		}
 	}
 	
+	
+	private class StatsPublisher extends Thread { 
+		
+		public void run() { 
+			DStopWatch stop = DStopWatch.create();
+			while(!interrupted()) { 
+				stop.start();
+				long writeCount = snapshotWriteCount.get();
+				try {
+					Thread.sleep(1000);
+				} catch (Exception e) {
+					// TODO: handle exception
+				}
+				
+				long postWriteCount = snapshotWriteCount.get();
+				stop.stop();
+				WorkerPersistStats snapshotStats = new WorkerPersistStats();
+				snapshotStats.setStream(worker.getStream().getInput().getIdentifier());
+				snapshotStats.setVarSnapshotCount(snapshotWriteCount.get());
+				snapshotStats.setVarSnapshotQueue(varSnapshotInsertQueue.size());
+				snapshotStats.setVarSnapshotSecondCount(postWriteCount - writeCount);
+				snapshotStats.setVarSnapshotSecondTime(stop.getCompletedSeconds());
+				StreamPersisterExt.this.snapshotStats = snapshotStats;
+				
+			}
+		}
+	}
 	
 	
 	public class EntitySignalWriter extends Thread { 
