@@ -17,11 +17,11 @@
 		class="ch.qos.logback.more.appenders.DataFluentAppender">
 		<tag>myrock</tag>
 		<label>cluster</label>
-	<remoteHost>172.16.16.55</remoteHost>
-		<port>32759</port>
+		<remoteHost>192.168.23.107</remoteHost>
+	<port>32759</port>
 		<additionalField>
 			<key>node</key>
-			<value>tick</value>
+			<value>stream</value>
 		</additionalField>
 	</appender>
 	

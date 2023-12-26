@@ -135,7 +135,12 @@ public class DExecutor {
 					@Override
 					public void run() {
 						try {
-							nextTask.task.run();
+							try {
+								nextTask.task.run();	
+							} catch (Exception e) {
+								logger.error("Task Class {} Threw Exception {}",nextTask.task.getClass().getName(),e.toString(),e);
+							}
+							
 							phaser.decrement();
 							completedCount.incrementAndGet();
 						} finally {
@@ -153,6 +158,7 @@ public class DExecutor {
 				executor.schedule(new Runnable() {
 					@Override
 					public void run() {
+						
 						if (!taskHandler.isDone()) {
 							taskHandler.cancel(true);
 							logger.error(marker, "Executor task time out " + nextTask.task.getClass().getName() );

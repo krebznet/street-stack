@@ -23,6 +23,5 @@ public interface XStreamSignals {
 	
 	public List<XStreamSignal> search(XStreamSignalSearch search);
 	
-	public Map<XStreamEntity,Map<Integer,AtomicInteger>> getEntitySignalCounts();
 
 }

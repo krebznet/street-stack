@@ -26,7 +26,7 @@ public class XStreamInput {
 	private XStreamStatService statProvider;
 	private XStreamEntityQueryBuilder queryBuilder;
 	private Map<String,String> properties = new HashMap<String,String>();
-	
+	private long id;
 	// here we need to somehow provide a stat provider and not put the bullshit in memeory here. 
 	public List<XStreamExtensionType> getExtensions() {
 		return extensions;
@@ -106,6 +106,14 @@ public class XStreamInput {
 	public void setProperties(Map<String, String> properties) {
 		this.properties = properties;
 	}
+	public long getId() {
+		return id;
+	}
+	public void setId(long id) {
+		this.id = id;
+	}
+	
+	
 	
 	
 	

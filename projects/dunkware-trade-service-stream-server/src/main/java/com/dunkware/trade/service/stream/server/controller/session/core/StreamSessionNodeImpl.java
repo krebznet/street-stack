@@ -27,7 +27,6 @@ import com.dunkware.spring.cluster.core.request.DunkNetServiceRequest;
 import com.dunkware.spring.cluster.core.request.DunkNetServiceRequestListener;
 import com.dunkware.trade.service.stream.json.controller.session.StreamSessionNodeBean;
 import com.dunkware.trade.service.stream.json.controller.spec.StreamState;
-import com.dunkware.trade.service.stream.json.worker.service.StreamEntitySnapshotReq;
 import com.dunkware.trade.service.stream.json.worker.stream.StreamSessionWorkerCancelReq;
 import com.dunkware.trade.service.stream.json.worker.stream.StreamSessionWorkerCreateReq;
 import com.dunkware.trade.service.stream.json.worker.stream.StreamSessionWorkerStartReq;
@@ -47,7 +46,6 @@ import com.dunkware.trade.service.stream.server.controller.session.events.EStrea
 import com.dunkware.trade.service.stream.server.controller.session.events.EStreamSessionNodeStopException;
 import com.dunkware.trade.service.stream.server.controller.session.events.EStreamSessionNodeStopped;
 import com.dunkware.trade.tick.model.ticker.TradeTickerSpec;
-import com.dunkware.xstream.model.entity.StreamEntitySnapshot;
 import com.dunkware.xstream.xproject.model.XStreamBundle;
 
 public class StreamSessionNodeImpl implements StreamSessionNode, DunkNetChannelHandler {
@@ -90,7 +88,7 @@ public class StreamSessionNodeImpl implements StreamSessionNode, DunkNetChannelH
 
 	private DunkNetChannel channel;
 
-	private StreamSessionWorkerStartReq startReq;
+	private StreamSessionWorkerStartReq startReq = new StreamSessionWorkerStartReq();
 	
 	private StreamSessionNodeBean bean;
 	
@@ -144,7 +142,6 @@ public class StreamSessionNodeImpl implements StreamSessionNode, DunkNetChannelH
 				}
 
 				notifyExtensions(StreamSessionExtension.NODE_STARTING);
-				startReq = new StreamSessionWorkerStartReq();
 				startReq.setWorkerId(input.getWorkerId());
 				startReq.setNumericId(input.getNumericId());
 				startReq.setStream(input.getSession().getStream().getName());
@@ -154,7 +151,9 @@ public class StreamSessionNodeImpl implements StreamSessionNode, DunkNetChannelH
 				startReq.setKafkaBrokers(kafkaBrokers);
 				startReq.setSignals(input.getSession().getInput().getSignalTypes());
 				startReq.setStreamDescriptor(input.getSession().getStream().getDescriptor());
-				startReq.setStreamProperties(input.getSession().getInput().getProperties());;
+				for (String key : input.getSession().getInput().getProperties().keySet()) {
+					startReq.getStreamProperties().put(key, input.getSession().getInput().getProperties().get(key));
+				}
 				startReq.setEntitySessionId(input.getSession().getEntity().getId());
 				try {
 					StreamSessionWorkerCreateReq req = new StreamSessionWorkerCreateReq();
@@ -189,25 +188,14 @@ public class StreamSessionNodeImpl implements StreamSessionNode, DunkNetChannelH
 		return starting;
 	}
 	
-	
 
 
 	@Override
-	public StreamEntitySnapshot entitySnapshot(int entityId) throws Exception {
-		StreamEntitySnapshotReq req = new StreamEntitySnapshotReq();
-		req.setEntityId(entityId);
-		try {
-			Object result = channel.serviceBlocking(req);			
-			try {
-				StreamEntitySnapshot snapshot = (StreamEntitySnapshot)result;
-				return snapshot;
-			} catch (Exception e) {
-				throw new Exception("exception casting entity snapshot service result to correct class type " + result.getClass().getName());
-			}
-		} catch (Exception e) {
-			throw new Exception("exception calling entity snapshot service on worker " + e.toString());
-		}
+	public StreamSessionWorkerStartReq getStartReq() {
+		return startReq;
 	}
+
+
 
 	@Override
 	public boolean isStopping() {

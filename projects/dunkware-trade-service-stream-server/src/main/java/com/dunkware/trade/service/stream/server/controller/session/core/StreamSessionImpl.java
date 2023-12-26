@@ -36,7 +36,6 @@ import com.dunkware.trade.service.stream.json.controller.model.StreamSessionSpec
 import com.dunkware.trade.service.stream.json.controller.session.StreamSessionNodeBean;
 import com.dunkware.trade.service.stream.json.controller.session.StreamSessionStats;
 import com.dunkware.trade.service.stream.json.controller.spec.StreamState;
-import com.dunkware.trade.service.stream.json.worker.service.StreamEntitySnapshotReq;
 import com.dunkware.trade.service.stream.server.controller.StreamController;
 import com.dunkware.trade.service.stream.server.controller.session.StreamSession;
 import com.dunkware.trade.service.stream.server.controller.session.StreamSessionException;
@@ -56,7 +55,6 @@ import com.dunkware.trade.service.stream.server.controller.session.events.EStrea
 import com.dunkware.trade.service.stream.server.repository.StreamSessionEntity;
 import com.dunkware.trade.service.stream.server.repository.StreamSessionRepo;
 import com.dunkware.trade.tick.model.ticker.TradeTickerSpec;
-import com.dunkware.xstream.model.entity.StreamEntitySnapshot;
 import com.dunkware.xstream.xproject.XScriptProject;
 import com.dunkware.xstream.xproject.model.XScriptBundle;
 
@@ -238,22 +236,6 @@ public class StreamSessionImpl implements StreamSession {
 
 	}
 
-	@Override
-	public StreamEntitySnapshot entitySnapshot(int entityId) throws Exception {
-		StreamSessionNode node = null;
-		try {
-			node = getEntityNode(entityId);
-		} catch (Exception e) {
-			throw new StreamSessionException("Exception getting node with entity id " + entityId + " " + e.toString());
-		}
-		try {
-
-		} catch (Exception e) {
-			// TODO: handle exception
-		}
-		return node.entitySnapshot(entityId);
-
-	}
 
 	@Override
 	public void stopSession() throws StreamSessionException {

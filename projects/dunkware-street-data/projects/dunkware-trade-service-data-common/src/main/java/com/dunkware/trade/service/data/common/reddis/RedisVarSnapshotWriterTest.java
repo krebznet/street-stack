@@ -1,6 +1,7 @@
 package com.dunkware.trade.service.data.common.reddis;
 
 import java.time.LocalDateTime;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
@@ -11,9 +12,9 @@ import redis.clients.jedis.JedisPooled;
 import redis.clients.jedis.Pipeline;
 import redis.clients.jedis.exceptions.JedisException;
 import redis.clients.jedis.timeseries.AggregationType;
-import redis.clients.jedis.timeseries.DuplicatePolicy;
 import redis.clients.jedis.timeseries.TSCreateParams;
 import redis.clients.jedis.timeseries.TSElement;
+import redis.clients.jedis.timeseries.TSMGetParams;
 import redis.clients.jedis.timeseries.TSMRangeElements;
 import redis.clients.jedis.timeseries.TSMRangeParams;
 import redis.clients.jedis.timeseries.TSRangeParams;
@@ -27,16 +28,108 @@ public class RedisVarSnapshotWriterTest {
 		System.out.println(code);
 		int code2 = "SPY".hashCode();
 		System.out.println(code2);
-		//new RedisVarSnapshotWriterTest();
-	}
+//	new RedisVarSnapshotWriterTest();
+		long start = 1703565840;
+		
+	
+		new RedisVarSnapshotWriterTest("VSADD:VS:US_EQUITY:7534:40304", 1703583086000L,1703583229000L);
+}
 	
 	
 	private JedisPooled jedis;
 	
+	
+	public RedisVarSnapshotWriterTest(String key, long start, long stop) { 
+		JedisPooled pooled = null;
+		try {
+			 pooled = new JedisPooled("testrock1.dunkware.net",31673);	
+		} catch (Exception e) {
+			e.printStackTrace();
+			return;
+		}
+		
+		TSMRangeParams mrp1 = new TSMRangeParams();
+		mrp1.fromTimestamp(start);
+		mrp1.toTimestamp(stop);
+		mrp1.filter("var=2");
+		
+		Map<String,TSMRangeElements> fuckers = pooled.tsMRange(mrp1);
+		for (String keyFuck: fuckers.keySet()) {
+			TSMRangeElements els = fuckers.get(keyFuck);
+			for (TSElement el : els.getValue()) {
+				System.out.println(el.getValue());
+			}
+			
+		}
+		
+		
+		TSMGetParams p = new TSMGetParams();
+		p.latest();
+		
+		TSRangeParams rp = new TSRangeParams();
+		rp.fromTimestamp(start);
+		rp.toTimestamp(stop);
+		TSMRangeParams mrp = new TSMRangeParams();
+		mrp.fromTimestamp(start);
+		mrp.toTimestamp(stop);
+		mrp.filter("stream=us_equity");
+		
+		//mrp.selectedLabels("stream=us_equity");
+		Map<String,TSMRangeElements> results = pooled.tsMRange(mrp);
+		System.out.println(results.size());
+		try {
+			Thread.sleep(4000);
+		} catch (Exception e) {
+			// TODO: handle exception
+		}
+		for (String keyName : results.keySet()) {
+			System.out.println(keyName);	
+		}
+		for (String keyName : results.keySet()) {
+			if(keyName.equals("VS:US_EQUITY:7534:3")) {
+			System.out.println(keyName);
+			TSMRangeElements elements = results.get(keyName);
+			System.out.println(elements.getElements().size());
+			try {
+				Thread.sleep(3000);
+			} catch (Exception e) {
+				// TODO: handle exception
+			}
+			for (TSElement element : elements.getElements()) {
+				System.out.println(keyName + ":" + element.getTimestamp() + ":" + element.getValue());
+				LocalDateTime dt = DunkTime.toLocalDateTime(new Date(element.getTimestamp()));
+				System.out.println(DunkTime.format(dt, DunkTime.YYMMDDHHMMSS));
+				
+			}
+			}
+			
+		}
+		
+		
+		
+		
+		
+		
+		
+		
+	}
 	public RedisVarSnapshotWriterTest() {
 		try {
 			
 			JedisPooled pooled = new JedisPooled("testrock1.dunkware.net",31673);
+			
+			
+			
+			
+			if(pooled.exists("SPY:SMA2MIN")) { 
+				System.out.println("exi ts");
+			} else { 
+				System.out.println("no exist");
+			}
+			
+			if(1 == 1) { 
+				return;
+			}
 			
 			
 			TSCreateParams params = new TSCreateParams();

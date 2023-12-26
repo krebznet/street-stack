@@ -30,7 +30,7 @@ import io.vertx.core.AsyncResult;
 import io.vertx.core.Future;
 import io.vertx.core.Handler;
 
-public class XStreamSignalsImpl implements XStreamSignals, XStreamListener  {
+public class XStreamSignalsImpl implements XStreamSignals  {
 	
 	private XStream stream; 
 	private Map<Integer,XStreamSignalHandler> handlers = new ConcurrentHashMap<Integer,XStreamSignalHandler>();
@@ -46,19 +46,13 @@ public class XStreamSignalsImpl implements XStreamSignals, XStreamListener  {
 	private List<XStreamSignal> signals = new ArrayList<XStreamSignal>();
 	private Semaphore signalLock = new Semaphore(1);
 	
-	private Map<XStreamEntity,Map<Integer,AtomicInteger>> entitySignalCounts = new ConcurrentHashMap<XStreamEntity,Map<Integer,AtomicInteger>>();
 	
 	public void start(XStream stream)  { 
 		this.stream = stream; 
 		this.signalTypes = stream.getInput().getSignalTypes();
 		
-		for (XStreamEntity entity : stream.getRows()) {
-				Map<Integer,AtomicInteger> counts = new HashMap<Integer,AtomicInteger>();
-			for (XStreamSignalType type : stream.getInput().getSignalTypes()) {
-				counts.put((int)type.getId(), new AtomicInteger(0));
-				entitySignalCounts.put(entity, counts);
-			}
-		}
+		
+		
 		for (XStreamSignalType signalType : stream.getInput().getSignalTypes()) {
 			handleSignalStart(signalType);
 		}
@@ -70,19 +64,7 @@ public class XStreamSignalsImpl implements XStreamSignals, XStreamListener  {
 		return signalCount.get();
 	}
 
-	@Override
-	public void rowInsert(XStreamEntity entity) {
-		Map<Integer,AtomicInteger> counts = new HashMap<Integer,AtomicInteger>();
-		for (XStreamSignalType type : stream.getInput().getSignalTypes()) {
-			counts.put((int)type.getId(), new AtomicInteger(0));
-			entitySignalCounts.put(entity, counts);
-		}
-	}
-
 	
-	public Map<XStreamEntity,Map<Integer,AtomicInteger>> getEntitySignalCounts() {
-		return entitySignalCounts;
-	}
 
 
 
@@ -132,15 +114,7 @@ public class XStreamSignalsImpl implements XStreamSignals, XStreamListener  {
 			signalLock.release();
 		}
 		
-		Map<Integer,AtomicInteger> counts = entitySignalCounts.get(sig.getEntity());
-		if(counts == null) { 
-			counts = new HashMap<Integer,AtomicInteger>();
-			counts.put(sig.getSignal().getId(), new AtomicInteger(1));
-			entitySignalCounts.put(sig.getEntity(), counts);
-			
-		} else { 
-			counts.get(sig.getSignal().getId()).incrementAndGet();
-		}
+		
 		
 		stream.getExecutor().execute(new SignalEmitter(sig));
 		

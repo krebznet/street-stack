@@ -13,6 +13,19 @@
 	</appender>
 	
 	
+	  	<appender name="FLUENT"
+		class="ch.qos.logback.more.appenders.DataFluentAppender">
+		<tag>myrock</tag>
+		<label>cluster</label>
+		<remoteHost>192.168.23.107</remoteHost>
+	<port>32759</port>
+		<additionalField>
+			<key>node</key>
+			<value>gateway</value>
+		</additionalField>
+	</appender>
+	
+	
 
 	
 
@@ -32,7 +45,7 @@
 
 	<logger name="com.dunkware" level="debug" additivity="false">
 		<appender-ref ref="CONSOLE" additivity="false" />
-		
+		<appender-ref ref="FLUENT" />
 	</logger>
 	
 	

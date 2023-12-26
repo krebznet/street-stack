@@ -55,6 +55,24 @@ public class MockXStreamEntity implements XStreamEntity {
 		this.identifier = identifier; 
 		this.id = id; 
 	}
+	
+	
+
+	@Override
+	public List<XStreamEntityVar> getNumericVars() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+
+
+	@Override
+	public Map<Integer, Number> numericVarSnapshot() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+
 
 	@Override
 	public void dispose() {

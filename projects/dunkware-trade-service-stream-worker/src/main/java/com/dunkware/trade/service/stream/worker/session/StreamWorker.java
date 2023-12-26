@@ -93,6 +93,7 @@ public class StreamWorker implements DunkNetChannelHandler {
 
 	public StreamDescriptor getStreamDescriptor() {
 		return req.getStreamDescriptor();
+		
 	}
 
 	@Override
@@ -265,6 +266,11 @@ public class StreamWorker implements DunkNetChannelHandler {
 			try {
 				if(logger.isDebugEnabled()) { 
 					logger.debug(marker,"starting stream worker extension " + ext.getClass().getName());
+				}
+				try {
+					Thread.sleep(1000);
+				} catch (Exception e) {
+
 				}
 				ext.start();
 			} catch (Exception e) {

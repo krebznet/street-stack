@@ -28,7 +28,17 @@ public class DunkTime {
     public static final String YYMMDDHHMMSS =  "YYMMddHHmmss";
     public static void main(String[] args) {
 		
-    	
+    	long fuck = DunkTime.toMilliseconds(LocalDateTime.now());
+    	long fuckMe = fuck;
+    	long poop = 1703568596000L;
+    	LocalDateTime test = DunkTime.toLocalDateTime(new Date(poop));
+    	System.out.println(DunkTime.format(test,DunkTime.YYMMDDHHMMSS));
+    	System.out.println(new Date(poop).toLocaleString());
+    	System.out.println(fuckMe);
+    	String fuckString = String.valueOf(fuck);
+    	System.out.println(fuckString);
+    	if(1 == 1)
+    		return;
     	
     	LocalDateTime now = LocalDateTime.now();
     	System.out.println(DunkTime.format(now, YYMMDDHHMMSS));

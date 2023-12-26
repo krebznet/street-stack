@@ -17,7 +17,7 @@ import com.dunkware.common.util.mysql.model.MySqlConnection;
 public class MySqlConnectionPool {
 	
 
-	public static boolean DISABLED = false;
+	public static boolean DISABLED = true;
 	
 	private Logger _logger = LoggerFactory.getLogger(getClass());
 

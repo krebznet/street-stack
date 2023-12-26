@@ -6,13 +6,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.dunkware.common.util.datagrid.DataGridUpdate;
 import com.dunkware.common.util.glazed.GlazedDataGrid;
 import com.dunkware.trade.service.stream.json.controller.session.StreamSessionNodeBean;
-import com.dunkware.xstream.model.entity.StreamEntitySnapshot;
 
 import ca.odell.glazedlists.ObservableElementList;
 import reactor.core.publisher.Flux;
@@ -50,11 +48,6 @@ public class StreamWebController {
 		return null;
 	}
 	
-	@GetMapping(path = "/stream/v1/web/stream/session/entity/snapshot")
-	public @ResponseBody() StreamEntitySnapshot streamEntitySnapshot(@RequestParam String stream, String identifier) throws Exception { 
-		return webService.getEntitySnapshot(stream, identifier);
-		
-	}
 	
 	
 

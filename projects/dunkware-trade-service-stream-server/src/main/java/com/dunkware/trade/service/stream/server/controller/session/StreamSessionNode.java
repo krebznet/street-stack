@@ -7,12 +7,10 @@ import com.dunkware.spring.cluster.DunkNetChannel;
 import com.dunkware.spring.cluster.DunkNetNode;
 import com.dunkware.trade.service.stream.json.controller.session.StreamSessionNodeBean;
 import com.dunkware.trade.service.stream.json.controller.spec.StreamState;
+import com.dunkware.trade.service.stream.json.worker.stream.StreamSessionWorkerStartReq;
 import com.dunkware.trade.service.stream.server.controller.StreamController;
 import com.dunkware.trade.tick.model.ticker.TradeTickerSpec;
-import com.dunkware.xstream.model.entity.StreamEntitySnapshot;
 import com.dunkware.xstream.xproject.model.XStreamBundle;
-
-import ca.odell.glazedlists.ObservableElementList;
 
 public interface StreamSessionNode {
 
@@ -41,7 +39,7 @@ public interface StreamSessionNode {
 	
 	void stop(); 
 	
-	StreamEntitySnapshot entitySnapshot(int entityId) throws Exception;
+	StreamSessionWorkerStartReq getStartReq();
 	
 	void start(StreamSessionNodeInput input) ;
 	

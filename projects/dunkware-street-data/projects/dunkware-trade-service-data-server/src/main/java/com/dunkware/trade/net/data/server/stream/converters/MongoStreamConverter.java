@@ -17,7 +17,6 @@ import org.bson.conversions.Bson;
 import com.dunkware.common.util.dtime.DTimeZone;
 import com.dunkware.trade.service.data.model.signals.query.SignalCountDataQuery;
 import com.dunkware.trade.service.stream.descriptor.StreamDescriptor;
-import com.dunkware.xstream.model.entity.StreamEntitySnapshot;
 import com.dunkware.xstream.model.signal.StreamEntitySignal;
 import com.mongodb.client.model.Accumulators;
 import com.mongodb.client.model.Aggregates;
@@ -25,16 +24,6 @@ import com.mongodb.client.model.Filters;
 import com.mongodb.client.model.Sorts;
 
 public class MongoStreamConverter {
-
-	/**
-	 * don't worry about this. 
-	 * @param snapshot
-	 * @param timeZone
-	 * @return
-	 */
-	public static Document snapshotToDocument(StreamEntitySnapshot snapshot, DTimeZone timeZone) {
-		return null;
-	}
 
 	/**
 	 * 
@@ -82,15 +71,6 @@ public class MongoStreamConverter {
 
 	
 
-	/**
-	 * We are not doign snapshots just yet
-	 * @param document
-	 * @return
-	 */
-	public StreamEntitySnapshot documentToSnapshot(Document document) {
-		return null;
-	}
-	
 	
 	
 	//SD21-GIFT-14 helper method to convert a signal document back into a model here we need to do take conversaion as ewll. 

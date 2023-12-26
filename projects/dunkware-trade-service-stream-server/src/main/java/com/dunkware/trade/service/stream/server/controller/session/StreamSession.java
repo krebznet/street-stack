@@ -11,7 +11,6 @@ import com.dunkware.trade.service.stream.json.controller.spec.StreamState;
 import com.dunkware.trade.service.stream.server.controller.StreamController;
 import com.dunkware.trade.service.stream.server.repository.StreamSessionEntity;
 import com.dunkware.trade.tick.model.ticker.TradeTickerSpec;
-import com.dunkware.xstream.model.entity.StreamEntitySnapshot;
 import com.dunkware.xstream.xproject.XScriptProject;
 import com.dunkware.xstream.xproject.model.XScriptBundle;
 
@@ -20,8 +19,6 @@ public interface StreamSession {
 	public XScriptBundle getXScriptBundle();
 
 	public String killSession();
-	
-	public StreamEntitySnapshot entitySnapshot(int entityId) throws Exception;
 	
 	public void startSession(StreamSessionInput input) throws StreamSessionException;
 

@@ -32,7 +32,7 @@ import com.dunkware.xstream.xScript.VarType;
 import ca.odell.glazedlists.EventList;
 import ca.odell.glazedlists.GlazedLists;
 
-public class xstreamvarimpl implements XStreamEntityVar, XStreamExpressionListener, XStreamEntityVarListener {
+public class XStreamVarImpl implements XStreamEntityVar, XStreamExpressionListener, XStreamEntityVarListener {
 
 	private XStreamEntity row;
 	private VarType varType;
@@ -180,6 +180,9 @@ public class xstreamvarimpl implements XStreamEntityVar, XStreamExpressionListen
 
 	@Override
 	public void setValue(Object value) {
+		if(varType.getCode() == 101) {
+			logger.info("101 set " + value.toString());
+		}
 		if(value == null) { 
 			if(logger.isDebugEnabled()) {
 				logger.debug(MarkerFactory.getMarker("NullVarValue"), "Var {} Session {}", varType.getName(), row.getStream().getInput().getSessionId());
@@ -376,7 +379,7 @@ public class xstreamvarimpl implements XStreamEntityVar, XStreamExpressionListen
 			}
 		}
 	}
-
+  
 	@Override
 	public LocalTime getLastUpdate() {
 		return lastUpdate;

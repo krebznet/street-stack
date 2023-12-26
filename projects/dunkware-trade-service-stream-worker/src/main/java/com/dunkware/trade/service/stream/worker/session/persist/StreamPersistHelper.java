@@ -4,6 +4,12 @@ import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
 import com.dunkware.common.util.helpers.DNumberHelper;
+import com.dunkware.xstream.api.XStream;
+import com.dunkware.xstream.api.XStreamEntityVar;
+
+import redis.clients.jedis.JedisPooled;
+import redis.clients.jedis.exceptions.JedisException;
+import redis.clients.jedis.timeseries.TSCreateParams;
 
 public class StreamPersistHelper {
 	
@@ -22,6 +28,31 @@ public class StreamPersistHelper {
 		Map<Integer,Number> results = removeEqualKeyValues(current, compare);
 		for (Integer key : results.keySet()) {
 			System.out.println(key + "=" + results.get(key));
+		}
+		
+	}
+	
+	
+	public static String getVarSnapshotKey(XStreamEntityVar var, XStream stream) { 
+		StringBuilder builder = new StringBuilder();
+		builder.append("VS:");
+		builder.append(stream.getInput().getIdentifier().toUpperCase());
+		builder.append(":");
+		builder.append(var.getRow().getIdentifier());
+		builder.append(":");
+		builder.append(var.getVarType().getCode());
+		return builder.toString();
+	}
+	
+	public static void createVarSnapshotKey(XStreamEntityVar var, XStream stream, JedisPooled jedis) throws JedisException { 
+		TSCreateParams p = new TSCreateParams();
+		p.label("entity", String.valueOf(var.getRow().getIdentifier()));
+		p.label("stream", stream.getInput().getIdentifier());
+		p.label("var", String.valueOf(var.getVarType().getCode()));
+		try {
+			jedis.tsCreate(getVarSnapshotKey(var, stream), p);
+		} catch (JedisException e) {
+				throw e;
 		}
 		
 	}

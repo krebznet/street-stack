@@ -12,6 +12,8 @@ import java.util.concurrent.atomic.AtomicInteger;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.slf4j.Marker;
+import org.slf4j.MarkerFactory;
 
 import com.dunkware.common.tick.stream.TickStream;
 import com.dunkware.common.tick.stream.impl.TickStreamImpl;
@@ -36,9 +38,10 @@ public class XStreamRowImpl implements XStreamEntity, XStreamEntityVarListener {
 	private XStream stream;
 
 	private Logger logger = LoggerFactory.getLogger(getClass());
+	private Marker volumeUpdateMarker = MarkerFactory.getMarker("VolumeSnapshotValue");
 
 	private ConcurrentHashMap<String, XStreamEntityVar> vars = new ConcurrentHashMap<String, XStreamEntityVar>();
-
+	private List<XStreamEntityVar> numericVars = new ArrayList<XStreamEntityVar>();
 	private List<XStreamRowSignal> signals = new ArrayList<XStreamRowSignal>();
 	private AtomicInteger signalCount = new AtomicInteger(0);
 	private TickStream tickStream;
@@ -67,10 +70,14 @@ public class XStreamRowImpl implements XStreamEntity, XStreamEntityVarListener {
 		for (VarType varType : varTypes) {
 			XStreamVarImpl var = new XStreamVarImpl();
 			var.init(this, varType);
-			vars.put(varType.getName(), var);
+		 	vars.put(varType.getName(), var);
 		}
 		for (XStreamEntityVar var : vars.values()) {
 			var.start();
+			if(var.isNumeric()) { 
+				numericVars.add(var);
+			}
+			
 			var.addVarListener(this);
 		}
 	}
@@ -86,6 +93,8 @@ public class XStreamRowImpl implements XStreamEntity, XStreamEntityVarListener {
 	public String getId() {
 		return id;
 	}
+	
+	
 
 	@Override
 	public XStream getStream() {
@@ -95,6 +104,14 @@ public class XStreamRowImpl implements XStreamEntity, XStreamEntityVarListener {
 	@Override
 	public Collection<XStreamEntityVar> getVars() {
 		return vars.values();
+	}
+	
+	
+
+	@Override
+	public List<XStreamEntityVar> getNumericVars() {
+		return numericVars;
+		
 	}
 
 	@Override
@@ -256,8 +273,17 @@ public class XStreamRowImpl implements XStreamEntity, XStreamEntityVarListener {
 		for (String key : vars.keySet()) {
 			XStreamEntityVar var = vars.get(key);
 			if(var.isNumeric()) { 
+				
 				if(var.getSize() > 0) { 
+					if(var.getVarType().getCode() != 3) { 
+						continue;
+					}
 					values.put(var.getVarType().getCode(), var.getNumber(0));
+					if(var.getVarType().getCode() == 3) { 
+						if(logger.isTraceEnabled()) { 
+							logger.trace(volumeUpdateMarker, "{}", var.getNumber(0));
+						}
+					}
 				}
 			}
 		}

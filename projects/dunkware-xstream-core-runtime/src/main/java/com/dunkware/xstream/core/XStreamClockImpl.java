@@ -15,6 +15,8 @@ import java.util.concurrent.atomic.AtomicInteger;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.slf4j.Marker;
+import org.slf4j.MarkerFactory;
 
 import com.dunkware.common.util.dtime.DDate;
 import com.dunkware.common.util.dtime.DTime;
@@ -31,6 +33,8 @@ import com.dunkware.xstream.api.XStreamClockListener;
 public class XStreamClockImpl implements XStreamClock {
 
 	private Logger logger = LoggerFactory.getLogger(getClass());
+	private Marker timeSetMarker = MarkerFactory.getMarker("XStreamClockSet");
+	private Marker runnableMarker = MarkerFactory.getMarker("XStreamScheduledRunnable");
 	
 	private volatile DTime time; 
 	private XStreamImpl stream; 
@@ -77,13 +81,16 @@ public class XStreamClockImpl implements XStreamClock {
 
 	@Override
 	public void setTime(DTime time) {
-		if(logger.isDebugEnabled()) { 
+		if(logger.isTraceEnabled()) { 
 			logger.debug("Time Set {}",time.getHour() + ":" + time.getMinute() + ":" + time.getSecond());
 		}
 		this.time = time; 
 		// in the same thread invoke listeners and schedulers
 		// so we stay more in syn 
 		LocalDateTime dt = getLocalDateTime();
+		if(logger.isTraceEnabled()) {
+			logger.trace(timeSetMarker,"Time Set {}",DunkTime.format(dt, DunkTime.YYYY_MM_DD_HH_MM_SS));
+		}
 		try {
 			listenerLock.acquire();
 			for (XStreamClockListener listener : listeners) {
@@ -112,7 +119,9 @@ public class XStreamClockImpl implements XStreamClock {
 
 	@Override
 	public void unscheduleRunnable(Runnable runnable) {
+		int scheduledSize = scheduledRunnables.size();
 		scheduledRunnables.remove(runnable);
+		int afterSize = scheduledRunnables.size();
 		
 	}
 	
@@ -224,6 +233,9 @@ public class XStreamClockImpl implements XStreamClock {
 		public synchronized void timeUpdate() { 
 			
 			if(counter.incrementAndGet() == interval) {
+				if(logger.isTraceEnabled()) { 
+					logger.trace(runnableMarker, "{}:{}",runnable.getClass().getName(),DunkTime.format(getLocalDateTime(), DunkTime.YYYY_MM_DD_HH_MM_SS));
+				}
 				stream.getExecutor().execute(runnable);
 				counter.set(0);
 			}

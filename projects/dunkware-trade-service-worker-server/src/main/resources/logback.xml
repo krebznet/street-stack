@@ -19,7 +19,7 @@
 		class="ch.qos.logback.more.appenders.DataFluentAppender">
 		<tag>myrock</tag>
 		<label>cluster</label>
-	<remoteHost>172.16.16.55</remoteHost>
+	<remoteHost>192.168.23.107</remoteHost>
 		<port>32759</port>
 		<additionalField>
 			<key>node</key>
@@ -30,7 +30,7 @@
 	<root level="INFO">
 	<appender-ref ref="FLUENT" additivity="false"/>
 
-		<appender-ref ref="CONSOLE" additivity="false" />
+	
 	</root>
 
 
@@ -43,5 +43,31 @@
 		<appender-ref ref="CONSOLE" additivity="false"/>
 	</logger>
 
+	<logger name="com.dunkware.trade.service.stream.worker.session.persist" level="TRACE">
+ <appender-ref ref="FLUENT" additivity="false"/>
+		<appender-ref ref="CONSOLE" additivity="false"/>
+	</logger>
+	<logger name="com.dunkware.xstream.core.XStreamClockImpl" level="TRACE">
+ <appender-ref ref="FLUENT" additivity="false"/>
+
+	</logger>	
+	<logger name="com.dunkware.xstream.core.XStreamTickRouterImpl" level="TRACE">
+ 		<appender-ref ref="FLUENT" additivity="false"/>
+
+	</logger>	
 	
+	<logger name="com.dunkware.xstream.core.XStreamRowImpl" level="TRACE">
+ 		<appender-ref ref="FLUENT" additivity="false"/>
+
+	</logger>	
+	
+		
+	
+	<logger name="om.dunkware.trade.service.stream.worker.session.persist.StreamPersisterExt" level="TRACE">
+ 		<appender-ref ref="FLUENT" additivity="false"/>
+
+	</logger>	
+		
+	
+	 c
 </configuration>

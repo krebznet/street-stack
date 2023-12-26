@@ -40,6 +40,13 @@ public interface XStreamEntity {
 	
 	public Map<Integer,Object> varValues();
 	
+	
+	/**
+	 * Returns all vars that are numeric
+	 * @return
+	 */
+	List<XStreamEntityVar> getNumericVars();
+	
 	/**
 	 * Returns the row stats at the current point in time
 	 * @param varStats flag include varStats in rowStats

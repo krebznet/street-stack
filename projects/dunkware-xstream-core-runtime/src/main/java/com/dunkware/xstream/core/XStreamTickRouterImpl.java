@@ -1,10 +1,13 @@
 package com.dunkware.xstream.core;
 
+import java.util.Date;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.atomic.AtomicLong;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.slf4j.Marker;
+import org.slf4j.MarkerFactory;
 
 import com.dunkware.common.tick.TickHandler;
 import com.dunkware.common.tick.TickHelper;
@@ -20,6 +23,7 @@ import com.dunkware.xstream.api.XStreamTickRouter;
 public class XStreamTickRouterImpl implements XStreamTickRouter, TickStream {
 	
 	private Logger logger = LoggerFactory.getLogger(getClass());
+	private Marker tickBlockTime = MarkerFactory.getMarker("TickBlockTime");
 	
 	private ConcurrentHashMap<Integer, Integer> dataTickTypes = new ConcurrentHashMap<Integer, Integer>();
 	
@@ -62,6 +66,17 @@ public class XStreamTickRouterImpl implements XStreamTickRouter, TickStream {
 
 	@Override
 	public void streamTick(Tick tick) {
+		try {
+			long start = new Date().getTime();
+			stream.getExecutor().awaitWhileTasksRunning();
+			long end = new Date().getTime();
+			if(logger.isTraceEnabled()) { 
+				logger.trace(tickBlockTime,"tick block {}", end - start);
+			}
+		} catch (Exception e) {
+			logger.error("Exception blocking on tick " + e.toString());
+		
+		}
 		tickCount.incrementAndGet();
 		// first call handlers
 		for (TickRouterHandler streamHandler : tickHandlers.values()) {
@@ -73,6 +88,8 @@ public class XStreamTickRouterImpl implements XStreamTickRouter, TickStream {
 		if(tick.getType() == TimeTick.TYPE) { 
 			timeTickCount.incrementAndGet();
 			DTime newTime = TimeTick.decode(tick);
+			
+			
 			stream.getClock().setTime(newTime);
 		}
 		// third if data tick route it to the row

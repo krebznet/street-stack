@@ -6,7 +6,6 @@ import org.slf4j.Marker;
 import org.slf4j.MarkerFactory;
 
 import com.dunkware.trade.net.data.server.stream.capture.writers.SignalWriter;
-import com.dunkware.trade.net.data.server.stream.capture.writers.SnapshotWriter;
 import com.dunkware.trade.net.data.server.stream.streamprovider.StreamDataProvider;
 import com.dunkware.trade.service.stream.descriptor.StreamDescriptor;
 
@@ -21,7 +20,7 @@ public class StreamCapture {
 	
 	private StreamDataProvider dataProvider; 
 	
-	private SnapshotWriter snapshotWriter;
+	
 	
 	public void init(StreamDataProvider dataProvider) { 
 		this.dataProvider = dataProvider;
