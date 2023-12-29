@@ -345,6 +345,15 @@ public class StreamWorker implements DunkNetChannelHandler {
 				stats.setVarSnapshotQueue(pstts.getVarSnapshotQueue());
 				stats.setVarSnapshotSecondTime(pstts.getVarSnapshotSecondTime());
 				stats.setVarSnapshotSecondCount(pstts.getVarSnapshotSecondCount());
+				stats.setVarSnapshotFirstCaptureTime(pstts.getVarSnapshotFirstCaptureTime());
+				stats.setVarSnapshotLastCaptureTime(pstts.getVarSnapshotLastCaptureTime());
+			} else { 
+				stats.setVarSnapshotCount(0);
+				stats.setVarSnapshotQueue(3);
+				stats.setVarSnapshotFirstCaptureTime(3);
+				stats.setVarSnapshotLastCaptureTime(4);
+				stats.setVarSnapshotSecondCount(3);
+				stats.setVarSnapshotSecondTime(3.3);
 			}
 			
 		} catch (Exception e) {

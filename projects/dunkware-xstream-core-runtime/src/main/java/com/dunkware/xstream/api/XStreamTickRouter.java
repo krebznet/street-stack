@@ -13,4 +13,6 @@ public interface XStreamTickRouter extends TickStream {
 	
 	public DTime getLastDataTickTime();
 	
+	public long lastTickDelay();
+	
 }

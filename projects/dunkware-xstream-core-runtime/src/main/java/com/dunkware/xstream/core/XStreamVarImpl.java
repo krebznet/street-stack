@@ -180,9 +180,7 @@ public class XStreamVarImpl implements XStreamEntityVar, XStreamExpressionListen
 
 	@Override
 	public void setValue(Object value) {
-		if(varType.getCode() == 101) {
-			logger.info("101 set " + value.toString());
-		}
+	
 		if(value == null) { 
 			if(logger.isDebugEnabled()) {
 				logger.debug(MarkerFactory.getMarker("NullVarValue"), "Var {} Session {}", varType.getName(), row.getStream().getInput().getSessionId());

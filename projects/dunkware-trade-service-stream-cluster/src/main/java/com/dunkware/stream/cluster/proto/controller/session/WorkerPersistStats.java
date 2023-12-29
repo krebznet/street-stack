@@ -6,7 +6,8 @@ public class WorkerPersistStats {
 	private long varSnapshotQueue = 0; 
 	private double varSnapshotSecondTime = 0.0;
 	private long varSnapshotSecondCount = 0;
-	
+	private long varSnapshotFirstCaptureTime = 0;
+	private long varSnapshotLastCaptureTime = 0;
 	private String stream;
 
 	public long getVarSnapshotCount() {
@@ -48,6 +49,23 @@ public class WorkerPersistStats {
 	public void setStream(String stream) {
 		this.stream = stream;
 	}
+
+	public long getVarSnapshotFirstCaptureTime() {
+		return varSnapshotFirstCaptureTime;
+	}
+
+	public void setVarSnapshotFirstCaptureTime(long varSnapshotFirstCaptureTime) {
+		this.varSnapshotFirstCaptureTime = varSnapshotFirstCaptureTime;
+	}
+
+	public long getVarSnapshotLastCaptureTime() {
+		return varSnapshotLastCaptureTime;
+	}
+
+	public void setVarSnapshotLastCaptureTime(long varSnapshotLastCaptureTime) {
+		this.varSnapshotLastCaptureTime = varSnapshotLastCaptureTime;
+	}
+	
 	
 	
 	

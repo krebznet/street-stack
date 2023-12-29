@@ -37,6 +37,8 @@ public class XStreamTickRouterImpl implements XStreamTickRouter, TickStream {
 	private DTimeZone streamTimeZone; 
 	private XStreamImpl stream; 
 	
+	private volatile long lastTickDelay = 0;
+	
 	private ConcurrentHashMap<String,Integer> missingIdMap = new ConcurrentHashMap<String,Integer>();
 	
 	public XStreamTickRouterImpl(XStreamImpl stream) {
@@ -63,6 +65,13 @@ public class XStreamTickRouterImpl implements XStreamTickRouter, TickStream {
 		tickHandlers.remove(handler);
 	}
 
+	
+
+	@Override
+	public long lastTickDelay() {
+		return lastTickDelay;
+	}
+
 
 	@Override
 	public void streamTick(Tick tick) {
@@ -70,6 +79,7 @@ public class XStreamTickRouterImpl implements XStreamTickRouter, TickStream {
 			long start = new Date().getTime();
 			stream.getExecutor().awaitWhileTasksRunning();
 			long end = new Date().getTime();
+			lastTickDelay = end - start;
 			if(logger.isTraceEnabled()) { 
 				logger.trace(tickBlockTime,"tick block {}", end - start);
 			}

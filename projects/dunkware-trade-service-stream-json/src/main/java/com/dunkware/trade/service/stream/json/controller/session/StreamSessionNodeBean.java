@@ -27,6 +27,8 @@ public class StreamSessionNodeBean extends ObservableBean {
 	private long varSnapshotQueue = 0; 
 	private double varSnapshotSecondTime = 0.0;
 	private long varSnapshotSecondCount = 0;
+	private long varSnapshotFirstCaptureTime = 0;
+	private long varSnapshotLastCaptureTime = 0;
 	
 	private List<String> stopProblems = new ArrayList<String>();
 	
@@ -149,7 +151,21 @@ public class StreamSessionNodeBean extends ObservableBean {
 	}
 	public void setVarSnapshotSecondCount(long varSnapshotSecondCount) {
 		this.varSnapshotSecondCount = varSnapshotSecondCount;
+	}
+	public long getVarSnapshotFirstCaptureTime() {
+		return varSnapshotFirstCaptureTime;
+	}
+	public void setVarSnapshotFirstCaptureTime(long varSnapshotFirstCaptureTime) {
+		this.varSnapshotFirstCaptureTime = varSnapshotFirstCaptureTime;
+	}
+	public long getVarSnapshotLastCaptureTime() {
+		return varSnapshotLastCaptureTime;
+	}
+	public void setVarSnapshotLastCaptureTime(long varSnapshotLastCaptureTime) {
+		this.varSnapshotLastCaptureTime = varSnapshotLastCaptureTime;
 	} 
+	
+	
 	
 	
 	

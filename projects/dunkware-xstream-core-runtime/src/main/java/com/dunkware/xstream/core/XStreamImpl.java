@@ -44,6 +44,7 @@ public class XStreamImpl implements XStream {
 	private Logger logger = LoggerFactory.getLogger(getClass());
 	private Marker stopMarker = MarkerFactory.getMarker("XStreamStop");
 	private volatile ConcurrentHashMap<String, XStreamEntity> rows = new ConcurrentHashMap<String, XStreamEntity>();
+	private Semaphore rowLock = new Semaphore(1);
 	private volatile ConcurrentHashMap<Integer,String> rowIdMappings = new ConcurrentHashMap<Integer,String>();
 	private XStreamStatus status = XStreamStatus.Created;
 
@@ -243,12 +244,15 @@ public class XStreamImpl implements XStream {
 			logger.debug(MarkerFactory.getMarker("EntityCreated"), "{} {} {}", rowId, rowIdentifier,
 					input.getSessionId());
 		}
+		
 		XStreamRowImpl row = new XStreamRowImpl();
 		row.start(rowId, rowIdentifier, this);
 		row.addRowListener(rowListener);
 		rowIdMappings.put(rowIdentifier, rowId);
-		rows.put(rowId, row);
+		
 		try {
+			rowLock.acquire();
+			rows.put(rowId, row);
 			streamListenerLock.acquire();
 			for (XStreamListener listener : streamListeners) {
 				try {
@@ -259,8 +263,9 @@ public class XStreamImpl implements XStream {
 				}
 			}
 		} catch (Exception e) {
-
+			logger.error("Exception adding row " + e.toString(),e);
 		} finally {
+			rowLock.release();
 			streamListenerLock.release();
 		}
 		
@@ -302,10 +307,15 @@ public class XStreamImpl implements XStream {
 	public void addStreamListener(XStreamListener listener) {
 		try {
 			streamListenerLock.acquire();
+			rowLock.acquire();
+			for (XStreamEntity entity : rows.values()) {
+				listener.rowInsert(entity);
+			}
 			streamListeners.add(listener);
 		} catch (Exception e) {
 
 		} finally {
+			rowLock.release();
 			streamListenerLock.release();
 		}
 	}

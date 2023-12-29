@@ -49,6 +49,8 @@ public class StreamSessionStats {
 	private long varSnapshotWriteCount = 0;
 	private long varSnapshotWriteQueue = 0;
 	private long varSnapshotWriteSecond = 0;
+	private long varSnapshotFirstCaptureTime = 0;
+	private long varSnapshotLastCaptureTime = 0;
 	
 	private List<StreamSessionNodeBean> nodes = new ArrayList<StreamSessionNodeBean>();
 	
@@ -307,6 +309,28 @@ public class StreamSessionStats {
 	public void setVarSnapshotWriteSecond(long varSnapshotWriteSecond) {
 		this.varSnapshotWriteSecond = varSnapshotWriteSecond;
 	}
+
+
+	public long getVarSnapshotFirstCaptureTime() {
+		return varSnapshotFirstCaptureTime;
+	}
+
+
+	public void setVarSnapshotFirstCaptureTime(long varSnapshotFirstCaptureTime) {
+		this.varSnapshotFirstCaptureTime = varSnapshotFirstCaptureTime;
+	}
+
+
+	public long getVarSnapshotLastCaptureTime() {
+		return varSnapshotLastCaptureTime;
+	}
+
+
+	public void setVarSnapshotLastCaptureTime(long varSnapshotLastCaptureTime) {
+		this.varSnapshotLastCaptureTime = varSnapshotLastCaptureTime;
+	}
+	
+	
 	
 	
 	

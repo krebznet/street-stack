@@ -12,7 +12,7 @@ import com.dunkware.common.util.executor.DExecutor;
 @Service
 public class ExecutorService {
 	
-	 @Value("${runtime.executor.pool.size:10}")
+	 @Value("${runtime.executor.pool.size:20}")
 	 private int coreSize; 
 	 
 	 @Value("${runtime.executor.task.timeout:600}")
@@ -23,7 +23,7 @@ public class ExecutorService {
 	
 	@PostConstruct
 	private void init() { 
-		executor = new DExecutor(coreSize,timeout,TimeUnit.SECONDS);
+		executor = new DExecutor(30,30,TimeUnit.SECONDS);
 	}
 	
 	public void execute(Runnable runnable) { 

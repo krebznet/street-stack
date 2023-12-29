@@ -271,6 +271,8 @@ public class StreamSessionNodeImpl implements StreamSessionNode, DunkNetChannelH
 		bean.setVarSnapshotQueue(stats.getVarSnapshotQueue());
 		bean.setVarSnapshotSecondCount(stats.getVarSnapshotSecondCount());
 		bean.setVarSnapshotSecondTime(stats.getVarSnapshotSecondTime());
+		bean.setVarSnapshotLastCaptureTime(stats.getVarSnapshotLastCaptureTime());
+		bean.setVarSnapshotFirstCaptureTime(stats.getVarSnapshotFirstCaptureTime());
 		bean.notifyUpdate();
 		this.workerStats = stats;
 		

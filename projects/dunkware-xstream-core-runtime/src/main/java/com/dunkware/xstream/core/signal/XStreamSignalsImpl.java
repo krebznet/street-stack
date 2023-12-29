@@ -53,9 +53,9 @@ public class XStreamSignalsImpl implements XStreamSignals  {
 		
 		
 		
-		for (XStreamSignalType signalType : stream.getInput().getSignalTypes()) {
-			handleSignalStart(signalType);
-		}
+	//	for (XStreamSignalType signalType : stream.getInput().getSignalTypes()) {
+		//	handleSignalStart(signalType);
+		//}
 	}
 	
 	
