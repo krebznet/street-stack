@@ -6,7 +6,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import com.dunkware.xstream.model.entity.EntityVarSnapshot;
+import com.dunkware.xstream.model.snapshot.SnapshotVariable;
 import com.google.common.util.concurrent.AtomicDouble;
 
 public class EntityVarSnapshotFactory {
@@ -18,16 +18,16 @@ public class EntityVarSnapshotFactory {
 		in.setStartTime(LocalDateTime.of(2000, 1, 1, 9, 30, 0));
 		in.setTimeRange(60);
 		in.setVarCount(1);
-		List<EntityVarSnapshot> snapshots = createSnapshots(in);
-		for (EntityVarSnapshot entityVarSnapshot : snapshots) {
+		List<SnapshotVariable> snapshots = createSnapshots(in);
+		for (SnapshotVariable entityVarSnapshot : snapshots) {
 			System.out.println(entityVarSnapshot.toString());
 		}
 	}
 	
 	
 
-	public static List<EntityVarSnapshot> createSnapshots(EntityVarSnapshotFactoryInput input) { 
-		List<EntityVarSnapshot>	 results = new ArrayList<EntityVarSnapshot>();
+	public static List<SnapshotVariable> createSnapshots(EntityVarSnapshotFactoryInput input) { 
+		List<SnapshotVariable>	 results = new ArrayList<SnapshotVariable>();
 		int durationCount = 0;
 		AtomicDouble varValue = new AtomicDouble(0);
 		while(durationCount < input.getTimeRange()) {
@@ -35,10 +35,11 @@ public class EntityVarSnapshotFactory {
 			varValue.addAndGet(1.5);
 			LocalDateTime snapshotDateTime = input.getStartTime().plusSeconds(durationCount);
 			while(varCount < input.getVarCount()) { 
-				EntityVarSnapshot snapshot = new EntityVarSnapshot();
-				snapshot.setDateTime(snapshotDateTime);
-				snapshot.setId(varCount);
-				snapshot.setIdent("IDENT" + varCount);
+				SnapshotVariable snapshot = new SnapshotVariable();
+				snapshot.setTimestamp(durationCount);
+				snapshot.setVar(varCount);
+				snapshot.setStream(1);
+				snapshot.setEntity(durationCount);
 				snapshot.setValue(varValue.get());
 				Map<String,String> vars = new HashMap<String,String>();
 				

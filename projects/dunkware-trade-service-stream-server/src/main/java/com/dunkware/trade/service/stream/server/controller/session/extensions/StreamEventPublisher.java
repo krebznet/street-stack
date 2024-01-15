@@ -40,6 +40,8 @@ public class StreamEventPublisher implements StreamSessionExtension {
 		extType.setKafkaIdentifier(node.getNodeId());
 		extType.setNode(node.getNodeId());
 		node.getStreamBundle().getExtensions().add(extType);
+		
+		// 
 	}
 
 	@Override

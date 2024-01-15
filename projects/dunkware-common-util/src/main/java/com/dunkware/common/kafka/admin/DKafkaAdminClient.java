@@ -44,6 +44,7 @@ public class DKafkaAdminClient {
 		try {
 
 			client = AdminClient.create(conf);
+			Thread.sleep(500);
 		} catch (Exception e) {
 			throw new DKafkaException("Exception Connection to AdminClient using brokers " + brokers + e.toString(), e);
 		}

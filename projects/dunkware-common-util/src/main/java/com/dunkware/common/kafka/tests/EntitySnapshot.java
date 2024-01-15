@@ -1,12 +1,12 @@
 package com.dunkware.common.kafka.tests;
 
-import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.Map;
 
 public class EntitySnapshot {
 	
-	private LocalDateTime timestamp;
+	private int streamId; 
+	private long timestamp;
 	private int entityId; 
 	private Map<Integer,Object> vars = new HashMap<Integer,Object>();
 	
@@ -22,12 +22,20 @@ public class EntitySnapshot {
 	public void setVars(Map<Integer, Object> vars) {
 		this.vars = vars;
 	}
-	public LocalDateTime getTimestamp() {
+	public int getStreamId() {
+		return streamId;
+	}
+	public void setStreamId(int streamId) {
+		this.streamId = streamId;
+	}
+	public long getTimestamp() {
 		return timestamp;
 	}
-	public void setTimestamp(LocalDateTime timestamp) {
+	public void setTimestamp(long timestamp) {
 		this.timestamp = timestamp;
 	}
+	
+	
 	
 	
 	

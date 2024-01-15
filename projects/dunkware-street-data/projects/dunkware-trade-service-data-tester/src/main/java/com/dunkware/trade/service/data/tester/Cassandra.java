@@ -14,6 +14,7 @@ import com.datastax.driver.core.NettyOptions;
 import com.datastax.driver.core.Session;
 import com.datastax.driver.core.policies.AddressTranslator;
 import com.datastax.driver.core.schemabuilder.SchemaBuilder;
+import com.datastax.oss.driver.api.core.CqlSession;
 
 
 
@@ -59,7 +60,7 @@ public class Cassandra {
 	            cluster = Cluster.builder()
 	            		.addContactPointsWithPorts(sockaddr)
 	            		.withCredentials("cassandra", "FjqO0vMuGUSr")
-	                  //	  .withAddressTranslator(new MyAddressTranslator())
+	                  	  .withAddressTranslator(new MyAddressTranslator())
 	                    .withNettyOptions(NettyOptions.DEFAULT_INSTANCE)
 	                    .build();
 	            
@@ -67,7 +68,9 @@ public class Cassandra {
 	            System.out.println(cluster.isClosed());
 	            
 	            Session session = cluster.connect();
-	            StringBuilder sb = new StringBuilder("CREATE KEYSPACE IF NOT EXISTS ").append("streamstats").append(" WITH replication = {").append("'class':'").append("SimpleStrategy").append("','replication_factor':").append(1).append("};");
+	            System.out.println(session.getClass().getName());
+	            
+	            StringBuilder sb = new StringBuilder("CREATE KEYSPACE IF NOT EXISTS ").append("cool").append(" WITH replication = {").append("'class':'").append("SimpleStrategy").append("','replication_factor':").append(1).append("};");
 
 	            final String query = sb.toString();
 
@@ -82,6 +85,8 @@ public class Cassandra {
 	            
 	            System.out.println("lol");
 	            
+	            DataType.bigint();
+	            //SchemaBuilder.createTable("dd").add
 
 	            // The Session is what you use to execute queries. Likewise, it is thread-safe and should be reused.
 	         //   Session session = cluster.connect();

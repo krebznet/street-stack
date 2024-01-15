@@ -5,9 +5,11 @@ import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 import java.util.Vector;
 import java.util.concurrent.Semaphore;
 import java.util.concurrent.TimeUnit;
+import java.util.zip.ZipOutputStream;
 
 import org.slf4j.Logger;
 import org.slf4j.Marker;
@@ -25,6 +27,7 @@ import com.dunkware.common.util.dtime.DZonedClockUpdater;
 import com.dunkware.common.util.dtime.DZonedDateTime;
 import com.dunkware.common.util.events.DEventNode;
 import com.dunkware.common.util.events.anot.ADEventMethod;
+import com.dunkware.common.util.helpers.DAnotHelper;
 import com.dunkware.common.util.json.DJson;
 import com.dunkware.common.util.observable.ObservableBeanListConnector;
 import com.dunkware.common.util.time.DunkTime;
@@ -39,6 +42,7 @@ import com.dunkware.trade.service.stream.json.controller.spec.StreamControllerSt
 import com.dunkware.trade.service.stream.json.controller.spec.StreamState;
 import com.dunkware.trade.service.stream.server.blueprint.StreamBlueprint;
 import com.dunkware.trade.service.stream.server.blueprint.StreamBlueprintService;
+import com.dunkware.trade.service.stream.server.controller.anot.AStreamControllerExt;
 import com.dunkware.trade.service.stream.server.controller.session.StreamSession;
 import com.dunkware.trade.service.stream.server.controller.session.StreamSessionException;
 import com.dunkware.trade.service.stream.server.controller.session.StreamSessionFactory;
@@ -137,6 +141,7 @@ public class StreamController {
 	
 	private ObservableElementList<StreamSessionNodeBean> sessionNodeBeans = null;
 
+	private List<StreamControllerExt> extensions = new ArrayList<StreamControllerExt>();
 	
 	
 	public StreamController() throws Exception {
@@ -201,6 +206,27 @@ public class StreamController {
 			stats.setStreamException("Exception Building XScript Bundle " + e.toString());
 			throw new Exception("Exception parsing stream version script bundle from entity " + e.toString());
 		}
+		
+		// create extensions 
+		Set<Class<?>> extClasses = DAnotHelper.getClassesAnnotedWith(AStreamControllerExt.class); 
+		for (Class<?> class1 : extClasses) {
+			try {
+				StreamControllerExt ext = (StreamControllerExt)class1.newInstance();
+				ac.getAutowireCapableBeanFactory().autowireBean(ext);
+				extensions.add(ext);
+			} catch (Exception e) {
+				logger.error("exception creating extension class {} exception {}",class1.getName(),e.toString());
+			}
+		}
+		
+		for (StreamControllerExt ext : extensions) {
+			try {
+				ext.initialize(this);
+			} catch (Exception e) {
+				logger.error("exception init extenson {}, error {}",ext.getClass().getName(),e.toString());
+			}
+		}
+		
 		
 		if (config.isScheduleStreams()) {
 			schedule = new StreamSchedule();

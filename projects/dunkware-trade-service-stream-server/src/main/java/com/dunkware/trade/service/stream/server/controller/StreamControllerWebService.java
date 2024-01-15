@@ -43,7 +43,6 @@ import com.dunkware.trade.service.stream.resources.StreamResource;
 import com.dunkware.trade.service.stream.resources.VariableResource;
 import com.dunkware.trade.service.stream.server.tick.StreamTickService;
 import com.dunkware.trade.tick.model.ticker.TradeTickerSpec;
-import com.dunkware.xstream.xScript.VarType;
 
 
 @RestController
@@ -213,30 +212,7 @@ public class StreamControllerWebService {
 		
 	}
 	
-	@GetMapping(path = "/stream/spec/vars")
-	public @ResponseBody() List<VariableResource> getVarResources(@RequestParam() String streamIdent) { 
-		List<VariableResource> mock = new ArrayList<VariableResource>();
-		StreamController stream = null;
-		try {
-			stream = service.getStreamByName(streamIdent);
-		} catch (Exception e) {
-			throw new ResponseStatusException(
-			           HttpStatus.BAD_REQUEST, "Stream " + streamIdent + " not found " 	+ e.toString());
-			
-		}
-		
-		for (VarType type : stream.getScriptProject().getStreamVars()) {
-			VariableResource var = new VariableResource(); 
-			var.setId(type.getCode());
-			var.setIdent(type.getName());
-			var.setName(type.getName());
-			mock.add(var);
-			
-		}
-		
-		return mock; 
-	}
-	
+
 
 	@GetMapping(path = "/stream/controller/specs")
 	public @ResponseBody GetStreamSpecsResp getStreamSpecs() { 

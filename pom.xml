@@ -73,6 +73,7 @@
       <module>projects/dunkware-trade-service-stream-json</module>
       <module>projects/dunkware-trade-service-stream-server</module>
 			<module>projects/dunkware-trade-service-stream-worker</module>
+			<module>projects/dunkware-trade-service-stream-data</module>
 			<module>projects/dunkware-trade-service-stream-cluster</module>
       <module>projects/dunkware-trade-service-web-server</module>
 			<module>projects/dunkware-trade-service-web-mock</module>

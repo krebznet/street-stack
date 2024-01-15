@@ -19,6 +19,7 @@ import org.slf4j.Marker;
 import org.slf4j.MarkerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import com.dunkware.common.util.helpers.DNumberHelper;
 import com.dunkware.common.util.stopwatch.DStopWatch;
 import com.dunkware.common.util.time.DunkTime;
 import com.dunkware.spring.cluster.DunkNet;
@@ -34,11 +35,9 @@ import com.dunkware.xstream.api.XStreamSignal;
 import com.dunkware.xstream.api.XStreamSignalListener;
 
 import redis.clients.jedis.DefaultJedisClientConfig;
-import redis.clients.jedis.HostAndPort;
 import redis.clients.jedis.JedisClientConfig;
 import redis.clients.jedis.JedisPooled;
 import redis.clients.jedis.Pipeline;
-import redis.clients.jedis.PipelineBase;
 import redis.clients.jedis.UnifiedJedis;
 
 @AStreamWorkerExtension
@@ -49,12 +48,13 @@ public class StreamPersisterExt implements StreamWorkerExtension, XStreamSignalL
 	@Autowired
 	private DunkNet dunkNet;
 	
-	public static final int SNAPSHOT_WRITER_COUNT = 4;
+	public static final int SNAPSHOT_WRITER_COUNT = 5;
 	
 	private Logger logger = LoggerFactory.getLogger(getClass());
 	private Marker marker = MarkerFactory.getMarker("VarSnapshotInsert");
 	private Marker entityVarCollectorCreate = MarkerFactory.getMarker("EntityVarCollectorCreate");
 	private Marker writerDisposingQueueSize = MarkerFactory.getMarker("VarSnapshotDisposeQueueSize");
+	private Marker writerSyncTime = MarkerFactory.getMarker("SnapshotWriterSyncTime");
 	private Marker snapshotWriter = MarkerFactory.getMarker("VarSnapshotWriter");
 	private Marker volumeVarCache = MarkerFactory.getMarker("VolumeVarCache");
 	private Marker tsAddMaker = MarkerFactory.getMarker("tsAdd");
@@ -90,8 +90,8 @@ public class StreamPersisterExt implements StreamWorkerExtension, XStreamSignalL
 		try {
 			worker.getChannel().addExtension(this);
 			String redisHost = worker.getStartReq().getStreamProperties().get("redis.host");
-			Integer redisPort = Integer.valueOf(worker.getStartReq().getStreamProperties().get("redis.port"));
-			jedis = new JedisPooled(redisHost, redisPort);
+			Integer redisPort = 32595;
+		jedis = new JedisPooled(redisHost, redisPort);
 		
 		} catch (Exception e) {
 			throw new Exception("Stream Persister Failed connection to jedis " + e.toString());
@@ -190,7 +190,7 @@ public class StreamPersisterExt implements StreamWorkerExtension, XStreamSignalL
 			
 				XStreamEntity entity;
 				Map<Integer,String> varSnapshotKeys = new HashMap<Integer,String>();
-				 
+				Map<Integer,Number> lastValues = new HashMap<Integer,Number>();
 				UnifiedJedis unified = null; 
 				
 				
@@ -227,11 +227,7 @@ public class StreamPersisterExt implements StreamWorkerExtension, XStreamSignalL
 					
 						
 						long timestamp = DunkTime.toMilliseconds(stream.getClock().getLocalDateTime());
-						if(logger.isInfoEnabled()) { 
-							logger.info(CollectorTimeStamp, "{}",timestamp);
-						}
 						
-					
 							List<XStreamEntityVar> numericVars = entity.getNumericVars();
 							for (XStreamEntityVar xStreamEntityVar : numericVars) {
 								// validate the key exists
@@ -242,85 +238,37 @@ public class StreamPersisterExt implements StreamWorkerExtension, XStreamSignalL
 									continue;
 								}
 								
-									if(xStreamEntityVar.getSize() > 0) {
-										VarSnapshotInsert in = new VarSnapshotInsert();
-										in.entity = entity.getIdentifier();
-										in.var = xStreamEntityVar.getVarType().getCode();
-										in.value = xStreamEntityVar.getNumber(0).doubleValue();
-										in.milliseconds = timestamp;
-										in.key = varSnapshotKey;
-								     	varSnapshotInsertQueue.add(in);		
-									}
-								
-								}
-						
 									
-				}
-			
-			
-			
-		}
-	
-	
-	/**
-	 * Runnable that will every 1 second go through all variables
-	 * for all entities, create the time series key if not exists 
-	 * then get all numeric vars for each entity, match them to 
-	 * the last set of snapshots and filter out non-changed vars 
-	 * then create a VarSnapshotInsert object and push it to the 
-	 * write queue. 
-	 * @author Duncan Krebs 
-	 *
-	 */
-	public class VarSnapshotolector implements Runnable {
-		
-		
-		
-				public void run() { 
-					
-						
-						long timestamp = DunkTime.toMilliseconds(stream.getClock().getLocalDateTime());
-						if(logger.isInfoEnabled()) { 
-							logger.info(CollectorTimeStamp, "{}",timestamp);
-						}
-						
-						for (XStreamEntity entity : stream.getRows()) {
-							List<XStreamEntityVar> numericVars = entity.getNumericVars();
-							for (XStreamEntityVar xStreamEntityVar : numericVars) {
-								// validate the key exists
-							
-								String varSnapshotKey = StreamPersistHelper.getVarSnapshotKey(xStreamEntityVar,stream);
-								if(jedis.exists(varSnapshotKey) == false) { 
-									try {
-										StreamPersistHelper.createVarSnapshotKey(xStreamEntityVar, stream, jedis);
-									} catch (Exception e) {
-										logger.error("Exception Creating Var Serries Key " + e.toString());
-										continue;
-									}
-								}
-								
-								
 									if(xStreamEntityVar.getSize() > 0) {
-										VarSnapshotInsert in = new VarSnapshotInsert();
-										in.entity = entity.getIdentifier();
-										in.var = xStreamEntityVar.getVarType().getCode();
-										in.value = xStreamEntityVar.getNumber(0).doubleValue();
-										in.milliseconds = timestamp;
-										in.key = varSnapshotKey;
-								     	varSnapshotInsertQueue.add(in);		
-								     	if(firstVarCapture == 0) { 
-											firstVarCapture = in.milliseconds;
+										
+										Number lastValue = lastValues.get(xStreamEntityVar.getVarType().getCode());
+										Number thisValue = xStreamEntityVar.getNumber(0);
+										if(lastValue != null) { 
+											if(DNumberHelper.compare(thisValue, lastValue) != 0) { 
+												VarSnapshotInsert in = new VarSnapshotInsert();
+												in.entity = entity.getIdentifier();
+												in.var = xStreamEntityVar.getVarType().getCode();
+												in.value = xStreamEntityVar.getNumber(0).doubleValue();
+												in.milliseconds = timestamp;
+												in.key = varSnapshotKey;
+										     	varSnapshotInsertQueue.add(in);
+												
+											}
+										} else { 
+											VarSnapshotInsert in = new VarSnapshotInsert();
+											in.entity = entity.getIdentifier();
+											in.var = xStreamEntityVar.getVarType().getCode();
+											in.value = xStreamEntityVar.getNumber(0).doubleValue();
+											in.milliseconds = timestamp;
+											in.key = varSnapshotKey;
+									     	varSnapshotInsertQueue.add(in);
 										}
-								     	lastVarCapture = in.milliseconds;
-									
+										lastValues.put(xStreamEntityVar.getVarType().getCode(), thisValue);	
 									}
+									
 								
 								}
-							}
-							
-
-
-					
+						
 									
 				}
 			
@@ -328,18 +276,17 @@ public class StreamPersisterExt implements StreamWorkerExtension, XStreamSignalL
 			
 		}
 	
+	
 
-	
-	
 	public class VarSnapshotWriter extends Thread { 
 		
 		AtomicLong inserts = new AtomicLong(0);
 		JedisClientConfig config = DefaultJedisClientConfig.builder().socketTimeoutMillis(20000).timeoutMillis(200000).build();
-		UnifiedJedis unified;
+		JedisPooled pooled = null;
 		
 		public VarSnapshotWriter() throws Exception { 
 			try {
-				unified = new UnifiedJedis(new HostAndPort("testrock1.dunkware.net", 31673), config);				
+				pooled = new JedisPooled("testrock1.dunkware.net",32595);		
 			} catch (Exception e) {
 				throw e;
 			}
@@ -351,10 +298,9 @@ public class StreamPersisterExt implements StreamWorkerExtension, XStreamSignalL
 			
 			while(!interrupted()) {
 			int pendingSyncCount = 0; 
-			PipelineBase pipeline = unified.pipelined();
+			Pipeline pipeline = pooled.pipelined();
+			int nullCount = 0;
 			while(true) { 
-				
-				
 				VarSnapshotInsert insert = null;
 				try {
 					insert = varSnapshotInsertQueue.poll(250,TimeUnit.MILLISECONDS);
@@ -363,31 +309,32 @@ public class StreamPersisterExt implements StreamWorkerExtension, XStreamSignalL
 							logger.trace(writerDisposingQueueSize, "Disposed Invoked Write Queu Size is {}",varSnapshotInsertQueue.size());
 						}
 					}
-					if(insert == null) { 
+					if(insert == null) {
+						nullCount = 0;
 						if(pendingSyncCount > 0) { 
 							try {
 								pipeline.sync();
+								pipeline.close();
+								pipeline = pooled.pipelined();
+								
 								snapshotWriteCount.addAndGet(pendingSyncCount);
+								pendingSyncCount = 0;
 							} catch (Exception e) {
-									// todo;
+									logger.error(marker, "what the fuck null snapshot pending write error " + e.toString());
 							}
 							pendingSyncCount = 0;
 						}
 						if(disposing.get() == true) { 
 							returnedVarSnapshotWriers.incrementAndGet();
 							pipeline.close();
-							unified.close();
+							pooled.close();
 							return;
 						}
 						continue;
 					}
 				
 					inserts.incrementAndGet();
-					if(insert.var == 3) { 
-						if(logger.isTraceEnabled()) { 
-							logger.trace(volumeVarCache, "value {} timestamp {} key{} ",insert.value,insert.milliseconds,insert.key);
-						}
-					}
+					
 					pipeline.tsAdd(insert.key, insert.milliseconds,insert.value);
 					
 					if(logger.isTraceEnabled()) { 
@@ -401,20 +348,23 @@ public class StreamPersisterExt implements StreamWorkerExtension, XStreamSignalL
 						//logger.trace("{}:{}",first,last);
 					}
 					pendingSyncCount++;
-					if(pendingSyncCount > 250) { 
+					if(pendingSyncCount > 1000) { 
 						try {
-
+							Long startTime = System.currentTimeMillis();
 							pipeline.sync();
-							pipeline = unified.pipelined();
-							snapshotWriteCount.addAndGet(250);
+							Long syncTime = System.currentTimeMillis() - startTime;
+							logger.info(writerSyncTime, "Sync Time " + syncTime);
+							
+							pipeline.close();
+							pipeline = pooled.pipelined();
+							snapshotWriteCount.addAndGet(pendingSyncCount);
 							if(firstVarCapture == 0) { 
 								firstVarCapture =  insert.milliseconds;
 							}
 							lastVarCapture = insert.milliseconds;
 							pendingSyncCount = 0;	
 						} catch (Exception e) {
-							unified = new UnifiedJedis(new HostAndPort("testrock1.dunkware.net", 31673), config);				
-							pipeline = unified.pipelined();
+							pipeline = pooled.pipelined();
 							logger.error(snapshotWriter, "Exception syncing pipeline " + e.toString(),e);
 						}
 						
@@ -423,7 +373,7 @@ public class StreamPersisterExt implements StreamWorkerExtension, XStreamSignalL
 				} catch(InterruptedException e) {
 						logger.error("VarSnapshot Thread Interrupted don't like that");
 						pipeline.close();
-						unified.close();
+						pooled.close();
 				}
 				
 			}

@@ -110,7 +110,13 @@ public class DKafkaByteProducer {
 		public void onCompletion(RecordMetadata arg0, Exception arg1) {
 			if (arg1 != null)
 				callbackCount.incrementAndGet();
+			if(arg1 != null) { 
+				logger.error("Exception send ident {} callback {} ",identifier, arg1.toString(),arg1);
+			}
+			
+		
 		}
+		
 
 	}
 	

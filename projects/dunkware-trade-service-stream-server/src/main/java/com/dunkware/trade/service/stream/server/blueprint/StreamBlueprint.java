@@ -76,7 +76,12 @@ public class StreamBlueprint {
 			throw new Exception("Could not load var metadata registry exception " + e.toString());
 		}
 		
-		
+		// MetaStream 
+			// StreamDay
+				// SnapshotEntityCapture
+				// 
+				// DayEntityVar
+				// DatSu
 		
 		signalBeans = new ObservableElementList<StreamBlueprintSignalBean>(
 				GlazedLists.threadSafeList(new BasicEventList<StreamBlueprintSignalBean>()),

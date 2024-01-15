@@ -270,21 +270,9 @@ public class XStreamRowImpl implements XStreamEntity, XStreamEntityVarListener {
 	@Override
 	public Map<Integer, Number> numericVarSnapshot() {
 		Map<Integer,Number> values = new HashMap<Integer,Number>();
-		for (String key : vars.keySet()) {
-			XStreamEntityVar var = vars.get(key);
-			if(var.isNumeric()) { 
-				
-				if(var.getSize() > 0) { 
-					if(var.getVarType().getCode() != 3) { 
-						continue;
-					}
-					values.put(var.getVarType().getCode(), var.getNumber(0));
-					if(var.getVarType().getCode() == 3) { 
-						if(logger.isTraceEnabled()) { 
-							logger.trace(volumeUpdateMarker, "{}", var.getNumber(0));
-						}
-					}
-				}
+		for (XStreamEntityVar var : numericVars) {
+			if(var.getSize() > 0) { 
+				values.put(var.getVarType().getCode(), var.getNumber(0));
 			}
 		}
 		return values;

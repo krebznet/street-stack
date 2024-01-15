@@ -1,5 +1,6 @@
 package com.dunkware.common.util.time;
 
+import java.awt.Dimension;
 import java.sql.Timestamp;
 import java.time.Instant;
 import java.time.LocalDate;
@@ -16,6 +17,8 @@ import java.util.Date;
 import java.util.TimeZone;
 import java.util.concurrent.TimeUnit;
 
+import javax.swing.plaf.synth.SynthOptionPaneUI;
+
 import com.dunkware.common.util.dtime.DTimeZone;
 
 public class DunkTime {
@@ -27,8 +30,19 @@ public class DunkTime {
     public static final String ISO_FORMAT = "yyyy-MM-dd'T'HH:mm:ssZ";
     public static final String YYMMDDHHMMSS =  "YYMMddHHmmss";
     public static void main(String[] args) {
+    	
+    	
+    	Date da = new Date(1705071455000L);
+    	System.out.println(da.toGMTString());
+    	System.out.println(DunkTime.toLocalDateTime(1705071455000L).toString());
 		
+    	DunkTimeDuration d = DunkTime.dayDuration(DTimeZone.NewYork);
+    	System.out.println(d.getStartTimestamp());
+    	System.out.println(d.getStopTimestamp());
+    	System.out.println(d.getStopTimestamp() - d.getStartTimestamp());
+    	if(1 == 1) return;
     	long fuck = DunkTime.toMilliseconds(LocalDateTime.now());
+    	System.out.println(fuck);
     	long fuckMe = fuck;
     	long poop = 1703568596000L;
     	LocalDateTime test = DunkTime.toLocalDateTime(new Date(poop));
@@ -73,6 +87,14 @@ public class DunkTime {
 	}
     
     
+    public static DunkTimeDuration dayDuration(DTimeZone timeZone) {
+    	LocalDateTime reference = LocalDateTime.now(DTimeZone.toZoneId(timeZone));
+    	LocalDateTime start = LocalDateTime.of(reference.getYear(),reference.getMonth(),reference.getDayOfMonth(),0,0);
+    	LocalDateTime stop = LocalDateTime.of(reference.getYear(),reference.getMonth(),reference.getDayOfMonth(),23,59);
+    	return DunkTimeDuration.build(start, stop);
+    	
+    }
+    
     public static void main2(String[] args) {
     	LocalDateTime d = LocalDateTime.now();
     	System.out.println(DunkTime.format(d, YYMMDDHHMMSS));
@@ -102,6 +124,39 @@ public class DunkTime {
 	}
     
     
+    
+    public static LocalTime dayStartTime() { 
+    	return LocalTime.of(0, 0,0,0);
+    	
+    }
+    
+    public static LocalTime dayTimeEnd() {
+    	return LocalTime.of(23, 59,59);
+    }
+    
+    
+    public static LocalDateTime toLocalDateTime(long millisconds) { 
+    	LocalDateTime result = toLocalDateTime(new Date(millisconds));
+    	return result;
+    	
+    }
+    
+    public static String toLocaDateTimeString(long milliseconds) { 
+    	LocalDateTime dt = toLocalDateTime(milliseconds);
+    	return DunkTime.format(dt, DunkTime.YYMMDDHHMMSS);
+    }
+    
+    public static long getDayStartMilliseconds(LocalDate date) { 
+    	LocalDateTime dt = LocalDateTime.of(date.getYear(), date.getMonth(), date.getDayOfMonth(), 0, 0);
+    	return toMilliseconds(dt);
+    }
+    
+    
+    public static long getDayEndMilliseconds(LocalDate date) { 
+    	LocalDateTime dt = LocalDateTime.of(date.getYear(), date.getMonth(), date.getDayOfMonth(), 23, 59);
+    	return toMilliseconds(dt);
+    }
+     
     public static Date toDateWithOffset(LocalDateTime date, DTimeZone timeZone) { 
     	ZoneId zoneId = DTimeZone.toZoneId(timeZone);
     	Instant instant = Instant.from(date);
