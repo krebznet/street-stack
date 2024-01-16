@@ -4,10 +4,21 @@ import java.net.InetSocketAddress;
 import java.util.ArrayList;
 import java.util.Collection;
 
+import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
 import org.springframework.data.cassandra.config.AbstractCassandraConfiguration;
 import org.springframework.data.cassandra.config.CqlSessionFactoryBean;
+import org.springframework.data.cassandra.repository.config.EnableCassandraRepositories;
 
+import lombok.Getter;
+import lombok.Setter;
+
+@Configuration
+@EnableCassandraRepositories(basePackages = {"com.some.package"})
+@ConfigurationProperties(prefix = "spring.data.cassandra")
+@Getter
+@Setter
 public class CassandraConfig extends AbstractCassandraConfiguration {
 
 
