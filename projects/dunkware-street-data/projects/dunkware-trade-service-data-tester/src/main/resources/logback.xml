@@ -27,15 +27,12 @@
 	
 
 
-	<root level="INFO">
+	<root level="ERROR">
 
 		<appender-ref ref="CONSOLE" additivity="false" />
 	</root>
 
 
-	<logger name="com.dunkware.spring" level="DEBUG">
-		  <appender-ref ref="FLUENT" />
-		<appender-ref ref="CONSOLE" additivity="false"/>
-	</logger>
+	
 
 </configuration>

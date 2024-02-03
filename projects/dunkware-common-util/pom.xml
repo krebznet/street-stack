@@ -48,7 +48,7 @@
 			<version>4.15.0</version>
 		</dependency>
 
-		<dependency>
+ 	<dependency>
 			<groupId>com.datastax.oss</groupId>
 			<artifactId>java-driver-shaded-guava</artifactId>
 			<version>25.1-jre-graal-sub-1</version>

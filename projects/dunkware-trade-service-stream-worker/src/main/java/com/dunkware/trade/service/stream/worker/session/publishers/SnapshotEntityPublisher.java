@@ -28,8 +28,8 @@ import com.dunkware.xstream.model.snapshot.SnapshotHelper;
 import com.dunkware.xstream.model.snapshot.SnapshotValue;
 
 
-//@AStreamWorkerExtension
-public class SnapshotPublisher implements StreamWorkerExtension, XStreamSignalListener, XStreamListener {
+@AStreamWorkerExtension
+public class SnapshotEntityPublisher implements StreamWorkerExtension, XStreamSignalListener, XStreamListener {
 
 	private Logger logger = LoggerFactory.getLogger(getClass());
 	private Marker marker = MarkerFactory.getMarker("SnapshotProducer");
@@ -45,6 +45,9 @@ public class SnapshotPublisher implements StreamWorkerExtension, XStreamSignalLi
 	public void init(StreamWorker worker) throws Exception {
 		this.worker = worker;
 
+		String brokers = worker.getStreamDescriptor().getKafkaBrokers();
+		String topicName = "system_stream_snapshot_entity";
+		kafkaProducer = DKafkaByteProducer.newInstance(brokers,topicName,worker.getStartReq().getWorkerId());
 	}
 
 	@Override

@@ -24,65 +24,22 @@ import com.dunkware.common.util.dtime.DTimeZone;
 public class DunkTime {
 
 	public final static String YYYY_MM_DD = "yyyy-MM-dd";
-	public final static String YYYY_MM_DD_HH_MM_SS = "yyyy-MM-dd HH:mm:ss";
+	public	 final static String YYYY_MM_DD_HH_MM_SS = "yyyy-MM-dd HH:mm:ss";
 	public final static String HH_MMM_SS = "HH:mm:ss";
 	public static final String YYMMDD = "yyMMdd";
     public static final String ISO_FORMAT = "yyyy-MM-dd'T'HH:mm:ssZ";
     public static final String YYMMDDHHMMSS =  "YYMMddHHmmss";
+  
+    
+    
     public static void main(String[] args) {
     	
-    	
-    	Date da = new Date(1705071455000L);
-    	System.out.println(da.toGMTString());
-    	System.out.println(DunkTime.toLocalDateTime(1705071455000L).toString());
-		
-    	DunkTimeDuration d = DunkTime.dayDuration(DTimeZone.NewYork);
-    	System.out.println(d.getStartTimestamp());
-    	System.out.println(d.getStopTimestamp());
-    	System.out.println(d.getStopTimestamp() - d.getStartTimestamp());
-    	if(1 == 1) return;
-    	long fuck = DunkTime.toMilliseconds(LocalDateTime.now());
-    	System.out.println(fuck);
-    	long fuckMe = fuck;
-    	long poop = 1703568596000L;
-    	LocalDateTime test = DunkTime.toLocalDateTime(new Date(poop));
-    	System.out.println(DunkTime.format(test,DunkTime.YYMMDDHHMMSS));
-    	System.out.println(new Date(poop).toLocaleString());
-    	System.out.println(fuckMe);
-    	String fuckString = String.valueOf(fuck);
-    	System.out.println(fuckString);
-    	if(1 == 1)
-    		return;
-    	
     	LocalDateTime now = LocalDateTime.now();
-    	System.out.println(DunkTime.format(now, YYMMDDHHMMSS));
-    	if(1 == 1) {
-    		return;
-    	}
-    	
-		// 1970-01-01T00:00:00Z
-		// I think you have it right - we need to set the java.util.Date object 
-		
-		
-		// #1. we need to bet setting/getting java.util.Date objects 
-		// on the mongo documents. 
-		
-		// #2. Does date capture any timezone? // 1970-01-01T00:00:00Z
-		LocalDate easternLocalDate = LocalDate.now(DTimeZone.toZoneId(DTimeZone.NewYork));
-		LocalDate myTimeZoneLocalDate = LocalDate.now();
-		Instant instant = Instant.ofEpochMilli(myTimeZoneLocalDate.toEpochDay());
-		Date myDate = Date.from(instant);
-		
-		LocalDateTime ldt = LocalDateTime.now();
-		ZoneOffset offset = ZoneOffset.ofHours( -5 ); 
-		OffsetDateTime odt = ldt.atOffset( offset );
-		myDate = Date.from(odt.toInstant());
-		
-		// now when we save this in Mongo, does it capture the offset? 
-		
-		//System.out.println(myDate.toString());
-		
-		
+    	long milliseconds = 1705597059000L;
+    	LocalDateTime then = DunkTime.toLocalDateTime(milliseconds);
+    	System.out.println(DunkTime.toMilliseconds(then));
+    	System.out.println(DunkTime.format(then, DunkTime.YYYY_MM_DD_HH_MM_SS));
+    	System.out.println(DunkTime.format(then, DunkTime.YYYY_MM_DD_HH_MM_SS));
 		
 	}
     

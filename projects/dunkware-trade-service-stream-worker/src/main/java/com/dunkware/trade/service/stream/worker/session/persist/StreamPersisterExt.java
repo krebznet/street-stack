@@ -40,7 +40,7 @@ import redis.clients.jedis.JedisPooled;
 import redis.clients.jedis.Pipeline;
 import redis.clients.jedis.UnifiedJedis;
 
-@AStreamWorkerExtension
+//@AStreamWorkerExtension
 public class StreamPersisterExt implements StreamWorkerExtension, XStreamSignalListener, XStreamListener {
 
 	

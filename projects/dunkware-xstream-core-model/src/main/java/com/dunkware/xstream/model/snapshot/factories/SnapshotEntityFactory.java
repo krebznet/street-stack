@@ -52,7 +52,6 @@ public class SnapshotEntityFactory {
 				entity.setTimestamp(DunkTime.toMilliseconds(currentTime));
 				entity.setEntity(i);
 				i++;
-				System.out.println("entiy set id is " + i);
 				entity.setStream(streamId);
 				int x = 0;
 				while(x < varCount) { 

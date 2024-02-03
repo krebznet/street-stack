@@ -1,5 +1,7 @@
 package com.dunkware.xstream.model.snapshot;
 
+import java.time.LocalDateTime;
+
 public class SnapshotVariable {
 
 	private int stream; 
@@ -38,6 +40,8 @@ public class SnapshotVariable {
 	public void setValue(double value) {
 		this.value = value;
 	}
+	
+	
 	
 	
 	

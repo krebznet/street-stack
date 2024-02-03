@@ -35,6 +35,8 @@ import com.dunkware.trade.service.stream.json.worker.stream.StreamSessionWorkerS
 import com.dunkware.trade.service.stream.json.worker.stream.StreamSessionWorkerStopState;
 import com.dunkware.trade.service.stream.worker.session.anot.AStreamWorkerExtension;
 import com.dunkware.trade.service.stream.worker.session.persist.StreamPersisterExt;
+import com.dunkware.trade.service.stream.worker.session.publishers.SnapshotEntityPublisher;
+import com.dunkware.trade.service.stream.worker.session.publishers.SnapshotVarPublisher;
 import com.dunkware.trade.service.stream.worker.session.query.StreamWorkerEntityQueryBuilder;
 import com.dunkware.xstream.api.XStream;
 import com.dunkware.xstream.api.XStreamInput;
@@ -71,7 +73,8 @@ public class StreamWorker implements DunkNetChannelHandler {
 	private StreamSessionWorkerStatus status = StreamSessionWorkerStatus.Pending;
 	private StreamSessionWorkerStopState stopState = StreamSessionWorkerStopState.StopPending;
 	
-	private StreamPersisterExt persistExtension = null;
+//	private StreamPersisterExt persistExtension = null;
+	private SnapshotEntityPublisher snapshotEntityPublisher;
 
 	private Timer statTimer = null;
 
@@ -222,8 +225,8 @@ public class StreamWorker implements DunkNetChannelHandler {
 				StreamWorkerExtension ext = (StreamWorkerExtension) class1.newInstance();
 				ext.init(this);
 				workerExtensions.add(ext);
-				if(StreamPersisterExt.class.isInstance(ext)) { 
-					this.persistExtension = (StreamPersisterExt)ext;
+				if(SnapshotEntityPublisher.class.isInstance(ext)) { 
+					this.snapshotEntityPublisher = (SnapshotEntityPublisher)ext;
 				}
 			} catch (Exception e) {
 				logger.error(marker, "Exception init extension " + e.toString());
@@ -339,22 +342,12 @@ public class StreamWorker implements DunkNetChannelHandler {
 			stats.setTickCount(stream.getTickRouter().getTickCount());
 			stats.setSignalCount(stream.getSignals().getSignalCount());
 			stats.setLastDataTickTime(stream.getTickRouter().getLastDataTickTime());
-			if(persistExtension != null) { 
-				WorkerPersistStats pstts = persistExtension.getPersistStats();
-				stats.setVarSnapshotCount(pstts.getVarSnapshotCount());
-				stats.setVarSnapshotQueue(pstts.getVarSnapshotQueue());
-				stats.setVarSnapshotSecondTime(pstts.getVarSnapshotSecondTime());
-				stats.setVarSnapshotSecondCount(pstts.getVarSnapshotSecondCount());
-				stats.setVarSnapshotFirstCaptureTime(pstts.getVarSnapshotFirstCaptureTime());
-				stats.setVarSnapshotLastCaptureTime(pstts.getVarSnapshotLastCaptureTime());
+			if(snapshotEntityPublisher != null) { 
+				stats.setEntitySnapshotCount(snapshotEntityPublisher.getStats().getPublishCount());
 			} else { 
-				stats.setVarSnapshotCount(0);
-				stats.setVarSnapshotQueue(3);
-				stats.setVarSnapshotFirstCaptureTime(3);
-				stats.setVarSnapshotLastCaptureTime(4);
-				stats.setVarSnapshotSecondCount(3);
-				stats.setVarSnapshotSecondTime(3.3);
-			}
+				stats.setEntitySnapshotCount(-1);
+				
+		}
 			
 		} catch (Exception e) {
 			logger.error(marker, "Exception update stats " + e.toString());

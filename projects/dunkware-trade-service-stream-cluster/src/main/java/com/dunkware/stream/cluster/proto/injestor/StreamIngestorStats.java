@@ -1,4 +1,4 @@
-package com.dunkware.stream.cluster.proto.injest;
+package com.dunkware.stream.cluster.proto.injestor;
 
 public class StreamIngestorStats {
 	

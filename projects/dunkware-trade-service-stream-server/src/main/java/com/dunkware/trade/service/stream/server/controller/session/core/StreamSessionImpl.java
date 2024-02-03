@@ -313,9 +313,7 @@ public class StreamSessionImpl implements StreamSession {
 		AtomicInteger rowCount = new AtomicInteger(0);
 		AtomicInteger nodeIssueCount = new AtomicInteger(0);
 		AtomicInteger signalCount = new AtomicInteger(0);
-		AtomicLong varSnapshotWriteCount = new AtomicLong(0);
-		AtomicLong varSnapshotQueue = new AtomicLong(0);
-		AtomicLong varSnapshotSecondCount = new AtomicLong(0);
+		AtomicLong entitySnapshotPublishCount = new AtomicLong(0);
 
 		for (StreamSessionNode node : nodes.values()) {
 			StreamSessionNodeBean bean = node.getBean();
@@ -326,10 +324,7 @@ public class StreamSessionImpl implements StreamSession {
 			nodeIssueCount.addAndGet(bean.getIssueCount());
 			rowCount.addAndGet(bean.getEntityCount());
 			tickCount.addAndGet(bean.getTickCount());
-			varSnapshotQueue.addAndGet(bean.getVarSnapshotQueue());
-			varSnapshotWriteCount.addAndGet(bean.getVarSnapshotCount());
-			varSnapshotSecondCount.addAndGet(bean.getVarSnapshotSecondCount());
-			status.getNodes().add(node.getBean());
+			entitySnapshotPublishCount.addAndGet(node.getBean().getEntitySnapshotCount());
 		}
 		status.setSignalCount(signalCount.get());
 		status.setCompletedTasks(completedTasks.get());
@@ -339,9 +334,7 @@ public class StreamSessionImpl implements StreamSession {
 		status.setSignalCount(signalCount.get());
 		status.setPendingTasks(pendingTasks.get());
 		status.setNodeIssueCount((int)nodeIssueCount.get());
-		status.setVarSnapshotWriteCount(varSnapshotWriteCount.get());
-		status.setVarSnapshotWriteQueue(varSnapshotQueue.get());
-		status.setVarSnapshotWriteSecond(varSnapshotSecondCount.get());
+		status.setEntitySnapshotCount(entitySnapshotPublishCount.get());
 		return status;
 	}
 

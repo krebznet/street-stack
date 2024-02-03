@@ -34,6 +34,7 @@ public class CassandraConfig extends AbstractCassandraConfiguration {
         InetSocketAddress sockaddr = new InetSocketAddress("testrock1.dunkware.net", 31994);
         Collection<InetSocketAddress> adrs =  new ArrayList<InetSocketAddress>();
         adrs.add(sockaddr);
+        
         cassandraSession.setContactPoints(adrs);
         cassandraSession.setUsername("cassandra");
         cassandraSession.setPassword("FjqO0vMuGUSr");
