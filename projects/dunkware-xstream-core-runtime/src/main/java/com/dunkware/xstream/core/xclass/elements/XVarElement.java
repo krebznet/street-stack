@@ -30,7 +30,6 @@ public class XVarElement extends XObjectElementImpl {
 	@Override
 	public void dispose()  {
 		
-		
 	}
 
 	

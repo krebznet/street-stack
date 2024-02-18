@@ -207,11 +207,12 @@ public class StreamSessionImpl implements StreamSession {
 						+ nodeInput.getNode().getId() + " " + nodeInput.getWorkerId());
 			}
 			
+			
+			ac.getAutowireCapableBeanFactory().autowireBean(sessionNode);
+			sessionNode.start(nodeInput);
 			input.getController().getSessionNodeBeans().getReadWriteLock().writeLock().lock();
 			input.getController().getSessionNodeBeans().add(sessionNode.getBean());
 			input.getController().getSessionNodeBeans().getReadWriteLock().writeLock().unlock();
-			ac.getAutowireCapableBeanFactory().autowireBean(sessionNode);
-			sessionNode.start(nodeInput);
 			logger.info(marker, "Started {} Session Worker {} on node {}", getStream().getName(), workerId,
 					node.getId());
 			nodes.put(node.getId(), sessionNode);

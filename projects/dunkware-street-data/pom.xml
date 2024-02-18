@@ -56,9 +56,8 @@
  <module>projects/dunkware-trade-service-data-common</module>
   <module>projects/dunkware-trade-service-data-server</module>
   <module>projects/dunkware-trade-service-data-model</module>
-  <module>projects/dunkware-trade-service-data-tester</module>
-<module>projects/dunkware-trade-service-data-worker</module>
-<module>projects/dunkware-trade-service-data-dunknet</module>
+  <module>projects/dunkware-trade-service-data-node</module>
+
   </modules>
 	<build>
     <!-- To define the plugin version in your parent POM -->

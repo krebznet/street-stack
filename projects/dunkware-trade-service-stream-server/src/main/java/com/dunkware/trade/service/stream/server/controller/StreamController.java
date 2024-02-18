@@ -360,6 +360,9 @@ public class StreamController {
 	
 	private boolean canStart() { 
 		StreamState state = getState();
+		if(session != null) { 
+			setState(session.getState());;
+		}
 		if(state == StreamState.Running) {
 			return false;
 		}
@@ -521,12 +524,12 @@ public class StreamController {
 	public void sessionStarted(EStreamSessionStarted started) { 
 		for (StreamSessionNode streamSessionNodeBean : session.getNodes()) {
 			try {
-				sessionNodeBeans.getReadWriteLock().writeLock().lock();
-				sessionNodeBeans.add(streamSessionNodeBean.getBean());
+				//sessionNodeBeans.getReadWriteLock().writeLock().lock();
+				//sessionNodeBeans.add(streamSessionNodeBean.getBean());
 			} catch (Exception e) {
 				// TODO: handle exception
 			} finally {
-				sessionNodeBeans.getReadWriteLock().writeLock().unlock();
+			//	sessionNodeBeans.getReadWriteLock().writeLock().unlock();
 			}
 		}
 	}

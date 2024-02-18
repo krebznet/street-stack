@@ -5,6 +5,7 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
 import java.util.concurrent.LinkedBlockingQueue;
 import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.ScheduledFuture;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicLong;
 
@@ -122,6 +123,10 @@ public class DExecutor {
 		return false;
 	}
 
+	public ScheduledFuture<?> scheduleAtFixedRate(Runnable runnable, long initDelay, long time, TimeUnit unit) { 
+		return executor.scheduleAtFixedRate(runnable, initDelay, time, unit);
+	}
+	
 	private synchronized void executeWaitingTask() {
 		if (executor.isShutdown()) {
 			return;

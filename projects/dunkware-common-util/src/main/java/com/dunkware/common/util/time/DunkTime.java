@@ -1,6 +1,5 @@
 package com.dunkware.common.util.time;
 
-import java.awt.Dimension;
 import java.sql.Timestamp;
 import java.time.Instant;
 import java.time.LocalDate;
@@ -17,8 +16,6 @@ import java.util.Date;
 import java.util.TimeZone;
 import java.util.concurrent.TimeUnit;
 
-import javax.swing.plaf.synth.SynthOptionPaneUI;
-
 import com.dunkware.common.util.dtime.DTimeZone;
 
 public class DunkTime {
@@ -34,13 +31,14 @@ public class DunkTime {
     
     public static void main(String[] args) {
     	
-    	LocalDateTime now = LocalDateTime.now();
-    	long milliseconds = 1705597059000L;
-    	LocalDateTime then = DunkTime.toLocalDateTime(milliseconds);
-    	System.out.println(DunkTime.toMilliseconds(then));
-    	System.out.println(DunkTime.format(then, DunkTime.YYYY_MM_DD_HH_MM_SS));
-    	System.out.println(DunkTime.format(then, DunkTime.YYYY_MM_DD_HH_MM_SS));
-		
+    	
+    	LocalDateTime fucker = LocalDateTime.of(2024,1,1,9,30,5);
+    	long milliseconds = DunkTime.toMilliseconds(fucker);
+    	
+    	LocalDateTime post = DunkTime.toLocalDateTime(milliseconds);
+    	System.out.println(DunkTime.format(fucker, DunkTime.YYYY_MM_DD_HH_MM_SS));
+    	System.out.println(DunkTime.format(post, DunkTime.YYYY_MM_DD_HH_MM_SS));
+    	
 	}
     
     

@@ -2,12 +2,11 @@ package com.dunkware.common.util.glazed;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.ScheduledFuture;
 import java.util.concurrent.Semaphore;
-import java.util.concurrent.atomic.AtomicInteger;
+import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicInteger;
 
-import org.reactivestreams.Subscriber;
-import org.reactivestreams.Subscription;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.slf4j.Marker;
@@ -16,14 +15,13 @@ import org.slf4j.MarkerFactory;
 import com.dunkware.common.util.datagrid.DataGrid;
 import com.dunkware.common.util.datagrid.DataGridUpdate;
 import com.dunkware.common.util.executor.DExecutor;
-import com.dunkware.common.util.json.DJson;
 import com.dunkware.common.util.uuid.DUUID;
 
 import ca.odell.glazedlists.ObservableElementList;
 import ca.odell.glazedlists.event.ListEvent;
 import ca.odell.glazedlists.event.ListEventListener;
 import reactor.core.publisher.Flux;
-import reactor.core.publisher.Sinks;
+import reactor.core.publisher.FluxSink;
 
 public class GlazedDataGrid implements ListEventListener<Object> {
 
@@ -33,40 +31,30 @@ public class GlazedDataGrid implements ListEventListener<Object> {
 	private Marker marker = MarkerFactory.getMarker("glazedgrid");
 	private List<DataGridUpdate> updates = new ArrayList<DataGridUpdate>();
 	private Semaphore updatesLock = new Semaphore(1);
-	private Sinks.Many<List<DataGridUpdate>> sink = Sinks.many().multicast().onBackpressureBuffer();
 	private Flux<List<DataGridUpdate>> flux;
+	private FluxSink<List<DataGridUpdate>> fluxSink;
 	private String id = DUUID.randomUUID(5);
 	private boolean running = false;
+	private boolean disposed = false;
 
 	private List<GlazedDataGridListener> listeners = new ArrayList<GlazedDataGridListener>();
 	private Semaphore listenerLock = new Semaphore(1);
 	
 	private AtomicInteger pingCounter = new AtomicInteger(0);
-
+	private DExecutor executor;
+	
+	private Flusher flusher;
 	public static GlazedDataGrid newInstance(ObservableElementList<?> list, DExecutor executor, String idMethod) {
 		return new GlazedDataGrid(list, executor, idMethod);
 	}
 
 	public GlazedDataGrid(ObservableElementList<?> list, DExecutor executor, String idMethod) {
 		this.list = list;
+		this.executor = executor;
 		this.dataGrid = DataGrid.newInstance(idMethod);
-		flux = sink.asFlux().doOnCancel(() -> {
-			
-			if (logger.isDebugEnabled()) {
-				logger.debug("Flux onCancel invoked " + id);
-			}
-
-			sink.tryEmitComplete();
-
-			try {
-				dispose();
-			} catch (Exception e) {
-				logger.error(marker, "Exception on DoCacnel dispose" + e.toString());
-			}
-			System.gc();
-
-		});
-
+		
+		flux = Flux.create(this::process);
+		
 		logger.debug(marker, "starting glazed data grid " + id);
 		;
 
@@ -96,6 +84,7 @@ public class GlazedDataGrid implements ListEventListener<Object> {
 
 				}
 			} catch (Exception e2) {
+				
 				// TODO: handle exception
 			} finally {
 				list.getReadWriteLock().readLock().unlock();
@@ -110,6 +99,18 @@ public class GlazedDataGrid implements ListEventListener<Object> {
 		}
 
 	}
+	
+	public Flux<List<DataGridUpdate>> getUpdates() { 
+		return flux;
+	}
+	
+	 private void process(final FluxSink<List<DataGridUpdate>> sink) {
+	    this.fluxSink = sink;
+	    sink.onCancel(() -> dispose());
+
+	    sink.onDispose(() -> dispose());
+	  }
+
 
 	public boolean isRunning() {
 		return running;
@@ -118,6 +119,8 @@ public class GlazedDataGrid implements ListEventListener<Object> {
 	public String getId() {
 		return id;
 	}
+	
+	
 
 	/**
 	 * Called from single thread service, what we need is a scheduler or runnable
@@ -147,58 +150,13 @@ public class GlazedDataGrid implements ListEventListener<Object> {
 				return;
 			}
 
-			sink.tryEmitNext(updates);
+			fluxSink.next(updates);
 			updates.clear();
 		} catch (Exception e) {
 			logger.error("exception emiting updates, should be disposed " + e.toString());
 		} finally {
 			updatesLock.release();
 		}
-	}
-
-	public Flux<List<DataGridUpdate>> getUpdates() {
-
-		flux.subscribe(new Subscriber<List<DataGridUpdate>>() {
-
-			private Subscription sub;
-
-			@Override
-			public void onSubscribe(Subscription s) {
-				this.sub = s;
-				sub.request(1);
-				;
-			}
-
-			@Override
-			public void onNext(List<DataGridUpdate> t) {
-				try {
-					logger.debug("on next " + DJson.serialize(t));
-					sub.request(1);
-				} catch (Exception e) {
-					e.printStackTrace(); // TODO: handle exception } sub.request(1);
-
-				}
-			}
-
-			@Override
-			public void onError(Throwable t) {
-
-				sub.cancel();
-
-			}
-
-			@Override
-			public void onComplete() {
-				sub.cancel();
-				if (logger.isDebugEnabled()) {
-					logger.debug("disposing mocked broker list");
-				} // list.dispose();
-
-			}
-		});
-
-		return flux;
-
 	}
 
 	public void start() {
@@ -209,27 +167,20 @@ public class GlazedDataGrid implements ListEventListener<Object> {
 			update.setId(-1);
 			addUpdate(update);
 		}
+		flusher = new Flusher();
+		flusher.start();
 		
-		Thread register = new Thread() {
-
-			public void run() {
-				try {
-					Thread.sleep(100);
-					GlazedDataGridService.get().register(GlazedDataGrid.this);
-
-				} catch (Exception e) {
-					// TODO: handle exception
-				}
-			}
-		};
-		register.start();
-
+		
 	}
 
 	public void dispose() {
+		if(disposed) { 
+			return;
+		}
 		Thread disposer = new Thread() { 
 		
 			public void run() { 
+				flusher.interrupt();
 				if(!running) { 
 					logger.error("calling dispose when not running");
 					return;
@@ -245,20 +196,19 @@ public class GlazedDataGrid implements ListEventListener<Object> {
 					}
 					
 				}
-				list.getReadWriteLock().writeLock().lock();
-				list.removeListEventListener(GlazedDataGrid.this);
-				list.getReadWriteLock().readLock();
-				GlazedDataGridService.get().unregister(GlazedDataGrid.this);
 				
+				list.removeListEventListener(GlazedDataGrid.this);
+	
 				dataGrid.dispose();
 
 				if (logger.isDebugEnabled()) {
 					logger.debug("Disposed {} ", id);
-				}				
+				}	
+				
 			}
 		};
 		disposer.start();
-		
+		disposed = true;
 		
 
 
@@ -436,6 +386,22 @@ public class GlazedDataGrid implements ListEventListener<Object> {
 			updatesLock.release();
 		}
 	}
+	
+	
+	private class Flusher extends Thread { 
+		
+		public void run() { 
+			while(!interrupted()) { 
+				try {
+					emitUpdates();
+					Thread.sleep(100);
+				} catch (Exception e) {
+					// TODO: handle exception
+				}
+			}
+		}
+	}
+	
 	
 	
 	

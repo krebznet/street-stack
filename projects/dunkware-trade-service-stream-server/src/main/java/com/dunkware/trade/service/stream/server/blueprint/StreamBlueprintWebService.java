@@ -31,7 +31,7 @@ public class StreamBlueprintWebService {
 	private StreamBlueprintService blueprintService; 
 	
 	// FUCK YOU ONE THAT WORKS 
-	// -H "Content-Type: application/stream+json"  GET  'http://localhost:80/stream/v1/blueprint/dash/signals?stream=us_equity'
+	// -H "Content-Type: text/event-stream"  GET  'http://localhost:6969/poop'
 	
 	
 	@Autowired

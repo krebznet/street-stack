@@ -33,6 +33,20 @@
 			<version>3.6.1</version> <!-- Replace with the latest version -->
 		</dependency>
 
+		<!-- https://mvnrepository.com/artifact/org.msgpack/jackson-dataformat-msgpack -->
+		<dependency>
+			<groupId>org.msgpack</groupId>
+			<artifactId>jackson-dataformat-msgpack</artifactId>
+			<version>0.9.8</version>
+		</dependency>
+<!-- https://mvnrepository.com/artifact/org.msgpack/msgpack-core -->
+<dependency>
+    <groupId>org.msgpack</groupId>
+    <artifactId>msgpack-core</artifactId>
+    <version>0.9.8</version>
+</dependency>
+
+
 
 
 
@@ -48,7 +62,7 @@
 			<version>4.15.0</version>
 		</dependency>
 
- 	<dependency>
+		<dependency>
 			<groupId>com.datastax.oss</groupId>
 			<artifactId>java-driver-shaded-guava</artifactId>
 			<version>25.1-jre-graal-sub-1</version>
