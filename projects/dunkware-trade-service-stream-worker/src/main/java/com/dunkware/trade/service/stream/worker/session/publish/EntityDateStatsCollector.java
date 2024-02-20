@@ -1,4 +1,4 @@
-package com.dunkware.trade.service.stream.worker.session.stats;
+package com.dunkware.trade.service.stream.worker.session.publish;
 
 import java.time.LocalDate;
 import java.util.ArrayList;

@@ -24,7 +24,6 @@ public interface StreamSessionNode {
 	
 	DunkNetChannel getChannel();
 	
-	
 	String getNodeId();
 	
 	int getNumericId();
@@ -71,6 +70,7 @@ public interface StreamSessionNode {
 	
 	public StreamSessionNodeStopState getStopState();
 	
+	public List<Integer> getSessionEntities();
 	
 	
 	

@@ -99,6 +99,10 @@ public class StreamSessionImpl implements StreamSession {
 	private StreamSessionSpec sessionSpec;
 
 	private String startException;
+	
+	//private LocalTime startTime; 
+	
+	private LocalTime stopTime; 
 
 	private int nodeCount = 0;
 
@@ -127,6 +131,23 @@ public class StreamSessionImpl implements StreamSession {
 	public StreamSessionInput getInput() {
 		return input;
 	}
+	
+	
+
+	@Override
+	public LocalTime getStartTime() {
+		return startTime.toLocalTime();
+	}
+
+	@Override
+	public LocalTime getStopTime() {
+		return stopTime;
+	}
+
+	@Override
+	public int getStreamId() {
+		return (int)input.getController().getEntity().getId();	
+	}
 
 	@Override
 	public void startSession(StreamSessionInput input) throws StreamSessionException {
@@ -152,6 +173,7 @@ public class StreamSessionImpl implements StreamSession {
 				starting.setIdentifier(getStream().getName());
 				starting.setStartingTime(getStream().getDateTime());
 				starting.setSessionId(sessionEntity.getId());
+				
 				try {
 					dunkNet.event(starting);	
 				} catch (Exception e) {
@@ -571,6 +593,8 @@ public class StreamSessionImpl implements StreamSession {
 		
 		this.stoppedSessionInvoked.set(true);
 		try {
+			LocalDateTime stop =  LocalDateTime.now(DTimeZone.toZoneId(input.getController().getTimeZone()));
+			stopTime = stop.toLocalTime();
 			sessionEntity.setStopDateTime(LocalDateTime.now(DTimeZone.toZoneId(input.getController().getTimeZone())));
 			sessionEntity.setState(status.getState());
 			logger.info(stopTrace, "handleSessionStop() Updating session entity with stop date time and state	");

@@ -1,5 +1,6 @@
-package com.dunkware.trade.service.stream.worker.session.stats;
+package com.dunkware.trade.service.stream.worker.session.publish;
 
+import java.util.Arrays;
 import java.util.List;
 
 import org.apache.kafka.clients.producer.Producer;
@@ -9,18 +10,20 @@ import org.slf4j.LoggerFactory;
 import org.slf4j.Marker;
 import org.slf4j.MarkerFactory;
 
+import com.dunkware.stream.data.codec.session.meta.SessionMetaEntityCodec;
 import com.dunkware.stream.data.codec.stat.EntityDateStatsCodec;
+import com.dunkware.stream.data.session.meta.SessionMetaEntity;
+import com.dunkware.stream.data.stats.entity.EntityStatType;
 import com.dunkware.stream.data.stats.entity.capture.EntityDateStats;
+import com.dunkware.stream.data.util.constants.StreamDataTopics;
 import com.dunkware.trade.service.stream.worker.session.StreamWorker;
 import com.dunkware.trade.service.stream.worker.session.StreamWorkerExtension;
-import com.dunkware.trade.service.stream.worker.session.anot.AStreamWorkerExtension;
 import com.dunkware.xstream.api.XStream;
 
-@AStreamWorkerExtension
-public class EntityDateStatsPublisher implements StreamWorkerExtension {
+public class SessionMetaEntityPublisher implements StreamWorkerExtension {
 
     private final Logger logger = LoggerFactory.getLogger(getClass());
-    private final Marker marker = MarkerFactory.getMarker("VarStatKafkaPublisher");
+    private final Marker marker = MarkerFactory.getMarker("SessionMetaEntityPublisher");
 
     private StreamWorker worker;
     private XStream stream;
@@ -34,7 +37,8 @@ public class EntityDateStatsPublisher implements StreamWorkerExtension {
     public void start() throws Exception {
         this.stream = worker.getStream();
     }
-
+// SesssionEntityNotifier 
+   // Channel Session
     @Override
     public void stop() throws Exception {
 
@@ -43,9 +47,9 @@ public class EntityDateStatsPublisher implements StreamWorkerExtension {
             public void run() {
                 logger.info(marker, "Starting Stat Collector Kafka Publisher Process");
                 EntityDateStatsCollector collector = EntityDateStatsCollector.newInstance(stream.getRows(),stream.getClock().getLocalDateTime().toLocalDate(), (int)stream.getInput().getId());
-                List<EntityDateStats> stats = null;
+                List<SessionMetaEntity> metaEnts = SessionMetaEntityCollector.collect(stream, Arrays.asList(EntityStatType.VarHigh,EntityStatType.VarLow));
                 try {
-                    stats = collector.collectStats();
+                   
                 } catch(Exception e) {
                     logger.error(marker, "Exception collecting var stats " + e.toString(),e);
                     return;
@@ -55,18 +59,19 @@ public class EntityDateStatsPublisher implements StreamWorkerExtension {
                     producer = worker.getDunkNet().getKafkaProducer();
                 } catch(Exception e) {
                     logger.error(marker, "Exception creating kafka producer "  + e.toString(),e);
-                    return;
-                }
-                for(EntityDateStats stat : stats) {
-                    try {
-                        byte[] bytes = EntityDateStatsCodec.encode(stat);
-                        ProducerRecord<Integer,byte[]> record = new ProducerRecord<Integer,byte[]>("stream_capture_entity_date_stats",bytes);
+                    return;		
+                    																				
+                }																					
+                for(SessionMetaEntity stat : metaEnts) {													
+                    try {																			
+                        byte[] bytes = SessionMetaEntityCodec.encode(stat);							
+                        ProducerRecord<Integer,byte[]> record = new ProducerRecord<Integer,byte[]>(StreamDataTopics.CaptureMetaEntity,bytes);
                         producer.send(record);
                     } catch (Exception e) {
-                        logger.error(marker, "Exception sending stats byytes " + e.toString());
+                        logger.error(marker, "Exception sending meta entity byytes " + e.toString());
                     }
                 }
-                logger.info(marker, "Worker Node Publisher {} stats to stream_capture_var_stat",stats.size());
+                logger.info(marker, "Worker Node Publisher {} meta entitties to to kafka",metaEnts.size());
 
             }
         };

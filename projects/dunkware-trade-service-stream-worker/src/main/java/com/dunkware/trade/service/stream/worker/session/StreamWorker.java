@@ -244,6 +244,8 @@ public class StreamWorker implements DunkNetChannelHandler {
 			StreamWorkerEntityQueryBuilder queryBuilder = new StreamWorkerEntityQueryBuilder();
 			queryBuilder.init(this);
 			this.input = XStreamCore.createInput(req.getStreamBundle(), executorService.get(), queryBuilder);
+			this.input.setId(req.getNumericId());
+			this.input.setId((long)req.getStreamId());
 			this.input.setSignalTypes(req.getSignals());
 			this.input.setIdentifier(req.getStream());
 		} catch (Exception e) {

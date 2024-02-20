@@ -27,6 +27,7 @@ import com.dunkware.spring.cluster.core.request.DunkNetServiceRequest;
 import com.dunkware.spring.cluster.core.request.DunkNetServiceRequestListener;
 import com.dunkware.trade.service.stream.json.controller.session.StreamSessionNodeBean;
 import com.dunkware.trade.service.stream.json.controller.spec.StreamState;
+import com.dunkware.trade.service.stream.json.worker.stream.StreamSessionWorkerEntitiesReq;
 import com.dunkware.trade.service.stream.json.worker.stream.StreamSessionWorkerCancelReq;
 import com.dunkware.trade.service.stream.json.worker.stream.StreamSessionWorkerCreateReq;
 import com.dunkware.trade.service.stream.json.worker.stream.StreamSessionWorkerStartReq;
@@ -102,6 +103,8 @@ public class StreamSessionNodeImpl implements StreamSessionNode, DunkNetChannelH
 	@Value("${dunknet.brokers}")
 	private String kafkaBrokers; 
 	
+	private List<Integer> sessionEntities = new ArrayList<Integer>();
+	
 
 	@Override
 	public void start(StreamSessionNodeInput input) {
@@ -144,6 +147,7 @@ public class StreamSessionNodeImpl implements StreamSessionNode, DunkNetChannelH
 				notifyExtensions(StreamSessionExtension.NODE_STARTING);
 				startReq.setWorkerId(input.getWorkerId());
 				startReq.setNumericId(input.getNumericId());
+				startReq.setStreamId((int)input.getStream().getEntity().getId());
 				startReq.setStream(input.getSession().getStream().getName());
 				startReq.setSessionId(input.getSession().getSessionId());
 				startReq.setStreamBundle(streamBundle);
@@ -254,6 +258,12 @@ public class StreamSessionNodeImpl implements StreamSessionNode, DunkNetChannelH
 		return dunkNode;
 	}
 
+	
+	@ADunkNetEvent
+	public void sessionEntity(StreamSessionWorkerEntitiesReq entity) { 
+		this.sessionEntities.add(entity.getEntity());
+	}
+	
 	@ADunkNetEvent
 	public void workerStats(StreamSessionWorkerStats stats) {
 		bean.setEntityCount(stats.getRowCount());
@@ -405,6 +415,14 @@ public class StreamSessionNodeImpl implements StreamSessionNode, DunkNetChannelH
 	}
 	
 	
+	
+
+	@Override
+	public List<Integer> getSessionEntities() {
+		return sessionEntities;
+	}
+
+
 
 	@Override
 	public StreamController getStream() {

@@ -32,6 +32,7 @@ public class XStreamInput {
 		return extensions;
 	}
 	public void setExtensions(List<XStreamExtensionType> extensions) {
+		
 		this.extensions = extensions;
 	}
 	public DExecutor getExecutor() {

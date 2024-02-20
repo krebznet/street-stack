@@ -29,5 +29,7 @@ public interface XStreamClock {
 	public void addListener(XStreamClockListener listener);
 	
 	public void removeListener(XStreamClockListener listneer);
+	
+	public LocalTime getStartTime();
 
 }

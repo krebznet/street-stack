@@ -11,6 +11,7 @@ import com.dunkware.xstream.xScript.XScript;
 
 public class XScriptHelper {
 	
+	
 	public static List<VarType> getVarTypes(XScript script){
 		List<VarType> types = new ArrayList<VarType>();
 		for (ScriptElement element : script.getElements()) {

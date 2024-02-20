@@ -1,6 +1,7 @@
 
 package com.dunkware.trade.service.stream.server.controller.session;
 
+import java.time.LocalTime;
 import java.util.Collection;
 import java.util.List;
 
@@ -20,6 +21,10 @@ public interface StreamSession {
 
 	public String killSession();
 	
+	public LocalTime getStartTime();
+	
+	public LocalTime getStopTime();
+	
 	public void startSession(StreamSessionInput input) throws StreamSessionException;
 
 	public void stopSession() throws StreamSessionException;
@@ -29,6 +34,8 @@ public interface StreamSession {
 	public Collection<StreamSessionNode> getNodes();
 
 	public StreamState getState();
+	
+	public int getStreamId();
 
 	public StreamController getStream();
 

@@ -21,6 +21,7 @@ public class StreamSessionWorkerStartReq {
 	private String nodeId;
 	private String kafkaBrokers;
 	private StreamDescriptor streamDescriptor;
+	private int streamId; 
 	private Map<String,String> streamProperties = new HashMap<String,String>();
 	public StreamSessionWorkerStartReq() { 
 	
@@ -119,6 +120,16 @@ public class StreamSessionWorkerStartReq {
 	public void setEntitySessionId(long entitySessionId) {
 		this.entitySessionId = entitySessionId;
 	}
+
+	public int getStreamId() {
+		return streamId;
+	}
+
+	public void setStreamId(int streamId) {
+		this.streamId = streamId;
+	}
+	
+	
 	
 	
 	

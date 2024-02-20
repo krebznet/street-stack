@@ -395,6 +395,7 @@ public class StreamController {
 		stats.setState(StreamState.Starting);
 		try {
 			StreamSessionInput input = new StreamSessionInput();
+			
 			input.setSignalTypes(signalTypes);
 			input.setTickers(tickers);
 			input.setController(this);

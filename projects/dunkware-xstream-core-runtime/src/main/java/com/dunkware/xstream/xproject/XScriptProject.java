@@ -30,6 +30,9 @@ public class XScriptProject {
 	private List<XScript> scripts = new ArrayList<XScript>();
 	private List<XClassType> classes = new ArrayList<XClassType>();
 	private List<SignalType> signals = new ArrayList<SignalType>();
+	private List<Integer> streamVarIds = new ArrayList<Integer>();
+	private List<Integer> streamSignalIds = new ArrayList<Integer>();
+	private List<SignalType> streamSignals = new ArrayList<SignalType>();
 	
 	public XScriptProject(XScriptBundle bundle) throws XScriptException {
 		if(!isSetup) { 
@@ -62,6 +65,13 @@ public class XScriptProject {
 			streamVars.addAll(XScriptHelper.getVarTypes(xScript));
 			classes.addAll(XScriptHelper.getClasses(xScript));
 			signals.addAll(XScriptHelper.getSignals(xScript));
+			signals.addAll(XScriptHelper.getSignals(xScript));
+		}
+		for (VarType varType : streamVars) {
+			streamVarIds.add(varType.getCode());
+		}
+		for (SignalType sigType : signals) { 
+			streamSignalIds.add(sigType.getId());
 		}
 		
 		
@@ -95,6 +105,14 @@ public class XScriptProject {
 
 	public List<XClassType> getClasses() { 
 		return classes;
+	}
+	
+	public List<Integer> getStreamVarIds() { 
+		return streamVarIds;
+	}
+	
+	public List<Integer> getStreamSignalIds() { 
+		return streamSignalIds;
 	}
 }
 

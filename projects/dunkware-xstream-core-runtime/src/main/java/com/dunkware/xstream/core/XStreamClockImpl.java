@@ -42,6 +42,8 @@ public class XStreamClockImpl implements XStreamClock {
 	private DTimeZone timeZone; 
 	private ZoneId zoneId; 
 	
+	private LocalTime startTime = null;
+	
 	private List<XStreamClockListener> listeners = new ArrayList<XStreamClockListener>();
 	private Semaphore listenerLock = new Semaphore(1);
 	
@@ -78,9 +80,20 @@ public class XStreamClockImpl implements XStreamClock {
 	public DTime getTime() {
 		return time; 
 	}
+	
+	
+
+	@Override
+	public LocalTime getStartTime() {
+		return startTime;
+	}
+
 
 	@Override
 	public void setTime(DTime time) {
+		if(startTime == null) { 
+			startTime = time.get();
+		}
 		if(logger.isTraceEnabled()) { 
 			logger.debug("Time Set {}",time.getHour() + ":" + time.getMinute() + ":" + time.getSecond());
 		}
