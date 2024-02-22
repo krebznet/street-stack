@@ -29,12 +29,13 @@ public class StreamWorkerEntityList implements StreamWorkerExtension, XStreamLis
 	
 	@Override
 	public void init(StreamWorker worker) throws Exception {
-		this.worker = worker;
-		worker.getChannel().addExtension(this);
+		this.worker = worker;	
 	}
 
 	@Override
 	public void start() throws Exception {
+	
+		worker.getChannel().addExtension(this);
 		this.stream = worker.getStream();
 		stream.addStreamListener(this);
 	}

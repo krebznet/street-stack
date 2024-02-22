@@ -3,9 +3,7 @@ package com.dunkware.trade.service.stream.worker.session.publish;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.LinkedBlockingQueue;
 import java.util.concurrent.TimeUnit;
@@ -16,9 +14,9 @@ import org.slf4j.LoggerFactory;
 import org.slf4j.Marker;
 import org.slf4j.MarkerFactory;
 
-import com.dunkware.stream.data.stats.entity.EntityStatType;
-import com.dunkware.stream.data.stats.entity.capture.EntityDateStats;
-import com.dunkware.stream.data.stats.entity.capture.EntityDateStatsVar;
+import com.dunkware.stream.data.model.stats.entity.EntityStatTypes;
+import com.dunkware.stream.data.model.stats.entity.EntityStatsModel;
+import com.dunkware.stream.data.model.stats.entity.EntityVarStatsModel;
 import com.dunkware.xstream.api.XStreamEntity;
 import com.dunkware.xstream.api.XStreamEntityVar;
 
@@ -45,11 +43,11 @@ public class EntityDateStatsCollector {
 
 	private AtomicInteger collectorCreation = new AtomicInteger(0);
 	private LocalDate date;
-	public List<EntityDateStats> collected = new ArrayList<EntityDateStats>();
+	public List<EntityStatsModel> collected = new ArrayList<EntityStatsModel>();
 
 	private AtomicInteger returnedCollectors = new AtomicInteger(0);
 
-	public List<EntityDateStats> collectStats() throws Exception {
+	public List<EntityStatsModel> collectStats() throws Exception {
 		int i = 0;
 		while (i < CollectorCount) {
 			collectorCreation.incrementAndGet();
@@ -88,7 +86,7 @@ public class EntityDateStatsCollector {
 						return;
 					}
 
-					EntityDateStats stats = new EntityDateStats();
+					EntityStatsModel stats = new EntityStatsModel();
 					stats.setStream(stream);
 					stats.setEntity(entity.getIdentifier());
 					stats.setDate(date);
@@ -96,12 +94,12 @@ public class EntityDateStatsCollector {
 						if (!entityVar.isNumeric() || entityVar.getSize() == 0) {
 							continue;
 						}
-						EntityDateStatsVar statsVar = new EntityDateStatsVar();
+						EntityVarStatsModel statsVar = new EntityVarStatsModel();
 						statsVar.setVar(entityVar.getVarType().getCode());
-						statsVar.getStats().put(EntityStatType.VarHigh, entityVar.getHigh().doubleValue());
-						statsVar.getTimes().put(EntityStatType.VarHigh, entityVar.getHighTime());
-						statsVar.getStats().put(EntityStatType.VarLow, entityVar.getLow().doubleValue());
-						statsVar.getTimes().put(EntityStatType.VarLow, entityVar.getLowTime());
+						statsVar.getStats().put(EntityStatTypes.VarHigh, entityVar.getHigh().doubleValue());
+						statsVar.getTimes().put(EntityStatTypes.VarHigh, entityVar.getHighTime());
+						statsVar.getStats().put(EntityStatTypes.VarLow, entityVar.getLow().doubleValue());
+						statsVar.getTimes().put(EntityStatTypes.VarLow, entityVar.getLowTime());
 						stats.getVarstats().put(entityVar.getVarType().getCode(),statsVar);
 					
 					}

@@ -1,12 +1,14 @@
 package com.dunkware.spring.cluster.message;
 
 import java.beans.Transient;
+import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
 import com.dunkware.common.util.json.DJson;
 import com.dunkware.common.util.uuid.DUUID;
 import com.dunkware.spring.cluster.DunkNetException;
+import com.dunkware.spring.cluster.core.DunkNetChannelPing;
 import com.dunkware.spring.cluster.protocol.descriptors.DunkNetDescriptors;
 
 public class DunkNetMessage {
@@ -38,6 +40,13 @@ public class DunkNetMessage {
 			return this;
 		}
 		
+		
+		public Builder channelPing(String channelId, DunkNetChannelPing ping) { 
+			m.setType(TYPE_CHANNEL_PING);
+			m.setChannel(channelId);
+			m.setPayload(ping);
+			return this;
+		}
 		
 
 		public Builder channelRequest(String channelId, Object payload) { 
@@ -262,8 +271,7 @@ public class DunkNetMessage {
 	public static final int TYPE_CHANNEL_CLIENT_STARRT_ERROR = 14;
 	public static final int TYPE_CHANNEL_SERVER_START = 9;
 	public static final int TYPE_CHANNEL_SERVER_START_ERROR = 10;
-	
-	
+	public static final int TYPE_CHANNEL_PING = 11;
 	
 	
 
@@ -353,6 +361,12 @@ public class DunkNetMessage {
 	
 	public String getMessageId() { 
 		return messageId;
+	}
+	
+	public static void main(String[] args) {
+		Map<String,String>  d = new HashMap<String,String>();
+		d.put("com.dunkware.trade.service.stream.worker.session.StreamWorker3BD95", "fuck");
+		System.out.println(d.get("com.dunkware.trade.service.stream.worker.session.StreamWorker3BD95"));
 	}
 	
 	@Transient

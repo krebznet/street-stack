@@ -1,10 +1,10 @@
 package com.dunkware.spring.cluster;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 import com.dunkware.spring.cluster.core.request.DunkNetChannelRequest;
 import com.dunkware.spring.cluster.core.request.DunkNetServiceRequest;
-import com.dunkware.spring.cluster.message.DunkNetMessage;
 import com.dunkware.spring.cluster.protocol.descriptors.DunkNetDescriptors;
 
 public interface DunkNetChannel {
@@ -13,7 +13,11 @@ public interface DunkNetChannel {
 	
 	void closeChannel();
 	
+	boolean isRemoteClose();
+	
 	String getLabel();
+	
+	LocalDateTime lastPing();
 	
 	boolean isOpen();
 	

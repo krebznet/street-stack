@@ -70,7 +70,8 @@ public class XStreamClockImpl implements XStreamClock {
 	
 	@Override
 	public LocalTime getLocalTime() {
-		return time.get();
+		
+		return LocalTime.of(time.getHour(), time.getMinute(),time.getSecond());
 	}
 
 

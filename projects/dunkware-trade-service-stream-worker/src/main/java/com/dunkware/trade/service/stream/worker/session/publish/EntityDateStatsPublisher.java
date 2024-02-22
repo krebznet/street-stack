@@ -9,8 +9,9 @@ import org.slf4j.LoggerFactory;
 import org.slf4j.Marker;
 import org.slf4j.MarkerFactory;
 
-import com.dunkware.stream.data.codec.stat.EntityDateStatsCodec;
-import com.dunkware.stream.data.stats.entity.capture.EntityDateStats;
+import com.dunkware.stream.data.codec.stat.EntityStatsModelCodec;
+import com.dunkware.stream.data.model.stats.entity.EntityStatsModel;
+import com.dunkware.stream.data.util.constants.StreamDataTopics;
 import com.dunkware.trade.service.stream.worker.session.StreamWorker;
 import com.dunkware.trade.service.stream.worker.session.StreamWorkerExtension;
 import com.dunkware.trade.service.stream.worker.session.anot.AStreamWorkerExtension;
@@ -43,7 +44,7 @@ public class EntityDateStatsPublisher implements StreamWorkerExtension {
             public void run() {
                 logger.info(marker, "Starting Stat Collector Kafka Publisher Process");
                 EntityDateStatsCollector collector = EntityDateStatsCollector.newInstance(stream.getRows(),stream.getClock().getLocalDateTime().toLocalDate(), (int)stream.getInput().getId());
-                List<EntityDateStats> stats = null;
+                List<EntityStatsModel> stats = null;
                 try {
                     stats = collector.collectStats();
                 } catch(Exception e) {
@@ -57,10 +58,10 @@ public class EntityDateStatsPublisher implements StreamWorkerExtension {
                     logger.error(marker, "Exception creating kafka producer "  + e.toString(),e);
                     return;
                 }
-                for(EntityDateStats stat : stats) {
+                for(EntityStatsModel stat : stats) {
                     try {
-                        byte[] bytes = EntityDateStatsCodec.encode(stat);
-                        ProducerRecord<Integer,byte[]> record = new ProducerRecord<Integer,byte[]>("stream_capture_entity_date_stats",bytes);
+                        byte[] bytes = EntityStatsModelCodec.encode(stat);
+                        ProducerRecord<Integer,byte[]> record = new ProducerRecord<Integer,byte[]>(StreamDataTopics.CaptureEntityStats,bytes);
                         producer.send(record);
                     } catch (Exception e) {
                         logger.error(marker, "Exception sending stats byytes " + e.toString());

@@ -12,9 +12,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import com.dunkware.common.util.dtime.DTimeZone;
 import com.dunkware.spring.cluster.DunkNet;
-import com.dunkware.stream.data.codec.session.meta.SessionMetaSessionCodec;
-import com.dunkware.stream.data.session.meta.SessionMetaSesion;
-import com.dunkware.stream.data.stats.entity.EntityStatType;
+import com.dunkware.stream.data.codec.session.meta.SessionModelCodec;
+import com.dunkware.stream.data.model.session.StreamSessionModel;
+import com.dunkware.stream.data.model.stats.entity.EntityStatTypes;
 import com.dunkware.stream.data.util.constants.StreamDataTopics;
 import com.dunkware.trade.service.stream.json.worker.stream.StreamSessionWorkerEntitiesReq;
 import com.dunkware.trade.service.stream.json.worker.stream.StreamSessionWorkerEntitiesResp;
@@ -75,7 +75,7 @@ public class StreamDataPublisher implements StreamSessionExtension {
 	@Override
 	public void sessionStopped(StreamSession session) {
 		// construct 
-		SessionMetaSesion metaSession = new SessionMetaSesion();
+		StreamSessionModel metaSession = new StreamSessionModel();
 	 	metaSession.setEntities(entities);
 	 	metaSession.setStream(session.getStreamId());
 	 	metaSession.setDate(LocalDate.now(DTimeZone.toZoneId(session.getStream().getTimeZone())));
@@ -83,11 +83,11 @@ public class StreamDataPublisher implements StreamSessionExtension {
 	 	metaSession.setStop(session.getStopTime());
 	 	metaSession.setVars(session.getScriptProject().getStreamVarIds());
 	 	metaSession.setSignals(session.getScriptProject().getStreamSignalIds());
-	 	metaSession.setStats(Arrays.asList(EntityStatType.VarHigh, EntityStatType.VarLow));
+	 	metaSession.setStats(Arrays.asList(EntityStatTypes.VarHigh, EntityStatTypes.VarLow));
 	 	// okay now a producer to send to the fuckin topic
 	 	try {
-	 		byte[] bytes = SessionMetaSessionCodec.encode(metaSession);
-	 		ProducerRecord<Integer, byte[]> record = new ProducerRecord<Integer, byte[]>(StreamDataTopics.CaptureMetaSession, bytes);
+	 		byte[] bytes = SessionModelCodec.encode(metaSession);
+	 		ProducerRecord<Integer, byte[]> record = new ProducerRecord<Integer, byte[]>(StreamDataTopics.CaptureSession, bytes);
 	 		dunkNet.getKafkaProducer().send(record);
 		} catch (Exception e) {
 			logger.error("Exception creating/sending SessionMetaSession " + e.toString());

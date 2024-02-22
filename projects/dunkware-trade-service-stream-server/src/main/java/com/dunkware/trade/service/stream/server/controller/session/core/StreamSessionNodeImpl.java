@@ -401,6 +401,8 @@ public class StreamSessionNodeImpl implements StreamSessionNode, DunkNetChannelH
 							logger.error(stopTrace, "Stop Request invoke exception on worker {} exception {}",input.getWorkerId(),e.toString());;
 							eventNode.event(new EStreamSessionNodeStopException(StreamSessionNodeImpl.this,stopException));
 							}
+						} finally { 
+							channel.closeChannel();
 						}
 					}
 

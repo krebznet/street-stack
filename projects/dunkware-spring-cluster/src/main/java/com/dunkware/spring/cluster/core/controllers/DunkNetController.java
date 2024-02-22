@@ -20,6 +20,7 @@ import com.dunkware.spring.cluster.DunkNetException;
 import com.dunkware.spring.cluster.DunkNetExtension.ComponentMethod;
 import com.dunkware.spring.cluster.DunkNetNode;
 import com.dunkware.spring.cluster.core.DunkNetChannelImpl;
+import com.dunkware.spring.cluster.core.DunkNetChannelPing;
 import com.dunkware.spring.cluster.core.request.DunkNetChannelRequest;
 import com.dunkware.spring.cluster.core.request.DunkNetServiceRequest;
 import com.dunkware.spring.cluster.message.DunkNetMessage;
@@ -36,6 +37,7 @@ public class DunkNetController
 
 	private Logger logger = LoggerFactory.getLogger(getClass());
 	private Marker marker = MarkerFactory.getMarker("DunkNet");
+	private Marker channelId = MarkerFactory.getMarker("ChannelId");
 
 	private ConcurrentHashMap<String, DunkNetServiceRequest> pendingServiceRequests = new ConcurrentHashMap<String, DunkNetServiceRequest>();
 	private ConcurrentHashMap<String, DunkNetChannelRequest> pendingChannelRequests = new ConcurrentHashMap<String, DunkNetChannelRequest>();
@@ -169,6 +171,11 @@ public class DunkNetController
 			case DunkNetMessage.TYPE_SERVICE_RESPONSE:
 				handleServiceResponse(message);
 				return true;
+				
+			case DunkNetMessage.TYPE_CHANNEL_PING:
+				handleChannelPing(message);
+				return true;
+				
 			}
 			
 			logger.error(marker, "Message not handled type {} on node {} payload {}", message.getType(), net.getId(),DJson.serializePretty(message.getPayload()));
@@ -181,13 +188,53 @@ public class DunkNetController
 		}
 		
 	}
+	
+	public String getActiveChannelIds() { 
+		StringBuilder b = new StringBuilder();
+		int count = 0;
+		for (String key : activeChannels.keySet()) {
+			if(count > 0)
+				b.append(",");
+			b.append(key);
+			count++;
+		}
+		return b.toString();
+	}
 
 	public DunkNetChannel getChannel(String channelId) throws DunkNetException {
 		DunkNetChannel channel =  activeChannels.get(channelId);
+		
 		if(channel == null) { 
+			
+			logger.error(channelId, "Could not find channel {} active channels are {}",channelId,null);
+			logger.error(channelId);
 			throw new DunkNetException("channel id " + channelId + " not found");
 		}
 		return channel;
+	}
+	
+	
+	private void handleChannelPing(DunkNetMessage message) throws DunkNetException { 
+		String channelId = message.getChannel();
+		if(channelId == null) { 
+			throw new DunkNetException("Internal Exception channel ping message has null channel");
+		}
+		DunkNetChannelImpl channel = null;
+		try {
+			channel = (DunkNetChannelImpl)getChannel(channelId);
+		
+		} catch (Exception e) {
+			logger.error("Channel Ping Handler did not find channel id " + message.getChannel());
+			return;
+		}
+		
+		try {
+			DunkNetChannelPing ping = (DunkNetChannelPing)message.getPayload();
+			channel.setLastPing(ping);
+		} catch (Exception e) {
+			logger.error("Exception Internal setting DunkNetChannelPing on channel " + e.toString());
+		}
+		
 	}
 
 	private void handleChannelRequest(DunkNetMessage message) throws DunkNetException {
@@ -223,9 +270,11 @@ public class DunkNetController
 		}
 		try {
 			String newChannelId = DUUID.randomUUID(5);
+			logger.info(channelId, "Created random channel id {} for payload class {}",newChannelId,message.getPayload().getClass().getCanonicalName());
 			DunkNetChannelImpl channel = new DunkNetChannelImpl();
 			ac.getAutowireCapableBeanFactory().autowireBean(channel);
 			channel.init(newChannelId, method.getLabel(), node, false);
+			logger.info(newChannelId, "Putting active channel id {}", channel.getChannelId());
 			activeChannels.put(channel.getChannelId(), channel);
 			try {
 				channel.setHandler(channelHandler);
@@ -367,10 +416,13 @@ public class DunkNetController
 		try {
 			channel.setDescriptors((DunkNetDescriptors) message.getPayload());
 			channel.setState(DunkNetChannelState.OPEN);
+			// sends back a 
+			((DunkNetChannelImpl)channel).startChannel();
 			channel.getHandler().channelStart();
 			node.message(DunkNetMessage.builder().channelServerStart(channel.getChannelId()).buildMessage());
 		} catch (Exception e) {
 			channel.getHandler().channelStartError(e.toString());
+			((DunkNetChannelImpl)channel).setRemoteClose();
 			channel.closeChannel();
 			activeChannels.remove(channel.getChannelId());
 			try {
@@ -420,7 +472,9 @@ public class DunkNetController
 		DunkNetChannel channel = getChannel(message.getChannel());
 		channel.setState(DunkNetChannelState.OPEN);
 		try {
+			((DunkNetChannelImpl)channel).startChannel();
 			channel.getHandler().channelStart();
+			
 		} catch (Exception e) {
 			channel.getHandler().channelStartError(e.toString());
 		//	channel.closeChannel();
@@ -451,10 +505,11 @@ public class DunkNetController
 
 	private void handleChannelClose(DunkNetMessage message) throws DunkNetException {
 		DunkNetNode senderNode = getSenderNode(message);
-		DunkNetChannel channel = null;
+		DunkNetChannelImpl channel = null;
 		try {
-			channel = getChannel(message.getChannel());
+			channel = (DunkNetChannelImpl)getChannel(message.getChannel());
 			if(channel == null) { 
+				logger.error("Should not be getting a handleChannelClose when channel is null");
 				// not going to worry about it
 				// this message gets triggered 
 				// when a node is closed on this node and already closed
@@ -465,6 +520,7 @@ public class DunkNetController
 					message.getChannel(),net.getId());
 			return;
 		}
+		channel.setRemoteClose();
 		channel.closeChannel();
 		if(logger.isDebugEnabled()) { 
 			logger.debug(marker, "Handled close channel message on node {} for channel id {} from node {}",

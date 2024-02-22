@@ -1,5 +1,6 @@
 package com.dunkware.spring.cluster.core;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.Semaphore;
@@ -9,7 +10,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.slf4j.Marker;
 import org.slf4j.MarkerFactory;
-import org.springframework.remoting.RemoteAccessException;
 
 import com.dunkware.spring.cluster.DunkNet;
 import com.dunkware.spring.cluster.DunkNetChannel;
@@ -24,6 +24,10 @@ import com.dunkware.spring.cluster.core.request.DunkNetServiceRequest;
 import com.dunkware.spring.cluster.message.DunkNetMessage;
 import com.dunkware.spring.cluster.protocol.descriptors.DunkNetDescriptors;
 
+/**
+ * Bug here is that extensions are not getting sent to other party
+ * when updated if i believe correctly. 
+ */
 public class DunkNetChannelImpl implements DunkNetChannel {
 	
 	private static final int LISTENER_EVENT_START = 1; 
@@ -35,7 +39,10 @@ public class DunkNetChannelImpl implements DunkNetChannel {
 
 	private Throwable exception = null;
 	
+	// used to see if we should send a close channel message
 	private boolean initialized = false;
+	
+	private boolean remoteClose = false; 
 	
 	private DunkNetDescriptors remoteDescriptors;
 	
@@ -55,9 +62,14 @@ public class DunkNetChannelImpl implements DunkNetChannel {
 	
 	private DunkNetChannelHandler handler;
 	
+	private ChannelPinger channelPinger; 
+	
+	
 	private boolean client; 
 	
 	private String label; 
+	
+	private LocalDateTime lastPing = LocalDateTime.now();
 	
 	public void init(String channelId, String label, DunkNetNode node, boolean client) throws DunkNetException { 
 		this.channelId = channelId;
@@ -67,6 +79,16 @@ public class DunkNetChannelImpl implements DunkNetChannel {
 		this.net = node.getNet();
 	}
 	
+	
+	/**
+	 * This is called before a server/client handler start() is invoked
+	 *  
+	 */
+	public void startChannel() { 
+		channelPinger = new ChannelPinger();
+		channelPinger.start();
+		
+	}
 	
 	
 	@Override
@@ -95,16 +117,39 @@ public class DunkNetChannelImpl implements DunkNetChannel {
 		extensions.addExtension(source);
 		descriptors = extensions.buildDescriptors();
 	}
+	
+	@Override
+	public LocalDateTime lastPing() {
+		return lastPing;
+	}
+
+
+	public void setLastPing(DunkNetChannelPing ping) { 
+		this.remoteDescriptors = ping.getDescriptors();
+		this.lastPing = LocalDateTime.now();
+		
+	}
 
 	@Override
 	public void closeChannel() {
-		if(state == DunkNetChannelState.CLOSED) { 
+		
+		if(state == DunkNetChannelState.CLOSED) {
+			logger.error("Calling close channel when state is closed fix code");
 			return;
 		}
+		
+		channelPinger.interrupt();
+		channelPinger = null; 
+		
 		try {
-			handler.channelClose();
 			
-			node.message(DunkNetMessage.builder(channelId).channelClose(channelId).buildMessage());			
+			handler.channelClose();
+			// if we are initiating the channel close then send send channel close message
+			// if remote then don't send a message 
+			if(!isRemoteClose()) { 
+				node.message(DunkNetMessage.builder(channelId).channelClose(channelId).buildMessage());	
+			}
+						
 		} catch (Exception e) {
 			logger.error(marker, "Can't send channel close message " + e.toString());
 		}
@@ -227,7 +272,8 @@ public class DunkNetChannelImpl implements DunkNetChannel {
 	@Override
 	public DunkNetChannelRequest channel(Object payload) throws Exception {
 		// TODO Auto-generated method stub
-		return null;
+		throw new  IllegalArgumentException("get sub channel not yet implemented");
+		
 	}
 	
 	
@@ -236,6 +282,7 @@ public class DunkNetChannelImpl implements DunkNetChannel {
 	public void setHandler(DunkNetChannelHandler handler) throws DunkNetException {
 		this.handler = handler;
 		try {
+			//
 			handler.channelInit(this);
 			initialized = true; // is this a client channel
 			if(client) { 
@@ -276,6 +323,17 @@ public class DunkNetChannelImpl implements DunkNetChannel {
 	public DunkNetChannelHandler getHandler() {
 		return handler;
 	}
+	
+	public void setRemoteClose() {
+		this.remoteClose = true; 
+	}
+
+	@Override
+	public boolean isRemoteClose() {
+		return remoteClose;
+	}
+
+
 
 	private void notifyListeners(int event) { 
 		try {
@@ -305,6 +363,39 @@ public class DunkNetChannelImpl implements DunkNetChannel {
 		if(!isOpen()) {
 			throw new DunkNetException("Channel Is Not Open");
 		}
+	}
+	
+	
+	private class ChannelPinger extends Thread { 
+		
+		
+		public void run() { 
+			setName("DunkNet Channel Pinger " + getChannelId());
+			try {
+				Thread.sleep(1000);
+			} catch (Exception e) {
+				// TODO: handle exception
+			}
+			while(!interrupted()) { 
+				try {
+					Thread.sleep(1000);
+					DunkNetChannelPing ping = new DunkNetChannelPing();
+					ping.setDescriptors(descriptors);
+					DunkNetMessage m = DunkNetMessage.builder().channelPing(getChannelId(), ping).buildMessage();
+					getNode().message(m);
+				} catch (Exception e) {
+					if (e instanceof InterruptedException) { 
+						return;
+						
+					}
+					logger.error("Exception sending channel ping " + e.toString());
+				}
+				
+				
+			}
+			
+		}
+		
 	}
 
 }
