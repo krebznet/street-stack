@@ -15,12 +15,13 @@ public class EntityStat {
 	private int entity;
 	private LocalTime time;
 	
-    private static volatile Instrumentation globalInstrumentation;
+    public static volatile Instrumentation globalInstrumentation;
 
+    
     
 	public static void main(String[] args) {
 		EntityStat stat = new EntityStat();
-		//stat.si
+		
 		//stat.setDate(LocalDate.now());
 		stat.setValue(323.23);
 		stat.setEntity(3);

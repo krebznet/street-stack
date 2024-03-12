@@ -25,3 +25,7 @@ public class XScriptBundleTest {
 		}
 	}
 }
+
+// FileSet
+	// File
+		// - 

@@ -26,7 +26,7 @@ public class CacheElement {
 		return null;
 	}
 	
-	public void add(EntityStat stat) { 
+	public void add(EntitySta stat) { 
 		CacheStat cacheStat = new CacheStat(stat);
 		stats.put(stat.getStat(), cacheStat);
 		

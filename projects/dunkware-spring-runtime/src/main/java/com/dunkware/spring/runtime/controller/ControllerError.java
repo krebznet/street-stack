@@ -7,6 +7,7 @@ public class ControllerError {
   private LocalDateTime timestamp;
   private String message;
   private String description;
+  
   public ControllerError(int statusCode, LocalDateTime timestamp, String message, String description) {
     this.statusCode = statusCode;
     this.timestamp = timestamp;

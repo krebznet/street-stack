@@ -42,6 +42,8 @@ public class VarAggHistoricalExpression extends XStreamExpressionImpl {
 		if(myType.getFunction() == HistoricalAggFunc.HIGH.LOW) { 
 			//statConstant = EntityStatsConstants.VAR_STAT_LOW;
 		}
+		
+		// it can execute a runnable - Future<>
 		if(statConstant == -1) { 
 			logger.error("Agg Function Not Handled Consant " + myType.getFunction().toString());;
 			canResolve = false; 
