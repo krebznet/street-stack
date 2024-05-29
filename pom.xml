@@ -87,6 +87,7 @@
 		<module>projects/dunkware-street-data</module>
 		<module>projects/dunkware-street-tick</module>
 		<module>projects/java-utils-parent</module>
+		<module>projects/java-generic-model</module>
 
 	</modules>
 	<build>
