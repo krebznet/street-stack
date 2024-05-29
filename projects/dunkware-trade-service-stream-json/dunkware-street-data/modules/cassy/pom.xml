@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	<parent>
+		<groupId>org.springframework.boot</groupId>
+		<artifactId>spring-boot-starter-parent</artifactId>
+		<version>3.2.2</version>
+	</parent>
+
+
+	<groupId>com.dunkware.stream.data</groupId>
+	<artifactId>data-mod-cassy</artifactId>
+	<version>1.0.0-SNAPSHOT</version>
+	<packaging>jar</packaging>
+	<name>Stream Data Mod Cassy</name>
+	<description>maven-archtype-jar.</description>
+
+
+	<properties>
+
+	</properties>
+
+	<dependencies>
+
+<dependency>
+	
+	<groupId>com.dunkware.stream.data</groupId>
+	<artifactId>data-lib-cassy</artifactId>
+	<version>1.0.0-SNAPSHOT</version>
+</dependency>
+		<!-- Dunkware Depenencies -->
+		<dependency>
+			<groupId>com.dunkware.stream.data</groupId>
+			<artifactId>data-lib-model</artifactId>
+			<version>1.0.0-SNAPSHOT</version>
+		</dependency>
+
+		<dependency>
+			<groupId>com.dunkware.stream.utils</groupId>
+			<artifactId>utils-lib-time</artifactId>
+			<version>1.0.0-SNAPSHOT</version>
+		</dependency>
+
+
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-data-cassandra</artifactId>
+		</dependency>
+
+		<!-- https://mvnrepository.com/artifact/org.projectlombok/lombok -->
+		<dependency>
+			<groupId>org.projectlombok</groupId>
+			<artifactId>lombok</artifactId>
+			<version>1.18.30</version>
+			<scope>provided</scope>
+		</dependency>
+
+		<dependency>
+			<groupId>junit</groupId>
+			<artifactId>junit</artifactId>
+		</dependency>
+
+	</dependencies>
+
+
+</project>

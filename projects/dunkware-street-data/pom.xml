@@ -1,0 +1,86 @@
+<!-- this is the parent configuration pom that has all our resources defined
+	liked target platforms, release repos etc. -->
+<project
+	xmlns="http://maven.apache.org/POM/4.0.0"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	<groupId>com.dunkware.stream.data</groupId>
+	<artifactId>stream-data</artifactId>
+	<version>1.0.0-SNAPSHOT</version>
+	<packaging>pom</packaging>
+	<name>Stream Data Parent</name>
+
+			<properties>
+				<test.dir>src/test/java</test.dir>
+				<testSourceDirectory>/src/test/java</testSourceDirectory>
+				<src.dir>src/main/java</src.dir>
+				<jdk.version>17</jdk.version>
+				<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+				<logback.classic-version>1.2.3</logback.classic-version>
+				<slf4j-api-version>1.7.30</slf4j-api-version>
+				<junit-version>4.11</junit-version>
+			</properties>
+
+
+
+
+
+			<distributionManagement>
+				<snapshotRepository>
+					<uniqueVersion>false</uniqueVersion>
+					<id>dunkware-internal-snapshot</id>
+					<layout>default</layout>
+					<name>dunkware-internal-snapshot</name>
+					<url>https://nexus.dunkware.com/repository/dunkware-internal-snapshot/</url>
+				</snapshotRepository>
+				<repository>
+					<uniqueVersion>false</uniqueVersion>
+					<id>dunkware-internal-release</id>
+					<layout>default</layout>
+					<name>dunkware-internal-release</name>
+					<url>https://nexus.dunkware.com/repository/dunkware-internal-release/</url>
+				</repository>
+			</distributionManagement>
+
+  <modules>
+
+
+    <module>modules/cassy</module>
+    <module>services/test</module>
+	  <module>services/injest</module>
+		<module>services/stats</module>
+		<module>services/signals</module>
+	  <module>libraries/model</module>
+		<module>libraries/codec</module>
+		<module>libraries/stats</module>
+
+		<module>libraries/util</module>
+				<module>libraries/cassy</module>
+
+  </modules>
+	<build>
+    <!-- To define the plugin version in your parent POM -->
+    <pluginManagement>
+      <plugins>
+
+        <plugin>
+
+          <groupId>com.github.danielflower.mavenplugins</groupId>
+          <artifactId>multi-module-maven-release-plugin</artifactId>
+          <version>3.6.1</version>
+        </plugin>
+
+      </plugins>
+    </pluginManagement>
+    <!-- To use the plugin goals in your POM or parent POM -->
+    <plugins>
+      <plugin>
+        <groupId>com.github.danielflower.mavenplugins</groupId>
+        <artifactId>multi-module-maven-release-plugin</artifactId>
+      </plugin>
+
+    </plugins>
+  </build>
+
+</project>

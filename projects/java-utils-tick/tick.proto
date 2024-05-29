@@ -1,0 +1,36 @@
+syntax = "proto2";
+
+package com.dunkware.stream.tick.proto;
+
+
+option java_package = "com.dunkware.stream.tick.proto";
+
+option java_outer_classname = "TickProto";
+
+message Tick {
+  required int32 type = 1;
+  
+  repeated TickField tickFields = 3;
+
+  enum TickFieldType {
+    INT = 0;
+    DOUBLE = 1;
+    STRING= 2;
+    LONG = 3;
+  }
+
+  message TickField {
+    required int32 id = 1;
+    required TickFieldType type = 19;
+    
+    optional int32 intValue = 15;
+    optional string stringValue = 16;
+  	optional double doubleValue = 17;
+  	optional int64 longValue = 18;
+    
+    
+  }
+
+  
+}
+/

@@ -11,108 +11,106 @@
 	<packaging>pom</packaging>
 
 	<scm>
-			<connection>scm:git:ssh://git@github.com/krebznet/dunkware-street-cloud.git</connection>
+		<connection>
+			scm:git:ssh://git@github.com/krebznet/dunkware-street-cloud.git</connection>
 
-			<developerConnection>scm:git:ssh://git@github.com/krebznet/dunkware-street-cloud.git</developerConnection>
-			<url>git@github.com:krebznet/dunkware-street-cloud.git</url>
-		</scm>
-
-
-			<properties>
-				<test.dir>src/test/java</test.dir>
-				<testSourceDirectory>/src/test/java</testSourceDirectory>
-
-				<src.dir>src/main/java</src.dir>
-				<jdk.version>11</jdk.version>
+		<developerConnection>
+			scm:git:ssh://git@github.com/krebznet/dunkware-street-cloud.git</developerConnection>
+		<url>git@github.com:krebznet/dunkware-street-cloud.git</url>
+	</scm>
 
 
+	<properties>
+		<test.dir>src/test/java</test.dir>
+		<testSourceDirectory>/src/test/java</testSourceDirectory>
 
-				<maven.compiler.source>11</maven.compiler.source>
-				<maven.compiler.target>11</maven.compiler.target>
-				<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-
-				<!-- Dependency Versions -->
-				<logback.classic-version>1.2.3</logback.classic-version>
-				<slf4j-api-version>1.7.30</slf4j-api-version>
-				<junit-version>4.11</junit-version>
-			</properties>
+		<src.dir>src/main/java</src.dir>
+		<jdk.version>11</jdk.version>
 
 
+		<maven.compiler.source>11</maven.compiler.source>
+		<maven.compiler.target>11</maven.compiler.target>
+		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+
+		<!-- Dependency Versions -->
+		<logback.classic-version>1.2.3</logback.classic-version>
+		<slf4j-api-version>1.7.30</slf4j-api-version>
+		<junit-version>4.11</junit-version>
+	</properties>
 
 
+	<distributionManagement>
+		<snapshotRepository>
+			<uniqueVersion>false</uniqueVersion>
+			<id>dunkware-internal-snapshot</id>
+			<layout>default</layout>
+			<name>dunkware-internal-snapshot</name>
+			<url>
+				https://nexus.dunkware.com/repository/dunkware-internal-snapshot/</url>
 
-			<distributionManagement>
-				<snapshotRepository>
-					<uniqueVersion>false</uniqueVersion>
-					<id>dunkware-internal-snapshot</id>
-					<layout>default</layout>
-					<name>dunkware-internal-snapshot</name>
-					<url>https://nexus.dunkware.com/repository/dunkware-internal-snapshot/</url>
+		</snapshotRepository>
+		<repository>
+			<uniqueVersion>false</uniqueVersion>
+			<id>dunkware-internal-release</id>
+			<layout>default</layout>
+			<name>dunkware-internal-release</name>
+			<url>
+				https://nexus.dunkware.com/repository/dunkware-internal-release/</url>
 
-				</snapshotRepository>
-				<repository>
-					<uniqueVersion>false</uniqueVersion>
-					<id>dunkware-internal-release</id>
-					<layout>default</layout>
-					<name>dunkware-internal-release</name>
-					<url>https://nexus.dunkware.com/repository/dunkware-internal-release/</url>
+		</repository>
+	</distributionManagement>
 
-				</repository>
-			</distributionManagement>
-
-  <modules>
+	<modules>
 
 
-  <module> projects/dunkware-maven-parent</module>
-      <module>projects/dunkware-common-util</module>
+		<module> projects/dunkware-maven-parent</module>
+		<module>projects/dunkware-common-util</module>
 
 		<module>projects/dunkware-xstream-script</module>
-			<module>projects/dunkware-xstream-core-model</module>
-      <module>projects/dunkware-xstream-core-runtime</module>
-      <module>projects/dunkware-xstream-core-mock</module>
-      <module>projects/dunkware-trade-service-stream-json</module>
-      <module>projects/dunkware-trade-service-stream-server</module>
-			<module>projects/dunkware-trade-service-stream-worker</module>
-			
-			<module>projects/dunkware-trade-service-stream-cluster</module>
-      <module>projects/dunkware-trade-service-web-server</module>
-			<module>projects/dunkware-trade-service-web-mock</module>
-			<module>projects/dunkware-trade-service-web-json</module>
-			<module>projects/dunkware-trade-service-worker-server</module>
-			<module>projects/dunkware-spring-cluster</module>
-			<module>projects/dunkware-spring-runtime</module>
-			<module>projects/dunkware-spring-test-model</module>
-			<module>projects/dunkware-spring-test-server</module>
-			<module>projects/dunkware-spring-test-client</module>
-			<module>projects/dunkware-street-data</module>
-			<module>projects/dunkware-street-tick</module>
+		<module>projects/dunkware-xstream-core-model</module>
+		<module>projects/dunkware-xstream-core-runtime</module>
+		<module>projects/dunkware-xstream-core-mock</module>
+		<module>projects/dunkware-trade-service-stream-json</module>
+		<module>projects/dunkware-trade-service-stream-server</module>
+		<module>projects/dunkware-trade-service-stream-worker</module>
 
-			<!--	<module>projects/dunkware-street-data</module>-->
+		<module>projects/dunkware-trade-service-stream-cluster</module>
+		<module>projects/dunkware-trade-service-web-server</module>
+		<module>projects/dunkware-trade-service-web-mock</module>
+		<module>projects/dunkware-trade-service-web-json</module>
+		<module>projects/dunkware-trade-service-worker-server</module>
+		<module>projects/dunkware-spring-cluster</module>
+		<module>projects/dunkware-spring-runtime</module>
+		<module>projects/dunkware-spring-test-model</module>
+		<module>projects/dunkware-spring-test-server</module>
+		<module>projects/dunkware-spring-test-client</module>
+		<module>projects/dunkware-street-data</module>
+		<module>projects/dunkware-street-tick</module>
+		<module>projects/java-utils-parent</module>
 
-
-  </modules>
+	</modules>
 	<build>
-    <!-- To define the plugin version in your parent POM -->
-    <pluginManagement>
-      <plugins>
+		<!-- To define the plugin version in your parent POM -->
+		<pluginManagement>
+			<plugins>
 
-        <plugin>
+				<plugin>
 
-          <groupId>com.github.danielflower.mavenplugins</groupId>
-          <artifactId>multi-module-maven-release-plugin</artifactId>
-          <version>3.6.1</version>
-        </plugin>
+					<groupId>com.github.danielflower.mavenplugins</groupId>
+					<artifactId>multi-module-maven-release-plugin</artifactId>
+					<version>3.6.1</version>
+				</plugin>
 
-      </plugins>
-    </pluginManagement>
-    <!-- To use the plugin goals in your POM or parent POM -->
-    <plugins>
-      <plugin>
-        <groupId>com.github.danielflower.mavenplugins</groupId>
-        <artifactId>multi-module-maven-release-plugin</artifactId>
-      </plugin>
+			</plugins>
+		</pluginManagement>
+		<!-- To use the plugin goals in your POM or parent POM -->
+		<plugins>
+			<plugin>
+				<groupId>com.github.danielflower.mavenplugins</groupId>
+				<artifactId>multi-module-maven-release-plugin</artifactId>
+			</plugin>
 
-    </plugins>
-  </build>
+		</plugins>
+	</build>
 
 </project>
