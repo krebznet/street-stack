@@ -1,5 +1,5 @@
 
 echo "Deploying Stream Dev"
-docker build --platform=linux/amd64 -t dunkware-trade-service-web-server:latest7 .
-docker tag dunkware-trade-service-web-server:latest7 testrock1:31000/dunkware-trade-service-web-server:latest7
-docker push testrock1:31000/dunkware-trade-service-web-server:latest7
+docker build --platform=linux/amd64 -t street-gateway:1.0.0-SNAPSHOT .
+docker tag street-gateway:1.0.0-SNAPSHOT testrock1:31000/street-gateway:1.0.0-SNAPSHOT
+docker push testrock1:31000/street-gateway:1.0.0-SNAPSHOT

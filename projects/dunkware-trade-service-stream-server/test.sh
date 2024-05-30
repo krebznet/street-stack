@@ -1,5 +1,5 @@
 
 echo "Deploying Stream Test"
-docker build --platform=linux/amd64 -t dunkware-trade-service-streamtest-server:testrock .
-docker tag dunkware-trade-service-streamtest-server:testrock testrock1:31000/dunkware-trade-service-streamtest-server:testrock
-docker push testrock1:31000/dunkware-trade-service-streamtest-server:testrock
+docker build --platform=linux/amd64 -t street-stream:1.0.0-SNAPSHOT .
+docker tag street-stream:1.0.0-SNAPSHOT testrock1:31000/street-stream:1.0.0-SNAPSHOT
+docker push testrock1:31000/street-stream:1.0.0-SNAPSHOT

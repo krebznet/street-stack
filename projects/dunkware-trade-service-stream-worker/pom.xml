@@ -64,13 +64,7 @@
 			<artifactId>data-lib-util</artifactId>
 			<version>1.0.0-SNAPSHOT</version>
 		</dependency>
-		<dependency>
-			<groupId>com.dunkware.trade.service</groupId>
-			<artifactId>dunkware-trade-service-data-model</artifactId>
-			<version>1.1.0-SNAPSHOT</version>
-
-		</dependency>
-
+		
 
 		<dependency>
 			<groupId>com.dunkware.trade.service</groupId>
@@ -84,11 +78,7 @@
 			<artifactId>jedis</artifactId>
 			<version>5.1.0</version>
 		</dependency>
-		<dependency>
-			<groupId>com.dunkware.trade.service</groupId>
-			<artifactId>dunkware-trade-service-data-common</artifactId>
-			<version>1.0.0-SNAPSHOT</version>
-		</dependency>
+		
 		<dependency>
 
 
@@ -96,11 +86,7 @@
 			<artifactId>dunkware-xstream-core-runtime</artifactId>
 			<version>1.2.0-SNAPSHOT</version>
 		</dependency>
-		<dependency>
-			<groupId>com.dunkware.xstream.core</groupId>
-			<artifactId>dunkware-xstream-core-mock</artifactId>
-			<version>1.0.0-SNAPSHOT</version>
-		</dependency>
+		
 		<dependency>
 			<groupId>com.dunkware.spring</groupId>
 			<artifactId>dunkware-spring-cluster</artifactId>
