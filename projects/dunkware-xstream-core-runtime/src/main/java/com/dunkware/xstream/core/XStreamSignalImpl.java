@@ -28,9 +28,9 @@ public class XStreamSignalImpl implements XStreamRowSignal {
 		
 		for (XStreamEntityVar var : row.getVars()) {
 			if(var.getSize() == 0) { 
-				vars.put(var.getVarType().getCode(), "null");
+				vars.put(var.getVarType().getId(), "null");
 			} else { 
-				vars.put(var.getVarType().getCode(), var.getValue(0));
+				vars.put(var.getVarType().getId(), var.getValue(0));
 			}
 		}
 	}

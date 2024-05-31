@@ -4,15 +4,12 @@ import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.Collection;
 
-import com.dunkware.common.stats.GenericNumber;
 import com.dunkware.xstream.api.XStreamEntity;
 import com.dunkware.xstream.api.XStreamEntityVar;
 import com.dunkware.xstream.api.XStreamEntityVarListener;
 import com.dunkware.xstream.api.XStreamExpression;
 import com.dunkware.xstream.model.metrics.XStreamVarMetrics;
 import com.dunkware.xstream.xScript.VarType;
-
-import ca.odell.glazedlists.EventList;
 
 public class MockXStreamVar implements XStreamEntityVar  {
 

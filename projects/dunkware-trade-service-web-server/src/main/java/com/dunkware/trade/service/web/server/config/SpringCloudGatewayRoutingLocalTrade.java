@@ -33,3 +33,4 @@ public class SpringCloudGatewayRoutingLocalTrade {
 	  //31681
 	 
 }
+

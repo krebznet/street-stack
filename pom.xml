@@ -66,7 +66,6 @@
 		<module> projects/dunkware-maven-parent</module>
 		<module>projects/dunkware-common-util</module>
 
-		<module>projects/dunkware-xstream-script</module>
 		<module>projects/dunkware-xstream-core-model</module>
 		<module>projects/dunkware-xstream-core-runtime</module>
 		<module>projects/dunkware-xstream-core-mock</module>

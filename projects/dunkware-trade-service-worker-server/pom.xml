@@ -33,10 +33,17 @@
 					</repository>
 				</distributionManagement>
 	<properties>
-		<java.version>11</java.version>
-		<xtextVersion>2.31.0</xtextVersion>
+		<java.version>17</java.version>
+		<xtextVersion>2.33.0</xtextVersion>
+		<mwe2Version>2.16.0</mwe2Version>
+		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+		<maven.compiler.source>17</maven.compiler.source>
+		<maven.compiler.target>17</maven.compiler.target>
+		<!-- Tycho settings -->
+		<tycho-version>3.0.5</tycho-version>
+		
 		<spring-cloud.version>Hoxton.SR6</spring-cloud.version>
-		<mwe2Version>2.14.0</mwe2Version>
+		
 	</properties>
 
 	<scm>

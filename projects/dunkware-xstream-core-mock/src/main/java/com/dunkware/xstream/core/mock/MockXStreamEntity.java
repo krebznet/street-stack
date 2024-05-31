@@ -124,12 +124,6 @@ public class MockXStreamEntity implements XStreamEntity {
 		return null;
 	}
 
-	@Override
-	public void signal(SignalType type) {
-		// TODO Auto-generated method stub
-		
-	}
-	
 	
 
 	@Override
@@ -204,6 +198,14 @@ public class MockXStreamEntity implements XStreamEntity {
 
 	@Override
 	public void removeVarListener(XStreamEntityVarListener listener) {
+		// TODO Auto-generated method stub
+		
+	}
+
+
+
+	@Override
+	public void signal(SignalType type) {
 		// TODO Auto-generated method stub
 		
 	}
