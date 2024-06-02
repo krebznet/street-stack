@@ -135,7 +135,7 @@ public class XStreamRowImpl implements XStreamEntity, XStreamEntityVarListener {
 		for (String key : vars.keySet()) {
 			XStreamEntityVar var = vars.get(key);
 			if (var.getSize() > 0) {
-				varMap.put(var.getVarType().getId(),vars.get(key));
+				varMap.put(var.getVarType().getCode(),vars.get(key));
 			}
 		}
 		return varMap;
@@ -272,7 +272,7 @@ public class XStreamRowImpl implements XStreamEntity, XStreamEntityVarListener {
 		Map<Integer,Number> values = new HashMap<Integer,Number>();
 		for (XStreamEntityVar var : numericVars) {
 			if(var.getSize() > 0) { 
-				values.put(var.getVarType().getId(), var.getNumber(0));
+				values.put(var.getVarType().getCode(), var.getNumber(0));
 			}
 		}
 		return values;

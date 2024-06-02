@@ -51,9 +51,9 @@
 
 		<!-- Dunkware Dependencies -->
 		<dependency>
-			<artifactId>com.dunkware.xstream.script</artifactId>
-			<groupId>com.dunkware.xstream.script</groupId>
-			<version>2.0.0-SNAPSHOT</version>
+			<artifactId>com.dunkware.xstream</artifactId>
+			<groupId>com.dunkware.xstream</groupId>
+			<version>3.0.0-SNAPSHOT</version>
 			
 		</dependency>
 		<dependency>

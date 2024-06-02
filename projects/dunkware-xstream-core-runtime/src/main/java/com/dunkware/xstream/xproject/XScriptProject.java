@@ -68,7 +68,7 @@ public class XScriptProject {
 			signals.addAll(XScriptHelper.getSignals(xScript));
 		}
 		for (VarType varType : streamVars) {
-			streamVarIds.add(varType.getId());
+			streamVarIds.add(varType.getCode());
 		}
 		for (SignalType sigType : signals) { 
 			streamSignalIds.add(sigType.getId());

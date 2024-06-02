@@ -95,12 +95,12 @@ public class EntityDateStatsCollector {
 							continue;
 						}
 						EntityVarStatsModel statsVar = new EntityVarStatsModel();
-						statsVar.setVar(entityVar.getVarType().getId());
+						statsVar.setVar(entityVar.getVarType().getCode());
 						statsVar.getStats().put(EntityStatTypes.VarHigh, entityVar.getHigh().doubleValue());
 						statsVar.getTimes().put(EntityStatTypes.VarHigh, entityVar.getHighTime());
 						statsVar.getStats().put(EntityStatTypes.VarLow, entityVar.getLow().doubleValue());
 						statsVar.getTimes().put(EntityStatTypes.VarLow, entityVar.getLowTime());
-						stats.getVarstats().put(entityVar.getVarType().getId(),statsVar);
+						stats.getVarstats().put(entityVar.getVarType().getCode(),statsVar);
 					
 					}
 					
