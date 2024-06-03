@@ -1,0 +1,172 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	<parent>
+		<groupId>org.springframework.boot</groupId>
+		<artifactId>spring-boot-starter-parent</artifactId>
+		<version>3.2.5</version>
+		<relativePath />
+	</parent>
+
+	<groupId>com.dunkware.street</groupId>
+	<artifactId>dunkware-street-server</artifactId>
+	<version>1.0.0-SNAPSHOT</version>
+	<name>Dunkware Street Server</name>
+	<description>Dunkware Street Server</description>
+
+
+	<properties>
+
+		<src.dir>src/main/java</src.dir>
+
+		<maven.compiler.source>17</maven.compiler.source>
+		<maven.compiler.target>17</maven.compiler.target>
+		<openapi-generator.version>7.6.0</openapi-generator.version>
+		<swagger-annotations.version>2.2.20</swagger-annotations.version>
+	</properties>
+
+	<dependencies>
+
+
+		<dependency>
+			<groupId>org.projectlombok</groupId>
+			<artifactId>lombok</artifactId>
+			<optional>true</optional>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-web</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-test</artifactId>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-validation</artifactId>
+		</dependency>
+
+		<dependency>
+			<groupId>io.swagger.core.v3</groupId>
+			<artifactId>swagger-annotations</artifactId>
+			<version>${swagger-annotations.version}</version>
+		</dependency>
+
+
+		<dependency>
+			<groupId>org.springdoc</groupId>
+			<artifactId>springdoc-openapi-ui</artifactId>
+			<version>1.7.0</version>
+		</dependency>
+
+		<!--
+		https://mvnrepository.com/artifact/jakarta.persistence/jakarta.persistence-api -->
+		<dependency>
+			<groupId>jakarta.persistence</groupId>
+			<artifactId>jakarta.persistence-api</artifactId>
+		</dependency>
+
+		<dependency>
+			<groupId>org.springframework.data</groupId>
+			<artifactId>spring-data-jpa</artifactId>
+		</dependency>
+
+
+		<dependency>
+			<groupId>com.dunkware.spring</groupId>
+			<artifactId>spring-mod-cluster</artifactId>
+			<version>1.0.0-SNAPSHOT</version>
+
+		</dependency>
+		<!--
+		<dependency>
+			<groupId>com.dunkware.street</groupId>
+			<artifactId>street-stream-session</artifactId>
+			<version>1.0.0-SNAPSHOT</version>
+		</dependency>
+-->
+
+
+		<!-- GRPC DEPS -->
+
+		<!--
+		https://mvnrepository.com/artifact/org.springframework.metrics/spring-metrics -->
+
+
+		<!-- Metrics/Prometheus -->
+
+		<!--
+		https://mvnrepository.com/artifact/org.openapitools/jackson-databind-nullable -->
+		<dependency>
+			<groupId>org.openapitools</groupId>
+			<artifactId>jackson-databind-nullable</artifactId>
+			<version>0.2.6</version>
+		</dependency>
+
+
+		<dependency>
+
+			<groupId>com.dunkware.street</groupId>
+			<artifactId>dunkware-street-model</artifactId>
+			<version>1.0.0-SNAPSHOT</version>
+		</dependency>
+	</dependencies>
+
+
+	<build>
+		<plugins>
+
+			<plugin>
+				<groupId>org.openapitools</groupId>
+				<artifactId>openapi-generator-maven-plugin</artifactId>
+				<version>7.1.0</version>
+				<executions>
+					<execution>
+						<goals>
+							<goal>generate</goal>
+						</goals>
+						<configuration>
+							<inputSpec>
+								${project.basedir}/model.yml
+							</inputSpec>
+
+							<generatorName>spring</generatorName>
+
+							<templateResourcePath>
+								${project.basedir}/src/main/resources/templates/JavaSpring</templateResourcePath>
+							<generateApis>true</generateApis>
+							<generateModels>false</generateModels>
+<output>${project.basedir}</output>
+
+							<apiPackage>com.dunkware.street.server</apiPackage>
+							<modelPackage>com.dunkware.street.model</modelPackage>
+							<sourceFolder>src/main/java</sourceFolder>
+							<supportingFilesToGenerate>
+								ApiUtil.java
+							</supportingFilesToGenerate>
+							<configOptions>
+								<library>spring-boot</library>
+								<oas3>true</oas3>
+								<documentationProvider>source</documentationProvider>
+								<useSpringController>true</useSpringController>
+								<useSpringBoot3>true</useSpringBoot3>
+								<useSpringfox>false</useSpringfox>
+								<dateLibrary>java17</dateLibrary>
+								<interfaceOnly>true</interfaceOnly>
+								<springBoot3>true</springBoot3>
+								
+								<java17>true</java17>
+
+								<delegatePattern>true</delegatePattern>
+							</configOptions>
+						</configuration>
+					</execution>
+				</executions>
+			</plugin>
+
+		</plugins>
+	</build>
+
+</project>

@@ -86,5 +86,13 @@ public class EntityStatCacheService {
 		runner.start();
 
 	}
+	
+	public List<EntityStatCacheBean> getCacheBeans() { 
+		List<EntityStatCacheBean> beans = new ArrayList<EntityStatCacheBean>();
+		for (EntityStatCache cache : cacheMap.values()) {
+			beans.add(cache.getBean());
+		}
+		return beans;
+	}
 
 }

@@ -1,15 +1,19 @@
-echo "worker server"
-cd /Users/duncankrebs/dunkworld/street/cloud/branches/main/street-cloud/projects/dunkware-trade-service-worker-server
+echo "Tick Service"
+cd projects/dunkware-street-tick/projects/dunkware-trade-service-tick-server
 ./test.sh
-echo "strem server"
-cd /Users/duncankrebs/dunkworld/street/cloud/branches/main/street-cloud/projects/dunkware-trade-service-stream-server
+cd ../../../../
+echo "Street Gateway" 
+cd projects/dunkware-trade-service-web-server
 ./test.sh
-echo "web servier "
-cd /Users/duncankrebs/dunkworld/street/cloud/branches/main/street-cloud/projects/dunkware-trade-service-web-server
+cd ../
+cd dunkware-trade-service-worker-server
 ./test.sh
-echo "tick server"
-cd /Users/duncankrebs/dunkworld/street/cloud/branches/main/street-cloud/projects/dunkware-street-tick/projects/dunkware-trade-service-tick-server/
+cd ../
+cd dunkware-trade-service-stream-server
 ./test.sh
-#echo "trade servier"
-#cd /Users/duncankrebs/dunkworld/street/cloud/branches/main/street-cloud/projects/dunkware-trade-service-beach-server
-#./test.sh
+cd ..
+cd dunkware-street-data/services/injest
+./test.sh
+cd ..
+cd stats
+./test.sh

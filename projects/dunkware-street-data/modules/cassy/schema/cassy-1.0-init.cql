@@ -1,25 +1,25 @@
-CREATE KEYSPACE IF NOT EXISTS stream_data WITH replication = {'class': 'SimpleStrategy',
+CREATE KEYSPACE IF NOT EXISTS dunkstreet WITH replication = {'class': 'SimpleStrategy',
     'replication_factor' : 2};
 
-CREATE TYPE "stream_data"."entity_var_stats"
+CREATE TYPE "dunkstreet"."entity_var_stats"
     (
         "stats" Map<int,double>,
         "times" Map<int,time>
     );
 
-CREATE TABLE IF NOT EXISTS "stream_data"."entity_stats"
+CREATE TABLE IF NOT EXISTS "dunkstreet"."entity_stats"
 (
     "stream"    int,
     "entity"    int,
     "date"      date,
     "signals" frozen<Map<int,int>>,
-    "vars"  frozen<Map<int,"stream_data"."entity_var_stats">>,
+    "vars"  frozen<Map<int,"dunkstreet"."entity_var_stats">>,
 
     PRIMARY KEY ((stream, entity), date),
 
 );
 
-CREATE TABLE IF NOT EXISTS "stream_data"."session_entity_stat"
+CREATE TABLE IF NOT EXISTS "dunkstreet"."session_entity_stat"
 (
     "stream"  int,
     "date"    date,
@@ -35,21 +35,21 @@ CREATE TABLE IF NOT EXISTS "stream_data"."session_entity_stat"
 
 
 
-CREATE TABLE IF NOT EXISTS "stream_data"."session_entity_stats"
+CREATE TABLE IF NOT EXISTS "dunkstreet"."session_entity_stats"
 (
 
     "stream"    int,
     "date"      date,
     "entity"    int,
     "signals"   frozen<Map<int,int>>,
-    "vars"      frozen<Map<int,"stream_data"."entity_var_stats">>,
+    "vars"      frozen<Map<int,"dunkstreet"."entity_var_stats">>,
 
     PRIMARY KEY ((stream, date), entity),
 
 );
 
 
-CREATE TABLE IF NOT EXISTS "stream_data"."stream_session"
+CREATE TABLE IF NOT EXISTS "dunkstreet"."stream_session"
 (
     "stream"  int,
     "date"    date,
@@ -61,9 +61,10 @@ CREATE TABLE IF NOT EXISTS "stream_data"."stream_session"
     "stop"    time,
 
     PRIMARY KEY ((stream), date),
-
+	
 )
 WITH CLUSTERING ORDER BY (date DESC);
+
 
 
 
