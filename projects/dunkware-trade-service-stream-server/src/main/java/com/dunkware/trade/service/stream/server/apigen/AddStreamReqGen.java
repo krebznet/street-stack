@@ -23,10 +23,11 @@ public class AddStreamReqGen {
 
 	
 	public static void main(String[] args) {
-		
+	AddStreamReqGen gen = new AddStreamReqGen();
+	gen.gen();
 		
 	}
-	public static final String DEV1 = "/Users/duncankrebs/dunkware/street/dunkware-stream-us-equity";
+	public static final String DEV1 = "/Users/duncankrebs/worksapces/dunkhub/runtime-StreetScript/equity-script";
 
 	@PostConstruct
 	void gen() {
@@ -48,7 +49,7 @@ public class AddStreamReqGen {
 			spec.setSchedule(true);
 			spec.setTimeZone(DTimeZone.NewYork);
 			spec.setVersion(1);
-			spec.setTickers("Alpha3500");
+			spec.setTickers("Test1");
 			spec.setName("us_equity");;
 			req.setSpec(spec);
 			String out = DJson.serialize(req);

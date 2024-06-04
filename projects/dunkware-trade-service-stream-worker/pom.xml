@@ -111,11 +111,7 @@
 
 		</dependency>
 
-		<dependency>
-			<groupId>org.springframework.boot</groupId>
-			<artifactId>spring-boot</artifactId>
-			<version>2.7.1</version>
-		</dependency>
+		
 		<!-- https://mvnrepository.com/artifact/org.springframework/spring-web -->
 		<!-- https://mvnrepository.com/artifact/org.springframework/spring-web -->
 		<!-- <dependency> <groupId>org.springframework</groupId>
@@ -126,19 +122,8 @@
 		<!-- Dunkware Dependencies -->
 
 
-		<dependency>
-			<groupId>org.reflections</groupId>
-			<artifactId>reflections</artifactId>
-			<version>0.9.10</version>
-		</dependency>
 
-
-		<dependency>
-			<groupId>com.dunkware.common</groupId>
-			<artifactId>dunkware-common-util</artifactId>
-			<version>1.3.0-SNAPSHOT</version>
-		</dependency>
-
+		
 		<dependency>
 			<groupId>junit</groupId>
 			<artifactId>junit</artifactId>
@@ -161,11 +146,6 @@
 		</dependency>
 
 
-		<dependency>
-			<groupId>javax.annotation</groupId>
-			<artifactId>javax.annotation-api</artifactId>
-			<version>1.2</version>
-		</dependency>
 
 
 		<dependency>
@@ -179,55 +159,6 @@
 
 	</dependencies>
 
-
-	<build>
-		<pluginManagement>
-			<!-- lock down plugins versions to avoid using Maven defaults (may
-			be 
-				moved to parent pom) -->
-			<plugins>
-				<plugin>
-					<artifactId>maven-clean-plugin</artifactId>
-					<version>3.1.0</version>
-				</plugin>
-				<plugin>
-					<artifactId>maven-site-plugin</artifactId>
-					<version>3.7.1</version>
-				</plugin>
-				<plugin>
-					<artifactId>maven-project-info-reports-plugin</artifactId>
-					<version>3.0.0</version>
-				</plugin>
-				<!-- see
-				http://maven.apache.org/ref/current/maven-core/default-bindings.html#Plugin_bindings_for_jar_packaging -->
-
-				<plugin>
-					<artifactId>maven-resources-plugin</artifactId>
-					<version>3.0.2</version>
-				</plugin>
-				<plugin>
-					<artifactId>maven-compiler-plugin</artifactId>
-					<version>3.8.0</version>
-				</plugin>
-				<plugin>
-					<artifactId>maven-surefire-plugin</artifactId>
-					<version>2.22.1</version>
-				</plugin>
-				<plugin>
-					<artifactId>maven-jar-plugin</artifactId>
-					<version>3.0.2</version>
-				</plugin>
-				<plugin>
-					<artifactId>maven-install-plugin</artifactId>
-					<version>2.5.2</version>
-				</plugin>
-				<plugin>
-					<artifactId>maven-deploy-plugin</artifactId>
-					<version>2.8.2</version>
-				</plugin>
-			</plugins>
-		</pluginManagement>
-	</build>
-
+    
 
 </project>

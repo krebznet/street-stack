@@ -3,8 +3,6 @@ package com.dunkware.spring.runtime.services;
 import java.io.File;
 import java.io.FileInputStream;
 
-import javax.annotation.PostConstruct;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.slf4j.MarkerFactory;
@@ -12,6 +10,7 @@ import org.springframework.stereotype.Service;
 
 import ch.qos.logback.classic.LoggerContext;
 import ch.qos.logback.classic.joran.JoranConfigurator;
+import jakarta.annotation.PostConstruct;
 
 @Service
 public class LoggingService {

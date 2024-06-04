@@ -1,11 +1,11 @@
 openapi: 3.0.0
 paths: {}
 info:
-  title: Generic Data Schema
+  title: Dunk Schema
   version: 1.0.0
 components:
   schemas:
-    GenDate:
+    DunkDate:
       type: object
       properties:
         year:
@@ -26,7 +26,7 @@ components:
         month: 5
         dayOfMonth: 25
 
-    GenTime:
+    DunkTime:
       type: object
       properties:
         hour:
@@ -51,7 +51,7 @@ components:
         second: 0
         timeZone: "UTC"
 
-    GenTimeUnit:
+    DunkTimeUnit:
       type: object
       properties:
         seconds:
@@ -72,13 +72,13 @@ components:
         hours: 2
         days: 1
 
-    GenDateTime:
+    DunkDateTime:
       type: object
       properties:
         date:
-          $ref: '#/components/schemas/GenDate'
+          $ref: '#/components/schemas/DunkDate'
         time:
-          $ref: '#/components/schemas/GenTime'
+          $ref: '#/components/schemas/DunkTime'
       example:
         date:
           year: 2024
@@ -90,17 +90,17 @@ components:
           second: 0
           timeZone: "UTC"
 
-    GenTimeRangeType:
+    DunkTimeRangeType:
       type: string
       enum:
         - Absolute
         - Relative
 
-    GenTimeRange:
+    DunkTimeRange:
       type: object
       properties:
         type:
-          $ref: '#/components/schemas/GenTimeRangeType'
+          $ref: '#/components/schemas/DunkTimeRangeType'
         startDate:
           type: string
           format: date-time
@@ -113,12 +113,12 @@ components:
           type: integer
           description: The value for the relative time range.
         relativeTimeUnit:
-          $ref: '#/components/schemas/GenTimeUnit'
+          $ref: '#/components/schemas/DunkTimeUnit'
         hasTimeWindow:
           type: boolean
           description: Boolean indicating if a specific time window is included in the range.
         timeWindow:
-          $ref: '#/components/schemas/GenTimeRange'
+          $ref: '#/components/schemas/DunkTimeRange'
       required:
         - type
       example:
@@ -132,18 +132,18 @@ components:
           startDate: "2023-05-25T14:00:00Z"
           endDate: "2023-05-25T14:30:00Z"
 
-    GenDateTimeRange:
+    DunkDateTimeRange:
       type: object
       properties:
         start:
-          $ref: '#/components/schemas/GenDateTime'
+          $ref: '#/components/schemas/DunkDateTime'
         end:
-          $ref: '#/components/schemas/GenDateTime'
+          $ref: '#/components/schemas/DunkDateTime'
         hasTimeWindow:
           type: boolean
           description: Boolean indicating if a specific time window is included in the range.
         timeWindow:
-          $ref: '#/components/schemas/GenTimeRange'
+          $ref: '#/components/schemas/DunkTimeRange'
       required:
         - start
         - end
@@ -174,18 +174,18 @@ components:
           startDate: "2023-05-25T14:00:00Z"
           endDate: "2023-05-25T14:30:00Z"
 
-    GenAbsoluteDateRange:
+    DunkAbsoluteDateRange:
       type: object
       properties:
         startDate:
-          $ref: '#/components/schemas/GenDate'
+          $ref: '#/components/schemas/DunkDate'
         endDate:
-          $ref: '#/components/schemas/GenDate'
+          $ref: '#/components/schemas/DunkDate'
         hasTimeWindow:
           type: boolean
           description: Boolean indicating if a specific time window is included in the range.
         timeWindow:
-          $ref: '#/components/schemas/GenTimeRange'
+          $ref: '#/components/schemas/DunkTimeRange'
       required:
         - startDate
         - endDate
@@ -204,18 +204,18 @@ components:
           startDate: "2023-05-25T14:00:00Z"
           endDate: "2023-05-25T14:30:00Z"
 
-    GenAbsoluteTimeRange:
+    DunkAbsoluteTimeRange:
       type: object
       properties:
         startTime:
-          $ref: '#/components/schemas/GenTime'
+          $ref: '#/components/schemas/DunkTime'
         endTime:
-          $ref: '#/components/schemas/GenTime'
+          $ref: '#/components/schemas/DunkTime'
         hasTimeWindow:
           type: boolean
           description: Boolean indicating if a specific time window is included in the range.
         timeWindow:
-          $ref: '#/components/schemas/GenTimeRange'
+          $ref: '#/components/schemas/DunkTimeRange'
       required:
         - startTime
         - endTime
@@ -236,7 +236,7 @@ components:
           startDate: "2023-05-25T14:00:00Z"
           endDate: "2023-05-25T14:30:00Z"
 
-    GenOperator:
+    DunkOperator:
       type: string
       enum:
         - greater
@@ -248,7 +248,7 @@ components:
       description: Enumeration of comparison operators.
       example: greater
 
-    GenFunction:
+    DunkStatFunction:
       type: string
       enum:
         - percentChange
@@ -259,20 +259,20 @@ components:
       description: Enumeration of functions for computing math expressions.
       example: average
 
-    GenDataType:
+    DunkDataType:
       type: string
       enum:
         - Integer
         - Double
         - String
         - Boolean
-        - GenTime
-        - GenDate
-        - GenDateTime
-      description: Enumeration of generic data types.
+        - DunkTime
+        - DunkDate
+        - DunkDateTime
+      description: Enumeration of Dunkeric data types.
       example: Integer
 
-    GenDataFormat:
+    DunkDataFormat:
       type: object
       properties:
         formatType:
@@ -301,7 +301,7 @@ components:
         formatType: roundToDecimalPlaces
         precision: 2
 
-    GenAttributeType:
+    DunkTypeAttribute:
       type: object
       properties:
         identifier:
@@ -311,13 +311,13 @@ components:
           type: string
           description: User-friendly name for the attribute.
         dataType:
-          $ref: '#/components/schemas/GenDataType'
+          $ref: '#/components/schemas/DunkDataType'
           description: The data type of the attribute.
         dataFormat:
-          $ref: '#/components/schemas/GenDataFormat'
+          $ref: '#/components/schemas/DunkDataFormat'
           description: The data format of the attribute.
 
-    GenEntityType:
+    DunkType:
       type: object
       properties:
         id:
@@ -332,14 +332,14 @@ components:
         attributes:
           type: array
           items:
-            $ref: '#/components/schemas/GenAttributeType'
+            $ref: '#/components/schemas/DunkTypeAttribute'
           description: A list of attributes for the entity type.
 
-    GenEntity:
+    DunkBean:
       type: object
       properties:
         type:
-          $ref: '#/components/schemas/GenEntityType'
+          $ref: '#/components/schemas/DunkType'
           description: The type of the entity.
         values:
           type: object
@@ -349,7 +349,7 @@ components:
               - type: number
               - type: string
               - type: boolean
-              - $ref: '#/components/schemas/GenTime'
-              - $ref: '#/components/schemas/GenDate'
-              - $ref: '#/components/schemas/GenDateTime'
+              - $ref: '#/components/schemas/DunkTime'
+              - $ref: '#/components/schemas/DunkDate'
+              - $ref: '#/components/schemas/DunkDateTime'
           description: A map of attribute identifiers to their actual values.

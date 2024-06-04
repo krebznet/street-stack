@@ -15,10 +15,8 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.dunkware.common.util.json.DJson;
 import com.dunkware.spring.cluster.DunkNet;
-import com.dunkware.trade.service.stream.descriptor.StreamDescriptor;
 import com.dunkware.trade.service.stream.descriptor.StreamDescriptors;
 import com.dunkware.trade.service.stream.json.controller.spec.StreamControllerSpec;
-import com.dunkware.trade.service.stream.server.blueprint.StreamBlueprintService;
 import com.dunkware.trade.service.stream.server.repository.StreamEntity;
 import com.dunkware.trade.service.stream.server.repository.StreamRepo;
 import com.dunkware.trade.service.stream.server.repository.StreamVersionEntity;
@@ -45,8 +43,7 @@ public class StreamControllerService {
 	@Autowired
 	private StreamTickService tickService; 
 	
-	@Autowired
-	private StreamBlueprintService blueprintService; 
+	
 	
 	@Value("${streams.schedule.enable}")
 	private boolean enableSchedule = true; 

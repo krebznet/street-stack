@@ -10,7 +10,6 @@ import org.springframework.stereotype.Service;
 import com.dunkware.common.util.executor.DExecutor;
 import com.dunkware.spring.runtime.services.ExecutorService;
 import com.dunkware.trade.service.stream.json.controller.session.StreamSessionNodeBean;
-import com.dunkware.trade.service.stream.server.blueprint.StreamBlueprintService;
 import com.dunkware.trade.service.stream.server.controller.StreamControllerService;
 import com.dunkware.trade.service.stream.server.web.StreamWebService;
 import com.dunkware.trade.service.stream.server.web.components.EntitySessionVarGrid;
@@ -28,9 +27,6 @@ public class StreamWebServiceImpl implements StreamWebService  {
 	
 	@Autowired
 	private ExecutorService executorService; 
-	
-	@Autowired
-	private StreamBlueprintService blueprintService; 
 	
 	@Override
 	public ObservableElementList<StreamSessionNodeBean> getStreamNodes(String streamIdentifier) throws Exception {

@@ -8,7 +8,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 
 public class XScriptBundleTest {
 
-	public static final String DEV1 = "/Users/dkrebs/dunkware/dunkware-xscript-dev/git/dunkware-xscript-dev/xscript-dev-1";
+	public static final String DEV1 = "/Users/duncankrebs/worksapces/dunkhub/runtime-StreetScript/equity-script";
 	
 	
 	public static void main(String[] args) {

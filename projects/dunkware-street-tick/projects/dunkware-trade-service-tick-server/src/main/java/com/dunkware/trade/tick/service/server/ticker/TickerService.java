@@ -8,8 +8,6 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.concurrent.ConcurrentHashMap;
 
-import javax.annotation.PostConstruct;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,6 +21,8 @@ import com.dunkware.trade.tick.service.server.ticker.repsoitory.TickerListDoRepo
 import com.dunkware.trade.tick.service.server.ticker.repsoitory.TickerListSubscribeRepo;
 import com.dunkware.trade.tick.service.server.ticker.repsoitory.TickerListTickerDO;
 import com.dunkware.trade.tick.service.server.ticker.repsoitory.TickerRepository;
+
+import jakarta.annotation.PostConstruct;
 
 @Service
 @Profile("TickerService")

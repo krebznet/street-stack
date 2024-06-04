@@ -1,12 +1,12 @@
 package com.dunkware.spring.runtime.services;
 
-import javax.annotation.PostConstruct;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.dunkware.common.util.events.DEventNode;
 import com.dunkware.common.util.events.DEventTree;
+
+import jakarta.annotation.PostConstruct;
 
 @Service
 public class EventService {

@@ -5,7 +5,7 @@
 	<parent>
 		<groupId>org.springframework.boot</groupId>
 		<artifactId>spring-boot-starter-parent</artifactId>
-		<version>2.7.1</version>
+		<version>3.3.0</version>
 	</parent>
 	<groupId>com.dunkware.trade.service</groupId>
 	<artifactId>dunkware-trade-service-stream-server</artifactId>
@@ -15,7 +15,11 @@
 
 
 	<properties>
-		<java.version>11</java.version>
+		
+	
+		<java.version>17</java.version>
+		<maven.compiler.source>17</maven.compiler.source>
+		<maven.compiler.target>17</maven.compiler.target>
 		<org.mapstruct.version>1.4.2.Final</org.mapstruct.version>
 		<flyway.version>7.10.0</flyway.version>
 		<lombok.version>1.18.20</lombok.version>
@@ -49,7 +53,20 @@
 
 
 	<dependencies>
+		
+			 <dependency>
+      <groupId>com.mysql</groupId>
+      <artifactId>mysql-connector-j</artifactId>
+      <scope>runtime</scope>
+    </dependency>
 
+<!-- https://mvnrepository.com/artifact/org.projectlombok/lombok -->
+		<dependency>
+			<groupId>org.projectlombok</groupId>
+			<artifactId>lombok</artifactId>
+		
+			<scope>provided</scope>
+		</dependency>
 		<dependency>
 			<groupId>com.dunkware.stream.data</groupId>
 			<artifactId>data-lib-model</artifactId>
@@ -61,6 +78,21 @@
 			<artifactId>data-lib-codec</artifactId>
 			<version>1.0.0-SNAPSHOT</version>
 		</dependency>
+
+<!-- https://mvnrepository.com/artifact/org.springframework.boot/spring-boot-starter-web -->
+
+    <!-- Exclude the servlet-related dependencies from spring-boot-starter-web -->
+    <dependency>
+        <groupId>org.springframework.boot</groupId>
+        <artifactId>spring-boot-starter-web</artifactId>
+        <exclusions>
+            <exclusion>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-starter-tomcat</artifactId>
+            </exclusion>
+            <!-- Exclude any other servlet-related dependencies if needed -->
+        </exclusions>
+    </dependency>
 
 		<dependency>
 			<groupId>com.dunkware.stream.data</groupId>
@@ -142,11 +174,7 @@
 			<groupId>ch.qos.logback</groupId>
 			<artifactId>logback-core</artifactId>
 		</dependency>
-		<dependency>
-			<groupId>javax.xml.bind</groupId>
-			<artifactId>jaxb-api</artifactId>
-
-		</dependency>
+	
 
 
 		<dependency>
@@ -190,10 +218,7 @@
 			<scope>test</scope>
 		</dependency>
 		<!-- Spring Boot Actuator for Production Ready Features -->
-		<dependency>
-			<groupId>org.springframework.boot</groupId>
-			<artifactId>spring-boot-starter-actuator</artifactId>
-		</dependency>
+		
 		<!-- Prometheus -->
 		<dependency>
 			<groupId>io.micrometer</groupId>
@@ -214,11 +239,7 @@
 			<groupId>ch.qos.logback</groupId>
 			<artifactId>logback-core</artifactId>
 		</dependency>
-		<dependency>
-			<groupId>javax.xml.bind</groupId>
-			<artifactId>jaxb-api</artifactId>
-
-		</dependency>
+	
 
 		<dependency>
 			<groupId>com.dunkware.common</groupId>
@@ -232,11 +253,7 @@
 			<artifactId>fluent-logger</artifactId>
 			<version>0.3.4</version>
 		</dependency>
-		<dependency>
-			<groupId>com.sndyuk</groupId>
-			<artifactId>logback-more-appenders</artifactId>
-			<version>1.8.3</version>
-		</dependency>
+		
 		<!-- MongoDB Dependencies -->
 		<!-- <dependency> <groupId>org.mongodb</groupId>
 		<artifactId>mongo-java-driver</artifactId> 
@@ -251,28 +268,7 @@
 		<!-- GRPC Dependencies -->
 
 
-		<dependency>
-			<groupId>javax.annotation</groupId>
-			<artifactId>javax.annotation-api</artifactId>
-
-		</dependency>
-
-
-		<!-- https://mvnrepository.com/artifact/com.google.inject/guice -->
-
-		<!-- https://mvnrepository.com/artifact/com.google.inject/guice -->
-		<dependency>
-			<groupId>com.google.inject</groupId>
-			<artifactId>guice</artifactId>
-			<version>4.2.3</version>
-		</dependency>
-
-		<dependency>
-
-			<groupId>mysql</groupId>
-			<artifactId>mysql-connector-java</artifactId>
-
-		</dependency>
+	
 
 		<dependency>
 			<groupId>com.zaxxer</groupId>
@@ -291,11 +287,23 @@
 				</exclusion>
 			</exclusions>
 		</dependency>
+	<dependency>
+			<groupId>com.mysql</groupId>
+			<artifactId>mysql-connector-j</artifactId>
+		</dependency> 			
 
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-webflux</artifactId>
 		</dependency>
+		
+		<!-- https://mvnrepository.com/artifact/org.springframework.boot/spring-boot-starter-webflux -->
+<dependency>
+    <groupId>org.springframework.boot</groupId>
+    <artifactId>spring-boot-starter-webflux</artifactId>
+
+</dependency>
+
 
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
@@ -308,6 +316,12 @@
 			<scope>test</scope>
 		</dependency>
 
+<!-- https://mvnrepository.com/artifact/com.google.inject/guice -->
+<dependency>
+  <groupId>com.google.inject</groupId>
+  <artifactId>guice</artifactId>
+  <version>5.0.1</version>
+</dependency> 
 
 		<!-- GRPC DEPS -->
 

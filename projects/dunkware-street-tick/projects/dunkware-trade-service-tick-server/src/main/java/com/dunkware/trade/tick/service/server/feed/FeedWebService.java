@@ -2,8 +2,6 @@ package com.dunkware.trade.tick.service.server.feed;
 
 import java.util.List;
 
-import javax.annotation.PostConstruct;
-
 import org.slf4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Profile;
@@ -24,6 +22,8 @@ import com.dunkware.trade.tick.service.protocol.feed.TickFeedStartReq;
 import com.dunkware.trade.tick.service.protocol.feed.TickFeedStartResp;
 import com.dunkware.trade.tick.service.protocol.provider.TickProviderAddReq;
 import com.dunkware.trade.tick.service.protocol.provider.TickProviderAddResp;
+
+import jakarta.annotation.PostConstruct;
 
 @RestController
 @Profile("FeedWebService")

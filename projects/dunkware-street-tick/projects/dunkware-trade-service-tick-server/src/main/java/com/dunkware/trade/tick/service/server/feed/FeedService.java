@@ -6,8 +6,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
-import javax.annotation.PostConstruct;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.slf4j.Marker;
@@ -44,6 +42,8 @@ import com.dunkware.trade.tick.service.server.feed.repository.FeedRepository;
 import com.dunkware.trade.tick.service.server.ticker.repsoitory.TickerListSubscribeDO;
 import com.dunkware.trade.tick.service.server.ticker.repsoitory.TickerListSubscribeRepo;
 import com.dunkware.trade.tick.service.server.ticker.repsoitory.TickerListTickerDO;
+
+import jakarta.annotation.PostConstruct;
 
 @Component
 @Profile("FeedService")

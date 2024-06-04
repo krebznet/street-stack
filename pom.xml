@@ -87,7 +87,8 @@
 		<module>projects/dunkware-street-tick</module>
 		<module>projects/java-utils-parent</module>
 		<module>projects/java-generic-model</module>
-
+		<module>projects/dunkware-street-model</module>
+		<module>projects/dunkware-street-server</module>
 	</modules>
 	<build>
 		<!-- To define the plugin version in your parent POM -->

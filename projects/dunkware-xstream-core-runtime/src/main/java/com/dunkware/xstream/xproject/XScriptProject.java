@@ -13,6 +13,7 @@ import org.eclipse.xtext.resource.XtextResourceSet;
 
 import com.dunkware.common.util.helpers.DRandom;
 import com.dunkware.xstream.XScriptStandaloneSetup;
+import com.dunkware.xstream.XScriptStandaloneSetupGenerated;
 import com.dunkware.xstream.xScript.SignalType;
 import com.dunkware.xstream.xScript.VarType;
 import com.dunkware.xstream.xScript.XClassType;

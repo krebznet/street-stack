@@ -40,6 +40,7 @@ import com.dunkware.xstream.api.XStreamStatus;
 import com.dunkware.xstream.core.XStreamCore;
 import com.dunkware.xstream.core.XStreamImpl;
 
+
 public class StreamWorker implements DunkNetChannelHandler {
 
 	private StreamSessionWorkerStartReq req;
@@ -56,11 +57,11 @@ public class StreamWorker implements DunkNetChannelHandler {
 	//private boolean stopInvoked = false;
 	private volatile boolean stopComplete = false;
 
-	@Autowired
+	
 	private DunkNet dunkNet;
 
-	@Autowired
-	private ApplicationContext ac;
+	
+
 
 	private XStream stream;
 
@@ -76,10 +77,12 @@ public class StreamWorker implements DunkNetChannelHandler {
 
 	private List<StreamWorkerExtension> workerExtensions = new ArrayList<StreamWorkerExtension>();
 
-	@Autowired
+	
 	private ExecutorService executorService;
 
-	public void init() {
+	public void init(DunkNet dunkNet, ExecutorService service) {
+		this.executorService = service;
+		this.dunkNet = dunkNet; 
 		marker = MarkerFactory.getMarker("StreamWorker" + dunkNet.getId());
 	}
 	

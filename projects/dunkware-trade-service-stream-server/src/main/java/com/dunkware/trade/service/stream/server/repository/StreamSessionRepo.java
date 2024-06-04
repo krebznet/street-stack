@@ -2,12 +2,12 @@ package com.dunkware.trade.service.stream.server.repository;
 
 import java.time.LocalDate;
 
-import javax.transaction.Transactional;
+import org.springframework.data.repository.CrudRepository;
 
-import org.springframework.data.repository.PagingAndSortingRepository;
+import jakarta.transaction.Transactional;
 
 @Transactional
-public interface StreamSessionRepo extends PagingAndSortingRepository<StreamSessionEntity, Long> {
+public interface StreamSessionRepo extends CrudRepository<StreamSessionEntity, Long> {
 
 	public StreamSessionEntity findByDate(LocalDate date);
 	

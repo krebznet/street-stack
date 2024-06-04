@@ -13,7 +13,7 @@
 
 package com.dunkware.street;
 
-@jakarta.annotation.Generated(value = "org.openapitools.codegen.languages.JavaClientCodegen", date = "2024-06-03T04:16:57.420268-05:00[America/Chicago]", comments = "Generator version: 7.6.0")
+@jakarta.annotation.Generated(value = "org.openapitools.codegen.languages.JavaClientCodegen", date = "2024-06-04T00:15:25.695743-05:00[America/Chicago]", comments = "Generator version: 7.6.0")
 public class Pair {
     private String name = "";
     private String value = "";

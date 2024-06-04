@@ -3,12 +3,12 @@ package com.dunkware.trade.tick.service.server.polygon;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
-import javax.annotation.PostConstruct;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.dunkware.trade.tick.service.server.ticker.TickerService;
+
+import jakarta.annotation.PostConstruct;
 
 @Service()
 public class PolygonService {

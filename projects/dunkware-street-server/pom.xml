@@ -19,7 +19,8 @@
 	<properties>
 
 		<src.dir>src/main/java</src.dir>
-
+<java.version>17</java.version>
+	
 		<maven.compiler.source>17</maven.compiler.source>
 		<maven.compiler.target>17</maven.compiler.target>
 		<openapi-generator.version>7.6.0</openapi-generator.version>

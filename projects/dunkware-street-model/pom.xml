@@ -14,7 +14,8 @@
 	<description>Dunkware Street Model</description>
 
 	<properties>
-
+<java.version>17</java.version>
+		
 		<sourceDirectory>/src/mainjava</sourceDirectory>
 		<maven.compiler.source>17</maven.compiler.source>
 		<maven.compiler.target>17</maven.compiler.target>

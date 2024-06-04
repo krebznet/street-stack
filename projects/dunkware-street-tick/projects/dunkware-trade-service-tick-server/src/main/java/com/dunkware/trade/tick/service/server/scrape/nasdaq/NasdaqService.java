@@ -5,14 +5,14 @@ import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
-import javax.annotation.PostConstruct;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Service;
 
 import com.dunkware.trade.tick.service.server.ticker.repsoitory.TickerDO;
 import com.dunkware.trade.tick.service.server.ticker.repsoitory.TickerRepository;
+
+import jakarta.annotation.PostConstruct;
 
 @Profile("Nasdaq")
 @Service

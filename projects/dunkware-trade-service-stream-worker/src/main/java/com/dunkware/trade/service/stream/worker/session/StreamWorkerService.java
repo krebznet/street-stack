@@ -12,6 +12,7 @@ import org.springframework.stereotype.Service;
 
 import com.dunkware.spring.cluster.DunkNet;
 import com.dunkware.spring.cluster.anot.ADunkNetChannel;
+import com.dunkware.spring.runtime.services.ExecutorService;
 import com.dunkware.trade.service.stream.json.worker.stream.StreamSessionWorkerCreateReq;
 
 @Service()
@@ -23,24 +24,34 @@ public class StreamWorkerService  {
 	@Autowired
 	private DunkNet dunkNet;
 	
+	@Autowired
+	private ExecutorService executorService;
+	
+	
 	private Logger logger = LoggerFactory.getLogger(getClass());
 	private Marker marker = MarkerFactory.getMarker("StreamWorkerService");
 	
 	@PostConstruct
-	private void init() { 
+	private void init() {
 		try {
-			dunkNet.extensions().addExtension(this);	
+			dunkNet.extensions().addExtension(StreamWorkerService.this);	
 		} catch (Exception e) {
-			logger.error(marker, "Exception adding DunkNet Extensions " + e.toString());
+			logger.error("Exception adding stream worker service extensions "
+		+ e.toString(),e);
+			// TODO: handle exception
 		}
+		
+		
+		
+	
 		
 	}
 	
 	@ADunkNetChannel(label = "Create Stream Session Worker Channel")
 	public StreamWorker workerChannel(StreamSessionWorkerCreateReq req) throws Exception { 
 		StreamWorker node = new StreamWorker();
-		ac.getAutowireCapableBeanFactory().autowireBean(node);
-		node.init();
+		//ac.getAutowireCapableBeanFactory().autowireBean(node);
+		node.init(dunkNet,executorService);
 		return node;
 	}
 	

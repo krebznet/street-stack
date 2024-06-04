@@ -3,24 +3,14 @@ package com.dunkware.spring.cluster.core;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
-import java.util.Properties;
-import java.util.Set;
 import java.util.Vector;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.LinkedBlockingQueue;
 import java.util.concurrent.TimeUnit;
 
-import javax.annotation.PostConstruct;
-
-import org.apache.kafka.clients.admin.AdminClient;
-import org.apache.kafka.clients.admin.AdminClientConfig;
-import org.apache.kafka.clients.admin.ListTopicsOptions;
-import org.apache.kafka.clients.admin.ListTopicsResult;
-import org.apache.kafka.clients.admin.TopicListing;
 import org.apache.kafka.clients.consumer.ConsumerRecord;
 import org.apache.kafka.clients.producer.Producer;
-import org.apache.kafka.common.config.TopicConfig;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.slf4j.Marker;
@@ -30,9 +20,7 @@ import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Service;
 
-import com.dunkware.common.kafka.DKafkaException;
 import com.dunkware.common.kafka.admin.DKafkaAdminClient;
-import com.dunkware.common.kafka.admin.model.DKafkaNewTopic;
 import com.dunkware.common.kafka.consumer.DKafkaByteConsumer2;
 import com.dunkware.common.kafka.consumer.DKafkaByteHandler2;
 import com.dunkware.common.kafka.producer.DKafkaByteProducer;
@@ -66,6 +54,7 @@ import com.dunkware.spring.runtime.services.ExecutorService;
 
 import io.vertx.core.Future;
 import io.vertx.core.Promise;
+import jakarta.annotation.PostConstruct;
 
 @Service()
 @Profile("DunkNet")

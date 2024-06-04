@@ -9,7 +9,6 @@ import java.util.Set;
 import java.util.Vector;
 import java.util.concurrent.Semaphore;
 import java.util.concurrent.TimeUnit;
-import java.util.zip.ZipOutputStream;
 
 import org.slf4j.Logger;
 import org.slf4j.Marker;
@@ -40,8 +39,6 @@ import com.dunkware.trade.service.stream.json.controller.session.StreamSessionNo
 import com.dunkware.trade.service.stream.json.controller.spec.StreamControllerSpec;
 import com.dunkware.trade.service.stream.json.controller.spec.StreamControllerStats;
 import com.dunkware.trade.service.stream.json.controller.spec.StreamState;
-import com.dunkware.trade.service.stream.server.blueprint.StreamBlueprint;
-import com.dunkware.trade.service.stream.server.blueprint.StreamBlueprintService;
 import com.dunkware.trade.service.stream.server.controller.anot.AStreamControllerExt;
 import com.dunkware.trade.service.stream.server.controller.session.StreamSession;
 import com.dunkware.trade.service.stream.server.controller.session.StreamSessionException;
@@ -106,10 +103,9 @@ public class StreamController {
 	@Autowired
 	private StreamTickService tickService;
 
-	@Autowired
-	private StreamBlueprintService blueprintService;
+	
 
-	private StreamBlueprint blueprint = null;
+	//private StreamBlueprint blueprint = null;
 
 	@Autowired
 	private ConfigService config;
@@ -171,7 +167,7 @@ public class StreamController {
 		eventNode = eventService.getEventRoot().createChild(this);
 		eventNode.addEventHandler(this);
 		try {
-			this.blueprint = blueprintService.getBlueprint(ent.getName());
+			//this.blueprint = blueprintService.getBlueprint(ent.getName());
 		} catch (Exception e) {
 			logger.error(marker, "Can not find stream blueprint");
 			streamException = "Stream Blueprint get exep " + e.toString();
@@ -278,11 +274,7 @@ public class StreamController {
 		this.tickerList = fuck; 
 	}
 
-	public StreamBlueprint getBlueprint() {
-		return blueprint;
-	}
 	
-
 
 	public XScriptBundle getScriptBundle() {
 		return scriptBundle;
@@ -388,7 +380,7 @@ public class StreamController {
 		ac.getAutowireCapableBeanFactory().autowireBean(session);
 		List<XStreamSignalType> signalTypes = null;
 		try {
-			signalTypes = blueprint.getXStreamSignalTypes();
+			//signalTypes = blueprint.getXStreamSignalTypes();
 		} catch (Exception e) {
 			throw new StreamSessionException("Exception building XStreamSignalTypes " + e.toString());
 		}
@@ -405,6 +397,7 @@ public class StreamController {
 				try {
 					Thread.sleep(1000);
 					sleepCount++;
+					nodes = dunkNet.getNodes("StreamWorker");
 					if (sleepCount > 5) {
 						break;
 					}
@@ -415,8 +408,17 @@ public class StreamController {
 			if (nodes.size() == 0) {
 				logger.error(marker, "Exception Starting Stream {} Session, available worker nodes is 0", getName());
 				logger.error(marker, "Exxception did return {} nodes total" + nodes.size());
+				try {
+					Thread.sleep(10000);
+					
+				} catch (Exception e) {
+					// TODO: handle exception
+				}
+				
 				stats.setState(StreamState.StartException);
 				stats.setStartException("0 Workers Node Discovered");
+				
+				
 				session = null;
 				return;
 			}

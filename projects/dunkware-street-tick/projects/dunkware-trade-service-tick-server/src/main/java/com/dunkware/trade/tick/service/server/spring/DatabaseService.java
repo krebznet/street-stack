@@ -1,11 +1,6 @@
 package com.dunkware.trade.tick.service.server.spring;
 
 
-import java.sql.Connection;
-import java.sql.Statement;
-
-import javax.annotation.PostConstruct;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
@@ -13,6 +8,8 @@ import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Component;
 
 import com.dunkware.common.util.mysql.pool.MySqlConnectionPool;
+
+import jakarta.annotation.PostConstruct;
 
 @Component
 @Profile("DatabaseService")
