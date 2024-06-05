@@ -24,11 +24,13 @@ import com.dunkware.xstream.api.XStreamEntity;
 import com.dunkware.xstream.api.XStreamEntityListener;
 import com.dunkware.xstream.api.XStreamEntityVar;
 import com.dunkware.xstream.api.XStreamEntityVarListener;
+import com.dunkware.xstream.api.XStreamExpression;
 import com.dunkware.xstream.api.XStreamRowSignal;
 import com.dunkware.xstream.api.XStreamRowSnapshot;
 import com.dunkware.xstream.api.XStreamRuntimeException;
 import com.dunkware.xstream.model.metrics.XStreamRowMetrics;
 import com.dunkware.xstream.model.metrics.XStreamVarMetrics;
+import com.dunkware.xstream.xScript.ExpressionType;
 import com.dunkware.xstream.xScript.SignalType;
 import com.dunkware.xstream.xScript.VarType;
 
@@ -81,6 +83,17 @@ public class XStreamRowImpl implements XStreamEntity, XStreamEntityVarListener {
 			var.addVarListener(this);
 		}
 	}
+	
+	
+
+	@Override
+	public XStreamExpression createExpressoin(ExpressionType type) throws Exception {
+		XStreamExpression exp = stream.getInput().getRegistry().createVarExpression(type);
+		exp.init(this, type);
+		return exp;
+	}
+
+
 
 	@Override
 	public void dispose() {

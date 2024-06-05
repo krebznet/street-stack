@@ -16,7 +16,7 @@ public class CassySchema {
 	
 	public static class Keyspaces { 
 		
-		public static final String StreamData = "street_core";
+		public static final String StreamData = "dunkstreet";
 	}
 	
 	

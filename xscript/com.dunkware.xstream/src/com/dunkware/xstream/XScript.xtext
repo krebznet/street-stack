@@ -12,7 +12,7 @@ ScriptElement:
 	CoreAbstractElement;
 
 CoreAbstractElement:
-	VarType | XClassType | SignalType;
+	VarType | XClassType | SignalType | BotType;
 
 VarType:
 	VarStoreType | VarTransType;

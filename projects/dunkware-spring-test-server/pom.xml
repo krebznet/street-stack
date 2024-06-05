@@ -27,6 +27,11 @@
 	</dependencyManagement>
 	<dependencies>
 		<dependency>
+			<groupId>com.dunkware.street</groupId>
+	<artifactId>dunkware-street-server</artifactId>
+	<version>1.0.0-SNAPSHOT</version>
+		</dependency>
+		<dependency>
 
 			<groupId>com.dunkware.spring</groupId>
 			<artifactId>dunkware-spring-cluster</artifactId>

@@ -20,14 +20,6 @@ import com.dunkware.spring.test.server.model.PersonResponse;
 @CrossOrigin("*")
 public class Test {
 	
-	
-	@GetMapping(path = "/api/exchanges")
-	public List<ExchangeRef> exchanges() { 
-		List<ExchangeRef> results = new ArrayList<ExchangeRef>();
-		results.add(ExchangeRef.builder().id(1).identifier("NYSE/NASDAQ").name("US Stock Market").status("Open").tickers(4).build());
-		results.add(ExchangeRef.builder().id(1).identifier("NYSE/CBOE").name("US Options Market").status("Open").tickers(4).build());
-		return results;
-	}
 
 	@CrossOrigin("*")
 	@PostMapping(path = "/person")

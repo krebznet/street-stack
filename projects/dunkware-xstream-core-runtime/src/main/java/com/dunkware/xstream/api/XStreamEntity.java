@@ -7,6 +7,7 @@ import java.util.Map;
 
 import com.dunkware.common.tick.stream.TickStream;
 import com.dunkware.xstream.model.metrics.XStreamRowMetrics;
+import com.dunkware.xstream.xScript.ExpressionType;
 import com.dunkware.xstream.xScript.SignalType;
 
 public interface XStreamEntity {
@@ -40,6 +41,8 @@ public interface XStreamEntity {
 	
 	public Map<Integer,Object> varValues();
 	
+	
+	public XStreamExpression createExpressoin(ExpressionType type) throws Exception;
 	
 	/**
 	 * Returns all vars that are numeric
