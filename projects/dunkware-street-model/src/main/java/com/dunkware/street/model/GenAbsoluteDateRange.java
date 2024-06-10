@@ -39,7 +39,7 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
   GenAbsoluteDateRange.JSON_PROPERTY_HAS_TIME_WINDOW,
   GenAbsoluteDateRange.JSON_PROPERTY_TIME_WINDOW
 })
-@jakarta.annotation.Generated(value = "org.openapitools.codegen.languages.JavaClientCodegen", date = "2024-06-04T00:15:25.695743-05:00[America/Chicago]", comments = "Generator version: 7.6.0")
+@jakarta.annotation.Generated(value = "org.openapitools.codegen.languages.JavaClientCodegen", date = "2024-06-10T02:11:27.513314-05:00[America/Chicago]", comments = "Generator version: 7.6.0")
 public class GenAbsoluteDateRange {
   public static final String JSON_PROPERTY_START_DATE = "startDate";
   private GenDate startDate;

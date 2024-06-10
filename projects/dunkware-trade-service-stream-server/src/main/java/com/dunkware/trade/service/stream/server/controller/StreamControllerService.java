@@ -53,6 +53,7 @@ public class StreamControllerService {
 	
 	@PostConstruct
 	private void load() {
+		logger.error("danger");
 		logger.info("Starting Stream Controller Servie");
 		Thread runner = new Thread() { 
 			public void run() { 

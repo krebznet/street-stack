@@ -39,7 +39,7 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
   GenAttributeType.JSON_PROPERTY_DATA_TYPE,
   GenAttributeType.JSON_PROPERTY_DATA_FORMAT
 })
-@jakarta.annotation.Generated(value = "org.openapitools.codegen.languages.JavaClientCodegen", date = "2024-06-04T00:15:25.695743-05:00[America/Chicago]", comments = "Generator version: 7.6.0")
+@jakarta.annotation.Generated(value = "org.openapitools.codegen.languages.JavaClientCodegen", date = "2024-06-09T00:50:10.403226-05:00[America/Chicago]", comments = "Generator version: 7.6.0")
 public class GenAttributeType {
   public static final String JSON_PROPERTY_IDENTIFIER = "identifier";
   private String identifier;

@@ -5,6 +5,9 @@
 ## oneOf schemas
 * [BigDecimal](BigDecimal.md)
 * [Boolean](Boolean.md)
+* [GenDate](GenDate.md)
+* [GenDateTime](GenDateTime.md)
+* [GenTime](GenTime.md)
 * [Integer](Integer.md)
 * [String](String.md)
 
@@ -14,6 +17,9 @@
 import com.dunkware.street.model.GenEntityValuesValue;
 import com.dunkware.street.model.BigDecimal;
 import com.dunkware.street.model.Boolean;
+import com.dunkware.street.model.GenDate;
+import com.dunkware.street.model.GenDateTime;
+import com.dunkware.street.model.GenTime;
 import com.dunkware.street.model.Integer;
 import com.dunkware.street.model.String;
 
@@ -34,6 +40,27 @@ public class Example {
         exampleGenEntityValuesValue.setActualInstance(exampleBoolean);
         // to get back the Boolean set earlier
         Boolean testBoolean = (Boolean) exampleGenEntityValuesValue.getActualInstance();
+
+        // create a new GenDate
+        GenDate exampleGenDate = new GenDate();
+        // set GenEntityValuesValue to GenDate
+        exampleGenEntityValuesValue.setActualInstance(exampleGenDate);
+        // to get back the GenDate set earlier
+        GenDate testGenDate = (GenDate) exampleGenEntityValuesValue.getActualInstance();
+
+        // create a new GenDateTime
+        GenDateTime exampleGenDateTime = new GenDateTime();
+        // set GenEntityValuesValue to GenDateTime
+        exampleGenEntityValuesValue.setActualInstance(exampleGenDateTime);
+        // to get back the GenDateTime set earlier
+        GenDateTime testGenDateTime = (GenDateTime) exampleGenEntityValuesValue.getActualInstance();
+
+        // create a new GenTime
+        GenTime exampleGenTime = new GenTime();
+        // set GenEntityValuesValue to GenTime
+        exampleGenEntityValuesValue.setActualInstance(exampleGenTime);
+        // to get back the GenTime set earlier
+        GenTime testGenTime = (GenTime) exampleGenEntityValuesValue.getActualInstance();
 
         // create a new Integer
         Integer exampleInteger = new Integer();

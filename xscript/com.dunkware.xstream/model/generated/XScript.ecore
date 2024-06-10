@@ -145,7 +145,7 @@
   <eClassifiers xsi:type="ecore:EClass" name="BotWeigtedType" eSuperTypes="#//BotSetupElementType">
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="weighted" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
   </eClassifiers>
-  <eClassifiers xsi:type="ecore:EClass" name="BotType">
+  <eClassifiers xsi:type="ecore:EClass" name="BotType" eSuperTypes="#//CoreAbstractElement">
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="name" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="group" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="setupElements" upperBound="-1"

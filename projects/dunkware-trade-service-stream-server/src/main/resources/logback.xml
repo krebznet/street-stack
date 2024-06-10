@@ -18,7 +18,7 @@
 		<tag>myrock</tag>
 		<label>cluster</label>
 		<remoteHost>192.168.23.107</remoteHost>
-	<port>32759</port>
+	<port>30920</port>
 		<additionalField>
 			<key>node</key>
 			<value>stream</value>

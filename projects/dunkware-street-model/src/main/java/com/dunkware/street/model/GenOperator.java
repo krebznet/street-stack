@@ -26,7 +26,7 @@ import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;
 
 /**
- * Enumeration of comparison operators.
+ * Gets or Sets GenOperator
  */
 public enum GenOperator {
   
@@ -36,11 +36,7 @@ public enum GenOperator {
   
   GREATEROREQUAL("greaterOrEqual"),
   
-  LESSOREQUAL("lessOrEqual"),
-  
-  NOTEQUAL("notEqual"),
-  
-  CONTAINS("contains");
+  LESSOREQUAL("lessOrEqual");
 
   private String value;
 

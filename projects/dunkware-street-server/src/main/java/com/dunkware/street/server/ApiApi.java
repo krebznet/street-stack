@@ -27,7 +27,7 @@ import java.util.Map;
 import java.util.Optional;
 import jakarta.annotation.Generated;
 
-@Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2024-06-04T00:15:33.482575-05:00[America/Chicago]")
+@Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2024-06-10T02:12:28.088965-05:00[America/Chicago]")
 @Validated
 @Controller
 public interface ApiApi {

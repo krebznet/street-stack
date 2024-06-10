@@ -1,6 +1,7 @@
 package com.dunkware.trade.service.tick.client.impl;
 
 import java.util.List;
+import java.util.logging.Logger;
 
 import com.dunkware.common.util.helpers.DHttpHelper;
 import com.dunkware.common.util.json.DJson;
@@ -80,6 +81,7 @@ public class TickServiceClientImpl implements TickServiceClient {
 			String endpoint = this.endpoint + "/ticker/echo?name=hello";
 			DHttpHelper.getURLContent(endpoint);
 		} catch (Exception e) {
+			
 			throw new Exception("Echo request failed " + e.toString());
 		}
 	}

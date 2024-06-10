@@ -1,4 +1,4 @@
-openapi: 3.0.6
+openapi: 3.0.2
 info:
   title: Dunkware Street Model
   description: Schema for Dunkware Street Model components.
@@ -202,6 +202,19 @@ paths:
 
 components:
   schemas:
+    GenDataType:
+      type: string
+      enum:
+        - Integer
+        - Double
+        - String
+        - Boolean
+        - GenTime
+        - GenDate
+        - GenDateTime
+      description: Enumeration of generic data types.
+      example: Integer
+
     ExchangeRef:
       type: object
       properties:
@@ -271,6 +284,58 @@ components:
         - sessionCount
         - baseVersion
 
+    Ticker:
+      type: object
+      properties:
+        id:
+          type: integer
+          description: Numeric identifier for the ticker
+        symbol:
+          type: string
+          description: Symbol of the ticker
+        name:
+          type: string
+          description: Name of the ticker
+        dateAdded:
+          type: string
+          description: Date when the ticker was added
+        versionAdded:
+          type: integer
+          description: Version number when the ticker was added
+      required:
+        - id
+        - symbol
+        - name
+        - dateAdded
+        - versionAdded
+    GenDataFormat:
+      type: object
+      properties:
+        formatType:
+          type: string
+          enum:
+            - roundToDecimalPlaces
+            - displayAsPercent
+            - addCommas
+            - truncateString
+            - currency
+            - abbreviateNumber
+          description: The type of data formatting to apply.
+        precision:
+          type: integer
+          description: Number of decimal places for rounding (used with roundToDecimalPlaces).
+        truncateLength:
+          type: integer
+          description: Maximum length for truncating strings (used with truncateString).
+        currencySymbol:
+          type: string
+          description: Symbol for currency formatting (used with currency).
+        abbreviationStyle:
+          type: string
+          description: Style for abbreviating large numbers (used with abbreviateNumber).
+      example:
+        formatType: roundToDecimalPlaces
+        precision: 2
     TickerVariable:
       type: object
       properties:
@@ -305,6 +370,9 @@ components:
             - type: number
             - type: string
             - type: boolean
+            - $ref: '#/components/schemas/GenTime'
+            - $ref: '#/components/schemas/GenDate'
+            - $ref: '#/components/schemas/GenDateTime'
           description: Value of the ticker variable, type depends on the dataType field
       required:
         - id
@@ -668,111 +736,3 @@ components:
         - less
         - greaterOrEqual
         - lessOrEqual
-        - notEqual
-        - contains
-      description: Enumeration of comparison operators.
-      example: greater
-
-    GenFunction:
-      type: string
-      enum:
-        - percentChange
-        - difference
-        - average
-        - max
-        - min
-      description: Enumeration of functions for computing math expressions.
-      example: average
-
-    GenDataType:
-      type: string
-      enum:
-        - Integer
-        - Double
-        - String
-        - Boolean
-        - GenTime
-        - GenDate
-        - GenDateTime
-      description: Enumeration of generic data types.
-      example: Integer
-
-    GenDataFormat:
-      type: object
-      properties:
-        formatType:
-          type: string
-          enum:
-            - roundToDecimalPlaces
-            - displayAsPercent
-            - addCommas
-            - truncateString
-            - currency
-            - abbreviateNumber
-          description: The type of data formatting to apply.
-        precision:
-          type: integer
-          description: Number of decimal places for rounding (used with roundToDecimalPlaces).
-        truncateLength:
-          type: integer
-          description: Maximum length for truncating strings (used with truncateString).
-        currencySymbol:
-          type: string
-          description: Symbol for currency formatting (used with currency).
-        abbreviationStyle:
-          type: string
-          description: Style for abbreviating large numbers (used with abbreviateNumber).
-      example:
-        formatType: roundToDecimalPlaces
-        precision: 2
-
-    GenAttributeType:
-      type: object
-      properties:
-        identifier:
-          type: string
-          description: Unique string identifier for the attribute.
-        name:
-          type: string
-          description: User-friendly name for the attribute.
-        dataType:
-          $ref: '#/components/schemas/GenDataType'
-          description: The data type of the attribute.
-        dataFormat:
-          $ref: '#/components/schemas/GenDataFormat'
-          description: The data format of the attribute.
-
-    GenEntityType:
-      type: object
-      properties:
-        id:
-          type: integer
-          description: The numeric ID of the entity type.
-        identifier:
-          type: string
-          description: Unique string identifier for the entity type.
-        name:
-          type: string
-          description: User-friendly name for the entity type.
-        attributes:
-          type: array
-          items:
-            $ref: '#/components/schemas/GenAttributeType'
-          description: A list of attributes for the entity type.
-
-    GenEntity:
-      type: object
-      properties:
-        type:
-          $ref: '#/components/schemas/GenEntityType'
-          description: The type of the entity.
-        values:
-          type: object
-          additionalProperties:
-            oneOf:
-              - type: integer
-              - type: number
-              - type: string
-              - type: boolean
-      
-          description: A map of attribute identifiers to their actual values.

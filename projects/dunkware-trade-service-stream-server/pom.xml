@@ -15,8 +15,8 @@
 
 
 	<properties>
-		
-	
+
+
 		<java.version>17</java.version>
 		<maven.compiler.source>17</maven.compiler.source>
 		<maven.compiler.target>17</maven.compiler.target>
@@ -54,17 +54,26 @@
 
 	<dependencies>
 		
-			 <dependency>
-      <groupId>com.mysql</groupId>
-      <artifactId>mysql-connector-j</artifactId>
-      <scope>runtime</scope>
-    </dependency>
 
-<!-- https://mvnrepository.com/artifact/org.projectlombok/lombok -->
+
+		<!-- https://mvnrepository.com/artifact/jakarta.servlet/jakarta.servlet-api -->
+<dependency>
+    <groupId>jakarta.servlet</groupId>
+    <artifactId>jakarta.servlet-api</artifactId>
+    <version>6.0.0</version>
+    <scope>provided</scope>
+</dependency>
+		<dependency>
+			<groupId>com.mysql</groupId>
+			<artifactId>mysql-connector-j</artifactId>
+			<scope>runtime</scope>
+		</dependency>
+
+		<!-- https://mvnrepository.com/artifact/org.projectlombok/lombok -->
 		<dependency>
 			<groupId>org.projectlombok</groupId>
 			<artifactId>lombok</artifactId>
-		
+
 			<scope>provided</scope>
 		</dependency>
 		<dependency>
@@ -79,20 +88,29 @@
 			<version>1.0.0-SNAPSHOT</version>
 		</dependency>
 
-<!-- https://mvnrepository.com/artifact/org.springframework.boot/spring-boot-starter-web -->
+		<!--
+		https://mvnrepository.com/artifact/org.springframework.boot/spring-boot-starter-web -->
 
-    <!-- Exclude the servlet-related dependencies from spring-boot-starter-web -->
-    <dependency>
-        <groupId>org.springframework.boot</groupId>
-        <artifactId>spring-boot-starter-web</artifactId>
-        <exclusions>
+		<!-- Exclude the servlet-related dependencies from
+		spring-boot-starter-web -->
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-web</artifactId>
+			<exclusions>
+				<exclusion>
+					<groupId>org.springframework.boot</groupId>
+					<artifactId>spring-boot-starter-tomcat</artifactId>
+				</exclusion>
+		
+            <!-- avoid: LoggerFactory is not a Logback LoggerContext but Logback is on the classpath. on run with vscode -->
             <exclusion>
-                <groupId>org.springframework.boot</groupId>
-                <artifactId>spring-boot-starter-tomcat</artifactId>
+                <groupId>ch.qos.logback</groupId>
+                <artifactId>logback-classic</artifactId>
             </exclusion>
-            <!-- Exclude any other servlet-related dependencies if needed -->
-        </exclusions>
-    </dependency>
+        
+				<!-- Exclude any other servlet-related dependencies if needed -->
+			</exclusions>
+		</dependency>
 
 		<dependency>
 			<groupId>com.dunkware.stream.data</groupId>
@@ -101,8 +119,7 @@
 		</dependency>
 
 		<!-- data-common -->
-		
-	
+
 
 		<dependency>
 			<groupId>com.dunkware.trade.service</groupId>
@@ -121,12 +138,41 @@
 			<groupId>com.dunkware.spring</groupId>
 			<artifactId>dunkware-spring-cluster</artifactId>
 			<version>1.0.0-SNAPSHOT</version>
+			<exclusions>
+				<exclusion>
+					<groupId>commons-logging</groupId>
+					<artifactId>commons-logging</artifactId>
+				</exclusion>
+			
+		
+            <!-- avoid: LoggerFactory is not a Logback LoggerContext but Logback is on the classpath. on run with vscode -->
+            <exclusion>
+                <groupId>ch.qos.logback</groupId>
+                <artifactId>logback-classic</artifactId>
+            </exclusion>
+			</exclusions>
+			
 		</dependency>
 
 		<dependency>
 			<groupId>com.dunkware.spring</groupId>
 			<artifactId>dunkware-spring-runtime</artifactId>
 			<version>1.0.0-SNAPSHOT</version>
+			<exclusions>
+				<exclusion>
+					<groupId>commons-logging</groupId>
+					<artifactId>commons-logging</artifactId>
+				</exclusion>
+			
+		
+            <!-- avoid: LoggerFactory is not a Logback LoggerContext but Logback is on the classpath. on run with vscode -->
+            <exclusion>
+                <groupId>ch.qos.logback</groupId>
+                <artifactId>logback-classic</artifactId>
+            </exclusion>
+            
+			</exclusions>
+			
 		</dependency>
 
 
@@ -174,8 +220,12 @@
 			<groupId>ch.qos.logback</groupId>
 			<artifactId>logback-core</artifactId>
 		</dependency>
-	
-
+		<!-- https://mvnrepository.com/artifact/org.slf4j/slf4j-api -->
+		<dependency>
+			<groupId>org.slf4j</groupId>
+			<artifactId>slf4j-api</artifactId>
+		
+		</dependency>
 
 		<dependency>
 			<groupId>com.sndyuk</groupId>
@@ -207,7 +257,7 @@
 			<artifactId>mapstruct</artifactId>
 			<version>${org.mapstruct.version}</version>
 		</dependency>
-		
+
 
 		<!-- Spring Boot Starter Dependencies -->
 
@@ -218,7 +268,7 @@
 			<scope>test</scope>
 		</dependency>
 		<!-- Spring Boot Actuator for Production Ready Features -->
-		
+
 		<!-- Prometheus -->
 		<dependency>
 			<groupId>io.micrometer</groupId>
@@ -239,7 +289,7 @@
 			<groupId>ch.qos.logback</groupId>
 			<artifactId>logback-core</artifactId>
 		</dependency>
-	
+
 
 		<dependency>
 			<groupId>com.dunkware.common</groupId>
@@ -253,7 +303,7 @@
 			<artifactId>fluent-logger</artifactId>
 			<version>0.3.4</version>
 		</dependency>
-		
+
 		<!-- MongoDB Dependencies -->
 		<!-- <dependency> <groupId>org.mongodb</groupId>
 		<artifactId>mongo-java-driver</artifactId> 
@@ -267,8 +317,6 @@
 
 		<!-- GRPC Dependencies -->
 
-
-	
 
 		<dependency>
 			<groupId>com.zaxxer</groupId>
@@ -287,22 +335,23 @@
 				</exclusion>
 			</exclusions>
 		</dependency>
-	<dependency>
+		<dependency>
 			<groupId>com.mysql</groupId>
 			<artifactId>mysql-connector-j</artifactId>
-		</dependency> 			
+		</dependency>
 
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-webflux</artifactId>
 		</dependency>
-		
-		<!-- https://mvnrepository.com/artifact/org.springframework.boot/spring-boot-starter-webflux -->
-<dependency>
-    <groupId>org.springframework.boot</groupId>
-    <artifactId>spring-boot-starter-webflux</artifactId>
 
-</dependency>
+		<!--
+		https://mvnrepository.com/artifact/org.springframework.boot/spring-boot-starter-webflux -->
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-webflux</artifactId>
+
+		</dependency>
 
 
 		<dependency>
@@ -316,12 +365,12 @@
 			<scope>test</scope>
 		</dependency>
 
-<!-- https://mvnrepository.com/artifact/com.google.inject/guice -->
-<dependency>
-  <groupId>com.google.inject</groupId>
-  <artifactId>guice</artifactId>
-  <version>5.0.1</version>
-</dependency> 
+		<!-- https://mvnrepository.com/artifact/com.google.inject/guice -->
+		<dependency>
+			<groupId>com.google.inject</groupId>
+			<artifactId>guice</artifactId>
+			<version>5.0.1</version>
+		</dependency>
 
 		<!-- GRPC DEPS -->
 
@@ -345,7 +394,6 @@
 		</dependency>
 
 
-		
 		<dependency>
 			<groupId>com.dunkware.trade.tick</groupId>
 			<artifactId>dunkware-trade-tick-api</artifactId>

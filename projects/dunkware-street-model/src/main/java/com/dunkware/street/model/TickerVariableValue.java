@@ -19,8 +19,16 @@ import java.util.StringJoiner;
 import java.util.Objects;
 import java.util.Map;
 import java.util.HashMap;
+import com.dunkware.street.model.GenDate;
+import com.dunkware.street.model.GenDateTime;
+import com.dunkware.street.model.GenTime;
+import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonTypeName;
+import com.fasterxml.jackson.annotation.JsonValue;
 import java.math.BigDecimal;
+import java.util.Arrays;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 
 import com.fasterxml.jackson.core.type.TypeReference;
@@ -47,7 +55,7 @@ import com.fasterxml.jackson.databind.deser.std.StdDeserializer;
 import com.fasterxml.jackson.databind.ser.std.StdSerializer;
 import com.dunkware.street.JSON;
 
-@jakarta.annotation.Generated(value = "org.openapitools.codegen.languages.JavaClientCodegen", date = "2024-06-04T00:15:25.695743-05:00[America/Chicago]", comments = "Generator version: 7.6.0")
+@jakarta.annotation.Generated(value = "org.openapitools.codegen.languages.JavaClientCodegen", date = "2024-06-10T02:11:27.513314-05:00[America/Chicago]", comments = "Generator version: 7.6.0")
 @JsonDeserialize(using = TickerVariableValue.TickerVariableValueDeserializer.class)
 @JsonSerialize(using = TickerVariableValue.TickerVariableValueSerializer.class)
 public class TickerVariableValue extends AbstractOpenApiSchema {
@@ -136,6 +144,84 @@ public class TickerVariableValue extends AbstractOpenApiSchema {
                 log.log(Level.FINER, "Input data does not match schema 'Boolean'", e);
             }
 
+            // deserialize GenDate
+            try {
+                boolean attemptParsing = true;
+                // ensure that we respect type coercion as set on the client ObjectMapper
+                if (GenDate.class.equals(Integer.class) || GenDate.class.equals(Long.class) || GenDate.class.equals(Float.class) || GenDate.class.equals(Double.class) || GenDate.class.equals(Boolean.class) || GenDate.class.equals(String.class)) {
+                    attemptParsing = typeCoercion;
+                    if (!attemptParsing) {
+                        attemptParsing |= ((GenDate.class.equals(Integer.class) || GenDate.class.equals(Long.class)) && token == JsonToken.VALUE_NUMBER_INT);
+                        attemptParsing |= ((GenDate.class.equals(Float.class) || GenDate.class.equals(Double.class)) && token == JsonToken.VALUE_NUMBER_FLOAT);
+                        attemptParsing |= (GenDate.class.equals(Boolean.class) && (token == JsonToken.VALUE_FALSE || token == JsonToken.VALUE_TRUE));
+                        attemptParsing |= (GenDate.class.equals(String.class) && token == JsonToken.VALUE_STRING);
+                    }
+                }
+                if (attemptParsing) {
+                    deserialized = tree.traverse(jp.getCodec()).readValueAs(GenDate.class);
+                    // TODO: there is no validation against JSON schema constraints
+                    // (min, max, enum, pattern...), this does not perform a strict JSON
+                    // validation, which means the 'match' count may be higher than it should be.
+                    match++;
+                    log.log(Level.FINER, "Input data matches schema 'GenDate'");
+                }
+            } catch (Exception e) {
+                // deserialization failed, continue
+                log.log(Level.FINER, "Input data does not match schema 'GenDate'", e);
+            }
+
+            // deserialize GenDateTime
+            try {
+                boolean attemptParsing = true;
+                // ensure that we respect type coercion as set on the client ObjectMapper
+                if (GenDateTime.class.equals(Integer.class) || GenDateTime.class.equals(Long.class) || GenDateTime.class.equals(Float.class) || GenDateTime.class.equals(Double.class) || GenDateTime.class.equals(Boolean.class) || GenDateTime.class.equals(String.class)) {
+                    attemptParsing = typeCoercion;
+                    if (!attemptParsing) {
+                        attemptParsing |= ((GenDateTime.class.equals(Integer.class) || GenDateTime.class.equals(Long.class)) && token == JsonToken.VALUE_NUMBER_INT);
+                        attemptParsing |= ((GenDateTime.class.equals(Float.class) || GenDateTime.class.equals(Double.class)) && token == JsonToken.VALUE_NUMBER_FLOAT);
+                        attemptParsing |= (GenDateTime.class.equals(Boolean.class) && (token == JsonToken.VALUE_FALSE || token == JsonToken.VALUE_TRUE));
+                        attemptParsing |= (GenDateTime.class.equals(String.class) && token == JsonToken.VALUE_STRING);
+                    }
+                }
+                if (attemptParsing) {
+                    deserialized = tree.traverse(jp.getCodec()).readValueAs(GenDateTime.class);
+                    // TODO: there is no validation against JSON schema constraints
+                    // (min, max, enum, pattern...), this does not perform a strict JSON
+                    // validation, which means the 'match' count may be higher than it should be.
+                    match++;
+                    log.log(Level.FINER, "Input data matches schema 'GenDateTime'");
+                }
+            } catch (Exception e) {
+                // deserialization failed, continue
+                log.log(Level.FINER, "Input data does not match schema 'GenDateTime'", e);
+            }
+
+            // deserialize GenTime
+            try {
+                boolean attemptParsing = true;
+                // ensure that we respect type coercion as set on the client ObjectMapper
+                if (GenTime.class.equals(Integer.class) || GenTime.class.equals(Long.class) || GenTime.class.equals(Float.class) || GenTime.class.equals(Double.class) || GenTime.class.equals(Boolean.class) || GenTime.class.equals(String.class)) {
+                    attemptParsing = typeCoercion;
+                    if (!attemptParsing) {
+                        attemptParsing |= ((GenTime.class.equals(Integer.class) || GenTime.class.equals(Long.class)) && token == JsonToken.VALUE_NUMBER_INT);
+                        attemptParsing |= ((GenTime.class.equals(Float.class) || GenTime.class.equals(Double.class)) && token == JsonToken.VALUE_NUMBER_FLOAT);
+                        attemptParsing |= (GenTime.class.equals(Boolean.class) && (token == JsonToken.VALUE_FALSE || token == JsonToken.VALUE_TRUE));
+                        attemptParsing |= (GenTime.class.equals(String.class) && token == JsonToken.VALUE_STRING);
+                    }
+                }
+                if (attemptParsing) {
+                    deserialized = tree.traverse(jp.getCodec()).readValueAs(GenTime.class);
+                    // TODO: there is no validation against JSON schema constraints
+                    // (min, max, enum, pattern...), this does not perform a strict JSON
+                    // validation, which means the 'match' count may be higher than it should be.
+                    match++;
+                    log.log(Level.FINER, "Input data matches schema 'GenTime'");
+                }
+            } catch (Exception e) {
+                // deserialization failed, continue
+                log.log(Level.FINER, "Input data does not match schema 'GenTime'", e);
+            }
+
             // deserialize Integer
             try {
                 boolean attemptParsing = true;
@@ -222,6 +308,21 @@ public class TickerVariableValue extends AbstractOpenApiSchema {
         setActualInstance(o);
     }
 
+    public TickerVariableValue(GenDate o) {
+        super("oneOf", Boolean.FALSE);
+        setActualInstance(o);
+    }
+
+    public TickerVariableValue(GenDateTime o) {
+        super("oneOf", Boolean.FALSE);
+        setActualInstance(o);
+    }
+
+    public TickerVariableValue(GenTime o) {
+        super("oneOf", Boolean.FALSE);
+        setActualInstance(o);
+    }
+
     public TickerVariableValue(Integer o) {
         super("oneOf", Boolean.FALSE);
         setActualInstance(o);
@@ -235,6 +336,9 @@ public class TickerVariableValue extends AbstractOpenApiSchema {
     static {
         schemas.put("BigDecimal", BigDecimal.class);
         schemas.put("Boolean", Boolean.class);
+        schemas.put("GenDate", GenDate.class);
+        schemas.put("GenDateTime", GenDateTime.class);
+        schemas.put("GenTime", GenTime.class);
         schemas.put("Integer", Integer.class);
         schemas.put("String", String.class);
         JSON.registerDescendants(TickerVariableValue.class, Collections.unmodifiableMap(schemas));
@@ -248,7 +352,7 @@ public class TickerVariableValue extends AbstractOpenApiSchema {
     /**
      * Set the instance that matches the oneOf child schema, check
      * the instance parameter is valid against the oneOf child schemas:
-     * BigDecimal, Boolean, Integer, String
+     * BigDecimal, Boolean, GenDate, GenDateTime, GenTime, Integer, String
      *
      * It could be an instance of the 'oneOf' schemas.
      * The oneOf child schemas may themselves be a composed schema (allOf, anyOf, oneOf).
@@ -265,6 +369,21 @@ public class TickerVariableValue extends AbstractOpenApiSchema {
             return;
         }
 
+        if (JSON.isInstanceOf(GenDate.class, instance, new HashSet<Class<?>>())) {
+            super.setActualInstance(instance);
+            return;
+        }
+
+        if (JSON.isInstanceOf(GenDateTime.class, instance, new HashSet<Class<?>>())) {
+            super.setActualInstance(instance);
+            return;
+        }
+
+        if (JSON.isInstanceOf(GenTime.class, instance, new HashSet<Class<?>>())) {
+            super.setActualInstance(instance);
+            return;
+        }
+
         if (JSON.isInstanceOf(Integer.class, instance, new HashSet<Class<?>>())) {
             super.setActualInstance(instance);
             return;
@@ -275,14 +394,14 @@ public class TickerVariableValue extends AbstractOpenApiSchema {
             return;
         }
 
-        throw new RuntimeException("Invalid instance type. Must be BigDecimal, Boolean, Integer, String");
+        throw new RuntimeException("Invalid instance type. Must be BigDecimal, Boolean, GenDate, GenDateTime, GenTime, Integer, String");
     }
 
     /**
      * Get the actual instance, which can be the following:
-     * BigDecimal, Boolean, Integer, String
+     * BigDecimal, Boolean, GenDate, GenDateTime, GenTime, Integer, String
      *
-     * @return The actual instance (BigDecimal, Boolean, Integer, String)
+     * @return The actual instance (BigDecimal, Boolean, GenDate, GenDateTime, GenTime, Integer, String)
      */
     @Override
     public Object getActualInstance() {
@@ -309,6 +428,39 @@ public class TickerVariableValue extends AbstractOpenApiSchema {
      */
     public Boolean getBoolean() throws ClassCastException {
         return (Boolean)super.getActualInstance();
+    }
+
+    /**
+     * Get the actual instance of `GenDate`. If the actual instance is not `GenDate`,
+     * the ClassCastException will be thrown.
+     *
+     * @return The actual instance of `GenDate`
+     * @throws ClassCastException if the instance is not `GenDate`
+     */
+    public GenDate getGenDate() throws ClassCastException {
+        return (GenDate)super.getActualInstance();
+    }
+
+    /**
+     * Get the actual instance of `GenDateTime`. If the actual instance is not `GenDateTime`,
+     * the ClassCastException will be thrown.
+     *
+     * @return The actual instance of `GenDateTime`
+     * @throws ClassCastException if the instance is not `GenDateTime`
+     */
+    public GenDateTime getGenDateTime() throws ClassCastException {
+        return (GenDateTime)super.getActualInstance();
+    }
+
+    /**
+     * Get the actual instance of `GenTime`. If the actual instance is not `GenTime`,
+     * the ClassCastException will be thrown.
+     *
+     * @return The actual instance of `GenTime`
+     * @throws ClassCastException if the instance is not `GenTime`
+     */
+    public GenTime getGenTime() throws ClassCastException {
+        return (GenTime)super.getActualInstance();
     }
 
     /**
@@ -388,6 +540,24 @@ public class TickerVariableValue extends AbstractOpenApiSchema {
     if (getActualInstance() instanceof Boolean) {
         if (getActualInstance() != null) {
           joiner.add(String.format("%sone_of_3%s=%s", prefix, suffix, URLEncoder.encode(String.valueOf(getActualInstance()), StandardCharsets.UTF_8).replaceAll("\\+", "%20")));
+        }
+        return joiner.toString();
+    }
+    if (getActualInstance() instanceof GenTime) {
+        if (getActualInstance() != null) {
+          joiner.add(((GenTime)getActualInstance()).toUrlQueryString(prefix + "one_of_4" + suffix));
+        }
+        return joiner.toString();
+    }
+    if (getActualInstance() instanceof GenDate) {
+        if (getActualInstance() != null) {
+          joiner.add(((GenDate)getActualInstance()).toUrlQueryString(prefix + "one_of_5" + suffix));
+        }
+        return joiner.toString();
+    }
+    if (getActualInstance() instanceof GenDateTime) {
+        if (getActualInstance() != null) {
+          joiner.add(((GenDateTime)getActualInstance()).toUrlQueryString(prefix + "one_of_6" + suffix));
         }
         return joiner.toString();
     }

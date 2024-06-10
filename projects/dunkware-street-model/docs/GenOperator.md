@@ -13,9 +13,5 @@
 
 * `LESSOREQUAL` (value: `"lessOrEqual"`)
 
-* `NOTEQUAL` (value: `"notEqual"`)
-
-* `CONTAINS` (value: `"contains"`)
-
 
 

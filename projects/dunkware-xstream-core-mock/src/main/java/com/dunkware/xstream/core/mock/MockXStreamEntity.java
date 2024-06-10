@@ -19,9 +19,11 @@ import com.dunkware.xstream.api.XStreamEntity;
 import com.dunkware.xstream.api.XStreamEntityListener;
 import com.dunkware.xstream.api.XStreamEntityVar;
 import com.dunkware.xstream.api.XStreamEntityVarListener;
+import com.dunkware.xstream.api.XStreamExpression;
 import com.dunkware.xstream.api.XStreamRowSignal;
 import com.dunkware.xstream.api.XStreamRowSnapshot;
 import com.dunkware.xstream.model.metrics.XStreamRowMetrics;
+import com.dunkware.xstream.xScript.ExpressionType;
 import com.dunkware.xstream.xScript.SignalType;
 
 public class MockXStreamEntity implements XStreamEntity {
@@ -31,6 +33,14 @@ public class MockXStreamEntity implements XStreamEntity {
 	private XStream stream; 
 	
 	
+	@Override
+	public XStreamExpression createExpressoin(ExpressionType type) throws Exception {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+
+
 	private Logger logger = LoggerFactory.getLogger(getClass());
 
 	private ConcurrentHashMap<String, XStreamEntityVar> vars = new ConcurrentHashMap<String, XStreamEntityVar>();
