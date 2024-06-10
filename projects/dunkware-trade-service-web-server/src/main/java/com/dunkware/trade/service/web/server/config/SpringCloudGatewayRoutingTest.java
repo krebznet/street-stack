@@ -43,6 +43,8 @@ public class SpringCloudGatewayRoutingTest {
 				.route("tick", r -> r.path("/tick/**").uri("http://192.168.23.107:31890"))
 				.route("feed", r -> r.path("/feed/**").uri("http://192.168.23.107:31890"))
 				.route("streamstats", r -> r.path("/streamstats/**").uri("http://192.168.23.107:32199"))
+				.route("api", r -> r.path("/api/**").uri("http://192.168.23.107:32100"))
+				
 				.route("data", r -> r.path("/data/**").uri("http://192.168.23.107:31681"))
 					.build();
 	  }

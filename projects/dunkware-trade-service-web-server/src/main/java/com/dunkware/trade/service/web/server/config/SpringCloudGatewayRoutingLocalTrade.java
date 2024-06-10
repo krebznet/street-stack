@@ -28,6 +28,7 @@ public class SpringCloudGatewayRoutingLocalTrade {
 				.route("tick", r -> r.path("/tick/**").uri("http://172.16.16.55:31890"))
 				.route("feed", r -> r.path("/feed/**").uri("http://172.16.16.55:31890"))
 				.route("data", r -> r.path("/data/**").uri("http://172.16.16.55:31681"))
+				.route("api", r -> r.path("/api/**").uri("http://172.16.16.55:32100"))
 					.build();
 	  }
 	  //31681

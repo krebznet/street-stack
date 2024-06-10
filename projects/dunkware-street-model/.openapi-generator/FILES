@@ -51,4 +51,3 @@ src/main/java/com/dunkware/street/model/TickerSession.java
 src/main/java/com/dunkware/street/model/TickerStat.java
 src/main/java/com/dunkware/street/model/TickerVariable.java
 src/main/java/com/dunkware/street/model/TickerVariableValue.java
-src/test/java/com/dunkware/street/api/DefaultApiTest.java
