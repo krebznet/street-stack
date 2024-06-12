@@ -2,11 +2,10 @@ package com.dunkware.trade.service.tick.client.impl;
 
 import java.util.concurrent.atomic.AtomicLong;
 
+import org.apache.kafka.clients.consumer.ConsumerRecord;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.dunkware.common.kafka.consumer.DKafkaByteConsumer;
-import com.dunkware.common.util.helpers.DHttpHelper;
 import com.dunkware.trade.service.tick.client.TickServiceClient;
 import com.dunkware.trade.service.tick.client.TickServiceClientException;
 import com.dunkware.trade.service.tick.client.TickServiceClientFeed;
@@ -15,6 +14,7 @@ import com.dunkware.trade.tick.model.consumer.TickConsumerSession;
 import com.dunkware.trade.tick.model.consumer.TickConsumerSpec;
 import com.dunkware.trade.tick.service.protocol.feed.TickFeedStartReq;
 import com.dunkware.trade.tick.service.protocol.feed.TickFeedStartResp;
+import com.dunkware.utils.core.http.DunkHttp;
 import com.dunkware.utils.kafka.byteconsumer.KafkaByteConsumer;
 import com.dunkware.utils.kafka.byteconsumer.KafkaByteHandler;
 import com.dunkware.utils.tick.proto.TickProto.Tick;
@@ -53,9 +53,9 @@ public class TickServiceClientFeedImpl implements TickServiceClientFeed, KafkaBy
 		}
 		try {
 			this.tickStream = new TickStreamImpl();
-			this.kafkaConsumer = KafkaByteConsumer.newInstance(null)
-			this.kafkaConsumer = DKafkaByteConsumer.newInstance(session.getKafkaBroker(),session.getKafkaTopic());
+			this.kafkaConsumer = KafkaByteConsumer.newConsumerInstance(session.getKafkaBroker(), session.getSessionId(), session.getKafkaBroker());
 			this.kafkaConsumer.addStreamHandler(this);
+			this.kafkaConsumer.start();
 		} catch (Exception e) {
 			throw new TickServiceClientException("Exception Creating Feed KafkaConsumer Borkers " + session.getKafkaBroker() + " Topic " + session.getKafkaTopic() + " Excepion " + e.toString(),e);
 		}
@@ -97,7 +97,7 @@ public class TickServiceClientFeedImpl implements TickServiceClientFeed, KafkaBy
 		//TODO: send stop request 
 		kafkaConsumer.dispose();
 		try {
-			DHttpHelper.getURLContent(client.getEndpoint() + "/tick/feed/stop?id=" + session.getSessionId());	
+			DunkHttp.getURLContent(client.getEndpoint() + "/tick/feed/stop?id=" + session.getSessionId());	
 		} catch (Exception e) {
 			// TODO: handle exception
 		}
@@ -122,13 +122,15 @@ public class TickServiceClientFeedImpl implements TickServiceClientFeed, KafkaBy
 	public long getConsumedTickCount() {
 		return tickCount.get();
 	}
+	
+
 
 	@Override
-	public void streamBytes(byte[] bytes) {
+	public void record(ConsumerRecord<String,byte[]> record) {
 		try {
-			Tick tick = Tick.parseFrom(bytes);
+			Tick tick = Tick.parseFrom(record.value());
 			tickCount.incrementAndGet();
-			tickStream.streamTick(tick);
+			tickStream.consume(tick);
 		} catch (Exception e) {
 			logger.error("Kafka Byte Consume Exception Line 106 Feed ID  " + this.session.getSessionId() + " " + e.toString(),e);
 		}
@@ -142,7 +144,7 @@ public class TickServiceClientFeedImpl implements TickServiceClientFeed, KafkaBy
 				while(!interrupted()) { 
 					try {
 						Thread.sleep(5000); 
-						DHttpHelper.getURLContent(client.getEndpoint() + "/tick/feed/ping?id=" + session.getSessionId());
+						DunkHttp.getURLContent(client.getEndpoint() + "/tick/feed/ping?id=" + session.getSessionId());
 					} catch (Exception e) {
 						if (e instanceof InterruptedException) {
 							return;

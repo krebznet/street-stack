@@ -2,7 +2,6 @@ package com.dunkware.trade.service.tick.client.impl;
 
 import java.util.List;
 
-import com.dunkware.common.util.helpers.DHttpHelper;
 import com.dunkware.trade.service.tick.client.TickServiceClient;
 import com.dunkware.trade.service.tick.client.TickServiceClientException;
 import com.dunkware.trade.service.tick.client.TickServiceClientFeed;
@@ -12,7 +11,7 @@ import com.dunkware.trade.tick.model.ticker.TradeTickerSpec;
 import com.dunkware.trade.tick.service.protocol.ticker.TSTickerListGetReq;
 import com.dunkware.trade.tick.service.protocol.ticker.TickerListGetResp;
 import com.dunkware.trade.tick.service.protocol.ticker.spec.TradeTickerListSpec;
-import com.dunkware.utils.core.http.DunkHttpHelper;
+import com.dunkware.utils.core.http.DunkHttp;
 import com.dunkware.utils.core.json.DunkJson;
 import com.fasterxml.jackson.core.type.TypeReference;
 
@@ -68,7 +67,7 @@ public class TickServiceClientImpl implements TickServiceClient {
 			throws TickServiceClientException {
 		String endpoint = this.endpoint + path;
 		try {
-			return DunkHttpHelper.postJsonWithResponse(endpoint, request, responseClass);
+			return DunkHttp.postBodyResponse(endpoint, request, responseClass);
 		} catch (Exception e) {
 			throw new TickServiceClientException("Exception posting with json response " + e.toString(), e);
 		}
@@ -79,7 +78,7 @@ public class TickServiceClientImpl implements TickServiceClient {
 	public void ping() throws Exception {
 		try {
 			String endpoint = this.endpoint + "/ticker/echo?name=hello";
-			DHttpHelper.getURLContent(endpoint);
+			DunkHttp.getURLContent(endpoint);
 		} catch (Exception e) {
 			
 			throw new Exception("Echo request failed " + e.toString());
@@ -107,7 +106,7 @@ public class TickServiceClientImpl implements TickServiceClient {
 	public List<TickFeedSubscriptionBean> getSubscriptions() throws TickServiceClientException {
 		try {
 			List<TickFeedSubscriptionBean> beans = null;
-			String resp = DHttpHelper.getJson(getEndpoint() + "/feed/subscriptions");
+			String resp = DunkHttp.getURLContent(getEndpoint() + "/feed/subscriptions");
 			beans = DunkJson.getObjectMapper().readValue(resp,new TypeReference<List<TickFeedSubscriptionBean>>(){});
 	        return beans;
 		} catch (Exception e) {

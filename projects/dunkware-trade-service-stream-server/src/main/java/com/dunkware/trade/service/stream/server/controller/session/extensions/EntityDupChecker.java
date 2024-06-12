@@ -26,7 +26,7 @@ import com.dunkware.trade.service.stream.server.controller.session.anot.AStreamS
  * that require aggregate data from all session nodes. 
  */
 @AStreamSessionExt
-public class StreamDataPublisher implements StreamSessionExtension {
+public class EntityDupChecker implements StreamSessionExtension {
 
 	private Logger logger = LoggerFactory.getLogger(getClass());
 	

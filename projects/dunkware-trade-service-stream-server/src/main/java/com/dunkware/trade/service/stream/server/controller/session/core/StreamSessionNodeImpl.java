@@ -1,5 +1,6 @@
 package com.dunkware.trade.service.stream.server.controller.session.core;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.ConcurrentHashMap;
@@ -12,9 +13,6 @@ import org.slf4j.Marker;
 import org.slf4j.MarkerFactory;
 import org.springframework.beans.factory.annotation.Value;
 
-import com.dunkware.common.util.LocalTime.LocalDate;
-import com.dunkware.common.util.LocalTime.LocalTimeZone;
-import com.dunkware.common.util.stopwatch.DStopWatch;
 import com.dunkware.spring.cluster.DunkNetChannel;
 import com.dunkware.spring.cluster.DunkNetChannelHandler;
 import com.dunkware.spring.cluster.DunkNetException;
@@ -132,7 +130,7 @@ public class StreamSessionNodeImpl implements StreamSessionNode, DunkNetChannelH
 				starting = true;
 				startingInitiazed = true;
 				try {
-					startingTimer = DStopWatch.create();
+					startingTimer = StopWatch.newInstance();
 					startingTimer.start();
 					streamBundle = createBundle();
 				} catch (Exception e) {
@@ -155,7 +153,7 @@ public class StreamSessionNodeImpl implements StreamSessionNode, DunkNetChannelH
 				startReq.setNodeId(input.getNode().getId());
 				startReq.setKafkaBrokers(kafkaBrokers);
 				startReq.setSignals(input.getSession().getInput().getSignalTypes());
-				startReq.setStreamDescriptor(input.getSession().getStream().getDescriptor());
+				//startReq.setStreamDescriptor(input.getSession().getStream().getDescriptor());
 				for (String key : input.getSession().getInput().getProperties().keySet()) {
 					startReq.getStreamProperties().put(key, input.getSession().getInput().getProperties().get(key));
 				}
@@ -232,9 +230,9 @@ public class StreamSessionNodeImpl implements StreamSessionNode, DunkNetChannelH
 			return 0;
 		}
 		if(stopping) { 
-			return stoppingTimer.getRunningSeconds();
+			return stoppingTimer.seconds();
 		}
-		return stoppingTimer.getCompletedSeconds();
+		return stoppingTimer.seconds();
 	}
 
 	@Override
@@ -243,9 +241,9 @@ public class StreamSessionNodeImpl implements StreamSessionNode, DunkNetChannelH
 			return 0;
 		}
 		if(starting) { 
-			return startingTimer.getRunningSeconds();
+			return startingTimer.seconds();
 		}
-		return startingTimer.getCompletedSeconds();
+		return startingTimer.seconds();
 	}
 
 	
@@ -270,9 +268,9 @@ public class StreamSessionNodeImpl implements StreamSessionNode, DunkNetChannelH
 		bean.setEntityCount(stats.getRowCount());
 		bean.setSignalCount(stats.getSignalCount());
 		if(stats.getStreamTime() != null)
-		bean.setStreamTime(stats.getStreamTime().toHHmmSS());
+		bean.setStreamTime(stats.getStreamTime().toString());
 		if(stats.getSystemTime() != null)
-		bean.setSystemTime(stats.getSystemTime().toHHmmSS());
+		bean.setSystemTime(stats.getSystemTime().toString());
 		bean.setIssueCount(errors.size());
 		bean.setTasksCompleted(stats.getCompletedTaskCount());
 		bean.setTasksPending(stats.getPendingTaskCount());
@@ -352,7 +350,7 @@ public class StreamSessionNodeImpl implements StreamSessionNode, DunkNetChannelH
 					}
 					setState(StreamState.Stopping);
 					stopping = true;
-					stoppingTimer = DStopWatch.create();
+					stoppingTimer = StopWatch.newInstance();
 					stoppingTimer.start();
 					stoppingInitiazed = true;
 					
@@ -580,8 +578,8 @@ public class StreamSessionNodeImpl implements StreamSessionNode, DunkNetChannelH
 	private XStreamBundle createBundle() throws Exception {
 		XStreamBundle xstreamBundle = null;
 		xstreamBundle = new XStreamBundle();
-		xstreamBundle.setDate(LocalDate.now(LocalTimeZone.toZoneId(input.getStream().getTimeZone())));
-		xstreamBundle.setTimeZone(input.getStream().getTimeZone());
+		xstreamBundle.setDate(LocalDate.now(this.getSession().getStream().getTimeZone()));
+		xstreamBundle.setTimeZone(input.getStream().getTimeZone().getId());
 		try {
 			xstreamBundle.setScriptBundle(input.getSession().getStream().getScriptBundle());
 		} catch (Exception e) {

@@ -7,7 +7,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Component;
 
-import com.dunkware.common.util.mysql.pool.MySqlConnectionPool;
+import com.dunkware.utils.mysql.pool.MySqlConnectionPool;
 
 import jakarta.annotation.PostConstruct;
 

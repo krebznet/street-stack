@@ -21,6 +21,10 @@ import org.apache.kafka.common.errors.InterruptException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.dunkware.utils.core.helpers.DunkUUID;
+import com.dunkware.utils.kafka.byteconsumer.KafkaByteConsumerSpec.ConsumerType;
+import com.dunkware.utils.kafka.byteconsumer.KafkaByteConsumerSpec.OffsetType;
+
 public class KafkaByteConsumer {
 
 	private Logger logger = LoggerFactory.getLogger(getClass());
@@ -52,6 +56,13 @@ public class KafkaByteConsumer {
 	private ThrottleThread throttleThread;
 	private HandlerThread handlerThread;
 	
+	
+	public static KafkaByteConsumer newConsumerInstance(String brokers, String consumerId, String topic) throws Exception { 
+		KafkaByteConsumerSpec spec = KafkaByteConsumerSpec.newBuilder(ConsumerType.Auto, OffsetType.Latest).addBroker(brokers).addTopic(topic).setClientAndGroup(consumerId, consumerId + DunkUUID.randomUUID(5)).build();
+		return newInstance(spec);
+		
+		
+	}
 	
 	public static KafkaByteConsumer newInstance(KafkaByteConsumerSpec spec) {
 		return new KafkaByteConsumer(spec);

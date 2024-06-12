@@ -53,7 +53,6 @@ import com.dunkware.utils.core.events.anot.ADunkEventHandler;
 import com.dunkware.utils.core.helpers.DunkAnot;
 import com.dunkware.utils.core.json.DunkJson;
 import com.dunkware.utils.core.time.DunkTime;
-import com.dunkware.utils.core.time.DunkTimeZones;
 import com.dunkware.utils.core.time.clock.DZonedClock;
 import com.dunkware.utils.core.time.clock.DZonedClockListener;
 import com.dunkware.utils.core.time.clock.DZonedClockUpdater;
@@ -151,6 +150,9 @@ public class StreamController implements StreetExchange  {
 		return stats.getState();
 	}
 
+	public LocalTime getTime() { 
+		return LocalTime.now(zoneId);
+	}
 	
 	public LocalDateTime getDateTime() { 
 		return LocalDateTime.now(zoneId);
@@ -207,7 +209,7 @@ public class StreamController implements StreetExchange  {
 			stats.setStreamException("Exception Building XScript Bundle " + e.toString());
 			throw new Exception("Exception parsing stream version script bundle from entity " + e.toString());
 		}
-		
+			
 		// create extensions 
 		Set<Class<?>> extClasses = DunkAnot.getClassesAnnotedWith(AStreamControllerExt.class); 
 		for (Class<?> class1 : extClasses) {
@@ -628,7 +630,7 @@ public class StreamController implements StreetExchange  {
 		public void run() {
 			clockUpdater = DZonedClockUpdater.now(zoneId, 1, TimeUnit.SECONDS);
 			clock = clockUpdater.getClock();
-			lastDateTime = clockUpdater.getClock().getDateTime();
+			lastDateTime = ZonedDateTime.of(clock.getDateTime(),getTimeZone());
 			newDay();
 			if (isSessionDay) {
 				// do we start a half baked session ? 

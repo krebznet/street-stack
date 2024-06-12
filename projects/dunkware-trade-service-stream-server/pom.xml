@@ -110,6 +110,18 @@
 				</exclusion>
 
 				<!-- Exclude any other servlet-related dependencies if needed -->
+				<exclusion>
+					<groupId>org.slf4j</groupId>
+					<artifactId>jul-to-slf4j</artifactId>
+				</exclusion>
+				<exclusion>
+					<groupId>org.apache.logging.log4j</groupId>
+					<artifactId>log4j-api</artifactId>
+				</exclusion>
+				<exclusion>
+					<groupId>org.apache.logging.log4j</groupId>
+					<artifactId>log4j-to-slf4j</artifactId>
+				</exclusion>
 			</exclusions>
 		</dependency>
 
@@ -126,6 +138,16 @@
 			<groupId>com.dunkware.xstream.core</groupId>
 			<artifactId>dunkware-xstream-core-model</artifactId>
 			<version>1.3.0-SNAPSHOT</version>
+			<exclusions>
+				<exclusion>
+					<groupId>ch.qos.reload4j</groupId>
+					<artifactId>reload4j</artifactId>
+				</exclusion>
+				<exclusion>
+					<groupId>org.slf4j</groupId>
+					<artifactId>slf4j-reload4j</artifactId>
+				</exclusion>
+			</exclusions>
 		</dependency>
 
 		<dependency>
@@ -386,6 +408,12 @@
 			<groupId>com.dunkware.xstream.core</groupId>
 			<artifactId>dunkware-xstream-core-runtime</artifactId>
 			<version>1.2.0-SNAPSHOT</version>
+			<exclusions>
+				<exclusion>
+					<groupId>ch.qos.reload4j</groupId>
+					<artifactId>reload4j</artifactId>
+				</exclusion>
+			</exclusions>
 		</dependency>
 
 

@@ -1,15 +1,14 @@
 package com.dunkware.trade.service.tick.client.test;
 
-import com.dunkware.common.tick.TickHandler;
-import com.dunkware.common.tick.TickHelper;
-import com.dunkware.common.tick.proto.TickProto.Tick;
-import com.dunkware.common.util.uuid.DunkUUID;
 import com.dunkware.trade.service.tick.client.TickServiceClient;
 import com.dunkware.trade.service.tick.client.TickServiceClientFactory;
 import com.dunkware.trade.service.tick.client.TickServiceClientFeed;
 import com.dunkware.trade.tick.model.TradeTicks;
 import com.dunkware.trade.tick.model.consumer.TickConsumerSpec;
 import com.dunkware.trade.tick.model.consumer.TickConsumerSpecBuilder;
+import com.dunkware.utils.core.helpers.DunkUUID;
+import com.dunkware.utils.tick.TickHandler;
+import com.dunkware.utils.tick.proto.TickProto.Tick;
 
 public class TickServiceClientTest implements TickHandler  {
 	

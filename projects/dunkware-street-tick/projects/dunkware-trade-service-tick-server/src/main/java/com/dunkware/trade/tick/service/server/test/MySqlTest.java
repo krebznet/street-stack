@@ -1,7 +1,7 @@
 package com.dunkware.trade.tick.service.server.test;
 
-import com.dunkware.common.util.mysql.model.MySqlConnection;
-import com.dunkware.common.util.mysql.pool.MySqlConnectionPool;
+import com.dunkware.utils.mysql.model.MySqlConnection;
+import com.dunkware.utils.mysql.pool.MySqlConnectionPool;
 
 public class MySqlTest {
 
