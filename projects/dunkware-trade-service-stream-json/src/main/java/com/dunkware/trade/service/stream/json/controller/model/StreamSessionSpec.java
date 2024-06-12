@@ -1,29 +1,18 @@
 package com.dunkware.trade.service.stream.json.controller.model;
 
+import java.time.LocalDate;
+import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.dunkware.common.util.dtime.DDate;
-import com.dunkware.common.util.dtime.DTime;
-import com.dunkware.common.util.dtime.DTimeZone;
-
-/**
- * Defines a running stream session and the attributes needed to connect 
- * to the kafka topics the publish stream entity snapshots and signals. 
- * Also lists the stream entities that are part of this session as well
- * as the stream script being used. the start/stop time the date and the 
- * TimeZone
- * @author duncankrebs
- *
- */
 public class StreamSessionSpec {
 	
 	private String kafkaBrokers;
 	
-	private DDate date;
-	private DTime startTime; 
-	private DTime stopTime;
-	private DTimeZone timeZone; 
+	private LocalDate date;
+	private LocalTime startTime; 
+	private LocalTime stopTime;
+	private String timeZone; 
 	private int entityCount;
 //	private StreamScript streamScript;
 	private String streamIdentifier;
@@ -42,22 +31,23 @@ public class StreamSessionSpec {
 		this.kafkaBrokers = kafkaBrokers;
 	}
 	
-	public DTime getStartTime() {
+	public LocalTime getStartTime() {
 		return startTime;
 	}
-	public void setStartTime(DTime startTime) {
+	public void setStartTime(LocalTime startTime) {
 		this.startTime = startTime;
 	}
-	public DTime getStopTime() {
+	public LocalTime getStopTime() {
 		return stopTime;
 	}
-	public void setStopTime(DTime stopTime) {
+	public void setStopTime(LocalTime stopTime) {
 		this.stopTime = stopTime;
 	}
-	public DTimeZone getTimeZone() {
+	
+	public String getTimeZone() {
 		return timeZone;
 	}
-	public void setTimeZone(DTimeZone timeZone) {
+	public void setTimeZone(String timeZone) {
 		this.timeZone = timeZone;
 	}
 	public int getEntityCount() {
@@ -78,10 +68,10 @@ public class StreamSessionSpec {
 	public void setStreamEntities(List<StreamEntitySpec> streamEntities) {
 		this.streamEntities = streamEntities;
 	}
-	public DDate getDate() {
+	public LocalDate getDate() {
 		return date;
 	}
-	public void setDate(DDate date) {
+	public void setDate(LocalDate date) {
 		this.date = date;
 	}
 	public String getStreamIdentifier() {
@@ -118,8 +108,8 @@ public class StreamSessionSpec {
 		b.append(",");
 		b.append("SessionID:");
 		b.append(sessionId);
-		b.append("StartTime:").append(startTime.toHHmmSS()).append(",").append("StopTime:").append(stopTime.toHHmmSS())
-		.append(",").append("Date:").append(date.toMMDDYY()).append(",TimeZone:").append(timeZone.name())
+		b.append("StartTime:").append(startTime.toString()).append(",").append("StopTime:").append(stopTime.toString())
+		.append(",").append("Date:").append(date.toString()).append(",TimeZone:").append(timeZone)
 		.append(",Entity Count:").append(streamEntities.size()).append(",KafkaBrokers:").append(kafkaBrokers);
 		
 		return b.toString();

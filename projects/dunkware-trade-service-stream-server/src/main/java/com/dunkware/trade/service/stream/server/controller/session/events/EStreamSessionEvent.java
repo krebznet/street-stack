@@ -2,12 +2,12 @@ package com.dunkware.trade.service.stream.server.controller.session.events;
 
 import java.lang.reflect.Method;
 
-import com.dunkware.common.util.events.DEvent;
-import com.dunkware.common.util.helpers.DReflectionHelper;
 import com.dunkware.trade.service.stream.server.controller.session.StreamSession;
 import com.dunkware.trade.service.stream.server.controller.session.core.StreamSessionImpl;
+import com.dunkware.utils.core.events.DunkEvent;
+import com.dunkware.utils.core.helpers.DunkReflection;
 
-public class EStreamSessionEvent extends DEvent {
+public class EStreamSessionEvent extends DunkEvent {
 
 	private StreamSession session;
 	
@@ -20,7 +20,7 @@ public class EStreamSessionEvent extends DEvent {
 	}
 
 	
-	public static DEvent tryMe() { 
+	public static DunkEvent tryMe() { 
 		StreamSessionImpl impl = new StreamSessionImpl();
 		return new EStreamSessionStarted(impl);
 	}
@@ -28,10 +28,10 @@ public class EStreamSessionEvent extends DEvent {
 	public static void main(String[] args) {
 		try {
 			StreamSessionImpl impl = new StreamSessionImpl();
-			DEvent event = new EStreamSessionStarted(impl);
+			DunkEvent event = new EStreamSessionStarted(impl);
 			Method method = Fuck.class.getMethods()[0];
 			Class clazz = method.getParameterTypes()[0];
-			if(DReflectionHelper.isAssignableFrom(clazz, event.getClass())) {
+			if(DunkReflection.isAssignableFrom(clazz, event.getClass())) {
 				System.out.println("this works too");
 			}
 			if(clazz.isAssignableFrom(tryMe().getClass())) { 

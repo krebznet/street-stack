@@ -12,8 +12,8 @@ import org.slf4j.LoggerFactory;
 import com.dunkware.common.tick.proto.TickProto.Tick;
 import com.dunkware.common.tick.proto.TickProto.Tick.TickField;
 import com.dunkware.common.tick.proto.TickProto.Tick.TickFieldType;
-import com.dunkware.common.util.dtime.DDateTime;
-import com.dunkware.common.util.executor.DExecutor;
+import com.dunkware.common.util.LocalTime.LocalDateTime;
+import com.dunkware.common.util.executor.DunkExecutor;
 import com.dunkware.trade.tick.api.feed.TickFeed;
 import com.dunkware.trade.tick.api.feed.TickFeedSubscription;
 import com.dunkware.trade.tick.api.provider.ATickProvider;
@@ -35,7 +35,7 @@ public class PolygonTickProvider implements TickProvider {
 	private PolygonFeed feed; 
 	
 	
-	private DExecutor executor; 
+	private DunkExecutor executor; 
 	
 	TickProviderStatsSpec stats;
 	
@@ -43,13 +43,13 @@ public class PolygonTickProvider implements TickProvider {
 	
 	private TickProviderState state = TickProviderState.CONNECTED;
 	
-	private DDateTime startTime; 
+	private LocalDateTime startTime; 
 	
 	private Map<String,TradeTickerSpec> tickerSubscriptions = new ConcurrentHashMap<String,TradeTickerSpec>();
 
 	
 	@Override
-	public void connect(TickProviderSpec providerSpec, TickFeed feed, DExecutor executor) throws TickProviderException {
+	public void connect(TickProviderSpec providerSpec, TickFeed feed, DunkExecutor executor) throws TickProviderException {
 		// TODO Auto-generated method stub
 		
 	}
@@ -147,7 +147,7 @@ public class PolygonTickProvider implements TickProvider {
 
 	/*
 	 * @Override public void connect(TickProviderSpec type, TradeSymbolService
-	 * idProvider, DExecutor executor) throws TickProviderException { this.apikey =
+	 * idProvider, DunkExecutor executor) throws TickProviderException { this.apikey =
 	 * type.getProperties().get("apiKey").toString(); stats = new
 	 * TickProviderStatsSpec(); stats.setName("Polygon"); feed = new PolygonFeed();
 	 * try { List<String> symbols = new ArrayList<String>();
@@ -156,7 +156,7 @@ public class PolygonTickProvider implements TickProvider {
 	 * } catch (Exception e) { throw new
 	 * TickProviderException("Exception connecting Polygon feed " + e.toString()); }
 	 * 
-	 * startTime = DDateTime.now(DTimeZone.NewYork); tickFactory = new
+	 * startTime = LocalDateTime.now(LocalTimeZone.NewYork); tickFactory = new
 	 * TickSnapshotFactory(); tickFactory.start(); }
 	 */
 	

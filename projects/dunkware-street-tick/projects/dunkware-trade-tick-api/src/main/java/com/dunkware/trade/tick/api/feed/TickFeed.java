@@ -3,18 +3,18 @@ package com.dunkware.trade.tick.api.feed;
 import java.util.Collection;
 import java.util.List;
 
-import com.dunkware.common.util.executor.DExecutor;
 import com.dunkware.trade.tick.api.provider.TickProvider;
 import com.dunkware.trade.tick.model.feed.TickFeedQuote;
 import com.dunkware.trade.tick.model.feed.TickFeedStats;
 import com.dunkware.trade.tick.model.feed.TickFeedSubscriptionBean;
 import com.dunkware.trade.tick.model.feed.TickFeedTrade;
 import com.dunkware.trade.tick.model.ticker.TradeTickerSpec;
+import com.dunkware.utils.core.concurrent.DunkExecutor;
 
 
 public interface TickFeed  {
 
-	public void start(TickProvider provider, DExecutor exector, String kafkaBrokers) throws TickFeedException;
+	public void start(TickProvider provider, DunkExecutor exector, String kafkaBrokers) throws TickFeedException;
 	
 	public void subscribe(Collection<TradeTickerSpec> specs) throws TickFeedException;
 	
@@ -36,7 +36,7 @@ public interface TickFeed  {
 	
 	public TickFeedStats getStats();
 	
-	public DExecutor getExecutor();
+	public DunkExecutor getExecutor();
 	
 	public boolean hasSubscription(String ticker);
 	

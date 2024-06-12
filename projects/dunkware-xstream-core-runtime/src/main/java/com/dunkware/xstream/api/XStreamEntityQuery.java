@@ -10,16 +10,16 @@ public interface XStreamEntityQuery {
 	/**
 	 * Sets the predicates and the build time and the stream
 	 * @param predicates
-	 * @param buildTime
+	 * @param builLocalTime
 	 */
-	public void init(List<XStreamEntityPredicate> predicates, XStream stream, double buildTime);
+	public void init(List<XStreamEntityPredicate> predicates, XStream stream, double builLocalTime);
 	
 	/**
 	 * Returns the number of seconds it took to build the query this includes loading all agg data
 	 * needed for all entities in the stream 
 	 * @return
 	 */
-	public double getBuildTime();
+	public double getBuilLocalTime();
 	
 	/**
 	 * Executes this query against all entities in the stream

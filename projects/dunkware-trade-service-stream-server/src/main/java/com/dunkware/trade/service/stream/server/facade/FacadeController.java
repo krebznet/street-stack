@@ -7,7 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.dunkware.trade.service.stream.server.controller.CloudExchange;
+import com.dunkware.trade.service.stream.server.controller.StreetExchange;
 import com.dunkware.trade.service.stream.server.controller.StreamController;
 import com.dunkware.trade.service.stream.server.controller.StreamControllerService;
 import com.dunkware.trade.service.stream.server.facade.api.ApiApi;
@@ -33,7 +33,7 @@ public class FacadeController implements ApiApi  {
 	public ResponseEntity<List<TickerRef>> apiExchangesExchangeIdTickersGet(Integer exchangeId) {
 
 			try {
-				CloudExchange exchange = streamControllerService.getStreamById((long)exchangeId);
+				StreetExchange exchange = streamControllerService.getStreamById((long)exchangeId);
 				return ResponseEntity.ok().body(exchange.getExchangeTickers());
 			} catch (Exception e) {
 				return ResponseEntity.badRequest().build();

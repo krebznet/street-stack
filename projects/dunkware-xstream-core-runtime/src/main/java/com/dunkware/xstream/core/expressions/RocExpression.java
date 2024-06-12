@@ -2,12 +2,12 @@ package com.dunkware.xstream.core.expressions;
 
 import java.util.List;
 
-import com.dunkware.common.util.calc.DCalc;
-import com.dunkware.common.util.helpers.DConverter;
-import com.dunkware.xstream.api.XStreamExpression;
+import com.dunkware.utils.core.helpers.DunkMath;
+import com.dunkware.utils.core.helpers.DunkNumber;
 import com.dunkware.xstream.api.XStreamEntity;
-import com.dunkware.xstream.api.XStreamRuntimeException;
 import com.dunkware.xstream.api.XStreamEntityVar;
+import com.dunkware.xstream.api.XStreamExpression;
+import com.dunkware.xstream.api.XStreamRuntimeException;
 import com.dunkware.xstream.core.XStreamExpressionImpl;
 import com.dunkware.xstream.core.annotations.AXStreamExpression;
 import com.dunkware.xstream.xScript.ExpressionType;
@@ -78,19 +78,19 @@ public class RocExpression extends XStreamExpressionImpl {
 				}
 				if (compObj instanceof Integer) {
 					Integer intValue = (Integer) compObj;
-					compareValue = DConverter.toDouble(intValue);
+					compareValue = DunkNumber.toDouble(intValue);
 				}
 				if (targetObj instanceof Integer) {
 					Integer intValue = (Integer) targetObj;
-					targetValue = DConverter.toDouble(intValue);
+					targetValue = DunkNumber.toDouble(intValue);
 				}
 				if (compObj instanceof Long) {
 					Long intValue = (Long) compObj;
-					compareValue = DConverter.toDouble(intValue);
+					compareValue = DunkNumber.toDouble(intValue);
 				}
 				if (targetObj instanceof Long) {
 					Long intValue = (Long) targetObj;
-					targetValue = DConverter.toDouble(intValue);
+					targetValue = DunkNumber.toDouble(intValue);
 				}
 				if (targetValue == null || compareValue == null) {
 					// TODO: is this exception?
@@ -158,7 +158,8 @@ public class RocExpression extends XStreamExpressionImpl {
 					setValue(Math.abs(targetValue));
 					return true;
 				}
-				rocValue = DCalc.getPercentageChange(targetValue, compareValue);
+				
+				rocValue = DunkMath.getPercentageChange(targetValue, compareValue);
 				
 				Object value = getValue();
 				if(value != null) { 

@@ -4,7 +4,7 @@ import java.lang.instrument.Instrumentation;
 import java.time.LocalDate;
 import java.time.LocalTime;
 
-import com.dunkware.common.util.time.DunkTime;
+import com.dunkware.utils.core.time.DunkTime;
 
 public class EntityStat {
 	

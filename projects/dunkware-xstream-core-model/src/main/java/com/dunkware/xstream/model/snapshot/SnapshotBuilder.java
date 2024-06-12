@@ -3,7 +3,7 @@ package com.dunkware.xstream.model.snapshot;
 import java.time.LocalDateTime;
 import java.util.Map;
 
-import com.dunkware.common.util.time.DunkTime;
+import com.dunkware.utils.core.time.DunkTime;
 import com.dunkware.xstream.model.signal.StreamEntitySignal;
 
 public class SnapshotBuilder {

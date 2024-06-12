@@ -1,8 +1,8 @@
 package com.dunkware.xstream.api;
 
+import java.time.ZoneId;
 import java.util.Collection;
 import java.util.List;
-import java.util.concurrent.Semaphore;
 
 import org.slf4j.Marker;
 
@@ -20,6 +20,8 @@ public interface XStream {
 	void cancel();
 	
 	XStreamStatus getStatus();
+	
+	ZoneId getTimeZoneId();
 	
 	/**
 	 * Gets a row by ID, throws XStreamRuntimeException

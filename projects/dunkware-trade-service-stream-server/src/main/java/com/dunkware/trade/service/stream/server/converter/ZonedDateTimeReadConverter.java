@@ -1,14 +1,14 @@
 package com.dunkware.trade.service.stream.server.converter;
 
-import org.springframework.core.convert.converter.Converter;
-
 import java.time.ZoneOffset;
-import java.time.ZonedDateTime;
+import java.time.ZoneLocalDateTime;
 import java.util.Date;
 
-public class ZonedDateTimeReadConverter implements Converter<Date, ZonedDateTime> {
+import org.springframework.core.convert.converter.Converter;
+
+public class ZoneLocalDateTimeReadConverter implements Converter<Date, ZoneLocalDateTime> {
     @Override
-    public ZonedDateTime convert(Date date) {
+    public ZoneLocalDateTime convert(Date date) {
         return date.toInstant().atZone(ZoneOffset.UTC);
     }
 }

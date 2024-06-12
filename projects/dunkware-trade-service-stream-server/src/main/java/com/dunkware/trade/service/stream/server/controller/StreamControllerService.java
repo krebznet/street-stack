@@ -13,15 +13,14 @@ import org.springframework.context.ApplicationContext;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.dunkware.common.util.json.DJson;
 import com.dunkware.spring.cluster.DunkNet;
-import com.dunkware.trade.service.stream.descriptor.StreamDescriptors;
 import com.dunkware.trade.service.stream.json.controller.spec.StreamControllerSpec;
 import com.dunkware.trade.service.stream.server.repository.StreamEntity;
 import com.dunkware.trade.service.stream.server.repository.StreamRepo;
 import com.dunkware.trade.service.stream.server.repository.StreamVersionEntity;
 import com.dunkware.trade.service.stream.server.repository.StreamVersionRepo;
 import com.dunkware.trade.service.stream.server.tick.StreamTickService;
+import com.dunkware.utils.core.json.DunkJson;
 
 
 @Service
@@ -80,13 +79,7 @@ public class StreamControllerService {
 		runner.start();
 	}
 	
-	public StreamDescriptors getStreamDescriptors() { 
-		StreamDescriptors desc = new StreamDescriptors();
-		for (StreamController streamController : controllers) {
-			desc.getDescriptors().add(streamController.getDescriptor());
-		}
-		return desc;
-	}
+
 
 	@Transactional
 	public StreamController addStream(StreamControllerSpec spec) throws Exception {
@@ -102,13 +95,13 @@ public class StreamControllerService {
 		}
 		ent.setTickerLists(spec.getTickers());
 		ent.setDataTicks(spec.getDataTicks());
-		ent.setSpec(DJson.serialize(spec));
+		ent.setSpec(DunkJson.serialize(spec));
 		ent.setName(spec.getName());
-		ent.setCountry(spec.getCountry());
+		
 		StreamVersionEntity ver = new StreamVersionEntity();
 		ver.setStream(ent);
 		ver.setVersion(spec.getVersion());
-		ver.setBundle(DJson.serialize(spec.getBundle()));
+		ver.setBundle(DunkJson.serialize(spec.getBundle()));
 		System.out.println(ver.getBundle());
 		ent.getVersions().add(ver);
 
@@ -157,7 +150,7 @@ public class StreamControllerService {
 		StreamVersionEntity newVersionDO = new StreamVersionEntity();
 		newVersionDO.setStream(stream.getEntity());
 		newVersionDO.setVersion(newVersion);
-		newVersionDO.setBundle(DJson.serialize(spec.getBundle()));
+		newVersionDO.setBundle(DunkJson.serialize(spec.getBundle()));
 		newVersionDO.setTimestamp(LocalDateTime.now());
 		
 		Iterable<StreamVersionEntity> versions = versionRepo.findAll();
@@ -171,13 +164,13 @@ public class StreamControllerService {
 		stream.getEntity().setTickerLists(spec.getTickers());
 		if (specVerisionGreater) {
 			// save the stream entity after adding new version
-			stream.getEntity().setSpec(DJson.serialize(spec));
+			stream.getEntity().setSpec(DunkJson.serialize(spec));
 			stream.getEntity().getVersions().add(newVersionDO);
 		} else {
 			// else
-			StreamControllerSpec entitySpec = DJson.getObjectMapper().readValue(stream.getEntity().getSpec(), StreamControllerSpec.class);
+			StreamControllerSpec entitySpec = DunkJson.getObjectMapper().readValue(stream.getEntity().getSpec(), StreamControllerSpec.class);
 			spec.setBundle(entitySpec.getBundle());
-			stream.getEntity().setSpec(DJson.serialize(spec));
+			stream.getEntity().setSpec(DunkJson.serialize(spec));
 		}
 		try {
 			streamRepo.save(stream.getEntity());

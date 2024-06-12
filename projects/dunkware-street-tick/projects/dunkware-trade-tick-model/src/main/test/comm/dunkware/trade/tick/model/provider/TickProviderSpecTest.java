@@ -1,6 +1,6 @@
 package comm.dunkware.trade.tick.model.provider;
 
-import com.dunkware.common.util.json.DJson;
+import com.dunkware.common.util.json.DunkJson;
 import com.dunkware.trade.tick.model.provider.TickProviderSpec;
 
 public class TickProviderSpecTest {
@@ -12,10 +12,10 @@ public class TickProviderSpecTest {
 		spec.getProperties().put("online", true);
 		spec.setName("atick");
 		try {
-			String serialized = DJson.serialize(spec);
+			String serialized = DunkJson.serialize(spec);
 			System.out.println(serialized);
 			
-			TickProviderSpec deserialized = DJson.getObjectMapper().readValue(serialized, TickProviderSpec.class);
+			TickProviderSpec deserialized = DunkJson.getObjectMapper().readValue(serialized, TickProviderSpec.class);
 			System.out.println(deserialized.getProperties().toString());
 		} catch (Exception e) {
 			e.printStackTrace();

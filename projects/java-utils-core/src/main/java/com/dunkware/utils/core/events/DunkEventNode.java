@@ -23,7 +23,7 @@ public class DunkEventNode {
 	
 	private Object source;
 
-	private List<AnnotatedEventHandler> eventHandlers = new ArrayList<AnnotatedEventHandler>();
+	private List<AnnotateDunkEventHandler> eventHandlers = new ArrayList<AnnotateDunkEventHandler>();
 	private Semaphore eventHandlerLock = new Semaphore(1);
 	
 
@@ -47,7 +47,7 @@ public class DunkEventNode {
 	 * Recursively gets all upstream event handlers registered on parent nodes. 
 	 * @param hanlders
 	 */
-	public void getEventHandlerMethods(DunkEvent event, List<AnnotatedEventHandlerMethod> handlerMethods)  { 
+	public void getEventHandlerMethods(DunkEvent event, List<AnnotateDunkEventHandlerMethod> handlerMethods)  { 
 		logger.debug("get event handler methods on event " + event.getClass().getName() + " source " + source.getClass().getName());
 		boolean acquired = false;
 		try {
@@ -56,8 +56,8 @@ public class DunkEventNode {
 				 logger.error("Event Handler Lock Timeout " + source.getClass().getName());;
 				 return;
 			 }
-			for (AnnotatedEventHandler annotatedEventHandler : eventHandlers) {
-				annotatedEventHandler.addMatchingMethodHandlers(event, handlerMethods);
+			for (AnnotateDunkEventHandler annotateDunkEventHandler : eventHandlers) {
+				annotateDunkEventHandler.addMatchingMethodHandlers(event, handlerMethods);
 			}
 		} catch (Exception e) {
 			logger.error("Exception getting event handler methods " + e.toString());
@@ -80,8 +80,8 @@ public class DunkEventNode {
 		return node;
 	}
 
-	public void addEventHandler(Object handler) throws DunkEventException {
-		final AnnotatedEventHandler registered = new AnnotatedEventHandler(handler);
+	public void adDunkEventHandler(Object handler) throws DunkEventException {
+		final AnnotateDunkEventHandler registered = new AnnotateDunkEventHandler(handler);
 		Runnable runnable = new Runnable() {
 			public void run() {
 				boolean hasLock = false;
@@ -119,10 +119,10 @@ public class DunkEventNode {
 					if(!hasLock) {
 						logger.error("Lock tieout on remove event handler " + source.getClass() + " " + handler.getClass());;
 					}
-					AnnotatedEventHandler remove = null;
-					for (AnnotatedEventHandler annotatedEventHandler : eventHandlers) {
-						if(annotatedEventHandler.source.equals(handler) || annotatedEventHandler.source == handler) {
-							remove = annotatedEventHandler;
+					AnnotateDunkEventHandler remove = null;
+					for (AnnotateDunkEventHandler annotateDunkEventHandler : eventHandlers) {
+						if(annotateDunkEventHandler.source.equals(handler) || annotateDunkEventHandler.source == handler) {
+							remove = annotateDunkEventHandler;
 							break;
 						}
 					}
@@ -159,9 +159,9 @@ public class DunkEventNode {
 
 			@Override
 			public void run() {
-					List<AnnotatedEventHandlerMethod> methods  = new ArrayList<AnnotatedEventHandlerMethod>();
+					List<AnnotateDunkEventHandlerMethod> methods  = new ArrayList<AnnotateDunkEventHandlerMethod>();
 					getEventHandlerMethods(event,methods);
-					for (AnnotatedEventHandlerMethod method : methods) {
+					for (AnnotateDunkEventHandlerMethod method : methods) {
 						
 							
 							// should invoke this in its own thread I am thinking. 
@@ -198,11 +198,11 @@ public class DunkEventNode {
 
 	
 
-	private class AnnotatedEventHandler {
+	private class AnnotateDunkEventHandler {
 		public Object source;
-		public List<AnnotatedEventHandlerMethod> methods = new ArrayList<AnnotatedEventHandlerMethod>();
+		public List<AnnotateDunkEventHandlerMethod> methods = new ArrayList<AnnotateDunkEventHandlerMethod>();
 		
-		public AnnotatedEventHandler(Object source) throws DunkEventException { 
+		public AnnotateDunkEventHandler(Object source) throws DunkEventException { 
 			this.source = source;
 			for (Method method : source.getClass().getMethods()) {
 				ADunkEventHandler[] anots = method.getAnnotationsByType(ADunkEventHandler.class);
@@ -213,14 +213,14 @@ public class DunkEventNode {
 					}
 					Class<?> param = method.getParameterTypes()[0];
 				
-					AnnotatedEventHandlerMethod methodHandler = new AnnotatedEventHandlerMethod();
+					AnnotateDunkEventHandlerMethod methodHandler = new AnnotateDunkEventHandlerMethod();
 					methodHandler.method = method;
 					methodHandler.expression = anot.expression();
 					methodHandler.source = source;
 					methodHandler.async = anot.async();
 					Class<?> paramClass = method.getParameterTypes()[0];
 					if(DunkEvent.class.isAssignableFrom(paramClass) == false) { 
-						throw new DunkEventException("method param on event handler method is not type of DEvent " + method.getName() + " " + source.getClass().getName());
+						throw new DunkEventException("method param on event handler method is not type of DunkEvent " + method.getName() + " " + source.getClass().getName());
 					}
 					methodHandler.event = paramClass;
 					methods.add(methodHandler);
@@ -228,8 +228,8 @@ public class DunkEventNode {
 			}
 		}
 		
-		public void addMatchingMethodHandlers(DunkEvent event, List<AnnotatedEventHandlerMethod> list) { 
-			for (AnnotatedEventHandlerMethod method : methods) {
+		public void addMatchingMethodHandlers(DunkEvent event, List<AnnotateDunkEventHandlerMethod> list) { 
+			for (AnnotateDunkEventHandlerMethod method : methods) {
 				if(method.method.getParameterTypes().length > 0) {
 					if(method.method.getName().equals("sessionEvent")) { 
 						System.out.println("Stop here");
@@ -244,7 +244,7 @@ public class DunkEventNode {
 		}
 	}
 
-	private class AnnotatedEventHandlerMethod {
+	private class AnnotateDunkEventHandlerMethod {
 		public Class<? > event;
 		public Method method;
 		public String expression;
@@ -269,7 +269,7 @@ public class DunkEventNode {
 			try {
 				method.invoke(source, event);
 			} catch (Exception e) {
-				logger.error("DEvent Method Exception " + method.getDeclaringClass().getName() + " " + method.getName() + " " + e.toString());
+				logger.error("DunkEvent Method Exception " + method.getDeclaringClass().getName() + " " + method.getName() + " " + e.toString());
 			}
 
 		}

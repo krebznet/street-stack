@@ -18,12 +18,9 @@ import org.slf4j.MarkerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 
-import com.dunkware.common.util.dtime.DTime;
-import com.dunkware.common.util.dtime.DTimeZone;
-import com.dunkware.common.util.events.DEventNode;
-import com.dunkware.common.util.events.anot.ADEventMethod;
-import com.dunkware.common.util.json.DJson;
-import com.dunkware.common.util.time.DunkTime;
+import com.dunkware.common.util.LocalTime.LocalTime;
+import com.dunkware.common.util.LocalTime.LocalTimeZone;
+import com.dunkware.common.util.events.anot.ADunkEventMethod;
 import com.dunkware.spring.cluster.DunkNet;
 import com.dunkware.spring.cluster.DunkNetNode;
 import com.dunkware.spring.runtime.services.ExecutorService;
@@ -53,6 +50,9 @@ import com.dunkware.trade.service.stream.server.controller.session.events.EStrea
 import com.dunkware.trade.service.stream.server.repository.StreamSessionEntity;
 import com.dunkware.trade.service.stream.server.repository.StreamSessionRepo;
 import com.dunkware.trade.tick.model.ticker.TradeTickerSpec;
+import com.dunkware.utils.core.events.DunkEventNode;
+import com.dunkware.utils.core.json.DunkJson;
+import com.dunkware.utils.core.time.DunkTime;
 import com.dunkware.xstream.xproject.XScriptProject;
 import com.dunkware.xstream.xproject.model.XScriptBundle;
 
@@ -90,7 +90,7 @@ public class StreamSessionImpl implements StreamSession {
 
 	private StreamSessionEntity sessionEntity;
 
-	private DEventNode eventNode;
+	private DunkEventNode eventNode;
 
 	private String sessionId;
 
@@ -184,7 +184,7 @@ public class StreamSessionImpl implements StreamSession {
 		};
 		
 		sender.start();
-		status.setStartingTime(DTime.from(LocalTime.now(DTimeZone.toZoneId(input.getController().getTimeZone()))));
+		status.setStartingTime(LocalTime.from(LocalTime.now(LocalTimeZone.toZoneId(input.getController().getTimeZone()))));
 		nodeStartEventCount.set(0);
 		logger.info(marker, "Starting Stream {} Session with {} workers ", input.getController().getName(),
 				input.getWorkerNodes().size());
@@ -194,9 +194,9 @@ public class StreamSessionImpl implements StreamSession {
 
 		nodeStartFailures = new AtomicInteger(0);
 		eventNode = input.getController().getEventNode().createChild(this);
-		eventNode.addEventHandler(this);
+		eventNode.adDunkEventHandler(this);
 
-		ZoneId zoneId = DTimeZone.toZoneId(input.getController().getTimeZone());
+		ZoneId zoneId = LocalTimeZone.toZoneId(input.getController().getTimeZone());
 		sessionId = input.getController().getName() + " _"
 				+ DunkTime.format(LocalDateTime.now(zoneId), DunkTime.YYYY_MM_DD_HH_MM_SS);
 		logger.info(marker, "Starting Stream Session " + input.getController().getName());
@@ -281,9 +281,9 @@ public class StreamSessionImpl implements StreamSession {
 					netMessage.setId(getStream().getEntity().getId());
 					netMessage.setIdentifier(getStream().getName());
 					netMessage.setStartTime(startTime);
-					netMessage.setStopTime(LocalDateTime.now(DTimeZone.toZoneId(getStream().getTimeZone())));
+					netMessage.setStopTime(LocalDateTime.now(LocalTimeZone.toZoneId(getStream().getTimeZone())));
 					netMessage.setSessionId(getEntity().getId());
-					logger.info(stop, "Sending stop session " + DJson.serializePretty(netMessage));
+					logger.info(stop, "Sending stop session " + DunkJson.serializePretty(netMessage));
 					System.out.println("Bun in hell sent the fuckin messge");
 					StreamSessionImpl.this.dunkNet.event(netMessage);
 				} catch (Exception e) {
@@ -293,7 +293,7 @@ public class StreamSessionImpl implements StreamSession {
 
 				try {
 
-					logger.info(marker, "Sending stop session " + DJson.serializePretty(netMessage));
+					logger.info(marker, "Sending stop session " + DunkJson.serializePretty(netMessage));
 				} catch (Exception e) {
 					logger.error(marker, "Stopping Session Message not sent " + e.toString());
 				}
@@ -382,7 +382,7 @@ public class StreamSessionImpl implements StreamSession {
 	}
 
 	@Override
-	public DEventNode getEventNode() {
+	public DunkEventNode getEventNode() {
 		return eventNode;
 	}
 
@@ -410,9 +410,9 @@ public class StreamSessionImpl implements StreamSession {
 	private void createSessionEntity() {
 		sessionEntity = new StreamSessionEntity();
 		sessionEntity.setProblemCount(0);
-		sessionEntity.setDate(LocalDate.now(DTimeZone.toZoneId(input.getController().getTimeZone())));
+		sessionEntity.setDate(LocalDate.now(LocalTimeZone.toZoneId(input.getController().getTimeZone())));
 		sessionEntity.setState(getStats().getState());
-		sessionEntity.setStartingTime(LocalDateTime.now(DTimeZone.toZoneId(input.getController().getTimeZone())));
+		sessionEntity.setStartingTime(LocalDateTime.now(LocalTimeZone.toZoneId(input.getController().getTimeZone())));
 		sessionEntity.setStream(getStream().getEntity());
 		sessionEntity.setStreamName(getStream().getName());
 		sessionEntity.setVersion(getStream().getCurrentVersion());
@@ -461,7 +461,7 @@ public class StreamSessionImpl implements StreamSession {
 		throw new Exception("Entity id " + entityId + " not found on any session worker nodes");
 	}
 
-	@ADEventMethod()
+	@ADunkEventMethod()
 	public void nodeStarted(EStreamSessionNodeStarted nodeStarted) {
 		if (logger.isDebugEnabled()) {
 			logger.debug(marker, "Event Session node " + nodeStarted.getNode().getWorkerId() + "Started");
@@ -485,7 +485,7 @@ public class StreamSessionImpl implements StreamSession {
 
 	}
 
-	@ADEventMethod()
+	@ADunkEventMethod()
 	public void nodeStartException(EStreamSessionNodeStartExcepton exp) {
 		logger.error(marker, "Stream {} Session Node {} Start Exception {}", getStream().getName(),
 				exp.getNode().getWorkerId(), exp.getException());
@@ -506,7 +506,7 @@ public class StreamSessionImpl implements StreamSession {
 
 	}
 
-	@ADEventMethod
+	@ADunkEventMethod
 	public void nodeStopped(EStreamSessionNodeStopped stopped) {
 		logger.info(stopTrace, "nodeStopped() invoked from node " + stopped.getNode().getNodeId());
 		int stopCount = nodeStopEventCount.incrementAndGet();
@@ -532,7 +532,7 @@ public class StreamSessionImpl implements StreamSession {
 		}
 	}
 
-	@ADEventMethod
+	@ADunkEventMethod
 	public void nodeStopExcetion(EStreamSessionNodeStopException stopExp) {
 		logger.error(stopTrace, "nodeStopException() invoked from node {} exception is {}",stopExp.getNode().getNodeId(), stopExp.getException());
 		int stopCount = nodeStopEventCount.incrementAndGet();
@@ -559,7 +559,7 @@ public class StreamSessionImpl implements StreamSession {
 	}
 
 	private void handleSessionSart() {
-		startTime = LocalDateTime.now(DTimeZone.toZoneId(getStream().getTimeZone()));
+		startTime = LocalDateTime.now(LocalTimeZone.toZoneId(getStream().getTimeZone()));
 		logger.info(marker, "Handling Stream {} Session Start", getStream().getName());
 		if (nodeStartFailures.get() > 0) {
 			this.status.setState(StreamState.StartException);
@@ -573,7 +573,7 @@ public class StreamSessionImpl implements StreamSession {
 		}
 
 		this.status.setState(StreamState.Running);
-		this.status.setStartTime(DTime.now());
+		this.status.setStartTime(LocalTime.now());
 		for (StreamSessionExtension ext : extensionTypes) {
 			ext.sessionStarted(this);
 		}
@@ -593,9 +593,9 @@ public class StreamSessionImpl implements StreamSession {
 		
 		this.stoppedSessionInvoked.set(true);
 		try {
-			LocalDateTime stop =  LocalDateTime.now(DTimeZone.toZoneId(input.getController().getTimeZone()));
+			LocalDateTime stop =  LocalDateTime.now(LocalTimeZone.toZoneId(input.getController().getTimeZone()));
 			stopTime = stop.toLocalTime();
-			sessionEntity.setStopDateTime(LocalDateTime.now(DTimeZone.toZoneId(input.getController().getTimeZone())));
+			sessionEntity.setStopDateTime(LocalDateTime.now(LocalTimeZone.toZoneId(input.getController().getTimeZone())));
 			sessionEntity.setState(status.getState());
 			logger.info(stopTrace, "handleSessionStop() Updating session entity with stop date time and state	");
 			saveSessionEntity();
@@ -608,7 +608,7 @@ public class StreamSessionImpl implements StreamSession {
 
 			streamSessionExtension.sessionStopped(this);
 		}
-		logger.info(stopTrace, "handleSessionStop() invoked sessionStopped on extensions sensing session stopped DEvent");
+		logger.info(stopTrace, "handleSessionStop() invoked sessionStopped on extensions sensing session stopped DunkEvent");
 		EStreamSessionStopped stopped = new EStreamSessionStopped(this);
 		eventNode.event(stopped);
 		
@@ -623,10 +623,10 @@ public class StreamSessionImpl implements StreamSession {
 					netMessage.setId(getStream().getEntity().getId());
 					netMessage.setIdentifier(getStream().getName());
 					netMessage.setStartTime(startTime);
-					netMessage.setStopTime(LocalDateTime.now(DTimeZone.toZoneId(getStream().getTimeZone())));
+					netMessage.setStopTime(LocalDateTime.now(LocalTimeZone.toZoneId(getStream().getTimeZone())));
 					netMessage.setSessionId(getEntity().getId());
 					netMessage.setProperties(input.getProperties());
-					logger.info(stop, "Sending stop session " + DJson.serializePretty(netMessage));
+					logger.info(stop, "Sending stop session " + DunkJson.serializePretty(netMessage));
 					StreamSessionImpl.this.dunkNet.event(netMessage);
 				} catch (Exception e) {
 					logger.error(stopTrace, "Exception sending StreamSessionStopped message {}",e.toString(),e);

@@ -1,4 +1,4 @@
-FROM openjdk:11
+FROM openjdk:17
 
 VOLUME /tmp
 ADD target/dunkware-trade-service-worker-server-1.0.0-SNAPSHOT.jar application.jar

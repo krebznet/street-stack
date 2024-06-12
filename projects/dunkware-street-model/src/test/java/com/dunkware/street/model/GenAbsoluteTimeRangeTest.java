@@ -48,11 +48,11 @@ class GenAbsoluteTimeRangeTest {
     }
 
     /**
-     * Test the property 'endTime'
+     * Test the property 'enLocalTime'
      */
     @Test
-    void endTimeTest() {
-        // TODO: test endTime
+    void enLocalTimeTest() {
+        // TODO: test enLocalTime
     }
 
     /**

@@ -44,8 +44,8 @@ public class GenTimeRange {
   public static final String JSON_PROPERTY_START_DATE = "startDate";
   private Date startDate;
 
-  public static final String JSON_PROPERTY_END_DATE = "endDate";
-  private Date endDate;
+  public static final String JSON_PROPERTY_END_DATE = "enLocalDate";
+  private Date enLocalDate;
 
   public static final String JSON_PROPERTY_RELATIVE_VALUE = "relativeValue";
   private Integer relativeValue;
@@ -112,28 +112,28 @@ public class GenTimeRange {
   }
 
 
-  public GenTimeRange endDate(Date endDate) {
-    this.endDate = endDate;
+  public GenTimeRange enLocalDate(Date enLocalDate) {
+    this.enLocalDate = enLocalDate;
     return this;
   }
 
    /**
    * End date and time of the range.
-   * @return endDate
+   * @return enLocalDate
   **/
   @jakarta.annotation.Nullable
   @JsonProperty(JSON_PROPERTY_END_DATE)
   @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
 
-  public Date getEndDate() {
-    return endDate;
+  public Date getEnLocalDate() {
+    return enLocalDate;
   }
 
 
   @JsonProperty(JSON_PROPERTY_END_DATE)
   @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
-  public void setEndDate(Date endDate) {
-    this.endDate = endDate;
+  public void setEnLocalDate(Date enLocalDate) {
+    this.enLocalDate = enLocalDate;
   }
 
 
@@ -251,7 +251,7 @@ public class GenTimeRange {
     GenTimeRange genTimeRange = (GenTimeRange) o;
     return Objects.equals(this.type, genTimeRange.type) &&
         Objects.equals(this.startDate, genTimeRange.startDate) &&
-        Objects.equals(this.endDate, genTimeRange.endDate) &&
+        Objects.equals(this.enLocalDate, genTimeRange.enLocalDate) &&
         Objects.equals(this.relativeValue, genTimeRange.relativeValue) &&
         Objects.equals(this.relativeTimeUnit, genTimeRange.relativeTimeUnit) &&
         Objects.equals(this.hasTimeWindow, genTimeRange.hasTimeWindow) &&
@@ -260,7 +260,7 @@ public class GenTimeRange {
 
   @Override
   public int hashCode() {
-    return Objects.hash(type, startDate, endDate, relativeValue, relativeTimeUnit, hasTimeWindow, timeWindow);
+    return Objects.hash(type, startDate, enLocalDate, relativeValue, relativeTimeUnit, hasTimeWindow, timeWindow);
   }
 
   @Override
@@ -269,7 +269,7 @@ public class GenTimeRange {
     sb.append("class GenTimeRange {\n");
     sb.append("    type: ").append(toIndentedString(type)).append("\n");
     sb.append("    startDate: ").append(toIndentedString(startDate)).append("\n");
-    sb.append("    endDate: ").append(toIndentedString(endDate)).append("\n");
+    sb.append("    enLocalDate: ").append(toIndentedString(enLocalDate)).append("\n");
     sb.append("    relativeValue: ").append(toIndentedString(relativeValue)).append("\n");
     sb.append("    relativeTimeUnit: ").append(toIndentedString(relativeTimeUnit)).append("\n");
     sb.append("    hasTimeWindow: ").append(toIndentedString(hasTimeWindow)).append("\n");
@@ -331,9 +331,9 @@ public class GenTimeRange {
       joiner.add(String.format("%sstartDate%s=%s", prefix, suffix, URLEncoder.encode(String.valueOf(getStartDate()), StandardCharsets.UTF_8).replaceAll("\\+", "%20")));
     }
 
-    // add `endDate` to the URL query string
-    if (getEndDate() != null) {
-      joiner.add(String.format("%sendDate%s=%s", prefix, suffix, URLEncoder.encode(String.valueOf(getEndDate()), StandardCharsets.UTF_8).replaceAll("\\+", "%20")));
+    // add `enLocalDate` to the URL query string
+    if (getEnLocalDate() != null) {
+      joiner.add(String.format("%senLocalDate%s=%s", prefix, suffix, URLEncoder.encode(String.valueOf(getEnLocalDate()), StandardCharsets.UTF_8).replaceAll("\\+", "%20")));
     }
 
     // add `relativeValue` to the URL query string

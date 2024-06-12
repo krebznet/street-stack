@@ -10,8 +10,6 @@ import org.slf4j.MarkerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 
-import com.dunkware.common.util.json.DJson;
-import com.dunkware.common.util.uuid.DUUID;
 import com.dunkware.spring.cluster.DunkNet;
 import com.dunkware.spring.cluster.DunkNetChannel;
 import com.dunkware.spring.cluster.DunkNetChannelHandler;
@@ -26,6 +24,8 @@ import com.dunkware.spring.cluster.core.request.DunkNetServiceRequest;
 import com.dunkware.spring.cluster.message.DunkNetMessage;
 import com.dunkware.spring.cluster.protocol.descriptors.DunkNetChannelDescriptor;
 import com.dunkware.spring.cluster.protocol.descriptors.DunkNetDescriptors;
+import com.dunkware.utils.core.helpers.DunkUUID;
+import com.dunkware.utils.core.json.DunkJson;
 
 public class DunkNetController 
  {
@@ -178,7 +178,7 @@ public class DunkNetController
 				
 			}
 			
-			logger.error(marker, "Message not handled type {} on node {} payload {}", message.getType(), net.getId(),DJson.serializePretty(message.getPayload()));
+			logger.error(marker, "Message not handled type {} on node {} payload {}", message.getType(), net.getId(),DunkJson.serializePretty(message.getPayload()));
 			return false;
 		} catch (Exception e) {
 			logger.error(marker, "Thrown Exception in message handler switch {}",e.toString(),e);
@@ -269,7 +269,7 @@ public class DunkNetController
 			return;
 		}
 		try {
-			String newChannelId = DUUID.randomUUID(5);
+			String newChannelId = DunkUUID.randomUUID(5);
 			logger.info(channelId, "Created random channel id {} for payload class {}",newChannelId,message.getPayload().getClass().getCanonicalName());
 			DunkNetChannelImpl channel = new DunkNetChannelImpl();
 			ac.getAutowireCapableBeanFactory().autowireBean(channel);
@@ -335,7 +335,7 @@ public class DunkNetController
 			return;
 		}
 		try {
-			String newChannelId = DUUID.randomUUID(5);
+			String newChannelId = DunkUUID.randomUUID(5);
 			DunkNetChannelImpl channel = new DunkNetChannelImpl();
 			ac.getAutowireCapableBeanFactory().autowireBean(channel);
 			channel.init(newChannelId, method.getLabel(), node, false);

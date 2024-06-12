@@ -37,8 +37,8 @@ public class GenAbsoluteTimeRange {
   public static final String JSON_PROPERTY_START_TIME = "startTime";
   private GenTime startTime;
 
-  public static final String JSON_PROPERTY_END_TIME = "endTime";
-  private GenTime endTime;
+  public static final String JSON_PROPERTY_END_TIME = "enLocalTime";
+  private GenTime enLocalTime;
 
   public static final String JSON_PROPERTY_HAS_TIME_WINDOW = "hasTimeWindow";
   private Boolean hasTimeWindow;
@@ -74,28 +74,28 @@ public class GenAbsoluteTimeRange {
   }
 
 
-  public GenAbsoluteTimeRange endTime(GenTime endTime) {
-    this.endTime = endTime;
+  public GenAbsoluteTimeRange enLocalTime(GenTime enLocalTime) {
+    this.enLocalTime = enLocalTime;
     return this;
   }
 
    /**
-   * Get endTime
-   * @return endTime
+   * Get enLocalTime
+   * @return enLocalTime
   **/
   @jakarta.annotation.Nonnull
   @JsonProperty(JSON_PROPERTY_END_TIME)
   @JsonInclude(value = JsonInclude.Include.ALWAYS)
 
-  public GenTime getEndTime() {
-    return endTime;
+  public GenTime getEnLocalTime() {
+    return enLocalTime;
   }
 
 
   @JsonProperty(JSON_PROPERTY_END_TIME)
   @JsonInclude(value = JsonInclude.Include.ALWAYS)
-  public void setEndTime(GenTime endTime) {
-    this.endTime = endTime;
+  public void setEnLocalTime(GenTime enLocalTime) {
+    this.enLocalTime = enLocalTime;
   }
 
 
@@ -162,14 +162,14 @@ public class GenAbsoluteTimeRange {
     }
     GenAbsoluteTimeRange genAbsoluteTimeRange = (GenAbsoluteTimeRange) o;
     return Objects.equals(this.startTime, genAbsoluteTimeRange.startTime) &&
-        Objects.equals(this.endTime, genAbsoluteTimeRange.endTime) &&
+        Objects.equals(this.enLocalTime, genAbsoluteTimeRange.enLocalTime) &&
         Objects.equals(this.hasTimeWindow, genAbsoluteTimeRange.hasTimeWindow) &&
         Objects.equals(this.timeWindow, genAbsoluteTimeRange.timeWindow);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(startTime, endTime, hasTimeWindow, timeWindow);
+    return Objects.hash(startTime, enLocalTime, hasTimeWindow, timeWindow);
   }
 
   @Override
@@ -177,7 +177,7 @@ public class GenAbsoluteTimeRange {
     StringBuilder sb = new StringBuilder();
     sb.append("class GenAbsoluteTimeRange {\n");
     sb.append("    startTime: ").append(toIndentedString(startTime)).append("\n");
-    sb.append("    endTime: ").append(toIndentedString(endTime)).append("\n");
+    sb.append("    enLocalTime: ").append(toIndentedString(enLocalTime)).append("\n");
     sb.append("    hasTimeWindow: ").append(toIndentedString(hasTimeWindow)).append("\n");
     sb.append("    timeWindow: ").append(toIndentedString(timeWindow)).append("\n");
     sb.append("}");
@@ -232,9 +232,9 @@ public class GenAbsoluteTimeRange {
       joiner.add(getStartTime().toUrlQueryString(prefix + "startTime" + suffix));
     }
 
-    // add `endTime` to the URL query string
-    if (getEndTime() != null) {
-      joiner.add(getEndTime().toUrlQueryString(prefix + "endTime" + suffix));
+    // add `enLocalTime` to the URL query string
+    if (getEnLocalTime() != null) {
+      joiner.add(getEnLocalTime().toUrlQueryString(prefix + "enLocalTime" + suffix));
     }
 
     // add `hasTimeWindow` to the URL query string

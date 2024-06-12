@@ -4,24 +4,24 @@ import java.util.Vector;
 
 import org.apache.kafka.clients.producer.Producer;
 
-import com.dunkware.common.kafka.admin.DKafkaAdminClient;
-import com.dunkware.common.util.events.DEventNode;
-import com.dunkware.common.util.executor.DExecutor;
 import com.dunkware.spring.cluster.core.controllers.DunkNetController;
 import com.dunkware.spring.cluster.core.controllers.DunkNetState;
 import com.dunkware.spring.cluster.core.request.DunkNetChannelRequest;
 import com.dunkware.spring.cluster.core.request.DunkNetServiceRequest;
 import com.dunkware.spring.cluster.protocol.descriptors.DunkNetNodeDescriptor;
+import com.dunkware.utils.core.concurrent.DunkExecutor;
+import com.dunkware.utils.core.events.DunkEventNode;
+import com.dunkware.utils.kafka.admin.DunkKafkaAdmin;
 
 import io.vertx.core.Future;
 
 public interface DunkNet {
 	
-	public DEventNode getEventNode();
+	public DunkEventNode getEventNode();
 	
 	public String getId();
 	
-	public DKafkaAdminClient createAdminClient() throws DunkNetException;
+	public DunkKafkaAdmin createAdminClient() throws DunkNetException;
 	
 	public void extension(Object extension) throws DunkNetException;
 	
@@ -51,7 +51,7 @@ public interface DunkNet {
 	
 	public DunkNetConfig getConfig();
 	
-	public DExecutor getExecutor(); 
+	public DunkExecutor getExecutor(); 
 	
 	public DunkNetExtensions extensions();
 	

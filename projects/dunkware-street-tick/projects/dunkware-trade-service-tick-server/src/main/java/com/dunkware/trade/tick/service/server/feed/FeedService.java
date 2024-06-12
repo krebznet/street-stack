@@ -1,6 +1,7 @@
 package com.dunkware.trade.tick.service.server.feed;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -16,12 +17,6 @@ import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Component;
 
-import com.dunkware.common.kafka.admin.DKafkaAdminClient;
-import com.dunkware.common.util.dtime.DDateTime;
-import com.dunkware.common.util.dtime.DTimeZone;
-import com.dunkware.common.util.executor.DExecutor;
-import com.dunkware.common.util.helpers.DConverter;
-import com.dunkware.common.util.json.DJson;
 import com.dunkware.spring.cluster.DunkNet;
 import com.dunkware.trade.tick.api.consumer.TickConsumer;
 import com.dunkware.trade.tick.api.feed.TickFeed;
@@ -42,6 +37,11 @@ import com.dunkware.trade.tick.service.server.feed.repository.FeedRepository;
 import com.dunkware.trade.tick.service.server.ticker.repsoitory.TickerListSubscribeDO;
 import com.dunkware.trade.tick.service.server.ticker.repsoitory.TickerListSubscribeRepo;
 import com.dunkware.trade.tick.service.server.ticker.repsoitory.TickerListTickerDO;
+import com.dunkware.utils.core.concurrent.DunkExecutor;
+import com.dunkware.utils.core.helpers.DunkNumber;
+import com.dunkware.utils.core.json.DunkJson;
+import com.dunkware.utils.core.time.DunkTimeZones;
+import com.dunkware.utils.kafka.admin.DunkKafkaAdmin;
 
 import jakarta.annotation.PostConstruct;
 
@@ -84,7 +84,7 @@ public class FeedService {
 
 	private Map<String, TradeTickerSpec> tickerSubscriptions = new ConcurrentHashMap<String, TradeTickerSpec>();
 
-	private DDateTime startTime;
+	private LocalDateTime startTime;
 
 	private TickProvider activeProvider;
 	
@@ -95,13 +95,13 @@ public class FeedService {
 	@PostConstruct
 	private void load() {
 		tickFeed = new TickFeedImpl();
-		today = LocalDate.now(DTimeZone.toZoneId(DTimeZone.NewYork));
-		startTime = DDateTime.now(DTimeZone.NewYork);
+		today = LocalDate.now(DunkTimeZones.zoneNewYork());
+		startTime = LocalDateTime.now(DunkTimeZones.zoneNewYork()); 
 		dayChecker = new ResetDayChecker();
 		dayChecker.start();
 		logger.info("Checking for existing feed consumer topics" );
 		try {
-			DKafkaAdminClient admin = dunkNet.createAdminClient();
+			DunkKafkaAdmin admin = dunkNet.createAdminClient();
 			List<String> deleteTopics = new ArrayList<String>();
 			List<String> topicNames = admin.getTopicNames(false);
 			for (String string : topicNames) {
@@ -153,7 +153,7 @@ public class FeedService {
 		if(serviceProviders.size() > 0) { 
 			
 			try {
-				tickFeed.start(activeProvider, new DExecutor(5),propKafkaBrokes);		
+				tickFeed.start(activeProvider, new DunkExecutor(5),propKafkaBrokes);		
 			} catch (Exception e) {
 				logger.error(MarkerFactory.getMarker("Crash"), "Exception starting tick feed " + e.toString());
 			//	System.exit(-1);
@@ -170,7 +170,7 @@ public class FeedService {
 				
 				if (tickerSubscriptions.get(ticker.getTicker().getSymbol()) == null) {
 					TradeTickerSpec spec = new TradeTickerSpec();
-					spec.setId(DConverter.longToInt(ticker.getTicker().getId()));
+					spec.setId(DunkNumber.longToInt(ticker.getTicker().getId()));
 					spec.setSymbol(ticker.getTicker().getSymbol());
 					spec.setName(ticker.getTicker().getSecurityName());
 					tickerSubscriptions.put(spec.getSymbol(), spec);
@@ -252,7 +252,7 @@ public class FeedService {
 		ent.setIdentifier(spec.getName());
 		ent.setSubscriptionLimit(0);
 		try {
-			String json = DJson.serialize(spec);
+			String json = DunkJson.serialize(spec);
 			ent.setJson(json);
 
 		} catch (Exception e) {
@@ -344,7 +344,7 @@ public class FeedService {
 		public void run() { 
 			try {
 				while(!interrupted()) { 
-					LocalDate rightNow = LocalDate.now(DTimeZone.toZoneId(DTimeZone.NewYork));
+					LocalDate rightNow = DunkTimeZones.dateTimeNewYork().toLocalDate();
 					if(rightNow.isAfter(today)) { 
 						logger.info("Feed Service Reset Day Triggered");
 						for (FeedServiceProvider feedServiceProvider : serviceProviders) {

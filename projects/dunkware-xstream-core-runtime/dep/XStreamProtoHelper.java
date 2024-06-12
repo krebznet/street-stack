@@ -8,8 +8,8 @@ import java.time.ZoneOffset;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.dunkware.common.util.dtime.DTimeZone;
-import com.dunkware.common.util.helpers.DDateTimeHelper;
+import com.dunkware.common.util.LocalTime.LocalTimeZone;
+import com.dunkware.common.util.helpers.LocalDateTimeHelper;
 import com.dunkware.xstream.api.XStreamRow;
 import com.dunkware.xstream.api.XStreamVar;
 import com.dunkware.xstream.core.model.signal.XStreamSignal;
@@ -28,8 +28,8 @@ public class XStreamProtoHelper {
 
 	public static Snapshot rowSnapshot(XStreamRow row) {
 
-		ZoneId timeZone = DTimeZone.toZoneId(row.getStream().getInput().getTimeZone());
-		long time = DDateTimeHelper.convertLocalTimeToDate(row.getStream().getClock().getTime().get(), timeZone)
+		ZoneId timeZone = LocalTimeZone.toZoneId(row.getStream().getInput().getTimeZone());
+		long time = LocalDateTimeHelper.convertLocalTimeToDate(row.getStream().getClock().getTime().get(), timeZone)
 				.getTime();
 		
 		Snapshot.Builder rowBuilder = Snapshot.newBuilder().setEntity(row.getIdentifier());
@@ -116,9 +116,9 @@ public class XStreamProtoHelper {
 	}
 
 	public static Signal rowSignal(XStreamRow row, XStreamSignal signal) {
-		ZoneId timeZone = DTimeZone.toZoneId(row.getStream().getInput().getTimeZone());
+		ZoneId timeZone = LocalTimeZone.toZoneId(row.getStream().getInput().getTimeZone());
 
-		long time = DDateTimeHelper.convertLocalTimeToDate(row.getStream().getClock().getTime().get(), timeZone)
+		long time = LocalDateTimeHelper.convertLocalTimeToDate(row.getStream().getClock().getTime().get(), timeZone)
 				.getTime();
 		Signal.Builder sigBuilder = Signal.newBuilder().setId(signal.getId()).setTimestamp(time).setEntity(row.getIdentifier());
 		for (XStreamVar var : row.getVars()) {

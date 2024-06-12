@@ -4,10 +4,8 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.dunkware.common.util.helpers.DFileHelper;
-import com.dunkware.common.util.json.DJson;
+import com.dunkware.utils.core.json.DunkJson;
 import com.dunkware.xstream.model.entity.query.type.StreamEntityCriteriaType;
-import com.dunkware.xstream.model.entity.query.type.StreamEntityQueryType;
 
 public class StreamSignalType {
 
@@ -31,10 +29,10 @@ public class StreamSignalType {
 
 	public static void main(String[] args) {
 		try {
-			String json = DFileHelper.readFileContents(new File(
+			String json = com.dunkware.utils.core.helpers.DunkFile.readFileContents(new File(
 					"/Users/duncankrebs/dunkware/street/cloud/1.0.0/dunkware-street-cloud/projects/dunkware-trade-service-stream-json/src/main/java/com/dunkware/trade/service/stream/json/blueprint/FileFuck.json"));
 
-			StreamSignalType type = DJson.getObjectMapper().readValue(json, StreamSignalType.class);
+			StreamSignalType type = DunkJson.getObjectMapper().readValue(json, StreamSignalType.class);
 			type.getName();
 			System.out.println(type.toString());
 		} catch (Exception e) {

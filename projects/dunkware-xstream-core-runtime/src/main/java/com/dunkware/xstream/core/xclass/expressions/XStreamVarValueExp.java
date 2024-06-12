@@ -3,11 +3,11 @@
  */
 package com.dunkware.xstream.core.xclass.expressions;
 
-import com.dunkware.common.util.helpers.DConverter;
+import com.dunkware.utils.core.helpers.DunkNumber;
 import com.dunkware.xstream.api.XObject;
 import com.dunkware.xstream.api.XObjectExpression;
-import com.dunkware.xstream.api.XStreamRuntimeException;
 import com.dunkware.xstream.api.XStreamEntityVar;
+import com.dunkware.xstream.api.XStreamRuntimeException;
 import com.dunkware.xstream.core.annotations.AXObjectExpression;
 import com.dunkware.xstream.xScript.XExpressionType;
 import com.dunkware.xstream.xScript.XStreamVarValueExpType;
@@ -40,7 +40,7 @@ public class XStreamVarValueExp implements XObjectExpression {
 		if(_expression.canExecute()) {
 			Object value = _expression.execute();
 			try {
-				_index = DConverter.toInteger(value);
+				_index = DunkNumber.toInteger(value);
 			} catch (Exception e) {
 				throw new XStreamRuntimeException("Error getting int inex value " + e.toString());
 			}

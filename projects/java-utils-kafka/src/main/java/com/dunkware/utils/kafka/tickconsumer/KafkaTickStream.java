@@ -5,7 +5,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.dunkware.utils.kafka.byteconsumer.KafkaByteConsumer;
-import com.dunkware.utils.kafka.byteconsumer.KafkaByteConsumerModel;
+import com.dunkware.utils.kafka.byteconsumer.KafkaByteConsumerSpec;
 import com.dunkware.utils.kafka.byteconsumer.KafkaByteHandler;
 import com.dunkware.utils.tick.proto.TickProto;
 import com.dunkware.utils.tick.proto.TickProto.Tick;
@@ -15,14 +15,14 @@ public class KafkaTickStream extends TickStreamImpl implements KafkaByteHandler 
 
 	private Logger logger = LoggerFactory.getLogger(getClass());
 	
-	public static KafkaTickStream newInstance(KafkaByteConsumerModel consumerModel) throws Exception { 
-		return new KafkaTickStream(consumerModel);
+	public static KafkaTickStream newInstance(KafkaByteConsumerSpec spec) throws Exception { 
+		return new KafkaTickStream(spec);
 	}
 	
 	
 	private KafkaByteConsumer kafkaConsumer; 
 	
-	private KafkaTickStream(KafkaByteConsumerModel model) throws Exception { 
+	private KafkaTickStream(KafkaByteConsumerSpec model) throws Exception { 
 		kafkaConsumer = KafkaByteConsumer.newInstance(model);
 		kafkaConsumer.start();
 		kafkaConsumer.addStreamHandler(this);

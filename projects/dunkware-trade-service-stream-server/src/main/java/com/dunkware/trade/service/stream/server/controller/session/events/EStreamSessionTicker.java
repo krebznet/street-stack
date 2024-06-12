@@ -1,29 +1,29 @@
 package com.dunkware.trade.service.stream.server.controller.session.events;
 
-import com.dunkware.common.util.dtime.DTime;
+import java.time.LocalTime;
+
 import com.dunkware.trade.service.stream.server.controller.session.StreamSession;
 import com.dunkware.trade.tick.model.ticker.TradeTickerSpec;
-import com.google.common.base.Ticker;
 
 public class EStreamSessionTicker extends EStreamSessionEvent {
 
 	private TradeTickerSpec ticker; 
-	private DTime time; 
+	private LocalTime time; 
 	private String node; 
 	
 	
-	public EStreamSessionTicker(StreamSession session,TradeTickerSpec ticker,DTime time) {
+	public EStreamSessionTicker(StreamSession session,TradeTickerSpec ticker,LocalTime time) {
 		super(session);
 		this.ticker = ticker;
 		this.time = time;
 	}
 	
 	
-	public DTime getTime() {
+	public LocalTime getTime() {
 		return time;
 	}
 
-	public void setTime(DTime time) {
+	public void setTime(LocalTime time) {
 		this.time = time;
 	}
 

@@ -4,7 +4,7 @@ import java.io.StringWriter;
 
 import org.requirementsascode.moonwlker.MoonwlkerModule;
 
-import com.dunkware.common.util.executor.DExecutor;
+import com.dunkware.utils.core.concurrent.DunkExecutor;
 import com.dunkware.xstream.api.XStream;
 import com.dunkware.xstream.api.XStreamEntityQueryBuilder;
 import com.dunkware.xstream.api.XStreamException;
@@ -34,7 +34,7 @@ public class XStreamCore {
 		return new XStreamImpl();
 	}
 	
-	public static XStreamInput createInput(XStreamBundle bundle, DExecutor executor, XStreamEntityQueryBuilder entityQueryBuilder) throws XStreamException { 
+	public static XStreamInput createInput(XStreamBundle bundle, DunkExecutor executor, XStreamEntityQueryBuilder entityQueryBuilder) throws XStreamException { 
 		try {
 			if(bundle.getScriptBundle() == null) { 
 				throw new XStreamException("XScript Bundle is not set on xstream bundle");
@@ -44,15 +44,16 @@ public class XStreamCore {
 		}
 		
 		if(bundle.getTimeZone() == null) {
-			
+			throw new XStreamException("TimeZone Null on XStreamInput");
 		}
+		
 		XStreamInput input = new XStreamInput();
 		input.setQueryBuilder(entityQueryBuilder);
 		input.setDate(bundle.getDate());
 		input.setExecutor(executor);
 		input.setRegistry(getRegistry());
 		input.setExtensions(bundle.getExtensions());
-		input.setTimeZone(bundle.getTimeZone());
+		
 		
 		try {
 			input.setScript(XscriptBundleHelper.loadProject(bundle.getScriptBundle()));	

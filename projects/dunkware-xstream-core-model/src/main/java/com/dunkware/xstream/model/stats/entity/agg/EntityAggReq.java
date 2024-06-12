@@ -12,7 +12,7 @@ public class EntityAggReq {
 	
 	// use dfor range req type  
 	private LocalDate startDate; 
-	private LocalDate endDate; 
+	private LocalDate enLocalDate; 
 	
 	private int entity; 
 	private int stat; 

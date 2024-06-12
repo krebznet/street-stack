@@ -8,10 +8,10 @@ import java.util.concurrent.Semaphore;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.dunkware.common.util.executor.DExecutor;
 import com.dunkware.trade.tick.api.instrument.Instrument;
 import com.dunkware.trade.tick.api.instrument.InstrumentListener;
 import com.dunkware.trade.tick.model.ticker.TradeTickerSpec;
+import com.dunkware.utils.core.concurrent.DunkExecutor;
 
 public class InstrumentImpl implements Instrument {
 
@@ -32,11 +32,11 @@ public class InstrumentImpl implements Instrument {
 	private volatile int volume = Integer.MIN_VALUE;
 	
 	private TradeTickerSpec ticker;
-	private DExecutor executor;
+	private DunkExecutor executor;
 
 	private volatile LocalDateTime lastUpdate = null;
 
-	public InstrumentImpl(TradeTickerSpec ticker, DExecutor executor) {
+	public InstrumentImpl(TradeTickerSpec ticker, DunkExecutor executor) {
 		this.ticker = ticker;
 		this.executor = executor;
 	}

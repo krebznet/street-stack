@@ -1,7 +1,7 @@
 package com.dunkware.trade.service.tick.client;
 
-import com.dunkware.common.tick.stream.TickStream;
 import com.dunkware.trade.tick.model.consumer.TickConsumerSpec;
+import com.dunkware.utils.tick.stream.TickStream;
 
 public interface TickServiceClientFeed {
 

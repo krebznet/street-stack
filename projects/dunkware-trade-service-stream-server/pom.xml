@@ -53,16 +53,16 @@
 
 
 	<dependencies>
-		
 
 
-		<!-- https://mvnrepository.com/artifact/jakarta.servlet/jakarta.servlet-api -->
-<dependency>
-    <groupId>jakarta.servlet</groupId>
-    <artifactId>jakarta.servlet-api</artifactId>
-    <version>6.0.0</version>
-    <scope>provided</scope>
-</dependency>
+		<!--
+		https://mvnrepository.com/artifact/jakarta.servlet/jakarta.servlet-api -->
+		<dependency>
+			<groupId>jakarta.servlet</groupId>
+			<artifactId>jakarta.servlet-api</artifactId>
+			<version>6.0.0</version>
+			<scope>provided</scope>
+		</dependency>
 		<dependency>
 			<groupId>com.mysql</groupId>
 			<artifactId>mysql-connector-j</artifactId>
@@ -101,13 +101,14 @@
 					<groupId>org.springframework.boot</groupId>
 					<artifactId>spring-boot-starter-tomcat</artifactId>
 				</exclusion>
-		
-            <!-- avoid: LoggerFactory is not a Logback LoggerContext but Logback is on the classpath. on run with vscode -->
-            <exclusion>
-                <groupId>ch.qos.logback</groupId>
-                <artifactId>logback-classic</artifactId>
-            </exclusion>
-        
+
+				<!-- avoid: LoggerFactory is not a Logback LoggerContext but
+				Logback is on the classpath. on run with vscode -->
+				<exclusion>
+					<groupId>ch.qos.logback</groupId>
+					<artifactId>logback-classic</artifactId>
+				</exclusion>
+
 				<!-- Exclude any other servlet-related dependencies if needed -->
 			</exclusions>
 		</dependency>
@@ -122,16 +123,21 @@
 
 
 		<dependency>
-			<groupId>com.dunkware.trade.service</groupId>
-			<artifactId>dunkware-trade-service-stream-cluster</artifactId>
-			<version>1.0.0-SNAPSHOT</version>
-
-		</dependency>
-
-		<dependency>
 			<groupId>com.dunkware.xstream.core</groupId>
 			<artifactId>dunkware-xstream-core-model</artifactId>
 			<version>1.3.0-SNAPSHOT</version>
+		</dependency>
+
+		<dependency>
+			<groupId>com.dunkware.utils</groupId>
+			<artifactId>java-utils-glazed</artifactId>
+			<version>1.0.0-SNAPSHOT</version>
+		</dependency>
+
+		<dependency>
+			<groupId>com.dunkware.utils</groupId>
+			<artifactId>java-utils-core</artifactId>
+			<version>1.0.0-SNAPSHOT</version>
 		</dependency>
 
 		<dependency>
@@ -143,15 +149,16 @@
 					<groupId>commons-logging</groupId>
 					<artifactId>commons-logging</artifactId>
 				</exclusion>
-			
-		
-            <!-- avoid: LoggerFactory is not a Logback LoggerContext but Logback is on the classpath. on run with vscode -->
-            <exclusion>
-                <groupId>ch.qos.logback</groupId>
-                <artifactId>logback-classic</artifactId>
-            </exclusion>
+
+
+				<!-- avoid: LoggerFactory is not a Logback LoggerContext but
+				Logback is on the classpath. on run with vscode -->
+				<exclusion>
+					<groupId>ch.qos.logback</groupId>
+					<artifactId>logback-classic</artifactId>
+				</exclusion>
 			</exclusions>
-			
+
 		</dependency>
 
 		<dependency>
@@ -163,16 +170,17 @@
 					<groupId>commons-logging</groupId>
 					<artifactId>commons-logging</artifactId>
 				</exclusion>
-			
-		
-            <!-- avoid: LoggerFactory is not a Logback LoggerContext but Logback is on the classpath. on run with vscode -->
-            <exclusion>
-                <groupId>ch.qos.logback</groupId>
-                <artifactId>logback-classic</artifactId>
-            </exclusion>
-            
+
+
+				<!-- avoid: LoggerFactory is not a Logback LoggerContext but
+				Logback is on the classpath. on run with vscode -->
+				<exclusion>
+					<groupId>ch.qos.logback</groupId>
+					<artifactId>logback-classic</artifactId>
+				</exclusion>
+
 			</exclusions>
-			
+
 		</dependency>
 
 
@@ -224,7 +232,7 @@
 		<dependency>
 			<groupId>org.slf4j</groupId>
 			<artifactId>slf4j-api</artifactId>
-		
+
 		</dependency>
 
 		<dependency>
@@ -288,13 +296,6 @@
 		<dependency>
 			<groupId>ch.qos.logback</groupId>
 			<artifactId>logback-core</artifactId>
-		</dependency>
-
-
-		<dependency>
-			<groupId>com.dunkware.common</groupId>
-			<artifactId>dunkware-common-util</artifactId>
-			<version>1.3.0-SNAPSHOT</version>
 		</dependency>
 
 
@@ -379,12 +380,6 @@
 
 
 		<!-- Dunkware Dependencies -->
-
-		<dependency>
-			<groupId>com.dunkware.common</groupId>
-			<artifactId>dunkware-common-util</artifactId>
-			<version>1.3.0-SNAPSHOT</version>
-		</dependency>
 
 
 		<dependency>

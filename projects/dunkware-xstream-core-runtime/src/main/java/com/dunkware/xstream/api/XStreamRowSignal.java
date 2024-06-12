@@ -1,9 +1,9 @@
 package com.dunkware.xstream.api;
 
 import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.util.Map;
 
-import com.dunkware.common.util.dtime.DTime;
 import com.dunkware.xstream.xScript.SignalType;
 
 public interface XStreamRowSignal {
@@ -14,7 +14,7 @@ public interface XStreamRowSignal {
 	
 	long getTimestamp(); 
 	
-	DTime getTime();
+	LocalTime getTime();
 	
 	LocalDateTime getLocalDateTime();
 	

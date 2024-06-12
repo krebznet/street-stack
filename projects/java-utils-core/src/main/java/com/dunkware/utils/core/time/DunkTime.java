@@ -8,7 +8,6 @@ import java.time.OffsetDateTime;
 import java.time.OffsetTime;
 import java.time.ZoneId;
 import java.time.ZoneOffset;
-import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
 import java.time.temporal.ChronoUnit;
 import java.util.Date;
@@ -51,28 +50,28 @@ public class DunkTime {
     	LocalDateTime d = LocalDateTime.now();
     	System.out.println(DunkTime.format(d, YYMMDDHHMMSS));
     	if(1 == 1) { return; }
-    	ZonedDateTime zonedDateTimeSameEst = ZonedDateTime.of(LocalDateTime.parse("2022-01-01T01:00:00.000000000"), ZoneId.of("America/New_York"));
-        ZonedDateTime zonedDateTimeSamePak = ZonedDateTime.of(LocalDateTime.parse("2022-01-01T01:00:00.000000000"), ZoneId.of("Asia/Karachi"));
+    	//ZoneLocalDateTime zoneLocalDateTimeSameEst = ZoneLocalDateTime.of(LocalDateTime.parse("2022-01-01T01:00:00.000000000"), ZoneId.of("America/New_York"));
+       // ZoneLocalDateTime zoneLocalDateTimeSamePak = ZoneLocalDateTime.of(LocalDateTime.parse("2022-01-01T01:00:00.000000000"), ZoneId.of("Asia/Karachi"));
         System.out.println("Dates coming into the system with timezone known");
-        System.out.println(zonedDateTimeSameEst + "||" + zonedDateTimeSamePak);
+       // System.out.println(zoneLocalDateTimeSameEst + "||" + zoneLocalDateTimeSamePak);
 
-        Date dateEstAdjusted = Date.from(zonedDateTimeSameEst.toInstant());
-        Date datePakAdjusted = Date.from(zonedDateTimeSamePak.toInstant());
-        System.out.println("Dates stored in Mongo as per UTC equal");
-        System.out.println(dateEstAdjusted + "||" + datePakAdjusted);
-        System.out.println("They actually look different, since they are same date time, but coming in from different time zones");
+       // Date dateEstAdjusted = Date.from(zoneLocalDateTimeSameEst.toInstant());
+       // Date datePakAdjusted = Date.from(zoneLocalDateTimeSamePak.toInstant());
+       // System.out.println("Dates stored in Mongo as per UTC equal");
+       // System.out.println(dateEstAdjusted + "||" + datePakAdjusted);
+       // System.out.println("They actually look different, since they are same date time, but coming in from different time zones");
 
         System.out.println();
-        ZonedDateTime reversedEst = dateEstAdjusted.toInstant().atZone(ZoneId.of("America/New_York"));
-        ZonedDateTime reversedPak = dateEstAdjusted.toInstant().atZone(ZoneId.of("Asia/Karachi"));
-        System.out.println("Reverse conversions and results");
-        System.out.println(reversedEst + "||" + reversedPak);
-        System.out.println("Awesome they are same as original");
+       // ZoneLocalDateTime reversedEst = dateEstAdjusted.toInstant().atZone(ZoneId.of("America/New_York"));
+       // ZoneLocalDateTime reversedPak = dateEstAdjusted.toInstant().atZone(ZoneId.of("Asia/Karachi"));
+       // System.out.println("Reverse conversions and results");
+       // System.out.println(reversedEst + "||" + reversedPak);
+       // System.out.println("Awesome they are same as original");
 
         System.out.println();
         System.out.println("Lets have the est time changed to pak time to see what it looks like in the other timezone as an additional case");
-        ZonedDateTime reversedEstAsPak = dateEstAdjusted.toInstant().atZone(ZoneId.of("Asia/Karachi"));
-        System.out.println(reversedEstAsPak);
+       // ZoneLocalDateTime reversedEstAsPak = dateEstAdjusted.toInstant().atZone(ZoneId.of("Asia/Karachi"));
+       // System.out.println(reversedEstAsPak);
 	}
     
     

@@ -3,13 +3,12 @@ package com.dunkware.xstream.xproject.model;
 
 import java.beans.Transient;
 import java.io.IOException;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.dunkware.common.util.dtime.DDate;
-import com.dunkware.common.util.dtime.DTimeZone;
-import com.dunkware.common.util.json.DJson;
-import com.dunkware.common.util.json.bytes.DBytes;
+import com.dunkware.utils.core.json.DunkJson;
+import com.dunkware.utils.core.json.bytes.JsonBytes;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.databind.JsonMappingException;
@@ -17,12 +16,12 @@ import com.fasterxml.jackson.databind.JsonMappingException;
 public class XStreamBundle {
 
 	
-	private DBytes bytes;
+	private JsonBytes bytes;
 	@JsonIgnore
 	private XScriptBundle scriptBundle;
 	private List<XStreamExtensionType> extensions = new ArrayList<XStreamExtensionType>();
-	private DDate date; 
-	private DTimeZone timeZone;
+	private LocalDate date; 
+	private String timeZone;
 	
 	
 	public XStreamBundle() { 
@@ -30,16 +29,17 @@ public class XStreamBundle {
 	}
 	
 	
+	
 
 	public List<XStreamExtensionType> getExtensions() {
 		return extensions;
 	}
 
-	public DBytes getBytes() {
+	public JsonBytes getBytes() {
 		return bytes;
 	}
 
-	public void setBytes(DBytes bytes) {
+	public void setBytes(JsonBytes bytes) {
 		this.bytes = bytes;
 		
 	}
@@ -47,33 +47,33 @@ public class XStreamBundle {
 	@Transient
 	public XScriptBundle getScriptBundle() throws JsonMappingException,JsonParseException,IOException {
 		if(scriptBundle == null && bytes != null) { 
-			this.scriptBundle = DJson.getObjectMapper().readValue(bytes.getBytes(), XScriptBundle.class);
+			this.scriptBundle = DunkJson.getObjectMapper().readValue(bytes.getBytes(), XScriptBundle.class);
 		}
 		return scriptBundle;
 	}
 
 	public void setScriptBundle(XScriptBundle scriptBundle) throws Exception{
 		this.scriptBundle = scriptBundle;
-		this.bytes = new DBytes(DJson.getObjectMapper().writeValueAsBytes(scriptBundle));
+		this.bytes = new JsonBytes(DunkJson.getObjectMapper().writeValueAsBytes(scriptBundle));
 	}
 
 	public void setExtensions(List<XStreamExtensionType> extensions) {
 		this.extensions = extensions;
 	}
 	
-	public DDate getDate() {
+	public LocalDate getDate() {
 		return date;
 	}
 
-	public void setDate(DDate date) {
+	public void setDate(LocalDate date) {
 		this.date = date;
 	}
 
-	public DTimeZone getTimeZone() {
+	public String getTimeZone() {
 		return timeZone;
 	}
 
-	public void setTimeZone(DTimeZone timeZone) {
+	public void setTimeZone(String timeZone) {
 		this.timeZone = timeZone;
 	}
 	
@@ -82,7 +82,7 @@ public class XStreamBundle {
 	
 	
 	
-	// time tick -->??? DTimeTick.TYPE - HOUR_FIELD = 1; MINUTE_FIELD = 2; 
+	// time tick -->??? LocalTimeTick.TYPE - HOUR_FIELD = 1; MINUTE_FIELD = 2; 
 	
 	
 }

@@ -6,15 +6,13 @@ import java.util.Set;
 
 import org.springframework.context.ApplicationContext;
 
-import com.dunkware.common.util.helpers.DAnotHelper;
 import com.dunkware.spring.cluster.DunkNetExtension.ComponentMethod;
 import com.dunkware.spring.cluster.anot.ADunkNetComponent;
 import com.dunkware.spring.cluster.protocol.descriptors.DunkNetChannelDescriptor;
 import com.dunkware.spring.cluster.protocol.descriptors.DunkNetDescriptors;
 import com.dunkware.spring.cluster.protocol.descriptors.DunkNetEventDescriptor;
 import com.dunkware.spring.cluster.protocol.descriptors.DunkNetServiceDescriptor;
-
-import ch.qos.logback.classic.Logger;
+import com.dunkware.utils.core.helpers.DunkAnot;
 
 public class DunkNetExtensions {
 
@@ -25,7 +23,7 @@ public class DunkNetExtensions {
 	public static DunkNetExtensions buildComponentExtensions(ApplicationContext ac) throws DunkNetException {
 
 		DunkNetExtensions ext = new DunkNetExtensions();
-		Set<Class<?>> classes = DAnotHelper.getClassesAnnotedWith(ADunkNetComponent.class);
+		Set<Class<?>> classes = DunkAnot.getClassesAnnotedWith(ADunkNetComponent.class);
 
 		for (Class<?> clazz : classes) {
 			try {

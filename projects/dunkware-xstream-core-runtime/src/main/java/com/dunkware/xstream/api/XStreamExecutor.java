@@ -1,12 +1,12 @@
 package com.dunkware.xstream.api;
 
-import com.dunkware.common.util.executor.DExecutor;
+import com.dunkware.utils.core.concurrent.DunkExecutor;
 
 public interface XStreamExecutor {
 	
 	public void execute(Runnable runnable);
 	
-	public DExecutor getDExecutor();
+	public DunkExecutor getDunkExecutor();
 	
 	public void awaitWhileTasksRunning() throws InterruptedException;
 	

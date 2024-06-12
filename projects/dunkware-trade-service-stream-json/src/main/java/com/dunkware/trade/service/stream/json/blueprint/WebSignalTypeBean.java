@@ -1,6 +1,6 @@
 package com.dunkware.trade.service.stream.json.blueprint;
 
-import com.dunkware.common.util.json.DJson;
+import com.dunkware.utils.core.json.DunkJson;
 
 public class WebSignalTypeBean {
 	
@@ -56,7 +56,7 @@ public class WebSignalTypeBean {
 		b.setGroup("Breakout");
 		b.setName("Breakout1");
 		try {
-			System.out.println(DJson.serializePretty(b));
+			System.out.println(DunkJson.serializePretty(b));
 		} catch (Exception e) {
 			// TODO: handle exception
 		}

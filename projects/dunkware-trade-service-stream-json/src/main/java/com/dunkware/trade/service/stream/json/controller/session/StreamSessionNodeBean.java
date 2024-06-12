@@ -3,7 +3,7 @@ package com.dunkware.trade.service.stream.json.controller.session;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.dunkware.common.util.observable.ObservableBean;
+import com.dunkware.utils.core.observable.ObservableBean;
 
 public class StreamSessionNodeBean extends ObservableBean {
 

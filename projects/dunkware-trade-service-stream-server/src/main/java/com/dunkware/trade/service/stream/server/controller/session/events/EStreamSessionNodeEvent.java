@@ -1,9 +1,9 @@
 package com.dunkware.trade.service.stream.server.controller.session.events;
 
-import com.dunkware.common.util.events.DEvent;
 import com.dunkware.trade.service.stream.server.controller.session.StreamSessionNode;
+import com.dunkware.utils.core.events.DunkEvent;
 
-public class EStreamSessionNodeEvent extends DEvent {
+public class EStreamSessionNodeEvent extends DunkEvent {
 
 	private StreamSessionNode node;
 	

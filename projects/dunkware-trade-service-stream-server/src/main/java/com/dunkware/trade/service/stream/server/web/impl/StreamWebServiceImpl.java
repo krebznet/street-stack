@@ -7,12 +7,12 @@ import org.slf4j.MarkerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.dunkware.common.util.executor.DExecutor;
 import com.dunkware.spring.runtime.services.ExecutorService;
 import com.dunkware.trade.service.stream.json.controller.session.StreamSessionNodeBean;
 import com.dunkware.trade.service.stream.server.controller.StreamControllerService;
 import com.dunkware.trade.service.stream.server.web.StreamWebService;
 import com.dunkware.trade.service.stream.server.web.components.EntitySessionVarGrid;
+import com.dunkware.utils.core.concurrent.DunkExecutor;
 
 import ca.odell.glazedlists.ObservableElementList;
 
@@ -34,7 +34,7 @@ public class StreamWebServiceImpl implements StreamWebService  {
 		return elements;
 	}
 	
-	public DExecutor getExecutor() { 
+	public DunkExecutor getExecutor() { 
 		return executorService.get();
 	}
 

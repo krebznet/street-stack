@@ -1,14 +1,10 @@
 package com.dunkware.xstream.model.snapshot.tick;
 
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.Map;
 
-import com.datastax.oss.driver.shaded.guava.common.base.Equivalence.Wrapper;
-import com.dunkware.common.tick.TickBuilder;
-import com.dunkware.common.tick.proto.TickProto.Tick;
-import com.dunkware.common.util.time.DunkTime;
+import com.dunkware.utils.tick.proto.TickProto.Tick;
 import com.dunkware.xstream.model.snapshot.tick.stats.SnapshotTickMakerSignalStats;
 import com.dunkware.xstream.model.snapshot.tick.stats.SnapshotTickMakerStats;
 import com.dunkware.xstream.model.snapshot.tick.stats.SnapshotTickMakerStatsWrapper;
@@ -43,14 +39,15 @@ public class SnapshotTickMaker {
 	
 	public Tick buildSnapshotEntityTick(int entityId, Map<Integer,Number> vars, LocalTime time) { 
 		Map<Integer,Number> updates = statsWrapper.entitySecond(entityId, vars, time);
-		TickBuilder tb = TickBuilder.newBuilder(SnapshotTick.TYPE_ENTITY_SNAPSHOT);
-		tb.longField(SnapshotTick.FIELD_TIMESTAMP, DunkTime.toMilliseconds(LocalDateTime.of(date, time)));
+		//TickBuilder tb = TickBuilder.newBuilder(SnapshotTick.TYPE_ENTITY_SNAPSHOT);
+		//tb.longField(SnapshotTick.FIELD_TIMESTAMP, DunkTime.toMilliseconds(LocalDateTime.of(date, time)));
 		// collision with shit
-		for (Integer varId : updates.keySet()) {
-			tb.doubleField(varId, updates.get(varId).doubleValue());
-		}
-		Tick tick = tb.build();
-		return tick;
+		//for (Integer varId : updates.keySet()) {
+		//	tb.doubleField(varId, updates.get(varId).doubleValue());
+		//}
+		//Tick tick = tb.build();
+		//return tick;
+		return null;
 	}
 	
 	public Tick buildSnapshotSignalTick(int entityId, int signalId, Map<Integer,Number> vars, LocalTime time) {
@@ -74,8 +71,8 @@ public class SnapshotTickMaker {
 			statsWrapper.getStats().getSignalStats().put(signalId,sigStats);
 			
 		}
-		TickBuilder tb = TickBuilder.newBuilder(SnapshotTick.TYPE_ENTITY_SIGNAL);
-		tb.intField(SnapshotTick.FIELD_SIGNAL_ID,signalId).intField(SnapshotTick.FIELD_ENTITY_ID, entityId).build();
+		//TickBuilder tb = TickBuilder.newBuilder(SnapshotTick.TYPE_ENTITY_SIGNAL);
+		//tb.intField(SnapshotTick.FIELD_SIGNAL_ID,signalId).intField(SnapshotTick.FIELD_ENTITY_ID, entityId).build();
 		
 		return null;
 	}

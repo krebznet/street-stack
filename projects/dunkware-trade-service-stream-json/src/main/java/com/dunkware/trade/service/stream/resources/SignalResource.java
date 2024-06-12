@@ -1,6 +1,6 @@
 package com.dunkware.trade.service.stream.resources;
 
-import com.dunkware.common.util.json.DJson;
+import com.dunkware.utils.core.json.DunkJson;
 
 public class SignalResource {
 	
@@ -17,7 +17,7 @@ public class SignalResource {
 		re.setIdent("BREAKOUT30DAY1");
 		re.setName("Breakout 30 Day 1");
 		try {
-			System.out.println(DJson.serializePretty(re));
+			System.out.println(DunkJson.serializePretty(re));
 		} catch (Exception e) {
 			// TODO: handle exception
 		}

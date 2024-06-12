@@ -13,7 +13,7 @@ import java.nio.file.attribute.BasicFileAttributes;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.dunkware.common.util.helpers.DFileHelper;
+import com.dunkware.utils.core.helpers.DunkFile;
 import com.dunkware.xstream.xproject.XScriptException;
 import com.dunkware.xstream.xproject.XScriptProject;
 import com.dunkware.xstream.xproject.model.XScriptBundle;
@@ -73,7 +73,7 @@ public class XscriptBundleHelper {
 			paths.addAll(walker.getPaths());
 		}
 		for (Path path : paths) {
-			String content = DFileHelper.readFileContents(path.toAbsolutePath().toFile());
+			String content = DunkFile.readFileContents(path.toAbsolutePath().toFile());
 			XScriptFile file = new XScriptFile(content);
 			files.add(file);
 		}

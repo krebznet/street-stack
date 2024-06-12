@@ -27,8 +27,8 @@ public class GenAbsoluteDateRange {
   @SerializedName("startDate")
   private GenDate startDate = null;
 
-  @SerializedName("endDate")
-  private GenDate endDate = null;
+  @SerializedName("enLocalDate")
+  private GenDate enLocalDate = null;
 
   @SerializedName("hasTimeWindow")
   private Boolean hasTimeWindow = null;
@@ -54,22 +54,22 @@ public class GenAbsoluteDateRange {
     this.startDate = startDate;
   }
 
-  public GenAbsoluteDateRange endDate(GenDate endDate) {
-    this.endDate = endDate;
+  public GenAbsoluteDateRange enLocalDate(GenDate enLocalDate) {
+    this.enLocalDate = enLocalDate;
     return this;
   }
 
    /**
-   * Get endDate
-   * @return endDate
+   * Get enLocalDate
+   * @return enLocalDate
   **/
   @Schema(required = true, description = "")
-  public GenDate getEndDate() {
-    return endDate;
+  public GenDate getEnLocalDate() {
+    return enLocalDate;
   }
 
-  public void setEndDate(GenDate endDate) {
-    this.endDate = endDate;
+  public void setEnLocalDate(GenDate enLocalDate) {
+    this.enLocalDate = enLocalDate;
   }
 
   public GenAbsoluteDateRange hasTimeWindow(Boolean hasTimeWindow) {
@@ -119,14 +119,14 @@ public class GenAbsoluteDateRange {
     }
     GenAbsoluteDateRange genAbsoluteDateRange = (GenAbsoluteDateRange) o;
     return Objects.equals(this.startDate, genAbsoluteDateRange.startDate) &&
-        Objects.equals(this.endDate, genAbsoluteDateRange.endDate) &&
+        Objects.equals(this.enLocalDate, genAbsoluteDateRange.enLocalDate) &&
         Objects.equals(this.hasTimeWindow, genAbsoluteDateRange.hasTimeWindow) &&
         Objects.equals(this.timeWindow, genAbsoluteDateRange.timeWindow);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(startDate, endDate, hasTimeWindow, timeWindow);
+    return Objects.hash(startDate, enLocalDate, hasTimeWindow, timeWindow);
   }
 
 
@@ -136,7 +136,7 @@ public class GenAbsoluteDateRange {
     sb.append("class GenAbsoluteDateRange {\n");
     
     sb.append("    startDate: ").append(toIndentedString(startDate)).append("\n");
-    sb.append("    endDate: ").append(toIndentedString(endDate)).append("\n");
+    sb.append("    enLocalDate: ").append(toIndentedString(enLocalDate)).append("\n");
     sb.append("    hasTimeWindow: ").append(toIndentedString(hasTimeWindow)).append("\n");
     sb.append("    timeWindow: ").append(toIndentedString(timeWindow)).append("\n");
     sb.append("}");

@@ -1,5 +1,6 @@
 package com.dunkware.xstream.core;
 
+import java.time.ZoneId;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -11,7 +12,8 @@ import org.slf4j.LoggerFactory;
 import org.slf4j.Marker;
 import org.slf4j.MarkerFactory;
 
-import com.dunkware.common.util.uuid.DUUID;
+import com.dunkware.utils.core.helpers.DunkUUID;
+import com.dunkware.utils.core.time.DunkTimeZones;
 import com.dunkware.xstream.api.XStream;
 import com.dunkware.xstream.api.XStreamClock;
 import com.dunkware.xstream.api.XStreamEntity;
@@ -80,8 +82,14 @@ public class XStreamImpl implements XStream {
 	private List<XStreamRuntimeErrorListener> errorListeners = new ArrayList<XStreamRuntimeErrorListener>();
 	private Semaphore errorListenerLock = new Semaphore(1);
 
+	private ZoneId zoneId; 
 	@Override
 	public void start(XStreamInput input) throws XStreamException {
+		try {
+			DunkTimeZones.getZoneId(input.getZoneId());
+		} catch (Exception e2) {
+			throw new XStreamException("Exception gettting time zone " + e2.toString());
+		}
 		if (logger.isDebugEnabled()) {
 			logger.debug("{} Starting", input.getIdentifier());
 		}
@@ -93,7 +101,7 @@ public class XStreamImpl implements XStream {
 
 		signals = new XStreamSignalsImpl();
 
-		sessionId = input.getIdentifier() + DUUID.randomUUID(5);
+		sessionId = input.getIdentifier() + DunkUUID.randomUUID(5);
 		executor = new XStreamExecutorImpl(input.getExecutor());
 		clock = new XStreamClockImpl(this);
 		tickRouter = new XStreamTickRouterImpl(this);
@@ -152,6 +160,13 @@ public class XStreamImpl implements XStream {
 	@Override
 	public XStreamStatService getStatProvider() {
 		return input.getStatProvider();
+	}
+	
+	
+
+	@Override
+	public ZoneId getTimeZoneId() {
+		return zoneId; 
 	}
 
 	@Override

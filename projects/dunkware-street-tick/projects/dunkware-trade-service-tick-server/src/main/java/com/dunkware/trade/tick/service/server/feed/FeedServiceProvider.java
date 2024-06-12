@@ -5,7 +5,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 
-import com.dunkware.common.util.json.DJson;
 import com.dunkware.spring.runtime.services.ExecutorService;
 import com.dunkware.trade.tick.api.provider.TickProvider;
 import com.dunkware.trade.tick.api.provider.TickProviderFactory;
@@ -14,6 +13,7 @@ import com.dunkware.trade.tick.model.provider.TickProviderStatsSpec;
 import com.dunkware.trade.tick.provider.atick.ActiveTickProvider;
 import com.dunkware.trade.tick.service.server.feed.repository.FeedProviderDO;
 import com.dunkware.trade.tick.service.server.ticker.TickerService;
+import com.dunkware.utils.core.json.DunkJson;
 
 public class FeedServiceProvider {
 	
@@ -32,7 +32,7 @@ public class FeedServiceProvider {
 	
 	public void load(FeedProviderDO ent, FeedService service) throws Exception { 
 		this.ent = ent; 
-		TickProviderSpec type = DJson.getObjectMapper().readValue(ent.getJson(), TickProviderSpec.class);
+		TickProviderSpec type = DunkJson.getObjectMapper().readValue(ent.getJson(), TickProviderSpec.class);
 		provider = null;
 		try {
 			provider = TickProviderFactory.createProvider(type);	

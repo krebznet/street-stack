@@ -1,6 +1,7 @@
 package com.dunkware.xstream.core.mock;
 
 import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
@@ -12,8 +13,7 @@ import java.util.concurrent.atomic.AtomicInteger;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.dunkware.common.tick.stream.TickStream;
-import com.dunkware.common.util.dtime.DTime;
+import com.dunkware.utils.tick.stream.TickStream;
 import com.dunkware.xstream.api.XStream;
 import com.dunkware.xstream.api.XStreamEntity;
 import com.dunkware.xstream.api.XStreamEntityListener;
@@ -49,8 +49,8 @@ public class MockXStreamEntity implements XStreamEntity {
 	private AtomicInteger signalCount = new AtomicInteger(0);
 	private TickStream tickStream;
 
-	private DTime realTimeCreate;
-	private DTime streamTimeCreate;
+	private LocalTime realTimeCreate;
+	private LocalTime streamTimeCreate;
 
 	private List<XStreamEntityListener> rowListeners = new ArrayList<XStreamEntityListener>();
 	private Semaphore rowListenerLock = new Semaphore(1);

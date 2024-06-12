@@ -1,7 +1,7 @@
 package com.dunkware.trade.tick.service.protocol.provider;
 
-import com.dunkware.common.util.json.DJson;
 import com.dunkware.trade.tick.model.provider.TickProviderSpec;
+import com.dunkware.utils.core.json.DunkJson;
 
 public class Test {
 
@@ -24,7 +24,7 @@ public class Test {
 		req.setSpec(spec);
 		
 		try {
-			String s = DJson.serializePretty(req);
+			String s = DunkJson.serializePretty(req);
 			System.out.println(s);
 		} catch (Exception e) {
 			

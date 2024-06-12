@@ -2,7 +2,7 @@ package com.dunkware.trade.service.stream.server.web.components;
 
 import java.time.LocalDateTime;
 
-import com.dunkware.common.util.observable.ObservableBean;
+import com.dunkware.utils.core.observable.ObservableBean;
 
 public class EntitySessionVarBean extends ObservableBean {
 	

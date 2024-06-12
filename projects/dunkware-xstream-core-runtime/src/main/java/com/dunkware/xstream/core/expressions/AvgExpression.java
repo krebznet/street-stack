@@ -4,11 +4,11 @@ import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.util.List;
 
-import com.dunkware.common.util.calc.DCalc;
-import com.dunkware.xstream.api.XStreamExpression;
+import com.dunkware.utils.core.helpers.DunkMath;
 import com.dunkware.xstream.api.XStreamEntity;
-import com.dunkware.xstream.api.XStreamRuntimeException;
 import com.dunkware.xstream.api.XStreamEntityVar;
+import com.dunkware.xstream.api.XStreamExpression;
+import com.dunkware.xstream.api.XStreamRuntimeException;
 import com.dunkware.xstream.core.XStreamExpressionImpl;
 import com.dunkware.xstream.core.annotations.AXStreamExpression;
 import com.dunkware.xstream.xScript.AvgExpressionType;
@@ -53,7 +53,7 @@ public class AvgExpression extends XStreamExpressionImpl {
 			targetExp.execute();
 			Object[] values = (Object[]) targetExp.getValue();
 			if (values != null) {
-				Double std = DCalc.getMean(values);
+				Double std = DunkMath.getMean(values);
 				BigDecimal bd = new BigDecimal(std);
 				bd = bd.setScale(2, RoundingMode.HALF_UP);
 				setValue(bd.doubleValue());

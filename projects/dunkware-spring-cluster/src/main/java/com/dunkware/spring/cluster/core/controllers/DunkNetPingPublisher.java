@@ -1,5 +1,7 @@
 package com.dunkware.spring.cluster.core.controllers;
 
+import java.time.LocalDateTime;
+
 import org.apache.kafka.clients.consumer.ConsumerRecord;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -8,20 +10,16 @@ import org.slf4j.MarkerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 
-import com.dunkware.common.kafka.consumer.DKafkaByteConsumer2;
-import com.dunkware.common.kafka.consumer.DKafkaByteHandler2;
-import com.dunkware.common.spec.kafka.DKafkaByteConsumer2Spec.ConsumerType;
-import com.dunkware.common.spec.kafka.DKafkaByteConsumer2Spec.OffsetType;
-import com.dunkware.common.spec.kafka.DKafkaByteConsumer2SpecBuilder;
-import com.dunkware.common.util.dtime.DDateTime;
-import com.dunkware.common.util.json.DJson;
-import com.dunkware.common.util.uuid.DUUID;
 import com.dunkware.spring.cluster.DunkNet;
 import com.dunkware.spring.cluster.core.DunkNetImpl;
 import com.dunkware.spring.cluster.protocol.descriptors.DunkNetNodeDescriptor;
+import com.dunkware.utils.core.json.DunkJson;
+import com.dunkware.utils.kafka.byteconsumer.KafkaByteConsumer;
+import com.dunkware.utils.kafka.byteconsumer.KafkaByteConsumerSpec;
+import com.dunkware.utils.kafka.byteconsumer.KafkaByteHandler;
 
 
-public class DunkNetPingPublisher implements DKafkaByteHandler2 {
+public class DunkNetPingPublisher implements KafkaByteHandler {
 
 	private DunkNetImpl dunkNet;
 	
@@ -35,7 +33,7 @@ public class DunkNetPingPublisher implements DKafkaByteHandler2 {
 	
 	private PingSender pingSender; 
 	
-	private DKafkaByteConsumer2 pingConsumer; 
+	private KafkaByteConsumer pingConsumer; 
 
 	public void init(DunkNet net) {
 		this.dunkNet =(DunkNetImpl) net;
@@ -44,9 +42,12 @@ public class DunkNetPingPublisher implements DKafkaByteHandler2 {
 		
 		try {
 			String pingTopic = "dunknet." + dunkNet.getConfig().getClusterId() + ".node.ping";
-			pingConsumer = DKafkaByteConsumer2.newInstance(DKafkaByteConsumer2SpecBuilder.newBuilder(ConsumerType.Auto, OffsetType.Latest).setClientAndGroup(dunkNet.getConfig().getNodeId() + 1, dunkNet.getConfig().getNodeId() + 1).addBroker(dunkNet.getConfig().getServerBrokers()).addTopic(pingTopic).build());
-			pingConsumer.start();
-			pingConsumer.addStreamHandler(this);
+			KafkaByteConsumerSpec spec = KafkaByteConsumerSpec.newBuilder(KafkaByteConsumerSpec.ConsumerType.Auto, KafkaByteConsumerSpec.OffsetType.Latest)
+                    .addBroker(dunkNet.getConfig().getServerBrokers()).addTopic(pingTopic).setClientAndGroup(dunkNet.getConfig().getNodeId(),dunkNet.getConfig().getNodeId()).setThrottle(500000).build();
+            pingConsumer = KafkaByteConsumer.newInstance(spec);
+            pingConsumer.addStreamHandler(this);
+            pingConsumer.start();
+			
 			
 			
 		} catch (Exception e) {
@@ -58,7 +59,7 @@ public class DunkNetPingPublisher implements DKafkaByteHandler2 {
 	@Override
 	public void record(ConsumerRecord<String, byte[]> record) {
 		try {
-			DunkNetNodeDescriptor ping = DJson.getObjectMapper().readValue(record.value(), DunkNetNodeDescriptor.class);
+			DunkNetNodeDescriptor ping = DunkJson.getObjectMapper().readValue(record.value(), DunkNetNodeDescriptor.class);
 			if(logger.isTraceEnabled()) { 
 				logger.trace("Recieved Ping on node {} from Node {} with profiles {}",dunkNet.getId(),ping.getId(),ping.getProfiles());
 			}
@@ -77,7 +78,7 @@ public class DunkNetPingPublisher implements DKafkaByteHandler2 {
 			while(!interrupted()) { 
 				DunkNetNodeDescriptor ping = new DunkNetNodeDescriptor();
 				ping.setDescriptors(dunkNet.extensions().buildDescriptors());
-				ping.setTimestamp(DDateTime.now());
+				ping.setTimestamp(LocalDateTime.now());
 				ping.setId(dunkNet.getId());
 				ping.setProfiles(dunkNet.getConfig().getProfiles());
 				dunkNet.sendUpdate(ping);

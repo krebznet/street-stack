@@ -45,7 +45,7 @@ public class EntityStatCacheLoader {
 		}
 		
 		public void run() { 
-			List<SessionEntityStatRow> rows = statRepo.findByStreamAndDate(streamId,date);
+			List<SessionEntityStatRow> rows = statRepo.findByStreamAnLocalDate(streamId,date);
 			for (SessionEntityStatRow row : rows) {
 				// now w needtocache
 			}

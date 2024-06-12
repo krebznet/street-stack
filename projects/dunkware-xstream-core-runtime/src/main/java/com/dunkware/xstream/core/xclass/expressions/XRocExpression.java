@@ -5,7 +5,7 @@ package com.dunkware.xstream.core.xclass.expressions;
 
 import org.apache.commons.beanutils.ConvertUtils;
 
-import com.dunkware.common.util.calc.DCalc;
+import com.dunkware.utils.core.helpers.DunkMath;
 import com.dunkware.xstream.api.XObject;
 import com.dunkware.xstream.api.XObjectExpression;
 import com.dunkware.xstream.core.annotations.AXObjectExpression;
@@ -68,12 +68,12 @@ public class XRocExpression implements XObjectExpression {
 			Double v1Dub = (Double) v1;
 			if (v2 instanceof Double) {
 				Double v2Dub = (Double) v2;
-				return DCalc.getPercentageChange(v1Dub, v2Dub);
+				return DunkMath.getPercentageChange(v1Dub, v2Dub);
 			}
 		}
 		double v1dub = (Double)ConvertUtils.convert(v1,Double.class);
 		double v2dub = (Double)ConvertUtils.convert(v2,Double.class);
-		double results = DCalc.getPercentageChange(v1dub,v2dub);
+		double results = DunkMath.getPercentageChange(v1dub,v2dub);
 		
 		return results;
 

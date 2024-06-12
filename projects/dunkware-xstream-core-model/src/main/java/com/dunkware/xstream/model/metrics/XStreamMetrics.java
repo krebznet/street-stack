@@ -5,8 +5,7 @@ import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.dunkware.common.util.dtime.DTime;
-import com.dunkware.common.util.json.DJson;
+import com.dunkware.utils.core.json.DunkJson;
 
 public class XStreamMetrics {
 
@@ -23,19 +22,19 @@ public class XStreamMetrics {
 	
 	private List<XStreamRowMetrics> rows = new ArrayList<XStreamRowMetrics>();
 	
-	private DTime streamTime;
-	private DTime realTime;
+	private LocalTime streamTime;
+	private LocalTime realTime;
 	
 	public static void main(String[] args) {
 		int i = 0;
 		while(i < 5) { 
 			LocalTime time = LocalTime.now();
 			try {
-				String ser = DJson.serializePretty(time);
+				String ser = DunkJson.serializePretty(time);
 				
 				System.out.println(ser);
 				LocalDateTime ld = LocalDateTime.now();
-				System.out.println(DJson.serializePretty(ld));
+				System.out.println(DunkJson.serializePretty(ld));
 				Thread.sleep(10);
 				i++;
 			} catch (Exception e) {
@@ -101,7 +100,7 @@ public class XStreamMetrics {
 		this.exceptionCount = exceptionCount;
 	}
 	
-	public DTime getStreamTime() {
+	public LocalTime getStreamTime() {
 		return streamTime;
 	}
 	
@@ -145,15 +144,15 @@ public class XStreamMetrics {
 		this.rowCount = rowCount;
 	}
 
-	public DTime getRealTime() {
+	public LocalTime getRealTime() {
 		return realTime;
 	}
 
-	public void setRealTime(DTime realTime) {
+	public void setRealTime(LocalTime realTime) {
 		this.realTime = realTime;
 	}
 
-	public void setStreamTime(DTime streamTime) {
+	public void setStreamTime(LocalTime streamTime) {
 		this.streamTime = streamTime;
 	} 
 	

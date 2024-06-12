@@ -1,5 +1,6 @@
 package com.dunkware.spring.cluster.core;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -20,20 +21,6 @@ import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Service;
 
-import com.dunkware.common.kafka.admin.DKafkaAdminClient;
-import com.dunkware.common.kafka.consumer.DKafkaByteConsumer2;
-import com.dunkware.common.kafka.consumer.DKafkaByteHandler2;
-import com.dunkware.common.kafka.producer.DKafkaByteProducer;
-import com.dunkware.common.spec.kafka.DKafkaByteConsumer2Spec;
-import com.dunkware.common.spec.kafka.DKafkaByteConsumer2Spec.ConsumerType;
-import com.dunkware.common.spec.kafka.DKafkaByteConsumer2Spec.OffsetType;
-import com.dunkware.common.spec.kafka.DKafkaByteConsumer2SpecBuilder;
-import com.dunkware.common.util.dtime.DDateTime;
-import com.dunkware.common.util.events.DEventNode;
-import com.dunkware.common.util.events.DEventTree;
-import com.dunkware.common.util.executor.DExecutor;
-import com.dunkware.common.util.json.DJson;
-import com.dunkware.common.util.uuid.DUUID;
 import com.dunkware.spring.cluster.DunkNet;
 import com.dunkware.spring.cluster.DunkNetBean;
 import com.dunkware.spring.cluster.DunkNetConfig;
@@ -51,6 +38,15 @@ import com.dunkware.spring.cluster.message.DunkNetMessage;
 import com.dunkware.spring.cluster.message.DunkNetMessageTransport;
 import com.dunkware.spring.cluster.protocol.descriptors.DunkNetNodeDescriptor;
 import com.dunkware.spring.runtime.services.ExecutorService;
+import com.dunkware.utils.core.concurrent.DunkExecutor;
+import com.dunkware.utils.core.events.DunkEventNode;
+import com.dunkware.utils.core.events.DunkEventTree;
+import com.dunkware.utils.core.json.DunkJson;
+import com.dunkware.utils.kafka.admin.DunkKafkaAdmin;
+import com.dunkware.utils.kafka.byteconsumer.KafkaByteConsumer;
+import com.dunkware.utils.kafka.byteconsumer.KafkaByteConsumerSpec;
+import com.dunkware.utils.kafka.byteconsumer.KafkaByteHandler;
+import com.dunkware.utils.kafka.byteproducer.KafkaByteProducer;
 
 import io.vertx.core.Future;
 import io.vertx.core.Promise;
@@ -58,7 +54,7 @@ import jakarta.annotation.PostConstruct;
 
 @Service()
 @Profile("DunkNet")
-public class DunkNetImpl implements DunkNet, DKafkaByteHandler2 {
+public class DunkNetImpl implements DunkNet, KafkaByteHandler {
 
 	private Logger logger = LoggerFactory.getLogger(getClass());
 
@@ -68,15 +64,15 @@ public class DunkNetImpl implements DunkNet, DKafkaByteHandler2 {
 
 	private DunkNetNodeDescriptor descriptor;
 
-	private DKafkaByteConsumer2 messageConsumer;
-	private DKafkaByteProducer messageProducer;
+	private KafkaByteConsumer messageConsumer;
+	private KafkaByteProducer messageProducer;
 	
 
 	private BlockingQueue<DunkNetMessage> messageQueue = new LinkedBlockingQueue<DunkNetMessage>();
+	
+	private DunkEventNode eventNode;
 
-	private DEventNode eventNode;
-
-	private DEventTree eventTree;
+	private DunkEventTree eventTree;
 
 	private DunkNetBean bean = new DunkNetBean();
 	
@@ -105,26 +101,33 @@ public class DunkNetImpl implements DunkNet, DKafkaByteHandler2 {
 		ac.getAutowireCapableBeanFactory().autowireBean(controller);
 		extensions = DunkNetExtensions.buildComponentExtensions(ac);
 		controller.init(this);
-		eventTree = DEventTree.newInstance(executorService.get());
+		eventTree = DunkEventTree.newInstance(executorService.get());
 		eventNode = eventTree.getRoot().createChild(this);
-		bean.setStartTime(DDateTime.now());
+		bean.setStartTime(LocalDateTime.now());
 		bean.setId(config.getNodeId());
 		String pingTopic = "dunknet." + getConfig().getClusterId() + ".node.ping";
+		//
+		
 		descriptor = new DunkNetNodeDescriptor();
 			
 			try {
-				messageProducer = DKafkaByteProducer.newInstance(config.getServerBrokers(),pingTopic,getId());
+				// initialize generic messsage consumer 
+				messageProducer = KafkaByteProducer.newInstance(config.getServerBrokers(),pingTopic,getId());
 			} catch (Exception e) {
 				logger.error("Exception creating ping kafka producer " + e.toString());
 				System.exit(-1);
 			}
 			
 			try {
+				// initailize our messageConsumer
+				
 				String nodeTopic = "dunknet." + getConfig().getClusterId() + ".node." + getId();
-				DKafkaByteConsumer2Spec spec = DKafkaByteConsumer2SpecBuilder.newBuilder(ConsumerType.Auto, OffsetType.Latest).addBroker(config.getServerBrokers()).setClientAndGroup(getId() +  DUUID.randomUUID(5) ,getId() +  DUUID.randomUUID(5)).addTopic(nodeTopic).build();
-				messageConsumer = DKafkaByteConsumer2.newInstance(spec);
-				messageConsumer.addStreamHandler(this);
-				messageConsumer.start();
+				  KafkaByteConsumerSpec spec = KafkaByteConsumerSpec.newBuilder(KafkaByteConsumerSpec.ConsumerType.Auto, KafkaByteConsumerSpec.OffsetType.Earliest)
+                          .addBroker(config.getServerBrokers()).addTopic(nodeTopic).setClientAndGroup(config.getNodeId(),config.getNodeId()).setThrottle(500000).build();
+                  messageConsumer = KafkaByteConsumer.newInstance(spec);
+                  messageConsumer.addStreamHandler(this);
+                  messageConsumer.start();
+				
 			} catch (Exception e) {
 				logger.error("Exception starting dunk net topic consumer " + e.toString());
 				System.exit(-1);
@@ -151,9 +154,9 @@ public class DunkNetImpl implements DunkNet, DKafkaByteHandler2 {
 	}
 	
 	@Override
-	public DKafkaAdminClient createAdminClient() throws DunkNetException {
+	public DunkKafkaAdmin createAdminClient() throws DunkNetException {
 		try {
-			return DKafkaAdminClient.newInstance(config.getServerBrokers());
+			return DunkKafkaAdmin.newInstance(config.getServerBrokers());
 		} catch (Exception e) {
 			throw new DunkNetException("Exceptin creting adminclinet " + e.toString());
 	
@@ -216,7 +219,7 @@ public class DunkNetImpl implements DunkNet, DKafkaByteHandler2 {
 	
 	public void sendUpdate(DunkNetNodeDescriptor descriptor) { 
 		try {
-			messageProducer.sendBytes(DJson.serialize(descriptor).getBytes());
+			messageProducer.sendBytes(DunkJson.serialize(descriptor).getBytes());
 		} catch (Exception e) {
 			logger.error(marker, "Exception sending ping " + e.toString());
 		}
@@ -228,7 +231,7 @@ public class DunkNetImpl implements DunkNet, DKafkaByteHandler2 {
 	}
 
 	@Override
-	public DEventNode getEventNode() {
+	public DunkEventNode getEventNode() {
 		return eventNode;
 	}
 
@@ -362,7 +365,7 @@ public class DunkNetImpl implements DunkNet, DKafkaByteHandler2 {
 	@Override
 	public void record(ConsumerRecord<String, byte[]> record) {
 		try {
-			DunkNetMessageTransport transport = DJson.getObjectMapper().readValue(record.value(),
+			DunkNetMessageTransport transport = DunkJson.getObjectMapper().readValue(record.value(),
 					DunkNetMessageTransport.class);
 			DunkNetMessage message = DunkNetMessage.transport(transport);
 			messageQueue.add(message);
@@ -402,7 +405,7 @@ public class DunkNetImpl implements DunkNet, DKafkaByteHandler2 {
 
 	
 	@Override
-	public DExecutor getExecutor() {
+	public DunkExecutor getExecutor() {
 		return executorService.get();
 	}
 

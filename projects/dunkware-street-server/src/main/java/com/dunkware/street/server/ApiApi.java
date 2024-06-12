@@ -27,7 +27,7 @@ import java.util.Map;
 import java.util.Optional;
 import jakarta.annotation.Generated;
 
-@Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2024-06-10T02:50:32.520505-05:00[America/Chicago]")
+@Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2024-06-12T04:48:05.520856-05:00[America/Chicago]")
 @Validated
 @Controller
 public interface ApiApi {
@@ -88,7 +88,7 @@ public interface ApiApi {
     
     default ResponseEntity<List<TickerRef>> _apiExchangesExchangeIdTickersGet(
          @PathVariable("exchangeId") Integer exchangeId
-    ) throws Exception {
+    ) {
         return apiExchangesExchangeIdTickersGet(exchangeId);
     }
 

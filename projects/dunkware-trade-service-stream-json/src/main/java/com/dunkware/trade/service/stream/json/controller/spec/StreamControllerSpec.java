@@ -1,8 +1,7 @@
 package com.dunkware.trade.service.stream.json.controller.spec;
 
-import com.dunkware.common.spec.locale.DCountry;
-import com.dunkware.common.util.dtime.DTime;
-import com.dunkware.common.util.dtime.DTimeZone;
+import java.time.LocalTime;
+
 import com.dunkware.xstream.xproject.model.XScriptBundle;
 
 public class StreamControllerSpec {
@@ -11,13 +10,12 @@ public class StreamControllerSpec {
 	private XScriptBundle bundle; 
 	private String days;
 	private double version;
-	private DTimeZone timeZone;
-	private DTime startTime; 
-	private DTime stopTime; 
+	private String timeZone;
+	private LocalTime startTime; 
+	private LocalTime stopTime; 
 	
 	private String tickers;
 	private String dataTicks;
-	private DCountry country; 
 	
 	private boolean schedule = true;
 	
@@ -41,22 +39,23 @@ public class StreamControllerSpec {
 	public void setDays(String days) {
 		this.days = days;
 	}
-	public DTimeZone getTimeZone() {
+	
+	public String getTimeZone() {
 		return timeZone;
 	}
-	public void setTimeZone(DTimeZone timeZone) {
+	public void setTimeZone(String timeZone) {
 		this.timeZone = timeZone;
 	}
-	public DTime getStartTime() {
+	public LocalTime getStartTime() {
 		return startTime;
 	}
-	public void setStartTime(DTime startTime) {
+	public void setStartTime(LocalTime startTime) {
 		this.startTime = startTime;
 	}
-	public DTime getStopTime() {
+	public LocalTime getStopTime() {
 		return stopTime;
 	}
-	public void setStopTime(DTime stopTime) {
+	public void setStopTime(LocalTime stopTime) {
 		this.stopTime = stopTime;
 	}
 	public double getVersion() {
@@ -83,14 +82,7 @@ public class StreamControllerSpec {
 	public void setSchedule(boolean schedule) {
 		this.schedule = schedule;
 	}
-	public DCountry getCountry() {
-		return country;
-	}
-	public void setCountry(DCountry country) {
-		this.country = country;
-	}
-	
-	
+
 	
 	
 	

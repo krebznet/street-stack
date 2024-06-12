@@ -3,7 +3,7 @@ package com.dunkware.xstream.model.snapshot;
 import java.util.HashMap;
 import java.util.Map;
 
-import com.dunkware.common.util.time.DunkTime;
+import com.dunkware.utils.core.time.DunkTime;
 
 public class SnapshotEntity {
 	

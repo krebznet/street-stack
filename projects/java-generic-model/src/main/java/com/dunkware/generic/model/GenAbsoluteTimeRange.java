@@ -27,8 +27,8 @@ public class GenAbsoluteTimeRange {
   @SerializedName("startTime")
   private GenTime startTime = null;
 
-  @SerializedName("endTime")
-  private GenTime endTime = null;
+  @SerializedName("enLocalTime")
+  private GenTime enLocalTime = null;
 
   @SerializedName("hasTimeWindow")
   private Boolean hasTimeWindow = null;
@@ -54,22 +54,22 @@ public class GenAbsoluteTimeRange {
     this.startTime = startTime;
   }
 
-  public GenAbsoluteTimeRange endTime(GenTime endTime) {
-    this.endTime = endTime;
+  public GenAbsoluteTimeRange enLocalTime(GenTime enLocalTime) {
+    this.enLocalTime = enLocalTime;
     return this;
   }
 
    /**
-   * Get endTime
-   * @return endTime
+   * Get enLocalTime
+   * @return enLocalTime
   **/
   @Schema(required = true, description = "")
-  public GenTime getEndTime() {
-    return endTime;
+  public GenTime getEnLocalTime() {
+    return enLocalTime;
   }
 
-  public void setEndTime(GenTime endTime) {
-    this.endTime = endTime;
+  public void setEnLocalTime(GenTime enLocalTime) {
+    this.enLocalTime = enLocalTime;
   }
 
   public GenAbsoluteTimeRange hasTimeWindow(Boolean hasTimeWindow) {
@@ -119,14 +119,14 @@ public class GenAbsoluteTimeRange {
     }
     GenAbsoluteTimeRange genAbsoluteTimeRange = (GenAbsoluteTimeRange) o;
     return Objects.equals(this.startTime, genAbsoluteTimeRange.startTime) &&
-        Objects.equals(this.endTime, genAbsoluteTimeRange.endTime) &&
+        Objects.equals(this.enLocalTime, genAbsoluteTimeRange.enLocalTime) &&
         Objects.equals(this.hasTimeWindow, genAbsoluteTimeRange.hasTimeWindow) &&
         Objects.equals(this.timeWindow, genAbsoluteTimeRange.timeWindow);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(startTime, endTime, hasTimeWindow, timeWindow);
+    return Objects.hash(startTime, enLocalTime, hasTimeWindow, timeWindow);
   }
 
 
@@ -136,7 +136,7 @@ public class GenAbsoluteTimeRange {
     sb.append("class GenAbsoluteTimeRange {\n");
     
     sb.append("    startTime: ").append(toIndentedString(startTime)).append("\n");
-    sb.append("    endTime: ").append(toIndentedString(endTime)).append("\n");
+    sb.append("    enLocalTime: ").append(toIndentedString(enLocalTime)).append("\n");
     sb.append("    hasTimeWindow: ").append(toIndentedString(hasTimeWindow)).append("\n");
     sb.append("    timeWindow: ").append(toIndentedString(timeWindow)).append("\n");
     sb.append("}");

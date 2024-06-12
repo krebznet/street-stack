@@ -2,7 +2,6 @@ package com.dunkware.trade.service.stream.server.controller.session;
 
 import java.util.List;
 
-import com.dunkware.common.util.events.DEventNode;
 import com.dunkware.spring.cluster.DunkNetChannel;
 import com.dunkware.spring.cluster.DunkNetNode;
 import com.dunkware.trade.service.stream.json.controller.session.StreamSessionNodeBean;
@@ -10,6 +9,7 @@ import com.dunkware.trade.service.stream.json.controller.spec.StreamState;
 import com.dunkware.trade.service.stream.json.worker.stream.StreamSessionWorkerStartReq;
 import com.dunkware.trade.service.stream.server.controller.StreamController;
 import com.dunkware.trade.tick.model.ticker.TradeTickerSpec;
+import com.dunkware.utils.core.events.DunkEventNode;
 import com.dunkware.xstream.xproject.model.XStreamBundle;
 
 public interface StreamSessionNode {
@@ -42,7 +42,7 @@ public interface StreamSessionNode {
 	
 	void start(StreamSessionNodeInput input) ;
 	
-	DEventNode getEventNode();
+	DunkEventNode getEventNode();
 	
 	public StreamSessionNodeInput getInput();
 	
@@ -58,9 +58,9 @@ public interface StreamSessionNode {
 	
 	public boolean isRunning();
 	
-	public double stoppingElapsedTime();
+	public double stoppingElapseLocalTime();
 	
-	public double startingElapsedTime();
+	public double startingElapseLocalTime();
 	
 	public boolean isStarting();
 	

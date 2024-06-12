@@ -5,7 +5,7 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 
-import com.dunkware.common.tick.stream.TickStream;
+import com.dunkware.utils.tick.stream.TickStream;
 import com.dunkware.xstream.model.metrics.XStreamRowMetrics;
 import com.dunkware.xstream.xScript.ExpressionType;
 import com.dunkware.xstream.xScript.SignalType;

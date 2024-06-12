@@ -4,7 +4,7 @@ import java.util.Collection;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import com.dunkware.common.util.stopwatch.DStopWatch;
+import com.dunkware.utils.core.stopwatch.StopWatch;
 import com.dunkware.xstream.api.XStream;
 import com.dunkware.xstream.api.XStreamEntity;
 import com.dunkware.xstream.api.XStreamEntityQuery;
@@ -16,7 +16,7 @@ public class XStreamEntityQueryImpl implements XStreamEntityQuery   {
 
 	private XStream stream; 
 	private List<XStreamEntityPredicate> predicates;
-	private double buildTime; 
+	private double builLocalTime; 
 	private XStreamEntityQueryPredicates queryPredicates;
 	
 	public XStreamEntityQueryImpl() { 
@@ -25,19 +25,19 @@ public class XStreamEntityQueryImpl implements XStreamEntityQuery   {
 	
 
 	@Override
-	public void init(List<XStreamEntityPredicate> predicates, XStream stream, double buildTime) {
+	public void init(List<XStreamEntityPredicate> predicates, XStream stream, double builLocalTime) {
 		queryPredicates = new XStreamEntityQueryPredicates();
 		queryPredicates.init(predicates);
 		this.predicates = predicates;
-		this.buildTime = buildTime;
+		this.builLocalTime = builLocalTime;
 		this.stream = stream;
 	}
 
 	
 
 	@Override
-	public double getBuildTime() {
-		return buildTime; 
+	public double getBuilLocalTime() {
+		return builLocalTime; 
 	}
 
 	@Override
@@ -49,7 +49,7 @@ public class XStreamEntityQueryImpl implements XStreamEntityQuery   {
 	@Override
 	public synchronized XStreamEntityQueryRun execute(Collection<XStreamEntity> entities) {
 		XStreamEntityQueryRunImpl run = new XStreamEntityQueryRunImpl();
-		DStopWatch timer = DStopWatch.create();
+		StopWatch timer = StopWatch.newInstance();
 		for (XStreamEntityPredicate pre : predicates) {
 			pre.setQueryRun(run);
 		}
@@ -57,7 +57,7 @@ public class XStreamEntityQueryImpl implements XStreamEntityQuery   {
 		timer.start();
 		List<XStreamEntity> results = stream.getRows().stream().filter(queryPredicates).collect(Collectors.toList());
 		timer.stop();
-		run.setTime(timer.getCompletedSeconds());
+		run.setTime(timer.seconds());
 		run.setResults(results);
 		
 		return run;

@@ -1,6 +1,6 @@
 package com.dunkware.xstream.core.model.util;
 
-import com.dunkware.common.util.json.DJson;
+import com.dunkware.utils.core.json.DunkJson;
 import com.dunkware.xstream.model.entity.query.type.StreamEntityCriteriaType;
 import com.dunkware.xstream.model.entity.query.type.StreamEntityQueryType;
 import com.dunkware.xstream.model.entity.query.type.XStreamEntityQueryType;
@@ -41,7 +41,7 @@ public class XStreamConverterTest extends TestCase {
 	
 	
 	public void testMe()  throws Exception {
-		StreamEntityCriteriaType type = DJson.getObjectMapper().readValue(JSON, StreamEntityCriteriaType.class);
+		StreamEntityCriteriaType type = DunkJson.getObjectMapper().readValue(JSON, StreamEntityCriteriaType.class);
 		StreamEntityQueryType queryType = new StreamEntityQueryType();
 		queryType.getCriterias().add(type);
 		XStreamEntityQueryType xQueryType = XStreamConverter.toXStreamEntityQueryType(queryType);

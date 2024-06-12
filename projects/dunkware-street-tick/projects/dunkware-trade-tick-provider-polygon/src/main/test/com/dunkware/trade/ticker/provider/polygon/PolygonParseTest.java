@@ -1,6 +1,6 @@
 package com.dunkware.trade.ticker.provider.polygon;
 
-import com.dunkware.common.util.json.DJson;
+import com.dunkware.common.util.json.DunkJson;
 import com.dunkware.trade.tick.model.instrument.EquityQuote;
 import com.dunkware.trade.tick.provider.polygon.core.event.PolygonAggEvent;
 import com.dunkware.trade.tick.provider.polygon.core.event.PolygonQuote;
@@ -16,7 +16,7 @@ public class PolygonParseTest extends TestCase {
 	public void testAggregateParse() throws Exception {
 		assertEquals(1, 1);
 		try {
-			PolygonAggEvent[] event = DJson.getObjectMapper().readValue(AggJson, PolygonAggEvent[].class);
+			PolygonAggEvent[] event = DunkJson.getObjectMapper().readValue(AggJson, PolygonAggEvent[].class);
 			assertEquals("AAPL", event[0].getSymbol());
 		} catch (Exception e) {
 			System.err.println(e.toString());
@@ -28,7 +28,7 @@ public class PolygonParseTest extends TestCase {
 	public void testQuoteParse() throws Exception { 
 		try {
 			System.out.println(QuoteJson);
-			EquityQuote quote = DJson.getObjectMapper().readValue(QuoteJson,EquityQuote.class);
+			EquityQuote quote = DunkJson.getObjectMapper().readValue(QuoteJson,EquityQuote.class);
 			assertEquals(quote.getBidPrice(), 114.125);
 		} catch (Exception e) {
 			throw e;

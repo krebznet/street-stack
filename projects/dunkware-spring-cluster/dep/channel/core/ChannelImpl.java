@@ -20,16 +20,16 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.GenericApplicationContext;
 
-import com.dunkware.common.kafka.consumer.DKafkaByteConsumer2;
-import com.dunkware.common.kafka.consumer.DKafkaByteHandler2;
-import com.dunkware.common.kafka.producer.DKafkaByteProducer;
-import com.dunkware.common.spec.kafka.DKafkaByteConsumer2Spec;
-import com.dunkware.common.spec.kafka.DKafkaByteConsumer2Spec.ConsumerType;
-import com.dunkware.common.spec.kafka.DKafkaByteConsumer2Spec.OffsetType;
-import com.dunkware.common.spec.kafka.DKafkaByteConsumer2SpecBuilder;
-import com.dunkware.common.util.executor.DExecutor;
-import com.dunkware.common.util.json.DJson;
-import com.dunkware.common.util.uuid.DUUID;
+import com.dunkware.common.kafka.consumer.KafkaByteConsumer;
+import com.dunkware.common.kafka.consumer.KafkaByteHandler;
+import com.dunkware.common.kafka.producer.KafkaByteProducer;
+import com.dunkware.common.spec.kafka.KafkaByteConsumerSpec;
+import com.dunkware.common.spec.kafka.KafkaByteConsumerSpec.ConsumerType;
+import com.dunkware.common.spec.kafka.KafkaByteConsumerSpec.OffsetType;
+import com.dunkware.common.spec.kafka.KafkaByteConsumerSpecBuilder;
+import com.dunkware.common.util.executor.DunkExecutor;
+import com.dunkware.common.util.json.DunkJson;
+import com.dunkware.common.util.uuid.DunkUUID;
 import com.dunkware.spring.messaging.channel.Channel;
 import com.dunkware.spring.messaging.channel.ChannelException;
 import com.dunkware.spring.messaging.channel.ChannelService;
@@ -41,7 +41,7 @@ import com.dunkware.spring.messaging.message.DunkMessageHelper;
 import com.dunkware.spring.messaging.message.DunkMessageInterceptor;
 import com.dunkware.spring.messaging.message.DunkMessageTransport;
 
-public class ChannelImpl implements Channel, DKafkaByteHandler2 {
+public class ChannelImpl implements Channel, KafkaByteHandler {
 
 	private String channelType;
 	private String brokers;
@@ -49,8 +49,8 @@ public class ChannelImpl implements Channel, DKafkaByteHandler2 {
 	private String producer;
 	private Map<String, Object> beans;
 
-	private DKafkaByteConsumer2 kafkaConsumer;
-	private DKafkaByteProducer kafkaProducer;
+	private KafkaByteConsumer kafkaConsumer;
+	private KafkaByteProducer kafkaProducer;
 
 	private BlockingQueue<DunkMessageTransport> inboundMessages = new LinkedBlockingQueue<DunkMessageTransport>();
 
@@ -71,13 +71,13 @@ public class ChannelImpl implements Channel, DKafkaByteHandler2 {
 	private List<ChannelHandler> channelHandlers = new ArrayList<ChannelHandler>();
 	private Semaphore channelHandlerLock = new Semaphore(1);
 
-	private DExecutor executor;
+	private DunkExecutor executor;
 
 	private boolean disposed = false;
 
 	private Marker marker = MarkerFactory.getMarker("Channel");
 	
-	public void start(DExecutor executor, String type, String brokers, String consumer, String producer,
+	public void start(DunkExecutor executor, String type, String brokers, String consumer, String producer,
 			Map<String, Object> beans, List<Class<?>> defaultHandlers) throws ChannelException {
 		this.channelType = type;
 		this.brokers = brokers;
@@ -136,12 +136,12 @@ public class ChannelImpl implements Channel, DKafkaByteHandler2 {
 
 		// create/start/add handler kafka consumer
 		try {
-			DKafkaByteConsumer2Spec spec = DKafkaByteConsumer2SpecBuilder
+			KafkaByteConsumerSpec spec = KafkaByteConsumerSpecBuilder
 					.newBuilder(ConsumerType.Auto, OffsetType.Latest).addBroker(brokers).addTopic(consumer)
-					.setClientAndGroup("DataContainerCluster_" + DUUID.randomUUID(4),
-							"ChannelConsumer" + DUUID.randomUUID(4))
+					.setClientAndGroup("DataContainerCluster_" + DunkUUID.randomUUID(4),
+							"ChannelConsumer" + DunkUUID.randomUUID(4))
 					.build();
-			kafkaConsumer = DKafkaByteConsumer2.newInstance(spec);
+			kafkaConsumer = KafkaByteConsumer.newInstance(spec);
 			kafkaConsumer.start();
 			kafkaConsumer.addStreamHandler(this);
 		} catch (Exception e) {
@@ -150,7 +150,7 @@ public class ChannelImpl implements Channel, DKafkaByteHandler2 {
 
 		// create producer
 		try {
-			kafkaProducer = DKafkaByteProducer.newInstance(brokers, producer, "Channel" + DUUID.randomUUID(5));
+			kafkaProducer = KafkaByteProducer.newInstance(brokers, producer, "Channel" + DunkUUID.randomUUID(5));
 		} catch (Exception e) {
 			kafkaConsumer.dispose();
 			throw new ChannelException("Exception Creating Channel Producer " + e.toString());
@@ -174,13 +174,13 @@ public class ChannelImpl implements Channel, DKafkaByteHandler2 {
 	@Override // object ?
 	public void send(Object payload) throws ChannelException {
 		try {
-			String messageId = DUUID.randomUUID(5);
+			String messageId = DunkUUID.randomUUID(5);
 			Map<String, Object> headers = new HashMap<String, Object>();
 			headers.put(DunkMessage.HEADER_KEY_MESSAGE_ID, messageId);
 			DunkMessageTransport transport = new DunkMessageTransport();
 			String payloadString = null;
 			try {
-				payloadString = DJson.serialize(payload);
+				payloadString = DunkJson.serialize(payload);
 			} catch (Exception e) {
 				throw new ChannelException("Exception serializing object payload " + e.toString());
 			}
@@ -188,7 +188,7 @@ public class ChannelImpl implements Channel, DKafkaByteHandler2 {
 			transport.setPayload(payloadString);
 			transport.setPayloadClass(payload.getClass().getName());
 
-			String serialized = DJson.serialize(transport);
+			String serialized = DunkJson.serialize(transport);
 			byte[] bytes = serialized.getBytes();
 			kafkaProducer.sendBytes(bytes);
 			if(logger.isTraceEnabled()) { 
@@ -203,7 +203,7 @@ public class ChannelImpl implements Channel, DKafkaByteHandler2 {
 	public DunkMessage sendReply(Object payload) throws ChannelException {
 	
 		DunkMessage message = DunkMessage.newInstance(payload);
-		String requestId = DUUID.randomUUID(5);
+		String requestId = DunkUUID.randomUUID(5);
 		message.setHeader(DunkMessage.HEADER_KEY_MESSAGE_ID, requestId);
 		message.setHeader(DunkMessage.HEADER_KEY_MESSAGE_TYPE, DunkMessage.HEADER_MESSAGE_TYPE_REQUEST);
 
@@ -236,13 +236,13 @@ public class ChannelImpl implements Channel, DKafkaByteHandler2 {
 			transport.setHeaders(message.getHeaders());
 			String payloadString = null;
 			try {
-				payloadString = DJson.serialize(payload);
+				payloadString = DunkJson.serialize(payload);
 			} catch (Exception e) {
 				throw new ChannelException("Exception serializing object payload " + e.toString());
 			}
 			transport.setPayload(payloadString);
 			transport.setPayloadClass(payload.getClass().getName());
-			String serialized = DJson.serialize(transport);
+			String serialized = DunkJson.serialize(transport);
 			byte[] bytes = serialized.getBytes();
 			if(logger.isDebugEnabled()) { 
 				logger.debug(marker, "Channel {} send/reply starting payload {}", channelType, payload.getClass().getName());
@@ -279,7 +279,7 @@ public class ChannelImpl implements Channel, DKafkaByteHandler2 {
 
 			}
 			DunkMessageTransport port = DunkMessageHelper.toTransport(message);
-			String portString = DJson.serialize(port);
+			String portString = DunkJson.serialize(port);
 			kafkaProducer.sendBytes(portString.getBytes());
 		} catch (Exception e) {
 			throw new ChannelException("Exception Sending Message " + e.toString());
@@ -398,7 +398,7 @@ public class ChannelImpl implements Channel, DKafkaByteHandler2 {
 	@Override
 	public void record(ConsumerRecord<String, byte[]> record) {
 		try {
-			DunkMessageTransport transport = DJson.getObjectMapper().readValue(record.value(), DunkMessageTransport.class);
+			DunkMessageTransport transport = DunkJson.getObjectMapper().readValue(record.value(), DunkMessageTransport.class);
 			inboundMessages.add(transport);
 		} catch (Exception e) {
 			logger.error("Exception deserialziing message transport from kafka on channel " + channelType + " "

@@ -48,11 +48,11 @@ class GenAbsoluteDateRangeTest {
     }
 
     /**
-     * Test the property 'endDate'
+     * Test the property 'enLocalDate'
      */
     @Test
-    void endDateTest() {
-        // TODO: test endDate
+    void enLocalDateTest() {
+        // TODO: test enLocalDate
     }
 
     /**

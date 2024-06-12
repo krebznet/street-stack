@@ -1,13 +1,13 @@
 package com.dunkware.trade.service.data.json.stream.writer;
 
-import com.dunkware.common.util.dtime.DDateTime;
+import java.time.LocalDateTime;
 
 public class DataStreamSignalWriterSessionStats {
 	
 	private int signalWriteCount; 
 	private int signalConsumeCount; 
 	private int writeQueueSize;
-	private DDateTime lastSignalWriteTime;
+	private LocalDateTime lastSignalWriteTime;
 	public int getSignalWriteCount() {
 		return signalWriteCount;
 	}
@@ -26,10 +26,10 @@ public class DataStreamSignalWriterSessionStats {
 	public void setWriteQueueSize(int writeQueueSize) {
 		this.writeQueueSize = writeQueueSize;
 	}
-	public DDateTime getLastSignalWriteTime() {
+	public LocalDateTime getLastSignalWriteTime() {
 		return lastSignalWriteTime;
 	}
-	public void setLastSignalWriteTime(DDateTime lastSignalWriteTime) {
+	public void setLastSignalWriteTime(LocalDateTime lastSignalWriteTime) {
 		this.lastSignalWriteTime = lastSignalWriteTime;
 	} 
 	

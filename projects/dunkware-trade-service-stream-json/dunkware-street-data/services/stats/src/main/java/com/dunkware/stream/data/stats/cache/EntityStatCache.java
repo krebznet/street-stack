@@ -123,7 +123,7 @@ public class EntityStatCache {
 				}
 			}
 			watch.stop();
-			bean.setLoadtime(watch.seconds());
+			bean.setLoaLocalTime(watch.seconds());
 			return;
 		}
 	}

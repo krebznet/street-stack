@@ -2,8 +2,8 @@ package com.dunkware.trade.tick.service.server.scrape.yahoo;
 
 import java.util.Map;
 
-import com.dunkware.common.util.helpers.DHttpHelper;
-import com.dunkware.common.util.helpers.DJsonHelper;
+import com.dunkware.utils.core.http.DunkHttp;
+import com.dunkware.utils.core.json.DunkJson;
 
 public class YahooQuoteScraper {
 	
@@ -22,7 +22,7 @@ public class YahooQuoteScraper {
 		String endpoint = "https://finance.yahoo.com/quote/" + ticker + "?p=" + ticker + "&.tsrc=fin-srch";
 		String content = null;
 		try {
-			content = DHttpHelper.getURLContent(endpoint);
+			content = DunkHttp.getURLContent(endpoint);
 		} catch (Exception e) {
 			throw e;
 		}
@@ -58,7 +58,7 @@ public class YahooQuoteScraper {
 		String element = content.substring(content.indexOf(marker),content.length());
 	     element = element.substring(marker.length(),element.length());
 	     element = element.substring(0,element.indexOf("}") + 1);		
-	     Map<String,Object> json = DJsonHelper.parseJsonToMap(element);
+	     Map<String,Object> json = DunkJson.parseMap(element);
 	     return json.get("raw");
 	     
 	}

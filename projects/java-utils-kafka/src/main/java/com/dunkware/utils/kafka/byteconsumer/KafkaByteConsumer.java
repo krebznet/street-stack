@@ -53,11 +53,6 @@ public class KafkaByteConsumer {
 	private HandlerThread handlerThread;
 	
 	
-	public static KafkaByteConsumer newInstance(KafkaByteConsumerModel model) throws Exception { 
-		return null;
-		
-	}
-
 	public static KafkaByteConsumer newInstance(KafkaByteConsumerSpec spec) {
 		return new KafkaByteConsumer(spec);
 	}

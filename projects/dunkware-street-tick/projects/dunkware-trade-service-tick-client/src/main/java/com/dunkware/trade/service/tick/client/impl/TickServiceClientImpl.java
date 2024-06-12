@@ -1,10 +1,8 @@
 package com.dunkware.trade.service.tick.client.impl;
 
 import java.util.List;
-import java.util.logging.Logger;
 
 import com.dunkware.common.util.helpers.DHttpHelper;
-import com.dunkware.common.util.json.DJson;
 import com.dunkware.trade.service.tick.client.TickServiceClient;
 import com.dunkware.trade.service.tick.client.TickServiceClientException;
 import com.dunkware.trade.service.tick.client.TickServiceClientFeed;
@@ -14,6 +12,8 @@ import com.dunkware.trade.tick.model.ticker.TradeTickerSpec;
 import com.dunkware.trade.tick.service.protocol.ticker.TSTickerListGetReq;
 import com.dunkware.trade.tick.service.protocol.ticker.TickerListGetResp;
 import com.dunkware.trade.tick.service.protocol.ticker.spec.TradeTickerListSpec;
+import com.dunkware.utils.core.http.DunkHttpHelper;
+import com.dunkware.utils.core.json.DunkJson;
 import com.fasterxml.jackson.core.type.TypeReference;
 
 public class TickServiceClientImpl implements TickServiceClient {
@@ -68,7 +68,7 @@ public class TickServiceClientImpl implements TickServiceClient {
 			throws TickServiceClientException {
 		String endpoint = this.endpoint + path;
 		try {
-			return DHttpHelper.postJsonWithResponse(endpoint, request, responseClass);
+			return DunkHttpHelper.postJsonWithResponse(endpoint, request, responseClass);
 		} catch (Exception e) {
 			throw new TickServiceClientException("Exception posting with json response " + e.toString(), e);
 		}
@@ -96,7 +96,7 @@ public class TickServiceClientImpl implements TickServiceClient {
 		TSTickerListGetReq req = new TSTickerListGetReq();
 		req.setName("Test500");
 		try {
-			System.out.println(DJson.serializePretty(req));
+			System.out.println(DunkJson.serializePretty(req));
 		} catch (Exception e) {
 			// TODO: handle exception
 		}
@@ -108,7 +108,7 @@ public class TickServiceClientImpl implements TickServiceClient {
 		try {
 			List<TickFeedSubscriptionBean> beans = null;
 			String resp = DHttpHelper.getJson(getEndpoint() + "/feed/subscriptions");
-			beans = DJson.getObjectMapper().readValue(resp,new TypeReference<List<TickFeedSubscriptionBean>>(){});
+			beans = DunkJson.getObjectMapper().readValue(resp,new TypeReference<List<TickFeedSubscriptionBean>>(){});
 	        return beans;
 		} catch (Exception e) {
 			throw new TickServiceClientException("Sorry no bueno " + e.toString());

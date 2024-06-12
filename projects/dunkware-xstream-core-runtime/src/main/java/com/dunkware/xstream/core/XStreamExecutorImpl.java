@@ -3,16 +3,16 @@ package com.dunkware.xstream.core;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.dunkware.common.util.executor.DExecutor;
+import com.dunkware.utils.core.concurrent.DunkExecutor;
 import com.dunkware.xstream.api.XStreamExecutor;
 
 public class XStreamExecutorImpl  implements XStreamExecutor {
 
-	private DExecutor executor; 
+	private DunkExecutor executor; 
 	
 	private Logger logger = LoggerFactory.getLogger(getClass());
 	
-	public XStreamExecutorImpl(DExecutor executor) { 
+	public XStreamExecutorImpl(DunkExecutor executor) { 
 		this.executor = executor;
 	}
 
@@ -21,12 +21,12 @@ public class XStreamExecutorImpl  implements XStreamExecutor {
 		try {
 			executor.execute(runnable);
 		} catch (Exception e) {
-			logger.error("Exception Executing Task on DExecutor " + e.toString());
+			logger.error("Exception Executing Task on DunkExecutor " + e.toString());
 		}
 	}
 
 	@Override
-	public DExecutor getDExecutor() {
+	public DunkExecutor getDunkExecutor() {
 		return executor;
 	}
 

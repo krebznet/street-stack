@@ -1,6 +1,6 @@
 package com.dunkware.trade.tick.model.instrument;
 
-import com.dunkware.common.util.dtime.DDateTime;
+import java.time.LocalDateTime;
 
 public class EquityQuote {
 	
@@ -13,8 +13,8 @@ public class EquityQuote {
 	private double lastPrice; 
 	private int tradeCount; 
 	private int volume; 
-	private DDateTime lastQuote; 
-	private DDateTime lastTrade; 
+	private LocalDateTime lastQuote; 
+	private LocalDateTime lastTrade; 
 	
 	public String getEvent() {
 		return event;
@@ -70,16 +70,16 @@ public class EquityQuote {
 	public void setVolume(int volume) {
 		this.volume = volume;
 	}
-	public DDateTime getLastQuote() {
+	public LocalDateTime getLastQuote() {
 		return lastQuote;
 	}
-	public void setLastQuote(DDateTime lastQuote) {
+	public void setLastQuote(LocalDateTime lastQuote) {
 		this.lastQuote = lastQuote;
 	}
-	public DDateTime getLastTrade() {
+	public LocalDateTime getLastTrade() {
 		return lastTrade;
 	}
-	public void setLastTrade(DDateTime lastTrade) {
+	public void setLastTrade(LocalDateTime lastTrade) {
 		this.lastTrade = lastTrade;
 	}
 	

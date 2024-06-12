@@ -1,6 +1,6 @@
 package com.dunkware.trade.tick.model.provider;
 
-import com.dunkware.common.util.dtime.DDateTime;
+import java.time.LocalDateTime;
 
 public class TickProviderStatsSpec {
 	
@@ -10,7 +10,7 @@ public class TickProviderStatsSpec {
 	private int quoteCount; 
 	private int secondAggCount; 
 	private int messageCount; 
-	private DDateTime startTime; 
+	private LocalDateTime startTime; 
 	private int invalidSubscriptionCount; 
 	private int mps; 
 	private int qps; 
@@ -76,11 +76,11 @@ public class TickProviderStatsSpec {
 		this.messageCount = messageCount;
 	}
 
-	public DDateTime getStartTime() {
+	public LocalDateTime getStartTime() {
 		return startTime;
 	}
 
-	public void setStartTime(DDateTime startTime) {
+	public void setStartTime(LocalDateTime startTime) {
 		this.startTime = startTime;
 	}
 

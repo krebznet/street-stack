@@ -1,6 +1,6 @@
 package com.dunkware.trade.tick.service.protocol.ticker;
 
-import com.dunkware.common.util.json.DJson;
+import com.dunkware.utils.core.json.DunkJson;
 
 public class TickerListAddReq {
 	
@@ -12,7 +12,7 @@ public class TickerListAddReq {
 		req.setOverride(false);
 		req.setName("onward");
 		try {
-			System.out.println(DJson.serializePretty(req));
+			System.out.println(DunkJson.serializePretty(req));
 		} catch (Exception e) {
 			// TODO: handle exception
 		}

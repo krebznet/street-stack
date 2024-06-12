@@ -5,7 +5,7 @@ import java.util.concurrent.TimeUnit;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
-import com.dunkware.common.util.executor.DExecutor;
+import com.dunkware.utils.core.concurrent.DunkExecutor;
 
 import jakarta.annotation.PostConstruct;
 
@@ -19,18 +19,18 @@ public class ExecutorService {
 	 private long timeout; 
 	 
 
-	private DExecutor executor; 
+	private DunkExecutor executor; 
 	
 	@PostConstruct
 	private void init() { 
-		executor = new DExecutor(30,30,TimeUnit.SECONDS);
+		executor = new DunkExecutor(30,30,TimeUnit.SECONDS);
 	}
 	
 	public void execute(Runnable runnable) { 
 		executor.execute(runnable);
 	}
 	
-	public DExecutor get() { 
+	public DunkExecutor get() { 
 		return executor;
 	}
 }

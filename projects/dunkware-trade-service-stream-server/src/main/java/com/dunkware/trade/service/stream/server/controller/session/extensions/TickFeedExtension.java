@@ -2,7 +2,6 @@ package com.dunkware.trade.service.stream.server.controller.session.extensions;
 
 import org.springframework.beans.factory.annotation.Autowired;
 
-import com.dunkware.common.util.uuid.DUUID;
 import com.dunkware.trade.service.stream.json.xstream.TickFeedExtType;
 import com.dunkware.trade.service.stream.server.controller.session.StreamSession;
 import com.dunkware.trade.service.stream.server.controller.session.StreamSessionExtension;
@@ -13,6 +12,7 @@ import com.dunkware.trade.tick.model.TradeTicks;
 import com.dunkware.trade.tick.model.consumer.TickConsumerSpec;
 import com.dunkware.trade.tick.model.consumer.TickConsumerSpecBuilder;
 import com.dunkware.trade.tick.model.ticker.TradeTickerSpec;
+import com.dunkware.utils.core.helpers.DunkUUID;
 
 @AStreamSessionExt
 public class TickFeedExtension implements StreamSessionExtension {
@@ -31,8 +31,8 @@ public class TickFeedExtension implements StreamSessionExtension {
 	public void nodeStarting(StreamSessionNode node) {
 		TickFeedExtType type = new TickFeedExtType();
 		//type.setServiceEndpoint(null);
-		TickConsumerSpecBuilder builder = TickConsumerSpecBuilder.newInstance(session.getStream().getName() + "_" + node.getNodeId() + "_" + DUUID.randomUUID(4));
-			//	DunkTime.formatHHMMSS(LocalDateTime.now(DTimeZone.toZoneId(node.getStream().getTimeZone())));
+		TickConsumerSpecBuilder builder = TickConsumerSpecBuilder.newInstance(session.getStream().getName() + "_" + node.getNodeId() + "_" + DunkUUID.randomUUID(4));
+			//	DunkTime.formatHHMMSS(LocalDateTime.now(LocalTimeZone.toZoneId(node.getStream().getTimeZone())));
 		type.getDataTicks().put(TradeTicks.TickSnapshot, TradeTicks.FieldSymbol);
 		
 		builder.addTickType(TradeTicks.TickSnapshot);

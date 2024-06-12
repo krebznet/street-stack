@@ -1,27 +1,26 @@
 package com.dunkware.xstream.api;
 
+import java.time.LocalTime;
 import java.util.Map;
-
-import com.dunkware.common.util.dtime.DTime;
 
 public class XStreamRowSnapshot {
 	
-	public DTime time;
+	public LocalTime time;
 	private String rowId; 
 	private int numericId;
 	private Map<String,Object> varMap;
 	
-	public XStreamRowSnapshot(String rowId, int numericId, DTime time, Map<String,Object> varMap) { 
+	public XStreamRowSnapshot(String rowId, int numericId, LocalTime time, Map<String,Object> varMap) { 
 		this.time = time; 
 		this.rowId = rowId; 
 		this.numericId = numericId;
 		this.varMap = varMap;
 	}
 	
-	public DTime getTime() {
+	public LocalTime getTime() {
 		return time;
 	}
-	public void setTime(DTime time) {
+	public void setTime(LocalTime time) {
 		this.time = time;
 	}
 	public String getRowId() {

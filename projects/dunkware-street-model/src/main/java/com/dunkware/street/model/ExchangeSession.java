@@ -42,7 +42,7 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
   ExchangeSession.JSON_PROPERTY_ENTITY_COUNT,
   ExchangeSession.JSON_PROPERTY_VERSION
 })
-@jakarta.annotation.Generated(value = "org.openapitools.codegen.languages.JavaClientCodegen", date = "2024-06-10T02:50:26.154173-05:00[America/Chicago]", comments = "Generator version: 7.6.0")
+@jakarta.annotation.Generated(value = "org.openapitools.codegen.languages.JavaClientCodegen", date = "2024-06-12T04:48:04.920148-05:00[America/Chicago]", comments = "Generator version: 7.6.0")
 public class ExchangeSession {
   public static final String JSON_PROPERTY_ID = "id";
   private Integer id;

@@ -6,7 +6,7 @@ import java.util.concurrent.atomic.AtomicInteger;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.dunkware.common.util.json.DJson;
+import com.dunkware.common.util.json.DunkJson;
 import com.dunkware.xstream.api.XStream;
 import com.dunkware.xstream.api.XStreamEntity;
 import com.dunkware.xstream.api.XStreamEntityListener;
@@ -80,7 +80,7 @@ public class EntityStatsBuilder implements XStreamEntityListener {
 		
 		
 		try {
-			System.out.println(DJson.serializePretty(stats));	
+			System.out.println(DunkJson.serializePretty(stats));	
 		} catch (Exception e) {
 			e.printStackTrace();
 			// TODO: handle exception

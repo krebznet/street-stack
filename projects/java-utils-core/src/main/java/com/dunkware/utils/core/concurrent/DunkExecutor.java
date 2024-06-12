@@ -42,7 +42,7 @@ public class DunkExecutor {
 	 * reserved to schedule cancellation task.
 	 *
 	 * @param corePoolSize the number of threads to keep in the pool, even if they
-	 *                     are idle, unless {@code allowCoreThreadTimeOut} is set
+	 *                     are idle, unless {@code allowCoreThreaLocalTimeOut} is set
 	 * @throws IllegalArgumentException if {@code corePoolSize < 0}
 	 */
 	public DunkExecutor(int corePoolSize) {

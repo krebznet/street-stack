@@ -6,14 +6,11 @@ import java.util.List;
 import org.hibernate.annotations.LazyCollection;
 import org.hibernate.annotations.LazyCollectionOption;
 
-import com.dunkware.common.spec.locale.DCountry;
 import com.dunkware.trade.service.stream.json.controller.spec.StreamState;
 
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
-import jakarta.persistence.EnumType;
-import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -29,8 +26,7 @@ public class StreamEntity {
 	private String name; 
 	private String tickerLists;
 	private String dataTicks;
-	@Enumerated(EnumType.STRING)
-	private DCountry country; 
+	
 	@Column(columnDefinition = "text")
 	private String spec;
 	
@@ -101,14 +97,6 @@ public class StreamEntity {
 
 	public void setSpec(String spec) {
 		this.spec = spec;
-	}
-
-	public DCountry getCountry() {
-		return country;
-	}
-
-	public void setCountry(DCountry country) {
-		this.country = country;
 	}
 
 	public StreamState getState() {

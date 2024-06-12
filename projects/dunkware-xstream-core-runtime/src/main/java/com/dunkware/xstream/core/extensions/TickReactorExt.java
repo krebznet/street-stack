@@ -1,9 +1,9 @@
 package com.dunkware.xstream.core.extensions;
 
-import com.dunkware.common.tick.TickHandler;
-import com.dunkware.common.tick.proto.TickProto.Tick;
-import com.dunkware.common.tick.reactor.TickReactorFactory;
-import com.dunkware.common.tick.reactor.impl.TickReactor;
+import com.dunkware.utils.tick.TickHandler;
+import com.dunkware.utils.tick.proto.TickProto.Tick;
+import com.dunkware.utils.tick.reactor.TickReactorFactory;
+import com.dunkware.utils.tick.reactor.impl.TickReactor;
 import com.dunkware.xstream.api.XStream;
 import com.dunkware.xstream.api.XStreamException;
 import com.dunkware.xstream.api.XStreamExtension;
@@ -75,7 +75,7 @@ public class TickReactorExt implements XStreamExtension, TickHandler {
 
 	@Override
 	public void onTick(Tick tick) {
-		this.stream.getTickRouter().streamTick(tick);
+		this.stream.getTickRouter().consume(tick);
 	}
 
 
@@ -101,7 +101,7 @@ public class TickReactorExt implements XStreamExtension, TickHandler {
 
 		@Override
 		public void onTick(Tick tick) {
-			stream.getTickRouter().streamTick(tick);
+			stream.getTickRouter().consume(tick);
 		}
 	}
 

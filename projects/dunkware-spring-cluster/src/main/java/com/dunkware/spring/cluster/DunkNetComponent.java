@@ -4,12 +4,11 @@ import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.dunkware.common.util.helpers.DAnotHelper;
 import com.dunkware.spring.cluster.anot.ADunkNetChannel;
 import com.dunkware.spring.cluster.anot.ADunkNetEvent;
 import com.dunkware.spring.cluster.anot.ADunkNetService;
 import com.dunkware.spring.cluster.core.response.DunkNetChannelResponse;
-import com.dunkware.spring.cluster.core.response.DunkNetServiceResponse;
+import com.dunkware.utils.core.helpers.DunkAnot;
 
 public abstract class DunkNetComponent {
 
@@ -21,7 +20,7 @@ public abstract class DunkNetComponent {
 
 
 	public void initialize() throws DunkNetException {
-		List<Method> methods = DAnotHelper.getMethodsAnnotatedWith(getClass(), ADunkNetEvent.class);
+		List<Method> methods = DunkAnot.getMethodsAnnotatedWith(getClass(), ADunkNetEvent.class);
 		for (Method method : methods) {
 			ComponentMethod handler = new ComponentMethod();
 			handler.setMethod(method);
@@ -33,7 +32,8 @@ public abstract class DunkNetComponent {
 			handler.setParamType(args[0]);
 			events.add(handler);
 		}
-		methods = DAnotHelper.getMethodsAnnotatedWith(getClass(), ADunkNetService.class);
+		methods = DunkAnot
+				.getMethodsAnnotatedWith(getClass(), ADunkNetService.class);
 		for (Method method : methods) {
 			ComponentMethod handler = new ComponentMethod();
 			handler.setMethod(method);
@@ -47,7 +47,7 @@ public abstract class DunkNetComponent {
 			handler.setReturnType(method.getReturnType());
 			services.add(handler);
 		}
-		methods = DAnotHelper.getMethodsAnnotatedWith(getClass(), ADunkNetChannel.class);
+		methods = DunkAnot.getMethodsAnnotatedWith(getClass(), ADunkNetChannel.class);
 		for (Method method : methods) {
 			ComponentMethod handler = new ComponentMethod();
 			handler.setObject(this);

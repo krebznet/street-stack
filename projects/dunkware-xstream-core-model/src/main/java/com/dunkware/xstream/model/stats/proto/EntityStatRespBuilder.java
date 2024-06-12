@@ -1,11 +1,11 @@
 package com.dunkware.xstream.model.stats.proto;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 
-import com.dunkware.common.util.dtime.DDate;
-import com.dunkware.common.util.dtime.DTime;
-import com.dunkware.common.util.time.DunkTime;
+import com.dunkware.utils.core.time.DunkTime;
 
 public class EntityStatRespBuilder {
 	
@@ -16,7 +16,7 @@ public class EntityStatRespBuilder {
 	private EntityStatResp resp = new EntityStatResp();
 	
 	
-	public EntityStatRespBuilder resolved(Number value, DDate date, DTime time) { 
+	public EntityStatRespBuilder resolved(Number value, LocalDate date, LocalTime time) { 
 		resp.setType(EntityStatRespType.Resolved);
 		resp.setValue(value);
 		resp.setDate(date);
@@ -29,8 +29,8 @@ public class EntityStatRespBuilder {
 		resp.setType(EntityStatRespType.Resolved);
 		resp.setValue(value);
 		LocalDateTime dt = LocalDateTime.parse(dateTimeString,DateTimeFormatter.ofPattern(DunkTime.YYYY_MM_DD_HH_MM_SS));
-		resp.setTime(DTime.from(dt.toLocalTime()));
-		resp.setDate(DDate.from(dt.toLocalDate()));
+		resp.setTime(LocalTime.from(dt.toLocalTime()));
+		resp.setDate(LocalDate.from(dt.toLocalDate()));
 		return this;
 	}
 	

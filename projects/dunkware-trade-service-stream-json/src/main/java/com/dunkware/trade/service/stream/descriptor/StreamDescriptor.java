@@ -1,13 +1,11 @@
 package com.dunkware.trade.service.stream.descriptor;
 
-import com.dunkware.common.util.dtime.DTimeZone;
-
 public class StreamDescriptor {
 
 	private long id; 
 	private String identifier; 
 	private String kafkaBrokers;
-	private DTimeZone timeZone; 
+	private String timeZone; 
 	private String warehouseDatabase; 
 	private String warehouseURL; 
 	private String coreDatabase; 
@@ -44,11 +42,11 @@ public class StreamDescriptor {
 		this.kafkaBrokers = kafkaBrokers;
 	}
 
-	public DTimeZone getTimeZone() {
+	public String getTimeZone() {
 		return timeZone;
 	}
 
-	public void setTimeZone(DTimeZone timeZone) {
+	public void setTimeZone(String timeZone) {
 		this.timeZone = timeZone;
 	}
 

@@ -8,8 +8,8 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.dunkware.common.util.datagrid.DataGridUpdate;
-import com.dunkware.common.util.glazed.GlazedDataGrid;
+import com.dunkware.java.utils.glazed.grid.DataGridUpdate;
+import com.dunkware.java.utils.glazed.grid.GlazedDataGrid;
 import com.dunkware.trade.service.stream.json.controller.session.StreamSessionNodeBean;
 
 import ca.odell.glazedlists.ObservableElementList;

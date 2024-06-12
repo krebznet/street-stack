@@ -1,14 +1,13 @@
 package com.dunkware.spring.cluster;
 
 import java.beans.Transient;
-
-import com.dunkware.common.util.dtime.DDateTime;
+import java.time.LocalDateTime;
 
 public class DunkNetBean {
 
 	private long messageCount; 
 	private int errorCount; 
-	private DDateTime startTime; 
+	private LocalDateTime startTime; 
 	private String id; 
 	private int nodeCount;
 	
@@ -25,10 +24,13 @@ public class DunkNetBean {
 	public void setErrorCount(int errorCount) {
 		this.errorCount = errorCount;
 	}
-	public DDateTime getStartTime() {
+	
+	
+	
+	public LocalDateTime getStartTime() {
 		return startTime;
 	}
-	public void setStartTime(DDateTime startTime) {
+	public void setStartTime(LocalDateTime startTime) {
 		this.startTime = startTime;
 	}
 	public String getId() {

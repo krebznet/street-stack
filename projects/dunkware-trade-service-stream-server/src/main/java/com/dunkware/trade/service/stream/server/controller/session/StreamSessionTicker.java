@@ -1,6 +1,7 @@
 package com.dunkware.trade.service.stream.server.controller.session;
 
-import com.dunkware.common.util.dtime.DDateTime;
+import java.time.LocalDateTime;
+
 import com.dunkware.trade.tick.model.ticker.TradeTickerSpec;
 
 public interface StreamSessionTicker {
@@ -9,5 +10,5 @@ public interface StreamSessionTicker {
 	
 	StreamSessionNode getNode();
 	
-	DDateTime getAddTime();
+	LocalDateTime getAdLocalTime();
 }

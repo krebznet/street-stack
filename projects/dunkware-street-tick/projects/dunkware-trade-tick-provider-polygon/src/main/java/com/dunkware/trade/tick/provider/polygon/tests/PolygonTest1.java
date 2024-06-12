@@ -3,7 +3,7 @@ package com.dunkware.trade.tick.provider.polygon.tests;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.dunkware.common.util.executor.DExecutor;
+import com.dunkware.common.util.executor.DunkExecutor;
 import com.dunkware.trade.tick.provider.polygon.PolygonFeed;
 import com.dunkware.trade.tick.provider.polygon.PolygonTicker;
 
@@ -17,9 +17,9 @@ public class PolygonTest1 {
 	
 	private PolygonFeed feed = null;
 	
-	private DExecutor executor; 
+	private DunkExecutor executor; 
 	public PolygonTest1() { 
-		executor = new DExecutor(15);
+		executor = new DunkExecutor(15);
 		List<String> symbols = new ArrayList<String>();
 		symbols.add("AAPL");
 		try {

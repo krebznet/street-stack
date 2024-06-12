@@ -3,7 +3,7 @@ package com.dunkware.xstream.core.extensions;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.dunkware.common.tick.reactor.blueprint.ReactorBlueprint;
+import com.dunkware.utils.tick.reactor.blueprint.ReactorBlueprint;
 import com.dunkware.xstream.xproject.model.XStreamExtensionType;
 import com.fasterxml.jackson.annotation.JsonProperty;
 

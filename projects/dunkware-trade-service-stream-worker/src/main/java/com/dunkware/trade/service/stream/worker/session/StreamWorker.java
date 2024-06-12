@@ -1,5 +1,7 @@
 package com.dunkware.trade.service.stream.worker.session;
 
+import java.time.LocalTime;
+import java.time.ZoneId;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
@@ -10,19 +12,13 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.slf4j.Marker;
 import org.slf4j.MarkerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.ApplicationContext;
 
-import com.dunkware.common.util.dtime.DTime;
-import com.dunkware.common.util.executor.DExecutor;
-import com.dunkware.common.util.helpers.DAnotHelper;
 import com.dunkware.spring.cluster.DunkNet;
 import com.dunkware.spring.cluster.DunkNetChannel;
 import com.dunkware.spring.cluster.DunkNetChannelHandler;
 import com.dunkware.spring.cluster.DunkNetException;
 import com.dunkware.spring.cluster.anot.ADunkNetService;
 import com.dunkware.spring.runtime.services.ExecutorService;
-import com.dunkware.trade.service.stream.descriptor.StreamDescriptor;
 import com.dunkware.trade.service.stream.json.worker.stream.StreamSessionWorkerCancelReq;
 import com.dunkware.trade.service.stream.json.worker.stream.StreamSessionWorkerCancelResp;
 import com.dunkware.trade.service.stream.json.worker.stream.StreamSessionWorkerStartReq;
@@ -34,6 +30,9 @@ import com.dunkware.trade.service.stream.json.worker.stream.StreamSessionWorkerS
 import com.dunkware.trade.service.stream.json.worker.stream.StreamSessionWorkerStopState;
 import com.dunkware.trade.service.stream.worker.session.anot.AStreamWorkerExtension;
 import com.dunkware.trade.service.stream.worker.session.query.StreamWorkerEntityQueryBuilder;
+import com.dunkware.utils.core.concurrent.DunkExecutor;
+import com.dunkware.utils.core.helpers.DunkAnot;
+import com.dunkware.utils.core.time.DunkTimeZones;
 import com.dunkware.xstream.api.XStream;
 import com.dunkware.xstream.api.XStreamInput;
 import com.dunkware.xstream.api.XStreamStatus;
@@ -61,6 +60,7 @@ public class StreamWorker implements DunkNetChannelHandler {
 	private DunkNet dunkNet;
 
 	
+	private ZoneId zoneId; 
 
 
 	private XStream stream;
@@ -95,10 +95,7 @@ public class StreamWorker implements DunkNetChannelHandler {
 		return req;
 	}
 
-	public StreamDescriptor getStreamDescriptor() {
-		return req.getStreamDescriptor();
-		
-	}
+	
 	
 	public DunkNetChannel getChannel() { 
 		return channel;
@@ -127,7 +124,12 @@ public class StreamWorker implements DunkNetChannelHandler {
 	public void channelStart() throws DunkNetException {
 		// don't really care
 	}
+	
+	public ZoneId getZoneId()  {
+		return zoneId; 
+	}
 
+	
 	
 	@ADunkNetService(label = "Stop Session Worker Stream")
 	public StreamSessionWorkerStopResp stopStream(StreamSessionWorkerStopReq req) {
@@ -144,7 +146,7 @@ public class StreamWorker implements DunkNetChannelHandler {
 		logger.info(stopTrace, "Stop Request Invoked on worker " + req.getWorkerId());;
 		new StopTimeoutMonitor().start();
 		
-		resp.setStoppingTime(DTime.now(input.getTimeZone()));
+		resp.setStoppingTime(getLocalTime());
 		try 
 		{
 			
@@ -181,7 +183,7 @@ public class StreamWorker implements DunkNetChannelHandler {
 		}
 
 		
-		resp.setStopTime(DTime.now(input.getTimeZone()));
+		resp.setStopTime(getLocalTime());
 		if(resp.getStopProblems().size() > 0) { 
 			stopState = StreamSessionWorkerStopState.StopCompleteProblems;
 			logger.info(stopTrace, "Worker stop complete problems on worker {}",req.getWorkerId());
@@ -193,6 +195,14 @@ public class StreamWorker implements DunkNetChannelHandler {
 		resp.setCode("OK");
 		stopComplete = true;
 		return resp;
+	}
+	
+	public LocalTime getLocalTime() {
+		if(zoneId == null) { 
+			logger.error("Exception getting local time, its null zone id ");
+			return null;
+		}
+		return LocalTime.now(zoneId);
 	}
 
 	@ADunkNetService(label = "Cancel Session Worker Stream")
@@ -209,11 +219,20 @@ public class StreamWorker implements DunkNetChannelHandler {
 
 	@ADunkNetService(label = "Start Session Worker Stream")
 	public StreamSessionWorkerStartResp startStream(StreamSessionWorkerStartReq req) {
+		StreamSessionWorkerStartResp resp = new StreamSessionWorkerStartResp();
+		try {
+			zoneId = DunkTimeZones.getZoneId(req.getStreamBundle().getTimeZone());
+		} catch (Exception e) {
+			resp.setError("Exception setting time zone id " + e.toString());
+			resp.setCode("ERROR");
+			return resp;
+		
+		}
 		if(logger.isDebugEnabled()) { 
 			logger.debug(marker, "Start Request Recieved on node {} ", dunkNet.getId());
 		}
 		this.req = req;
-		Set<Class<?>> classes = DAnotHelper.getClassesAnnotedWith(AStreamWorkerExtension.class);
+		Set<Class<?>> classes = DunkAnot.getClassesAnnotedWith(AStreamWorkerExtension.class);
 		for (Class<?> class1 : classes) {
 			try {
 				if(logger.isDebugEnabled()) { 
@@ -241,8 +260,7 @@ public class StreamWorker implements DunkNetChannelHandler {
 		}
 		
 		setStatus(StreamSessionWorkerStatus.Starting);
-		StreamSessionWorkerStartResp resp = new StreamSessionWorkerStartResp();
-		resp.setStartingTime(DTime.now(req.getStreamBundle().getTimeZone()));
+		resp.setStartingTime(getLocalTime());
 		try {
 			StreamWorkerEntityQueryBuilder queryBuilder = new StreamWorkerEntityQueryBuilder();
 			queryBuilder.init(this);
@@ -255,7 +273,6 @@ public class StreamWorker implements DunkNetChannelHandler {
 			logger.error(marker, "Exception starting stream session worker {} " + req.getWorkerId(), e.toString());
 			resp.setError(e.toString());
 			resp.setCode("ERROR");
-			resp.setStartTime(DTime.now(input.getTimeZone()));
 			setStatus(StreamSessionWorkerStatus.StartException);
 			return resp;
 		}
@@ -269,7 +286,6 @@ public class StreamWorker implements DunkNetChannelHandler {
 			logger.error(marker, "Exception starting stream session worker {} " + req.getWorkerId(), e.toString());
 			resp.setError(e.toString());
 			resp.setCode("ERROR");
-			resp.setStartTime(DTime.now(input.getTimeZone()));
 			setStatus(StreamSessionWorkerStatus.StartException);
 			return resp;
 		}
@@ -329,16 +345,16 @@ public class StreamWorker implements DunkNetChannelHandler {
 
 	private void updateStats() {
 		try {
-			DExecutor ex = executorService.get();
+			DunkExecutor ex = executorService.get();
 			stats.setPendingTaskCount(ex.getPendingTaskCount());
 			stats.setCompletedTaskCount(ex.getCompletedTaskCount());
 			stats.setTimeoutTaskCount(ex.getTimeoutTaskCount());
 			stats.setRowCount(stream.getRowCount());
-			stats.setSystemTime(DTime.now(stream.getInput().getTimeZone()));
+			stats.setSystemTime(getLocalTime());
 			stats.setStreamTime(stream.getClock().getTime());
 			stats.setTickCount(stream.getTickRouter().getTickCount());
 			stats.setSignalCount(stream.getSignals().getSignalCount());
-			stats.setLastDataTickTime(stream.getTickRouter().getLastDataTickTime());
+			stats.setLastDataTickTime(stream.getTickRouter().getLastDataTickTime().toLocalTime());
 			//if(snapshotEntityPublisher != null) { 
 			//	stats.setEntitySnapshotCount(snapshotEntityPublisher.getStats().getPublishCount());
 			//} else { 

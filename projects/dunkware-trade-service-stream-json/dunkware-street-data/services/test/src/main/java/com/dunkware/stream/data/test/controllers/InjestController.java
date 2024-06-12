@@ -60,8 +60,8 @@ public class InjestController {
 		
 		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MMM-yyyy").withLocale(Locale.ENGLISH);
 
-		LocalDate parsedDate = LocalDate.parse(date);
-	//	List<SessionEntityStatRow> data = SessionEntityStatMockData.build(parsedDate, 1, elements, entities, stats, 1,2);
+		LocalDate parseLocalDate = LocalDate.parse(date);
+	//	List<SessionEntityStatRow> data = SessionEntityStatMockData.build(parseLocalDate, 1, elements, entities, stats, 1,2);
 		//List<SessionEntityStatRow> data = SessionEntityStatMockData.build(LocalDate.of(2024, 1, 1),1,5000,1,1,2);
 		List<SessionEntityStatRow> data = SessionEntityStatMockData.build(LocalDate.of(2024, 1, 22),1,entities,elements,1,2);
 		

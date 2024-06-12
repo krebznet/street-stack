@@ -1,14 +1,14 @@
 package com.dunkware.xstream.model.stats.proto;
 
-import com.dunkware.common.util.dtime.DDate;
-import com.dunkware.common.util.dtime.DTime;
+import java.time.LocalDate;
+import java.time.LocalTime;
 
 public class EntityStatResp {
 	
 	private EntityStatRespType type; 
 	private Number value; 
-	private DTime time; 
-	private DDate date; 
+	private LocalTime time; 
+	private LocalDate date; 
 	private String exception;
 	
 	public EntityStatRespType getType() {
@@ -29,16 +29,16 @@ public class EntityStatResp {
 	public void setException(String exception) {
 		this.exception = exception;
 	}
-	public DTime getTime() {
+	public LocalTime getTime() {
 		return time;
 	}
-	public void setTime(DTime time) {
+	public void setTime(LocalTime time) {
 		this.time = time;
 	}
-	public DDate getDate() {
+	public LocalDate getDate() {
 		return date;
 	}
-	public void setDate(DDate date) {
+	public void setDate(LocalDate date) {
 		this.date = date;
 	} 
 	

@@ -1,7 +1,5 @@
 package com.dunkware.trade.service.web.server.services;
 
-import java.util.concurrent.TimeUnit;
-
 import javax.annotation.PostConstruct;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,9 +11,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.server.ResponseStatusException;
 
-import com.dunkware.common.util.stopwatch.DStopWatch;
 import com.dunkware.spring.cluster.DunkNet;
-import com.dunkware.spring.cluster.core.request.DunkNetServiceRequest;
 import com.dunkware.xstream.model.stats.proto.EntityStatReq;
 import com.dunkware.xstream.model.stats.proto.EntityStatResp;
 
@@ -42,8 +38,8 @@ public class TestController {
 		
 		try {
 			int i = 0; 
-			DStopWatch watch = DStopWatch.create();
-			watch.start();
+		//	DStopWatch watch = DStopWatch.create()
+			//watch.start();
 			EntityStatResp resp = (EntityStatResp)net.serviceBlocking(req);
 			return resp;
 			

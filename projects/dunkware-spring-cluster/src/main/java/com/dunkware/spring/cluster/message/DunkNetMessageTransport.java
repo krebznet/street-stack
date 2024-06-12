@@ -2,7 +2,7 @@ package com.dunkware.spring.cluster.message;
 
 import java.util.Map;
 
-import com.dunkware.common.util.uuid.DUUID;
+import com.dunkware.utils.core.helpers.DunkUUID;
 
 /**
  * This is what gets serialized and sent over wire 
@@ -21,7 +21,7 @@ public class DunkNetMessageTransport {
 	private int type;
 	private String channel = null;
 	private String parentChannel;
-	private String messageId = DUUID.randomUUID(5);
+	private String messageId = DunkUUID.randomUUID(5);
 	
 	
 	

@@ -2,11 +2,11 @@ package com.dunkware.xstream.core.expressions;
 
 import java.util.List;
 
-import com.dunkware.common.util.helpers.DConverter;
-import com.dunkware.xstream.api.XStreamExpression;
+import com.dunkware.utils.core.helpers.DunkNumber;
 import com.dunkware.xstream.api.XStreamEntity;
-import com.dunkware.xstream.api.XStreamRuntimeException;
 import com.dunkware.xstream.api.XStreamEntityVar;
+import com.dunkware.xstream.api.XStreamExpression;
+import com.dunkware.xstream.api.XStreamRuntimeException;
 import com.dunkware.xstream.core.XStreamExpressionImpl;
 import com.dunkware.xstream.core.annotations.AXStreamExpression;
 import com.dunkware.xstream.xScript.ExpressionType;
@@ -72,8 +72,8 @@ public class SubExpression extends XStreamExpressionImpl {
 		}
 		if (compareValue instanceof Double || targetValue instanceof Double) {
 			try {
-				Double targetInt = DConverter.toDouble(targetValue);
-				Double compareInt = DConverter.toDouble(compareValue);
+				Double targetInt = DunkNumber.toDouble(targetValue);
+				Double compareInt = DunkNumber.toDouble(compareValue);
 				setValue(targetInt - compareInt);
 				return true;	
 			} catch (Exception e) {

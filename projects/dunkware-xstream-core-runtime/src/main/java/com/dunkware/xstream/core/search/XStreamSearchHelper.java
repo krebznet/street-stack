@@ -1,6 +1,6 @@
 package com.dunkware.xstream.core.search;
 
-import com.dunkware.common.util.helpers.DNumberHelper;
+import com.dunkware.utils.core.helpers.DunkNumber;
 import com.dunkware.xstream.api.XStreamQueryException;
 import com.dunkware.xstream.model.entity.query.type.XStreamOperator;
 
@@ -9,7 +9,7 @@ public class XStreamSearchHelper {
 	
 	public static boolean testCondition(Number value, Number eval, XStreamOperator operator) throws XStreamQueryException {
 
-		int compare = DNumberHelper.compare(value, eval);
+		int compare = DunkNumber.compare(value, eval);
 		
 		if(operator == XStreamOperator.GreaterThan) { 
 			if(compare == 1) { 

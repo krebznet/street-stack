@@ -8,9 +8,7 @@ import org.slf4j.LoggerFactory;
 import org.slf4j.Marker;
 import org.slf4j.MarkerFactory;
 
-import com.dunkware.common.util.stopwatch.DStopWatch;
 import com.dunkware.xstream.api.XStreamEntityQuery;
-import com.dunkware.xstream.api.XStreamEntityQueryBuilder;
 import com.dunkware.xstream.core.search.row.XStreamEntityQueryImpl;
 import com.dunkware.xstream.core.search.row.criteria.XStreamEntityPredicate;
 import com.dunkware.xstream.core.search.row.criteria.XStreamEntityValueComparePredicate;
@@ -41,8 +39,8 @@ public class AsyncQueryBuilder  {
 	
 
 	public Future<XStreamEntityQuery> buildQuery(AsyncQueryContext context, XStreamEntityQueryType model) {
-		DStopWatch watch = DStopWatch.create();
-		watch.start();
+		
+		
 		this.context = context;
 
 		List<XStreamEntityPredicate> predicates = new ArrayList<XStreamEntityPredicate>();
@@ -67,8 +65,8 @@ public class AsyncQueryBuilder  {
 					i++;
 				}
 				XStreamEntityQueryImpl query = new XStreamEntityQueryImpl();
-				watch.stop();
-				query.init(predicates, context.getStream(), watch.getCompletedSeconds());
+			
+				query.init(predicates, context.getStream(), 0);
 				queryPromise.complete(query);
 				return;
 

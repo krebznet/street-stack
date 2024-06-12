@@ -18,10 +18,7 @@ import org.slf4j.LoggerFactory;
 import org.slf4j.Marker;
 import org.slf4j.MarkerFactory;
 
-import com.dunkware.common.util.dtime.DDate;
-import com.dunkware.common.util.dtime.DTime;
-import com.dunkware.common.util.dtime.DTimeZone;
-import com.dunkware.common.util.time.DunkTime;
+import com.dunkware.utils.core.time.DunkTime;
 import com.dunkware.xstream.api.XStreamClock;
 import com.dunkware.xstream.api.XStreamClockListener;
 
@@ -36,10 +33,10 @@ public class XStreamClockImpl implements XStreamClock {
 	private Marker timeSetMarker = MarkerFactory.getMarker("XStreamClockSet");
 	private Marker runnableMarker = MarkerFactory.getMarker("XStreamScheduledRunnable");
 	
-	private volatile DTime time; 
+	private volatile LocalTime time; 
 	private XStreamImpl stream; 
-	private DDate date; 
-	private DTimeZone timeZone; 
+	private LocalDate date; 
+	private String timeZone; 
 	private ZoneId zoneId; 
 	
 	private LocalTime startTime = null;
@@ -53,15 +50,15 @@ public class XStreamClockImpl implements XStreamClock {
 	public XStreamClockImpl(XStreamImpl stream) {
 		this.stream = stream; 
 		this.date = stream.getInput().getDate();
-		this.timeZone = stream.getInput().getTimeZone();
-		this.zoneId = DTimeZone.toZoneId(timeZone);
+		
+		this.zoneId = stream.getTimeZoneId();
 		
 	}
 	
 	
 	@Override
 	public LocalDateTime getLocalDateTime() {
-		return  LocalDateTime.of(date.get(), time.get());
+		return  LocalDateTime.of(date, time);
 		
 	}
 
@@ -78,7 +75,7 @@ public class XStreamClockImpl implements XStreamClock {
 
 
 	@Override
-	public DTime getTime() {
+	public LocalTime getTime() {
 		return time; 
 	}
 	
@@ -91,9 +88,9 @@ public class XStreamClockImpl implements XStreamClock {
 
 
 	@Override
-	public void setTime(DTime time) {
+	public void setTime(LocalTime time) {
 		if(startTime == null) { 
-			startTime = time.get();
+			startTime = time;
 		}
 		if(logger.isTraceEnabled()) { 
 			logger.debug("Time Set {}",time.getHour() + ":" + time.getMinute() + ":" + time.getSecond());
@@ -143,8 +140,7 @@ public class XStreamClockImpl implements XStreamClock {
 	
 	@Override
 	public long getSystemTimestamp() {
-		stream.getInput().getTimeZone();
-		ZoneId zoneId = DTimeZone.toZoneId(stream.getInput().getTimeZone());
+		
 		ZonedDateTime systime = ZonedDateTime.now(zoneId);
 		return systime.toInstant().toEpochMilli();
 		
@@ -164,13 +160,13 @@ public class XStreamClockImpl implements XStreamClock {
 	}
 	@Override
 	public long getTimestamp() {
-		LocalDateTime dt = LocalDateTime.of(date.get(), time.get());
+		LocalDateTime dt = LocalDateTime.of(date, time);
 		return DunkTime.toDate(dt).getTime();
 		
 		
 	}
 	@Override
-	public DDate getDate() {
+	public LocalDate getDate() {
 		return date;
 	}
 

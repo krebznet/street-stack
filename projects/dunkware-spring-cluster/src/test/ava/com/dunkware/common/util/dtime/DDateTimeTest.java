@@ -1,11 +1,11 @@
-package com.dunkware.common.util.dtime;
+package com.dunkware.common.util.LocalTime;
 
-import com.dunkware.common.util.dtime.DDateTime;
+import com.dunkware.common.util.LocalTime.LocalDateTime;
 
-public class DDateTimeTest {
+public class LocalDateTimeTest {
 
 	public static void main(String[] args) {
-		DDateTime dt = DDateTime.now();
+		LocalDateTime dt = LocalDateTime.now();
 		System.out.println(dt.get().toString());
 	}
 }

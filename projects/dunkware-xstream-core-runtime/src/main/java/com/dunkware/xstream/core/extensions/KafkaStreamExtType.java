@@ -1,20 +1,22 @@
 package com.dunkware.xstream.core.extensions;
 
-import com.dunkware.common.util.properties.DProperties;
+import java.util.Map;
+
 import com.dunkware.xstream.xproject.model.XStreamExtensionType;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class KafkaStreamExtType extends XStreamExtensionType {
 
-	private DProperties properties;
+	private Map<String,String> properties;
 	private String dataTicks;
 	
-	public DProperties getProperties() {
+
+	public Map<String, String> getProperties() {
 		return properties;
 	}
 
-	public void setProperties(DProperties properties) {
+	public void setProperties(Map<String, String> properties) {
 		this.properties = properties;
 	}
 

@@ -1,11 +1,6 @@
 package com.dunkware.trade.tick.service.protocol.service.spec;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import com.dunkware.common.util.dtime.DDateTime;
-import com.dunkware.trade.tick.model.provider.TickProviderStatsSpec;
-import com.dunkware.trade.tick.model.ticker.TradeTickerSpec;
+import java.time.LocalDateTime;
 
 public class FeedServiceStats {
 	
@@ -19,7 +14,7 @@ public class FeedServiceStats {
 	private int qps; 
 	private int aps; 
 	private int messageQueueSize;
-	private DDateTime startTime;
+	private LocalDateTime startTime;
 	private FeedServiceState state;
 	private int validatedSubscriptionCount;
 	private int invalidatedSubscriptionCount;
@@ -84,10 +79,10 @@ public class FeedServiceStats {
 	public void setMessageQueueSize(int messageQueueSize) {
 		this.messageQueueSize = messageQueueSize;
 	}
-	public DDateTime getStartTime() {
+	public LocalDateTime getStartTime() {
 		return startTime;
 	}
-	public void setStartTime(DDateTime startTime) {
+	public void setStartTime(LocalDateTime startTime) {
 		this.startTime = startTime;
 	}
 	public FeedServiceState getState() {

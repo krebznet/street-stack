@@ -3,17 +3,16 @@ package com.dunkware.xstream.core.expressions;
 import java.math.BigDecimal;
 import java.math.MathContext;
 import java.math.RoundingMode;
-import java.util.concurrent.atomic.AtomicInteger;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.dunkware.common.tick.TickHandler;
-import com.dunkware.common.tick.TickHelper;
-import com.dunkware.common.tick.filter.TickFilterBuilder;
-import com.dunkware.common.tick.proto.TickProto.Tick;
-import com.dunkware.common.tick.proto.TickProto.Tick.TickField;
-import com.dunkware.common.tick.proto.TickProto.Tick.TickFieldType;
+import com.dunkware.utils.tick.TickHandler;
+import com.dunkware.utils.tick.TickHelper;
+import com.dunkware.utils.tick.filter.TickFilterBuilder;
+import com.dunkware.utils.tick.proto.TickProto.Tick;
+import com.dunkware.utils.tick.proto.TickProto.Tick.TickField;
+import com.dunkware.utils.tick.proto.TickProto.Tick.TickFieldType;
 import com.dunkware.xstream.api.XStreamEntity;
 import com.dunkware.xstream.api.XStreamRuntimeException;
 import com.dunkware.xstream.core.XStreamExpressionImpl;
@@ -80,7 +79,13 @@ public class TickExpression extends XStreamExpressionImpl implements TickHandler
 		TickField field = null;
 		TickFieldType fieldType = null;
 		try {
-			field = TickHelper.getField(tick, tickField);
+			try {
+				field = TickHelper.getField(tick, tickField);	
+			} catch (Exception e) {
+				row.getStream().runtimeError("Expression", "Tick Expression invalid field " + e.toString());
+				
+			}
+			
 			fieldType = field.getType();
 		} catch (RuntimeException e) {
 			throw new XStreamRuntimeException("Tick Expression onTick() TichHelper.getField(" + tick.getType() + ","

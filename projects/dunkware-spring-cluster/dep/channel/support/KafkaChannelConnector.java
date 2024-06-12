@@ -2,16 +2,16 @@ package com.dunkware.spring.messaging.channel.support;
 
 import java.util.concurrent.BlockingQueue;
 
-import com.dunkware.common.kafka.consumer.DKafkaByteConsumer2;
-import com.dunkware.common.kafka.producer.DKafkaByteProducer;
+import com.dunkware.common.kafka.consumer.KafkaByteConsumer;
+import com.dunkware.common.kafka.producer.KafkaByteProducer;
 import com.dunkware.spring.messaging.channel.ChannelEndpoint;
 import com.dunkware.spring.messaging.channel.ChannelException;
 import com.dunkware.spring.messaging.message.DunkMessage;
 
 public class KafkaChannelConnector implements ChannelEndpoint {
 	
-	private DKafkaByteConsumer2 consumer; 
-	private DKafkaByteProducer producer; 
+	private KafkaByteConsumer consumer; 
+	private KafkaByteProducer producer; 
 	
 	public void connect(String brokers, String consumerTopic, String producerTopic) throws ChannelException { 
 		try {

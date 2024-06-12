@@ -9,7 +9,7 @@ public class XStreamProcessorStats {
 	
 	private int streamId; 
 	private LocalDateTime startTime; 
-	private LocalDateTime endTime; 
+	private LocalDateTime enLocalTime; 
 	
 	private Map<Integer,XStreamProcessorEntity> entities = new ConcurrentHashMap<Integer,XStreamProcessorEntity>();
 	private Map<Integer,XStreamProcessorSignalType> signals = new ConcurrentHashMap<Integer,XStreamProcessorSignalType>();
@@ -30,12 +30,12 @@ public class XStreamProcessorStats {
 		this.startTime = startTime;
 	}
 
-	public LocalDateTime getEndTime() {
-		return endTime;
+	public LocalDateTime getEnLocalTime() {
+		return enLocalTime;
 	}
 
-	public void setEndTime(LocalDateTime endTime) {
-		this.endTime = endTime;
+	public void setEnLocalTime(LocalDateTime enLocalTime) {
+		this.enLocalTime = enLocalTime;
 	}
 
 	public Map<Integer, XStreamProcessorEntity> getEntities() {

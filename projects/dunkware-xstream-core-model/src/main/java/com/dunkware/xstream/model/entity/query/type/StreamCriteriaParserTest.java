@@ -1,6 +1,6 @@
 package com.dunkware.xstream.model.entity.query.type;
 
-import com.dunkware.common.util.json.DJson;
+import com.dunkware.utils.core.json.DunkJson;
 
 public class StreamCriteriaParserTest {
 public static String JSON = "{\n"
@@ -35,7 +35,7 @@ public static String JSON = "{\n"
 		try {
 			StreamEntityCriteriaType criteria = null;
 			try {
-				criteria = DJson.getObjectMapper().readValue(JSON, StreamEntityCriteriaType.class);
+				criteria = DunkJson.getObjectMapper().readValue(JSON, StreamEntityCriteriaType.class);
 				System.out.println(criteria.getType());
 				System.out.println(criteria.getValue().get(0).getValueType());
 				

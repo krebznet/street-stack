@@ -1,13 +1,13 @@
 package com.dunkware.xstream.core;
 
 import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
-import com.dunkware.common.util.dtime.DTime;
 import com.dunkware.xstream.api.XStreamEntity;
-import com.dunkware.xstream.api.XStreamRowSignal;
 import com.dunkware.xstream.api.XStreamEntityVar;
+import com.dunkware.xstream.api.XStreamRowSignal;
 import com.dunkware.xstream.xScript.SignalType;
 
 public class XStreamSignalImpl implements XStreamRowSignal {
@@ -15,11 +15,11 @@ public class XStreamSignalImpl implements XStreamRowSignal {
 	private XStreamEntity row; 
 	private SignalType signalType; 
 	private long timestamp; 
-	private DTime time; 
+	private LocalTime time; 
 	private LocalDateTime localDateTime;
 	private Map<Integer,Object> vars = new ConcurrentHashMap<Integer,Object>();
 	
-	public XStreamSignalImpl(XStreamEntity row, SignalType signalType,  long timestamp,  DTime time, LocalDateTime dateTime) { 
+	public XStreamSignalImpl(XStreamEntity row, SignalType signalType,  long timestamp,  LocalTime time, LocalDateTime dateTime) { 
 		this.row = row; 
 		this.localDateTime = dateTime;
 		this.signalType = signalType; 
@@ -52,7 +52,7 @@ public class XStreamSignalImpl implements XStreamRowSignal {
 	}
 
 	@Override
-	public DTime getTime() {
+	public LocalTime getTime() {
 		return time;
 	}
 

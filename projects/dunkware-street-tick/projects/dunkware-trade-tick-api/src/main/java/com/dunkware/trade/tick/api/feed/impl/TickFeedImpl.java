@@ -8,7 +8,6 @@ import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.Semaphore;
 import java.util.concurrent.atomic.AtomicInteger;
 
-import com.dunkware.common.util.executor.DExecutor;
 import com.dunkware.trade.tick.api.feed.TickFeed;
 import com.dunkware.trade.tick.api.feed.TickFeedException;
 import com.dunkware.trade.tick.api.feed.TickFeedListener;
@@ -20,11 +19,12 @@ import com.dunkware.trade.tick.model.feed.TickFeedSubscriptionBean;
 import com.dunkware.trade.tick.model.feed.TickFeedTrade;
 import com.dunkware.trade.tick.model.provider.TickProviderStatsSpec;
 import com.dunkware.trade.tick.model.ticker.TradeTickerSpec;
+import com.dunkware.utils.core.concurrent.DunkExecutor;
 
 public class TickFeedImpl implements TickFeed {
 
 	
-	private DExecutor executor; 
+	private DunkExecutor executor; 
 	private TickProvider provider; 
 	
 	private List<TickFeedListener> listeners = new ArrayList<TickFeedListener>();
@@ -47,7 +47,7 @@ public class TickFeedImpl implements TickFeed {
 	
 	private SecondUpdater secUpdater = new SecondUpdater();
 	@Override
-	public void start(TickProvider provider, DExecutor exector, String kafkaBrokers) throws TickFeedException {
+	public void start(TickProvider provider, DunkExecutor exector, String kafkaBrokers) throws TickFeedException {
 		this.executor = exector;
 		this.provider = provider; 
 		this.kafkaBrokers = kafkaBrokers;
@@ -153,7 +153,7 @@ public class TickFeedImpl implements TickFeed {
 	}
 
 	@Override
-	public DExecutor getExecutor() {
+	public DunkExecutor getExecutor() {
 		return executor;
 	}
 

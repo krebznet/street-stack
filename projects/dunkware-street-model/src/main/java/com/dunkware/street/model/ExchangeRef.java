@@ -38,7 +38,7 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
   ExchangeRef.JSON_PROPERTY_TICKERS,
   ExchangeRef.JSON_PROPERTY_STATUS
 })
-@jakarta.annotation.Generated(value = "org.openapitools.codegen.languages.JavaClientCodegen", date = "2024-06-10T02:50:26.154173-05:00[America/Chicago]", comments = "Generator version: 7.6.0")
+@jakarta.annotation.Generated(value = "org.openapitools.codegen.languages.JavaClientCodegen", date = "2024-06-12T04:48:04.920148-05:00[America/Chicago]", comments = "Generator version: 7.6.0")
 public class ExchangeRef {
   public static final String JSON_PROPERTY_ID = "id";
   private Integer id;

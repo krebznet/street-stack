@@ -29,7 +29,7 @@ public class PolygonAggEvent {
 	@JsonProperty(value = "z")
 	private int tickAverageTradeSize;
 	@JsonProperty(value = "e")
-	private long endTime;
+	private long enLocalTime;
 	@JsonProperty(value = "s")
 	private long startTime;
 	
@@ -110,12 +110,12 @@ public class PolygonAggEvent {
 		this.tickAverageTradeSize = tickAverageTradeSize;
 	}
 
-	public long getEndTime() {
-		return endTime;
+	public long getEnLocalTime() {
+		return enLocalTime;
 	}
 
-	public void setEndTime(long endTime) {
-		this.endTime = endTime;
+	public void setEnLocalTime(long enLocalTime) {
+		this.enLocalTime = enLocalTime;
 	}
 
 	public long getStartTime() {

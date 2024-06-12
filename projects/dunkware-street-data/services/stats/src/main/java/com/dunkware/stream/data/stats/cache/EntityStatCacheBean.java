@@ -3,7 +3,7 @@ package com.dunkware.stream.data.stats.cache;
 public class EntityStatCacheBean {
 	
 	private int sessions; 
-	private double loadtime; 
+	private double loaLocalTime; 
 	private int loadsecond;
 	private int errorcount;
 	private int keycount; 
@@ -16,11 +16,11 @@ public class EntityStatCacheBean {
 	public void setSessions(int sessions) {
 		this.sessions = sessions;
 	}
-	public double getLoadtime() {
-		return loadtime;
+	public double getLoaLocalTime() {
+		return loaLocalTime;
 	}
-	public void setLoadtime(double loadtime) {
-		this.loadtime = loadtime;
+	public void setLoaLocalTime(double loaLocalTime) {
+		this.loaLocalTime = loaLocalTime;
 	}
 	public int getLoadsecond() {
 		return loadsecond;

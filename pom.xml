@@ -64,8 +64,7 @@
 
 
 		<module> projects/dunkware-maven-parent</module>
-		<module>projects/dunkware-common-util</module>
-
+	
 		<module>projects/dunkware-xstream-core-model</module>
 		<module>projects/dunkware-xstream-core-runtime</module>
 		<module>projects/dunkware-xstream-core-mock</module>
@@ -89,6 +88,7 @@
 		<module>projects/java-generic-model</module>
 		<module>projects/dunkware-street-model</module>
 		<module>projects/dunkware-street-server</module>
+		
 	</modules>
 	<build>
 		<!-- To define the plugin version in your parent POM -->

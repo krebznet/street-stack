@@ -6,10 +6,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.dunkware.common.kafka.consumer.DKafkaByteConsumer;
-import com.dunkware.common.kafka.consumer.DKafkaByteHandler;
-import com.dunkware.common.tick.proto.TickProto.Tick;
-import com.dunkware.common.tick.stream.TickStream;
-import com.dunkware.common.tick.stream.impl.TickStreamImpl;
 import com.dunkware.common.util.helpers.DHttpHelper;
 import com.dunkware.trade.service.tick.client.TickServiceClient;
 import com.dunkware.trade.service.tick.client.TickServiceClientException;
@@ -19,8 +15,13 @@ import com.dunkware.trade.tick.model.consumer.TickConsumerSession;
 import com.dunkware.trade.tick.model.consumer.TickConsumerSpec;
 import com.dunkware.trade.tick.service.protocol.feed.TickFeedStartReq;
 import com.dunkware.trade.tick.service.protocol.feed.TickFeedStartResp;
+import com.dunkware.utils.kafka.byteconsumer.KafkaByteConsumer;
+import com.dunkware.utils.kafka.byteconsumer.KafkaByteHandler;
+import com.dunkware.utils.tick.proto.TickProto.Tick;
+import com.dunkware.utils.tick.stream.TickStream;
+import com.dunkware.utils.tick.stream.impl.TickStreamImpl;
 
-public class TickServiceClientFeedImpl implements TickServiceClientFeed, DKafkaByteHandler{
+public class TickServiceClientFeedImpl implements TickServiceClientFeed, KafkaByteHandler{
 
 	private Logger logger = LoggerFactory.getLogger(getClass());
 	
@@ -30,7 +31,7 @@ public class TickServiceClientFeedImpl implements TickServiceClientFeed, DKafkaB
 	private TickStream tickStream; 
 	private TickConsumerSession session;
 	
-	private DKafkaByteConsumer kafkaConsumer;
+	private KafkaByteConsumer kafkaConsumer;
 	
 	//private Pinger pinger = new Pinger();
 	
@@ -52,6 +53,7 @@ public class TickServiceClientFeedImpl implements TickServiceClientFeed, DKafkaB
 		}
 		try {
 			this.tickStream = new TickStreamImpl();
+			this.kafkaConsumer = KafkaByteConsumer.newInstance(null)
 			this.kafkaConsumer = DKafkaByteConsumer.newInstance(session.getKafkaBroker(),session.getKafkaTopic());
 			this.kafkaConsumer.addStreamHandler(this);
 		} catch (Exception e) {

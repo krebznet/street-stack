@@ -1,11 +1,11 @@
 package com.dunkware.trade.service.stream.worker.session.ext;
 
-import com.dunkware.common.tick.TickHandler;
-import com.dunkware.common.tick.proto.TickProto.Tick;
 import com.dunkware.trade.service.stream.json.xstream.TickFeedExtType;
 import com.dunkware.trade.service.tick.client.TickServiceClient;
 import com.dunkware.trade.service.tick.client.TickServiceClientFactory;
 import com.dunkware.trade.service.tick.client.TickServiceClientFeed;
+import com.dunkware.utils.tick.TickHandler;
+import com.dunkware.utils.tick.proto.TickProto.Tick;
 import com.dunkware.xstream.api.XStream;
 import com.dunkware.xstream.api.XStreamException;
 import com.dunkware.xstream.api.XStreamExtension;
@@ -72,7 +72,7 @@ public class StreamWorkerFeedExt implements XStreamExtension, TickHandler {
 
 	@Override
 	public void onTick(Tick tick) {
-		stream.getTickRouter().streamTick(tick);
+		stream.getTickRouter().consume(tick);
 	}
 
 	@Override

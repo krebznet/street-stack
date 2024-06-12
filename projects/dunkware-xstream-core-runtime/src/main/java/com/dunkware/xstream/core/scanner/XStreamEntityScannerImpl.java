@@ -1,8 +1,8 @@
 package com.dunkware.xstream.core.scanner;
 
-import com.dunkware.common.util.glazed.GlazedDataGrid;
-import com.dunkware.common.util.observable.ObservableBeanListConnector;
-import com.dunkware.common.util.observable.ObservableNetBean;
+import com.dunkware.java.utils.glazed.grid.GlazedDataGrid;
+import com.dunkware.java.utils.glazed.grid.GlazedDataGridConnector;
+import com.dunkware.utils.core.observable.ObservableBean;
 import com.dunkware.xstream.api.XStream;
 import com.dunkware.xstream.api.XStreamEntityQuery;
 import com.dunkware.xstream.api.XStreamEntityScannerException;
@@ -20,15 +20,15 @@ public class XStreamEntityScannerImpl { // a channel
 	
 	private GlazedDataGrid dataGrid;
 	
-	private ObservableElementList<ObservableNetBean> scannerList;
+	private ObservableElementList<ObservableBean> scannerList;
 	
 	private XStreamEntityQuery entityQuery;
 	
 	public void start(XStreamEntityScannerModel model, XStream stream) throws XStreamEntityScannerException {
 		this.stream = stream;
-		scannerList = new ObservableElementList<ObservableNetBean>(
-			GlazedLists.threadSafeList(new BasicEventList<ObservableNetBean>()),
-					new ObservableBeanListConnector<ObservableNetBean>());
+		scannerList = new ObservableElementList<ObservableBean>(
+			GlazedLists.threadSafeList(new BasicEventList<ObservableBean>()),
+					new GlazedDataGridConnector<ObservableBean>());
 		try {
 		//stream.entityQuery(model.getQueryModel());
 		} catch (Exception e) {

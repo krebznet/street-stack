@@ -1,14 +1,12 @@
 package com.dunkware.trade.tick.api.mock;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
-import com.dunkware.common.util.dtime.DDateTime;
-import com.dunkware.common.util.executor.DExecutor;
-import com.dunkware.common.util.helpers.DRandom;
 import com.dunkware.trade.tick.api.feed.TickFeed;
 import com.dunkware.trade.tick.api.feed.TickFeedSubscription;
 import com.dunkware.trade.tick.api.provider.ATickProvider;
@@ -19,20 +17,22 @@ import com.dunkware.trade.tick.model.provider.TickProviderSpec;
 import com.dunkware.trade.tick.model.provider.TickProviderState;
 import com.dunkware.trade.tick.model.provider.TickProviderStatsSpec;
 import com.dunkware.trade.tick.model.ticker.TradeTickerSpec;
+import com.dunkware.utils.core.concurrent.DunkExecutor;
+import com.dunkware.utils.core.helpers.DunkRandom;
 
 @ATickProvider(type="Mock")
 public class MockTickProvider implements TickProvider {
 	
 	private Map<String,TickFeedSubscription> subscriptions = new ConcurrentHashMap<String,TickFeedSubscription>();
 	private Map<String,Integer> seeds = new ConcurrentHashMap<String,Integer>();
-	private DExecutor executor; 
+	private DunkExecutor executor; 
 	private TickFeed feed; 
 	private TickProviderSpec spec;
 	private int interval;
 	private SnapshotUpdater updater;
 	
  	@Override
-	public void connect(TickProviderSpec providerSpec, TickFeed feed, DExecutor executor) throws TickProviderException {
+	public void connect(TickProviderSpec providerSpec, TickFeed feed, DunkExecutor executor) throws TickProviderException {
 		this.feed = feed;
 		this.spec =providerSpec;
 		this.executor = executor;
@@ -47,7 +47,7 @@ public class MockTickProvider implements TickProvider {
 		for (TradeTickerSpec tradeTickerSpec : tickers) {
 			if(subscriptions.containsKey(tradeTickerSpec.getSymbol()) == false) { 
 				// get a random seed between 1 and 200 
-				Integer seed = DRandom.getRandom(1, 10);
+				Integer seed = DunkRandom.getRandom(1, 10);
 				TickFeedSnapshot snap = new TickFeedSnapshot();
 				snap.setLast(seed);
 				snap.setVolume(seed);
@@ -56,7 +56,7 @@ public class MockTickProvider implements TickProvider {
 				snap.setBidSize(seed);
 				snap.setTradeCount(seed);
 				snap.setAskSize(seed);
-				snap.setTime(DDateTime.now());
+				snap.setTime(LocalDateTime.now());
 				snap.setSymbol(tradeTickerSpec.getSymbol());
 				seeds.put(tradeTickerSpec.getSymbol(), seed);
 				TickFeedSubscription sub = new TickFeedSubscription(snap, tradeTickerSpec);
@@ -164,7 +164,7 @@ public class MockTickProvider implements TickProvider {
 						snap.setBidSize(seed);
 						snap.setTradeCount(seed);
 						snap.setAskSize(seed);
-						snap.setTime(DDateTime.now());
+						snap.setTime(LocalDateTime.now());
 						
 						seeds.put(test, seed);
 						sub.setLastSnapshot(snap);

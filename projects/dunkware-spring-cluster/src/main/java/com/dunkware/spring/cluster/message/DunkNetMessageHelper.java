@@ -1,7 +1,7 @@
 package com.dunkware.spring.cluster.message;
 
-import com.dunkware.common.util.json.DJson;
 import com.dunkware.spring.cluster.DunkNetException;
+import com.dunkware.utils.core.json.DunkJson;
 
 public class DunkNetMessageHelper {
 
@@ -12,7 +12,7 @@ public class DunkNetMessageHelper {
 		if(message.getPayload() != null) { 
 			String payloadString = null; 
 			try {
-				payloadString = DJson.serialize(message.getPayload());
+				payloadString = DunkJson.serialize(message.getPayload());
 			} catch (Exception e) {
 				throw new DunkNetException("Exception serializing payload " + e.toString());
 			}

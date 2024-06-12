@@ -1,7 +1,6 @@
 package com.dunkware.trade.service.stream.server.web.bean;
 
-import com.dunkware.common.util.json.DJson;
-import com.dunkware.trade.service.stream.server.repository.StreamBlueprintSignalEntity;
+import com.dunkware.utils.core.json.DunkJson;
 
 public class SignalSearchRow {
 
@@ -16,7 +15,7 @@ public class SignalSearchRow {
 		row.setTimestamp("12:31:54 9:32:30");
 		resp.getResults().add(row);
 		try {
-			System.out.println(DJson.serializePretty(resp));
+			System.out.println(DunkJson.serializePretty(resp));
 			
 		} catch (Exception e) {
 			e.printStackTrace();

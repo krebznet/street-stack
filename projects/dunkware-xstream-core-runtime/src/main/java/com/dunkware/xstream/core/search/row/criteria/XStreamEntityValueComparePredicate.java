@@ -1,16 +1,13 @@
 package com.dunkware.xstream.core.search.row.criteria;
 
-import com.dunkware.common.util.calc.DCalc;
-import com.dunkware.xstream.api.XStreamQueryException;
-import com.dunkware.xstream.api.XStreamResolveException;
+import com.dunkware.utils.core.helpers.DunkMath;
 import com.dunkware.xstream.api.XStreamEntity;
 import com.dunkware.xstream.api.XStreamEntityQueryRun;
-import com.dunkware.xstream.core.search.XStreamSearchHelper;
+import com.dunkware.xstream.api.XStreamQueryException;
 import com.dunkware.xstream.core.search.row.XStreamEntityQueryRunImpl;
 import com.dunkware.xstream.core.search.row.value.XStreamEntityQueryValue;
 import com.dunkware.xstream.model.entity.query.type.XStreamCriteriaCompareFunc;
 import com.dunkware.xstream.model.entity.query.type.XStreamEntityCriteriaType;
-import com.dunkware.xstream.model.entity.query.type.XStreamEntityValueType;
 import com.dunkware.xstream.model.entity.query.type.XStreamOperator;
 
 public class XStreamEntityValueComparePredicate implements XStreamEntityPredicate  {
@@ -63,22 +60,7 @@ public class XStreamEntityValueComparePredicate implements XStreamEntityPredicat
 		queryRun = (XStreamEntityQueryRunImpl)run;
 	}
 
-	private Number doCompare(Number target, Number compare) throws XStreamQueryException {
-		
-		if(compareFunc == XStreamCriteriaCompareFunc.ROC) { 
-			return DCalc.getPercentageChange(target.doubleValue(), compare.doubleValue());
-		}
-		if(compareFunc == XStreamCriteriaCompareFunc.DIFFERENCE) { 
-			return target.doubleValue() - compare.doubleValue();
-		}
-		if(compareFunc == XStreamCriteriaCompareFunc.SUM) { 
-			return target.doubleValue() + compare.doubleValue();
-		}
-		
-		throw new XStreamQueryException("XStream Row Value Compare Function Not Handled " + compareFunc.name());
-		
-	}
-
+	
 	
 	
 }

@@ -4,7 +4,7 @@ import java.time.LocalTime;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
-import com.dunkware.common.util.helpers.DNumberHelper;
+import com.dunkware.utils.core.helpers.DunkNumber;
 
 /**
  * Wraps SnapshotTickMakerStats POJO for helper and utility methods.
@@ -64,7 +64,7 @@ public class SnapshotTickMakerStatsWrapper {
 				updatedVars.put(varId, values.get(varId));
 			} else { 
 				// check if current value is different than last updated var value 
-				if(DNumberHelper.compare(lastUpdate, values.get(varId)) != 0) { 
+				if(DunkNumber.compare(lastUpdate, values.get(varId)) != 0) { 
 					entityStats.getVarSnapshotsLastTime().put(varId, time);
 					entityStats.getVarSnapshotsLastValue().put(varId, values.get(varId));
 					entityStats.getVarSnapshotsCount().put(varId, entityStats.getVarSnapshotsCount().get(varId) + 1);

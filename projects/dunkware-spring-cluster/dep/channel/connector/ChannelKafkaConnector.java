@@ -7,27 +7,27 @@ import org.apache.kafka.clients.consumer.ConsumerRecord;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.dunkware.common.kafka.consumer.DKafkaByteConsumer2;
-import com.dunkware.common.kafka.consumer.DKafkaByteHandler2;
-import com.dunkware.common.kafka.producer.DKafkaByteProducer;
-import com.dunkware.common.spec.kafka.DKafkaByteConsumer2Spec;
-import com.dunkware.common.spec.kafka.DKafkaByteConsumer2Spec.ConsumerType;
-import com.dunkware.common.spec.kafka.DKafkaByteConsumer2Spec.OffsetType;
-import com.dunkware.common.spec.kafka.DKafkaByteConsumer2SpecBuilder;
-import com.dunkware.common.util.json.DJson;
-import com.dunkware.common.util.uuid.DUUID;
+import com.dunkware.common.kafka.consumer.KafkaByteConsumer;
+import com.dunkware.common.kafka.consumer.KafkaByteHandler;
+import com.dunkware.common.kafka.producer.KafkaByteProducer;
+import com.dunkware.common.spec.kafka.KafkaByteConsumerSpec;
+import com.dunkware.common.spec.kafka.KafkaByteConsumerSpec.ConsumerType;
+import com.dunkware.common.spec.kafka.KafkaByteConsumerSpec.OffsetType;
+import com.dunkware.common.spec.kafka.KafkaByteConsumerSpecBuilder;
+import com.dunkware.common.util.json.DunkJson;
+import com.dunkware.common.util.uuid.DunkUUID;
 import com.dunkware.spring.messaging.channel.ChannelConnector;
 import com.dunkware.spring.messaging.channel.ChannelException;
 import com.dunkware.spring.messaging.message.DunkMessageTransport;
 
-public class ChannelKafkaConnector implements ChannelConnector, DKafkaByteHandler2  {
+public class ChannelKafkaConnector implements ChannelConnector, KafkaByteHandler  {
 
 	private String brokers; 
 	private String consumer; 
 	private String producer; 
 	
-	private DKafkaByteConsumer2 kafkaConsumer; 
-	private DKafkaByteProducer kafkaProducer; 
+	private KafkaByteConsumer kafkaConsumer; 
+	private KafkaByteProducer kafkaProducer; 
 	
 	private Logger logger = LoggerFactory.getLogger(getClass());
 	
@@ -42,7 +42,7 @@ public class ChannelKafkaConnector implements ChannelConnector, DKafkaByteHandle
 	@Override
 	public void send(DunkMessageTransport transport) throws ChannelException {
 		try {
-			String serialized = DJson.serialize(transport);
+			String serialized = DunkJson.serialize(transport);
 			byte[] bytes = serialized.getBytes();
 			kafkaProducer.sendBytes(bytes);
 				
@@ -60,12 +60,12 @@ public class ChannelKafkaConnector implements ChannelConnector, DKafkaByteHandle
 	@Override
 	public void connect() throws ChannelException {
 		try {
-			DKafkaByteConsumer2Spec spec = DKafkaByteConsumer2SpecBuilder
+			KafkaByteConsumerSpec spec = KafkaByteConsumerSpecBuilder
 					.newBuilder(ConsumerType.Auto, OffsetType.Latest).addBroker(brokers).addTopic(consumer)
-					.setClientAndGroup("DataContainerCluster_" + DUUID.randomUUID(4),
-							"ChannelConsumer" + DUUID.randomUUID(4))
+					.setClientAndGroup("DataContainerCluster_" + DunkUUID.randomUUID(4),
+							"ChannelConsumer" + DunkUUID.randomUUID(4))
 					.build();
-			kafkaConsumer = DKafkaByteConsumer2.newInstance(spec);
+			kafkaConsumer = KafkaByteConsumer.newInstance(spec);
 			kafkaConsumer.start();
 			kafkaConsumer.addStreamHandler(this);
 		} catch (Exception e) {
@@ -74,7 +74,7 @@ public class ChannelKafkaConnector implements ChannelConnector, DKafkaByteHandle
 
 		// create producer
 		try {
-			kafkaProducer = DKafkaByteProducer.newInstance(brokers, producer, "Channel" + DUUID.randomUUID(5));
+			kafkaProducer = KafkaByteProducer.newInstance(brokers, producer, "Channel" + DunkUUID.randomUUID(5));
 		} catch (Exception e) {
 			kafkaConsumer.dispose();
 			throw new ChannelException("Exception Creating Channel Producer " + e.toString());
@@ -92,7 +92,7 @@ public class ChannelKafkaConnector implements ChannelConnector, DKafkaByteHandle
 	@Override
 	public void record(ConsumerRecord<String, byte[]> record) {
 		try {
-			DunkMessageTransport transport = DJson.getObjectMapper().readValue(record.value(), DunkMessageTransport.class);
+			DunkMessageTransport transport = DunkJson.getObjectMapper().readValue(record.value(), DunkMessageTransport.class);
 			messageQueue.add(transport);
 		} catch (Exception e) {
 			logger.error("Exception deserialziing message transport from kafka on channel connector "  + " "

@@ -2,15 +2,12 @@ package com.dunkware.trade.tick.provider.atick.impl;
 
 import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
+import java.time.LocalDateTime;
 import java.time.LocalTime;
-import java.util.ArrayList;
 import java.util.Iterator;
-import java.util.List;
 import java.util.Map;
 import java.util.Vector;
-import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.ConcurrentHashMap;
-import java.util.concurrent.LinkedBlockingQueue;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicInteger;
@@ -18,14 +15,12 @@ import java.util.concurrent.atomic.AtomicInteger;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.dunkware.common.util.dtime.DDateTime;
-import com.dunkware.common.util.dtime.DTimeZone;
-import com.dunkware.common.util.dtime.DZonedClock;
-import com.dunkware.common.util.dtime.DZonedClockListener;
-import com.dunkware.common.util.dtime.DZonedClockUpdater;
-import com.dunkware.common.util.dtime.DZonedDateTime;
 import com.dunkware.trade.tick.model.feed.TickFeedSnapshot;
 import com.dunkware.trade.tick.provider.atick.ActiveTickProvider;
+import com.dunkware.utils.core.time.DunkTimeZones;
+import com.dunkware.utils.core.time.clock.DZonedClock;
+import com.dunkware.utils.core.time.clock.DZonedClockListener;
+import com.dunkware.utils.core.time.clock.DZonedClockUpdater;
 
 import at.feedapi.Helpers;
 import at.shared.ATServerAPIDefines;
@@ -122,7 +117,7 @@ public class ATProviderRequestor extends at.feedapi.ActiveTickServerRequester {
 			int plainItemSymbolIndex = strItemSymbol.indexOf((byte) 0);
 			strItemSymbol = strItemSymbol.substring(0, plainItemSymbolIndex);
 			TickFeedSnapshot snapshot = new TickFeedSnapshot();
-			snapshot.setTime(DDateTime.now(DTimeZone.NewYork));
+			snapshot.setTime(LocalDateTime.now(DunkTimeZones.zoneNewYork()));
 			snapshot.setSymbol(strItemSymbol);
 			//TODO: item
 			//fields.add(Tick.TickField.newBuilder().setId(TradeTicks.FieldSymbolId).setType(TickFieldType.INT).setIntValue(this.provider.getSymbolService().getSymbolId(strItemSymbol)).build());
@@ -591,7 +586,7 @@ public class ATProviderRequestor extends at.feedapi.ActiveTickServerRequester {
 		
 		private DZonedClock clock;
 		private DZonedClockUpdater clockUpdater; 
-		private DZonedDateTime lastDateTime;
+		private LocalDateTime lastDateTime;
 		
 		private LocalTime marketOpen = LocalTime.of(9,30,0);
 		private LocalTime marketClose = LocalTime.of(16,0,0);
@@ -601,7 +596,7 @@ public class ATProviderRequestor extends at.feedapi.ActiveTickServerRequester {
 	
 		
 		public void run() { 
-			clockUpdater = DZonedClockUpdater.now(DTimeZone.NewYork, 1, TimeUnit.SECONDS);
+			clockUpdater = DZonedClockUpdater.now(DunkTimeZones.zoneNewYork(), 1, TimeUnit.SECONDS);
 			clock = clockUpdater.getClock();
 			lastDateTime = clockUpdater.getClock().getDateTime();
 			initialize();
@@ -614,12 +609,12 @@ public class ATProviderRequestor extends at.feedapi.ActiveTickServerRequester {
 		}
 		
 		private void initialize() { 
-			if(lastDateTime.toLocalTime().get().isBefore(marketClose) && lastDateTime.toLocalTime().get().isAfter(marketOpen)) { 
+			if(lastDateTime.toLocalTime().isBefore(marketClose) && lastDateTime.toLocalTime().isAfter(marketOpen)) { 
 				pendingClose = true;
 				logger.info("Starting Extended Hours To False, Market is Open");
 				return;
 			}
-			if(lastDateTime.toLocalTime().get().isAfter(marketClose)) { 
+			if(lastDateTime.toLocalTime().isAfter(marketClose)) { 
 				extendedHours.set(true);
 				logger.info("Starting Extended Hours to True, Market is Closed");
 				pendingOpen = true;
@@ -634,7 +629,7 @@ public class ATProviderRequestor extends at.feedapi.ActiveTickServerRequester {
 			if(pendingOpen) {
 				// if we are after market open time then lets set
 				// extended hours to false 
-				if(lastDateTime.toLocalTime().get().isAfter(marketClose) == false && lastDateTime.toLocalTime().get().isAfter(marketOpen)) { 
+				if(lastDateTime.toLocalTime().isAfter(marketClose) == false && lastDateTime.toLocalTime().isAfter(marketOpen)) { 
 					logger.info("Setting Extended Hours To False, Market Has Openeed");
 					extendedHours.set(false);
 					pendingClose = true;
@@ -643,7 +638,7 @@ public class ATProviderRequestor extends at.feedapi.ActiveTickServerRequester {
 				return;
 			}
 			if(pendingClose) { 
-				if(lastDateTime.toLocalTime().get().isAfter(marketClose)) { 
+				if(lastDateTime.toLocalTime().isAfter(marketClose)) { 
 					extendedHours.set(true);
 					logger.info("Setting Extended Hours to True, Market Has Closed");
 					pendingClose = false;

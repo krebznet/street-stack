@@ -3,6 +3,8 @@ package com.dunkware.trade.service.stream.server.controller;
 import java.time.DayOfWeek;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
+import java.time.ZoneId;
+import java.time.ZonedDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
@@ -16,25 +18,11 @@ import org.slf4j.MarkerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 
-import com.dunkware.common.spec.locale.DCountry;
-import com.dunkware.common.util.concurrency.ReusableCountDownLatch;
-import com.dunkware.common.util.dtime.DTime;
-import com.dunkware.common.util.dtime.DTimeZone;
-import com.dunkware.common.util.dtime.DZonedClock;
-import com.dunkware.common.util.dtime.DZonedClockListener;
-import com.dunkware.common.util.dtime.DZonedClockUpdater;
-import com.dunkware.common.util.dtime.DZonedDateTime;
-import com.dunkware.common.util.events.DEventNode;
-import com.dunkware.common.util.events.anot.ADEventMethod;
-import com.dunkware.common.util.helpers.DAnotHelper;
-import com.dunkware.common.util.json.DJson;
-import com.dunkware.common.util.observable.ObservableBeanListConnector;
-import com.dunkware.common.util.time.DunkTime;
+import com.dunkware.java.utils.glazed.grid.GlazedDataGridConnector;
 import com.dunkware.spring.cluster.DunkNet;
 import com.dunkware.spring.cluster.DunkNetNode;
 import com.dunkware.spring.runtime.services.EventService;
 import com.dunkware.spring.runtime.services.ExecutorService;
-import com.dunkware.trade.service.stream.descriptor.StreamDescriptor;
 import com.dunkware.trade.service.stream.json.controller.session.StreamSessionNodeBean;
 import com.dunkware.trade.service.stream.json.controller.spec.StreamControllerSpec;
 import com.dunkware.trade.service.stream.json.controller.spec.StreamControllerStats;
@@ -59,6 +47,16 @@ import com.dunkware.trade.service.stream.server.tick.StreamTickService;
 import com.dunkware.trade.tick.model.ticker.TradeTickerSpec;
 import com.dunkware.trade.tick.model.ticker.TradeTickerType;
 import com.dunkware.trade.tick.service.protocol.ticker.spec.TradeTickerListSpec;
+import com.dunkware.utils.core.concurrent.DunkExecutorCountLatch;
+import com.dunkware.utils.core.events.DunkEventNode;
+import com.dunkware.utils.core.events.anot.ADunkEventHandler;
+import com.dunkware.utils.core.helpers.DunkAnot;
+import com.dunkware.utils.core.json.DunkJson;
+import com.dunkware.utils.core.time.DunkTime;
+import com.dunkware.utils.core.time.DunkTimeZones;
+import com.dunkware.utils.core.time.clock.DZonedClock;
+import com.dunkware.utils.core.time.clock.DZonedClockListener;
+import com.dunkware.utils.core.time.clock.DZonedClockUpdater;
 import com.dunkware.xstream.model.signal.StreamEntitySignalListener;
 import com.dunkware.xstream.model.signal.type.XStreamSignalType;
 import com.dunkware.xstream.xproject.XScriptProject;
@@ -69,7 +67,7 @@ import ca.odell.glazedlists.BasicEventList;
 import ca.odell.glazedlists.GlazedLists;
 import ca.odell.glazedlists.ObservableElementList;
 
-public class StreamController implements CloudExchange  {
+public class StreamController implements StreetExchange  {
 
 	private Logger logger = org.slf4j.LoggerFactory.getLogger(getClass());
 	private Marker marker = MarkerFactory.getMarker("StreamController");
@@ -92,7 +90,7 @@ public class StreamController implements CloudExchange  {
 	@Autowired
 	private StreamControllerService service;
 
-	private DEventNode eventNode;
+	private DunkEventNode eventNode;
 
 	@Autowired
 	private ExecutorService executorService;
@@ -137,8 +135,11 @@ public class StreamController implements CloudExchange  {
 
 	private StreamSchedule schedule;
 	
+	private ZoneId zoneId;
+	
 	private ObservableElementList<StreamSessionNodeBean> sessionNodeBeans = null;
 
+	
 	private List<StreamControllerExt> extensions = new ArrayList<StreamControllerExt>();
 	
 	
@@ -152,7 +153,7 @@ public class StreamController implements CloudExchange  {
 
 	
 	public LocalDateTime getDateTime() { 
-		return LocalDateTime.now(DTimeZone.toZoneId(getTimeZone()));
+		return LocalDateTime.now(zoneId);
 	}
 	
 	public ObservableElementList<StreamSessionNodeBean> getSessionNodeBeans() { 
@@ -161,13 +162,14 @@ public class StreamController implements CloudExchange  {
 	
 	public void start(StreamEntity ent) throws Exception {
 		
+		
 		sessionNodeBeans = new ObservableElementList<StreamSessionNodeBean>(
 				GlazedLists.threadSafeList(new BasicEventList<StreamSessionNodeBean>()),
-				new ObservableBeanListConnector<StreamSessionNodeBean>());
+				new GlazedDataGridConnector<StreamSessionNodeBean>());
 		
 		logger.info(marker, "Starting Stream " + ent.getName());
 		eventNode = eventService.getEventRoot().createChild(this);
-		eventNode.addEventHandler(this);
+		eventNode.adDunkEventHandler(this);
 		try {
 			//this.blueprint = blueprintService.getBlueprint(ent.getName());
 		} catch (Exception e) {
@@ -177,13 +179,14 @@ public class StreamController implements CloudExchange  {
 		}
 
 		this.ent = ent;
+		
 		stats = new StreamControllerStats();
 		stats.setName(ent.getName());
 		stats.setState(StreamState.Stopped);
 		streamVersion = getCurrentVersion();
 
-		spec = DJson.getObjectMapper().readValue(ent.getSpec(), StreamControllerSpec.class);
-
+		spec = DunkJson.getObjectMapper().readValue(ent.getSpec(), StreamControllerSpec.class);
+		
 		try {
 			TradeTickerListSpec spec = tickerList = tickService.getClient().getTickerList(getEntity().getTickerLists());
 			tickers = spec.getTickers();
@@ -196,7 +199,7 @@ public class StreamController implements CloudExchange  {
 
 		try {
 
-			scriptBundle = DJson.getObjectMapper().readValue(streamVersion.getBundle(), XScriptBundle.class);
+			scriptBundle = DunkJson.getObjectMapper().readValue(streamVersion.getBundle(), XScriptBundle.class);
 			scriptProject = XscriptBundleHelper.loadProject(scriptBundle);
 
 		} catch (Exception e) {
@@ -206,7 +209,7 @@ public class StreamController implements CloudExchange  {
 		}
 		
 		// create extensions 
-		Set<Class<?>> extClasses = DAnotHelper.getClassesAnnotedWith(AStreamControllerExt.class); 
+		Set<Class<?>> extClasses = DunkAnot.getClassesAnnotedWith(AStreamControllerExt.class); 
 		for (Class<?> class1 : extClasses) {
 			try {
 				StreamControllerExt ext = (StreamControllerExt)class1.newInstance();
@@ -256,6 +259,12 @@ public class StreamController implements CloudExchange  {
 	}
 	
 	
+
+	@Override
+	public ZoneId getTimeZone() {
+		return zoneId;
+	}
+
 	public List<TickerRef> getExchangeTickers() { 
 		List<TickerRef> tickers = new ArrayList<TickerRef>();
 		for (TradeTickerSpec spec : tickerList.getTickers()) {
@@ -310,18 +319,12 @@ public class StreamController implements CloudExchange  {
 		return scriptBundle;
 	}
 
-	public DTimeZone getTimeZone() {
-		return spec.getTimeZone();
-	}
 
 	public StreamVersionEntity getStreamVersion() {
 		return streamVersion;
 	}
 
-	public DCountry getCountry() {
-		return this.ent.getCountry();
-	}
-
+	
 	public StreamControllerSpec getSpec() {
 		return spec;
 	}
@@ -343,9 +346,6 @@ public class StreamController implements CloudExchange  {
 		throw new Exception("Trade ticker ident " + ident + " not found on stream controller");
 	}
 	
-	public StreamDescriptor getDescriptor() { 
-		return buildDescriptor();
-	}
 
 	public String getName() {
 		return ent.getName();
@@ -457,7 +457,7 @@ public class StreamController implements CloudExchange  {
 			
 			
 			session.startSession(input);
-			session.getEventNode().addEventHandler(this);
+			session.getEventNode().adDunkEventHandler(this);
 		} catch (StreamSessionException e) {
 			stats.setState(session.getState());
 			stats.setStartException("Exception starting Stram " + getName() + " session " + e.toString());
@@ -470,7 +470,7 @@ public class StreamController implements CloudExchange  {
 		return session;
 	}
 
-	public DEventNode getEventNode() {
+	public DunkEventNode getEventNode() {
 		return eventNode;
 	}
 
@@ -502,25 +502,6 @@ public class StreamController implements CloudExchange  {
 	}
 
 	
-	private StreamDescriptor buildDescriptor() { 
-		StreamDescriptor descriptor = new StreamDescriptor();
-		descriptor.setId(ent.getId());
-		descriptor.setCoreDatabase(config.getCoreDatabase());
-		descriptor.setCoreDatabaseURL(config.getCoreDatabaseURL());
-		descriptor.setWarehouseDatabase(config.getWarehouseDatabase());
-		descriptor.setWarehouseURL(config.getWarehouseURL());
-		descriptor.setIdentifier(getName());
-		descriptor.setKafkaBrokers(config.getKafkaBrokers());
-		descriptor.setTimeZone(getTimeZone());
-		descriptor.setStatDbHost(exception);
-		descriptor.setStatDbHost(config.getStatsDbHost());
-		descriptor.setStatDbName(config.getStatsDbName());
-		descriptor.setStatDbUser(config.getStatsDbUser());
-		descriptor.setStatDbPass(config.getStatsDbPass());
-		descriptor.setStatDbPort(config.getStatsDbPort());
-		descriptor.setStatDbPoolSize(config.getStatsDbPoolSize());;
-		return descriptor;
-	}
 	
 	
 	/**
@@ -528,7 +509,7 @@ public class StreamController implements CloudExchange  {
 	 * 
 	 * @param sessionStopped
 	 */
-	@ADEventMethod()
+	@ADunkEventHandler()
 	public void sessionStopped(EStreamSessionStopped sessionStopped) {
 		if (logger.isDebugEnabled()) {
 			logger.debug("Recieved Session Stopped Event, Status Update Stopped");
@@ -543,17 +524,17 @@ public class StreamController implements CloudExchange  {
 
 	}
 	
-	@ADEventMethod()
+	@ADunkEventHandler()
 	public void sessionStartException(EStreamSessionStartException exp) {
 		this.stats.getErrors().add(exp.getError());
 	}
 
-	@ADEventMethod()
+	@ADunkEventHandler()
 	public void sessionEvent(EStreamSessionEvent event) {
 		setState(event.getSession().getState());
 	}
 	
-	@ADEventMethod
+	@ADunkEventHandler
 	public void sessionStarted(EStreamSessionStarted started) { 
 		for (StreamSessionNode streamSessionNodeBean : session.getNodes()) {
 			try {
@@ -587,17 +568,17 @@ public class StreamController implements CloudExchange  {
 	private class StreamSchedule extends Thread implements DZonedClockListener {
 
 		private List<DayOfWeek> days = new ArrayList<DayOfWeek>();
-		private DZonedDateTime lastDateTime;
+		private ZonedDateTime lastDateTime;
 		private volatile boolean inSession = false;
 		private volatile boolean isSessionDay = false;
 
-		private DTime stopTime;
-		private DTime startTime;
+		private LocalTime stopTime;
+		private LocalTime startTime;
 		// come on dude! last fuckin piece
 		
 		private Marker marker = MarkerFactory.getMarker("stream.controller.schedule");
 
-		private ReusableCountDownLatch latch = new ReusableCountDownLatch();
+		private DunkExecutorCountLatch latch = new DunkExecutorCountLatch();
 
 		private DZonedClockUpdater clockUpdater;
 		private DZonedClock clock;
@@ -645,7 +626,7 @@ public class StreamController implements CloudExchange  {
 		}
 
 		public void run() {
-			clockUpdater = DZonedClockUpdater.now(spec.getTimeZone(), 1, TimeUnit.SECONDS);
+			clockUpdater = DZonedClockUpdater.now(zoneId, 1, TimeUnit.SECONDS);
 			clock = clockUpdater.getClock();
 			lastDateTime = clockUpdater.getClock().getDateTime();
 			newDay();
@@ -654,7 +635,7 @@ public class StreamController implements CloudExchange  {
 				if (clock.isAfterLocalTime(startTime) && clock.isBeforeLocalTime(stopTime)) {
 					try {
 						if (logger.isInfoEnabled()) {
-							logger.info(scheduleMarker,"Starting Stream after start time of {} current time is {} stream is {}",startTime.toHHmmSS(),DunkTime.format(lastDateTime.dateTime().toLocalDateTime(), DunkTime.YYMMDDHHMMSS), ent.getName());
+							logger.info(scheduleMarker,"Starting Stream after start time of {} current time is {} stream is {}",startTime.toString(),DunkTime.format(lastDateTime.toLocalDateTime(), DunkTime.YYMMDDHHMMSS), ent.getName());
 						}
 						startSession();
 						inSession = true;
@@ -708,7 +689,7 @@ public class StreamController implements CloudExchange  {
 				newDay();
 			}
 			if (inSession) {
-				if (clock.getDateTime().toLocalTime().get().isAfter(stopTime.get())) {
+				if (clock.getDateTime().toLocalTime().isAfter(stopTime)) {
 					// STOP SESSIOn:
 					try {
 						

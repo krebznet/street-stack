@@ -5,11 +5,11 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
-import com.dunkware.common.util.json.DJson;
-import com.dunkware.common.util.uuid.DUUID;
 import com.dunkware.spring.cluster.DunkNetException;
 import com.dunkware.spring.cluster.core.DunkNetChannelPing;
 import com.dunkware.spring.cluster.protocol.descriptors.DunkNetDescriptors;
+import com.dunkware.utils.core.helpers.DunkUUID;
+import com.dunkware.utils.core.json.DunkJson;
 
 public class DunkNetMessage {
 
@@ -228,7 +228,7 @@ public class DunkNetMessage {
 		Object payload = null;
 		if (transport.getPayload() != null) {
 			try {
-				payload = DJson.getObjectMapper().readValue(transport.getPayload(),
+				payload = DunkJson.getObjectMapper().readValue(transport.getPayload(),
 						Class.forName(transport.getPayloadClass()));
 			} catch (Exception e) {
 				throw new DunkNetException(
@@ -279,7 +279,7 @@ public class DunkNetMessage {
 	private Map<String, Object> headers = new ConcurrentHashMap<String, Object>();
 	private int type;
 	private String channel = null;
-	private String messageId = DUUID.randomUUID(5);
+	private String messageId = DunkUUID.randomUUID(5);
 	private String senderId; 
 	private String parentChannel = null;
 

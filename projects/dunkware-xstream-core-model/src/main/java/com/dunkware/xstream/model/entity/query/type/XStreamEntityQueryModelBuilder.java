@@ -1,6 +1,6 @@
 package com.dunkware.xstream.model.entity.query.type;
 
-import com.dunkware.common.util.json.DJson;
+import com.dunkware.utils.core.json.DunkJson;
 
 public class XStreamEntityQueryModelBuilder {
 
@@ -8,7 +8,7 @@ public class XStreamEntityQueryModelBuilder {
 		XStreamEntityQueryType model = XStreamEntityQueryModelBuilder.query(XStreamEntityQueryModelBuilder
 				.valueCritiera(XStreamOperator.GreaterThan, 2, XStreamEntityQueryModelBuilder.currentVarValue("Last")));
 		try {
-			System.out.println(DJson.serializePretty(model));
+			System.out.println(DunkJson.serializePretty(model));
 		} catch (Exception e) {
 			e.printStackTrace();
 			// TODO: handle exception

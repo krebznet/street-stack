@@ -1,15 +1,15 @@
 package com.dunkware.trade.service.tick.client.impl;
 
-import com.dunkware.common.tick.TickHandler;
-import com.dunkware.common.tick.TickHelper;
-import com.dunkware.common.tick.proto.TickProto.Tick;
-import com.dunkware.common.util.uuid.DUUID;
 import com.dunkware.trade.service.tick.client.TickServiceClient;
 import com.dunkware.trade.service.tick.client.TickServiceClientFactory;
 import com.dunkware.trade.service.tick.client.TickServiceClientFeed;
 import com.dunkware.trade.tick.model.TradeTicks;
 import com.dunkware.trade.tick.model.consumer.TickConsumerSpec;
 import com.dunkware.trade.tick.model.consumer.TickConsumerSpecBuilder;
+import com.dunkware.utils.core.helpers.DunkUUID;
+import com.dunkware.utils.tick.TickHandler;
+import com.dunkware.utils.tick.TickHelper;
+import com.dunkware.utils.tick.proto.TickProto.Tick;
 
 public class TickServiceClientTest implements TickHandler {
 
@@ -25,7 +25,7 @@ public class TickServiceClientTest implements TickHandler {
 			TickServiceClient client = TickServiceClientFactory.connect("http://localhost:8987");
 
 			System.out.println("success");
-			TickConsumerSpec spec = TickConsumerSpecBuilder.newInstance("Test" + DUUID.randomUUID(5)).addEquity("GRUB")
+			TickConsumerSpec spec = TickConsumerSpecBuilder.newInstance("Test" + DunkUUID.randomUUID(5)).addEquity("GRUB")
 					.addEquity("GOOG").addEquity("JPM").addTickType(TradeTicks.TickSnapshot).build();
 			TickServiceClientFeed feed = client.createFeed(spec);
 			feed.getTickStream().addTickHandler(this);

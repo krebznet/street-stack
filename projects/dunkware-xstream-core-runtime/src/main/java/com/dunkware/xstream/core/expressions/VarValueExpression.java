@@ -2,11 +2,11 @@ package com.dunkware.xstream.core.expressions;
 
 import java.util.List;
 
-import com.dunkware.common.util.helpers.DConverter;
-import com.dunkware.xstream.api.XStreamExpression;
+import com.dunkware.utils.core.helpers.DunkNumber;
 import com.dunkware.xstream.api.XStreamEntity;
-import com.dunkware.xstream.api.XStreamRuntimeException;
 import com.dunkware.xstream.api.XStreamEntityVar;
+import com.dunkware.xstream.api.XStreamExpression;
+import com.dunkware.xstream.api.XStreamRuntimeException;
 import com.dunkware.xstream.core.XStreamExpressionImpl;
 import com.dunkware.xstream.core.annotations.AXStreamExpression;
 import com.dunkware.xstream.xScript.ExpressionType;
@@ -75,7 +75,7 @@ public class VarValueExpression extends XStreamExpressionImpl {
 			}
 			indexExpression.execute();
 			Object objValue = indexExpression.getValue();
-			Integer index = DConverter.toInteger(objValue); 
+			Integer index = DunkNumber.toInteger(objValue); 
 			if(valueVar.getSize() + 1 < index) { 
 				valueVar.setMaxSize(index + 1);
 				return false;
@@ -114,7 +114,7 @@ public class VarValueExpression extends XStreamExpressionImpl {
 				return false;
 			}
 			// DConvertHelper.
-			indexValue = DConverter.toInteger(value);
+			indexValue = DunkNumber.toInteger(value);
 			// set the max size on variable value
 			valueVar.setMaxSize(indexValue + 1);
 			if(histSize + 1 < indexValue) { 

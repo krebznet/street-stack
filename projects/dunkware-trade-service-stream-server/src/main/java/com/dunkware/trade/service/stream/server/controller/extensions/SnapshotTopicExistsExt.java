@@ -4,14 +4,14 @@ import java.util.concurrent.TimeUnit;
 
 import org.springframework.beans.factory.annotation.Autowired;
 
-import com.dunkware.common.kafka.admin.DKafkaAdminClient;
-import com.dunkware.common.kafka.admin.model.DKafkaNewTopic;
-import com.dunkware.common.kafka.admin.model.DKafkaNewTopicResult;
 import com.dunkware.spring.cluster.DunkNet;
 import com.dunkware.trade.service.stream.server.controller.StreamController;
 import com.dunkware.trade.service.stream.server.controller.StreamControllerExt;
 import com.dunkware.trade.service.stream.server.controller.anot.AStreamControllerExt;
 import com.dunkware.trade.service.stream.server.controller.session.StreamSession;
+import com.dunkware.utils.kafka.admin.DunkKafkaAdmin;
+import com.dunkware.utils.kafka.admin.model.KafkaNewTopic;
+import com.dunkware.utils.kafka.admin.model.KafkaNewTopicResult;
 import com.dunkware.xstream.model.snapshot.SnapshotHelper;
 
 @AStreamControllerExt
@@ -25,9 +25,9 @@ public class SnapshotTopicExistsExt implements StreamControllerExt  {
 		
 		String topicName = SnapshotHelper.kafkaSnapshotTopic(controller.getName());
 		
-		DKafkaAdminClient client = dunkNet.createAdminClient();
+		DunkKafkaAdmin client = dunkNet.createAdminClient();
 		if(!client.topicExists(topicName)) { 
-			DKafkaNewTopicResult result = client.createTopic(DKafkaNewTopic.builder().paritions(6).name(topicName).retentionTime(5, TimeUnit.DAYS).replicas((short)1).build());
+			KafkaNewTopicResult result = client.createTopic(KafkaNewTopic.builder().paritions(6).name(topicName).retentionTime(5, TimeUnit.DAYS).replicas((short)1).build());
 			if(result.isException()) { 
 				throw new Exception("Exception creating Snapshot topic " + controller.getName() + " " + result.getCause());
 			}

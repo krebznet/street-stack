@@ -11,9 +11,8 @@ import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.xtext.resource.XtextResource;
 import org.eclipse.xtext.resource.XtextResourceSet;
 
-import com.dunkware.common.util.helpers.DRandom;
+import com.dunkware.utils.core.helpers.DunkRandom;
 import com.dunkware.xstream.XScriptStandaloneSetup;
-import com.dunkware.xstream.XScriptStandaloneSetupGenerated;
 import com.dunkware.xstream.xScript.SignalType;
 import com.dunkware.xstream.xScript.VarType;
 import com.dunkware.xstream.xScript.XClassType;
@@ -47,7 +46,7 @@ public class XScriptProject {
 		for (XScriptFile res : bundle.getFiles()) {
 			try {
 				count++;
-				Resource resource = resourceSet.createResource(URI.createURI("test " + DRandom.getRandom(3, 100) + count + ".xs"));
+				Resource resource = resourceSet.createResource(URI.createURI("test " + DunkRandom.getRandom(3, 100) + count + ".xs"));
 				resourceSet.addLoadOption(XtextResource.OPTION_RESOLVE_ALL,
 						Boolean.TRUE);
 				InputStream in = new ByteArrayInputStream(res.getContent().getBytes());

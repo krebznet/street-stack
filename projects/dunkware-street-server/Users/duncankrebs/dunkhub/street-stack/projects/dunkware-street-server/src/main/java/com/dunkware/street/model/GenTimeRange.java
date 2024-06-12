@@ -31,7 +31,7 @@ public class GenTimeRange {
   private Date startDate;
 
   @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME)
-  private Date endDate;
+  private Date enLocalDate;
 
   private Integer relativeValue;
 
@@ -90,23 +90,23 @@ public class GenTimeRange {
     this.startDate = startDate;
   }
 
-  public GenTimeRange endDate(Date endDate) {
-    this.endDate = endDate;
+  public GenTimeRange enLocalDate(Date enLocalDate) {
+    this.enLocalDate = enLocalDate;
     return this;
   }
 
   /**
    * End date and time of the range.
-   * @return endDate
+   * @return enLocalDate
   */
   @Valid 
-  @JsonProperty("endDate")
-  public Date getEndDate() {
-    return endDate;
+  @JsonProperty("enLocalDate")
+  public Date getEnLocalDate() {
+    return enLocalDate;
   }
 
-  public void setEndDate(Date endDate) {
-    this.endDate = endDate;
+  public void setEnLocalDate(Date enLocalDate) {
+    this.enLocalDate = enLocalDate;
   }
 
   public GenTimeRange relativeValue(Integer relativeValue) {
@@ -196,7 +196,7 @@ public class GenTimeRange {
     GenTimeRange genTimeRange = (GenTimeRange) o;
     return Objects.equals(this.type, genTimeRange.type) &&
         Objects.equals(this.startDate, genTimeRange.startDate) &&
-        Objects.equals(this.endDate, genTimeRange.endDate) &&
+        Objects.equals(this.enLocalDate, genTimeRange.enLocalDate) &&
         Objects.equals(this.relativeValue, genTimeRange.relativeValue) &&
         Objects.equals(this.relativeTimeUnit, genTimeRange.relativeTimeUnit) &&
         Objects.equals(this.hasTimeWindow, genTimeRange.hasTimeWindow) &&
@@ -205,7 +205,7 @@ public class GenTimeRange {
 
   @Override
   public int hashCode() {
-    return Objects.hash(type, startDate, endDate, relativeValue, relativeTimeUnit, hasTimeWindow, timeWindow);
+    return Objects.hash(type, startDate, enLocalDate, relativeValue, relativeTimeUnit, hasTimeWindow, timeWindow);
   }
 
   @Override
@@ -214,7 +214,7 @@ public class GenTimeRange {
     sb.append("class GenTimeRange {\n");
     sb.append("    type: ").append(toIndentedString(type)).append("\n");
     sb.append("    startDate: ").append(toIndentedString(startDate)).append("\n");
-    sb.append("    endDate: ").append(toIndentedString(endDate)).append("\n");
+    sb.append("    enLocalDate: ").append(toIndentedString(enLocalDate)).append("\n");
     sb.append("    relativeValue: ").append(toIndentedString(relativeValue)).append("\n");
     sb.append("    relativeTimeUnit: ").append(toIndentedString(relativeTimeUnit)).append("\n");
     sb.append("    hasTimeWindow: ").append(toIndentedString(hasTimeWindow)).append("\n");

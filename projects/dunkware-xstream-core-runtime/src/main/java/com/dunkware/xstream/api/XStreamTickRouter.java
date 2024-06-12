@@ -1,7 +1,8 @@
 package com.dunkware.xstream.api;
 
-import com.dunkware.common.tick.stream.TickStream;
-import com.dunkware.common.util.dtime.DTime;
+import java.time.LocalDateTime;
+
+import com.dunkware.utils.tick.stream.TickStream;
 
 public interface XStreamTickRouter extends TickStream {
 
@@ -11,7 +12,7 @@ public interface XStreamTickRouter extends TickStream {
 	
 	public long getDataTickCount();
 	
-	public DTime getLastDataTickTime();
+	public LocalDateTime getLastDataTickTime();
 	
 	public long lastTickDelay();
 	

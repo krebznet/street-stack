@@ -1,10 +1,8 @@
 package com.dunkware.trade.service.stream.json.controller.model;
 
+import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
-
-import com.dunkware.common.util.dtime.DTime;
-import com.dunkware.common.util.dtime.DTimeZone;
 
 public class StreamSpec {
 	
@@ -14,9 +12,9 @@ public class StreamSpec {
 	private String streamIdentifier; 
 	//private StreamScript script; 
 	private String days; 
-	private DTimeZone timeZone; 
-	private DTime startTime; 
-	private DTime stopTime; 
+	private String timeZone; 
+	private LocalTime startTime; 
+	private LocalTime stopTime; 
 	private double version; 
 	private List<StreamEntitySpec> entities = new ArrayList<StreamEntitySpec>();
 	public String getStreamIdentifier() {
@@ -33,22 +31,22 @@ public class StreamSpec {
 	public void setDays(String days) {
 		this.days = days;
 	}
-	public DTimeZone getTimeZone() {
+	public String getTimeZone() {
 		return timeZone;
 	}
-	public void setTimeZone(DTimeZone timeZone) {
+	public void setTimeZone(String timeZone) {
 		this.timeZone = timeZone;
 	}
-	public DTime getStartTime() {
+	public LocalTime getStartTime() {
 		return startTime;
 	}
-	public void setStartTime(DTime startTime) {
+	public void setStartTime(LocalTime startTime) {
 		this.startTime = startTime;
 	}
-	public DTime getStopTime() {
+	public LocalTime getStopTime() {
 		return stopTime;
 	}
-	public void setStopTime(DTime stopTime) {
+	public void setStopTime(LocalTime stopTime) {
 		this.stopTime = stopTime;
 	}
 	public double getVersion() {

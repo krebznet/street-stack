@@ -1,16 +1,15 @@
 package com.dunkware.trade.service.stream.json.worker.stream;
 
+import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
-
-import com.dunkware.common.util.dtime.DTime;
 
 public class StreamSessionWorkerStopResp {
 
 	private String code; 
 	private String error; 
-	private DTime stoppingTime; 
-	private DTime stopTime;
+	private LocalTime stoppingTime; 
+	private LocalTime stopTime;
 	private List<String> stopProblems = new ArrayList<String>();
 	
 	public StreamSessionWorkerStopResp() { 
@@ -29,16 +28,16 @@ public class StreamSessionWorkerStopResp {
 	public void setError(String error) {
 		this.error = error;
 	}
-	public DTime getStoppingTime() {
+	public LocalTime getStoppingTime() {
 		return stoppingTime;
 	}
-	public void setStoppingTime(DTime stoppingTime) {
+	public void setStoppingTime(LocalTime stoppingTime) {
 		this.stoppingTime = stoppingTime;
 	}
-	public DTime getStopTime() {
+	public LocalTime getStopTime() {
 		return stopTime;
 	}
-	public void setStopTime(DTime stopTime) {
+	public void setStopTime(LocalTime stopTime) {
 		this.stopTime = stopTime;
 	}
 

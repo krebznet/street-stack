@@ -3,18 +3,17 @@ package com.dunkware.trade.tick.api.provider;
 import java.util.Collection;
 import java.util.List;
 
-import com.dunkware.common.tick.reactor.TickReactorException;
-import com.dunkware.common.util.executor.DExecutor;
 import com.dunkware.trade.tick.api.feed.TickFeed;
 import com.dunkware.trade.tick.api.feed.TickFeedSubscription;
 import com.dunkware.trade.tick.model.provider.TickProviderSpec;
 import com.dunkware.trade.tick.model.provider.TickProviderState;
 import com.dunkware.trade.tick.model.provider.TickProviderStatsSpec;
 import com.dunkware.trade.tick.model.ticker.TradeTickerSpec;
+import com.dunkware.utils.core.concurrent.DunkExecutor;
 
 public interface TickProvider  {
 
-	public void connect(TickProviderSpec providerSpec, TickFeed feed, DExecutor executor) throws TickProviderException;
+	public void connect(TickProviderSpec providerSpec, TickFeed feed, DunkExecutor executor) throws TickProviderException;
 	
 	
 	public void subscribeTickers(Collection<TradeTickerSpec> tickers) throws Exception;

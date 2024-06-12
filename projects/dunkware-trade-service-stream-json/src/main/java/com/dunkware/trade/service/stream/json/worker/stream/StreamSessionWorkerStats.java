@@ -1,6 +1,7 @@
 package com.dunkware.trade.service.stream.json.worker.stream;
 
-import com.dunkware.common.util.dtime.DTime;
+import java.time.LocalTime;
+
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonInclude.Include;
 
@@ -14,9 +15,9 @@ public class StreamSessionWorkerStats {
 	private long timeoutTaskCount; 
 	private int signalCount; 
 	@JsonInclude(Include.NON_NULL)
-	private DTime streamTime; 
+	private LocalTime streamTime; 
 	@JsonInclude(Include.NON_NULL)
-	private DTime systemTime; 
+	private LocalTime systemTime; 
 	private int rowCount; 
 	private long tickCount; 
 	private String workerId; 
@@ -29,7 +30,7 @@ public class StreamSessionWorkerStats {
 	@JsonInclude(Include.NON_NULL)
 	private String requestError;
 	
-	private DTime lastDataTickTime;
+	private LocalTime lastDataTickTime;
 	
 	
 	public StreamSessionWorkerStats() { 
@@ -77,22 +78,22 @@ public class StreamSessionWorkerStats {
 	}
 
 
-	public DTime getStreamTime() {
+	public LocalTime getStreamTime() {
 		return streamTime;
 	}
 
 
-	public void setStreamTime(DTime streamTime) {
+	public void setStreamTime(LocalTime streamTime) {
 		this.streamTime = streamTime;
 	}
 
 
-	public DTime getSystemTime() {
+	public LocalTime getSystemTime() {
 		return systemTime;
 	}
 
 
-	public void setSystemTime(DTime systemTime) {
+	public void setSystemTime(LocalTime systemTime) {
 		this.systemTime = systemTime;
 	}
 
@@ -137,12 +138,12 @@ public class StreamSessionWorkerStats {
 	}
 
 
-	public DTime getLastDataTickTime() {
+	public LocalTime getLastDataTickTime() {
 		return lastDataTickTime;
 	}
 
 
-	public void setLastDataTickTime(DTime lastDataTickTime) {
+	public void setLastDataTickTime(LocalTime lastDataTickTime) {
 		this.lastDataTickTime = lastDataTickTime;
 	}
 

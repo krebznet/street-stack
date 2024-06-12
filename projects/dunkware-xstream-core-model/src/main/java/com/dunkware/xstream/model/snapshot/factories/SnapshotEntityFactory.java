@@ -4,7 +4,7 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.dunkware.common.util.time.DunkTime;
+import com.dunkware.utils.core.time.DunkTime;
 import com.dunkware.xstream.model.snapshot.SnapshotEntity;
 
 public class SnapshotEntityFactory {

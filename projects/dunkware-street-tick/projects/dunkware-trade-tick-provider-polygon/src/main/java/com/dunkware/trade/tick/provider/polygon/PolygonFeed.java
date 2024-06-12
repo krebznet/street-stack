@@ -13,8 +13,8 @@ import java.util.function.Function;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.dunkware.common.util.executor.DExecutor;
-import com.dunkware.common.util.json.DJson;
+import com.dunkware.common.util.executor.DunkExecutor;
+import com.dunkware.common.util.json.DunkJson;
 import com.dunkware.trade.tick.provider.polygon.core.PolygonIO;
 import com.dunkware.trade.tick.provider.polygon.core.event.PolygonAggEvent;
 import com.dunkware.trade.tick.provider.polygon.core.event.PolygonQuote;
@@ -37,7 +37,7 @@ public class PolygonFeed {
 	private List<String> subscriptions;
 
 	private BlockingQueue<String> eventQueue = new LinkedBlockingQueue<String>();
-	private DExecutor executor;
+	private DunkExecutor executor;
 
 	private Logger logger = LoggerFactory.getLogger(getClass());
 
@@ -51,7 +51,7 @@ public class PolygonFeed {
 	
 	private PolygonFeedMetrics metrics;
 	
-	public void connect(String apiKey, List<String> subscriptions, DExecutor executor) throws Exception {
+	public void connect(String apiKey, List<String> subscriptions, DunkExecutor executor) throws Exception {
 		this.apiKey = apiKey;
 		subscriptions.add("BAC");
 		subscriptions.add("JPM");
@@ -238,7 +238,7 @@ public class PolygonFeed {
 								try {
 									String value = object.toString();
 									logger.error("Aggregation " + value);
-									aggEvent = DJson.getObjectMapper().readValue(childElement.toString(),
+									aggEvent = DunkJson.getObjectMapper().readValue(childElement.toString(),
 											PolygonAggEvent.class);
 								} catch (Exception e) {
 									problemCount.incrementAndGet();
@@ -261,7 +261,7 @@ public class PolygonFeed {
 								PolygonQuote quote = null;
 								try {
 								//	System.out.println("Quote " + childElement.toString());
-									quote = DJson.getObjectMapper().readValue(childElement.toString(),
+									quote = DunkJson.getObjectMapper().readValue(childElement.toString(),
 											PolygonQuote.class);
 
 								} catch (Exception e) {

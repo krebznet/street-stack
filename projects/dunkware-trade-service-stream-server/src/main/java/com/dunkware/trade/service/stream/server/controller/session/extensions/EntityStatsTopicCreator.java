@@ -6,14 +6,13 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 
-import com.dunkware.common.kafka.admin.DKafkaAdminClient;
-import com.dunkware.common.kafka.admin.model.DKafkaNewTopicResult;
-import com.dunkware.common.util.dtime.DTimeZone;
-import com.dunkware.common.util.time.DunkTime;
 import com.dunkware.spring.cluster.DunkNet;
 import com.dunkware.trade.service.stream.server.controller.session.StreamSession;
 import com.dunkware.trade.service.stream.server.controller.session.StreamSessionExtension;
 import com.dunkware.trade.service.stream.server.controller.session.anot.AStreamSessionExt;
+import com.dunkware.utils.core.time.DunkTime;
+import com.dunkware.utils.kafka.admin.DunkKafkaAdmin;
+import com.dunkware.utils.kafka.admin.model.KafkaNewTopicResult;
 
 
 
@@ -40,8 +39,8 @@ public class EntityStatsTopicCreator implements StreamSessionExtension {
 			
 				public void run() { 
 					try {
-						DKafkaAdminClient client = dunkNet.createAdminClient();						
-						DKafkaNewTopicResult result = client.createPersistentTopic(getStatTopicName(session.getEntity().getId()),1,1);
+						DunkKafkaAdmin client = dunkNet.createAdminClient();						
+						KafkaNewTopicResult result = client.createPersistentTopic(getStatTopicName(session.getEntity().getId()),1,1);
 						if(result.isException() || result.isTimeout()) { 
 							if(result.isException())  {
 							logger.error("Fucked up creating entity stat session topic exception " + result.getCause());
@@ -74,8 +73,8 @@ public class EntityStatsTopicCreator implements StreamSessionExtension {
 		StringBuilder b = new StringBuilder();
 		b.append("stream_data_" + session.getStream().getName());
 		b.append("_entity_stats");
-		DTimeZone zone = session.getStream().getTimeZone();
-		LocalDate now = LocalDate.now(DTimeZone.toZoneId(zone));
+		
+		LocalDate now = session.getStream().getDateTime().toLocalDate();
 		DunkTime.format(now,DunkTime.YYMMDD);
 		b.append("_");
 		b.append(DunkTime.format(now,DunkTime.YYMMDD));

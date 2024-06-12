@@ -1,9 +1,9 @@
 package com.dunkware.trade.service.stream.server.controller.event;
 
-import com.dunkware.common.util.events.DEvent;
 import com.dunkware.trade.service.stream.server.controller.StreamController;
+import com.dunkware.utils.core.events.DunkEvent;
 
-public class EStreamEvent extends DEvent  {
+public class EStreamEvent extends DunkEvent  {
 
 	private StreamController stream; 
 	

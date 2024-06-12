@@ -5,7 +5,6 @@ import java.math.MathContext;
 import java.math.RoundingMode;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
-import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
@@ -17,8 +16,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.slf4j.MarkerFactory;
 
-import com.dunkware.common.stats.GenericNumber;
-import com.dunkware.common.util.helpers.DNumberHelper;
+import com.dunkware.utils.core.helpers.DunkNumber;
 import com.dunkware.xstream.api.XStreamEntity;
 import com.dunkware.xstream.api.XStreamEntityVar;
 import com.dunkware.xstream.api.XStreamEntityVarListener;
@@ -28,9 +26,6 @@ import com.dunkware.xstream.api.XStreamRuntimeException;
 import com.dunkware.xstream.model.metrics.XStreamVarMetrics;
 import com.dunkware.xstream.xScript.DataType;
 import com.dunkware.xstream.xScript.VarType;
-
-import ca.odell.glazedlists.EventList;
-import ca.odell.glazedlists.GlazedLists;
 
 public class XStreamVarImpl implements XStreamEntityVar, XStreamExpressionListener, XStreamEntityVarListener {
 
@@ -202,11 +197,11 @@ public class XStreamVarImpl implements XStreamEntityVar, XStreamExpressionListen
 					lowTime = highTime;
 					highLowInit = true;
 				} else { 
-					if(DNumberHelper.isFirstGreater(numericValue, high) ) { 
+					if(DunkNumber.isFirstGreater(numericValue, high) ) { 
 						high = numericValue;
 						highTime = row.getStream().getClock().getLocalTime();
 					}
-					if(DNumberHelper.isFirstGreater(low, numericValue)) { 
+					if(DunkNumber.isFirstGreater(low, numericValue)) { 
 						low = numericValue;
 						lowTime = row.getStream().getClock().getLocalTime();
 					}

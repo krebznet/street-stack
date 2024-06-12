@@ -4,14 +4,14 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-import com.dunkware.common.util.json.DJson;
+import com.dunkware.utils.core.json.DunkJson;
 
 public class WebSignalQuery {
 
 	private String stream; 
 	private boolean enableDateRange; 
 	private String startDateTime; 
-	private String endDateTime; 
+	private String enLocalDateTime; 
 	private boolean enableEntityFilters;
 	private List<Integer> entitites = new ArrayList<Integer>();
 	private boolean enableSignalTypeFilters; 
@@ -69,16 +69,16 @@ public class WebSignalQuery {
 
 
 
-	public String getEndDateTime() {
-		return endDateTime;
+	public String getEnLocalDateTime() {
+		return enLocalDateTime;
 	}
 
 
 
 
 
-	public void setEndDateTime(String endDateTime) {
-		this.endDateTime = endDateTime;
+	public void setEnLocalDateTime(String enLocalDateTime) {
+		this.enLocalDateTime = enLocalDateTime;
 	}
 
 
@@ -154,12 +154,12 @@ public class WebSignalQuery {
 		q.setEnableDateRange(true);
 		q.setStream("us_equity");
 		q.setStartDateTime("23-09-32:9:30:00");
-		q.setEndDateTime("23-09-36:9:30:00");
+		q.setEnLocalDateTime("23-09-36:9:30:00");
 		q.setEnableSignalTypeFilters(true);
 		q.setSignalTypeFilters(Arrays.asList(1,2,43));
 		q.setEnableEntityFilters(false);;
 		try {
-			System.out.println(DJson.serializePretty(q));
+			System.out.println(DunkJson.serializePretty(q));
 		} catch (Exception e) {
 			e.printStackTrace();
 			// TODO: handle exception

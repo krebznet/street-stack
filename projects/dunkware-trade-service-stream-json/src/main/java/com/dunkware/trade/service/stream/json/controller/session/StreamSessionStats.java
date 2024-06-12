@@ -1,10 +1,10 @@
 package com.dunkware.trade.service.stream.json.controller.session;
 
 import java.beans.Transient;
+import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.dunkware.common.util.dtime.DTime;
 import com.dunkware.trade.service.stream.json.controller.spec.StreamState;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonInclude.Include;
@@ -15,11 +15,11 @@ public class StreamSessionStats {
 	private String sessionId;
 	private StreamState state;
 	@JsonInclude(Include.NON_NULL)
-	private DTime startTime; 
+	private LocalTime startTime; 
 	@JsonInclude(Include.NON_NULL)
 	private long pendingTasks;
 	@JsonInclude(Include.NON_NULL)
-	private DTime startingTime;
+	private LocalTime startingTime;
 	@JsonInclude(Include.NON_NULL)
 	private long tickCount; 
 	@JsonInclude(Include.NON_NULL)
@@ -68,12 +68,12 @@ public class StreamSessionStats {
 	}
 
 
-	public DTime getStartTime() {
+	public LocalTime getStartTime() {
 		return startTime;
 	}
 
 
-	public void setStartTime(DTime startTime) {
+	public void setStartTime(LocalTime startTime) {
 		this.startTime = startTime;
 	}
 
@@ -115,12 +115,12 @@ public class StreamSessionStats {
 	}
 
 
-	public DTime getStartingTime() {
+	public LocalTime getStartingTime() {
 		return startingTime;
 	}
 
 
-	public void setStartingTime(DTime startingTime) {
+	public void setStartingTime(LocalTime startingTime) {
 		this.startingTime = startingTime;
 	}
 

@@ -16,12 +16,7 @@ import java.util.concurrent.atomic.AtomicInteger;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.slf4j.MarkerFactory;
-import org.slf4j.spi.LocationAwareLogger;
 
-import com.dunkware.common.util.dtime.DTimeZone;
-import com.dunkware.common.util.dtime.json.DTimeDeserializer;
-import com.dunkware.common.util.executor.DExecutor;
-import com.dunkware.common.util.time.DunkTime;
 import com.dunkware.trade.tick.api.feed.TickFeed;
 import com.dunkware.trade.tick.api.feed.TickFeedSubscription;
 import com.dunkware.trade.tick.api.provider.ATickProvider;
@@ -35,6 +30,9 @@ import com.dunkware.trade.tick.model.provider.TickProviderState;
 import com.dunkware.trade.tick.model.provider.TickProviderStatsSpec;
 import com.dunkware.trade.tick.model.ticker.TradeTickerSpec;
 import com.dunkware.trade.tick.provider.atick.impl.ATProviderSession;
+import com.dunkware.utils.core.concurrent.DunkExecutor;
+import com.dunkware.utils.core.time.DunkTime;
+import com.dunkware.utils.core.time.DunkTimeZones;
 
 import at.feedapi.ActiveTickServerAPI;
 import at.feedapi.Helpers;
@@ -131,7 +129,7 @@ public class ActiveTickProvider implements TickProvider {
 	}
 
 	@Override
-	public void connect(TickProviderSpec spec, TickFeed feed, DExecutor executor) throws TickProviderException {
+	public void connect(TickProviderSpec spec, TickFeed feed, DunkExecutor executor) throws TickProviderException {
 		this.feed = feed;
 		Runner runner = new Runner();
 		runner.start();
@@ -299,8 +297,8 @@ public class ActiveTickProvider implements TickProvider {
 	}
 	
 	public void onSnapshot(TickFeedSnapshot snapshot) { 
-		lastSnapshotMessage = LocalDateTime.now(DTimeZone.toZoneId(DTimeZone.NewYork));
-		this.lastStreamMessage = LocalDateTime.now(DTimeZone.toZoneId(DTimeZone.NewYork));
+		lastSnapshotMessage = LocalDateTime.now(DunkTimeZones.zoneNewYork());
+		this.lastStreamMessage = LocalDateTime.now(DunkTimeZones.zoneNewYork());
 		SymbolUpdates updat = updates.get(snapshot.getSymbol());
 		if(updat == null) { 
 			updat = new SymbolUpdates();
@@ -326,7 +324,7 @@ public class ActiveTickProvider implements TickProvider {
 	}
 	
 	public void onQuote(TickFeedQuote quote) { 
-		lastStreamMessage = LocalDateTime.now(DTimeZone.toZoneId(DTimeZone.NewYork));		
+		lastStreamMessage = LocalDateTime.now(DunkTimeZones.zoneNewYork());		
 		messgeQueue.add(quote);
 	}
 

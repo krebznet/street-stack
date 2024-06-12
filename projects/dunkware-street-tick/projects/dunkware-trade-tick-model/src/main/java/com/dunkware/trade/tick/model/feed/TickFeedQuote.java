@@ -2,8 +2,6 @@ package com.dunkware.trade.tick.model.feed;
 
 import java.time.LocalDateTime;
 
-import com.dunkware.common.util.dtime.DDateTime;
-
 public class TickFeedQuote {
 
 	private String symbol; 
@@ -11,7 +9,7 @@ public class TickFeedQuote {
 	private volatile double bidPrice; 
 	private volatile int askSize; 
 	private volatile int bidSize; 
-	private DDateTime time;
+	private LocalDateTime time;
 
 	public String getSymbol() {
 		return symbol;
@@ -43,10 +41,10 @@ public class TickFeedQuote {
 	public void setBidSize(int bidSize) {
 		this.bidSize = bidSize;
 	}
-	public DDateTime getTime() {
+	public LocalDateTime getTime() {
 		return time;
 	}
-	public void setTime(DDateTime time) {
+	public void setTime(LocalDateTime time) {
 		this.time = time;
 	}
 	

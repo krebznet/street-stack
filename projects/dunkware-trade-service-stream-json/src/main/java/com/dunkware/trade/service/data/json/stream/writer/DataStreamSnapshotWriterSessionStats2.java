@@ -1,7 +1,6 @@
 package com.dunkware.trade.service.data.json.stream.writer;
 
-import com.dunkware.common.util.dtime.DDateTime;
-import com.dunkware.common.util.dtime.DTime;
+import java.time.LocalDateTime;
 
 public class DataStreamSnapshotWriterSessionStats2 {
 	
@@ -10,12 +9,12 @@ public class DataStreamSnapshotWriterSessionStats2 {
 	private long consumCount;
 	private long consumeQueue;
 	private long writeQueue; 
-	private DDateTime lastWriteTime; 
+	private LocalDateTime lastWriteTime; 
 	private int lastWriteSize;
 	private double lastWriteSeconds;
 	private int consumerPauseCount; 
 	private double consumerPauseTime;
-	private DDateTime startTime;
+	private LocalDateTime startTime;
 	private int problemCount;
 	
 	public long getEntitiyCount() {
@@ -48,10 +47,10 @@ public class DataStreamSnapshotWriterSessionStats2 {
 	public void setWriteQueue(long writeQueue) {
 		this.writeQueue = writeQueue;
 	}
-	public DDateTime getLastWriteTime() {
+	public LocalDateTime getLastWriteTime() {
 		return lastWriteTime;
 	}
-	public void setLastWriteTime(DDateTime lastWriteTime) {
+	public void setLastWriteTime(LocalDateTime lastWriteTime) {
 		this.lastWriteTime = lastWriteTime;
 	}
 	public int getLastWriteSize() {
@@ -78,10 +77,10 @@ public class DataStreamSnapshotWriterSessionStats2 {
 	public void setConsumerPauseTime(double consumerPauseTime) {
 		this.consumerPauseTime = consumerPauseTime;
 	}
-	public DDateTime getStartTime() {
+	public LocalDateTime getStartTime() {
 		return startTime;
 	}
-	public void setStartTime(DDateTime startTime) {
+	public void setStartTime(LocalDateTime startTime) {
 		this.startTime = startTime;
 	}
 	public int getProblemCount() {

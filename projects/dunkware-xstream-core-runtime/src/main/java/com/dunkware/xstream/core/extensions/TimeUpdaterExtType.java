@@ -1,19 +1,20 @@
 package com.dunkware.xstream.core.extensions;
 
-import com.dunkware.common.util.dtime.DTimeZone;
 import com.dunkware.xstream.xproject.model.XStreamExtensionType;
 
 public class TimeUpdaterExtType extends XStreamExtensionType {
 
-	private DTimeZone timeZone;
+	private String timeZone;
 
-	public DTimeZone getTimeZone() {
+	public String getTimeZone() {
 		return timeZone;
 	}
 
-	public void setTimeZone(DTimeZone timeZone) {
+	public void setTimeZone(String timeZone) {
 		this.timeZone = timeZone;
-	} 
+	}
+
+	
 	
 	
 }

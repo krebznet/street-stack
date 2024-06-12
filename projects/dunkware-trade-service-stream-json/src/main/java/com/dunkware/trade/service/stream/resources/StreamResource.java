@@ -1,6 +1,6 @@
 package com.dunkware.trade.service.stream.resources;
 
-import com.dunkware.common.util.json.DJson;
+import com.dunkware.utils.core.json.DunkJson;
 
 public class StreamResource {
 	
@@ -17,7 +17,7 @@ public class StreamResource {
 		re.setIdentifier("us_equity");
 		
 		try {
-			System.out.println(DJson.serializePretty(re));
+			System.out.println(DunkJson.serializePretty(re));
 		} catch (Exception e) {
 			// TODO: handle exception
 		}

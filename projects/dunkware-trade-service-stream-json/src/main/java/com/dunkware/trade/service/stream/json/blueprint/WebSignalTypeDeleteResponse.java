@@ -3,7 +3,7 @@ package com.dunkware.trade.service.stream.json.blueprint;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.dunkware.common.util.json.DJson;
+import com.dunkware.utils.core.json.DunkJson;
 
 public class WebSignalTypeDeleteResponse {
 	
@@ -16,7 +16,7 @@ public class WebSignalTypeDeleteResponse {
 		resp.getConflicts().add("Signal Type is being used by Trading System Breakout1");
 		resp.getConflicts().add("Signal type is refernced by Singnal 3");
 		try {
-			System.out.println(DJson.serializePretty(resp));
+			System.out.println(DunkJson.serializePretty(resp));
 		} catch (Exception e) {
 			e.getLocalizedMessage();
 			// TODO: handle exception

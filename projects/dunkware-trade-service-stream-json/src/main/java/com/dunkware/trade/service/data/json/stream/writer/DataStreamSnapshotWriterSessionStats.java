@@ -1,8 +1,5 @@
 package com.dunkware.trade.service.data.json.stream.writer;
 
-import com.dunkware.common.util.dtime.DDateTime;
-import com.dunkware.common.util.dtime.DTime;
-
 public class DataStreamSnapshotWriterSessionStats {
 	
 	private long entityCount;

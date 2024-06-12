@@ -1,6 +1,7 @@
 package com.dunkware.xstream.core;
 
 import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
@@ -15,10 +16,9 @@ import org.slf4j.LoggerFactory;
 import org.slf4j.Marker;
 import org.slf4j.MarkerFactory;
 
-import com.dunkware.common.tick.stream.TickStream;
-import com.dunkware.common.tick.stream.impl.TickStreamImpl;
-import com.dunkware.common.util.dtime.DTime;
-import com.dunkware.common.util.time.DunkTime;
+import com.dunkware.utils.core.time.DunkTime;
+import com.dunkware.utils.tick.stream.TickStream;
+import com.dunkware.utils.tick.stream.impl.TickStreamImpl;
 import com.dunkware.xstream.api.XStream;
 import com.dunkware.xstream.api.XStreamEntity;
 import com.dunkware.xstream.api.XStreamEntityListener;
@@ -48,8 +48,8 @@ public class XStreamRowImpl implements XStreamEntity, XStreamEntityVarListener {
 	private AtomicInteger signalCount = new AtomicInteger(0);
 	private TickStream tickStream;
 
-	private DTime realTimeCreate;
-	private DTime streamTimeCreate;
+	private LocalTime realTimeCreate;
+	private LocalTime streamTimeCreate;
 
 	private List<XStreamEntityListener> rowListeners = new ArrayList<XStreamEntityListener>();
 	private Semaphore rowListenerLock = new Semaphore(1);
@@ -66,8 +66,8 @@ public class XStreamRowImpl implements XStreamEntity, XStreamEntityVarListener {
 		this.identifier = identifier;
 		this.id = id;
 		this.stream = stream;
-		realTimeCreate = DTime.now();
-		streamTimeCreate = (DTime) stream.getClock().getTime();
+		realTimeCreate = LocalTime.now();
+		streamTimeCreate = (LocalTime) stream.getClock().getTime();
 		List<VarType> varTypes = stream.getInput().getScript().getStreamVars();
 		for (VarType varType : varTypes) {
 			XStreamVarImpl var = new XStreamVarImpl();
@@ -167,7 +167,7 @@ public class XStreamRowImpl implements XStreamEntity, XStreamEntityVarListener {
 			}
 		}
 
-		DTime time = stream.getClock().getTime();
+		LocalTime time = stream.getClock().getTime();
 		XStreamRowSnapshot snapshot = new XStreamRowSnapshot(getId(),getIdentifier(), time, varMap);
 		return snapshot;
 	}
@@ -194,14 +194,14 @@ public class XStreamRowImpl implements XStreamEntity, XStreamEntityVarListener {
 	public void signal(SignalType type) {
 
 		long timestamp = getStream().getClock().getTimestamp();
-		DTime time = getStream().getClock().getTime();
+		LocalTime time = getStream().getClock().getTime();
 		if (logger.isTraceEnabled()) {
-			String formmatedTime = DunkTime.formatDateTimeStamp(timestamp);
+			String formmateLocalTime = DunkTime.formatDateTimeStamp(timestamp);
 			String clockDateTimeFormatted = DunkTime.format(stream.getClock().getLocalDateTime(),
 					DunkTime.YYYY_MM_DD_HH_MM_SS);
 			logger.trace("Signal {} Entity {} Clock Time {} Formatted Timestamp {} Clock DateTime Formatted {}",
 					type.getName(), this.getId(), time.getHour() + ":" + time.getMinute() + ":" + time.getSecond(),
-					formmatedTime, clockDateTimeFormatted);
+					formmateLocalTime, clockDateTimeFormatted);
 		}
 
 		final XStreamSignalImpl signal = new XStreamSignalImpl(this, type, timestamp, time,

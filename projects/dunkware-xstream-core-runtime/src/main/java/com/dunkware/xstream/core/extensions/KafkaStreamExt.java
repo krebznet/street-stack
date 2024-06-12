@@ -1,8 +1,11 @@
 package com.dunkware.xstream.core.extensions;
 
+import java.util.Properties;
+
 import com.dunkware.common.kafka.consumer.DKafkaByteConsumer;
-import com.dunkware.common.kafka.consumer.DKafkaByteHandler;
-import com.dunkware.common.tick.proto.TickProto.Tick;
+import com.dunkware.utils.kafka.byteconsumer.KafkaByteConsumer;
+import com.dunkware.utils.kafka.byteconsumer.KafkaByteHandler;
+import com.dunkware.utils.tick.proto.TickProto.Tick;
 import com.dunkware.xstream.api.XStream;
 import com.dunkware.xstream.api.XStreamException;
 import com.dunkware.xstream.api.XStreamExtension;
@@ -10,9 +13,9 @@ import com.dunkware.xstream.core.annotations.AXStreamExtension;
 import com.dunkware.xstream.xproject.model.XStreamExtensionType;
 
 @AXStreamExtension(type = KafkaStreamExtType.class)
-public class KafkaStreamExt implements XStreamExtension, DKafkaByteHandler {
+public class KafkaStreamExt implements XStreamExtension, KafkaByteHandler {
 
-	private DKafkaByteConsumer consumer;
+	private KafkaByteConsumer consumer;
 	private XStream stream;
 	private KafkaStreamExtType type;
 	
@@ -45,6 +48,9 @@ public class KafkaStreamExt implements XStreamExtension, DKafkaByteHandler {
 					
 				}
 			}
+			// okay figure this kafka shit out 
+			
+			type.getProperties();
 			consumer = DKafkaByteConsumer.newInstance(type.getProperties());
 			consumer.addStreamHandler(this);
 		} catch (Exception e) {

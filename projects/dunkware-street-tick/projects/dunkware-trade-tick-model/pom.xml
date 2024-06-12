@@ -34,12 +34,11 @@
 			<version>3.8.1</version>
 		</dependency>
 		<!-- Dunkware Dependencies -->
-		<dependency>
-			<groupId>com.dunkware.common</groupId>
-			<artifactId>dunkware-common-util</artifactId>
-			<version>1.3.0-SNAPSHOT</version>
+	<dependency>
+			<groupId>com.dunkware.utils</groupId>
+			<artifactId>java-utils-core</artifactId>
+			<version>1.0.0-SNAPSHOT</version>
 		</dependency>
-
 
 	</dependencies>
 

@@ -1,9 +1,8 @@
 package com.dunkware.xstream.model.metrics;
 
+import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
-
-import com.dunkware.common.util.dtime.DTime;
 
 
 public class XStreamRowMetrics {
@@ -11,8 +10,8 @@ public class XStreamRowMetrics {
 	private String rowId; 
 	private int varCount; 
 	private long tickCount; 
-	private DTime streamTimeCreate;
-	private DTime realTimeCreate;
+	private LocalTime streamTimeCreate;
+	private LocalTime realTimeCreate;
 	private List<XStreamVarMetrics> varStats = new ArrayList<XStreamVarMetrics>();
 	
 	public XStreamRowMetrics() { 
@@ -41,16 +40,16 @@ public class XStreamRowMetrics {
 	}
 	
 	
-	public DTime getStreamTimeCreate() {
+	public LocalTime getStreamTimeCreate() {
 		return streamTimeCreate;
 	}
-	public void setStreamTimeCreate(DTime streamTimeCreate) {
+	public void setStreamTimeCreate(LocalTime streamTimeCreate) {
 		this.streamTimeCreate = streamTimeCreate;
 	}
-	public DTime getRealTimeCreate() {
+	public LocalTime getRealTimeCreate() {
 		return realTimeCreate;
 	}
-	public void setRealTimeCreate(DTime realTimeCreate) {
+	public void setRealTimeCreate(LocalTime realTimeCreate) {
 		this.realTimeCreate = realTimeCreate;
 	}
 	public List<XStreamVarMetrics> getVarStats() {

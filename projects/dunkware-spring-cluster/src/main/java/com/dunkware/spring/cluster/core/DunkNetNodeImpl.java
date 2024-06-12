@@ -7,8 +7,6 @@ import org.slf4j.LoggerFactory;
 import org.slf4j.Marker;
 import org.slf4j.MarkerFactory;
 
-import com.dunkware.common.kafka.producer.DKafkaByteProducer;
-import com.dunkware.common.util.json.DJson;
 import com.dunkware.spring.cluster.DunkNet;
 import com.dunkware.spring.cluster.DunkNetException;
 import com.dunkware.spring.cluster.DunkNetNode;
@@ -18,13 +16,15 @@ import com.dunkware.spring.cluster.message.DunkNetMessage;
 import com.dunkware.spring.cluster.message.DunkNetMessageHelper;
 import com.dunkware.spring.cluster.message.DunkNetMessageTransport;
 import com.dunkware.spring.cluster.protocol.descriptors.DunkNetNodeDescriptor;
+import com.dunkware.utils.core.json.DunkJson;
+import com.dunkware.utils.kafka.byteproducer.KafkaByteProducer;
 
 public class DunkNetNodeImpl implements DunkNetNode {
 	
 	private Marker marker = MarkerFactory.getMarker("DunkNet");
 	private Logger logger = LoggerFactory.getLogger(getClass());
 	
-	private DKafkaByteProducer kafkaProducer;
+	private KafkaByteProducer kafkaProducer;
 	
 
 	private DunkNetNodeDescriptor descriptor; 
@@ -39,7 +39,7 @@ public class DunkNetNodeImpl implements DunkNetNode {
 		
 			String nodeTopic = "dunknet." + net.getConfig().getClusterId() + ".node." + descriptor.getId();
 			System.out.println("producer on node " + nodeTopic);
-			kafkaProducer = DKafkaByteProducer.newInstance(net.getConfig().getServerBrokers(),nodeTopic,nodeTopic);
+			kafkaProducer = KafkaByteProducer.newInstance(net.getConfig().getServerBrokers(),nodeTopic,nodeTopic);
 		} catch (Exception e) {
 			throw new DunkNetException("Exception creating node message producer " + e.toString());
 		}
@@ -122,7 +122,7 @@ public class DunkNetNodeImpl implements DunkNetNode {
 							message.getMessageId(), message.getType(), net.getId(), getId(), message.getHeaders().toString(),message.getHeaders().size());
 				}
 			}
-			kafkaProducer.sendBytes(DJson.serialize(DunkNetMessageHelper.toTransport(message,net.getId())).getBytes());	
+			kafkaProducer.sendBytes(DunkJson.serialize(DunkNetMessageHelper.toTransport(message,net.getId())).getBytes());	
 		} catch (Exception e) {
 			logger.error(marker, "Exception sending event transport to node " + getId() + " " +  e.toString());
 		}
@@ -135,9 +135,9 @@ public class DunkNetNodeImpl implements DunkNetNode {
 			transport.getHeaders().put(DunkNetMessage.KEY_SOURCE_NODE, net.getId());
 			if(logger.isDebugEnabled()) { 
 				logger.debug(marker, "Sending ransport on node {} to node {} serialized {} ",
-						net.getId(),getId(),DJson.serializePretty(transport));
+						net.getId(),getId(),DunkJson.serializePretty(transport));
 			}
-			kafkaProducer.sendBytes(DJson.serialize(transport).getBytes());	
+			kafkaProducer.sendBytes(DunkJson.serialize(transport).getBytes());	
 		} catch (Exception e) {
 			logger.error(marker, "Exception sending event transport to node " + getId() + " " +  e.toString());
 		}

@@ -3,7 +3,7 @@ package com.dunkware.trade.service.stream.json.blueprint;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.dunkware.common.util.json.DJson;
+import com.dunkware.utils.core.json.DunkJson;
 import com.dunkware.xstream.model.entity.query.type.StreamEntityCriteriaType;
 import com.dunkware.xstream.model.signal.type.StreamSignalType;
 
@@ -26,7 +26,7 @@ public class WebStreamEntitySignalType {
 	
 	public static void main(String[] args) {
 		try {
-			StreamSignalType t = DJson.getObjectMapper().readValue(JSON, StreamSignalType.class);
+			StreamSignalType t = DunkJson.getObjectMapper().readValue(JSON, StreamSignalType.class);
 			System.out.println(t.getCriterias().get(0).getType());
 		} catch (Exception e) {
 			e.printStackTrace();

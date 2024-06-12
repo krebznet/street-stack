@@ -2,16 +2,16 @@
 package com.dunkware.trade.service.stream.server.controller.session;
 
 import java.time.LocalTime;
+import java.time.ZoneId;
 import java.util.Collection;
 import java.util.List;
 
-import com.dunkware.common.util.events.DEventNode;
-import com.dunkware.trade.service.stream.json.controller.model.StreamSessionSpec;
 import com.dunkware.trade.service.stream.json.controller.session.StreamSessionStats;
 import com.dunkware.trade.service.stream.json.controller.spec.StreamState;
 import com.dunkware.trade.service.stream.server.controller.StreamController;
 import com.dunkware.trade.service.stream.server.repository.StreamSessionEntity;
 import com.dunkware.trade.tick.model.ticker.TradeTickerSpec;
+import com.dunkware.utils.core.events.DunkEventNode;
 import com.dunkware.xstream.xproject.XScriptProject;
 import com.dunkware.xstream.xproject.model.XScriptBundle;
 
@@ -45,7 +45,7 @@ public interface StreamSession {
 
 	public List<StreamSessionExtension> getExtensions();
 
-	public DEventNode getEventNode();
+	public DunkEventNode getEventNode();
 
 	public Long getSessionEntityId();
 
@@ -55,7 +55,7 @@ public interface StreamSession {
 
 	public List<TradeTickerSpec> getTickers();
 
-	public StreamSessionSpec getSessionSpec();
+	public ZoneId getZoneId();
 
 	public StreamSessionNode getEntityNode(String ident) throws Exception;
 	

@@ -1,6 +1,6 @@
 package com.dunkware.xstream.core.search.row.criteria;
 
-import com.dunkware.common.util.helpers.DNumberHelper;
+import com.dunkware.utils.core.helpers.DunkNumber;
 import com.dunkware.xstream.api.XStreamEntity;
 import com.dunkware.xstream.api.XStreamEntityQueryRun;
 import com.dunkware.xstream.core.search.row.XStreamEntityQueryRunImpl;
@@ -72,13 +72,13 @@ public class XStreamEntityValuePredicate implements XStreamEntityPredicate {
 		try {
 			Number resolved = value.resolve(t);
 			if(operator == XStreamOperator.GreaterThan) {
-				if(DNumberHelper.isFirstGreater(resolved, operand)) { 
+				if(DunkNumber.isFirstGreater(resolved, operand)) { 
 					return true; 
 				}
 				return false;
 			}
 			if(operator == XStreamOperator.LessThan) {
-				if(DNumberHelper.isFirstGreater(operand,resolved)) { 
+				if(DunkNumber.isFirstGreater(operand,resolved)) { 
 					return true; 
 				}
 				return false; 

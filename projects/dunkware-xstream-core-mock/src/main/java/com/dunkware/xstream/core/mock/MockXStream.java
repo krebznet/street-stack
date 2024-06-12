@@ -1,5 +1,6 @@
 package com.dunkware.xstream.core.mock;
 
+import java.time.ZoneId;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -21,12 +22,11 @@ import com.dunkware.xstream.api.XStreamExecutor;
 import com.dunkware.xstream.api.XStreamExtension;
 import com.dunkware.xstream.api.XStreamInput;
 import com.dunkware.xstream.api.XStreamListener;
-import com.dunkware.xstream.api.XStreamQueryException;
 import com.dunkware.xstream.api.XStreamRowSignal;
-import com.dunkware.xstream.api.XStreamService;
-import com.dunkware.xstream.api.XStreamSignals;
 import com.dunkware.xstream.api.XStreamRowSignalListener;
 import com.dunkware.xstream.api.XStreamRuntimeErrorListener;
+import com.dunkware.xstream.api.XStreamService;
+import com.dunkware.xstream.api.XStreamSignals;
 import com.dunkware.xstream.api.XStreamStatService;
 import com.dunkware.xstream.api.XStreamStatus;
 import com.dunkware.xstream.api.XStreamTickRouter;
@@ -389,6 +389,12 @@ public class MockXStream implements XStream {
 	public void removeRuntimeErrorListener(XStreamRuntimeErrorListener listener) {
 		// TODO Auto-generated method stub
 		
+	}
+
+	@Override
+	public ZoneId getTimeZoneId() {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 	

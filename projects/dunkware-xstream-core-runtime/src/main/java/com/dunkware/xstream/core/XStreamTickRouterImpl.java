@@ -1,5 +1,8 @@
 package com.dunkware.xstream.core;
 
+import java.time.LocalDateTime;
+import java.time.LocalTime;
+import java.time.ZoneId;
 import java.util.Date;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.atomic.AtomicLong;
@@ -9,14 +12,12 @@ import org.slf4j.LoggerFactory;
 import org.slf4j.Marker;
 import org.slf4j.MarkerFactory;
 
-import com.dunkware.common.tick.TickHandler;
-import com.dunkware.common.tick.TickHelper;
-import com.dunkware.common.tick.filter.TickFilter;
-import com.dunkware.common.tick.proto.TickProto.Tick;
-import com.dunkware.common.tick.stream.TickStream;
-import com.dunkware.common.tick.time.TimeTick;
-import com.dunkware.common.util.dtime.DTime;
-import com.dunkware.common.util.dtime.DTimeZone;
+import com.dunkware.utils.tick.TickHandler;
+import com.dunkware.utils.tick.TickHelper;
+import com.dunkware.utils.tick.filter.TickFilter;
+import com.dunkware.utils.tick.proto.TickProto.Tick;
+import com.dunkware.utils.tick.stream.TickStream;
+import com.dunkware.utils.tick.type.TimeTick;
 import com.dunkware.xstream.api.XStreamEntity;
 import com.dunkware.xstream.api.XStreamTickRouter;
 
@@ -33,8 +34,8 @@ public class XStreamTickRouterImpl implements XStreamTickRouter, TickStream {
 	private AtomicLong dataTickCount = new AtomicLong();
 	private AtomicLong timeTickCount = new AtomicLong();
 	
-	private DTime lastDataTickTime = DTime.now();
-	private DTimeZone streamTimeZone; 
+	private LocalDateTime lastDataTickTime = LocalDateTime.now();
+	private ZoneId streamTimeZone; 
 	private XStreamImpl stream; 
 	
 	private volatile long lastTickDelay = 0;
@@ -43,8 +44,8 @@ public class XStreamTickRouterImpl implements XStreamTickRouter, TickStream {
 	
 	public XStreamTickRouterImpl(XStreamImpl stream) {
 		this.stream = stream; 
-		this.streamTimeZone = stream.getInput().getTimeZone();
-		lastDataTickTime = DTime.now(streamTimeZone);
+		this.streamTimeZone = stream.getTimeZoneId();
+		lastDataTickTime = LocalDateTime.now(streamTimeZone);
 	}
 	
 	
@@ -74,7 +75,7 @@ public class XStreamTickRouterImpl implements XStreamTickRouter, TickStream {
 
 
 	@Override
-	public void streamTick(Tick tick) {
+	public void consume(Tick tick) {
 		try {
 			long start = new Date().getTime();
 			stream.getExecutor().awaitWhileTasksRunning();
@@ -97,20 +98,33 @@ public class XStreamTickRouterImpl implements XStreamTickRouter, TickStream {
 		// second if time tick send it to the clock
 		if(tick.getType() == TimeTick.TYPE) { 
 			timeTickCount.incrementAndGet();
-			DTime newTime = TimeTick.decode(tick);
+			try {
+				LocalTime newTime = TimeTick.decode(tick);	
+				stream.getClock().setTime(newTime);
+			} catch (Exception e) {
+				//
+			}
 			
 			
-			stream.getClock().setTime(newTime);
+			
+			
 		}
 		// third if data tick route it to the row
 		// create row if does not exist. 
 		if(isDataTick(tick)) { 
-			lastDataTickTime = DTime.now(streamTimeZone);
+			lastDataTickTime = LocalDateTime.now(streamTimeZone);
 			dataTickCount.incrementAndGet();
-			String rowId = getDataTickRowId(tick);
+			String rowId = null;
+			try {
+				 rowId = getDataTickRowId(tick);	
+			} catch (Exception e) {
+				// exception already added as runtime error 
+				return;
+			}
+			
 			if(stream.hasRow(rowId)) { 
 				XStreamEntity row = stream.getRow(rowId);
-				row.getTickStream().streamTick(tick);
+				row.getTickStream().consume(tick);
 			} else { 
 				// new row create event //
 				int identifier = -1;
@@ -132,7 +146,7 @@ public class XStreamTickRouterImpl implements XStreamTickRouter, TickStream {
 				}
 				
 				XStreamEntity row = stream.createRow(rowId,identifier);
-				row.getTickStream().streamTick(tick);
+				row.getTickStream().consume(tick);
 			}
 		}
 	}
@@ -161,10 +175,17 @@ public class XStreamTickRouterImpl implements XStreamTickRouter, TickStream {
 	}
 
 	
-	private String getDataTickRowId(Tick tick) { 
+	private String getDataTickRowId(Tick tick) throws Exception { 
 		int keyField = dataTickTypes.get(tick.getType());
-		String value = TickHelper.getString(tick, keyField);
-		return value;
+		try {
+			String value = TickHelper.getString(tick, keyField);
+			return value;
+		} catch (Exception e) {
+			stream.runtimeError("TickRouter", "xception getting key field " + e.toString());
+			throw e;
+		}
+		
+		
 	}
 	
 	private boolean isDataTick(Tick tick) { 
@@ -173,7 +194,7 @@ public class XStreamTickRouterImpl implements XStreamTickRouter, TickStream {
 	
 	
 	@Override
-	public DTime getLastDataTickTime() {
+	public LocalDateTime getLastDataTickTime() {
 		return lastDataTickTime;
 	}
 

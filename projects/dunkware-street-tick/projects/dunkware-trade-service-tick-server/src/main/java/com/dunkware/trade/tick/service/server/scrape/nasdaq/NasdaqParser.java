@@ -4,7 +4,7 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.dunkware.common.util.helpers.DFileHelper;
+import com.dunkware.utils.core.helpers.DunkFile;
 
 public class NasdaqParser {
 	
@@ -22,7 +22,7 @@ public class NasdaqParser {
 		try {
 			List<NasdaqTicker> tickers = new ArrayList<NasdaqTicker>();
 			File file = new File(filepath);
-			List<String> lines = DFileHelper.readFileLines(file);
+			List<String> lines = DunkFile.readFileLines(file);
 			int goodCount = 0;
 			int count = 0;
 			boolean first = true; 

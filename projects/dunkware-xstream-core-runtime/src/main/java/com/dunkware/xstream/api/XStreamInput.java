@@ -1,13 +1,12 @@
 package com.dunkware.xstream.api;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import com.dunkware.common.util.dtime.DDate;
-import com.dunkware.common.util.dtime.DTimeZone;
-import com.dunkware.common.util.executor.DExecutor;
+import com.dunkware.utils.core.concurrent.DunkExecutor;
 import com.dunkware.xstream.model.signal.type.XStreamSignalType;
 import com.dunkware.xstream.xproject.XScriptProject;
 import com.dunkware.xstream.xproject.model.XStreamExtensionType;
@@ -15,13 +14,13 @@ import com.dunkware.xstream.xproject.model.XStreamExtensionType;
 public class XStreamInput {
 
 	private List<XStreamExtensionType> extensions;
-	private DExecutor executor;
-	private DDate date;
+	private DunkExecutor executor;
+	private LocalDate date;
 	private XScriptProject script;
 	private XStreamRegistry registry;
 	private String identifier;
 	private String sessionId;
-	private DTimeZone timeZone; 
+	private String zoneId; 
 	private List<XStreamSignalType> signalTypes = new ArrayList<XStreamSignalType>();
 	private XStreamStatService statProvider;
 	private XStreamEntityQueryBuilder queryBuilder;
@@ -35,21 +34,26 @@ public class XStreamInput {
 		
 		this.extensions = extensions;
 	}
-	public DExecutor getExecutor() {
+	public DunkExecutor getExecutor() {
 		return executor;
 	}
-	public void setExecutor(DExecutor executor) {
+	public void setExecutor(DunkExecutor executor) {
 		this.executor = executor;
 	}
 	
-	public DDate getDate() {
-		if(date == null) { 
-			date = DDate.now();
-		}
+	
+	
+	public LocalDate getDate() {
 		return date;
 	}
-	public void setDate(DDate date) {
+	public void setDate(LocalDate date) {
 		this.date = date;
+	}
+	public String getZoneId() {
+		return zoneId;
+	}
+	public void setZoneId(String zoneId) {
+		this.zoneId = zoneId;
 	}
 	public XScriptProject getScript() {
 		return script;
@@ -69,12 +73,8 @@ public class XStreamInput {
 	public void setIdentifier(String identifier) {
 		this.identifier = identifier;
 	}
-	public DTimeZone getTimeZone() {
-		return timeZone;
-	}
-	public void setTimeZone(DTimeZone timeZone) {
-		this.timeZone = timeZone;
-	}
+	
+	
 	public String getSessionId() {
 		return sessionId;
 	}

@@ -1,6 +1,5 @@
 package com.dunkware.trade.service.stream.server.controller.session.extensions;
 
-import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -10,7 +9,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 
-import com.dunkware.common.util.dtime.DTimeZone;
 import com.dunkware.spring.cluster.DunkNet;
 import com.dunkware.stream.data.codec.session.meta.SessionModelCodec;
 import com.dunkware.stream.data.model.session.StreamSessionModel;
@@ -78,7 +76,7 @@ public class StreamDataPublisher implements StreamSessionExtension {
 		StreamSessionModel metaSession = new StreamSessionModel();
 	 	metaSession.setEntities(entities);
 	 	metaSession.setStream(session.getStreamId());
-	 	metaSession.setDate(LocalDate.now(DTimeZone.toZoneId(session.getStream().getTimeZone())));
+	 	metaSession.setDate(session.getStream().getDateTime().toLocalDate());
 	 	metaSession.setStart(session.getStartTime());
 	 	metaSession.setStop(session.getStopTime());
 	 	metaSession.setVars(session.getScriptProject().getStreamVarIds());

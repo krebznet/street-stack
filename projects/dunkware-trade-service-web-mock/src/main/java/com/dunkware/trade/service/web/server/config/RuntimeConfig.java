@@ -5,7 +5,7 @@ import javax.annotation.PostConstruct;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
-import com.dunkware.common.util.executor.DExecutor;
+import com.dunkware.utils.core.concurrent.DunkExecutor;
 
 @Service
 public class RuntimeConfig {
@@ -22,14 +22,14 @@ public class RuntimeConfig {
 	@Value("${service.stream.url.grpc}")
 	private String serviceStreamGRPC;
 	
-	private DExecutor executor; 
+	private DunkExecutor executor; 
 	
 	@PostConstruct
 	private void postConstruct() { 
-		executor = new DExecutor(10);
+		executor = new DunkExecutor(10);
 	}
 	
-	public DExecutor excutor() { 
+	public DunkExecutor excutor() { 
 		return executor;
 	}
 	

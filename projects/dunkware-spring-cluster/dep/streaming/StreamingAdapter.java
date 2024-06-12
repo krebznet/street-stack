@@ -12,7 +12,7 @@ import java.util.concurrent.TimeUnit;
 
 import org.springframework.web.servlet.mvc.method.annotation.StreamingResponseBody;
 
-import com.dunkware.common.util.json.DJson;
+import com.dunkware.common.util.json.DunkJson;
 
 public class StreamingAdapter implements StreamingResponseBody {
 
@@ -119,7 +119,7 @@ public class StreamingAdapter implements StreamingResponseBody {
 						continue;
 					}
 
-					serialized = DJson.serialize(object);
+					serialized = DunkJson.serialize(object);
 					writer.println(serialized);
 					writer.flush();
 					outputStream.flush();

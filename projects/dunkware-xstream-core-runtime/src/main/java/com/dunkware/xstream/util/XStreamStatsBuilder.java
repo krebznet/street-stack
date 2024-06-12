@@ -1,9 +1,9 @@
 package com.dunkware.xstream.util;
 
+import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.dunkware.common.util.dtime.DTime;
 import com.dunkware.xstream.api.XStream;
 import com.dunkware.xstream.api.XStreamException;
 import com.dunkware.xstream.model.metrics.XStreamMetrics;
@@ -27,8 +27,8 @@ public class XStreamStatsBuilder {
 			}
 		}
 		XStreamMetrics stats = new XStreamMetrics();
-		stats.setStreamTime((DTime)(stream.getClock().getTime()));
-		stats.setRealTime(DTime.now(stream.getInput().getTimeZone()));
+		stats.setStreamTime(stream.getClock().getTime());
+		stats.setRealTime(LocalTime.now(stream.getTimeZoneId()));
 		stats.setPendingTaskCount(stream.getInput().getExecutor().getPendingTaskCount());
 		stats.setTaskCount(stream.getInput().getExecutor().getCompletedTaskCount());
 		stats.setRowCount(stream.getRowCount());

@@ -2,7 +2,7 @@ package com.dunkware.trade.tick.api.consumer;
 
 import java.time.LocalTime;
 
-import com.dunkware.common.util.observable.ObservableBean;
+import com.dunkware.utils.core.observable.ObservableBean;
 
 public class TickConsumerBean extends ObservableBean  {
 

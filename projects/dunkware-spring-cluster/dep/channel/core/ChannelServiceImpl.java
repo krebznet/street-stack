@@ -12,7 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.springframework.stereotype.Service;
 
-import com.dunkware.common.util.executor.DExecutor;
+import com.dunkware.common.util.executor.DunkExecutor;
 import com.dunkware.spring.messaging.channel.Channel;
 import com.dunkware.spring.messaging.channel.ChannelException;
 import com.dunkware.spring.messaging.channel.ChannelService;
@@ -60,7 +60,7 @@ public class ChannelServiceImpl implements ChannelService {
 		
 		ChannelImpl channel = new ChannelImpl(); 
 		ac.getAutowireCapableBeanFactory().autowireBean(channel);
-		DExecutor executor = new DExecutor(5);
+		DunkExecutor executor = new DunkExecutor(5);
 		channel.start(executor, type, broker, consumerTopic, producerTopic, injectables, getChannelHandlerClasses(type));
 		
 		return channel;

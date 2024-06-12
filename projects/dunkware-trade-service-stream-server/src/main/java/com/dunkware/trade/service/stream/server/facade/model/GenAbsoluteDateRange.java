@@ -37,8 +37,8 @@ public class GenAbsoluteDateRange {
   public static final String JSON_PROPERTY_START_DATE = "startDate";
   private GenDate startDate;
 
-  public static final String JSON_PROPERTY_END_DATE = "endDate";
-  private GenDate endDate;
+  public static final String JSON_PROPERTY_END_DATE = "enLocalDate";
+  private GenDate enLocalDate;
 
   public static final String JSON_PROPERTY_HAS_TIME_WINDOW = "hasTimeWindow";
   private Boolean hasTimeWindow;
@@ -74,28 +74,28 @@ public class GenAbsoluteDateRange {
   }
 
 
-  public GenAbsoluteDateRange endDate(GenDate endDate) {
-    this.endDate = endDate;
+  public GenAbsoluteDateRange enLocalDate(GenDate enLocalDate) {
+    this.enLocalDate = enLocalDate;
     return this;
   }
 
    /**
-   * Get endDate
-   * @return endDate
+   * Get enLocalDate
+   * @return enLocalDate
   **/
   @jakarta.annotation.Nonnull
   @JsonProperty(JSON_PROPERTY_END_DATE)
   @JsonInclude(value = JsonInclude.Include.ALWAYS)
 
-  public GenDate getEndDate() {
-    return endDate;
+  public GenDate getEnLocalDate() {
+    return enLocalDate;
   }
 
 
   @JsonProperty(JSON_PROPERTY_END_DATE)
   @JsonInclude(value = JsonInclude.Include.ALWAYS)
-  public void setEndDate(GenDate endDate) {
-    this.endDate = endDate;
+  public void setEnLocalDate(GenDate enLocalDate) {
+    this.enLocalDate = enLocalDate;
   }
 
 
@@ -162,14 +162,14 @@ public class GenAbsoluteDateRange {
     }
     GenAbsoluteDateRange genAbsoluteDateRange = (GenAbsoluteDateRange) o;
     return Objects.equals(this.startDate, genAbsoluteDateRange.startDate) &&
-        Objects.equals(this.endDate, genAbsoluteDateRange.endDate) &&
+        Objects.equals(this.enLocalDate, genAbsoluteDateRange.enLocalDate) &&
         Objects.equals(this.hasTimeWindow, genAbsoluteDateRange.hasTimeWindow) &&
         Objects.equals(this.timeWindow, genAbsoluteDateRange.timeWindow);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(startDate, endDate, hasTimeWindow, timeWindow);
+    return Objects.hash(startDate, enLocalDate, hasTimeWindow, timeWindow);
   }
 
   @Override
@@ -177,7 +177,7 @@ public class GenAbsoluteDateRange {
     StringBuilder sb = new StringBuilder();
     sb.append("class GenAbsoluteDateRange {\n");
     sb.append("    startDate: ").append(toIndentedString(startDate)).append("\n");
-    sb.append("    endDate: ").append(toIndentedString(endDate)).append("\n");
+    sb.append("    enLocalDate: ").append(toIndentedString(enLocalDate)).append("\n");
     sb.append("    hasTimeWindow: ").append(toIndentedString(hasTimeWindow)).append("\n");
     sb.append("    timeWindow: ").append(toIndentedString(timeWindow)).append("\n");
     sb.append("}");
@@ -232,9 +232,9 @@ public class GenAbsoluteDateRange {
       joiner.add(getStartDate().toUrlQueryString(prefix + "startDate" + suffix));
     }
 
-    // add `endDate` to the URL query string
-    if (getEndDate() != null) {
-      joiner.add(getEndDate().toUrlQueryString(prefix + "endDate" + suffix));
+    // add `enLocalDate` to the URL query string
+    if (getEnLocalDate() != null) {
+      joiner.add(getEnLocalDate().toUrlQueryString(prefix + "enLocalDate" + suffix));
     }
 
     // add `hasTimeWindow` to the URL query string
