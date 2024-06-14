@@ -27,7 +27,7 @@ public class DZonedClock {
 	
 	private DZonedClock(LocalDateTime datetime, ZoneId zoneId) { 
 		this.dateTime = datetime; 
-		
+		this.zoneId = zoneId; 
 	}
 	
 	public void addListener(DZonedClockListener listener) { 

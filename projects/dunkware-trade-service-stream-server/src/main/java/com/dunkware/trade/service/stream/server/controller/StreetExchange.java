@@ -20,7 +20,9 @@ public interface StreetExchange {
 	
 	LocalDateTime getDateTime();
 	
-	
+	// StreetStream
+		// StreetEntity 
+		// 	- getVariableValues(); 
 	
 
 }

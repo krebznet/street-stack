@@ -42,7 +42,7 @@ public interface StreamSessionNode {
 	
 	void start(StreamSessionNodeInput input) ;
 	
-	DunkEventNode getEventNode();
+	public DunkEventNode getEventNode();
 	
 	public StreamSessionNodeInput getInput();
 	

@@ -49,6 +49,7 @@ import com.dunkware.trade.service.stream.server.repository.StreamSessionEntity;
 import com.dunkware.trade.service.stream.server.repository.StreamSessionRepo;
 import com.dunkware.trade.tick.model.ticker.TradeTickerSpec;
 import com.dunkware.utils.core.events.DunkEventNode;
+import com.dunkware.utils.core.events.anot.ADunkEventHandler;
 import com.dunkware.utils.core.json.DunkJson;
 import com.dunkware.utils.core.time.DunkTime;
 import com.dunkware.xstream.xproject.XScriptProject;
@@ -67,6 +68,7 @@ public class StreamSessionImpl implements StreamSession {
 
 	private StreamSessionInput input;
 
+	
 	@Autowired
 	private ExecutorService executorService;
 
@@ -87,8 +89,6 @@ public class StreamSessionImpl implements StreamSession {
 	private DunkNet dunkNet;
 
 	private StreamSessionEntity sessionEntity;
-
-	private DunkEventNode eventNode;
 
 	private String sessionId;
 
@@ -113,6 +113,7 @@ public class StreamSessionImpl implements StreamSession {
 
 	private LocalDateTime startTime;
 	
+	private DunkEventNode eventNode; 
 
 	// put the stream session capture in here?
 
@@ -152,9 +153,17 @@ public class StreamSessionImpl implements StreamSession {
 	public int getStreamId() {
 		return (int)input.getController().getEntity().getId();	
 	}
+	
+	
+
+	@Override
+	public DunkEventNode getEventNode() {
+		return eventNode;
+	}
 
 	@Override
 	public void startSession(StreamSessionInput input) throws StreamSessionException {
+		this.eventNode = input.getController().getEventNode().createChild(this);
 		if(logger.isInfoEnabled()) { 
 			logger.info("Starting stream session {}",input.getController().getName());
 		}
@@ -197,8 +206,9 @@ public class StreamSessionImpl implements StreamSession {
 		this.input = input;
 
 		nodeStartFailures = new AtomicInteger(0);
-		eventNode = input.getController().getEventNode().createChild(this);
-		eventNode.adDunkEventHandler(this);
+		
+		
+		
 
 		
 		sessionId = input.getController().getName() + " _"
@@ -236,11 +246,13 @@ public class StreamSessionImpl implements StreamSession {
 			
 			ac.getAutowireCapableBeanFactory().autowireBean(sessionNode);
 			sessionNode.start(nodeInput);
+			sessionNode.getEventNode().adDunkEventHandler(this);
 			input.getController().getSessionNodeBeans().getReadWriteLock().writeLock().lock();
 			input.getController().getSessionNodeBeans().add(sessionNode.getBean());
 			input.getController().getSessionNodeBeans().getReadWriteLock().writeLock().unlock();
 			logger.info(marker, "Started {} Session Worker {} on node {}", getStream().getName(), workerId,
 					node.getId());
+			
 			nodes.put(node.getId(), sessionNode);
 			nodeIndex++;
 			numericId++;
@@ -385,11 +397,7 @@ public class StreamSessionImpl implements StreamSession {
 		return extensionTypes;
 	}
 
-	@Override
-	public DunkEventNode getEventNode() {
-		return eventNode;
-	}
-
+	
 	@Override
 	public Long getSessionEntityId() {
 		return sessionEntity.getId();
@@ -462,7 +470,7 @@ public class StreamSessionImpl implements StreamSession {
 		throw new Exception("Entity id " + entityId + " not found on any session worker nodes");
 	}
 
-	@ADunkNetEvent()
+	@ADunkEventHandler
 	public void nodeStarted(EStreamSessionNodeStarted nodeStarted) {
 		if (logger.isDebugEnabled()) {
 			logger.debug(marker, "Event Session node " + nodeStarted.getNode().getWorkerId() + "Started");
@@ -486,7 +494,8 @@ public class StreamSessionImpl implements StreamSession {
 
 	}
 
-	@ADunkNetEvent()
+	
+	@ADunkEventHandler
 	public void nodeStartException(EStreamSessionNodeStartExcepton exp) {
 		logger.error(marker, "Stream {} Session Node {} Start Exception {}", getStream().getName(),
 				exp.getNode().getWorkerId(), exp.getException());
@@ -507,7 +516,8 @@ public class StreamSessionImpl implements StreamSession {
 
 	}
 
-	@ADunkNetEvent
+	
+	@ADunkEventHandler
 	public void nodeStopped(EStreamSessionNodeStopped stopped) {
 		logger.info(stopTrace, "nodeStopped() invoked from node " + stopped.getNode().getNodeId());
 		int stopCount = nodeStopEventCount.incrementAndGet();
@@ -569,6 +579,7 @@ public class StreamSessionImpl implements StreamSession {
 					node.cancel();
 				}
 			}
+			
 			eventNode.event(new EStreamSessionStartException(this, "Node Errors"));
 			return;
 		}

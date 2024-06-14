@@ -40,7 +40,7 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
   TickerSession.JSON_PROPERTY_SIGNAL_COUNT,
   TickerSession.JSON_PROPERTY_VERSION
 })
-@jakarta.annotation.Generated(value = "org.openapitools.codegen.languages.JavaClientCodegen", date = "2024-06-14T00:30:33.189853-05:00[America/Chicago]", comments = "Generator version: 7.6.0")
+@jakarta.annotation.Generated(value = "org.openapitools.codegen.languages.JavaClientCodegen", date = "2024-06-14T02:50:34.529636-05:00[America/Chicago]", comments = "Generator version: 7.6.0")
 public class TickerSession {
   public static final String JSON_PROPERTY_DATE = "date";
   private GenDate date;

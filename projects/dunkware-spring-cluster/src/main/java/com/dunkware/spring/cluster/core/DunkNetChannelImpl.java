@@ -23,6 +23,7 @@ import com.dunkware.spring.cluster.core.request.DunkNetChannelRequest;
 import com.dunkware.spring.cluster.core.request.DunkNetServiceRequest;
 import com.dunkware.spring.cluster.message.DunkNetMessage;
 import com.dunkware.spring.cluster.protocol.descriptors.DunkNetDescriptors;
+import com.dunkware.utils.core.json.DunkJson;
 
 /**
  * Bug here is that extensions are not getting sent to other party
@@ -104,6 +105,14 @@ public class DunkNetChannelImpl implements DunkNetChannel {
 	
 	@Override
 	public void setRemoteDescriptors(DunkNetDescriptors descriptors) {
+		try {
+			System.out.println("remot descriptors set on " + this.getNode().getId() + DunkJson.serializePretty(descriptors));	
+		} catch (Exception e) {
+			e.printStackTrace();
+			// TODO: handle exception
+		}
+		
+		
 		this.remoteDescriptors = descriptors;
 	}
 

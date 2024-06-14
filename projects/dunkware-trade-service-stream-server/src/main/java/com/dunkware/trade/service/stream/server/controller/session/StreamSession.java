@@ -45,10 +45,10 @@ public interface StreamSession {
 
 	public List<StreamSessionExtension> getExtensions();
 
-	public DunkEventNode getEventNode();
-
 	public Long getSessionEntityId();
 
+	public DunkEventNode getEventNode();
+	
 	public XScriptProject getScriptProject();
 
 	public StreamSessionEntity getEntity();

@@ -82,6 +82,8 @@ public class StreamController implements StreetExchange  {
 	@Autowired
 	private DunkNet dunkNet;
 
+	@Autowired
+	private EventService eventService;
 
 	private String exception = null;
 
@@ -90,22 +92,13 @@ public class StreamController implements StreetExchange  {
 	@Autowired
 	private StreamControllerService service;
 
-	private DunkEventNode eventNode;
-
 	@Autowired
 	private ExecutorService executorService;
-
-	@Autowired
-	private EventService eventService;
 
 	private TradeTickerListSpec tickerList;
 
 	@Autowired
 	private StreamTickService tickService;
-
-	
-
-	//private StreamBlueprint blueprint = null;
 
 	@Autowired
 	private ConfigService config;
@@ -128,6 +121,8 @@ public class StreamController implements StreetExchange  {
 	private String streamException;
 
 	private LocalTime statsCacheTimestamp = null;
+	
+	private DunkEventNode eventNode; 
 
 	private List<StreamEntitySignalListener> signalListeners = new ArrayList<StreamEntitySignalListener>();
 	
@@ -163,16 +158,20 @@ public class StreamController implements StreetExchange  {
 		return sessionNodeBeans;
 	}
 	
+	
+	public DunkEventNode getEventNode() { 
+		return eventNode;
+	}
 	public void start(StreamEntity ent) throws Exception {
 		
+		eventNode = eventService.getEventRoot().createChild(this);
 		
 		sessionNodeBeans = new ObservableElementList<StreamSessionNodeBean>(
 				GlazedLists.threadSafeList(new BasicEventList<StreamSessionNodeBean>()),
 				new GlazedDataGridConnector<StreamSessionNodeBean>());
 		
 		logger.info(marker, "Starting Stream " + ent.getName());
-		eventNode = eventService.getEventRoot().createChild(this);
-		eventNode.adDunkEventHandler(this);
+		
 		try {
 			//this.blueprint = blueprintService.getBlueprint(ent.getName());
 		} catch (Exception e) {
@@ -467,6 +466,7 @@ public class StreamController implements StreetExchange  {
 			
 			session.startSession(input);
 			session.getEventNode().adDunkEventHandler(this);
+			
 		} catch (StreamSessionException e) {
 			stats.setState(session.getState());
 			stats.setStartException("Exception starting Stram " + getName() + " session " + e.toString());
@@ -479,9 +479,6 @@ public class StreamController implements StreetExchange  {
 		return session;
 	}
 
-	public DunkEventNode getEventNode() {
-		return eventNode;
-	}
 
 	public StreamControllerStats getStats() {
 		if (session != null) {
@@ -511,14 +508,12 @@ public class StreamController implements StreetExchange  {
 	}
 
 	
-	
-	
 	/**
 	 * Notify when session is stopped
 	 * 
 	 * @param sessionStopped
 	 */
-	@ADunkEventHandler()
+	@ADunkEventHandler
 	public void sessionStopped(EStreamSessionStopped sessionStopped) {
 		if (logger.isDebugEnabled()) {
 			logger.debug("Recieved Session Stopped Event, Status Update Stopped");
@@ -533,12 +528,12 @@ public class StreamController implements StreetExchange  {
 
 	}
 	
-	@ADunkEventHandler()
+	@ADunkEventHandler
 	public void sessionStartException(EStreamSessionStartException exp) {
 		this.stats.getErrors().add(exp.getError());
 	}
 
-	@ADunkEventHandler()
+	@ADunkEventHandler
 	public void sessionEvent(EStreamSessionEvent event) {
 		setState(event.getSession().getState());
 	}

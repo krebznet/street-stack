@@ -8,6 +8,7 @@ import javax.annotation.PostConstruct;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
+import org.springframework.context.event.EventListener;
 import org.springframework.stereotype.Component;
 
 import com.dunkware.trade.service.stream.server.controller.session.StreamSession;
@@ -15,6 +16,8 @@ import com.dunkware.trade.service.stream.server.controller.session.StreamSession
 import com.dunkware.trade.service.stream.server.controller.session.StreamSessionExtension;
 import com.dunkware.trade.service.stream.server.controller.session.StreamSessionService;
 import com.dunkware.trade.service.stream.server.controller.session.anot.AStreamSessionExt;
+import com.dunkware.trade.service.stream.server.controller.session.events.EStreamSessionNodeEvent;
+import com.dunkware.trade.service.stream.server.controller.session.events.EStreamSessionNodeStartExcepton;
 import com.dunkware.trade.service.stream.server.spring.ReflectionService;
 import com.dunkware.utils.core.helpers.DunkAnot;
 
@@ -31,15 +34,21 @@ public class StreamSessionServiceImpl implements StreamSessionService {
 	
 	@PostConstruct
 	void load() { 
-		//DunkAnot.getDunkwareReflections();
+		DunkAnot.getDunkwareReflections();
 		
 		//extClasses = DunkAnot.getClassesAnnotedWith(AStreamSessionExt.class);
+	}
+	
+	@EventListener
+	public void wow(EStreamSessionNodeStartExcepton event) { 
+		System.out.println("there you go");
 	}
 	
 	public List<StreamSessionExtension> createExtensions() throws StreamSessionException {
 		
 		Class<?>[] classes = ReflectionService.findAllAnnotatedClassesInPackage("com.dunkware", AStreamSessionExt.class);
 		
+		extClasses = DunkAnot.getClassesAnnotedWith(AStreamSessionExt.class);
 		
 		//extClasses = refService.getClassesAnnotedWith(AStreamSessionExt.class);
 		List<StreamSessionExtension> extensions = new ArrayList<StreamSessionExtension>();

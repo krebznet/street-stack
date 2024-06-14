@@ -30,6 +30,7 @@ public class DunkEventNode {
 	public DunkEventNode(DunkEventNode parent, Object source, DunkEventTree service)   {
 		this.parent = parent;
 		this.source = source;
+	
 		this.eventTree = service;
 	}
 

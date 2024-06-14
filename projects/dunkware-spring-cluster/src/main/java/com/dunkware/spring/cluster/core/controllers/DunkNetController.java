@@ -416,7 +416,7 @@ public class DunkNetController
 		DunkNetChannel channel = getChannel(message.getChannel());
 		DunkNetNode node = getSenderNode(message);
 		try {
-			channel.setDescriptors((DunkNetDescriptors) message.getPayload());
+			channel.setRemoteDescriptors((DunkNetDescriptors) message.getPayload());
 			channel.setState(DunkNetChannelState.OPEN);
 			// sends back a 
 			((DunkNetChannelImpl)channel).startChannel();
