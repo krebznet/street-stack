@@ -53,6 +53,7 @@ import com.dunkware.utils.core.events.anot.ADunkEventHandler;
 import com.dunkware.utils.core.helpers.DunkAnot;
 import com.dunkware.utils.core.json.DunkJson;
 import com.dunkware.utils.core.time.DunkTime;
+import com.dunkware.utils.core.time.DunkTimeZones;
 import com.dunkware.utils.core.time.clock.DZonedClock;
 import com.dunkware.utils.core.time.clock.DZonedClockListener;
 import com.dunkware.utils.core.time.clock.DZonedClockUpdater;
@@ -188,7 +189,13 @@ public class StreamController implements StreetExchange  {
 		streamVersion = getCurrentVersion();
 
 		spec = DunkJson.getObjectMapper().readValue(ent.getSpec(), StreamControllerSpec.class);
-		
+		try {
+			zoneId = DunkTimeZones.getZoneId(spec.getTimeZone());
+		} catch (Exception e) {
+			logger.error("Exception creating time zone from stream spec " + e.toString());
+			stats.setState(StreamState.ControllerException);;
+			throw e;
+		}
 		try {
 			TradeTickerListSpec spec = tickerList = tickService.getClient().getTickerList(getEntity().getTickerLists());
 			tickers = spec.getTickers();

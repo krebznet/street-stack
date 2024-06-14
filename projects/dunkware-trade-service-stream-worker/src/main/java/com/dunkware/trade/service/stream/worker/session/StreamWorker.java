@@ -56,11 +56,11 @@ public class StreamWorker implements DunkNetChannelHandler {
 	//private boolean stopInvoked = false;
 	private volatile boolean stopComplete = false;
 
-	
+
 	private DunkNet dunkNet;
 
 	
-	private ZoneId zoneId; 
+	private ZoneId zoneId;
 
 
 	private XStream stream;
@@ -269,6 +269,7 @@ public class StreamWorker implements DunkNetChannelHandler {
 			this.input.setId((long)req.getStreamId());
 			this.input.setSignalTypes(req.getSignals());
 			this.input.setIdentifier(req.getStream());
+			this.input.setZoneId(req.getStreamBundle().getTimeZone());
 		} catch (Exception e) {
 			logger.error(marker, "Exception starting stream session worker {} " + req.getWorkerId(), e.toString());
 			resp.setError(e.toString());

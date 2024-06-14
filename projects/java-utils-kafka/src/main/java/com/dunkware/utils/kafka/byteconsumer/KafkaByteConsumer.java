@@ -112,7 +112,7 @@ public class KafkaByteConsumer {
 		if (spec.getOffsetType() == KafkaByteConsumerSpec.OffsetType.Latest)
 			props.put("auto.offset.reset", "latest");
 		// manual we don't set this?
-		props.put("heartbeat.interval.ms", "100");
+		props.put("heartbeat.interval.ms", "3000");
 		props.put("max.poll.records", 50000);
 		props.put("enable.auto.commit", "true");
 		props.put("auto.commit.interval.ms", "500");

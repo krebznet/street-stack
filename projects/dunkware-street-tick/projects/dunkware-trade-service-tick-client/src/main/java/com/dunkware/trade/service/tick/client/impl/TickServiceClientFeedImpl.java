@@ -53,7 +53,7 @@ public class TickServiceClientFeedImpl implements TickServiceClientFeed, KafkaBy
 		}
 		try {
 			this.tickStream = new TickStreamImpl();
-			this.kafkaConsumer = KafkaByteConsumer.newConsumerInstance(session.getKafkaBroker(), session.getSessionId(), session.getKafkaBroker());
+			this.kafkaConsumer = KafkaByteConsumer.newConsumerInstance(session.getKafkaBroker(), session.getSessionId(), session.getKafkaTopic());
 			this.kafkaConsumer.addStreamHandler(this);
 			this.kafkaConsumer.start();
 		} catch (Exception e) {

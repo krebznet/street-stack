@@ -13,6 +13,7 @@ import org.springframework.context.ApplicationContext;
 import com.dunkware.spring.cluster.DunkNet;
 import com.dunkware.spring.cluster.core.DunkNetImpl;
 import com.dunkware.spring.cluster.protocol.descriptors.DunkNetNodeDescriptor;
+import com.dunkware.utils.core.helpers.DunkUUID;
 import com.dunkware.utils.core.json.DunkJson;
 import com.dunkware.utils.kafka.byteconsumer.KafkaByteConsumer;
 import com.dunkware.utils.kafka.byteconsumer.KafkaByteConsumerSpec;
@@ -43,7 +44,7 @@ public class DunkNetPingPublisher implements KafkaByteHandler {
 		try {
 			String pingTopic = "dunknet." + dunkNet.getConfig().getClusterId() + ".node.ping";
 			KafkaByteConsumerSpec spec = KafkaByteConsumerSpec.newBuilder(KafkaByteConsumerSpec.ConsumerType.Auto, KafkaByteConsumerSpec.OffsetType.Latest)
-                    .addBroker(dunkNet.getConfig().getServerBrokers()).addTopic(pingTopic).setClientAndGroup(dunkNet.getConfig().getNodeId(),dunkNet.getConfig().getNodeId()).setThrottle(500000).build();
+                    .addBroker(dunkNet.getConfig().getServerBrokers()).addTopic(pingTopic).setClientAndGroup(dunkNet.getConfig().getNodeId(),dunkNet.getConfig().getNodeId() + "_" + DunkUUID.randomUUID(5)).setThrottle(500000).build();
             pingConsumer = KafkaByteConsumer.newInstance(spec);
             pingConsumer.addStreamHandler(this);
             pingConsumer.start();

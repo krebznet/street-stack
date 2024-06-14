@@ -48,6 +48,13 @@ public class DunkNetMessage {
 			return this;
 		}
 		
+		
+		public Builder channelPingNull(String channelId, Object payload) { 
+			m.setType(TYPE_CHANNEL_PING_NULL_CHANNEL);
+			m.setChannel(channelId);
+			//m.setParentChannel(payload);
+			return this;
+		}
 
 		public Builder channelRequest(String channelId, Object payload) { 
 			m.setType(TYPE_CHANNEL_REQUEST);
@@ -228,6 +235,7 @@ public class DunkNetMessage {
 		Object payload = null;
 		if (transport.getPayload() != null) {
 			try {
+
 				payload = DunkJson.getObjectMapper().readValue(transport.getPayload(),
 						Class.forName(transport.getPayloadClass()));
 			} catch (Exception e) {
@@ -272,6 +280,7 @@ public class DunkNetMessage {
 	public static final int TYPE_CHANNEL_SERVER_START = 9;
 	public static final int TYPE_CHANNEL_SERVER_START_ERROR = 10;
 	public static final int TYPE_CHANNEL_PING = 11;
+	public static final int TYPE_CHANNEL_PING_NULL_CHANNEL = 12; 
 	
 	
 

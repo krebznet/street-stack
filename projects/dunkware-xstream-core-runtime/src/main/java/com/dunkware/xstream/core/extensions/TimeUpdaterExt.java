@@ -1,5 +1,9 @@
 package com.dunkware.xstream.core.extensions;
 
+import java.time.LocalDateTime;
+
+import com.dunkware.utils.tick.proto.TickProto.Tick;
+import com.dunkware.utils.tick.type.TimeTick;
 import com.dunkware.xstream.api.XStream;
 import com.dunkware.xstream.api.XStreamException;
 import com.dunkware.xstream.api.XStreamExtension;
@@ -59,9 +63,9 @@ public class TimeUpdaterExt implements XStreamExtension {
 		public void run() { 
 			while(!interrupted()) { 
 				try {
-					//LocalDateTime dateTime = LocalDateTime.now(type.getTimeZone()); 
-					//Tick tick = TimeTick.encode(dateTime.get());
-					//stream.getTickRouter().streamTick(tick);
+					LocalDateTime dateTime = LocalDateTime.now(stream.getTimeZoneId()); 
+					Tick tick = TimeTick.encode(dateTime);
+					stream.getTickRouter().consume(tick);
 					Thread.sleep(1000);
 				} catch (Exception e) {
 					if (e instanceof InterruptedException) {

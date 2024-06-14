@@ -224,6 +224,8 @@ public class DunkNetController
 			channel = (DunkNetChannelImpl)getChannel(channelId);
 		
 		} catch (Exception e) {
+			// lets send a messag back saying no channel found
+			
 			logger.error("Channel Ping Handler did not find channel id " + message.getChannel());
 			return;
 		}

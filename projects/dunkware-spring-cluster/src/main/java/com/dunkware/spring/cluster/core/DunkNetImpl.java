@@ -41,6 +41,7 @@ import com.dunkware.spring.runtime.services.ExecutorService;
 import com.dunkware.utils.core.concurrent.DunkExecutor;
 import com.dunkware.utils.core.events.DunkEventNode;
 import com.dunkware.utils.core.events.DunkEventTree;
+import com.dunkware.utils.core.helpers.DunkUUID;
 import com.dunkware.utils.core.json.DunkJson;
 import com.dunkware.utils.kafka.admin.DunkKafkaAdmin;
 import com.dunkware.utils.kafka.byteconsumer.KafkaByteConsumer;
@@ -122,8 +123,8 @@ public class DunkNetImpl implements DunkNet, KafkaByteHandler {
 				// initailize our messageConsumer
 				
 				String nodeTopic = "dunknet." + getConfig().getClusterId() + ".node." + getId();
-				  KafkaByteConsumerSpec spec = KafkaByteConsumerSpec.newBuilder(KafkaByteConsumerSpec.ConsumerType.Auto, KafkaByteConsumerSpec.OffsetType.Earliest)
-                          .addBroker(config.getServerBrokers()).addTopic(nodeTopic).setClientAndGroup(config.getNodeId(),config.getNodeId()).setThrottle(500000).build();
+				  KafkaByteConsumerSpec spec = KafkaByteConsumerSpec.newBuilder(KafkaByteConsumerSpec.ConsumerType.Auto, KafkaByteConsumerSpec.OffsetType.Latest)
+                          .addBroker(config.getServerBrokers()).addTopic(nodeTopic).setClientAndGroup(config.getNodeId(),config.getNodeId() + "_" + DunkUUID.randomUUID(5)).setThrottle(500000).build();
                   messageConsumer = KafkaByteConsumer.newInstance(spec);
                   messageConsumer.addStreamHandler(this);
                   messageConsumer.start();

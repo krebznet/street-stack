@@ -2,6 +2,8 @@ package com.dunkware.trade.service.stream.server.controller.session.extensions;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.ApplicationContext;
 
 import com.dunkware.trade.service.stream.server.controller.session.StreamSession;
 import com.dunkware.trade.service.stream.server.controller.session.StreamSessionExtension;
@@ -17,6 +19,8 @@ public class StreamTimeUpdater implements StreamSessionExtension {
 
 	private StreamSession session;
 	
+	@Autowired
+	private ApplicationContext ac; 
 	private Logger logger = LoggerFactory.getLogger(getClass());
 
 

@@ -7,8 +7,11 @@ import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.DeserializationContext;
 import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.deser.std.StdDeserializer;
 
+
+@JsonDeserialize
 public class JsonBytesDeserializer  extends StdDeserializer<JsonBytes> {
 
     private static final long serialVersionUID = 1514703510863497028L;

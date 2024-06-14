@@ -18,7 +18,7 @@
 		<tag>myrock</tag>
 		<label>cluster</label>
 		<remoteHost>192.168.23.107</remoteHost>
-	<port>30920</port>
+		<port>32759</port>
 		<additionalField>
 			<key>node</key>
 			<value>stream</value>
@@ -36,7 +36,7 @@
 		  <appender-ref ref="FLUENT" />
 		<appender-ref ref="CONSOLE" additivity="false"/>
 </logger>
-	<logger name="com.dunkware" level="debug">
+	<logger name="com.dunkware" level="INFO">
 		  <appender-ref ref="FLUENT" />
 		<appender-ref ref="CONSOLE" additivity="false"/>
 	</logger>

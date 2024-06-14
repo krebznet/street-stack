@@ -15,12 +15,12 @@ import org.springframework.web.reactive.config.EnableWebFlux;
 @EnableAutoConfiguration(exclude={WebMvcAutoConfiguration.class,MongoAutoConfiguration.class, MongoDataAutoConfiguration.class, CassandraAutoConfiguration.class})
 
 //@EnableBinding(StreamProcessor.class)
-public class WorkerService {
+public class WorkerApp {
 
 
 
 	public static void main(String[] args) {
-		SpringApplication.run(WorkerService.class, args);
+		SpringApplication.run(WorkerApp.class, args);
 	}
 	
 	// okay need this here 

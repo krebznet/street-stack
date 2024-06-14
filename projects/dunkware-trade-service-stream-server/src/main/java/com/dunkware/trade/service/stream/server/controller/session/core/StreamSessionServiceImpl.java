@@ -15,6 +15,7 @@ import com.dunkware.trade.service.stream.server.controller.session.StreamSession
 import com.dunkware.trade.service.stream.server.controller.session.StreamSessionExtension;
 import com.dunkware.trade.service.stream.server.controller.session.StreamSessionService;
 import com.dunkware.trade.service.stream.server.controller.session.anot.AStreamSessionExt;
+import com.dunkware.trade.service.stream.server.spring.ReflectionService;
 import com.dunkware.utils.core.helpers.DunkAnot;
 
 @Component
@@ -25,14 +26,24 @@ public class StreamSessionServiceImpl implements StreamSessionService {
 	@Autowired
 	private ApplicationContext ac; 
 	
+	@Autowired
+	private ReflectionService refService; 
+	
 	@PostConstruct
 	void load() { 
-		extClasses = DunkAnot.getClassesAnnotedWith(AStreamSessionExt.class);
+		//DunkAnot.getDunkwareReflections();
+		
+		//extClasses = DunkAnot.getClassesAnnotedWith(AStreamSessionExt.class);
 	}
 	
-	public List<StreamSessionExtension> createExtensions() throws StreamSessionException { 
+	public List<StreamSessionExtension> createExtensions() throws StreamSessionException {
+		
+		Class<?>[] classes = ReflectionService.findAllAnnotatedClassesInPackage("com.dunkware", AStreamSessionExt.class);
+		
+		
+		//extClasses = refService.getClassesAnnotedWith(AStreamSessionExt.class);
 		List<StreamSessionExtension> extensions = new ArrayList<StreamSessionExtension>();
-		for (Class<?> clazz : extClasses) {
+		for (Class<?> clazz : classes) {
 			try {
 				StreamSessionExtension ext = (StreamSessionExtension)clazz.newInstance();
 				ac.getAutowireCapableBeanFactory().autowireBean(ext);

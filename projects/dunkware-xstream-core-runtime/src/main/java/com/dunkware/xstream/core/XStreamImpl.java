@@ -86,7 +86,7 @@ public class XStreamImpl implements XStream {
 	@Override
 	public void start(XStreamInput input) throws XStreamException {
 		try {
-			DunkTimeZones.getZoneId(input.getZoneId());
+			zoneId = DunkTimeZones.getZoneId(input.getZoneId());
 		} catch (Exception e2) {
 			throw new XStreamException("Exception gettting time zone " + e2.toString());
 		}

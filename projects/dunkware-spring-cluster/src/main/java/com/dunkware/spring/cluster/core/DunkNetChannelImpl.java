@@ -383,6 +383,8 @@ public class DunkNetChannelImpl implements DunkNetChannel {
 					ping.setDescriptors(descriptors);
 					DunkNetMessage m = DunkNetMessage.builder().channelPing(getChannelId(), ping).buildMessage();
 					getNode().message(m);
+					// we need to get a channel not found message from the ping and come back 
+					// to the channel 
 				} catch (Exception e) {
 					if (e instanceof InterruptedException) { 
 						return;
