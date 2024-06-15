@@ -1,0 +1,159 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+
+
+	<groupId>com.dunkware.sdk</groupId>
+	<artifactId>sdk-blocks-schema</artifactId>
+	<version>1.0.0-SNAPSHOT</version>
+
+	<name>Dunkware Blocks Schema</name>
+	<description>Dunkware Blocks Schema</description>
+
+	<properties>
+		<java.version>17</java.version>
+
+		<sourceDirectory>/src/mainjava</sourceDirectory>
+		<maven.compiler.source>17</maven.compiler.source>
+		<maven.compiler.target>17</maven.compiler.target>
+		<openapi-generator.version>7.6.0</openapi-generator.version>
+		<swagger-annotations.version>2.2.20</swagger-annotations.version>
+	</properties>
+
+
+	<dependencies>
+
+		<dependency>
+			<groupId>org.openapitools</groupId>
+			<artifactId>openapi-generator</artifactId>
+			<version>7.6.0</version>
+		</dependency>
+		<!--
+		https://mvnrepository.com/artifact/com.fasterxml.jackson.core/jackson-databind -->
+		<dependency>
+			<groupId>com.fasterxml.jackson.core</groupId>
+			<artifactId>jackson-databind</artifactId>
+			<version>2.17.1</version>
+
+		</dependency>
+
+		<!--
+		https://mvnrepository.com/artifact/jakarta.annotation/jakarta.annotation-api -->
+		<dependency>
+			<groupId>jakarta.annotation</groupId>
+			<artifactId>jakarta.annotation-api</artifactId>
+			<version>3.0.0</version>
+		</dependency>
+
+		<!--
+		https://mvnrepository.com/artifact/org.springframework.boot/spring-boot -->
+
+
+		<!-- https://mvnrepository.com/artifact/redis.clients/jedis -->
+
+		<dependency>
+			<groupId>io.swagger.core.v3</groupId>
+			<artifactId>swagger-annotations</artifactId>
+			<version>${swagger-annotations.version}</version>
+		</dependency>
+
+		<dependency>
+			<groupId>org.javatuples</groupId>
+			<artifactId>javatuples</artifactId>
+			<version>1.2</version>
+		</dependency>
+
+		<!--
+		https://mvnrepository.com/artifact/com.fasterxml.jackson.core/jackson-core -->
+		<dependency>
+			<groupId>com.fasterxml.jackson.core</groupId>
+			<artifactId>jackson-core</artifactId>
+			<version>2.17.1</version>
+		</dependency>
+		<!--
+		https://mvnrepository.com/artifact/com.fasterxml.jackson.core/jackson-annotations -->
+		<dependency>
+			<groupId>com.fasterxml.jackson.core</groupId>
+			<artifactId>jackson-annotations</artifactId>
+			<version>2.17.1</version>
+		</dependency>
+
+		<!--
+		https://mvnrepository.com/artifact/org.junit.jupiter/junit-jupiter-api -->
+		<dependency>
+			<groupId>org.junit.jupiter</groupId>
+			<artifactId>junit-jupiter-api</artifactId>
+			<version>5.9.2</version>
+			<scope>test</scope>
+		</dependency>
+
+	</dependencies>
+
+	<build>
+		<sourceDirectory>src/main/java</sourceDirectory>
+		<plugins>
+			<plugin>
+				<groupId>org.openapitools</groupId>
+				<artifactId>openapi-generator-maven-plugin</artifactId>
+				<version>${openapi-generator.version}</version>
+				<executions>
+					<execution>
+						<goals>
+							<goal>generate</goal>
+						</goals>
+						<configuration>
+							<generateSupportingFiles>true</generateSupportingFiles>
+							<supportingFilesToGenerate>
+								Pair.java,ApiResponse.java,ApiException.java,ApiClient.java,AbstractOpenApiSchema.java,JSON.java,RFC3339DateFormat.java</supportingFilesToGenerate>
+							<skipValidateSpec>true</skipValidateSpec>
+							<output>${project.basedir}</output>
+							<generateApis>true</generateApis>
+							<inputSpec>
+								${project.basedir}/model.yml</inputSpec>
+							<generatorName>java</generatorName>
+
+							<templateResourcePath>
+								${project.basedir}/src/main/resources/templates/native</templateResourcePath>
+							<globalProperties>
+								<debugOpenAPI>true</debugOpenAPI>
+								<generateApis>true</generateApis>
+
+							</globalProperties>
+
+							<configOptions>
+								<generateSupportingFiles>true</generateSupportingFiles>
+								<supportingFilesToGenerate>
+									Pair.java,ApiResponse.java,ApiException.java,ApiClient.java,AbstractOpenApiSchema.java,JSON.java,RFC3339DateFormat.java</supportingFilesToGenerate>
+								<useJakartaEe>true</useJakartaEe>
+								<generateApis>false</generateApis>
+								<sourceFolder>src/main/java</sourceFolder>
+								<library>native</library>
+								<oas3>true</oas3>
+								<useSpringController>false</useSpringController>
+								<!-- javax.* to jakarta.* -->
+								<useSpringBoot3>false</useSpringBoot3>
+								<useSpringfox>false</useSpringfox>
+								<dateLibrary>java17</dateLibrary>
+								<openApiNullable>false</openApiNullable>
+								<delegatePattern>true</delegatePattern>
+
+
+								<documentationProvider>source</documentationProvider>
+
+								<apiPackage>com.dunkware.blocks.api</apiPackage>
+								<modelPackage>
+									com.dunkware.blocks.model</modelPackage>
+								<documentationProvider>source</documentationProvider>
+							</configOptions>
+						</configuration>
+					</execution>
+				</executions>
+			</plugin>
+		</plugins>
+	</build>
+
+
+</project>
