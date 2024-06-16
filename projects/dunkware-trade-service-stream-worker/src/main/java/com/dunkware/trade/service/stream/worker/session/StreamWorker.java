@@ -8,10 +8,13 @@ import java.util.Set;
 import java.util.Timer;
 import java.util.TimerTask;
 
+import org.redisson.api.RedissonClient;
+import org.redisson.client.RedisConnection;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.slf4j.Marker;
 import org.slf4j.MarkerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import com.dunkware.spring.cluster.DunkNet;
 import com.dunkware.spring.cluster.DunkNetChannel;
@@ -28,6 +31,7 @@ import com.dunkware.trade.service.stream.json.worker.stream.StreamSessionWorkerS
 import com.dunkware.trade.service.stream.json.worker.stream.StreamSessionWorkerStopReq;
 import com.dunkware.trade.service.stream.json.worker.stream.StreamSessionWorkerStopResp;
 import com.dunkware.trade.service.stream.json.worker.stream.StreamSessionWorkerStopState;
+import com.dunkware.trade.service.stream.worker.istream.IStream;
 import com.dunkware.trade.service.stream.worker.session.anot.AStreamWorkerExtension;
 import com.dunkware.trade.service.stream.worker.session.query.StreamWorkerEntityQueryBuilder;
 import com.dunkware.utils.core.concurrent.DunkExecutor;
@@ -42,7 +46,7 @@ import com.dunkware.xstream.core.XStreamCore;
 import com.dunkware.xstream.core.XStreamImpl;
 
 
-public class StreamWorker implements DunkNetChannelHandler {
+public class StreamWorker implements DunkNetChannelHandler, IStream {
 
 	private StreamSessionWorkerStartReq req;
 
@@ -53,6 +57,9 @@ public class StreamWorker implements DunkNetChannelHandler {
 
 	private DunkNetChannel channel;
 
+	
+	private StreamWorkerService workerService; 
+	
 	private XStreamInput input = new XStreamInput();
 
 	//private boolean stopInvoked = false;
@@ -72,6 +79,7 @@ public class StreamWorker implements DunkNetChannelHandler {
 	private StreamSessionWorkerStatus status = StreamSessionWorkerStatus.Pending;
 	private StreamSessionWorkerStopState stopState = StreamSessionWorkerStopState.StopPending;
 	
+	private RedisConnection redisConnection; 
 
 	private Timer statTimer = null;
 
@@ -83,9 +91,10 @@ public class StreamWorker implements DunkNetChannelHandler {
 	
 	private ExecutorService executorService;
 
-	public void init(DunkNet dunkNet, ExecutorService service) {
+	public void init(DunkNet dunkNet, ExecutorService service, StreamWorkerService workerService) {
 		this.executorService = service;
 		this.dunkNet = dunkNet; 
+		this.workerService = workerService;
 		
 		marker = MarkerFactory.getMarker("StreamWorker" + dunkNet.getId());
 	}
@@ -94,6 +103,14 @@ public class StreamWorker implements DunkNetChannelHandler {
 	public Marker getMarker() { 
 		return marker; 
 	}
+	
+	
+
+	@Override
+	public RedissonClient getRedissonClient() {
+		return workerService.getRedissonClient();
+	}
+
 
 	public StreamSessionWorkerStartReq getStartReq() {
 		return req;
@@ -258,7 +275,9 @@ public class StreamWorker implements DunkNetChannelHandler {
 				
 			} catch (Exception e) {
 				logger.error(marker, "Exception init extension " + e.toString());
-
+				resp.setCode("ERROR");
+				resp.setError("Exception on extension init " + e.toString());
+				return resp;
 			}
 		}
 		try {

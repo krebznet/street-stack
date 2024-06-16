@@ -1,6 +1,7 @@
 package com.dunkware.spring.cluster.core.controllers;
 
 import java.util.List;
+import java.util.Vector;
 import java.util.concurrent.ConcurrentHashMap;
 
 import org.slf4j.Logger;
@@ -365,6 +366,26 @@ public class DunkNetController
 		DunkNetNode reqNode = null;
 		try {
 			reqNode = getSenderNode(message);
+			int nullCount = 0; 
+			while(reqNode == null) { 
+				logger.error("ReqNode Null remote node is " + message.getSenderId());
+				Vector<DunkNetNode> nodes = net.getNodes();
+				for (DunkNetNode dunkNetNode : nodes) {
+					logger.error("found " + dunkNetNode.getId());
+					if(dunkNetNode.getId().equals(message.getSenderId())) { 
+						logger.error("match in loop");
+						reqNode = dunkNetNode;
+						break;
+					}
+				}
+				nullCount++;
+				Thread.sleep(200);
+				if(nullCount > 20) { 
+					logger.error("Fatal RequNode Fucked Not Found");
+					break;
+				}
+				
+			}
 		} catch (Exception e) {
 			logger.error("handdleChannelResponse() getSenderNode() exception {}",e.toString(),e);
 		}

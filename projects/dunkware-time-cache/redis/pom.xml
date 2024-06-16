@@ -6,7 +6,6 @@
 	<modelVersion>4.0.0</modelVersion>
 
 
-
 	<groupId>com.dunkware.time</groupId>
 	<artifactId>dunkware-time-cache-redis</artifactId>
 	<version>1.0.0-SNAPSHOT</version>
@@ -32,18 +31,13 @@
 			<version>4.13.2</version>
 		</dependency>
 
-		<!-- https://mvnrepository.com/artifact/redis.clients/jedis -->
+		<!-- https://mvnrepository.com/artifact/org.redisson/redisson -->
 		<dependency>
-			<groupId>redis.clients</groupId>
-			<artifactId>jedis</artifactId>
-			<version>5.1.0</version>
+			<groupId>org.redisson</groupId>
+			<artifactId>redisson</artifactId>
+			<version>3.31.0</version>
 		</dependency>
-		
-		<dependency>
-			<groupId>com.dunkware.utils</groupId>
-			<artifactId>java-utils-redis</artifactId>
-			<version>1.0.0-SNAPSHOT</version>
-		</dependency>
+
 
 		<dependency>
 			<groupId>org.javatuples</groupId>

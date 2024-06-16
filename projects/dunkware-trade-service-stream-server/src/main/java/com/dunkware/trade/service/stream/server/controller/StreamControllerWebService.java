@@ -9,6 +9,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -26,10 +27,16 @@ import com.dunkware.trade.service.stream.json.controller.StopStreamResp;
 import com.dunkware.trade.service.stream.json.controller.StreamStatsResp;
 import com.dunkware.trade.service.stream.json.controller.UpdateStreamReq;
 import com.dunkware.trade.service.stream.json.controller.UpdateStreamResp;
+import com.dunkware.trade.service.stream.json.controller.session.StreamDashEntity;
+import com.dunkware.trade.service.stream.json.controller.session.StreamDashNode;
+import com.dunkware.trade.service.stream.json.controller.session.StreamDashStats;
+import com.dunkware.trade.service.stream.json.controller.session.StreamSessionStats;
 import com.dunkware.trade.service.stream.json.controller.spec.StreamControllerSpec;
+import com.dunkware.trade.service.stream.json.controller.spec.StreamControllerStats;
 import com.dunkware.trade.service.stream.json.controller.spec.StreamState;
 import com.dunkware.trade.service.stream.resources.StreamResource;
 import com.dunkware.trade.service.stream.server.tick.StreamTickService;
+import com.dunkware.trade.tick.model.ticker.TradeTickerSpec;
 
 
 @RestController
@@ -205,7 +212,72 @@ public class StreamControllerWebService {
 	
 
 	
+	@GetMapping(path = "/stream/dash/stats",produces = MediaType.APPLICATION_JSON_VALUE)
+	public @ResponseBody StreamDashStats streamFuckMe(@RequestParam String ident) throws Exception { 
+		StreamController controller = service.getStreamByName("us_equity");
+		StreamControllerStats stats = controller.getStats();
+		StreamDashStats resp = new StreamDashStats();
+		resp.setStatus(stats.getState().name());
+		
+		StreamSessionStats session = stats.getSession();
+		if(session != null) { 
+			resp.setEntityCount(session.getTickerCount());
+			resp.setNodes(session.getNodeCount());
+			resp.setTasksCompleted((int)session.getCompletedTasks());
+			resp.setTasksExpired((int)session.getTimeoutTasks());
+			resp.setTasksPending((int)session.getPendingTasks());
+			resp.setTickCount(session.getTickCount());
+			resp.setSignalCount((int)session.getSignalCount());
+			
+			
+		} else { 
+			resp.setEntityCount(0);
+			resp.setNodes(0);
+			resp.setTasksCompleted(0);
+			resp.setTasksExpired(0);
+			resp.setTasksPending(0);
+			resp.setTickCount(0);
+		}
+		return resp;
+	}
 
+	@GetMapping(path = "/stream/dash/nodes")
+	public @ResponseBody List<StreamDashNode> streamDashNodes(@RequestParam String ident) throws Exception  { 
+		
+		return null;
+	}
+	
+	
+	@GetMapping(path = "/stream/dash/entities")
+	public @ResponseBody List<StreamDashEntity> streamDashEntities(@RequestParam String stream) throws Exception  { 
+		List<StreamDashEntity> entities = new ArrayList<StreamDashEntity>();
+		for (TradeTickerSpec spec : service.getStreamByName("us_equity").getTickers()) {
+			StreamDashEntity entity = new StreamDashEntity();
+			entity.setSymbol(spec.getSymbol());
+			entity.setName(spec.getName());
+			entity.setId(spec.getId());
+			entities.add(entity);
+		}
+		return entities;
+	}
+	
+
+	@GetMapping(path = "/stream/dash/entity")
+	public @ResponseBody StreamDashEntity streamDashEntity(@RequestParam String stream, @RequestParam String ident) throws Exception  { 
+		for (TradeTickerSpec spec : service.getStreamByName("us_equity").getTickers()) {
+			if(spec.getSymbol().equalsIgnoreCase(ident)) { 
+				StreamDashEntity entity = new StreamDashEntity();
+				entity.setSymbol(spec.getSymbol());
+				entity.setName(spec.getName());
+				return entity;	
+			}
+			
+		}
+		logger.error("Entity Not found in /stream/dash/entity " + ident);
+		throw new Exception("Entity Not Found " + ident);
+	}
+	
+		
 	
 
 	

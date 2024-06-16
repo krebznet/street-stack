@@ -52,6 +52,7 @@
 		<module>services/stats</module>
 		<module>services/signals</module>
 	  <module>libraries/model</module>
+	  <module>libraries/cache</module>
 		<module>libraries/codec</module>
 		<module>libraries/stats</module>
 

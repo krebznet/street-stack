@@ -48,7 +48,7 @@ public class DunkNetChannelImpl implements DunkNetChannel {
 	private DunkNetDescriptors remoteDescriptors;
 	
 	private DunkNet net;
-	private DunkNetNode node;
+	private volatile DunkNetNode node;
 	private String channelId;
 	private List<DunkNetChannelListener> listeners = new ArrayList<DunkNetChannelListener>();
 	private Semaphore listenerLock = new Semaphore(1);
@@ -78,6 +78,11 @@ public class DunkNetChannelImpl implements DunkNetChannel {
 		this.client = client;
 		this.node = node;
 		this.net = node.getNet();
+		try {
+			Thread.sleep(100);
+		} catch (Exception e) {
+			// TODO: handle exception
+		}
 	}
 	
 	
@@ -105,14 +110,7 @@ public class DunkNetChannelImpl implements DunkNetChannel {
 	
 	@Override
 	public void setRemoteDescriptors(DunkNetDescriptors descriptors) {
-		try {
-			System.out.println("remot descriptors set on " + this.getNode().getId() + DunkJson.serializePretty(descriptors));	
-		} catch (Exception e) {
-			e.printStackTrace();
-			// TODO: handle exception
-		}
-		
-		
+	
 		this.remoteDescriptors = descriptors;
 	}
 
