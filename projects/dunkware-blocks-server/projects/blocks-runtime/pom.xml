@@ -4,15 +4,14 @@
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
-	
- <parent>
-	<groupId>com.dunkware.sdk</groupId>
-	<artifactId>sdk-blocks-parent</artifactId>
-	<version>1-SNAPSHOT</version>
-	<relativePath>../pom.xml</relativePath>
- </parent>
 
-	<groupId>com.dunkware.sdk</groupId>
+	<parent>
+		<groupId>com.dunkware.sdk</groupId>
+		<artifactId>sdk-blocks-parent</artifactId>
+		<version>1-SNAPSHOT</version>
+		<relativePath>../pom.xml</relativePath>
+	</parent>
+	
 	<artifactId>sdk-blocks-runtime</artifactId>
 	<version>1.0.0-SNAPSHOT</version>
 
@@ -23,11 +22,18 @@
 	<dependencies>
 
 
-<dependency>
-	<groupId>com.dunkware.sdk</groupId>
-	<artifactId>sdk-blocks-schema</artifactId>
-	<version>1.0.0-SNAPSHOT</version>
-</dependency>
+
+		<dependency>
+			<groupId>com.dunkware.utils</groupId>
+			<artifactId>java-utils-core</artifactId>
+			<version>1.0.0-SNAPSHOT</version>
+		</dependency>
+		
+		<dependency>
+			<groupId>com.dunkware.sdk</groupId>
+			<artifactId>sdk-blocks-schema</artifactId>
+			<version>1.0.0-SNAPSHOT</version>
+		</dependency>
 		<!--
 		https://mvnrepository.com/artifact/org.springframework.boot/spring-boot -->
 
@@ -37,7 +43,7 @@
 			<version>4.13.2</version>
 		</dependency>
 
-			<!--
+		<!--
 		https://mvnrepository.com/artifact/com.fasterxml.jackson.core/jackson-databind -->
 		<dependency>
 			<groupId>com.fasterxml.jackson.core</groupId>
@@ -72,7 +78,6 @@
 		</dependency>
 
 
-
 		<dependency>
 
 			<groupId>org.reflections</groupId>
@@ -98,7 +103,6 @@
 
 
 	</dependencies>
-
 
 
 </project>

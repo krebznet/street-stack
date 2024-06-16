@@ -25,11 +25,11 @@
 		<testSourceDirectory>/src/test/java</testSourceDirectory>
 
 		<src.dir>src/main/java</src.dir>
-		<jdk.version>11</jdk.version>
+		<jdk.version>17</jdk.version>
 
 
-		<maven.compiler.source>11</maven.compiler.source>
-		<maven.compiler.target>11</maven.compiler.target>
+		<maven.compiler.source>17</maven.compiler.source>
+		<maven.compiler.target>17</maven.compiler.target>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 
 		<!-- Dependency Versions -->
@@ -72,7 +72,6 @@
 		<module>projects/dunkware-trade-service-stream-server</module>
 		<module>projects/dunkware-trade-service-stream-worker</module>
 
-		<module>projects/dunkware-trade-service-stream-cluster</module>
 		<module>projects/dunkware-trade-service-web-server</module>
 		<module>projects/dunkware-trade-service-web-mock</module>
 		<module>projects/dunkware-trade-service-web-json</module>
@@ -88,7 +87,7 @@
 		<module>projects/java-generic-model</module>
 		<module>projects/dunkware-street-model</module>
 		<module>projects/dunkware-street-server</module>
-		
+		<module>xscript</module>
 	</modules>
 	<build>
 		<!-- To define the plugin version in your parent POM -->

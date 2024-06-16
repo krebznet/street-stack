@@ -31,7 +31,7 @@
 	<modules>
 
 		<module>./projects/blocks-runtime</module>
-		<module>./projects/blocks-schema</module>
+		<module>./projects/ blocks-schema</module>
 
 	</modules>
 	

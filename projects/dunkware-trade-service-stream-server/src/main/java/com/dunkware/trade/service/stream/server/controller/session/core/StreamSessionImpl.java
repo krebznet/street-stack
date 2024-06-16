@@ -364,6 +364,7 @@ public class StreamSessionImpl implements StreamSession {
 			rowCount.addAndGet(bean.getEntityCount());
 			tickCount.addAndGet(bean.getTickCount());
 			entitySnapshotPublishCount.addAndGet(node.getBean().getEntitySnapshotCount());
+			status.getNodes().add(bean);
 		}
 		status.setSignalCount(signalCount.get());
 		status.setCompletedTasks(completedTasks.get());

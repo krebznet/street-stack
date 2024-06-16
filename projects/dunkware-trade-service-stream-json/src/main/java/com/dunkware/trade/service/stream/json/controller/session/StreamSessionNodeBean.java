@@ -3,6 +3,8 @@ package com.dunkware.trade.service.stream.json.controller.session;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.antlr.runtime.misc.Stats;
+
 import com.dunkware.utils.core.observable.ObservableBean;
 
 public class StreamSessionNodeBean extends ObservableBean {
@@ -24,6 +26,7 @@ public class StreamSessionNodeBean extends ObservableBean {
 	private String stopState; 
 	private String stopError; 
 	private long entitySnapshotCount = 0; 
+	private Stats stats;
 
 	
 	private List<String> stopProblems = new ArrayList<String>();
@@ -130,6 +133,14 @@ public class StreamSessionNodeBean extends ObservableBean {
 	public void setEntitySnapshotCount(long entitySnapshotCount) {
 		this.entitySnapshotCount = entitySnapshotCount;
 	}
+	public Stats getStats() {
+		return stats;
+	}
+	public void setStats(Stats stats) {
+		this.stats = stats;
+	}
+	
+	
 	
 	
 	

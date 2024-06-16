@@ -277,6 +277,7 @@ public class StreamSessionNodeImpl implements StreamSessionNode, DunkNetChannelH
 		bean.setTasksExpired(stats.getTimeoutTaskCount());
 		bean.setTickCount((int)stats.getTickCount());
 		bean.setEntitySnapshotCount(stats.getEntitySnapshotCount());
+		bean.setStats(stats.getDynamicStats());
 		bean.notifyUpdate();
 		this.workerStats = stats;
 		

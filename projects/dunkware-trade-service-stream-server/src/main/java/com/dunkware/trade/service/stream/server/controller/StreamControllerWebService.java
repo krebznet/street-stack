@@ -12,7 +12,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
@@ -21,10 +20,10 @@ import org.springframework.web.server.ResponseStatusException;
 import com.dunkware.spring.runtime.controller.UserException;
 import com.dunkware.trade.service.stream.json.controller.AddStreamReq;
 import com.dunkware.trade.service.stream.json.controller.AddStreamResp;
-import com.dunkware.trade.service.stream.json.controller.GetStreamSpecResp;
 import com.dunkware.trade.service.stream.json.controller.GetStreamSpecsResp;
 import com.dunkware.trade.service.stream.json.controller.StartStreamResp;
 import com.dunkware.trade.service.stream.json.controller.StopStreamResp;
+import com.dunkware.trade.service.stream.json.controller.StreamStatsResp;
 import com.dunkware.trade.service.stream.json.controller.UpdateStreamReq;
 import com.dunkware.trade.service.stream.json.controller.UpdateStreamResp;
 import com.dunkware.trade.service.stream.json.controller.spec.StreamControllerSpec;
@@ -92,6 +91,23 @@ public class StreamControllerWebService {
 		StreamController controller = service.getStreamByName(stream);
 		controller.setTickers(parsed);
 		
+	}
+	
+	
+	
+	@GetMapping(path = "/stream/core/stats") 
+	public @ResponseBody()StreamStatsResp streamStatus(@RequestParam(name = "stream")String stream) {
+		StreamStatsResp resp = new StreamStatsResp();
+		try {
+			StreamController controller = service.getStreamByName(stream);
+			resp.setCode("SUCCESS");
+			resp.setStats(controller.getStats());
+			return resp;
+		} catch (Exception e) {
+			resp.setCode("ERROR");
+			resp.setError("Exception getting stream " + e.toString());;
+			return resp;
+		}
 	}
 		
 	
@@ -162,24 +178,6 @@ public class StreamControllerWebService {
 		} catch (Exception e) {
 		
 			throw new Exception("Exception interla getting state on stream " + e.toString());
-		}
-		
-	}
-	
-
-	
-	@RequestMapping(path = "/stream/core/get")
-	public @ResponseBody GetStreamSpecResp getStreamSpec(@RequestParam(name = "stream") String stream) { 
-		GetStreamSpecResp resp = new GetStreamSpecResp();
-		try {
-			StreamController controller = service.getStreamByName(stream);
-			StreamControllerSpec spec = controller.getSpec();
-			resp.setSpec(spec);
-			resp.setCode("SUCCESS");
-			return resp;			
-		} catch (Exception e) {
-			resp.setError("Exception Getting Stream " + e.toString());
-			return resp;
 		}
 		
 	}

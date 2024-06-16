@@ -32,6 +32,8 @@ import com.dunkware.trade.service.stream.worker.session.anot.AStreamWorkerExtens
 import com.dunkware.trade.service.stream.worker.session.query.StreamWorkerEntityQueryBuilder;
 import com.dunkware.utils.core.concurrent.DunkExecutor;
 import com.dunkware.utils.core.helpers.DunkAnot;
+import com.dunkware.utils.core.stats.StatRegistry;
+import com.dunkware.utils.core.stats.Stats;
 import com.dunkware.utils.core.time.DunkTimeZones;
 import com.dunkware.xstream.api.XStream;
 import com.dunkware.xstream.api.XStreamInput;
@@ -77,12 +79,14 @@ public class StreamWorker implements DunkNetChannelHandler {
 
 	private List<StreamWorkerExtension> workerExtensions = new ArrayList<StreamWorkerExtension>();
 
+	private StatRegistry statRegistry; 
 	
 	private ExecutorService executorService;
 
 	public void init(DunkNet dunkNet, ExecutorService service) {
 		this.executorService = service;
 		this.dunkNet = dunkNet; 
+		
 		marker = MarkerFactory.getMarker("StreamWorker" + dunkNet.getId());
 	}
 	
@@ -108,6 +112,10 @@ public class StreamWorker implements DunkNetChannelHandler {
 		this.channel.addExtension(this);
 		logger.info(marker, "Channel Init invoked");
 	}
+	
+	public StatRegistry getStatRegistry() { 
+		return statRegistry; 
+	}
 
 	public XStream getXStream() {
 		return stream;
@@ -129,6 +137,11 @@ public class StreamWorker implements DunkNetChannelHandler {
 		return zoneId; 
 	}
 
+	
+	
+	public Stats getStats() { 
+		return statRegistry.getStats();
+	}
 	
 	
 	@ADunkNetService(label = "Stop Session Worker Stream")
@@ -219,6 +232,7 @@ public class StreamWorker implements DunkNetChannelHandler {
 
 	@ADunkNetService(label = "Start Session Worker Stream")
 	public StreamSessionWorkerStartResp startStream(StreamSessionWorkerStartReq req) {
+		statRegistry = StatRegistry.newInstance(req.getStream());
 		StreamSessionWorkerStartResp resp = new StreamSessionWorkerStartResp();
 		try {
 			zoneId = DunkTimeZones.getZoneId(req.getStreamBundle().getTimeZone());

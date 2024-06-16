@@ -2,6 +2,8 @@ package com.dunkware.trade.service.stream.json.worker.stream;
 
 import java.time.LocalTime;
 
+import org.antlr.runtime.misc.Stats;
+
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonInclude.Include;
 
@@ -24,6 +26,7 @@ public class StreamSessionWorkerStats {
 	private int numericId;
 	private StreamSessionWorkerStopState stopState;
 	private long entitySnapshotCount = 0;
+	private Stats dynamicStats;
 	
 	private String status;
 
@@ -218,6 +221,18 @@ public class StreamSessionWorkerStats {
 	public void setEntitySnapshotCount(long entitySnapshotCount) {
 		this.entitySnapshotCount = entitySnapshotCount;
 	}
+
+
+	public Stats getDynamicStats() {
+		return dynamicStats;
+	}
+
+
+	public void setDynamicStats(Stats dynamicStats) {
+		this.dynamicStats = dynamicStats;
+	}
+	
+	
 	
 	
 
