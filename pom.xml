@@ -88,8 +88,9 @@
 		<module>projects/dunkware-street-model</module>
 		<module>projects/dunkware-street-server</module>
 		<module>projects/dunkware-street-broker</module>
-		<module>projects/trade-broker-api</module>
-		<module>projects/trade-broker-tws</module>
+		<module>projects/trade-api-broker</module>
+		<module>projects/trade-tws-broker</module>
+		<module>projects/trade-tws-demo</module>
 		<module>xscript</module>
 	</modules>
 	<build>
