@@ -9,11 +9,11 @@ import java.util.List;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.dunkware.stream.data.cassy.entity.sesion.StreamSessionKey;
-import com.dunkware.stream.data.cassy.entity.sesion.StreamSessionRow;
-import com.dunkware.stream.data.cassy.entity.stats.EntityStatsKey;
-import com.dunkware.stream.data.cassy.entity.stats.EntityStatsRow;
-import com.dunkware.stream.data.cassy.entity.stats.EntityVarStats;
+import com.dunkware.stream.data.cassy.entity.sesion.DBStreamSessionKey;
+import com.dunkware.stream.data.cassy.entity.sesion.DBStreamSessionRow;
+import com.dunkware.stream.data.cassy.entity.stats.DBEntityStatsKey;
+import com.dunkware.stream.data.cassy.entity.stats.DBEntityStatsRow;
+import com.dunkware.stream.data.cassy.entity.stats.DBEntityVarStats;
 import com.dunkware.stream.data.cassy.repository.session.StreamSessionRepo;
 import com.dunkware.stream.data.cassy.repository.stats.EntityStatsRepo;
 
@@ -32,8 +32,8 @@ public class TestController {
 
 	@GetMapping(path = "/insert/session")
 	public String insertSessionMeta() {
-		StreamSessionKey key = new StreamSessionKey(0, LocalDate.now().minusDays(2));
-		StreamSessionRow ent = new StreamSessionRow();
+		DBStreamSessionKey key = new DBStreamSessionKey(0, LocalDate.now().minusDays(2));
+		DBStreamSessionRow ent = new DBStreamSessionRow();
 		ent.setKey(key);
 		List<Integer> ents = new ArrayList<Integer>();
 		int i = 0;
@@ -59,14 +59,14 @@ public class TestController {
 
 	@GetMapping(path = "/insert/entity_stats")
 	public void testInsert() {
-		EntityStatsRow ent = new EntityStatsRow();
-		EntityStatsKey key = new EntityStatsKey();
+		DBEntityStatsRow ent = new DBEntityStatsRow();
+		DBEntityStatsKey key = new DBEntityStatsKey();
 		key.setDate(LocalDate.of(2024, 2, 15));
 		key.setEntity(2);
 		key.setStream(1);
 		ent.setKey(key);
 		ent.getSignals().put(1, 100);
-		EntityVarStats var = new EntityVarStats();
+		DBEntityVarStats var = new DBEntityVarStats();
 
 		var.getStats().put(1, 23.4);
 		var.getStats().put(2, 32.3);
@@ -79,7 +79,7 @@ public class TestController {
 		var.getTimes().put(1, LocalTime.of(3, 3, 3));
 
 		ent.getVars().put(1, var);
-		var = new EntityVarStats();
+		var = new DBEntityVarStats();
 
 		var.getStats().put(1, 23.4);
 		var.getStats().put(2, 32.3);

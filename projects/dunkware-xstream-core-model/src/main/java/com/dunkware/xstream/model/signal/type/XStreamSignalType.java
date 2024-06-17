@@ -18,7 +18,7 @@ public class XStreamSignalType {
 	
 	public String getIdentifier() {
 		return identifier;
-	}
+	} // XStreamSignal --
 	public void setIdentifier(String identifier) {
 		this.identifier = identifier;
 	}

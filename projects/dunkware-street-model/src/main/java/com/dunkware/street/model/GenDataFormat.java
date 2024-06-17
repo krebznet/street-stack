@@ -38,7 +38,7 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
   GenDataFormat.JSON_PROPERTY_CURRENCY_SYMBOL,
   GenDataFormat.JSON_PROPERTY_ABBREVIATION_STYLE
 })
-@jakarta.annotation.Generated(value = "org.openapitools.codegen.languages.JavaClientCodegen", date = "2024-06-16T03:35:07.432806-05:00[America/Chicago]", comments = "Generator version: 7.6.0")
+@jakarta.annotation.Generated(value = "org.openapitools.codegen.languages.JavaClientCodegen", date = "2024-06-16T19:33:55.211341-05:00[America/Chicago]", comments = "Generator version: 7.6.0")
 public class GenDataFormat {
   /**
    * The type of data formatting to apply.

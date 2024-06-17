@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.server.ResponseStatusException;
 
-import com.dunkware.stream.data.cassy.entity.stats.EntityStatsRow;
+import com.dunkware.stream.data.cassy.entity.stats.DBEntityStatsRow;
 import com.dunkware.stream.data.cassy.helpers.EntityStatsRowHelper;
 import com.dunkware.stream.data.cassy.repository.stats.EntityStatsRepo;
 import com.dunkware.stream.data.model.stats.entity.EntityStatsModel;
@@ -29,7 +29,7 @@ public class QueryController {
 	public @ResponseBody EntityStatsModel entityDateStats(@RequestParam int stream, @RequestParam int entity, @RequestParam String date) throws Exception  {
 		try {
 			LocalDate dateParsed = LocalDate.parse(date);
-			List<EntityStatsRow> results = statsRepo.findByKeyStreamAndKeyEntityAndKeyDate	(stream, entity, dateParsed);
+			List<DBEntityStatsRow> results = statsRepo.findByKeyStreamAndKeyEntityAndKeyDate	(stream, entity, dateParsed);
 			if(results.size() == 0) { 
 				throw new ResponseStatusException(HttpStatus.NOT_EXTENDED, "Query Returned 0 Results");
 			}

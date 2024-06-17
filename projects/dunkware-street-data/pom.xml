@@ -47,6 +47,7 @@
 
 
     <module>modules/cassy</module>
+	<module>modules/elastic</module>
     <module>services/test</module>
 	  <module>services/injest</module>
 		<module>services/stats</module>

@@ -14,11 +14,11 @@ import org.slf4j.LoggerFactory;
 import org.slf4j.Marker;
 import org.slf4j.MarkerFactory;
 
-import com.dunkware.stream.data.cassy.entity.stats.SessionEntityStatsRow;
+import com.dunkware.stream.data.cassy.entity.stats.DBSessionEntityStatsRow;
 import com.dunkware.stream.data.cassy.repository.stats.SessionEntityStatsRepo;
 import com.dunkware.utils.core.stopwatch.StopWatch;
 
-public class SessionEntityStatsInjestor implements EntityInjestor<SessionEntityStatsRow> {
+public class SessionEntityStatsInjestor implements EntityInjestor<DBSessionEntityStatsRow> {
 
 	public static SessionEntityStatsInjestor newInstance(SessionEntityStatsRepo repo, int threads, int batchSize) {
 		return new SessionEntityStatsInjestor(repo, threads, batchSize);
@@ -26,7 +26,7 @@ public class SessionEntityStatsInjestor implements EntityInjestor<SessionEntityS
 	
 	private Logger logger = LoggerFactory.getLogger(getClass());
 	private Marker marker = MarkerFactory.getMarker("EntityStatsInjestor");
-	private BlockingQueue<SessionEntityStatsRow> queue = new LinkedBlockingQueue<SessionEntityStatsRow>();
+	private BlockingQueue<DBSessionEntityStatsRow> queue = new LinkedBlockingQueue<DBSessionEntityStatsRow>();
 
 
 	private SessionEntityStatsRepo repo;
@@ -58,7 +58,7 @@ public class SessionEntityStatsInjestor implements EntityInjestor<SessionEntityS
 	}
 
 	@Override
-	public void injest(SessionEntityStatsRow entity) {
+	public void injest(DBSessionEntityStatsRow entity) {
 		queue.add(entity);
 	}
 
@@ -82,7 +82,7 @@ public class SessionEntityStatsInjestor implements EntityInjestor<SessionEntityS
 
 	private class BatchWriter extends Thread {
 
-		private List<SessionEntityStatsRow> batch = new ArrayList<SessionEntityStatsRow>();
+		private List<DBSessionEntityStatsRow> batch = new ArrayList<DBSessionEntityStatsRow>();
 		private StopWatch stopWatch = StopWatch.newInstance();
 		
 		private int id; 
@@ -95,7 +95,7 @@ public class SessionEntityStatsInjestor implements EntityInjestor<SessionEntityS
 			setName("SessionEntity-Stats_Injestor-" + id);
 			while (!interrupted()) {
 				try {
-					SessionEntityStatsRow row = queue.poll(3, TimeUnit.SECONDS);
+					DBSessionEntityStatsRow row = queue.poll(3, TimeUnit.SECONDS);
 					if (row == null) {
 						writeBatch();
 						continue;

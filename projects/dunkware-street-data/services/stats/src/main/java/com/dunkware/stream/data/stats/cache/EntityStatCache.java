@@ -13,7 +13,7 @@ import org.slf4j.Marker;
 import org.slf4j.MarkerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 
-import com.dunkware.stream.data.cassy.entity.sesion.StreamSessionRow;
+import com.dunkware.stream.data.cassy.entity.sesion.DBStreamSessionRow;
 import com.dunkware.stream.data.cassy.services.CassyQueryService;
 import com.dunkware.stream.data.lib.stats.entity.EntityStatHelper;
 import com.dunkware.stream.data.model.stats.entity.EntityStatModel;
@@ -27,7 +27,7 @@ public class EntityStatCache {
 	private Logger logger = LoggerFactory.getLogger(getClass());
 	private Marker marker = MarkerFactory.getMarker("EntityStatCache");
 	
-	private BlockingQueue<StreamSessionRow> sessionQueue = new LinkedBlockingQueue<StreamSessionRow>();
+	private BlockingQueue<DBStreamSessionRow> sessionQueue = new LinkedBlockingQueue<DBStreamSessionRow>();
 	
 	@Autowired
 	private CassyQueryService queryService;
@@ -37,14 +37,14 @@ public class EntityStatCache {
 	private AtomicInteger completedLoaders = new AtomicInteger(0);
 	private List<SessionStatLoader> loaders = new ArrayList<SessionStatLoader>();
 	
-	private List<StreamSessionRow> sessions;
+	private List<DBStreamSessionRow> sessions;
 	private AtomicInteger statCounter = new AtomicInteger(0);
 	private JedisInjestor injestor;
 	
 	private EntityStatCacheBean bean;
 	
 	
-	public void start(List<StreamSessionRow> sessions, JedisPool pool) {
+	public void start(List<DBStreamSessionRow> sessions, JedisPool pool) {
 		this.sessions = sessions;
 		bean = new EntityStatCacheBean();
 		Metrics metrics = new Metrics();
@@ -83,7 +83,7 @@ public class EntityStatCache {
 			while(true) {
 				try {
 					
-					StreamSessionRow row = sessionQueue.poll(250, TimeUnit.MILLISECONDS);
+					DBStreamSessionRow row = sessionQueue.poll(250, TimeUnit.MILLISECONDS);
 					if(row == null) {
 						completedLoaders.incrementAndGet();
 						return;

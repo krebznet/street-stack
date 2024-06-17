@@ -9,8 +9,8 @@ import org.slf4j.Marker;
 import org.slf4j.MarkerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 
-import com.dunkware.stream.data.cassy.entity.sesion.StreamSessionRow;
-import com.dunkware.stream.data.cassy.entity.stats.SessionEntityStatRow;
+import com.dunkware.stream.data.cassy.entity.sesion.DBStreamSessionRow;
+import com.dunkware.stream.data.cassy.entity.stats.DBSessionEntityStatRow;
 import com.dunkware.stream.data.cassy.repository.stats.SessionEntityStatRepo;
 
 public class EntityStatCacheLoader {
@@ -23,7 +23,7 @@ public class EntityStatCacheLoader {
 	
 	
 	
-	public void start(List<StreamSessionRow> sessions) {
+	public void start(List<DBStreamSessionRow> sessions) {
 		
 	}
 	
@@ -45,8 +45,8 @@ public class EntityStatCacheLoader {
 		}
 		
 		public void run() { 
-			List<SessionEntityStatRow> rows = statRepo.findByStreamAnLocalDate(streamId,date);
-			for (SessionEntityStatRow row : rows) {
+			List<DBSessionEntityStatRow> rows = statRepo.findByStreamAnLocalDate(streamId,date);
+			for (DBSessionEntityStatRow row : rows) {
 				// now w needtocache
 			}
 			

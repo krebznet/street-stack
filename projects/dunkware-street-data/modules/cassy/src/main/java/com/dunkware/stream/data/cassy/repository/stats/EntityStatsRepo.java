@@ -5,15 +5,15 @@ import java.util.List;
 
 import org.springframework.stereotype.Repository;
 
-import com.dunkware.stream.data.cassy.entity.stats.EntityStatsRow;
-import com.dunkware.stream.data.cassy.entity.stats.EntityStatsKey;
+import com.dunkware.stream.data.cassy.entity.stats.DBEntityStatsRow;
+import com.dunkware.stream.data.cassy.entity.stats.DBEntityStatsKey;
 import com.dunkware.stream.data.cassy.support.CustomCassandraRepository;
 
 @Repository
-public interface EntityStatsRepo extends CustomCassandraRepository<EntityStatsRow, EntityStatsKey>, EntityStatsRepoCustom {
+public interface EntityStatsRepo extends CustomCassandraRepository<DBEntityStatsRow, DBEntityStatsKey>, EntityStatsRepoCustom {
 
 
-	public List<EntityStatsRow> findByKeyStreamAndKeyEntityAndKeyDate(int stream, int entity, LocalDate date);
+	public List<DBEntityStatsRow> findByKeyStreamAndKeyEntityAndKeyDate(int stream, int entity, LocalDate date);
 	
 	
 	

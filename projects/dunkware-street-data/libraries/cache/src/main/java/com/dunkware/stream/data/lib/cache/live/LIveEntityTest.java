@@ -1,5 +1,7 @@
 package com.dunkware.stream.data.lib.cache.live;
 
+import java.util.Map;
+
 import org.redisson.Redisson;
 import org.redisson.api.RLiveObjectService;
 import org.redisson.api.RedissonClient;
@@ -13,23 +15,25 @@ public class LIveEntityTest {
 		//6379
 		try {
 			Config config = new Config();
-	    	config.useSingleServer().setAddress("redis://127.0.0.1:6379");
-	    	//config.useSingleServer().setAddress("redis://testrock1.dunkware.net:32595");
+	    	//config.useSingleServer().setAddress("redis://127.0.0.1:6379");
+	    	config.useSingleServer().setAddress("redis://testrock1.dunkware.net:32595");
 	    	//testrock1.dunkware.net"
 	        RedissonClient redisson = Redisson.create(config);
 
 	        StopWatch stopWatch = StopWatch.newInstance();
 	        stopWatch.start();
 	        RLiveObjectService liveObjectService = redisson.getLiveObjectService();
-	        LiveEntity liveTest = liveObjectService.get(LiveEntity.class, 7534L);
-	    //    Thread.sleep(5000);
+	        LiveEntity liveTest = liveObjectService.get(LiveEntity.class, 9L);
+	       Thread.sleep(1000);
 	        System.out.println(liveTest.getIdent());
 	        stopWatch.stop();
+	        Map<String,Number> shit = liveTest.getVariables();
+
 	        System.out.println(stopWatch.seconds());
 	        for (String key : liveTest.getVariables().keySet()) {
-				System.out.println(key + " " + liveTest.getVariables().get(key).toString());
+				System.out.println(key + " " + shit.get(key).toString());
 			}
-	        System.out.println(liveTest.getVariables().toString());
+	      //  System.out.println(liveTest.getVariables().toString());
 	        
 	        redisson.shutdown();
 		} catch (Exception e) {

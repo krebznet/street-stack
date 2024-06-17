@@ -87,6 +87,9 @@
 		<module>projects/java-generic-model</module>
 		<module>projects/dunkware-street-model</module>
 		<module>projects/dunkware-street-server</module>
+		<module>projects/dunkware-street-broker</module>
+		<module>projects/trade-broker-api</module>
+		<module>projects/trade-broker-tws</module>
 		<module>xscript</module>
 	</modules>
 	<build>

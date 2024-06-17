@@ -3,16 +3,16 @@ package com.dunkware.stream.data.cassy.helpers;
 import java.util.HashMap;
 import java.util.Map;
 
-import com.dunkware.stream.data.cassy.entity.stats.EntityStatsRow;
-import com.dunkware.stream.data.cassy.entity.stats.EntityStatsKey;
-import com.dunkware.stream.data.cassy.entity.stats.EntityVarStats;
+import com.dunkware.stream.data.cassy.entity.stats.DBEntityStatsRow;
+import com.dunkware.stream.data.cassy.entity.stats.DBEntityStatsKey;
+import com.dunkware.stream.data.cassy.entity.stats.DBEntityVarStats;
 import com.dunkware.stream.data.model.stats.entity.EntityStatsModel;
 import com.dunkware.stream.data.model.stats.entity.EntityVarStatsModel;
 
 public class EntityStatsRowHelper {
 	
 	
-	public static EntityStatsModel toModel(EntityStatsRow ent) {
+	public static EntityStatsModel toModel(DBEntityStatsRow ent) {
 		EntityStatsModel model = new EntityStatsModel();
 		model.setDate(ent.getKey().getDate());
 		model.setEntity(ent.getKey().getEntity());
@@ -21,7 +21,7 @@ public class EntityStatsRowHelper {
 			EntityVarStatsModel modStats = new EntityVarStatsModel();
 			modStats.setVar(key);
 			
-			EntityVarStats evarStats = ent.getVars().get(key);
+			DBEntityVarStats evarStats = ent.getVars().get(key);
 			modStats.setStats(evarStats.getStats());
 			modStats.setTimes(evarStats.getTimes());
 			model.getVarstats().put(key, modStats);
@@ -29,9 +29,9 @@ public class EntityStatsRowHelper {
 		return model;
 	}
 	
-	public static EntityStatsRow toRow(EntityStatsModel model) {
-		EntityStatsKey key = new EntityStatsKey(model.getStream(), model.getEntity(), model.getDate());
-		EntityStatsRow entity = new EntityStatsRow();
+	public static DBEntityStatsRow toRow(EntityStatsModel model) {
+		DBEntityStatsKey key = new DBEntityStatsKey(model.getStream(), model.getEntity(), model.getDate());
+		DBEntityStatsRow entity = new DBEntityStatsRow();
 		entity.setKey(key);
 		entity.setSignals(model.getSigcounts());
 		entity.setVars(toRowVarStatsMap(model));
@@ -39,8 +39,8 @@ public class EntityStatsRowHelper {
 		
 	}
 	
-	private static Map<Integer, EntityVarStats> toRowVarStatsMap(EntityStatsModel model) {
-		Map<Integer, EntityVarStats> results = new HashMap<Integer, EntityVarStats>();
+	private static Map<Integer, DBEntityVarStats> toRowVarStatsMap(EntityStatsModel model) {
+		Map<Integer, DBEntityVarStats> results = new HashMap<Integer, DBEntityVarStats>();
 		for (Integer varId : model.getVarstats().keySet() ) {
 			EntityVarStatsModel var = model.getVarstats().get(varId);
 			results.put(varId, toRowVarStats(var));
@@ -49,8 +49,8 @@ public class EntityStatsRowHelper {
 		
 	}
 
-	private static EntityVarStats toRowVarStats(EntityVarStatsModel input) {
-		EntityVarStats varStats = new EntityVarStats();
+	private static DBEntityVarStats toRowVarStats(EntityVarStatsModel input) {
+		DBEntityVarStats varStats = new DBEntityVarStats();
 		varStats.setStats(input.getStats());
 		varStats.setTimes(input.getTimes());
 		return varStats;

@@ -48,6 +48,35 @@ CREATE TABLE IF NOT EXISTS "dunkstreet"."session_entity_stats"
 
 );
 
+CREATE TABLE IF NOT EXISTS dunkstreet.session_signal_entity (
+    "entity" int,
+    "stream" int,
+    "date" date,  // This column only stores the date, used for partitioning
+    "time" time,  // This column stores the full timestamp including time down to the second
+    "data" blob,
+    PRIMARY KEY ((entity, stream, date), time)
+) WITH CLUSTERING ORDER BY (time ASC);
+
+CREATE TABLE IF NOT EXISTS dunkstreet.session_signal_type (
+    "signal" int,
+    "stream" int,
+    "date" date,
+    "entity" int,
+    "time" time,
+    "data" blob,
+    PRIMARY KEY ((signal, stream, date), time, entity)
+) WITH CLUSTERING ORDER BY (signal_time ASC);
+
+CREATE TABLE IF NOT EXISTS dunkstreet.entity_daily_signals (
+    entity_id int,
+    signal_date date,
+    signal_time timestamp,
+    signal_id int,
+    stream_id int,
+    data blob,
+    PRIMARY KEY ((entity_id, signal_date), signal_time, signal_id, stream_id)
+) WITH CLUSTERING ORDER BY (signal_time ASC);
+
 
 CREATE TABLE IF NOT EXISTS "dunkstreet"."stream_session"
 (

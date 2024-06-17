@@ -12,7 +12,7 @@ import org.slf4j.Marker;
 import org.slf4j.MarkerFactory;
 import org.springframework.stereotype.Service;
 
-import com.dunkware.stream.data.cassy.entity.sesion.StreamSessionRow;
+import com.dunkware.stream.data.cassy.entity.sesion.DBStreamSessionRow;
 import com.dunkware.stream.data.cassy.helpers.StreamSessionRowHelper;
 import com.dunkware.stream.data.cassy.repository.session.StreamSessionRepo;
 import com.dunkware.stream.data.codec.session.meta.SessionModelCodec;
@@ -106,7 +106,7 @@ public class StreamSessionConsumer implements KafkaByteHandler {
 						continue;
 					}
 
-					StreamSessionRow entity = StreamSessionRowHelper.toRow(inbound);
+					DBStreamSessionRow entity = StreamSessionRowHelper.toRow(inbound);
 					repo.save(entity);
 					injestCounter.incrementAndGet();
 

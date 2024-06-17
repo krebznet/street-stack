@@ -15,8 +15,3 @@ src/main/java/com/dunkware/blocks/model/MetricCard.java
 src/main/java/com/dunkware/blocks/model/MetricDash.java
 src/main/java/com/dunkware/blocks/model/MetricSet.java
 src/main/java/com/dunkware/blocks/model/SearchEntity.java
-src/test/java/com/dunkware/blocks/model/FormatTypeTest.java
-src/test/java/com/dunkware/blocks/model/MetricCardTest.java
-src/test/java/com/dunkware/blocks/model/MetricDashTest.java
-src/test/java/com/dunkware/blocks/model/MetricSetTest.java
-src/test/java/com/dunkware/blocks/model/SearchEntityTest.java

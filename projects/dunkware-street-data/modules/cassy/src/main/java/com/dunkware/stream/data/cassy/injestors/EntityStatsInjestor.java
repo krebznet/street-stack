@@ -14,11 +14,11 @@ import org.slf4j.LoggerFactory;
 import org.slf4j.Marker;
 import org.slf4j.MarkerFactory;
 
-import com.dunkware.stream.data.cassy.entity.stats.EntityStatsRow;
+import com.dunkware.stream.data.cassy.entity.stats.DBEntityStatsRow;
 import com.dunkware.stream.data.cassy.repository.stats.EntityStatsRepo;
 import com.dunkware.utils.core.stopwatch.StopWatch;
 
-public class EntityStatsInjestor implements EntityInjestor<EntityStatsRow> {
+public class EntityStatsInjestor implements EntityInjestor<DBEntityStatsRow> {
 
 	public static EntityStatsInjestor newInstance(EntityStatsRepo repo, int threads, int batchSize) {
 		return new EntityStatsInjestor(repo, threads, batchSize);
@@ -26,7 +26,7 @@ public class EntityStatsInjestor implements EntityInjestor<EntityStatsRow> {
 	
 	private Logger logger = LoggerFactory.getLogger(getClass());
 	private Marker marker = MarkerFactory.getMarker("EntityStatsInjestor");
-	private BlockingQueue<EntityStatsRow> queue = new LinkedBlockingQueue<EntityStatsRow>();
+	private BlockingQueue<DBEntityStatsRow> queue = new LinkedBlockingQueue<DBEntityStatsRow>();
 
 
 	private EntityStatsRepo repo;
@@ -58,7 +58,7 @@ public class EntityStatsInjestor implements EntityInjestor<EntityStatsRow> {
 	}
 
 	@Override
-	public void injest(EntityStatsRow entity) {
+	public void injest(DBEntityStatsRow entity) {
 		queue.add(entity);
 	}
 
@@ -82,7 +82,7 @@ public class EntityStatsInjestor implements EntityInjestor<EntityStatsRow> {
 
 	private class BatchWriter extends Thread {
 
-		private List<EntityStatsRow> batch = new ArrayList<EntityStatsRow>();
+		private List<DBEntityStatsRow> batch = new ArrayList<DBEntityStatsRow>();
 		private StopWatch stopWatch = StopWatch.newInstance();
 		
 		private int id; 
@@ -95,7 +95,7 @@ public class EntityStatsInjestor implements EntityInjestor<EntityStatsRow> {
 			setName("Entity-Stats_Injestor-" + id);
 			while (!interrupted()) {
 				try {
-					EntityStatsRow row = queue.poll(3, TimeUnit.SECONDS);
+					DBEntityStatsRow row = queue.poll(3, TimeUnit.SECONDS);
 					if (row == null) {
 						writeBatch();
 						continue;

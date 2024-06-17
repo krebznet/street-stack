@@ -4,7 +4,7 @@ import java.time.LocalDate;
 import java.util.List;
 
 import com.dunkware.stream.data.cassy.builders.SessionEntityStatRowBuilder;
-import com.dunkware.stream.data.cassy.entity.stats.SessionEntityStatRow;
+import com.dunkware.stream.data.cassy.entity.stats.DBSessionEntityStatRow;
 import com.dunkware.stream.data.cassy.mock.SessionEntityStatMockData;
 
 import junit.framework.TestCase;
@@ -13,9 +13,9 @@ public class SessionEntityStatMockDataTest extends TestCase {
 
 	
 	public void testBuilder() { 
-		List<SessionEntityStatRow> data = SessionEntityStatMockData.build(LocalDate.of(2024, 1, 1), 1, 100, 5, 1,2);
+		List<DBSessionEntityStatRow> data = SessionEntityStatMockData.build(LocalDate.of(2024, 1, 1), 1, 100, 5, 1,2);
 		System.out.println(data.size());
-		SessionEntityStatRow row = data.get(0);
+		DBSessionEntityStatRow row = data.get(0);
 		assertEquals(row.getKey().getDate(), LocalDate.of(2024, 1, 1));
 		assertEquals(row.getEntity(),0);
 		assertEquals(row.getElement(), 0);

@@ -39,7 +39,7 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
   MetricDash.JSON_PROPERTY_COLUMNS,
   MetricDash.JSON_PROPERTY_SETS
 })
-@jakarta.annotation.Generated(value = "org.openapitools.codegen.languages.JavaClientCodegen", date = "2024-06-15T02:03:08.283972-05:00[America/Chicago]", comments = "Generator version: 7.6.0")
+@jakarta.annotation.Generated(value = "org.openapitools.codegen.languages.JavaClientCodegen", date = "2024-06-16T19:34:00.202329-05:00[America/Chicago]", comments = "Generator version: 7.6.0")
 public class MetricDash {
   public static final String JSON_PROPERTY_NAME = "name";
   private String name;

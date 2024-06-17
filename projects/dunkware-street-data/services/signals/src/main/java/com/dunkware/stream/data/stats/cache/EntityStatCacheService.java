@@ -13,7 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.springframework.stereotype.Service;
 
-import com.dunkware.stream.data.cassy.entity.sesion.StreamSessionRow;
+import com.dunkware.stream.data.cassy.entity.sesion.DBStreamSessionRow;
 import com.dunkware.stream.data.cassy.repository.session.StreamSessionRepo;
 
 import jakarta.annotation.PostConstruct;
@@ -44,13 +44,13 @@ public class EntityStatCacheService {
 
 			public void start() {
 				try {
-					Map<Integer, List<StreamSessionRow>> streamSessions = new ConcurrentHashMap<Integer, List<StreamSessionRow>>();
-					List<StreamSessionRow> results = streamSessionRepo.findAll();
-					for (StreamSessionRow row : results) {
+					Map<Integer, List<DBStreamSessionRow>> streamSessions = new ConcurrentHashMap<Integer, List<DBStreamSessionRow>>();
+					List<DBStreamSessionRow> results = streamSessionRepo.findAll();
+					for (DBStreamSessionRow row : results) {
 						if (streamSessions.containsKey(row.getKey().getStream())) {
 							streamSessions.get(row.getKey().getStream()).add(row);
 						} else {
-							List<StreamSessionRow> sessions = new ArrayList<StreamSessionRow>();
+							List<DBStreamSessionRow> sessions = new ArrayList<DBStreamSessionRow>();
 							sessions.add(row);
 							streamSessions.put(row.getKey().getStream(), sessions);
 						}

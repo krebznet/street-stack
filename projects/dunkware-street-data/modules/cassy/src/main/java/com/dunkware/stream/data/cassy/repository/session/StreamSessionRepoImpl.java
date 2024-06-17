@@ -1,7 +1,7 @@
 package com.dunkware.stream.data.cassy.repository.session;
 
-import com.dunkware.stream.data.cassy.entity.sesion.StreamSessionRow;
-import com.dunkware.stream.data.cassy.entity.stats.SessionEntityStatRow;
+import com.dunkware.stream.data.cassy.entity.sesion.DBStreamSessionRow;
+import com.dunkware.stream.data.cassy.entity.stats.DBSessionEntityStatRow;
 import com.dunkware.stream.data.cassy.support.CustomCassandraOperations;
 
 import java.util.List;
@@ -16,7 +16,7 @@ public class StreamSessionRepoImpl implements  StreamSessionRepoCustom {
     }
 
     @Override
-    public void ingest(List<StreamSessionRow> row) {
+    public void ingest(List<DBStreamSessionRow> row) {
         customOperations.ingest(row);
     }
 

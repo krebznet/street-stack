@@ -125,3 +125,34 @@ INFO: Registered provider org.glassfish.jaxb.runtime.v2.JAXBContextFactory of se
 2024-06-16 01:16:19.772 [Worker-1: Generating diff] - org.burningwave.core.Cache - (Cache.java:76) - Building cache
 2024-06-16 01:16:19.790 [Worker-1: Generating diff] - org.burningwave.core.assembler.StaticComponentContainer - (StaticComponentContainer.java:432) - org.burningwave.core.assembler.StaticComponentContainer initialized in 0.17302975 seconds
 jdk.internal.loader.ClassLoaders$PlatformClassLoader@4049dde0 instantiated
+Jun 16, 2024 3:00:46 PM org.eclipse.lsp4j.jsonrpc.RemoteEndpoint notify
+INFO: Failed to send notification message.
+org.eclipse.lsp4j.jsonrpc.JsonRpcException: java.io.IOException: Stream closed
+	at org.eclipse.lsp4j.jsonrpc.json.StreamMessageConsumer.consume(StreamMessageConsumer.java:72)
+	at org.eclipse.lsp4e.LanguageServerWrapper.lambda$3(LanguageServerWrapper.java:310)
+	at org.eclipse.lsp4j.jsonrpc.RemoteEndpoint.notify(RemoteEndpoint.java:135)
+	at org.eclipse.lsp4j.jsonrpc.services.EndpointProxy.invoke(EndpointProxy.java:88)
+	at jdk.proxy21/jdk.proxy21.$Proxy87.exit(Unknown Source)
+	at org.eclipse.lsp4e.LanguageServerWrapper.lambda$10(LanguageServerWrapper.java:506)
+	at java.base/java.util.concurrent.CompletableFuture$AsyncRun.run(CompletableFuture.java:1804)
+	at java.base/java.util.concurrent.CompletableFuture$AsyncRun.exec(CompletableFuture.java:1796)
+	at java.base/java.util.concurrent.ForkJoinTask.doExec(ForkJoinTask.java:387)
+	at java.base/java.util.concurrent.ForkJoinPool$WorkQueue.topLevelExec(ForkJoinPool.java:1312)
+	at java.base/java.util.concurrent.ForkJoinPool.scan(ForkJoinPool.java:1843)
+	at java.base/java.util.concurrent.ForkJoinPool.runWorker(ForkJoinPool.java:1808)
+	at java.base/java.util.concurrent.ForkJoinWorkerThread.run(ForkJoinWorkerThread.java:188)
+Caused by: java.io.IOException: Stream closed
+	at java.base/java.lang.ProcessBuilder$NullOutputStream.write(ProcessBuilder.java:447)
+	at java.base/java.io.OutputStream.write(OutputStream.java:167)
+	at java.base/java.io.BufferedOutputStream.flushBuffer(BufferedOutputStream.java:125)
+	at java.base/java.io.BufferedOutputStream.implFlush(BufferedOutputStream.java:252)
+	at java.base/java.io.BufferedOutputStream.flush(BufferedOutputStream.java:246)
+	at org.eclipse.lsp4j.jsonrpc.json.StreamMessageConsumer.consume(StreamMessageConsumer.java:69)
+	... 12 more
+
+Jun 16, 2024 3:02:25 PM org.eclipse.tm4e.core.registry.Registry _doLoadSingleGrammar
+WARNING: No grammar source for scope [source.java]
+Jun 16, 2024 3:02:25 PM org.eclipse.tm4e.core.internal.rule.RuleFactory _compilePatterns
+WARNING: CANNOT find grammar for scopeName [source.java]. I am [source.xml@org.eclipse.wildwebdeveloper.xml]
+Jun 16, 2024 3:02:25 PM org.eclipse.tm4e.core.internal.rule.RuleFactory _compilePatterns
+WARNING: REMOVING BeginEndRule{id=79,name=source.java.embedded.xml} ENTIRELY DUE TO EMPTY PATTERNS THAT ARE MISSING

@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.datastax.oss.driver.api.core.CqlSessionBuilder;
-import com.dunkware.stream.data.cassy.entity.stats.SessionEntityStatRow;
+import com.dunkware.stream.data.cassy.entity.stats.DBSessionEntityStatRow;
 import com.dunkware.stream.data.cassy.loaders.SessionEntityStatLoader;
 import com.dunkware.stream.data.cassy.mock.SessionEntityStatMockData;
 import com.dunkware.stream.data.cassy.repository.stats.SessionEntityStatRepo;
@@ -63,7 +63,7 @@ public class InjestController {
 		LocalDate parseLocalDate = LocalDate.parse(date);
 	//	List<SessionEntityStatRow> data = SessionEntityStatMockData.build(parseLocalDate, 1, elements, entities, stats, 1,2);
 		//List<SessionEntityStatRow> data = SessionEntityStatMockData.build(LocalDate.of(2024, 1, 1),1,5000,1,1,2);
-		List<SessionEntityStatRow> data = SessionEntityStatMockData.build(LocalDate.of(2024, 1, 22),1,entities,elements,1,2);
+		List<DBSessionEntityStatRow> data = SessionEntityStatMockData.build(LocalDate.of(2024, 1, 22),1,entities,elements,1,2);
 		
 		System.out.println(data.size());
 		try {
