@@ -8,14 +8,18 @@ public class DunkNumber {
 	public static final int LONG = 2; 
 	public static final int UNKNOWN = 3;
 	
+	private static long TENS[] = new long[19];
+	static {
+	    TENS[0] = 1;
+	    for (int i = 1; i < TENS.length; i++) TENS[i] = 10 * TENS[i - 1];
+	}
 	
 	public static void main(String[] args) {
-		Number higher = 2323.23;
-		Number lower = 23;
-		System.out.println(compare(higher,lower));
-				
+		Integer test = 5; 
+		Double test1 = 5.0; 
+		System.out.println(compare(test, test1));
+		System.out.println(test1.equals(test));
 	}
-
 	/**
 	 * 0 if both values are equal 
 	 * -1 if targetValue is smaller 
@@ -50,6 +54,13 @@ public class DunkNumber {
 	    return true;
 	}
 	
+	/*
+	 * public static double round(double v, int precision) { assert precision >= 0
+	 * && precision < TENS.length; double unscaled = v * TENS[precision];
+	 * if(unscaled < Long.MIN_VALUE || unscaled > Long.MAX_VALUE) return v; long
+	 * unscaledLong = (long) (unscaled + (v < 0 ? -0.5 : 0.5)); return (double)
+	 * unscaledLong / TENS[precision]; }
+	 */
 	
 	public static int getNumberType(Number number) { 
 		if (number instanceof Double) {
