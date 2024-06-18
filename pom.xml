@@ -88,6 +88,11 @@
 		<module>projects/time-injest-srvc</module>
 		<module>projects/time-mock-srvc</module>
 		
+		<module>projects/trade-api-data</module>
+		<module>projects/trade-api-broker</module>
+		<module>projects/trade-tws-broker</module>
+		<module>projects/trade-tws-demo</module>
+		
 		
 		<module>projects/dunkware-street-tick</module>
 		<module>projects/java-generic-model</module>

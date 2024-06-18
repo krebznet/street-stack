@@ -1,5 +1,7 @@
 package com.dunkware.trade.api.broker;
 
+import java.util.List;
+
 import com.dunkware.utils.core.concurrent.DunkExecutor;
 import com.dunkware.utils.core.events.DunkEventNode;
 
@@ -17,7 +19,7 @@ public interface Broker {
 
 	public DunkEventNode getEventNode();
 
-	public BrokerAccount[] getAccounts();
+	public List<BrokerAccount> getAccounts();
 
 	public String getIdentifier();
 

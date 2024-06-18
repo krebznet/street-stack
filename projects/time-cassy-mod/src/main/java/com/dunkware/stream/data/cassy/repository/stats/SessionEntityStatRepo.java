@@ -12,7 +12,7 @@ import com.dunkware.stream.data.cassy.support.CustomCassandraRepository;
 @Repository
 public interface SessionEntityStatRepo extends CustomCassandraRepository<DBSessionEntityStatRow, DBSessionEntityStatKey>, SessionEntityStatRepoCustom {
 
-	public List<DBSessionEntityStatRow> findByStreamAnLocalDate(int stream, LocalDate date);
+	public List<DBSessionEntityStatRow> findByStreamAndDate(int stream, LocalDate date);
 	
 	
 

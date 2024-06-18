@@ -33,13 +33,13 @@
 	</properties>
 
 	<dependencies>
-
+		
 		<dependency>
-			<groupId>com.dunkware.utils</groupId>
-			<artifactId>java-utils-core</artifactId>
+			<groupId>com.dunkware.trade</groupId>
+			<artifactId>trade-api-broker</artifactId>
 			<version>1.0.0-SNAPSHOT</version>
-
 		</dependency>
+		
 
 		<!--
 		https://mvnrepository.com/artifact/commons-beanutils/commons-beanutils -->

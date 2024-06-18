@@ -1,8 +1,5 @@
 package com.dunkware.stream.data.cassy.constants;
 
-import com.datastax.oss.driver.api.querybuilder.QueryBuilder;
-import com.datastax.oss.driver.api.querybuilder.insert.RegularInsert;
-
 public class CassySchema {
 
 	
@@ -12,6 +9,8 @@ public class CassySchema {
 		public static final String SessionEntityStats = "session_entity_stats";
 		public static final String SessionEntityStat = "session_entity_stat";
 		public static final String StreamSession = "stream_session";
+		public static final String SessionSignalEntity = "session_signal_entity";
+		public static final String SessionSignalType = "session_signal_type";
 	}
 	
 	public static class Keyspaces { 

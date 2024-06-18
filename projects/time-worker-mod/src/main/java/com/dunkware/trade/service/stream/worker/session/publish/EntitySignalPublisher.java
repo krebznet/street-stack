@@ -1,7 +1,10 @@
 package com.dunkware.trade.service.stream.worker.session.publish;
 
 import org.apache.kafka.clients.producer.Producer;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
+import com.dunkware.stream.data.model.entity.EntitySignal;
 import com.dunkware.trade.service.stream.worker.session.StreamWorker;
 import com.dunkware.trade.service.stream.worker.session.StreamWorkerExtension;
 import com.dunkware.trade.service.stream.worker.session.anot.AStreamWorkerExtension;
@@ -9,9 +12,12 @@ import com.dunkware.xstream.api.XSignal;
 import com.dunkware.xstream.api.XSignalListener;
 import com.dunkware.xstream.api.XStream;
 
+
 @AStreamWorkerExtension
 public class EntitySignalPublisher implements StreamWorkerExtension, XSignalListener  {
 
+	private Logger logger = LoggerFactory.getLogger(getClass());
+	
 	private StreamWorker worker; 
 	private XStream stream; 
 	
@@ -27,6 +33,13 @@ public class EntitySignalPublisher implements StreamWorkerExtension, XSignalList
 	public void start() throws Exception {
 		this.stream = worker.getStream();
 		stream.getXSignals().addSignalListener(this);
+		 
+         try {
+             producer = worker.getDunkNet().getKafkaProducer();
+         } catch(Exception e) {
+        	 logger.error("Exception creating EntitySignalPublisher Producer " + e.toString());;
+        	 throw e;
+         }
 	}
 
 	@Override
@@ -38,6 +51,21 @@ public class EntitySignalPublisher implements StreamWorkerExtension, XSignalList
 	@Override
 	public void onSignal(XSignal signal) {
 		System.err.println("Signal in publisher! " + signal.getType().getModel().getName());
+		EntitySignal sig = new EntitySignal();
+		sig.setEntity(signal.getEntity().getIdentifier());
+		sig.setEntityIdent(signal.getEntity().getId());
+		sig.setId(signal.getType().getId());
+		sig.setSignalIdent(signal.getType().getName());
+		sig.setTimestamp(signal.getTimeStamp());
+		sig.setStream(0);
+		try {
+			//byte[] bytes = 
+		} catch (Exception e) {
+			// TODO: handle exception
+		}
+		
+		
+		
 		
 	}
 	

@@ -13,7 +13,7 @@ import com.dunkware.stream.data.cassy.support.CustomCassandraRepository;
 public interface EntityStatsRepo extends CustomCassandraRepository<DBEntityStatsRow, DBEntityStatsKey>, EntityStatsRepoCustom {
 
 
-	public List<DBEntityStatsRow> findByKeyStreamAndKeyEntityAndKeyDate(int stream, int entity, LocalDate date);
+//	public List<DBEntityStatsRow> findByKeyAndStreamAndKeyEntityAndKeyDate(int stream, int entity, LocalDate date);
 	
 	
 	

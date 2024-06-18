@@ -49,9 +49,11 @@ CREATE TABLE IF NOT EXISTS "dunkstreet"."session_entity_stats"
 );
 
 CREATE TABLE IF NOT EXISTS dunkstreet.session_signal_entity (
-    "entity" int,
     "stream" int,
     "date" date,  // This column only stores the date, used for partitioning
+    "entity" int,
+    
+   
     "time" time,  // This column stores the full timestamp including time down to the second
     "data" blob,
     PRIMARY KEY ((entity, stream, date), time)

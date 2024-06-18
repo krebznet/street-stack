@@ -10,6 +10,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.slf4j.Marker;
 import org.slf4j.MarkerFactory;
+import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Service;
 
 import com.dunkware.stream.data.cassy.entity.sesion.DBStreamSessionRow;
@@ -18,7 +19,7 @@ import com.dunkware.stream.data.cassy.repository.session.StreamSessionRepo;
 import com.dunkware.stream.data.codec.session.meta.SessionModelCodec;
 import com.dunkware.stream.data.injest.config.InjestConfig;
 import com.dunkware.stream.data.model.session.StreamSessionModel;
-import com.dunkware.stream.data.util.constants.StreamDataTopics;
+import com.dunkware.tiime.data.util.constants.StreamDataTopics;
 import com.dunkware.utils.kafka.byteconsumer.KafkaByteConsumer;
 import com.dunkware.utils.kafka.byteconsumer.KafkaByteConsumerSpec;
 import com.dunkware.utils.kafka.byteconsumer.KafkaByteHandler;
@@ -26,6 +27,7 @@ import com.dunkware.utils.kafka.byteconsumer.KafkaByteHandler;
 import jakarta.annotation.PostConstruct;
 
 @Service
+@Profile("StreamSessionInjestor")
 public class StreamSessionConsumer implements KafkaByteHandler {
 
 	private Logger logger = LoggerFactory.getLogger(getClass());
@@ -82,6 +84,7 @@ public class StreamSessionConsumer implements KafkaByteHandler {
 
 		};
 
+		
 		init.start();
 
 	}

@@ -12,6 +12,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.slf4j.Marker;
 import org.slf4j.MarkerFactory;
+import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Service;
 
 import com.datastax.oss.driver.api.core.CqlSessionBuilder;
@@ -20,8 +21,8 @@ import com.dunkware.stream.data.codec.stat.EntityStatsModelCodec;
 import com.dunkware.stream.data.injest.config.InjestConfig;
 import com.dunkware.stream.data.model.stats.entity.EntityStatModel;
 import com.dunkware.stream.data.model.stats.entity.EntityStatsModel;
-import com.dunkware.stream.data.util.constants.StreamDataTopics;
-import com.dunkware.stream.data.util.helpers.EntityStatModelHelper;
+import com.dunkware.tiime.data.util.constants.StreamDataTopics;
+import com.dunkware.tiime.data.util.helpers.EntityStatModelHelper;
 import com.dunkware.utils.kafka.byteconsumer.KafkaByteConsumer;
 import com.dunkware.utils.kafka.byteconsumer.KafkaByteConsumerSpec;
 import com.dunkware.utils.kafka.byteconsumer.KafkaByteHandler;
@@ -29,6 +30,7 @@ import com.dunkware.utils.kafka.byteconsumer.KafkaByteHandler;
 import jakarta.annotation.PostConstruct;
 
 @Service
+@Profile("EntityStatInjestor")
 public class EntityStatsConsumer implements KafkaByteHandler {
 
     private Logger logger = LoggerFactory.getLogger(getClass());
@@ -136,7 +138,7 @@ public class EntityStatsConsumer implements KafkaByteHandler {
     				}
     				
     				List<EntityStatModel> statList = EntityStatModelHelper.collect(model);
-    				sessionStatLoader.injest(statList);    				
+    				sessionStatLoader.load(statList);    				
 				} catch (Exception e) {
 					if (e instanceof InterruptedException) { 
 						return;

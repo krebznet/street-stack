@@ -79,7 +79,13 @@ public class SessionEntityStatLoader {
 		return completed.get();
 	}
 	
-	public void injest(List<EntityStatModel> stats) { 
+	
+	public void load(EntityStatModel model) { 
+		pending++;
+		this.queue.add(model);
+		
+	}
+	public void load(List<EntityStatModel> stats) { 
 		pending++;
 		queue.addAll(stats);
 	}

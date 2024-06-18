@@ -8,7 +8,7 @@ import org.springframework.data.cassandra.core.mapping.Column;
 import org.springframework.data.cassandra.core.mapping.PrimaryKey;
 import org.springframework.data.cassandra.core.mapping.Table;
 
-@Table("session_signal_type")
+//@Table("session_signal_type")
 public class DBSessionSignalType {
 
 	@PrimaryKey

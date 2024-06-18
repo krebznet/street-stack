@@ -254,6 +254,7 @@ public class XSignalTypeScannerImpl implements XStreamListener {
 										LocalDateTime currentTime = stream.getClock().getLocalDateTime();
 										triggerLastTime = currentTime;
 										signalType.signal(entity, currentTime, entity.numericVarSnapshot());
+										return;
 										
 									}
 									if(entityLimit) { 
@@ -263,8 +264,9 @@ public class XSignalTypeScannerImpl implements XStreamListener {
 											triggerLastTime = currentTime;
 											signalType.signal(entity, currentTime, entity.numericVarSnapshot());
 										}
+										return;
  									}
-									return;
+									
 									
 								}
 								// else no throttle or entity liit tritger
