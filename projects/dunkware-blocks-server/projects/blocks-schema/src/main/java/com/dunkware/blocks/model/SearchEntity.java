@@ -37,7 +37,7 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
   SearchEntity.JSON_PROPERTY_SYMBOL,
   SearchEntity.JSON_PROPERTY_NAME
 })
-@jakarta.annotation.Generated(value = "org.openapitools.codegen.languages.JavaClientCodegen", date = "2024-06-16T19:34:00.202329-05:00[America/Chicago]", comments = "Generator version: 7.6.0")
+@jakarta.annotation.Generated(value = "org.openapitools.codegen.languages.JavaClientCodegen", date = "2024-06-17T19:45:35.723302-05:00[America/Chicago]", comments = "Generator version: 7.6.0")
 public class SearchEntity {
   public static final String JSON_PROPERTY_ID = "id";
   private BigDecimal id;

@@ -11,7 +11,7 @@
 		<relativePath>../dunkware-maven-parent/pom.xml</relativePath>
 	</parent>
 	<groupId>com.dunkware.spring</groupId>
-	<artifactId>dunkware-spring-cluster</artifactId>
+	<artifactId>spring-cluster</artifactId>
 	<version>1.0.0-SNAPSHOT</version>
 
 	<name>Dunkware Spring Cluster</name>
@@ -36,7 +36,7 @@
 		</dependency>
 		<dependency>
 			<groupId>com.dunkware.spring</groupId>
-			<artifactId>dunkware-spring-runtime</artifactId>
+			<artifactId>spring-runtime</artifactId>
 			<version>1.0.0-SNAPSHOT</version>
 		</dependency>
 

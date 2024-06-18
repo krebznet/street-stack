@@ -86,9 +86,9 @@
 		<dependency>
 
 
-			<groupId>com.dunkware.xstream.core</groupId>
-			<artifactId>dunkware-xstream-core-runtime</artifactId>
-			<version>1.2.0-SNAPSHOT</version>
+			<groupId>com.dunkware.xstream</groupId>
+			<artifactId>xstream-core-runtime</artifactId>
+			<version>1.0.0-SNAPSHOT</version>
 		</dependency>
 
 		<dependency>

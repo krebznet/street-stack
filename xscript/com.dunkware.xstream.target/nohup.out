@@ -156,3 +156,11 @@ Jun 16, 2024 3:02:25 PM org.eclipse.tm4e.core.internal.rule.RuleFactory _compile
 WARNING: CANNOT find grammar for scopeName [source.java]. I am [source.xml@org.eclipse.wildwebdeveloper.xml]
 Jun 16, 2024 3:02:25 PM org.eclipse.tm4e.core.internal.rule.RuleFactory _compilePatterns
 WARNING: REMOVING BeginEndRule{id=79,name=source.java.embedded.xml} ENTIRELY DUE TO EMPTY PATTERNS THAT ARE MISSING
+2024-06-16 08:25:30.945 [Burningwave - Resource releaser] - org.burningwave.core.assembler.StaticComponentContainer - (StaticComponentContainer.java:380) - ... Waiting for all tasks ending
+2024-06-16 08:25:30.951 [Burningwave - Resource releaser] - org.burningwave.core.assembler.StaticComponentContainer - (StaticComponentContainer.java:386) - Closing all component containers
+2024-06-16 08:25:30.959 [Burningwave - Resource releaser] - org.burningwave.core.assembler.StaticComponentContainer - (StaticComponentContainer.java:392) - Closing FileSystemHelper
+2024-06-16 08:25:30.963 [Burningwave - Resource releaser] - org.burningwave.core.assembler.StaticComponentContainer - (StaticComponentContainer.java:398) - ... Waiting for all tasks ending before shutting down the BackgroundExecutor
+2024-06-16 08:25:30.965 [Burningwave - Resource releaser] - org.burningwave.core.assembler.StaticComponentContainer - (StaticComponentContainer.java:403) - Shutting down BackgroundExecutor
+2024-06-16 08:25:30.966 [Burningwave - Resource releaser] - org.burningwave.core.assembler.StaticComponentContainer - (StaticComponentContainer.java:409) - Stopping all threads monitoring thread
+2024-06-16 08:25:30.966 [Burningwave - Resource releaser] - org.burningwave.core.assembler.StaticComponentContainer - (StaticComponentContainer.java:414) - Closing ThreadHolder
+2024-06-16 08:25:30.967 [Burningwave - Resource releaser] - org.burningwave.core.assembler.StaticComponentContainer - (StaticComponentContainer.java:419) - Shutting down ThreadSupplier

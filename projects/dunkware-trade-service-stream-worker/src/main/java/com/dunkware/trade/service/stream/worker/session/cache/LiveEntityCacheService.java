@@ -21,7 +21,7 @@ import com.dunkware.xstream.api.XStreamEntity;
 import com.dunkware.xstream.api.XStreamEntityVar;
 import com.dunkware.xstream.api.XStreamListener;
 
-@AStreamWorkerExtension
+//@AStreamWorkerExtension
 public class LiveEntityCacheService implements StreamWorkerExtension, XStreamListener {
 
 	private Logger logger = LoggerFactory.getLogger(getClass());

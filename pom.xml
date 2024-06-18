@@ -65,9 +65,10 @@
 
 		<module> projects/dunkware-maven-parent</module>
 	
-		<module>projects/dunkware-xstream-core-model</module>
-		<module>projects/dunkware-xstream-core-runtime</module>
-		<module>projects/dunkware-xstream-core-mock</module>
+		<module>projects/xstream-core-model</module>
+		<module>projects/xstream-core-runtime</module>
+		<module>projects/xstream-core-mock</module>
+
 		<module>projects/dunkware-trade-service-stream-json</module>
 		<module>projects/dunkware-trade-service-stream-server</module>
 		<module>projects/dunkware-trade-service-stream-worker</module>
@@ -76,8 +77,8 @@
 		<module>projects/dunkware-trade-service-web-mock</module>
 		<module>projects/dunkware-trade-service-web-json</module>
 		<module>projects/dunkware-trade-service-worker-server</module>
-		<module>projects/dunkware-spring-cluster</module>
-		<module>projects/dunkware-spring-runtime</module>
+		<module>projects/spring-cluster</module>
+		<module>projects/spring-runtime</module>
 		<module>projects/dunkware-spring-test-model</module>
 		<module>projects/dunkware-spring-test-server</module>
 		<module>projects/dunkware-spring-test-client</module>
@@ -87,10 +88,8 @@
 		<module>projects/java-generic-model</module>
 		<module>projects/dunkware-street-model</module>
 		<module>projects/dunkware-street-server</module>
-		<module>projects/dunkware-street-broker</module>
-		<module>projects/trade-api-broker</module>
-		<module>projects/trade-tws-broker</module>
-		<module>projects/trade-tws-demo</module>
+	
+		
 		<module>xscript</module>
 	</modules>
 	<build>

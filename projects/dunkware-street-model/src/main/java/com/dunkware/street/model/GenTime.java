@@ -37,7 +37,7 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
   GenTime.JSON_PROPERTY_SECOND,
   GenTime.JSON_PROPERTY_TIME_ZONE
 })
-@jakarta.annotation.Generated(value = "org.openapitools.codegen.languages.JavaClientCodegen", date = "2024-06-16T19:33:55.211341-05:00[America/Chicago]", comments = "Generator version: 7.6.0")
+@jakarta.annotation.Generated(value = "org.openapitools.codegen.languages.JavaClientCodegen", date = "2024-06-17T23:27:31.285684-05:00[America/Chicago]", comments = "Generator version: 7.6.0")
 public class GenTime {
   public static final String JSON_PROPERTY_HOUR = "hour";
   private Integer hour;
