@@ -34,8 +34,8 @@ public class StreamWorkerService  {
 	
 	private RedissonClient redissonClient;  
 	
-	@Value("${redis.url}") 
-	private String redisUrl; 
+	//@Value("${redis.url}") 
+	//private String redisUrl; 
 	
 	private Logger logger = LoggerFactory.getLogger(getClass());
 	private Marker marker = MarkerFactory.getMarker("StreamWorkerService");
@@ -44,12 +44,12 @@ public class StreamWorkerService  {
 	private void init() {
 		try {
 			try {
-				Config config = new Config();
-				config.useSingleServer().setAddress(redisUrl);
-				redissonClient = Redisson.create(config);
+			//	Config config = new Config();
+			//	config.useSingleServer().setAddress(redisUrl);
+			//	redissonClient = Redisson.create(config);
 				dunkNet.extensions().addExtension(StreamWorkerService.this);	
 			} catch (Exception e) {
-				logger.error("Worker server create to redis server failed " + redisUrl + e.toString()); 
+				//logger.error("Worker server create to redis server failed " + redisUrl + e.toString()); 
 				System.err.println("Worker server create failed redis sever " + e.toString());
 				System.exit(-1);
 			}
@@ -66,9 +66,9 @@ public class StreamWorkerService  {
 		
 	}
 	
-	public RedissonClient getRedissonClient() { 
-		return redissonClient;
-	}
+//	public RedissonClient getRedissonClient() { 
+	//	return redissonClient;
+	//}
 	
 	@ADunkNetChannel(label = "Create Stream Session Worker Channel")
 	public StreamWorker workerChannel(StreamSessionWorkerCreateReq req) throws Exception { 

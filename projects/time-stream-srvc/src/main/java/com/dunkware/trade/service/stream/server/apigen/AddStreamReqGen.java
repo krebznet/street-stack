@@ -26,7 +26,7 @@ public class AddStreamReqGen {
 	gen.gen();
 		
 	}
-	public static final String DEV1 = "/Users/duncankrebs/worksapces/dunkhub/runtime-StreetScript/equity-script";
+	public static final String DEV1 = "/Users/duncankrebs/worksapces/dunkhub/runtime-studio.product/equity-stream";
 
 	@PostConstruct
 	void gen() {

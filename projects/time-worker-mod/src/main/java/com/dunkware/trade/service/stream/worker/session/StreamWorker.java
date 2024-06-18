@@ -106,10 +106,10 @@ public class StreamWorker implements DunkNetChannelHandler, IStream {
 	
 	
 
-	@Override
-	public RedissonClient getRedissonClient() {
-		return workerService.getRedissonClient();
-	}
+	//@Override
+	//public RedissonClient getRedissonClient() {
+	//	return workerService.getRedissonClient();
+	//}
 
 
 	public StreamSessionWorkerStartReq getStartReq() {

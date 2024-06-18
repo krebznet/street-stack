@@ -26,7 +26,7 @@ public class EntitySignalPublisher implements StreamWorkerExtension, XSignalList
 	@Override
 	public void start() throws Exception {
 		this.stream = worker.getStream();
-		// 
+		stream.getXSignals().addSignalListener(this);
 	}
 
 	@Override
@@ -37,7 +37,7 @@ public class EntitySignalPublisher implements StreamWorkerExtension, XSignalList
 
 	@Override
 	public void onSignal(XSignal signal) {
-		// TODO Auto-generated method stub
+		System.err.println("Signal in publisher! " + signal.getType().getModel().getName());
 		
 	}
 	

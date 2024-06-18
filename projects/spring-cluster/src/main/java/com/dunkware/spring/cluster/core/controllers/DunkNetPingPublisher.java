@@ -63,8 +63,7 @@ public class DunkNetPingPublisher implements KafkaByteHandler {
 			DunkNetNodeDescriptor ping = DunkJson.getObjectMapper().readValue(record.value(), DunkNetNodeDescriptor.class);
 			if(logger.isTraceEnabled()) { 
 				logger.trace("Recieved Ping on node {} from Node {} with profiles {}",dunkNet.getId(),ping.getId(),ping.getProfiles());
-			}
-			dunkNet.nodeDescriptor(ping);
+			}			dunkNet.nodeDescriptor(ping);
 		} catch (Exception e) {
 			logger.error(marker, "Exception consuming ping " + e.toString());
 		}

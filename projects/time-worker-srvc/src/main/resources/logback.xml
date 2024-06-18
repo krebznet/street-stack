@@ -34,15 +34,16 @@
 	</root>
 
 
-	<logger name="com.dunkware" level="DEBUG">
+	<logger name="com.dunkware" level="INFO">
  <appender-ref ref="FLUENT" />
 		<appender-ref ref="CONSOLE" additivity="false"/>
 	</logger>
-<logger name="com.dunkware.spring.cluster" level="DEBUG">
+<logger name="com.dunkware.spring.cluster" level="INFO">
  
 		<appender-ref ref="CONSOLE" additivity="false"/>
 	</logger>
 
+<!--  
 	<logger name="com.dunkware.trade.service.stream.worker.session.persist" level="TRACE">
  <appender-ref ref="FLUENT" additivity="false"/>
 		<appender-ref ref="CONSOLE" additivity="false"/>
@@ -68,6 +69,6 @@
 
 	</logger>	
 		
-	
+	-->
 	 
 </configuration>

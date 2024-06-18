@@ -180,7 +180,7 @@ public class ComparisonExp extends XStreamExpressionImpl {
 		if (error) {
 			return false;
 		}
-		if (!leftExpression.canExecute() || rightExpression.canExecute()) {
+		if (!leftExpression.canExecute() || !rightExpression.canExecute()) {
 			return false;
 		}
 		return true;

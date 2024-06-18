@@ -101,6 +101,7 @@ public class DunkNetImpl implements DunkNet, KafkaByteHandler {
 		controller = new DunkNetController();
 		ac.getAutowireCapableBeanFactory().autowireBean(controller);
 		extensions = DunkNetExtensions.buildComponentExtensions(ac);
+		
 		controller.init(this);
 		eventTree = DunkEventTree.newInstance(executorService.get());
 		eventNode = eventTree.getRoot().createChild(this);
