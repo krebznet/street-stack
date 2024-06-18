@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	<parent>
+		<groupId>com.dunkware.maven</groupId>
+		<artifactId>dunkware-maven-parent</artifactId>
+		<version>6-SNAPSHOT</version>
+		<relativePath>../dunkware-maven-parent/pom.xml</relativePath>
+
+	</parent>
+
+	<groupId>com.dunkware.time</groupId>
+	<artifactId>time-stream-model</artifactId>
+	<version>1.0.0-SNAPSHOT</version>
+
+	<name>Time Stream Model</name>
+	
+	<properties>
+	<java.version>17</java.version>
+		<maven.compiler.source>17</maven.compiler.source>
+		<maven.compiler.target>17</maven.compiler.target>
+	
+		<maven-jar-plugin.version>3.1.1</maven-jar-plugin.version>
+		<os.plugin.version>1.6.0</os.plugin.version>
+
+	</properties>
+
+	<scm>
+		<connection>scm:git:ssh://git@github.com:krebznet/dunkware-trade-service-stream-protocol.git</connection>
+		<developerConnection>scm:git:ssh://git@github.com/krebznet/dunkware-trade-service-stream-protocol.git</developerConnection>
+		<url>https://github.com/krebznet/dunkware-trade-service-stream-protocol.git</url>
+		<tag>v1.0.0</tag>
+	</scm>
+
+
+
+
+	<dependencies>
+
+<dependency>
+	<groupId>com.dunkware.utils</groupId>
+	<artifactId>java-utils-core</artifactId>
+	<version>1.0.0-SNAPSHOT</version>
+</dependency>
+		<dependency>
+			<groupId>com.dunkware.xstream</groupId>
+			<artifactId>xstream-core-model</artifactId>
+			<version>1.0.0-SNAPSHOT</version>
+		</dependency>
+	
+		<dependency>
+			<groupId>junit</groupId>
+			<artifactId>junit</artifactId>
+			<version>3.8.1</version>
+		</dependency>
+		<dependency>
+			<groupId>com.dunkware.utils</groupId>
+			
+			<artifactId>java-utils-core</artifactId>
+			<version>1.0.0</version>
+		</dependency>
+
+	
+		<dependency>
+			<groupId>com.dunkware.xstream</groupId>
+			<artifactId>xstream-core-runtime</artifactId>
+			<version>1.0.0-SNAPSHOT</version>
+		</dependency>
+
+		<dependency>
+			<groupId>com.dunkware.trade.service</groupId>
+			<artifactId>dunkware-trade-service-tick-protocol</artifactId>
+			<version>1.2.0-SNAPSHOT</version>
+		</dependency>
+
+
+		
+		
+		<dependency>
+			<groupId>javax.annotation</groupId>
+			<artifactId>javax.annotation-api</artifactId>
+			<version>1.2</version>
+		</dependency>
+
+
+
+
+	</dependencies>
+
+	<build>
+		<extensions>
+			<extension>
+				<groupId>kr.motd.maven</groupId>
+				<artifactId>os-maven-plugin</artifactId>
+				<version>${os.plugin.version}</version>
+			</extension>
+		</extensions>
+
+		<plugins>
+
+
+		</plugins>
+
+
+	</build>
+
+	<reporting>
+		<plugins>
+			<plugin>
+				<artifactId>maven-project-info-reports-plugin</artifactId>
+			</plugin>
+		</plugins>
+	</reporting>
+</project>

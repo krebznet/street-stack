@@ -38,7 +38,7 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
   Ticker.JSON_PROPERTY_DATE_ADDED,
   Ticker.JSON_PROPERTY_VERSION_ADDED
 })
-@jakarta.annotation.Generated(value = "org.openapitools.codegen.languages.JavaClientCodegen", date = "2024-06-17T23:27:31.285684-05:00[America/Chicago]", comments = "Generator version: 7.6.0")
+@jakarta.annotation.Generated(value = "org.openapitools.codegen.languages.JavaClientCodegen", date = "2024-06-18T05:33:44.639891-05:00[America/Chicago]", comments = "Generator version: 7.6.0")
 public class Ticker {
   public static final String JSON_PROPERTY_ID = "id";
   private Integer id;

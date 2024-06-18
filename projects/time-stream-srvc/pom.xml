@@ -1,0 +1,450 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	<parent>
+		<groupId>org.springframework.boot</groupId>
+		<artifactId>spring-boot-starter-parent</artifactId>
+		<version>3.2.5</version>
+	</parent>
+	<groupId>com.dunkware.time</groupId>
+	<artifactId>time-stream-srvc</artifactId>
+	<version>1.0.0-SNAPSHOT</version>
+	<name>Time Stream Server</name>
+	<description>Time Stream Server</description>
+
+
+	<properties>
+
+
+		<java.version>17</java.version>
+		<maven.compiler.source>17</maven.compiler.source>
+		<maven.compiler.target>17</maven.compiler.target>
+		<org.mapstruct.version>1.4.2.Final</org.mapstruct.version>
+		<flyway.version>7.10.0</flyway.version>
+		<lombok.version>1.18.20</lombok.version>
+		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+		<project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
+
+
+	</properties>
+
+
+	<distributionManagement>
+		<snapshotRepository>
+			<uniqueVersion>false</uniqueVersion>
+			<id>dunkware-internal-snapshot</id>
+			<layout>default</layout>
+			<name>dunkware-internal-snapshot</name>
+			<url>
+				https://nexus.dunkware.com/repository/dunkware-internal-snapshot/</url>
+
+		</snapshotRepository>
+		<repository>
+			<uniqueVersion>false</uniqueVersion>
+			<id>dunkware-internal-release</id>
+			<layout>default</layout>
+			<name>dunkware-internal-release</name>
+			<url>
+				https://nexus.dunkware.com/repository/dunkware-internal-release/</url>
+
+		</repository>
+	</distributionManagement>
+
+
+	<dependencies>
+
+
+		<!--
+		https://mvnrepository.com/artifact/jakarta.servlet/jakarta.servlet-api -->
+		<dependency>
+			<groupId>jakarta.servlet</groupId>
+			<artifactId>jakarta.servlet-api</artifactId>
+			<version>6.0.0</version>
+			<scope>provided</scope>
+		</dependency>
+		<dependency>
+			<groupId>com.mysql</groupId>
+			<artifactId>mysql-connector-j</artifactId>
+			<scope>runtime</scope>
+		</dependency>
+
+		<!-- https://mvnrepository.com/artifact/org.projectlombok/lombok -->
+		<dependency>
+			<groupId>org.projectlombok</groupId>
+			<artifactId>lombok</artifactId>
+
+			<scope>provided</scope>
+		</dependency>
+		<dependency>
+			<groupId>com.dunkware.time</groupId>
+			<artifactId>time-data-model</artifactId>
+			<version>1.0.0-SNAPSHOT</version>
+		</dependency>
+
+		<dependency>
+			<groupId>com.dunkware.time</groupId>
+			<artifactId>time-data-codec</artifactId>
+			<version>1.0.0-SNAPSHOT</version>
+		</dependency>
+
+		<!--
+		https://mvnrepository.com/artifact/org.springframework.boot/spring-boot-starter-web -->
+
+		<!-- Exclude the servlet-related dependencies from
+		spring-boot-starter-web -->
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-web</artifactId>
+			<exclusions>
+				<exclusion>
+					<groupId>org.springframework.boot</groupId>
+					<artifactId>spring-boot-starter-tomcat</artifactId>
+				</exclusion>
+
+				<!-- avoid: LoggerFactory is not a Logback LoggerContext but
+				Logback is on the classpath. on run with vscode -->
+				<exclusion>
+					<groupId>ch.qos.logback</groupId>
+					<artifactId>logback-classic</artifactId>
+				</exclusion>
+
+				<!-- Exclude any other servlet-related dependencies if needed -->
+				<exclusion>
+					<groupId>org.slf4j</groupId>
+					<artifactId>jul-to-slf4j</artifactId>
+				</exclusion>
+				<!--<exclusion>
+					<groupId>org.apache.logging.log4j</groupId>
+					<artifactId>log4j-api</artifactId>
+				</exclusion>
+				<exclusion>
+					<groupId>org.apache.logging.log4j</groupId>
+					<artifactId>log4j-to-slf4j</artifactId>
+				</exclusion>-->
+			</exclusions>
+		</dependency>
+
+		<dependency>
+			<groupId>com.dunkware.time</groupId>
+			<artifactId>time-data-util</artifactId>
+			<version>1.0.0-SNAPSHOT</version>
+		</dependency>
+
+		<!-- data-common -->
+
+
+		<dependency>
+			<groupId>com.dunkware.xstream</groupId>
+			<artifactId>xstream-core-model</artifactId>
+			<version>1.0.0-SNAPSHOT</version>
+			<exclusions>
+				<exclusion>
+					<groupId>ch.qos.reload4j</groupId>
+					<artifactId>reload4j</artifactId>
+				</exclusion>
+				<exclusion>
+					<groupId>org.slf4j</groupId>
+					<artifactId>slf4j-reload4j</artifactId>
+				</exclusion>
+			</exclusions>
+		</dependency>
+
+		<dependency>
+			<groupId>com.dunkware.utils</groupId>
+			<artifactId>java-utils-glazed</artifactId>
+			<version>1.0.0-SNAPSHOT</version>
+		</dependency>
+
+		<dependency>
+			<groupId>com.dunkware.utils</groupId>
+			<artifactId>java-utils-core</artifactId>
+			<version>1.0.0-SNAPSHOT</version>
+		</dependency>
+
+		<dependency>
+			<groupId>com.dunkware.spring</groupId>
+			<artifactId>spring-cluster</artifactId>
+			<version>1.0.0-SNAPSHOT</version>
+			<exclusions>
+				<exclusion>
+					<groupId>commons-logging</groupId>
+					<artifactId>commons-logging</artifactId>
+				</exclusion>
+
+
+				<!-- avoid: LoggerFactory is not a Logback LoggerContext but
+				Logback is on the classpath. on run with vscode -->
+				<exclusion>
+					<groupId>ch.qos.logback</groupId>
+					<artifactId>logback-classic</artifactId>
+				</exclusion>
+			</exclusions>
+
+		</dependency>
+
+		<dependency>
+			<groupId>com.dunkware.spring</groupId>
+			<artifactId>spring-runtime</artifactId>
+			<version>1.0.0-SNAPSHOT</version>
+			<exclusions>
+				<exclusion>
+					<groupId>commons-logging</groupId>
+					<artifactId>commons-logging</artifactId>
+				</exclusion>
+
+				<!-- avoid: LoggerFactory is not a Logback LoggerContext but
+				Logback is on the classpath. on run with vscode -->
+				<exclusion>
+					<groupId>ch.qos.logback</groupId>
+					<artifactId>logback-classic</artifactId>
+				</exclusion>
+
+			</exclusions>
+
+		</dependency>
+
+
+		<dependency>
+			<groupId>org.projectlombok</groupId>
+			<artifactId>lombok</artifactId>
+			<optional>true</optional>
+		</dependency>
+
+
+		<!-- Spring Boot Actuator for Production Ready Features -->
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-actuator</artifactId>
+		</dependency>
+		<!-- Prometheus -->
+		<dependency>
+			<groupId>io.micrometer</groupId>
+			<artifactId>micrometer-registry-prometheus</artifactId>
+		</dependency>
+
+
+		<dependency>
+			<groupId>io.micrometer</groupId>
+			<artifactId>micrometer-registry-prometheus</artifactId>
+			<scope>runtime</scope>
+		</dependency>
+		<!-- Spring Boot Dev Tool - High Performance Development -->
+
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-data-jpa</artifactId>
+		</dependency>
+		<!-- <dependency> <groupId>org.springframework.boot</groupId>
+		<artifactId>spring-boot-starter-security</artifactId> 
+			</dependency> -->
+
+
+		<!-- Logging Dependencies -->
+		<dependency>
+			<groupId>ch.qos.logback</groupId>
+			<artifactId>logback-classic</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>ch.qos.logback</groupId>
+			<artifactId>logback-core</artifactId>
+		</dependency>
+		<!-- https://mvnrepository.com/artifact/org.slf4j/slf4j-api -->
+		<dependency>
+			<groupId>org.slf4j</groupId>
+			<artifactId>slf4j-api</artifactId>
+
+		</dependency>
+
+		<dependency>
+			<groupId>com.sndyuk</groupId>
+			<artifactId>logback-more-appenders</artifactId>
+			<version>1.8.3</version>
+		</dependency>
+
+		<!-- <dependency> <groupId>io.jsonwebtoken</groupId>
+		<artifactId>jjwt</artifactId> 
+			<version>0.9.1</version> </dependency> -->
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-test</artifactId>
+			<scope>test</scope>
+		</dependency>
+
+		<!-- <dependency> <groupId>org.flywaydb</groupId>
+		<artifactId>flyway-core</artifactId> 
+			<version>${flyway.version}</version> </dependency> -->
+		<!--
+		https://mvnrepository.com/artifact/org.springframework/spring-context -->
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-context</artifactId>
+
+		</dependency>
+		<dependency>
+			<groupId>org.mapstruct</groupId>
+			<artifactId>mapstruct</artifactId>
+			<version>${org.mapstruct.version}</version>
+		</dependency>
+
+
+		<!-- Spring Boot Starter Dependencies -->
+
+
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-test</artifactId>
+			<scope>test</scope>
+		</dependency>
+		<!-- Spring Boot Actuator for Production Ready Features -->
+
+		<!-- Prometheus -->
+		<dependency>
+			<groupId>io.micrometer</groupId>
+			<artifactId>micrometer-registry-prometheus</artifactId>
+		</dependency>
+		<!-- Spring Boot Dev Tool - High Performance Development -->
+		
+		
+
+		<dependency>
+			<groupId>org.fluentd</groupId>
+			<artifactId>fluent-logger</artifactId>
+			<version>0.3.4</version>
+		</dependency>
+
+		<!-- MongoDB Dependencies -->
+		<!-- <dependency> <groupId>org.mongodb</groupId>
+		<artifactId>mongo-java-driver</artifactId> 
+			<version>3.4.1</version> </dependency> -->
+		<!-- Kafka Dependencies -->
+		<dependency>
+			<groupId>org.apache.kafka</groupId>
+			<artifactId>kafka-clients</artifactId>
+		</dependency>
+
+
+		<!-- GRPC Dependencies -->
+
+
+		<dependency>
+			<groupId>com.zaxxer</groupId>
+			<artifactId>HikariCP</artifactId>
+
+		</dependency>
+
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-data-rest</artifactId>
+			<exclusions>
+				<!-- Exclude the Tomcat dependency -->
+				<exclusion>
+					<groupId>org.springframework.boot</groupId>
+					<artifactId>spring-boot-starter-tomcat</artifactId>
+				</exclusion>
+			</exclusions>
+		</dependency>
+		<dependency>
+			<groupId>com.mysql</groupId>
+			<artifactId>mysql-connector-j</artifactId>
+		</dependency>
+
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-webflux</artifactId>
+		</dependency>
+
+		<!--
+		https://mvnrepository.com/artifact/org.springframework.boot/spring-boot-starter-webflux -->
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-webflux</artifactId>
+
+		</dependency>
+
+
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-test</artifactId>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>io.projectreactor</groupId>
+			<artifactId>reactor-test</artifactId>
+			<scope>test</scope>
+		</dependency>
+
+		<!-- https://mvnrepository.com/artifact/com.google.inject/guice -->
+	<!--	<dependency>
+			<groupId>com.google.inject</groupId>
+			<artifactId>guice</artifactId>
+			<version>5.0.1</version>
+		</dependency>-->
+
+		<!-- GRPC DEPS -->
+
+		<!--
+		https://mvnrepository.com/artifact/org.springframework.metrics/spring-metrics -->
+
+
+		<!-- Dunkware Dependencies -->
+
+<!-- https://mvnrepository.com/artifact/log4j/log4j -->
+<dependency>
+    <groupId>log4j</groupId>
+    <artifactId>log4j</artifactId>
+    <version>1.2.17</version>
+</dependency>
+
+		<dependency>
+			<groupId>com.dunkware.xstream</groupId>
+			<artifactId>xstream-core-runtime</artifactId>
+			<version>1.0.0-SNAPSHOT</version>
+			<exclusions>
+				<exclusion>
+					<groupId>ch.qos.reload4j</groupId>
+					<artifactId>reload4j</artifactId>
+				</exclusion>
+			</exclusions>
+		</dependency>
+
+
+		<dependency>
+			<groupId>com.dunkware.trade.tick</groupId>
+			<artifactId>dunkware-trade-tick-api</artifactId>
+			<version>1.2.0-SNAPSHOT</version>
+		</dependency>
+
+		<dependency>
+			<groupId>com.dunkware.trade.service</groupId>
+			<artifactId>dunkware-trade-service-tick-client</artifactId>
+			<version>1.2.0-SNAPSHOT</version>
+		</dependency>
+		<dependency>
+			<groupId>com.dunkware.trade.service</groupId>
+			<artifactId>dunkware-trade-service-tick-protocol</artifactId>
+			<version>1.2.0-SNAPSHOT</version>
+		</dependency>
+		<dependency>
+			<groupId>com.dunkware.trade.service</groupId>
+			<artifactId>dunkware-trade-service-stream-json</artifactId>
+			<version>1.2.0-SNAPSHOT</version>
+		</dependency>
+
+
+		<!-- Metrics/Prometheus -->
+
+
+	</dependencies>
+
+
+	<build>
+		<plugins>
+			<plugin>
+				<groupId>org.springframework.boot</groupId>
+				<artifactId>spring-boot-maven-plugin</artifactId>
+			</plugin>
+
+		</plugins>
+	</build>
+</project>

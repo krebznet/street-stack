@@ -55,7 +55,7 @@ import com.fasterxml.jackson.databind.deser.std.StdDeserializer;
 import com.fasterxml.jackson.databind.ser.std.StdSerializer;
 import com.dunkware.street.JSON;
 
-@jakarta.annotation.Generated(value = "org.openapitools.codegen.languages.JavaClientCodegen", date = "2024-06-17T23:27:31.285684-05:00[America/Chicago]", comments = "Generator version: 7.6.0")
+@jakarta.annotation.Generated(value = "org.openapitools.codegen.languages.JavaClientCodegen", date = "2024-06-18T05:33:44.639891-05:00[America/Chicago]", comments = "Generator version: 7.6.0")
 @JsonDeserialize(using = TickerVariableValue.TickerVariableValueDeserializer.class)
 @JsonSerialize(using = TickerVariableValue.TickerVariableValueSerializer.class)
 public class TickerVariableValue extends AbstractOpenApiSchema {

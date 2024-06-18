@@ -1,2 +1,0 @@
-select * from streamdata.stats_entity_date where entity = 63 ALLOW FILTERING;
-select * from streamdata.session_meta_session_date ALLOW FILTERING;

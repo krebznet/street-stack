@@ -1,8 +1,5 @@
 package com.dunkware.utils.redis;
 
-import java.net.URI;
-
-import redis.clients.jedis.DefaultJedisClientConfig;
 import redis.clients.jedis.JedisPool;
 import redis.clients.jedis.JedisPoolConfig;
 
