@@ -49,7 +49,7 @@ public interface XStreamEntity {
 	 * @return
 	 */
 	List<XStreamEntityVar> getNumericVars();
-	
+		
 	/**
 	 * Returns the row stats at the current point in time
 	 * @param varStats flag include varStats in rowStats

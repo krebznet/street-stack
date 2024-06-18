@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.Semaphore;
+import java.util.concurrent.atomic.AtomicInteger;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -14,6 +15,7 @@ import org.slf4j.MarkerFactory;
 
 import com.dunkware.utils.core.helpers.DunkUUID;
 import com.dunkware.utils.core.time.DunkTimeZones;
+import com.dunkware.xstream.api.XSignals;
 import com.dunkware.xstream.api.XStream;
 import com.dunkware.xstream.api.XStreamClock;
 import com.dunkware.xstream.api.XStreamEntity;
@@ -34,6 +36,7 @@ import com.dunkware.xstream.api.XStreamStatService;
 import com.dunkware.xstream.api.XStreamStatus;
 import com.dunkware.xstream.api.XStreamTickRouter;
 import com.dunkware.xstream.core.signal.XStreamSignalsImpl;
+import com.dunkware.xstream.core.xsignal.XSignalsImpl;
 import com.dunkware.xstream.model.entity.query.type.XStreamEntityQueryType;
 import com.dunkware.xstream.model.metrics.XStreamMetrics;
 import com.dunkware.xstream.util.XStreamStatsBuilder;
@@ -74,13 +77,16 @@ public class XStreamImpl implements XStream {
 	private XStreamExecutor executor;
 
 	private XStreamSignalsImpl signals;
-
+	private XSignalsImpl xSignals; 
 	private String sessionId;
 
 	private List<String> rowIdentifiers = new ArrayList<String>();
 
 	private List<XStreamRuntimeErrorListener> errorListeners = new ArrayList<XStreamRuntimeErrorListener>();
 	private Semaphore errorListenerLock = new Semaphore(1);
+	
+	private AtomicInteger errorCount = new AtomicInteger(0);
+	
 
 	private ZoneId zoneId; 
 	@Override
@@ -105,7 +111,14 @@ public class XStreamImpl implements XStream {
 		executor = new XStreamExecutorImpl(input.getExecutor());
 		clock = new XStreamClockImpl(this);
 		tickRouter = new XStreamTickRouterImpl(this);
-
+		xSignals = new XSignalsImpl();
+		try {
+			xSignals.init(this);
+		} catch (Exception e) {
+			logger.error("XSignals Init Exception " + e.toString());
+			throw new XStreamException("XSignals Init Exception " + e.toString());
+		}
+		
 		services = input.getRegistry().createServices();
 		for (XStreamService service : services) {
 			service.init(this);
@@ -171,7 +184,7 @@ public class XStreamImpl implements XStream {
 
 	@Override
 	public void dispose() throws XStreamException {
-
+		
 		for (XStreamExtension ext : extensions) {
 			logger.info(stopMarker, "Ext Predispose Start {} ", ext.getClass().getName());
 			ext.preDispose();
@@ -202,6 +215,8 @@ public class XStreamImpl implements XStream {
 		logger.info(stopMarker, "Entities Dispose Done");
 		logger.info(stopMarker, "XStream Disposed");
 		status = XStreamStatus.Disposed;
+		
+		xSignals.dispose();
 	}
 
 	@Override
@@ -306,6 +321,11 @@ public class XStreamImpl implements XStream {
 	@Override
 	public XStreamTickRouter getTickRouter() {
 		return tickRouter;
+	}
+
+	@Override
+	public XSignals getXSignals() {
+		return xSignals;
 	}
 
 	@Override
@@ -477,6 +497,18 @@ public class XStreamImpl implements XStream {
 	@Override
 	public Future<XStreamEntityQuery> buildEntityQuery(XStreamEntityQueryType model) {
 		return input.getQueryBuilder().build(this, model);
+	}
+	
+	
+
+	@Override
+	public void incrementErrorCount() {
+		errorCount.incrementAndGet();
+	}
+
+	@Override
+	public int getErrorCount() {
+		return errorCount.get();
 	}
 
 	@Override

@@ -32,6 +32,9 @@ public interface XStream {
 	XStreamEntity getRow(String id);
 
 	XStreamEntity getRow(int entityid);
+	
+	
+	XSignals getXSignals();
 
 	
 	List<String> getRowIdentifiers();
@@ -183,6 +186,19 @@ public interface XStream {
 	 * @return
 	 */
 	public XStreamSignals getSignals();
+	
+	/**
+	 * Instead of putting messages on all this shit, for a lot of them we need to hold off
+	 * and just notify error count for further log searching, if this is incremented the 
+	 * caller will be logging error. 
+	 */
+	public void incrementErrorCount(); 
+	
+	/**
+	 * Returns the error count. 
+	 * @return
+	 */
+	public int getErrorCount();
 	
 }
 
