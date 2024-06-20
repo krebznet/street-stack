@@ -2,12 +2,13 @@ package com.dunkware.trade.api.broker;
 
 import java.util.List;
 
+import com.dunkware.trade.api.broker.model.BrokerBean;
 import com.dunkware.utils.core.concurrent.DunkExecutor;
 import com.dunkware.utils.core.events.DunkEventNode;
 
 public interface Broker {
 
-	public void connect(BrokerConfig config, DunkEventNode eventNode, DunkExecutor executor) throws Exception;
+	public void connect(BrokerProperties config, DunkEventNode eventNode, DunkExecutor executor) throws Exception;
 
 	public void disconnect() throws Exception;
 

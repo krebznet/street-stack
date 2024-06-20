@@ -4,7 +4,8 @@ import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.Arrays;
 
-import com.dunkware.stream.data.model.session.StreamSessionModel;
+import com.dunkware.time.data.codec.session.meta.SessionModelCodec;
+import com.dunkware.time.data.model.session.StreamSessionModel;
 
 import junit.framework.TestCase;
 

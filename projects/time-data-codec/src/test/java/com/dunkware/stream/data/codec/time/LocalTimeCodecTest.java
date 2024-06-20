@@ -6,6 +6,8 @@ import junit.framework.TestCase;
 import java.time.LocalDate;
 import java.time.LocalTime;
 
+import com.dunkware.time.data.codec.time.LocalTimeCodec;
+
 
 public class LocalTimeCodecTest extends TestCase {
 

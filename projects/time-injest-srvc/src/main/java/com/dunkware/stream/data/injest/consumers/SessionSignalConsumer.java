@@ -10,7 +10,7 @@ import org.springframework.stereotype.Service;
 import com.datastax.oss.driver.api.core.CqlSessionBuilder;
 import com.dunkware.stream.data.cassy.loaders.SessionSignalEntityLoader;
 import com.dunkware.stream.data.cassy.services.CassyQueryService;
-import com.dunkware.stream.data.model.entity.EntitySignal;
+import com.dunkware.time.data.model.entity.EntitySignal;
 
 import jakarta.annotation.PostConstruct;
 

@@ -4,7 +4,7 @@ import org.apache.kafka.clients.producer.Producer;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.dunkware.stream.data.model.entity.EntitySignal;
+import com.dunkware.time.data.model.entity.EntitySignal;
 import com.dunkware.trade.service.stream.worker.session.StreamWorker;
 import com.dunkware.trade.service.stream.worker.session.StreamWorkerExtension;
 import com.dunkware.trade.service.stream.worker.session.anot.AStreamWorkerExtension;

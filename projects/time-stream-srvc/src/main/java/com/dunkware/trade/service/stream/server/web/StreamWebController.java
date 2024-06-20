@@ -10,7 +10,12 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.dunkware.java.utils.glazed.grid.DataGridUpdate;
 import com.dunkware.java.utils.glazed.grid.GlazedDataGrid;
+import com.dunkware.spring.runtime.controller.UserException;
+import com.dunkware.spring.runtime.services.ExecutorService;
 import com.dunkware.trade.service.stream.json.controller.session.StreamSessionNodeBean;
+import com.dunkware.trade.service.stream.server.controller.StreamController;
+import com.dunkware.trade.service.stream.server.controller.StreamControllerService;
+import com.dunkware.trade.service.stream.server.web.components.EntitySessionVarGrid;
 
 import ca.odell.glazedlists.ObservableElementList;
 import reactor.core.publisher.Flux;
@@ -20,6 +25,12 @@ public class StreamWebController {
 
 	@Autowired
 	private StreamWebService webService; 
+	
+	@Autowired
+	private StreamControllerService streamService; 
+	
+	@Autowired
+	private ExecutorService executorService; 
 	
 //	/stream/v1/web/stream/grid/session/nodes?stream=us_equity
 	@GetMapping(path = "/stream/v1/web/stream/grid/session/nodes", produces = MediaType.APPLICATION_STREAM_JSON_VALUE)
@@ -41,11 +52,20 @@ public class StreamWebController {
 	
 	
 	
-	@GetMapping(path = "/stream/v1/web/stream/session/entity/vars/grid", produces = MediaType.APPLICATION_STREAM_JSON_VALUE)
-	public Flux<DataGridUpdate> entitySessionVars(@RequestParam String stream, @RequestParam int entityId) { 
-		// VarSnapshot - ID - IDENT - value -
-		//webService.getEntitySessionVarGrid(entityId);
-		return null;
+	@GetMapping(path = "/stream/v1/web/stream/session/entity/vars/", produces = MediaType.APPLICATION_STREAM_JSON_VALUE)
+	public Flux<List<DataGridUpdate>> entitySessionVars(@RequestParam String stream, @RequestParam int entity) throws Exception { 
+		// okay make the return type easier or lets think for one second give me a secon. 
+		try {
+			StreamController controller = streamService.getStreamByName(stream);
+			EntitySessionVarGrid grid = new EntitySessionVarGrid();
+			return grid.init(executorService.get(), controller, entity);
+			
+		} catch (Exception e) {
+			// UserException will set bad http request - their problem not ours
+			throw new UserException("Invalid Stream " + stream);
+		}
+		
+
 	}
 	
 	

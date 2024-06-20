@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.server.ResponseStatusException;
 
+import com.dunkware.java.utils.glazed.grid.GlazedDataGrid;
 import com.dunkware.spring.runtime.controller.UserException;
 import com.dunkware.trade.service.stream.json.controller.AddStreamReq;
 import com.dunkware.trade.service.stream.json.controller.AddStreamResp;
@@ -35,6 +36,7 @@ import com.dunkware.trade.service.stream.json.controller.spec.StreamControllerSp
 import com.dunkware.trade.service.stream.json.controller.spec.StreamControllerStats;
 import com.dunkware.trade.service.stream.json.controller.spec.StreamState;
 import com.dunkware.trade.service.stream.resources.StreamResource;
+import com.dunkware.trade.service.stream.server.controller.session.StreamSession;
 import com.dunkware.trade.service.stream.server.tick.StreamTickService;
 import com.dunkware.trade.tick.model.ticker.TradeTickerSpec;
 
@@ -277,7 +279,8 @@ public class StreamControllerWebService {
 		throw new Exception("Entity Not Found " + ident);
 	}
 	
-		
+
+	
 	
 
 	

@@ -16,9 +16,9 @@ import com.dunkware.common.util.events.DEventNode;
 import com.dunkware.common.util.executor.DExecutor;
 import com.dunkware.trade.api.broker.Broker;
 import com.dunkware.trade.api.broker.BrokerAccount;
-import com.dunkware.trade.api.broker.BrokerBean;
-import com.dunkware.trade.api.broker.BrokerConfig;
+import com.dunkware.trade.api.broker.BrokerProperties;
 import com.dunkware.trade.api.broker.BrokerStatus;
+import com.dunkware.trade.api.broker.model.BrokerBean;
 import com.dunkware.trade.broker.tws.connector.TwsConnectorService;
 import com.dunkware.trade.broker.tws.connector.TwsConnectorSocket;
 import com.dunkware.trade.broker.tws.connector.TwsSocketReader;
@@ -107,7 +107,7 @@ public class TwsBroker implements Broker , TwsSocketReader {
 	
 	
 	@Override
-	public void connect(BrokerConfig config, DunkEventNode eventNode, DunkExecutor executor) throws Exception {
+	public void connect(BrokerProperties config, DunkEventNode eventNode, DunkExecutor executor) throws Exception {
 		// TODO Auto-generated method stub
 		
 	}

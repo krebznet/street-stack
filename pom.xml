@@ -87,7 +87,7 @@
 		<module>projects/time-data-util</module>
 		<module>projects/time-injest-srvc</module>
 		<module>projects/time-mock-srvc</module>
-		
+	<!--	
 		<module>projects/trade-api-data</module>
 		<module>projects/trade-api-broker</module>
 		<module>projects/trade-tws-broker</module>
@@ -97,7 +97,7 @@
 		<module>projects/dunkware-street-tick</module>
 		<module>projects/java-generic-model</module>
 		<module>projects/dunkware-street-model</module>
-		<module>projects/dunkware-street-server</module>
+		<module>projects/dunkware-street-server</module>-->
 	
 		
 		<module>xscript</module>

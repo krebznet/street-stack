@@ -1,22 +1,15 @@
 package com.dunkware.trade.service.stream.server.web.components;
 
-import java.time.LocalDateTime;
-
 import com.dunkware.utils.core.observable.ObservableBean;
 
 public class EntitySessionVarBean extends ObservableBean {
 	
-	private String identi; 
+	private String ident; 
 	private int id; 
 	private int updateCount; 
 	private String value; 
-	private LocalDateTime lastUpdate;
-	public String getIdenti() {
-		return identi;
-	}
-	public void setIdenti(String identi) {
-		this.identi = identi;
-	}
+	private String lastUpdate;
+	
 	public int getId() {
 		return id;
 	}
@@ -35,12 +28,20 @@ public class EntitySessionVarBean extends ObservableBean {
 	public void setValue(String value) {
 		this.value = value;
 	}
-	public LocalDateTime getLastUpdate() {
+	public String getIdent() {
+		return ident;
+	}
+	public void setIdent(String ident) {
+		this.ident = ident;
+	}
+	public String getLastUpdate() {
 		return lastUpdate;
 	}
-	public void setLastUpdate(LocalDateTime lastUpdate) {
+	public void setLastUpdate(String lastUpdate) {
 		this.lastUpdate = lastUpdate;
-	} 
+	}
+	
+	
 	
 	
 	

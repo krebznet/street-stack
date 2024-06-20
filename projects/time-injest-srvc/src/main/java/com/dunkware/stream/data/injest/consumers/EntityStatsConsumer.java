@@ -17,12 +17,12 @@ import org.springframework.stereotype.Service;
 
 import com.datastax.oss.driver.api.core.CqlSessionBuilder;
 import com.dunkware.stream.data.cassy.loaders.SessionEntityStatLoader;
-import com.dunkware.stream.data.codec.stat.EntityStatsModelCodec;
 import com.dunkware.stream.data.injest.config.InjestConfig;
-import com.dunkware.stream.data.model.stats.entity.EntityStatModel;
-import com.dunkware.stream.data.model.stats.entity.EntityStatsModel;
 import com.dunkware.tiime.data.util.constants.StreamDataTopics;
 import com.dunkware.tiime.data.util.helpers.EntityStatModelHelper;
+import com.dunkware.time.data.codec.stat.EntityStatsModelCodec;
+import com.dunkware.time.data.model.stats.entity.EntityStatModel;
+import com.dunkware.time.data.model.stats.entity.EntityStatsModel;
 import com.dunkware.utils.kafka.byteconsumer.KafkaByteConsumer;
 import com.dunkware.utils.kafka.byteconsumer.KafkaByteConsumerSpec;
 import com.dunkware.utils.kafka.byteconsumer.KafkaByteHandler;

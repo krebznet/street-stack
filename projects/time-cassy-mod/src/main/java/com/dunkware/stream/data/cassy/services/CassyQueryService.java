@@ -14,7 +14,7 @@ import com.datastax.oss.driver.api.core.cql.ResultSet;
 import com.datastax.oss.driver.api.core.cql.Row;
 import com.datastax.oss.driver.api.core.cql.SimpleStatement;
 import com.dunkware.stream.data.lib.cassy.helpers.CassyQueries;
-import com.dunkware.stream.data.model.stats.entity.EntityStatModel;
+import com.dunkware.time.data.model.stats.entity.EntityStatModel;
 
 @Service
 public class CassyQueryService {

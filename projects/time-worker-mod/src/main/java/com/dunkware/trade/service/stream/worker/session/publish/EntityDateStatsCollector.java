@@ -14,9 +14,9 @@ import org.slf4j.LoggerFactory;
 import org.slf4j.Marker;
 import org.slf4j.MarkerFactory;
 
-import com.dunkware.stream.data.model.stats.entity.EntityStatTypes;
-import com.dunkware.stream.data.model.stats.entity.EntityStatsModel;
-import com.dunkware.stream.data.model.stats.entity.EntityVarStatsModel;
+import com.dunkware.time.data.model.stats.entity.EntityStatTypes;
+import com.dunkware.time.data.model.stats.entity.EntityStatsModel;
+import com.dunkware.time.data.model.stats.entity.EntityVarStatsModel;
 import com.dunkware.xstream.api.XStreamEntity;
 import com.dunkware.xstream.api.XStreamEntityVar;
 

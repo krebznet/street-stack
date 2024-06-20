@@ -15,7 +15,7 @@ public class MainApp extends JFrame {
     // Constructor for the main application window
     public MainApp() {
         // Set up the frame
-        setTitle("Dunkstreet");
+        setTitle("Street Link");
         setSize(800, 600);
         setLocationRelativeTo(null);
         setDefaultCloseOperation(EXIT_ON_CLOSE);

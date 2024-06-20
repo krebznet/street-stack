@@ -1,5 +1,6 @@
 package com.dunkware.trade.api.broker;
 
+import com.dunkware.trade.api.broker.model.BrokerAccountBean;
 import com.dunkware.utils.core.events.DunkEventNode;
 
 public interface BrokerAccount {

@@ -10,10 +10,10 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import com.dunkware.spring.cluster.DunkNet;
-import com.dunkware.stream.data.codec.session.meta.SessionModelCodec;
-import com.dunkware.stream.data.model.session.StreamSessionModel;
-import com.dunkware.stream.data.model.stats.entity.EntityStatTypes;
 import com.dunkware.tiime.data.util.constants.StreamDataTopics;
+import com.dunkware.time.data.codec.session.meta.SessionModelCodec;
+import com.dunkware.time.data.model.session.StreamSessionModel;
+import com.dunkware.time.data.model.stats.entity.EntityStatTypes;
 import com.dunkware.trade.service.stream.json.worker.stream.StreamSessionWorkerEntitiesReq;
 import com.dunkware.trade.service.stream.json.worker.stream.StreamSessionWorkerEntitiesResp;
 import com.dunkware.trade.service.stream.server.controller.session.StreamSession;
@@ -33,7 +33,7 @@ public class EntityDupChecker implements StreamSessionExtension {
 	@Autowired
 	private DunkNet dunkNet; 
 	
-	private StreamSession session; 
+	private StreamSessionModel session; 
 	
 	List<Integer> entities = new ArrayList<Integer>();
 	

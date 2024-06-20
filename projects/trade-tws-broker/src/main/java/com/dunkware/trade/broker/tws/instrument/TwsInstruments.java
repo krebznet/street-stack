@@ -85,6 +85,7 @@ public class TwsInstruments implements TwsSocketReader {
 		}
 		
 		/*
+		 *
 		 * Instrument instrument = instruments.get(instrumentIds.get(tickerId));
 		 * if(TickType.valueOf(null)) switch (field) {
 		 * 

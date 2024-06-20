@@ -1,6 +1,5 @@
 package com.dunkware.trade.broker.tws;
 
-import java.math.BigDecimal;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.LinkedBlockingQueue;
 import java.util.concurrent.TimeUnit;
@@ -11,6 +10,8 @@ import org.slf4j.LoggerFactory;
 import com.dunkware.common.util.dtime.DTimeZone;
 import com.dunkware.common.util.dtime.DZonedDateTime;
 import com.dunkware.common.util.events.DEventNode;
+import com.dunkware.trade.api.broker.BrokerOrder;
+import com.dunkware.trade.api.broker.model.BrokerOrderStatus;
 import com.dunkware.trade.broker.tws.connector.TwsSocketReader;
 import com.dunkware.trade.sdk.core.model.order.OrderAction;
 import com.dunkware.trade.sdk.core.model.order.OrderKind;
@@ -30,12 +31,13 @@ import com.dunkware.trade.sdk.core.runtime.order.event.EOrderSent;
 import com.dunkware.trade.sdk.core.runtime.order.event.EOrderStatusUpdate;
 import com.dunkware.trade.sdk.core.runtime.order.event.EOrderSubmitted;
 import com.dunkware.trade.sdk.core.runtime.order.event.EOrderUpdate;
+import com.dunkware.utils.core.events.DunkEventNode;
 import com.ib.client.Contract;
 import com.ib.client.Decimal;
 import com.ib.client.TwsOrder;
 import com.ib.client.TwsOrderState;
 
-public class TwsAccountOrder implements Order {
+public class TwsAccountOrder implements BrokerOrder {
 
 	private Logger logger = LoggerFactory.getLogger(getClass());
 
@@ -55,7 +57,7 @@ public class TwsAccountOrder implements Order {
 	private boolean notifyRejected = false;
 	private boolean notifyException = false;
 
-	private DEventNode eventNode;
+	private DunkEventNode eventNode;
 
 	private OrderSpec spec;
 	
@@ -158,13 +160,11 @@ public class TwsAccountOrder implements Order {
 		}
 	}
 
+	
+	
+	
 	@Override
-	public DEventNode getEventNode() {
-		return eventNode;
-	}
-
-	@Override
-	public OrderStatus getStatus() {
+	public BrokerOrderStatus getStatus() {
 		return spec.getStatus();
 	}
 

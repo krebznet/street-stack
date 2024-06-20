@@ -4,8 +4,9 @@ import java.io.IOException;
 import java.time.LocalDate;
 import java.time.LocalTime;
 
-import com.dunkware.stream.data.model.stats.entity.EntityStatsModel;
-import com.dunkware.stream.data.model.stats.entity.EntityVarStatsModel;
+import com.dunkware.time.data.codec.stat.EntityStatsModelCodec;
+import com.dunkware.time.data.model.stats.entity.EntityStatsModel;
+import com.dunkware.time.data.model.stats.entity.EntityVarStatsModel;
 
 import junit.framework.TestCase;
 

@@ -2,7 +2,7 @@ package com.dunkware.stream.data.cassy.helpers;
 
 import com.dunkware.stream.data.cassy.entity.sesion.DBStreamSessionKey;
 import com.dunkware.stream.data.cassy.entity.sesion.DBStreamSessionRow;
-import com.dunkware.stream.data.model.session.StreamSessionModel;
+import com.dunkware.time.data.model.session.StreamSessionModel;
 
 public class StreamSessionRowHelper {
 	
