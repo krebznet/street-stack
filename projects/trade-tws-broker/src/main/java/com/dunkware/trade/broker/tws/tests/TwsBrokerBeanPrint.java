@@ -1,7 +1,7 @@
 package com.dunkware.trade.broker.tws.tests;
 
-import com.dunkware.common.util.json.DJson;
 import com.dunkware.trade.broker.tws.TwsBrokerType;
+import com.dunkware.utils.core.json.DunkJson;
 
 public class TwsBrokerBeanPrint {
 
@@ -11,7 +11,7 @@ public class TwsBrokerBeanPrint {
 		bean.setIdentifier("TwsPaper");
 		bean.setPort(7495);
 		try {
-			String ser = DJson.serializePretty(bean);
+			String ser = DunkJson.serializePretty(bean);
 			System.out.println(ser);
 		} catch (Exception e) {
 			e.printStackTrace();

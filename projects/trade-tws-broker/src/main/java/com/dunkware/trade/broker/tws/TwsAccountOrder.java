@@ -9,35 +9,31 @@ import org.slf4j.LoggerFactory;
 
 import com.dunkware.common.util.dtime.DTimeZone;
 import com.dunkware.common.util.dtime.DZonedDateTime;
-import com.dunkware.common.util.events.DEventNode;
-import com.dunkware.trade.api.broker.BrokerOrder;
-import com.dunkware.trade.api.broker.model.BrokerOrderStatus;
+import com.dunkware.trade.api.broker.Order;
+import com.dunkware.trade.api.broker.OrderAction;
+import com.dunkware.trade.api.broker.OrderBean;
+import com.dunkware.trade.api.broker.OrderException;
+import com.dunkware.trade.api.broker.OrderPreview;
+import com.dunkware.trade.api.broker.OrderSpec;
+import com.dunkware.trade.api.broker.OrderStatus;
+import com.dunkware.trade.api.broker.event.EOrderCancelled;
+import com.dunkware.trade.api.broker.event.EOrderException;
+import com.dunkware.trade.api.broker.event.EOrderFilled;
+import com.dunkware.trade.api.broker.event.EOrderPendingSubmit;
+import com.dunkware.trade.api.broker.event.EOrderPreSubmitted;
+import com.dunkware.trade.api.broker.event.EOrderRejected;
+import com.dunkware.trade.api.broker.event.EOrderSent;
+import com.dunkware.trade.api.broker.event.EOrderStatusUpdate;
+import com.dunkware.trade.api.broker.event.EOrderSubmitted;
+import com.dunkware.trade.api.broker.event.EOrderUpdate;
 import com.dunkware.trade.broker.tws.connector.TwsSocketReader;
-import com.dunkware.trade.sdk.core.model.order.OrderAction;
-import com.dunkware.trade.sdk.core.model.order.OrderKind;
-import com.dunkware.trade.sdk.core.model.order.OrderSpec;
-import com.dunkware.trade.sdk.core.model.order.OrderStatus;
-import com.dunkware.trade.sdk.core.model.order.OrderType;
-import com.dunkware.trade.sdk.core.runtime.order.Order;
-import com.dunkware.trade.sdk.core.runtime.order.OrderException;
-import com.dunkware.trade.sdk.core.runtime.order.OrderPreview;
-import com.dunkware.trade.sdk.core.runtime.order.event.EOrderCancelled;
-import com.dunkware.trade.sdk.core.runtime.order.event.EOrderException;
-import com.dunkware.trade.sdk.core.runtime.order.event.EOrderFilled;
-import com.dunkware.trade.sdk.core.runtime.order.event.EOrderPendingSubmit;
-import com.dunkware.trade.sdk.core.runtime.order.event.EOrderPreSubmitted;
-import com.dunkware.trade.sdk.core.runtime.order.event.EOrderRejected;
-import com.dunkware.trade.sdk.core.runtime.order.event.EOrderSent;
-import com.dunkware.trade.sdk.core.runtime.order.event.EOrderStatusUpdate;
-import com.dunkware.trade.sdk.core.runtime.order.event.EOrderSubmitted;
-import com.dunkware.trade.sdk.core.runtime.order.event.EOrderUpdate;
 import com.dunkware.utils.core.events.DunkEventNode;
 import com.ib.client.Contract;
 import com.ib.client.Decimal;
 import com.ib.client.TwsOrder;
 import com.ib.client.TwsOrderState;
 
-public class TwsAccountOrder implements BrokerOrder {
+public class TwsAccountOrder implements Order {
 
 	private Logger logger = LoggerFactory.getLogger(getClass());
 
@@ -56,35 +52,38 @@ public class TwsAccountOrder implements BrokerOrder {
 	private boolean notifyCancelled = false;
 	private boolean notifyRejected = false;
 	private boolean notifyException = false;
+	
+	private OrderSpec spec; 
 
 	private DunkEventNode eventNode;
+	
+	private OrderStatus status = OrderStatus.Created;
 
-	private OrderSpec spec;
+	private OrderBean bean;
 	
 	private BlockingQueue<OrderPreview> orderPreviewQueue = new LinkedBlockingQueue<OrderPreview>();
 
-	public TwsAccountOrder(TwsAccount account, OrderType type) throws OrderException {
+	public TwsAccountOrder(TwsAccount account, OrderSpec spec) throws OrderException {
 
+		this.spec = spec;
 		this.account = account;
 		this.broker = (TwsBroker) account.getBroker();
 
-		spec = new OrderSpec();
-		spec.setTicker(type.getTicker());
-		spec.setSize(type.getSize());
-		spec.setAction(type.getAction());
-		spec.setKind(type.getKind());
-		spec.setStatus(OrderStatus.Created);
-		spec.setTransmit(true);
-		spec.setLimitPrice(type.getLimit());
-		spec.setTrailingPercent(type.getTrailingPercent());
-		spec.setStopTrigger(type.getStopTrigger());
-		spec.setTrailingStopPrice(type.getTrailingStopPrice());
+		bean = new OrderBean();
+		bean.setSymbol(spec.getTicker().getSymbol());
+		bean.setSize(spec.getSize());
+		bean.setAction(spec.getAction().name());
+		bean.setType(spec.getType().name());
+		bean.setStatus(status.name());
+		bean.setTransmit(true);
+		bean.setLimitPrice(spec.getLimitPrice());
+		bean.setFilled(0);
+		bean.setRemaining(spec.getSize());
+		//bean.setStopTrigger(spec.getStopPrice())
 		
-		getSpec().setRemaining(getSpec().getSize());
 		this.eventNode = account.getEventNode().createChild(this);
-
 		this.twsOrder = createTwsOrder();
-		spec.setId(twsOrder.orderId());
+		bean.setOrderId(twsOrder.orderId());
 
 	}
 	
@@ -104,11 +103,14 @@ public class TwsAccountOrder implements BrokerOrder {
 	}
 
 	@Override
-	public void send() throws OrderException {
+	public void send() {
 		// validate status send(); -->
 		// Sent
 		if (getStatus() != OrderStatus.Created) {
-			throw new OrderException("Cannot Submit Order that is not in Created status");
+			setStatus(OrderStatus.Exception);
+			bean.setException("Invalid order state " + getStatus() +  " for sending order");
+			eventNode.event(new EOrderException(this));
+			return;
 		}
 		if (logger.isTraceEnabled()) {
 			logger.trace("{} TwsOrder Send Size={} Action={} Type={}", twsOrder.orderId(), twsOrder.totalQuantity().longValue(),
@@ -126,9 +128,9 @@ public class TwsAccountOrder implements BrokerOrder {
 			}
 			// Update Status To Sent
 			if (logger.isTraceEnabled()) {
-				logger.trace("TwsOrder Sent {} ", spec.getId());
+				logger.trace("TwsOrder Sent {} ", bean.getOrderId());
 			}
-			spec.setStatus(OrderStatus.Sent);
+			status = (OrderStatus.Sent);
 			if(twsOrder.whatIf() == false) {
 				// only send a send notification if its a real order. 
 				EOrderSent sent = new EOrderSent(this);
@@ -136,41 +138,49 @@ public class TwsAccountOrder implements BrokerOrder {
 			}
 			
 		} catch (Exception e) {
-			logger.error("{} Order Submit Exception " + e.toString(), twsOrder.orderId());
-			throw new OrderException("Internal TwsSocket OpenOrder Exception " + e.toString());
+			setStatus(OrderStatus.Exception);
+			bean.setException("Send Exception " + e.toString());
+			eventNode.event(new EOrderException(this));
 		}
 
 	}
 
 	@Override
-	public void cancel() throws OrderException {
+	public void cancel() {
 		if (logger.isTraceEnabled()) {
-			logger.trace("{} cancel() ", getSpec().getId());
+			logger.trace("{} cancel() ", getBean().getOrderId());
 		}
-		if (getSpec().getStatus() == OrderStatus.Filled || getSpec().getStatus() == OrderStatus.PendingCancel
-				|| getSpec().getStatus() == OrderStatus.Cancelled) {
-			throw new OrderException("Order invalid state to cancel status is " + getStatus());
+		if (status == OrderStatus.Filled || status == OrderStatus.PendingCancel
+				|| status == OrderStatus.Cancelled) {
+			//throw new OrderException("Order invalid state to cancel status is " + getStatus());
 		}
 		if (logger.isTraceEnabled()) {
-			logger.trace("{} sending cancel requst ", getSpec().getId());
+			logger.trace("{} sending cancel requst ", getBean().getOrderId());
 		}
 		broker.getClientSocket().cancelOrder(twsOrder.orderId(),null);
 		if (logger.isTraceEnabled()) {
-			logger.trace("{} sent cancel requst ", getSpec().getId());
+			logger.trace("{} sent cancel requst ", getBean().getOrderId());
 		}
 	}
 
 	
 	
 	
+	
 	@Override
-	public BrokerOrderStatus getStatus() {
-		return spec.getStatus();
+	public OrderStatus getStatus() {
+		return status;
 	}
 
 	@Override
 	public OrderSpec getSpec() {
 		return spec;
+	}
+	
+	private void setStatus(OrderStatus status) { 
+		this.status = status; 
+		this.bean.setStatus(status.name());
+		bean.notifyUpdate();
 	}
 
 	private TwsOrder createTwsOrder() throws OrderException {

@@ -7,18 +7,19 @@ import java.util.concurrent.Semaphore;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.dunkware.trade.api.broker.Account;
+import com.dunkware.trade.api.broker.AccountBean;
+import com.dunkware.trade.api.broker.AccountStatus;
 import com.dunkware.trade.api.broker.Broker;
-import com.dunkware.trade.api.broker.BrokerAccount;
-import com.dunkware.trade.api.broker.BrokerAccountStatus;
-import com.dunkware.trade.api.broker.BrokerOrder;
-import com.dunkware.trade.api.broker.BrokerOrderException;
-import com.dunkware.trade.api.broker.BrokerOrderPreview;
-import com.dunkware.trade.api.broker.BrokerOrderType;
-import com.dunkware.trade.api.broker.model.BrokerAccountBean;
+import com.dunkware.trade.api.broker.Order;
+import com.dunkware.trade.api.broker.OrderException;
+import com.dunkware.trade.api.broker.OrderPreview;
+import com.dunkware.trade.api.broker.OrderSpec;
+import com.dunkware.trade.api.broker.OrderType;
 import com.dunkware.trade.broker.tws.connector.TwsSocketReader;
 import com.dunkware.utils.core.events.DunkEventNode;
 
-public class TwsAccount implements BrokerAccount, TwsSocketReader {
+public class TwsAccount implements Account, TwsSocketReader {
 
 	private Logger logger = LoggerFactory.getLogger(getClass());
 
@@ -30,14 +31,14 @@ public class TwsAccount implements BrokerAccount, TwsSocketReader {
 
 	private DunkEventNode eventNode;
 	
-	private BrokerAccountBean bean;
+	private AccountBean bean;
 
-	private BrokerAccountStatus status = BrokerAccountStatus.Pending;
+	private AccountStatus status = AccountStatus.Pending;
 	
 	public TwsAccount(TwsBroker broker, String id) {
 		this.id = id;
 		this.eventNode = broker.getEventNode().createChild(this);
-		bean = new BrokerAccountBean();
+		bean = new AccountBean();
 		
 		bean.setName(id);
 		bean.setStatus(status.name());
@@ -45,7 +46,7 @@ public class TwsAccount implements BrokerAccount, TwsSocketReader {
 		eventNode = broker.getEventNode().createChild(this);
 	}
 	
-	public void setStatus(BrokerAccountStatus status)  { 
+	public void setStatus(AccountStatus status)  { 
 		this.status = status;
 		bean.setStatus(status.name());
 		
@@ -53,8 +54,8 @@ public class TwsAccount implements BrokerAccount, TwsSocketReader {
 	
 	
 	@Override
-	public BrokerOrder createOrder(BrokerOrderType type) throws BrokerOrderException {
-		TwsAccountOrder order = new TwsAccountOrder(this, type);
+	public Order createOrder(OrderSpec spec) throws OrderException {
+		TwsAccountOrder order = new TwsAccountOrder(this,spec);
 		try {
 			orderLock.acquire();
 			orders.add(order);
@@ -66,18 +67,18 @@ public class TwsAccount implements BrokerAccount, TwsSocketReader {
 	}
 
 	@Override
-	public BrokerOrderPreview createOrderPreview(BrokerOrderType type) throws BrokerOrderException {
+	public OrderPreview createOrderPreview(OrderType type) throws OrderException {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
-	public BrokerAccountBean getBean() {
+	public AccountBean getBean() {
 		return bean; 
 	}
 
 	@Override
-	public BrokerAccountStatus getStatus() {
+	public AccountStatus getStatus() {
 		return status; 
 	}
 

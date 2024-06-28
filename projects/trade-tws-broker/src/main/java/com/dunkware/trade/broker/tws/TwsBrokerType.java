@@ -1,8 +1,6 @@
 package com.dunkware.trade.broker.tws;
 
-import com.dunkware.trade.sdk.core.model.broker.BrokerType;
-
-public class TwsBrokerType implements BrokerType {
+public class TwsBrokerType   {
 
 	private String host; 
 	private int port; 

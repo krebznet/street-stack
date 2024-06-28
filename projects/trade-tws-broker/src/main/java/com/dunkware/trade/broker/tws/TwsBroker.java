@@ -12,32 +12,28 @@ import java.util.concurrent.atomic.AtomicInteger;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.dunkware.common.util.events.DEventNode;
-import com.dunkware.common.util.executor.DExecutor;
+import com.dunkware.trade.api.broker.Account;
 import com.dunkware.trade.api.broker.Broker;
-import com.dunkware.trade.api.broker.BrokerAccount;
-import com.dunkware.trade.api.broker.BrokerProperties;
+import com.dunkware.trade.api.broker.BrokerBean;
+import com.dunkware.trade.api.broker.BrokerException;
 import com.dunkware.trade.api.broker.BrokerStatus;
-import com.dunkware.trade.api.broker.model.BrokerBean;
+import com.dunkware.trade.api.broker.event.EBrokerBeanUpdate;
+import com.dunkware.trade.api.broker.event.EBrokerDisconnected;
+import com.dunkware.trade.api.broker.event.EBrokerException;
+import com.dunkware.trade.api.broker.event.EBrokerInitialized;
 import com.dunkware.trade.broker.tws.connector.TwsConnectorService;
 import com.dunkware.trade.broker.tws.connector.TwsConnectorSocket;
 import com.dunkware.trade.broker.tws.connector.TwsSocketReader;
 import com.dunkware.trade.broker.tws.instrument.TwsInstruments;
-import com.dunkware.trade.sdk.core.model.broker.BrokerType;
-import com.dunkware.trade.sdk.core.runtime.broker.event.EBrokerBeanUpdate;
-import com.dunkware.trade.sdk.core.runtime.broker.event.EBrokerDisconnected;
-import com.dunkware.trade.sdk.core.runtime.broker.event.EBrokerException;
-import com.dunkware.trade.sdk.core.runtime.broker.event.EBrokerInitialized;
-import com.dunkware.trade.tick.model.ticker.TradeTickerSpec;
 import com.dunkware.utils.core.concurrent.DunkExecutor;
 import com.dunkware.utils.core.concurrent.DunkExecutorCountLatch;
 import com.dunkware.utils.core.events.DunkEventNode;
 import com.ib.client.ContractDetails;
 import com.ib.client.EClientSocket;
-import com.ib.controller.Instrument;
 
 
-public class TwsBroker implements Broker , TwsSocketReader {
+
+public class TwsBroker implements Broker<TwsBrokerType> , TwsSocketReader {
 
 	public static AtomicInteger CLIENTID = new AtomicInteger(1); 
 	
@@ -45,7 +41,7 @@ public class TwsBroker implements Broker , TwsSocketReader {
 
 	private TwsBrokerType type;
 
-	private List<BrokerAccount> accounts = new ArrayList<BrokerAccount>();
+	private List<Account> accounts = new ArrayList<Account>();
 
 	private volatile int nextOrderId;
 
@@ -76,17 +72,15 @@ public class TwsBroker implements Broker , TwsSocketReader {
 	private int _nextValidIdReturnedFromServer = 0;
 	private AtomicInteger _nextValidIdFactory = new AtomicInteger(0);
 
-	private boolean hasConnected = false;
-	private boolean pendingConnect = true;
-	private boolean pendingingConnectNextId = true;
-	private boolean pendingConnectAccounts = true;
+	private volatile boolean hasConnected = false;
+	private volatile boolean pendingConnect = true;
+	private volatile boolean pendingingConnectNextId = true;
+	private volatile boolean pendingConnectAccounts = true;
 
-	private boolean connectionClosed = false;
 
-	public TwsBroker() {
-		bean = new BrokerBean();
-		bean.setStatus(BrokerStatus.Pending.name());
-	}
+	private TwsBrokerType brokerType; 
+	private boolean closed = false;
+
 
 	public BrokerBean getBrokerBean() {
 		return bean;
@@ -105,39 +99,25 @@ public class TwsBroker implements Broker , TwsSocketReader {
 	}
 	
 	
+	public TwsBroker() { 
+		bean = new BrokerBean();
+		this.status = BrokerStatus.Pending;
+		bean.setStatus(status.name());
+	}
 	
 	@Override
-	public void connect(BrokerProperties config, DunkEventNode eventNode, DunkExecutor executor) throws Exception {
-		// TODO Auto-generated method stub
+	public void connect(TwsBrokerType type, DunkEventNode eventNode, DunkExecutor executor)  {
+		this.type = type;
+		this.eventNode = eventNode; 
+		this.exector = executor; 
+		this.status = BrokerStatus.Connecting;
 		
-	}
-
-	@Override
-	public BrokerStatus getStatus() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public DunkEventNode getEventNode() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public DunkExecutor getExecutor() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public void connect(BrokerType type, DEventNode eventNode, DExecutor executor) {
 		try {
 			this.exector = executor;
 			this.eventNode = eventNode;
-			this.eventNode.addEventHandler(this);
+			this.eventNode.adDunkEventHandler(this);
 			connectLatch.increment();
-			this.type = (TwsBrokerType) type;
+			this.type = type; 
 			this.type.setConnectionId(CLIENTID.incrementAndGet());
 		} catch (Exception e) {
 			exception = e.toString();
@@ -157,26 +137,41 @@ public class TwsBroker implements Broker , TwsSocketReader {
 
 	}
 
+	@Override
+	public BrokerStatus getStatus() {
+		return status; 
+	}
+
+	@Override
+	public DunkEventNode getEventNode() {
+		return eventNode; 
+	}
+
+
 	public void setStatus(BrokerStatus status) {
 		this.status = status;
 		bean.setStatus(status.name());
 		notifyBeanUpdate();
 	}
+	
+	@Override
+	public List<Account> getAccounts() {
+		return accounts; 
+	}
 
 	@Override
-	public DExecutor getExecutor() {
+	public DunkExecutor getExecutor() {
 		return exector;
 	}
+
+	
 
 	@Override
 	public String getException() {
 		return exception;
 	}
 
-	@Override
-	public BrokerAccount[] getAccounts() {
-		return accounts.toArray(new BrokerAccount[accounts.size()]);
-	}
+	
 
 	@Override
 	public String getIdentifier() {
@@ -184,35 +179,24 @@ public class TwsBroker implements Broker , TwsSocketReader {
 	}
 
 	@Override
-	public void disconnect() throws Exception {
+	public void disconnect()   {
+		
 		EBrokerDisconnected event = new EBrokerDisconnected(this);
 		getEventNode().event(event);
 	}
 
 	@Override
-	public BrokerAccount getAccount(String identifier) throws Exception {
-		for (BrokerAccount dAccount : accounts) {
+	public Account getAccount(String identifier) throws BrokerException  {
+		for (Account dAccount : accounts) {
 			if (dAccount.getIdentifier().equals(identifier)) {
 				return dAccount;
 			}
 		}
-		throw new Exception("Account " + identifier + " not found");
+		throw new BrokerException("Tws Account " + identifier + " not found");
+		
 	}
 
-	@Override
-	public DEventNode getEventNode() {
-		return eventNode;
-	}
-
-	@Override
-	protected Instrument subscribe(TradeTickerSpec ticker) throws Exception {
-		return instruments.subscribe(ticker);
-	}
-
-	@Override
-	protected void unsubscribe(Instrument instrument) {
-		instruments.unsubsribe(instrument);
-	}
+	
 
 	public int getNextOrderId() {
 		nextOrderId++;
@@ -268,7 +252,7 @@ public class TwsBroker implements Broker , TwsSocketReader {
 
 	@Override
 	public void connectionClosed() {
-		connectionClosed = true;
+		closed = true;
 		if (logger.isInfoEnabled()) {
 			logger.info("Connection Closed Event");
 		}
@@ -361,6 +345,8 @@ public class TwsBroker implements Broker , TwsSocketReader {
 		exector.execute(runner);
 
 	}
+
+	
 
 
 }
