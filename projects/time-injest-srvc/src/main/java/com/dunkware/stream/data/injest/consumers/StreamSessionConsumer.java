@@ -27,7 +27,7 @@ import com.dunkware.utils.kafka.byteconsumer.KafkaByteHandler;
 import jakarta.annotation.PostConstruct;
 
 @Service
-@Profile("StreamSessionInjestor")
+//@Profile("StreamSessionInjestor")
 public class StreamSessionConsumer implements KafkaByteHandler {
 
 	private Logger logger = LoggerFactory.getLogger(getClass());
@@ -66,9 +66,9 @@ public class StreamSessionConsumer implements KafkaByteHandler {
 				try {
 					KafkaByteConsumerSpec spec = KafkaByteConsumerSpec
 							.newBuilder(KafkaByteConsumerSpec.ConsumerType.Auto,
-									KafkaByteConsumerSpec.OffsetType.Earliest)
+									KafkaByteConsumerSpec.OffsetType.Latest)
 							.addBroker(config.getKafkaBrokers()).addTopic(StreamDataTopics.CaptureSession).setClientAndGroup(config.getKafkaConsumerId(), config.getKafkaConsumerGroup())
-							.setThrottle(500000).build();
+							.setThrottle(60000000).build();
 					kafkaConsumer = KafkaByteConsumer.newInstance(spec);
 					kafkaConsumer.addStreamHandler(StreamSessionConsumer.this);
 					kafkaConsumer.start();
