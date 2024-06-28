@@ -87,6 +87,7 @@
 		<module>projects/time-data-util</module>
 		<module>projects/time-injest-srvc</module>
 		<module>projects/time-mock-srvc</module>
+		<module>projects/time-repo-mod</module>
 	<!--	
 		<module>projects/trade-api-data</module>
 		<module>projects/trade-api-broker</module>
