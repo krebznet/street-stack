@@ -30,7 +30,7 @@ import com.dunkware.utils.kafka.byteconsumer.KafkaByteHandler;
 import jakarta.annotation.PostConstruct;
 
 @Service
-@Profile("EntityStatInjestor")
+//@Profile("EntityStatInjestor")
 public class EntityStatsConsumer implements KafkaByteHandler {
 
     private Logger logger = LoggerFactory.getLogger(getClass());
@@ -74,8 +74,8 @@ public class EntityStatsConsumer implements KafkaByteHandler {
                 public void run() {
                     try {
                     	
-                        KafkaByteConsumerSpec spec = KafkaByteConsumerSpec.newBuilder(KafkaByteConsumerSpec.ConsumerType.Auto, KafkaByteConsumerSpec.OffsetType.Earliest)
-                                .addBroker(config.getKafkaBrokers()).addTopic(StreamDataTopics.CaptureEntityStats).setClientAndGroup(config.getKafkaConsumerId(),config.getKafkaConsumerGroup()).setThrottle(500000).build();
+                        KafkaByteConsumerSpec spec = KafkaByteConsumerSpec.newBuilder(KafkaByteConsumerSpec.ConsumerType.Auto, KafkaByteConsumerSpec.OffsetType.Latest)
+                                .addBroker(config.getKafkaBrokers()).addTopic(StreamDataTopics.CaptureEntityStats).setClientAndGroup(config.getKafkaConsumerId(),config.getKafkaConsumerGroup()).setThrottle(50000000).build();
                         kafkaConsumer = KafkaByteConsumer.newInstance(spec);
                         kafkaConsumer.addStreamHandler(EntityStatsConsumer.this);
                         kafkaConsumer.start();
@@ -83,7 +83,7 @@ public class EntityStatsConsumer implements KafkaByteHandler {
                         sessionStatLoader = new SessionEntityStatLoader(sessionBuilder.build(), config.getSessionEntityStatLoaderThreadCount(), config.getSessionEntityStatLoaderBatchSize());
 
                         int i = 0;
-                        while(i < 3) {
+                        while(i < 9) {
                             ConsumerThread injestor = new ConsumerThread(i);
                             injestor.start();;
                             consumerThreads.add(injestor);
