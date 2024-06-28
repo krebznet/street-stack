@@ -67,7 +67,7 @@ public class EntitySessionVarGrid implements GlazedDataGridListener {
 			  beans = new ObservableElementList<EntitySessionVarBean>(
 						GlazedLists.threadSafeList(new BasicEventList<EntitySessionVarBean>()),
 						new GlazedDataGridConnector<EntitySessionVarBean>());
-				dataGrid = GlazedDataGrid.newInstance(beans,executor,"id");
+				dataGrid = GlazedDataGrid.newInstance(beans,executor,"getId");
 				dataGrid.start();
 				dataGrid.addListener(this);
 				// this is async programming we are starting another thread that will grab variable 
