@@ -19,7 +19,11 @@ public class StreamSessionModel {
 
 
     public StreamSessionModel() {
-    }
+    } // DBMEntitySignal // DBEntitySignalBean
+    // DBEntitySnapshotBean 
+    // DBMEntity
+    // PBEntityVariable
+    // 
 
     public StreamSessionModel(int stream, LocalDate date, LocalTime start, LocalTime stop, List<Integer> entities, List<Integer> vars, List<Integer> signals, List<Integer> stats) {
         this.stream = stream;

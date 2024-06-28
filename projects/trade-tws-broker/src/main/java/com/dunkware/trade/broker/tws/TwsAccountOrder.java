@@ -7,10 +7,7 @@ import java.util.concurrent.TimeUnit;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.dunkware.common.util.dtime.DTimeZone;
-import com.dunkware.common.util.dtime.DZonedDateTime;
 import com.dunkware.trade.api.broker.Order;
-import com.dunkware.trade.api.broker.OrderAction;
 import com.dunkware.trade.api.broker.OrderBean;
 import com.dunkware.trade.api.broker.OrderException;
 import com.dunkware.trade.api.broker.OrderPreview;
@@ -186,58 +183,44 @@ public class TwsAccountOrder implements Order {
 	private TwsOrder createTwsOrder() throws OrderException {
 		TwsOrder twsOrder = new TwsOrder();
 
-		int twsOrderId = broker.getNextOrderId();
-		twsOrder.action(getSpec().getAction().Value());
-		if (getSpec().getAction() == OrderAction.SSHORT) {
-			twsOrder.action("SSHORT");
-		}
-		twsOrder.account(account.getIdentifier());
-		twsOrder.orderType(getSpec().getKind().name());
-		twsOrder.outsideRth(true);
-	    twsOrder.tif("DAY");
-		twsOrder.orderId(twsOrderId);
-		twsOrder.transmit(getSpec().isTransmit());
-		twsOrder.whatIf(getSpec().isWhatif());
-		twsOrder.totalQuantity(Decimal.get(getSpec().getSize()));
-		twsOrder.lmtPrice(getSpec().getLimitPrice());
-		if (getSpec().getKind().equals(OrderKind.LMT)) {
-			twsOrder.auxPrice(getSpec().getLimitPrice());
-			twsOrder.lmtPrice(getSpec().getLimitPrice());
-		}
-
-		if (getSpec().getKind().equals(OrderKind.TRAIL_PERCENT)) {
-			twsOrder.orderType("TRAIL");
-			twsOrder.trailingPercent(getSpec().getTrailingPercent());
-			twsOrder.auxPrice(Double.MAX_VALUE);
-			if (getSpec().getTrailingStopPrice() != Double.MIN_VALUE) {
-				twsOrder.trailStopPrice(getSpec().getTrailingStopPrice());
-			}
-		}
-		if (getSpec().getKind().equals(OrderKind.TRAIL_AMOUNT)) {
-			twsOrder.orderType("TRAIL");
-			twsOrder.auxPrice(getSpec().getTrailingAmount());
-
-			if (getSpec().getTrailingStopPrice() != Double.MAX_VALUE) {
-				twsOrder.trailStopPrice(getSpec().getTrailingStopPrice());
-			}
-
-		}
-		if (getSpec().getKind().equals(OrderKind.STP)) {
-			twsOrder.orderType("STOP");
-			twsOrder.auxPrice(getSpec().getStopPrice());
-			if (getSpec().getStopTrigger() != null) {
-				twsOrder.triggerMethod(getSpec().getStopTrigger().val());
-			}
-
-		}
-		try {
-			Contract contract = TwsUtil.tickerToContract(getSpec().getTicker());
-			twsOrder.setContract(contract);
-			twsOrder.referenceContractId(contract.conid());
-		} catch (Exception e) {
-			throw new OrderException("Exception Creating Tws Contract " + e.toString());
-		}
-
+		/*
+		 * int twsOrderId = broker.getNextOrderId();
+		 * twsOrder.action(getSpec().getAction().Value()); if (getSpec().getAction() ==
+		 * OrderAction.SSHORT) { twsOrder.action("SSHORT"); }
+		 * twsOrder.account(account.getIdentifier());
+		 * twsOrder.orderType(getSpec().getKind().name()); twsOrder.outsideRth(true);
+		 * twsOrder.tif("DAY"); twsOrder.orderId(twsOrderId);
+		 * twsOrder.transmit(getSpec().isTransmit());
+		 * twsOrder.whatIf(getSpec().isWhatif());
+		 * twsOrder.totalQuantity(Decimal.get(getSpec().getSize()));
+		 * twsOrder.lmtPrice(getSpec().getLimitPrice()); if
+		 * (getSpec().getKind().equals(OrderKind.LMT)) {
+		 * twsOrder.auxPrice(getSpec().getLimitPrice());
+		 * twsOrder.lmtPrice(getSpec().getLimitPrice()); }
+		 * 
+		 * if (getSpec().getKind().equals(OrderKind.TRAIL_PERCENT)) {
+		 * twsOrder.orderType("TRAIL");
+		 * twsOrder.trailingPercent(getSpec().getTrailingPercent());
+		 * twsOrder.auxPrice(Double.MAX_VALUE); if (getSpec().getTrailingStopPrice() !=
+		 * Double.MIN_VALUE) {
+		 * twsOrder.trailStopPrice(getSpec().getTrailingStopPrice()); } } if
+		 * (getSpec().getKind().equals(OrderKind.TRAIL_AMOUNT)) {
+		 * twsOrder.orderType("TRAIL");
+		 * twsOrder.auxPrice(getSpec().getTrailingAmount());
+		 * 
+		 * if (getSpec().getTrailingStopPrice() != Double.MAX_VALUE) {
+		 * twsOrder.trailStopPrice(getSpec().getTrailingStopPrice()); }
+		 * 
+		 * } if (getSpec().getKind().equals(OrderKind.STP)) {
+		 * twsOrder.orderType("STOP"); twsOrder.auxPrice(getSpec().getStopPrice()); if
+		 * (getSpec().getStopTrigger() != null) {
+		 * twsOrder.triggerMethod(getSpec().getStopTrigger().val()); }
+		 * 
+		 * } try { Contract contract = TwsUtil.tickerToContract(getSpec().getTicker());
+		 * twsOrder.setContract(contract);
+		 * twsOrder.referenceContractId(contract.conid()); } catch (Exception e) { throw
+		 * new OrderException("Exception Creating Tws Contract " + e.toString()); }
+		 */
 		return twsOrder;
 
 	}
@@ -248,7 +231,7 @@ public class TwsAccountOrder implements Order {
 		}
 		if (readerAttached) {
 			if (logger.isTraceEnabled()) {
-				logger.trace("{} detachReader() ", getSpec().getId());
+				logger.trace("{} detachReader() ", getBean().getOrderId());
 			}
 			broker.removeSocketReader(reader);
 			readerAttached = false;
@@ -267,17 +250,17 @@ public class TwsAccountOrder implements Order {
 				return;
 			}
 			if (logger.isTraceEnabled()) {
-				logger.trace("{} TwsOrder Status() status={} filled={} remaining={} avgFillPrice={} lastFillPrice={} ",
-						getSpec().getId(), status, filled, remaining, avgFillPrice, lastFillPrice);
+				//logger.trace("{} TwsOrder Status() status={} filled={} remaining={} avgFillPrice={} lastFillPrice={} ",
+				//		getSpec().getId(), status, filled, remaining, avgFillPrice, lastFillPrice);
 			}
 
-			getSpec().setFilled(filled.value().intValue());
-			getSpec().setRemaining(remaining.value().intValue());
-			getSpec().setAvgFillPrice(avgFillPrice);
+			getBean().setFilled(filled.value().intValue());
+			getBean().setRemaining(remaining.value().intValue());
+			//getBean().setAvgFillPrice(avgFillPrice);
 
 			OrderStatus orderStatus = OrderStatus.valueOf(status);
-			getSpec().setStatus(orderStatus);
-			getSpec().setLastUpdate(DZonedDateTime.now(DTimeZone.NewYork));
+			getBean().setStatus(orderStatus.name());
+			//getSpec().setLastUpdate(DZonedDateTime.now(DTimeZone.NewYork));
 
 			EOrderUpdate update = new EOrderUpdate(TwsAccountOrder.this);
 			eventNode.event(update);
@@ -363,10 +346,10 @@ public class TwsAccountOrder implements Order {
 			
 			
 			if (logger.isTraceEnabled()) {
-				logger.trace("{} openOrder() method ", getSpec().getId());
+				logger.trace("{} openOrder() method ", getBean().getOrderId());
 			}
-			getSpec().setStatus(OrderStatus.valueOf(orderState.status().name()));
-			getSpec().setCommision(orderState.commission());
+			//getSpec().setStatus(OrderStatus.valueOf(orderState.status().name()));
+			//getSpec().setCommision(orderState.commission());
 			// yes call it because we got it. 
 			detachReader();
 		}
@@ -391,10 +374,10 @@ public class TwsAccountOrder implements Order {
 			if (errorMsg.contains("Warning: your order will not")) {
 				return;
 			}
-			logger.trace("TwsOrder error({},{},{}) setting status to Exception (is this right?)", getSpec().getId(), id,
+			logger.trace("TwsOrder error({},{},{}) setting status to Exception (is this right?)", bean.getOrderId(), id,
 					errorCode, errorMsg);
-			getSpec().setException(errorCode + "-" + errorMsg);
-			getSpec().setStatus(OrderStatus.Exception);
+			//getSpec().setException(errorCode + "-" + errorMsg);
+			//getSpec().setStatus(OrderStatus.Exception);
 
 			eventNode.event(new EOrderException(TwsAccountOrder.this));
 			notifyException = true;
@@ -403,6 +386,16 @@ public class TwsAccountOrder implements Order {
 
 
 
+	}
+
+	@Override
+	public OrderBean getBean() {
+		return bean;
+	}
+
+	@Override
+	public DunkEventNode getEventNode() {
+		return eventNode;
 	}
 
 }
