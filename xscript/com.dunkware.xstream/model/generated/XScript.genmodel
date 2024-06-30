@@ -33,6 +33,16 @@
       <genEnumLiterals ecoreEnumLiteral="XScript.ecore#//DataType/DUB"/>
       <genEnumLiterals ecoreEnumLiteral="XScript.ecore#//DataType/LONG"/>
     </genEnums>
+    <genEnums typeSafeEnumCompatible="false" ecoreEnum="XScript.ecore#//FormatType">
+      <genEnumLiterals ecoreEnumLiteral="XScript.ecore#//FormatType/CURRENCY"/>
+      <genEnumLiterals ecoreEnumLiteral="XScript.ecore#//FormatType/PERCENT"/>
+      <genEnumLiterals ecoreEnumLiteral="XScript.ecore#//FormatType/NUMERIC"/>
+      <genEnumLiterals ecoreEnumLiteral="XScript.ecore#//FormatType/TEXT"/>
+      <genEnumLiterals ecoreEnumLiteral="XScript.ecore#//FormatType/DATE"/>
+      <genEnumLiterals ecoreEnumLiteral="XScript.ecore#//FormatType/TIMESTAMP"/>
+      <genEnumLiterals ecoreEnumLiteral="XScript.ecore#//FormatType/TIME"/>
+      <genEnumLiterals ecoreEnumLiteral="XScript.ecore#//FormatType/DECIMAL"/>
+    </genEnums>
     <genClasses ecoreClass="XScript.ecore#//XScript">
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference XScript.ecore#//XScript/elements"/>
     </genClasses>
@@ -42,10 +52,9 @@
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute XScript.ecore#//VarType/name"/>
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute XScript.ecore#//VarType/code"/>
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute XScript.ecore#//VarType/type"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute XScript.ecore#//VarType/format"/>
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference XScript.ecore#//VarType/expression"/>
     </genClasses>
-    <genClasses ecoreClass="XScript.ecore#//VarStoreType"/>
-    <genClasses ecoreClass="XScript.ecore#//VarTransType"/>
     <genClasses ecoreClass="XScript.ecore#//ExpressionType"/>
     <genClasses ecoreClass="XScript.ecore#//VariableValueRangeType">
       <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference XScript.ecore#//VariableValueRangeType/targetVar"/>
@@ -372,6 +381,35 @@
     <genClasses ecoreClass="XScript.ecore#//XRocExpType">
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference XScript.ecore#//XRocExpType/value1"/>
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference XScript.ecore#//XRocExpType/value2"/>
+    </genClasses>
+    <genClasses ecoreClass="XScript.ecore#//ScriptTree">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute XScript.ecore#//ScriptTree/name"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference XScript.ecore#//ScriptTree/varTree"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference XScript.ecore#//ScriptTree/sigTree"/>
+    </genClasses>
+    <genClasses ecoreClass="XScript.ecore#//SignalTree">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference XScript.ecore#//SignalTree/nodes"/>
+    </genClasses>
+    <genClasses ecoreClass="XScript.ecore#//SignalTreeNodeElement">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute XScript.ecore#//SignalTreeNodeElement/name"/>
+    </genClasses>
+    <genClasses ecoreClass="XScript.ecore#//SignalTreeNode">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference XScript.ecore#//SignalTreeNode/elements"/>
+    </genClasses>
+    <genClasses ecoreClass="XScript.ecore#//SignalTreeSignal">
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference XScript.ecore#//SignalTreeSignal/signal"/>
+    </genClasses>
+    <genClasses ecoreClass="XScript.ecore#//VarTree">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference XScript.ecore#//VarTree/nodes"/>
+    </genClasses>
+    <genClasses ecoreClass="XScript.ecore#//VarTreeeNodeElement">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute XScript.ecore#//VarTreeeNodeElement/name"/>
+    </genClasses>
+    <genClasses ecoreClass="XScript.ecore#//VarTreeNode">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference XScript.ecore#//VarTreeNode/elements"/>
+    </genClasses>
+    <genClasses ecoreClass="XScript.ecore#//VarTreeVar">
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference XScript.ecore#//VarTreeVar/var"/>
     </genClasses>
     <genClasses ecoreClass="XScript.ecore#//OrType">
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference XScript.ecore#//OrType/left"/>
