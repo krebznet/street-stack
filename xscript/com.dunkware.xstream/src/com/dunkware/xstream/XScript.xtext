@@ -143,15 +143,46 @@ TimeType:
 	{TimeType} 'time' '(' hour=INT ':' minute=INT ':' second=INT type=("AM" | "PM") ')' //
 ;
 
-BotOrderType:
-	BotOrderMarketType | BotOrderMarketPegType;
 
-BotOrderMarketType:
-	{BotOrderMarketType} 'market' '(' ('timeout:' timeout=INT timeoutUnit=("sec" | "min"))? ')' ';';
 
-BotOrderMarketPegType:
-	{BotOrderMarketPegType} 'marketPeg' '(' ('timeout:' timeout=INT timeoutUnit=("sec" | "min") ',')? ('offfset' '='
-	offset=DOUBLE)? ')' ';';
+OrderType:
+	OrderTypeMarket | OrderTypeMarketPeg
+;
+
+OrderTypeMarketElement:
+	OrderTypeMarketTimeout
+;
+
+OrderTypeMarketTimeout:
+	{OrderTypeMarketTimeout}'timeout:' value=INT timeoutUnit=("sec" | "min")';';
+
+
+OrderTypeMarket:
+	{OrderTypeMarket} 'market' '{'
+			elements+=OrderTypeMarketElement*
+	'}'
+;
+
+OrderTypeMarketPeg:
+	{OrderTypeMarketPeg} 'marketPeg' '{'
+		elements+=OrderTypeMarketPegElement*
+	'}'
+;
+
+OrderTypeMarketPegElement:
+	OrderTypeMarketPegOffset | OrderTypeMarketPegTimeout;
+OrderTypeMarketPegTimeout:
+	{OrderTypeMarketPegTimeout} 'timeout:'value=INT timeoutUnit=("sec" | "min")';';
+OrderTypeMarketPegOffset:
+	{OrderTypeMarketPegOffset} 'offset:' offset=DOUBLE';';
+
+//OrderTypeMarketPegOffset
+
+
+
+
+// LimitOffset OrderTimeout 
+// marketPeg
 
 BotSetupElementType:
 	BotActiveTradeLimitType | BotAllocatedCapitalType | BotTradeLimitType | BotSymbolLimitType |
@@ -189,14 +220,14 @@ BotWeigtedType:
 	{BotWeigtedType} 'weighted:' weighted=("true" | "false") ';';
 
 BotType:
-	{BotType} 'TradingBot' '(' name=STRING ',' group=STRING ')' '{'
-	'setup' '{'
-	setupElements+=BotSetupElementType*
+	{BotType} 'tradeBook' '(' name=STRING ',' description=STRING ')' '{'
+	'bookSetup' '{'
+		setupElements+=BotSetupElementType*
 	'}'
-	'tradePlays' '{'
+	
 	tradePlays+=TradePlayType*
-	'}'
-	'}';
+
+'}';
 
 BotEntryType:
 	BotSignalEntryType;
@@ -206,15 +237,15 @@ BotSignalEntryType:
 
 TradePlayType:
 	{TradePlayType} 'tradePlay' '(' name=STRING ')' '{'
-	'setup' '{'
-	elments+=BotSetupPlayElementType*
+	'playSetup' '{'
+		elments+=BotSetupPlayElementType*
 	'}'
-	'entryOrderType:' entryOrder=BotOrderType
-	'entryTriggers' '{'
+	'entryOrder' entryOrder=OrderType
+	'entryTypes' '{'
 	entryTriggers+=BotEntryType*
 	'}'
-	'exitOrderType' '=' exitOrder=BotOrderType
-	'exitTriggers' '{'
+	'exitOrder' exitOrder=OrderType
+	'exitTypes' '{'
 	exitTriggers+=TradeExitType*
 	'}';
 
@@ -262,7 +293,7 @@ terminal DOUBLE returns ecore::EDouble:
  * XScript Signals
  *******************************/
 SignalType:
-	{SignalType} 'Signal' name=ID '(' id=INT ',' label=STRING ',' group=STRING ')' ((';') | (scanner=SignalScannerType))
+	{SignalType} 'signalType' name=ID '(' id=INT ',' label=STRING ')' ((';') | (scanner=SignalScannerType))
 	?;
 
 SignalScannerElementType:
@@ -501,14 +532,14 @@ XRocExpType:
  
  ScriptTree:
 	{ScriptTree} 'scriptTree' '('name=STRING')' '{'
-			varTree+=VarTree
+			varTree=VarTree
 			sigTree=SignalTree
 			
 	'}';
  
 SignalTree:
-	{SignalTree} 'signalTree' '{'
-	nodes+=VarTreeNode*
+	{SignalTree} 'signals' '{'
+	nodes+=SignalTreeNodeElement*
 	'}';
 
 SignalTreeNodeElement:
@@ -524,7 +555,7 @@ SignalTreeSignal:
 
 
 VarTree:
-	{VarTree} 'varTree' '{'
+	{VarTree} 'variables' '{'
 	nodes+=VarTreeNode*
 	'}';
 

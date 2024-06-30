@@ -5,7 +5,7 @@
     updateClasspath="false" rootExtendsClass="org.eclipse.emf.ecore.impl.MinimalEObjectImpl$Container"
     complianceLevel="11.0" copyrightFields="false" runtimeVersion="2.29">
   <genPackages prefix="XScript" basePackage="com.dunkware.xstream" disposableProviderFactory="true"
-      fileExtensions="xs" ecorePackage="XScript.ecore#/">
+      loadInitialization="true" literalsInterface="false" fileExtensions="xs" ecorePackage="XScript.ecore#/">
     <genEnums typeSafeEnumCompatible="false" ecoreEnum="XScript.ecore#//HistoricalAggFunc">
       <genEnumLiterals ecoreEnumLiteral="XScript.ecore#//HistoricalAggFunc/high"/>
       <genEnumLiterals ecoreEnumLiteral="XScript.ecore#//HistoricalAggFunc/low"/>
@@ -121,13 +121,25 @@
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute XScript.ecore#//TimeType/second"/>
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute XScript.ecore#//TimeType/type"/>
     </genClasses>
-    <genClasses ecoreClass="XScript.ecore#//BotOrderType">
-      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute XScript.ecore#//BotOrderType/timeout"/>
-      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute XScript.ecore#//BotOrderType/timeoutUnit"/>
+    <genClasses ecoreClass="XScript.ecore#//OrderType"/>
+    <genClasses ecoreClass="XScript.ecore#//OrderTypeMarketElement"/>
+    <genClasses ecoreClass="XScript.ecore#//OrderTypeMarketTimeout">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute XScript.ecore#//OrderTypeMarketTimeout/value"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute XScript.ecore#//OrderTypeMarketTimeout/timeoutUnit"/>
     </genClasses>
-    <genClasses ecoreClass="XScript.ecore#//BotOrderMarketType"/>
-    <genClasses ecoreClass="XScript.ecore#//BotOrderMarketPegType">
-      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute XScript.ecore#//BotOrderMarketPegType/offset"/>
+    <genClasses ecoreClass="XScript.ecore#//OrderTypeMarket">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference XScript.ecore#//OrderTypeMarket/elements"/>
+    </genClasses>
+    <genClasses ecoreClass="XScript.ecore#//OrderTypeMarketPeg">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference XScript.ecore#//OrderTypeMarketPeg/elements"/>
+    </genClasses>
+    <genClasses ecoreClass="XScript.ecore#//OrderTypeMarketPegElement"/>
+    <genClasses ecoreClass="XScript.ecore#//OrderTypeMarketPegTimeout">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute XScript.ecore#//OrderTypeMarketPegTimeout/value"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute XScript.ecore#//OrderTypeMarketPegTimeout/timeoutUnit"/>
+    </genClasses>
+    <genClasses ecoreClass="XScript.ecore#//OrderTypeMarketPegOffset">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute XScript.ecore#//OrderTypeMarketPegOffset/offset"/>
     </genClasses>
     <genClasses ecoreClass="XScript.ecore#//BotSetupElementType"/>
     <genClasses ecoreClass="XScript.ecore#//BotSetupPlayElementType"/>
@@ -161,7 +173,7 @@
     </genClasses>
     <genClasses ecoreClass="XScript.ecore#//BotType">
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute XScript.ecore#//BotType/name"/>
-      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute XScript.ecore#//BotType/group"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute XScript.ecore#//BotType/description"/>
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference XScript.ecore#//BotType/setupElements"/>
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference XScript.ecore#//BotType/tradePlays"/>
     </genClasses>
@@ -208,7 +220,6 @@
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute XScript.ecore#//SignalType/name"/>
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute XScript.ecore#//SignalType/id"/>
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute XScript.ecore#//SignalType/label"/>
-      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute XScript.ecore#//SignalType/group"/>
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference XScript.ecore#//SignalType/scanner"/>
     </genClasses>
     <genClasses ecoreClass="XScript.ecore#//SignalScannerElementType"/>

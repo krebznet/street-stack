@@ -106,12 +106,26 @@
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="second" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EInt"/>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="type" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
   </eClassifiers>
-  <eClassifiers xsi:type="ecore:EClass" name="BotOrderType">
-    <eStructuralFeatures xsi:type="ecore:EAttribute" name="timeout" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EInt"/>
+  <eClassifiers xsi:type="ecore:EClass" name="OrderType"/>
+  <eClassifiers xsi:type="ecore:EClass" name="OrderTypeMarketElement"/>
+  <eClassifiers xsi:type="ecore:EClass" name="OrderTypeMarketTimeout" eSuperTypes="#//OrderTypeMarketElement">
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="value" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EInt"/>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="timeoutUnit" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
   </eClassifiers>
-  <eClassifiers xsi:type="ecore:EClass" name="BotOrderMarketType" eSuperTypes="#//BotOrderType"/>
-  <eClassifiers xsi:type="ecore:EClass" name="BotOrderMarketPegType" eSuperTypes="#//BotOrderType">
+  <eClassifiers xsi:type="ecore:EClass" name="OrderTypeMarket" eSuperTypes="#//OrderType">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="elements" upperBound="-1"
+        eType="#//OrderTypeMarketElement" containment="true"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="OrderTypeMarketPeg" eSuperTypes="#//OrderType">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="elements" upperBound="-1"
+        eType="#//OrderTypeMarketPegElement" containment="true"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="OrderTypeMarketPegElement"/>
+  <eClassifiers xsi:type="ecore:EClass" name="OrderTypeMarketPegTimeout" eSuperTypes="#//OrderTypeMarketPegElement">
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="value" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EInt"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="timeoutUnit" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="OrderTypeMarketPegOffset" eSuperTypes="#//OrderTypeMarketPegElement">
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="offset" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EDouble"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="BotSetupElementType" eSuperTypes="#//BotSetupPlayElementType"/>
@@ -146,7 +160,7 @@
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="BotType" eSuperTypes="#//CoreAbstractElement">
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="name" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
-    <eStructuralFeatures xsi:type="ecore:EAttribute" name="group" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="description" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="setupElements" upperBound="-1"
         eType="#//BotSetupElementType" containment="true"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="tradePlays" upperBound="-1"
@@ -161,11 +175,11 @@
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="name" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="elments" upperBound="-1"
         eType="#//BotSetupPlayElementType" containment="true"/>
-    <eStructuralFeatures xsi:type="ecore:EReference" name="entryOrder" eType="#//BotOrderType"
+    <eStructuralFeatures xsi:type="ecore:EReference" name="entryOrder" eType="#//OrderType"
         containment="true"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="entryTriggers" upperBound="-1"
         eType="#//BotEntryType" containment="true"/>
-    <eStructuralFeatures xsi:type="ecore:EReference" name="exitOrder" eType="#//BotOrderType"
+    <eStructuralFeatures xsi:type="ecore:EReference" name="exitOrder" eType="#//OrderType"
         containment="true"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="exitTriggers" upperBound="-1"
         eType="#//TradeExitType" containment="true"/>
@@ -226,7 +240,6 @@
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="name" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="id" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EInt"/>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="label" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
-    <eStructuralFeatures xsi:type="ecore:EAttribute" name="group" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="scanner" eType="#//SignalScannerType"
         containment="true"/>
   </eClassifiers>
@@ -439,14 +452,14 @@
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="ScriptTree" eSuperTypes="#//CoreAbstractElement">
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="name" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
-    <eStructuralFeatures xsi:type="ecore:EReference" name="varTree" upperBound="-1"
-        eType="#//VarTree" containment="true"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="varTree" eType="#//VarTree"
+        containment="true"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="sigTree" eType="#//SignalTree"
         containment="true"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="SignalTree">
     <eStructuralFeatures xsi:type="ecore:EReference" name="nodes" upperBound="-1"
-        eType="#//VarTreeNode" containment="true"/>
+        eType="#//SignalTreeNodeElement" containment="true"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="SignalTreeNodeElement">
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="name" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
