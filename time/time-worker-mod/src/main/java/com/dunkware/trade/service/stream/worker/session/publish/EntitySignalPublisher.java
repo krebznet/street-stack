@@ -4,7 +4,7 @@ import org.apache.kafka.clients.producer.Producer;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.dunkware.time.data.model.entity.EntitySignal;
+import com.dunkware.time.data.model.entity.EntitySignalModel;
 import com.dunkware.trade.service.stream.worker.session.StreamWorker;
 import com.dunkware.trade.service.stream.worker.session.StreamWorkerExtension;
 import com.dunkware.trade.service.stream.worker.session.anot.AStreamWorkerExtension;
@@ -51,7 +51,7 @@ public class EntitySignalPublisher implements StreamWorkerExtension, XSignalList
 	@Override
 	public void onSignal(XSignal signal) {
 		System.err.println("Signal in publisher! " + signal.getType().getModel().getName());
-		EntitySignal sig = new EntitySignal();
+		EntitySignalModel sig = new EntitySignalModel();
 		sig.setEntity(signal.getEntity().getIdentifier());
 		sig.setEntityIdent(signal.getEntity().getId());
 		sig.setId(signal.getType().getId());

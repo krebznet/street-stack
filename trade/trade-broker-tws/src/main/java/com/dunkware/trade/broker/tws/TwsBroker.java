@@ -33,7 +33,7 @@ import com.ib.client.EClientSocket;
 
 
 
-public class TwsBroker implements Broker<TwsBrokerType> , TwsSocketReader {
+public class TwsBroker implements Broker , TwsSocketReader {
 
 	public static AtomicInteger CLIENTID = new AtomicInteger(1); 
 	
@@ -106,8 +106,9 @@ public class TwsBroker implements Broker<TwsBrokerType> , TwsSocketReader {
 	}
 	
 	@Override
-	public void connect(TwsBrokerType type, DunkEventNode eventNode, DunkExecutor executor)  {
-		this.type = type;
+	public void connect(Object brokerType, DunkEventNode eventNode, DunkExecutor executor)  {
+		this.type =  (TwsBrokerType)brokerType;
+		
 		this.eventNode = eventNode; 
 		this.exector = executor; 
 		this.status = BrokerStatus.Connecting;

@@ -20,7 +20,7 @@ import com.datastax.oss.driver.api.core.cql.SimpleStatement;
 import com.datastax.oss.driver.api.querybuilder.QueryBuilder;
 import com.datastax.oss.driver.api.querybuilder.insert.RegularInsert;
 import com.dunkware.stream.data.cassy.constants.CassySchema;
-import com.dunkware.time.data.model.stats.entity.EntityStatModel;
+import com.dunkware.time.data.model.entity.EntityStatModel;
 
 
 public class SessionEntityStatLoader {

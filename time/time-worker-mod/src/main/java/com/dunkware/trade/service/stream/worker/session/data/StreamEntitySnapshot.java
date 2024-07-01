@@ -3,7 +3,7 @@ package com.dunkware.trade.service.stream.worker.session.data;
 import org.slf4j.Logger;
 
 import com.dunkware.spring.cluster.anot.ADunkNetService;
-import com.dunkware.time.data.model.entity.EntitySnapshot;
+import com.dunkware.time.data.model.entity.EntitySnapshotModel;
 import com.dunkware.trade.service.stream.json.worker.service.EntitySnapshotRep;
 import com.dunkware.trade.service.stream.json.worker.service.EntitySnapshotReq;
 import com.dunkware.trade.service.stream.worker.session.StreamWorker;
@@ -49,7 +49,7 @@ public class StreamEntitySnapshot implements StreamWorkerExtension {
 				rep.setError(true);
 				rep.setErrorMessage("entity not found");
 			}
-			EntitySnapshot snapshot = new EntitySnapshot();
+			EntitySnapshotModel snapshot = new EntitySnapshotModel();
 			snapshot.setStreamId(0);
 			snapshot.setEntityId(entity.getIdentifier());
 			snapshot.setEntityIdent(req.getEntityIdent());

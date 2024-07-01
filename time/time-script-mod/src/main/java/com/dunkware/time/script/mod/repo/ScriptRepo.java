@@ -1,17 +1,19 @@
 package com.dunkware.time.script.mod.repo;
 
+import java.util.List;
+
+import com.dunkware.xstream.xproject.model.XScriptBundle;
+
 public interface ScriptRepo {
 
-	// gradudate to a file system. 
+	String getName();
+
+	String getType();
 	
-	// Project
-	// ProjectFile
-	// ProjectDirectory
-	// Project
+	XScriptBundle getBundle();
+
+	ScriptRepoVersion getLatestVersion();
 	
-	// ProjectWrapper() 
-		// readFileS
-	
-	// 
+	List<ScriptRepoVersion> getVersions();
 
 }

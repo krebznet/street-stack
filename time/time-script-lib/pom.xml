@@ -18,17 +18,27 @@
 		<java.version>17</java.version>
 		<maven.compiler.source>17</maven.compiler.source>
 		<maven.compiler.target>17</maven.compiler.target>
+		<lombok.version>1.18.20</lombok.version>
 	</properties>
 
 	<dependencies>
+
+<dependency>
+	
 		
+			<groupId>org.projectlombok</groupId>
+			<artifactId>lombok</artifactId>
+			<optional>true</optional>
+			<version>${lombok.version}</version>
 		
+</dependency>
+
 		<dependency>
 			<groupId>com.dunkware.xstream</groupId>
-	<artifactId>xstream-core-runtime</artifactId>
-	<version>1.0.0-SNAPSHOT</version>
+			<artifactId>xstream-core-runtime</artifactId>
+			<version>1.0.0-SNAPSHOT</version>
 		</dependency>
-				<!-- https://mvnrepository.com/artifact/org.redisson/redisson -->
+		<!-- https://mvnrepository.com/artifact/org.redisson/redisson -->
 		<dependency>
 			<groupId>org.redisson</groupId>
 			<artifactId>redisson</artifactId>
@@ -53,8 +63,8 @@
 			<artifactId>junit</artifactId>
 			<version>4.13.2</version>
 		</dependency>
-		
-		
+
+
 		<!--
 		https://mvnrepository.com/artifact/org.springframework.boot/spring-boot -->
 

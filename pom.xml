@@ -70,26 +70,15 @@
 
         <module>spring/spring-cluster</module>
         <module>spring/spring-runtime</module>
+        <module>time/pom.xml</module>
 
-
         
         
-        <module>trade/link/trade-link-client</module>
-		<module>trade/link/trade-link-server</module>
-		<module>trade/link/trade-link-core</module>
-        <module>trade/api/trade-api-data</module>
-        <module>trade/api/trade-api-broker</module>
-        <module>trade/tws/trade-tws-broker</module>
-        <module>trade/tws/trade-tws-demo</module>
-        
-        
+        <module>trade/pom.xml</module>
+     
 		
         <module>projects/dunkware-street-tick</module>
-        <module>projects/java-generic-model</module>
-        <module>projects/dunkware-street-model</module>
-        <module>projects/dunkware-street-server</module>
-    
-        
+   
         <module>xscript</module>
     </modules>
     <build>

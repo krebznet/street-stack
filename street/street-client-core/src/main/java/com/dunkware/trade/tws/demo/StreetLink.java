@@ -21,7 +21,7 @@ public class StreetLink extends JFrame {
 
     public StreetLink() {
         // Frame properties
-        setTitle("Street Smart");
+        setTitle("Street Fusion");
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setSize(800, 600);
         setLocationRelativeTo(null);
@@ -109,7 +109,7 @@ public class StreetLink extends JFrame {
         gbc.gridwidth = 2;
 
         // Header
-        JLabel headerLabel = new JLabel("STREET LINK");
+        JLabel headerLabel = new JLabel("STREET TRADE");
         headerLabel.setForeground(Color.WHITE);
         headerLabel.setFont(new Font("Arial", Font.BOLD, 24));
         loginPanel.add(headerLabel, gbc);
@@ -124,6 +124,7 @@ public class StreetLink extends JFrame {
         gbc.gridx = 1;
         gbc.anchor = GridBagConstraints.WEST;
         usernameField = new JTextField(20);
+        usernameField.setText("user");
         loginPanel.add(usernameField, gbc);
 
         gbc.gridx = 0;
@@ -136,6 +137,7 @@ public class StreetLink extends JFrame {
         gbc.gridx = 1;
         gbc.anchor = GridBagConstraints.WEST;
         passwordField = new JPasswordField(20);
+        passwordField.setText("password");
         loginPanel.add(passwordField, gbc);
 
         gbc.gridx = 1;
@@ -178,20 +180,21 @@ public class StreetLink extends JFrame {
     }
 
     private JPanel createMainInterfacePanel() {
-    	TradeBotViewPanel pot = new TradeBotViewPanel();
-    	pot.setVisible(true);
-    	if(1 == 1)
-    		return pot;
+    	//TradeBotViewPanel pot = new TradeBotViewPanel();
+    	//pot.setVisible(true);
+    	//if(1 == 1)
+    	//	return pot;
         JPanel mainInterfacePanel = new JPanel(new BorderLayout());
 
-        JTabbedPane tabbedPane = new JTabbedPane();
+        	mainInterfacePanel.add(new BotLaunchPanel(), BorderLayout.CENTER);
+        //JTabbedPane tabbedPane = new JTabbedPane();
 
-        tabbedPane.addTab("TWS", createHomeTab());
-        tabbedPane.addTab("DASH", new JPanel()); // Placeholder
-        tabbedPane.addTab("BOTS", new JPanel());  // Placeholder
-        tabbedPane.addTab("CONSOLE", new JPanel());  // Placeholder
+        ///tabbedPane.addTab("BOT", new BotLaunchPanel());
+        //tabbedPane.addTab("DASH", new JPanel()); // Placeholder
+        //tabbedPane.addTab("BOTS", new JPanel());  // Placeholder
+      //  tabbedPane.addTab("CONSOLE", new JPanel());  // Placeholder
 
-        mainInterfacePanel.add(tabbedPane, BorderLayout.CENTER);
+        //mainInterfacePanel.add(tabbedPane, BorderLayout.CENTER);
 
         return mainInterfacePanel;
     }

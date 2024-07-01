@@ -5,8 +5,8 @@ import java.time.LocalDate;
 import java.time.LocalTime;
 
 import com.dunkware.time.data.codec.stat.EntityStatsModelCodec;
-import com.dunkware.time.data.model.stats.entity.EntityStatsModel;
-import com.dunkware.time.data.model.stats.entity.EntityVarStatsModel;
+import com.dunkware.time.data.model.entity.EntityStatsModel;
+import com.dunkware.time.data.model.entity.EntityVarStatsModel;
 
 import junit.framework.TestCase;
 

@@ -5,13 +5,13 @@ import com.dunkware.utils.core.events.DunkEvent;
 
 public class EBrokerEvent extends DunkEvent {
 
-	private Broker<?> broker; 
+	private Broker broker; 
 	
-	public EBrokerEvent(Broker<?> broker) { 
+	public EBrokerEvent(Broker broker) { 
 		this.broker = broker; 
 	}
 	
-	public Broker<?> getBroker() { 
+	public Broker getBroker() { 
 		return broker; 
 	}
 }

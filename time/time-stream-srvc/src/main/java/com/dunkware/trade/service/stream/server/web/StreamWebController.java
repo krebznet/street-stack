@@ -15,6 +15,7 @@ import com.dunkware.spring.runtime.services.ExecutorService;
 import com.dunkware.trade.service.stream.json.controller.session.StreamSessionNodeBean;
 import com.dunkware.trade.service.stream.server.controller.StreamController;
 import com.dunkware.trade.service.stream.server.controller.StreamControllerService;
+import com.dunkware.trade.service.stream.server.repository.StreamSessionRepo;
 import com.dunkware.trade.service.stream.server.web.components.EntitySessionVarGrid;
 
 import ca.odell.glazedlists.ObservableElementList;
@@ -31,6 +32,8 @@ public class StreamWebController {
 	
 	@Autowired
 	private ExecutorService executorService; 
+	
+	private StreamSessionRepo sessionRepo;
 	
 //	/stream/v1/web/stream/grid/session/nodes?stream=us_equity
 	@GetMapping(path = "/stream/v1/web/stream/grid/session/nodes", produces = MediaType.APPLICATION_STREAM_JSON_VALUE)
@@ -53,21 +56,31 @@ public class StreamWebController {
 	
 	
 	@GetMapping(path = "/stream/v1/web/stream/session/entity/vars/", produces = MediaType.APPLICATION_STREAM_JSON_VALUE)
-	public Flux<List<DataGridUpdate>> entitySessionVars(@RequestParam String stream, @RequestParam int entity) throws Exception { 
+	public String entitySessionVars(@RequestParam String stream, @RequestParam int entity) throws Exception { 
+		// okay make the return type easier or lets think for one second give me a secon. 
+		return null;
+		
+
+	}
+	
+	
+
+	@GetMapping(path = "/stream/v1/web/stream/sessions", produces = MediaType.APPLICATION_STREAM_JSON_VALUE)
+	public Flux<List<DataGridUpdate>> streamSessions(@RequestParam String stream) throws Exception { 
 		// okay make the return type easier or lets think for one second give me a secon. 
 		try {
 			StreamController controller = streamService.getStreamByName(stream);
 			EntitySessionVarGrid grid = new EntitySessionVarGrid();
-			return grid.init(executorService.get(), controller, entity);
+			//return grid.init(executorService.get(), controller, entity);
 			
 		} catch (Exception e) {
 			// UserException will set bad http request - their problem not ours
 			throw new UserException("Invalid Stream " + stream);
 		}
+		return null;
 		
 
 	}
-	
 	
 	
 

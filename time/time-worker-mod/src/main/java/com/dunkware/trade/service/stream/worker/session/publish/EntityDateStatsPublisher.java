@@ -11,7 +11,7 @@ import org.slf4j.MarkerFactory;
 
 import com.dunkware.tiime.data.util.constants.StreamDataTopics;
 import com.dunkware.time.data.codec.stat.EntityStatsModelCodec;
-import com.dunkware.time.data.model.stats.entity.EntityStatsModel;
+import com.dunkware.time.data.model.entity.EntityStatsModel;
 import com.dunkware.trade.service.stream.worker.session.StreamWorker;
 import com.dunkware.trade.service.stream.worker.session.StreamWorkerExtension;
 import com.dunkware.trade.service.stream.worker.session.anot.AStreamWorkerExtension;

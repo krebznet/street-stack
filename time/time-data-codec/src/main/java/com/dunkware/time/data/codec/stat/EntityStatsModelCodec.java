@@ -9,8 +9,8 @@ import org.msgpack.core.MessageUnpacker;
 
 import com.dunkware.time.data.codec.time.LocalDateCodec;
 import com.dunkware.time.data.codec.time.LocalTimeCodec;
-import com.dunkware.time.data.model.stats.entity.EntityStatsModel;
-import com.dunkware.time.data.model.stats.entity.EntityVarStatsModel;
+import com.dunkware.time.data.model.entity.EntityStatsModel;
+import com.dunkware.time.data.model.entity.EntityVarStatsModel;
 
 public class EntityStatsModelCodec {
 

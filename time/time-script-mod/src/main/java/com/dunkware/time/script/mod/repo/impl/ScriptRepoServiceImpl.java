@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 
 import com.dunkware.time.script.mod.repo.ScriptRepo;
 import com.dunkware.time.script.mod.repo.ScriptRepoService;
+import com.dunkware.xstream.xproject.model.XScriptBundle;
 
 import jakarta.annotation.PostConstruct;
 
@@ -26,17 +27,25 @@ public class ScriptRepoServiceImpl implements ScriptRepoService  {
 		
 	}
 	
+	
+	
+	
+	@Override
+	public ScriptRepo createRepo(XScriptBundle script, String repoName) throws Exception {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+
+
+
 	@Override
 	public void deleteRepo(ScriptRepo repo) throws Exception {
 		// TODO Auto-generated method stub
 		
 	}
 
-	@Override
-	public ScriptRepo createRepo(Object input) throws Exception {
-		// TODO Auto-generated method stub
-		return null;
-	}
+	
 
 	@Override
 	public ScriptRepo getRepo(String ident) throws Exception {

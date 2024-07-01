@@ -5,7 +5,7 @@ import com.dunkware.trade.broker.api.Broker;
 public class EBrokerDisconnected extends EBrokerEvent {
 
 	
-	public EBrokerDisconnected(Broker<?> broker) { 
+	public EBrokerDisconnected(Broker broker) { 
 		super(broker);
 	}
 }

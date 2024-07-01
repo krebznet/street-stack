@@ -21,7 +21,7 @@ import com.datastax.oss.driver.api.querybuilder.QueryBuilder;
 import com.datastax.oss.driver.api.querybuilder.insert.RegularInsert;
 import com.datastax.oss.driver.shaded.guava.common.util.concurrent.AtomicDouble;
 import com.dunkware.stream.data.cassy.constants.CassySchema;
-import com.dunkware.time.data.model.entity.EntitySignal;
+import com.dunkware.time.data.model.entity.EntitySignalModel;
 import com.dunkware.utils.core.json.DunkJson;
 
 public class SessionSignalEntityLoader {
@@ -34,7 +34,7 @@ public int BATCH_SIZE = 3000;
 	private PreparedStatement preparedStatement;
 	private SimpleStatement simpleStatement; 
 	
-	private BlockingQueue<EntitySignal> queue = new LinkedBlockingQueue<EntitySignal>();
+	private BlockingQueue<EntitySignalModel> queue = new LinkedBlockingQueue<EntitySignalModel>();
 	private AtomicInteger errorCount = new AtomicInteger();
 	private AtomicInteger insertCount = new AtomicInteger();
 	private AtomicDouble lastBulkSpped = new AtomicDouble();
@@ -82,11 +82,11 @@ public int BATCH_SIZE = 3000;
 		return completed.get();
 	}
 	
-	public void load(EntitySignal signal) { 
+	public void load(EntitySignalModel signal) { 
 		pending++;
 		queue.add(signal);
 	}
-	public void load(List<EntitySignal> stats) { 
+	public void load(List<EntitySignalModel> stats) { 
 		pending = pending + stats.size();
 		queue.addAll(stats);
 	}
@@ -99,7 +99,7 @@ public int BATCH_SIZE = 3000;
 		public void run() { 
 			while(!interrupted()) { 
 				try {
-					EntitySignal model = queue.poll(4,TimeUnit.SECONDS);
+					EntitySignalModel model = queue.poll(4,TimeUnit.SECONDS);
 					if(model == null) { 
 						writeBatch();
 						continue;

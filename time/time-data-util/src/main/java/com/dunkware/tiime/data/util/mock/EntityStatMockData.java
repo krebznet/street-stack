@@ -5,7 +5,7 @@ import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.dunkware.time.data.model.stats.entity.EntityStatModel;
+import com.dunkware.time.data.model.entity.EntityStatModel;
 
 public class EntityStatMockData {
 

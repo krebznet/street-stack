@@ -10,7 +10,7 @@ import org.springframework.stereotype.Service;
 import com.datastax.oss.driver.api.core.CqlSessionBuilder;
 import com.dunkware.stream.data.cassy.loaders.SessionSignalEntityLoader;
 import com.dunkware.stream.data.cassy.services.CassyQueryService;
-import com.dunkware.time.data.model.entity.EntitySignal;
+import com.dunkware.time.data.model.entity.EntitySignalModel;
 
 import jakarta.annotation.PostConstruct;
 
@@ -45,7 +45,7 @@ public class SessionSignalConsumer {
 				int i = 0;
 				
 				while(i < 50000) { 
-					EntitySignal sig = new  EntitySignal();
+					EntitySignalModel sig = new  EntitySignalModel();
 					sig.setEntity(i);
 					sig.setId(i);
 					sig.setStream(1);

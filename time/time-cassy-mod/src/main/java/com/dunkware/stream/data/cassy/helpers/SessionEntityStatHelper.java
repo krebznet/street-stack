@@ -5,9 +5,9 @@ import java.util.List;
 
 import com.dunkware.stream.data.cassy.entity.stats.DBSessionEntityStatKey;
 import com.dunkware.stream.data.cassy.entity.stats.DBSessionEntityStatRow;
-import com.dunkware.time.data.model.stats.entity.EntityStatTypes;
-import com.dunkware.time.data.model.stats.entity.EntityStatsModel;
-import com.dunkware.time.data.model.stats.entity.EntityVarStatsModel;
+import com.dunkware.time.data.model.entity.EntityStatTypes;
+import com.dunkware.time.data.model.entity.EntityStatsModel;
+import com.dunkware.time.data.model.entity.EntityVarStatsModel;
 
 public class SessionEntityStatHelper {
 	

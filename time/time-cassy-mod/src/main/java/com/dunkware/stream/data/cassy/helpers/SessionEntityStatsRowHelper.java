@@ -6,8 +6,8 @@ import java.util.Map;
 import com.dunkware.stream.data.cassy.entity.stats.DBEntityVarStats;
 import com.dunkware.stream.data.cassy.entity.stats.DBSessionEntityStatsKey;
 import com.dunkware.stream.data.cassy.entity.stats.DBSessionEntityStatsRow;
-import com.dunkware.time.data.model.stats.entity.EntityStatsModel;
-import com.dunkware.time.data.model.stats.entity.EntityVarStatsModel;
+import com.dunkware.time.data.model.entity.EntityStatsModel;
+import com.dunkware.time.data.model.entity.EntityVarStatsModel;
 
 public class SessionEntityStatsRowHelper {
 	

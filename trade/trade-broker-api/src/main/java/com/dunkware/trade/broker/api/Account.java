@@ -10,7 +10,7 @@ public interface Account extends OrderExecutor {
 	
 	DunkEventNode getEventNode();
 	
-	Broker<?> getBroker();
+	Broker getBroker();
 	
 	AccountBean getBean();
 	

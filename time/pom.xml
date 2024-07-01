@@ -79,11 +79,10 @@
         <module>time-injest-srvc</module>
         <module>time-mock-srvc</module>
         <module>time-script-mod</module>
+        <module>time-script-model</module>
         <module>time-script-lib</module>
-        <module>time-api-lib</module>
-        <module>time-api-model</module>
-        <module>time-api-mod</module>
-
+        <module>time-client-lib</module>
+        <module>time-signal-srvc</module>
 	
     </modules>
     <build>
