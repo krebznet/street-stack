@@ -6,28 +6,57 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.ManyToOne;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
+@Data
+@NoArgsConstructor
+@AllArgsConstructor
 @Entity(name = "script_repo_variable")
 public class ScriptVariableEntity {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private long uuid;
+
 	
-	private double version;
+	private LocalDateTime releaseTimestamp;
 	
-	private LocalDateTime timestamp;
+	private LocalDateTime deleteTimestamp; 
 	
-	private String varIdent;
+	private LocalDateTime archivedTimestamp;
 	
-	private String varDataType; 
+	@ManyToOne
+	private ScriptVersionEntity releaseVersion; 
 	
-	private String varFormatType;
+	@ManyToOne
+	private ScriptVersionEntity deleteVersion;
 	
-	private String varName; 
 	
-	private int varId; 
+	@ManyToOne
+	private ScriptEntity script;
 	
+	private String ident;
+	
+	private String dataType; 
+	
+	private String formatType;
+	
+	private String group;
+	
+	private String name; 
+	
+	private int id; 
+	
+	private boolean active; 
+	
+    private boolean archived; 
+   
+   
+    
+    
 	
 	
 }

@@ -72,7 +72,7 @@
         <module>trade-feed-api</module>
         <module>trade-engine-api</module>
         <module>trade-engine-core</module>
-        <module>trade-engine-awt</module>
+       
         
 	
     </modules>

@@ -65,12 +65,10 @@
         
 
         
-        <module>street-client-app</module>
-        <module>street-client-link</module>
-        <module>street-server-srvc</module>
-        <module>street-bot-time</module>
-        <module>street-client-core</module>
-        <module>street-client-trade</module>
+        <module>street-smart-stream</module>
+        <module>street-smart-runtime</module>
+        <module>street-smart-trade</module>
+       
         
        
        

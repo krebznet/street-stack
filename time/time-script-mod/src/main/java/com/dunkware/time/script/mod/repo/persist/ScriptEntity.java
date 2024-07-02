@@ -19,7 +19,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 
-@Entity(name = "script_repo_repository")
+@Entity(name = "script_repo_entity")
 public class ScriptEntity {
 
 	@Id
@@ -30,17 +30,29 @@ public class ScriptEntity {
 	
 	private LocalDateTime created;
 	
-	private LocalDateTime updated; 
+	private LocalDateTime updated;
 	
 	private String name; 
 	
 	private String type; 
 	
+	private boolean active = true; 
+	
 	@OneToMany(cascade = CascadeType.ALL, orphanRemoval =  true)
 	@JoinColumn(name = "script")
 	private List<ScriptVersionEntity> versions = new ArrayList<ScriptVersionEntity>();
 	
+	@OneToMany(cascade = CascadeType.ALL, orphanRemoval =  true)
+	@JoinColumn(name = "script")
+	private List<ScriptVariableEntity> variables = new ArrayList<ScriptVariableEntity>();
 	
+	@OneToMany(cascade = CascadeType.ALL, orphanRemoval =  true)
+	@JoinColumn(name = "script")
+	private List<ScriptSignalEntity> signals = new ArrayList<ScriptSignalEntity>();
+	
+	@OneToMany(cascade = CascadeType.ALL, orphanRemoval =  true)
+	@JoinColumn(name = "script")
+	private List<ScriptLeaseEntity> leases = new ArrayList<ScriptLeaseEntity>();
 	
 	
 }

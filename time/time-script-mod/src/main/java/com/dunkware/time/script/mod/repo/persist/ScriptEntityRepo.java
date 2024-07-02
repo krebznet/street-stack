@@ -1,5 +1,7 @@
 package com.dunkware.time.script.mod.repo.persist;
 
-public class ScriptEntityRepo {
+import org.springframework.data.repository.CrudRepository;
+
+public interface ScriptEntityRepo extends CrudRepository<ScriptEntity, Long>{
 
 }

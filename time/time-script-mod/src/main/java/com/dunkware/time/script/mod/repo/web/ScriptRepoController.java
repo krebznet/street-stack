@@ -5,7 +5,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.dunkware.time.script.mod.repo.ScriptRepoService;
+import com.dunkware.time.script.mod.repo.ScriptService;
 import com.dunkware.time.script.model.proto.ScriptDeployRep;
 import com.dunkware.time.script.model.proto.ScriptDeployReq;
 
@@ -14,9 +14,9 @@ import com.dunkware.time.script.model.proto.ScriptDeployReq;
 @RestController
 public class ScriptRepoController {
 	
-	private ScriptRepoService repoService; 
+	private ScriptService repoService; 
 	
-	public ScriptRepoController(ScriptRepoService repoService) {
+	public ScriptRepoController(ScriptService repoService) {
 		this.repoService = repoService;
 	}
 	
