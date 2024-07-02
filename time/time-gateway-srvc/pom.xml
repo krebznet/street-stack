@@ -55,7 +55,7 @@
 <dependency>
 			<groupId>com.dunkware.utils</groupId>
 			<artifactId>java-utils-core</artifactId>
-			<version>1.0.0</version>
+			<version>1.0.0-SNAPSHOT</version>
 		</dependency>
 		<dependency>
 			<groupId>com.jcraft</groupId>

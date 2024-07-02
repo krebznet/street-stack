@@ -1,0 +1,129 @@
+2024-07-02 03:22:46.768 eclipse[23762:3857793] WARNING: Secure coding is not enabled for restorable state! Enable secure coding by implementing NSApplicationDelegate.applicationSupportsSecureRestorableState: and returning YES.
+WARNING: Using incubator modules: jdk.incubator.vector
+Jul 02, 2024 3:22:47 AM org.apache.aries.spifly.BaseActivator log
+INFO: Registered provider ch.qos.logback.classic.spi.LogbackServiceProvider of service org.slf4j.spi.SLF4JServiceProvider in bundle ch.qos.logback.classic
+03:22:48.744 [Start Level: Equinox Container: 8d59d1f7-c2cb-4f29-9b01-6d23c83bb6b5] DEBUG org.eclipse.jgit.internal.util.ShutdownHook -- register org.eclipse.jgit.util.FS$FileStoreAttributes$$Lambda/0x000000fe011a78f0@3642b34d with shutdown hook
+03:22:48.744 [Start Level: Equinox Container: 8d59d1f7-c2cb-4f29-9b01-6d23c83bb6b5] DEBUG org.eclipse.jgit.internal.util.ShutdownHook -- register org.eclipse.jgit.util.FS$FileStoreAttributes$$Lambda/0x000000fe011a78f0@3642b34d with shutdown hook
+Jul 02, 2024 3:22:48 AM org.apache.aries.spifly.BaseActivator log
+INFO: Registered provider com.sun.tools.rngdatatype.helpers.ProxyDatatypeLibraryFactory of service com.sun.tools.rngdatatype.DatatypeLibraryFactory in bundle com.sun.xml.bind.jaxb-osgi
+Jul 02, 2024 3:22:48 AM org.apache.aries.spifly.BaseActivator log
+INFO: Registered provider com.sun.tools.xjc.addon.code_injector.PluginImpl of service com.sun.tools.xjc.Plugin in bundle com.sun.xml.bind.jaxb-osgi
+Jul 02, 2024 3:22:48 AM org.apache.aries.spifly.BaseActivator log
+INFO: Registered provider com.sun.tools.xjc.addon.locator.SourceLocationAddOn of service com.sun.tools.xjc.Plugin in bundle com.sun.xml.bind.jaxb-osgi
+Jul 02, 2024 3:22:48 AM org.apache.aries.spifly.BaseActivator log
+INFO: Registered provider com.sun.tools.xjc.addon.sync.SynchronizedMethodAddOn of service com.sun.tools.xjc.Plugin in bundle com.sun.xml.bind.jaxb-osgi
+Jul 02, 2024 3:22:48 AM org.apache.aries.spifly.BaseActivator log
+INFO: Registered provider com.sun.tools.xjc.addon.at_generated.PluginImpl of service com.sun.tools.xjc.Plugin in bundle com.sun.xml.bind.jaxb-osgi
+Jul 02, 2024 3:22:48 AM org.apache.aries.spifly.BaseActivator log
+INFO: Registered provider com.sun.tools.xjc.addon.episode.PluginImpl of service com.sun.tools.xjc.Plugin in bundle com.sun.xml.bind.jaxb-osgi
+Jul 02, 2024 3:22:48 AM org.apache.aries.spifly.BaseActivator log
+INFO: Registered provider com.sun.tools.xjc.addon.accessors.PluginImpl of service com.sun.tools.xjc.Plugin in bundle com.sun.xml.bind.jaxb-osgi
+Jul 02, 2024 3:22:48 AM org.apache.aries.spifly.BaseActivator log
+INFO: Registered provider org.glassfish.jaxb.runtime.v2.JAXBContextFactory of service jakarta.xml.bind.JAXBContextFactory in bundle com.sun.xml.bind.jaxb-osgi
+
+
+ ___                                                                        
+(  _`\                      _                                               
+| (_) ) _   _  _ __   ___  (_)  ___     __   _   _   _    _ _  _   _    __  
+|  _ <'( ) ( )( '__)/' _ `\| |/' _ `\ /'_ `\( ) ( ) ( ) /'_` )( ) ( ) /'__`\
+| (_) )| (_) || |   | ( ) || || ( ) |( (_) || \_/ \_/ |( (_| || \_/ |(  ___/
+(____/'`\___/'(_)   (_) (_)(_)(_) (_)`\__  |`\___x___/'`\__,_)`\___/'`\____)
+                                     ( )_) |                                
+                                      \___/'                                
+
+
+2024-07-02 03:23:05.636 [Java indexing] - org.burningwave.core.assembler.StaticComponentContainer - (StaticComponentContainer.java:354) - No custom properties found for file burningwave.static.properties
+2024-07-02 03:23:05.638 [Java indexing] - org.burningwave.core.assembler.StaticComponentContainer - (StaticComponentContainer.java:356) - Instantiated org.burningwave.core.SimpleManagedLoggerRepository
+2024-07-02 03:23:05.639 [Java indexing] - org.burningwave.core.assembler.StaticComponentContainer - (StaticComponentContainer.java:357) - 
+
+	Configuration values for static components:
+
+		background-executor.all-tasks-monitoring.enabled=\
+			true
+		background-executor.all-tasks-monitoring.interval=\
+			30000
+		background-executor.all-tasks-monitoring.logger.enabled=\
+			false
+		background-executor.all-tasks-monitoring.minimum-elapsed-time-to-consider-a-task-as-probable-dead-locked=\
+			300000
+		background-executor.all-tasks-monitoring.probable-dead-locked-tasks-handling.policy=\
+			log only
+		background-executor.queued-task-executor[0].name=\
+			Low priority tasks
+		background-executor.queued-task-executor[0].priority=\
+			1
+		background-executor.queued-task-executor[1].name=\
+			Normal priority tasks
+		background-executor.queued-task-executor[1].priority=\
+			5
+		background-executor.queued-task-executor[2].name=\
+			High priority tasks
+		background-executor.queued-task-executor[2].priority=\
+			10
+		background-executor.task-creation-tracking.enabled=\
+			${background-executor.all-tasks-monitoring.enabled}
+		banner.file=\
+			org/burningwave/banner.bwb
+		banner.hide=\
+			false
+		buffer-handler.default-allocation-mode=\
+			ByteBuffer::allocateDirect
+		buffer-handler.default-buffer-size=\
+			1024
+		group-name-for-named-elements=\
+			Burningwave
+		iterable-object-helper.default-values-separator=\
+			;
+		iterable-object-helper.parallel-iteration.applicability.default-minimum-collection-size=\
+			2
+		iterable-object-helper.parallel-iteration.applicability.max-runtime-thread-count-threshold=\
+			autodetect
+		iterable-object-helper.parallel-iteration.applicability.output-collection-enabled-types=\
+			java.util.concurrent.ConcurrentHashMap$CollectionView;\
+			java.util.Collections$SynchronizedCollection;\
+			java.util.concurrent.CopyOnWriteArrayList;\
+			java.util.concurrent.CopyOnWriteArraySet;\
+			java.util.concurrent.BlockingQueue;\
+			java.util.concurrent.ConcurrentSkipListSet;\
+			java.util.concurrent.ConcurrentSkipListMap$EntrySet;\
+			java.util.concurrent.ConcurrentSkipListMap$KeySet;\
+			java.util.concurrent.ConcurrentSkipListMap$Values;
+		jvm.driver.init=\
+			false
+		managed-logger.repository=\
+			autodetect
+		managed-logger.repository.enabled=\
+			true
+		managed-logger.repository.logging.warn.disabled-for=\
+			org.burningwave.core.assembler.ComponentContainer$ClassLoader;\
+			org.burningwave.core.classes.MemoryClassLoader;\
+			org.burningwave.core.classes.PathScannerClassLoader;
+		modules.export-all-to-all=\
+			true
+		resource-releaser.enabled=\
+			true
+		synchronizer.all-threads-monitoring.enabled=\
+			false
+		synchronizer.all-threads-monitoring.interval=\
+			90000
+		thread-supplier.default-daemon-flag-value=\
+			true
+		thread-supplier.default-thread-priority=\
+			5
+		thread-supplier.max-detached-thread-count=\
+			${thread-supplier.max-poolable-thread-count}
+		thread-supplier.max-detached-thread-count.elapsed-time-threshold-from-last-increase-for-gradual-decreasing-to-initial-value=\
+			30000
+		thread-supplier.max-detached-thread-count.increasing-step=\
+			autodetect
+		thread-supplier.max-poolable-thread-count=\
+			autodetect
+		thread-supplier.poolable-thread-request-timeout=\
+			6000
+
+
+2024-07-02 03:23:05.640 [Java indexing] - org.burningwave.core.jvm.BufferHandler - (BufferHandler.java:127) - default buffer size: 1024 bytes
+2024-07-02 03:23:05.640 [Java indexing] - org.burningwave.core.jvm.BufferHandler - (BufferHandler.java:141) - default allocation mode: ByteBuffer::allocateDirect
+2024-07-02 03:23:05.642 [Java indexing] - org.burningwave.core.Cache - (Cache.java:76) - Building cache
+2024-07-02 03:23:05.650 [Java indexing] - org.burningwave.core.assembler.StaticComponentContainer - (StaticComponentContainer.java:432) - org.burningwave.core.assembler.StaticComponentContainer initialized in 0.062089417 seconds
+jdk.internal.loader.ClassLoaders$PlatformClassLoader@11e63fbb instantiated
