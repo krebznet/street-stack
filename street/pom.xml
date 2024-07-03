@@ -67,7 +67,8 @@
         
         <module>street-smart-stream</module>
         <module>street-smart-runtime</module>
-        <module>street-smart-trade</module>
+
+        <module>street-smart-swing</module>
        
         
        
