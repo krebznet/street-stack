@@ -46,16 +46,16 @@
             <layout>default</layout>
             <name>dunkware-internal-snapshot</name>
             <url>
-                https://nexus.dunkware.com/repository/dunkware-internal-snapshot/</url>
+                https://nexus.dunkware.net/</url>
 
         </snapshotRepository>
         <repository>
             <uniqueVersion>false</uniqueVersion>
-            <id>dunkware-internal-release</id>
+            <id>dunkware-internal-snapshot</id>
             <layout>default</layout>
-            <name>dunkware-internal-release</name>
+            <name>dunkware-snapshotreleasese</name>
             <url>
-                https://nexus.dunkware.com/repository/dunkware-internal-release/</url>
+                https://nexus.dunkware./repository/dunkware-internal-release/</url>
 
         </repository>
     </distributionManagement>
