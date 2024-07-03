@@ -5,7 +5,7 @@
     updateClasspath="false" rootExtendsClass="org.eclipse.emf.ecore.impl.MinimalEObjectImpl$Container"
     complianceLevel="11.0" copyrightFields="false" runtimeVersion="2.29">
   <genPackages prefix="XScript" basePackage="com.dunkware.xstream" disposableProviderFactory="true"
-      loadInitialization="true" literalsInterface="false" fileExtensions="xs" ecorePackage="XScript.ecore#/">
+      fileExtensions="xs" ecorePackage="XScript.ecore#/">
     <genEnums typeSafeEnumCompatible="false" ecoreEnum="XScript.ecore#//HistoricalAggFunc">
       <genEnumLiterals ecoreEnumLiteral="XScript.ecore#//HistoricalAggFunc/high"/>
       <genEnumLiterals ecoreEnumLiteral="XScript.ecore#//HistoricalAggFunc/low"/>
@@ -120,101 +120,6 @@
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute XScript.ecore#//TimeType/minute"/>
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute XScript.ecore#//TimeType/second"/>
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute XScript.ecore#//TimeType/type"/>
-    </genClasses>
-    <genClasses ecoreClass="XScript.ecore#//OrderType"/>
-    <genClasses ecoreClass="XScript.ecore#//OrderTypeMarketElement"/>
-    <genClasses ecoreClass="XScript.ecore#//OrderTypeMarketTimeout">
-      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute XScript.ecore#//OrderTypeMarketTimeout/value"/>
-      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute XScript.ecore#//OrderTypeMarketTimeout/timeoutUnit"/>
-    </genClasses>
-    <genClasses ecoreClass="XScript.ecore#//OrderTypeMarket">
-      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference XScript.ecore#//OrderTypeMarket/elements"/>
-    </genClasses>
-    <genClasses ecoreClass="XScript.ecore#//OrderTypeMarketPeg">
-      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference XScript.ecore#//OrderTypeMarketPeg/elements"/>
-    </genClasses>
-    <genClasses ecoreClass="XScript.ecore#//OrderTypeMarketPegElement"/>
-    <genClasses ecoreClass="XScript.ecore#//OrderTypeMarketPegTimeout">
-      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute XScript.ecore#//OrderTypeMarketPegTimeout/value"/>
-      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute XScript.ecore#//OrderTypeMarketPegTimeout/timeoutUnit"/>
-    </genClasses>
-    <genClasses ecoreClass="XScript.ecore#//OrderTypeMarketPegOffset">
-      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute XScript.ecore#//OrderTypeMarketPegOffset/offset"/>
-    </genClasses>
-    <genClasses ecoreClass="XScript.ecore#//BotSetupElementType"/>
-    <genClasses ecoreClass="XScript.ecore#//BotSetupPlayElementType"/>
-    <genClasses ecoreClass="XScript.ecore#//BotAllocatedCapitalType">
-      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute XScript.ecore#//BotAllocatedCapitalType/allocated"/>
-    </genClasses>
-    <genClasses ecoreClass="XScript.ecore#//BotActiveTradeLimitType">
-      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute XScript.ecore#//BotActiveTradeLimitType/activeTradeLimit"/>
-    </genClasses>
-    <genClasses ecoreClass="XScript.ecore#//BotTradeLimitType">
-      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute XScript.ecore#//BotTradeLimitType/tradeLimit"/>
-    </genClasses>
-    <genClasses ecoreClass="XScript.ecore#//BotActiveSymbolLimitType">
-      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute XScript.ecore#//BotActiveSymbolLimitType/activeSymbolLimit"/>
-    </genClasses>
-    <genClasses ecoreClass="XScript.ecore#//BotSymbolLimitType">
-      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute XScript.ecore#//BotSymbolLimitType/symbolLimit"/>
-    </genClasses>
-    <genClasses ecoreClass="XScript.ecore#//BotSymbolThrottleType">
-      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute XScript.ecore#//BotSymbolThrottleType/limit"/>
-      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute XScript.ecore#//BotSymbolThrottleType/unit"/>
-    </genClasses>
-    <genClasses ecoreClass="XScript.ecore#//BotWeightType">
-      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute XScript.ecore#//BotWeightType/weight"/>
-    </genClasses>
-    <genClasses ecoreClass="XScript.ecore#//BotSideType">
-      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute XScript.ecore#//BotSideType/side"/>
-    </genClasses>
-    <genClasses ecoreClass="XScript.ecore#//BotWeigtedType">
-      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute XScript.ecore#//BotWeigtedType/weighted"/>
-    </genClasses>
-    <genClasses ecoreClass="XScript.ecore#//BotType">
-      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute XScript.ecore#//BotType/name"/>
-      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute XScript.ecore#//BotType/description"/>
-      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference XScript.ecore#//BotType/setupElements"/>
-      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference XScript.ecore#//BotType/tradePlays"/>
-    </genClasses>
-    <genClasses ecoreClass="XScript.ecore#//BotEntryType"/>
-    <genClasses ecoreClass="XScript.ecore#//BotSignalEntryType">
-      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute XScript.ecore#//BotSignalEntryType/name"/>
-      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference XScript.ecore#//BotSignalEntryType/signal"/>
-    </genClasses>
-    <genClasses ecoreClass="XScript.ecore#//TradePlayType">
-      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute XScript.ecore#//TradePlayType/name"/>
-      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference XScript.ecore#//TradePlayType/elments"/>
-      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference XScript.ecore#//TradePlayType/entryOrder"/>
-      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference XScript.ecore#//TradePlayType/entryTriggers"/>
-      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference XScript.ecore#//TradePlayType/exitOrder"/>
-      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference XScript.ecore#//TradePlayType/exitTriggers"/>
-    </genClasses>
-    <genClasses ecoreClass="XScript.ecore#//TradeExitType">
-      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute XScript.ecore#//TradeExitType/name"/>
-    </genClasses>
-    <genClasses ecoreClass="XScript.ecore#//TradeExitTimmerType">
-      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute XScript.ecore#//TradeExitTimmerType/hours"/>
-      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute XScript.ecore#//TradeExitTimmerType/minutes"/>
-      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute XScript.ecore#//TradeExitTimmerType/seconds"/>
-    </genClasses>
-    <genClasses ecoreClass="XScript.ecore#//TradeExitTimeType">
-      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference XScript.ecore#//TradeExitTimeType/time"/>
-    </genClasses>
-    <genClasses ecoreClass="XScript.ecore#//TradeExitStopType">
-      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute XScript.ecore#//TradeExitStopType/percent"/>
-    </genClasses>
-    <genClasses ecoreClass="XScript.ecore#//TradeExitTradilingStopType">
-      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute XScript.ecore#//TradeExitTradilingStopType/percent"/>
-    </genClasses>
-    <genClasses ecoreClass="XScript.ecore#//TradeExitUplAmountType">
-      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute XScript.ecore#//TradeExitUplAmountType/acount"/>
-    </genClasses>
-    <genClasses ecoreClass="XScript.ecore#//TradeExitUplPercentType">
-      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute XScript.ecore#//TradeExitUplPercentType/percent"/>
-    </genClasses>
-    <genClasses ecoreClass="XScript.ecore#//TradeExitSignalType">
-      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference XScript.ecore#//TradeExitSignalType/signal"/>
     </genClasses>
     <genClasses ecoreClass="XScript.ecore#//SignalType">
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute XScript.ecore#//SignalType/name"/>
@@ -392,6 +297,94 @@
     <genClasses ecoreClass="XScript.ecore#//XRocExpType">
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference XScript.ecore#//XRocExpType/value1"/>
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference XScript.ecore#//XRocExpType/value2"/>
+    </genClasses>
+    <genClasses ecoreClass="XScript.ecore#//XScriptOrder">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference XScript.ecore#//XScriptOrder/properties"/>
+    </genClasses>
+    <genClasses ecoreClass="XScript.ecore#//XScriptMarketOrder"/>
+    <genClasses ecoreClass="XScript.ecore#//XScriptMarketPegOrder"/>
+    <genClasses ecoreClass="XScript.ecore#//XScriptOrderProperty"/>
+    <genClasses ecoreClass="XScript.ecore#//XScriptOrderOffset">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute XScript.ecore#//XScriptOrderOffset/offset"/>
+    </genClasses>
+    <genClasses ecoreClass="XScript.ecore#//XScriptOrderTimeout">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute XScript.ecore#//XScriptOrderTimeout/value"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute XScript.ecore#//XScriptOrderTimeout/timeUnit"/>
+    </genClasses>
+    <genClasses ecoreClass="XScript.ecore#//XScriptBotElement"/>
+    <genClasses ecoreClass="XScript.ecore#//XScriptPolicy"/>
+    <genClasses ecoreClass="XScript.ecore#//XScriptAllocatedCapital">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute XScript.ecore#//XScriptAllocatedCapital/allocated"/>
+    </genClasses>
+    <genClasses ecoreClass="XScript.ecore#//XScriptActiveTradeLimit">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute XScript.ecore#//XScriptActiveTradeLimit/activeTradeLimit"/>
+    </genClasses>
+    <genClasses ecoreClass="XScript.ecore#//XScriptTradeLimit">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute XScript.ecore#//XScriptTradeLimit/tradeLimit"/>
+    </genClasses>
+    <genClasses ecoreClass="XScript.ecore#//XScriptActiveEntityLimit">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute XScript.ecore#//XScriptActiveEntityLimit/activeEntityLimit"/>
+    </genClasses>
+    <genClasses ecoreClass="XScript.ecore#//XScriptEntityLimit">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute XScript.ecore#//XScriptEntityLimit/symbolLimit"/>
+    </genClasses>
+    <genClasses ecoreClass="XScript.ecore#//XScriptEntityThrottle">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute XScript.ecore#//XScriptEntityThrottle/limit"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute XScript.ecore#//XScriptEntityThrottle/unit"/>
+    </genClasses>
+    <genClasses ecoreClass="XScript.ecore#//XScriptWeight">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute XScript.ecore#//XScriptWeight/weight"/>
+    </genClasses>
+    <genClasses ecoreClass="XScript.ecore#//XScriptSide">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute XScript.ecore#//XScriptSide/side"/>
+    </genClasses>
+    <genClasses ecoreClass="XScript.ecore#//XScriptWeighted">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute XScript.ecore#//XScriptWeighted/weighted"/>
+    </genClasses>
+    <genClasses ecoreClass="XScript.ecore#//XScriptBot">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute XScript.ecore#//XScriptBot/name"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute XScript.ecore#//XScriptBot/description"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference XScript.ecore#//XScriptBot/policies"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference XScript.ecore#//XScriptBot/tradePlays"/>
+    </genClasses>
+    <genClasses ecoreClass="XScript.ecore#//XScriptEntry"/>
+    <genClasses ecoreClass="XScript.ecore#//XScriptSignalEntry">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute XScript.ecore#//XScriptSignalEntry/name"/>
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference XScript.ecore#//XScriptSignalEntry/signal"/>
+    </genClasses>
+    <genClasses ecoreClass="XScript.ecore#//XScriptTrade">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute XScript.ecore#//XScriptTrade/name"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference XScript.ecore#//XScriptTrade/policies"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference XScript.ecore#//XScriptTrade/entryOrder"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference XScript.ecore#//XScriptTrade/entryTypes"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference XScript.ecore#//XScriptTrade/exitOrder"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference XScript.ecore#//XScriptTrade/exits"/>
+    </genClasses>
+    <genClasses ecoreClass="XScript.ecore#//XScriptExit">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute XScript.ecore#//XScriptExit/name"/>
+    </genClasses>
+    <genClasses ecoreClass="XScript.ecore#//XScriptExitTimer">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute XScript.ecore#//XScriptExitTimer/hours"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute XScript.ecore#//XScriptExitTimer/minutes"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute XScript.ecore#//XScriptExitTimer/seconds"/>
+    </genClasses>
+    <genClasses ecoreClass="XScript.ecore#//XScriptExitTime">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference XScript.ecore#//XScriptExitTime/time"/>
+    </genClasses>
+    <genClasses ecoreClass="XScript.ecore#//XScriptStopLoss">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute XScript.ecore#//XScriptStopLoss/percent"/>
+    </genClasses>
+    <genClasses ecoreClass="XScript.ecore#//XScriptTrailingStop">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute XScript.ecore#//XScriptTrailingStop/percent"/>
+    </genClasses>
+    <genClasses ecoreClass="XScript.ecore#//XScriptGainLossExit">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute XScript.ecore#//XScriptGainLossExit/acount"/>
+    </genClasses>
+    <genClasses ecoreClass="XScript.ecore#//XScriptGainLossPercExit">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute XScript.ecore#//XScriptGainLossPercExit/amount"/>
+    </genClasses>
+    <genClasses ecoreClass="XScript.ecore#//XScriptSignalExit">
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference XScript.ecore#//XScriptSignalExit/signal"/>
     </genClasses>
     <genClasses ecoreClass="XScript.ecore#//ScriptTree">
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute XScript.ecore#//ScriptTree/name"/>

@@ -15,7 +15,7 @@ package com.dunkware.street;
 
 import java.net.http.HttpHeaders;
 
-@jakarta.annotation.Generated(value = "org.openapitools.codegen.languages.JavaClientCodegen", date = "2024-06-30T13:53:43.257195-05:00[America/Chicago]", comments = "Generator version: 7.6.0")
+@jakarta.annotation.Generated(value = "org.openapitools.codegen.languages.JavaClientCodegen", date = "2024-07-03T01:10:51.173441-05:00[America/Chicago]", comments = "Generator version: 7.6.0")
 public class ApiException extends Exception {
     private static final long serialVersionUID = 1L;
 

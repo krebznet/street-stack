@@ -79,12 +79,12 @@
     </repository>
   
 		<repository>
-			<id>dunk-utils-release</id>
+			<id>dunk-utils-j</id>
 			<name>Dunkware Utils Release</name>
 			<url>https://nexus.dunkware.net/repository/dunk-utils-release/</url>
 		</repository>
 		<repository>
-			<id>dunk-utils-snapshot</id>
+			<id>dunnkware-snapshot-snapshot</id>
 			<name>Maven Central</name>
 			<url>https://nexus.dunkware.net/repository/dunk-utils-snapshot/</url>
 		</repository>

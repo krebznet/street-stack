@@ -77,7 +77,6 @@
         <module>time-data-model</module>
         <module>time-data-util</module>
         <module>time-injest-srvc</module>
-        <module>time-mock-srvc</module>
         <module>time-script-mod</module>
         <module>time-script-model</module>
         <module>time-script-lib</module>

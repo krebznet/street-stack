@@ -13,7 +13,6 @@ import org.eclipse.xtext.resource.XtextResourceSet;
 
 import com.dunkware.utils.core.helpers.DunkRandom;
 import com.dunkware.xstream.XScriptStandaloneSetup;
-import com.dunkware.xstream.xScript.BotType;
 import com.dunkware.xstream.xScript.SignalType;
 import com.dunkware.xstream.xScript.VarType;
 import com.dunkware.xstream.xScript.XClassType;
@@ -22,8 +21,6 @@ import com.dunkware.xstream.xScript.XScriptPackage;
 import com.dunkware.xstream.xproject.model.XScriptBundle;
 import com.dunkware.xstream.xproject.model.XScriptFile;
 import com.google.inject.Injector;
-
-import io.netty.util.Signal;
 
 public class XScriptProject {
 	

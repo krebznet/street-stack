@@ -5,7 +5,7 @@
 	<parent>
 		<groupId>org.springframework.boot</groupId>
 		<artifactId>spring-boot-starter-parent</artifactId>
-		<version>3.2.5</version>
+		<version>3.3.1</version>
 	</parent>
 	<groupId>com.dunkware.time</groupId>
 	<artifactId>time-stream-srvc</artifactId>
@@ -33,11 +33,11 @@
 	<distributionManagement>
 		<snapshotRepository>
 			<uniqueVersion>false</uniqueVersion>
-			<id>dunkware-internal-snapshot</id>
+			<id>dunkware-stack-snapshot</id>
 			<layout>default</layout>
 			<name>dunkware-internal-snapshot</name>
 			<url>
-				https://nexus.dunkware.com/repository/dunkware-internal-snapshot/</url>
+				https://nexus.dunkware.com/repository/dunkware-stack-snapshot/</url>
 
 		</snapshotRepository>
 		<repository>
@@ -304,8 +304,7 @@
 			<artifactId>micrometer-registry-prometheus</artifactId>
 		</dependency>
 		<!-- Spring Boot Dev Tool - High Performance Development -->
-		
-		
+
 
 		<dependency>
 			<groupId>org.fluentd</groupId>
@@ -375,7 +374,7 @@
 		</dependency>
 
 		<!-- https://mvnrepository.com/artifact/com.google.inject/guice -->
-	<!--	<dependency>
+		<!--	<dependency>
 			<groupId>com.google.inject</groupId>
 			<artifactId>guice</artifactId>
 			<version>5.0.1</version>
@@ -389,12 +388,12 @@
 
 		<!-- Dunkware Dependencies -->
 
-<!-- https://mvnrepository.com/artifact/log4j/log4j -->
-<dependency>
-    <groupId>log4j</groupId>
-    <artifactId>log4j</artifactId>
-    <version>1.2.17</version>
-</dependency>
+		<!-- https://mvnrepository.com/artifact/log4j/log4j -->
+		<dependency>
+			<groupId>log4j</groupId>
+			<artifactId>log4j</artifactId>
+			<version>1.2.17</version>
+		</dependency>
 
 		<dependency>
 			<groupId>com.dunkware.xstream</groupId>
@@ -406,6 +405,11 @@
 					<artifactId>reload4j</artifactId>
 				</exclusion>
 			</exclusions>
+		</dependency>
+		<dependency>
+			<groupId>com.dunkware.time</groupId>
+			<artifactId>time-script-mod</artifactId>
+			<version>1.0.0-SNAPSHOT</version>
 		</dependency>
 
 
@@ -426,9 +430,9 @@
 			<version>1.2.0-SNAPSHOT</version>
 		</dependency>
 		<dependency>
-			<groupId>com.dunkware.trade.service</groupId>
-			<artifactId>dunkware-trade-service-stream-json</artifactId>
-			<version>1.2.0-SNAPSHOT</version>
+			<groupId>com.dunkware.time</groupId>
+			<artifactId>time-stream-model</artifactId>
+			<version>1.0.0-SNAPSHOT</version>
 		</dependency>
 
 

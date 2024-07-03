@@ -1,4 +1,3 @@
-	<?xml version="1.0" encoding="UTF-8"?>
 
 <project xmlns="http://maven.apache.org/POM/4.0.0"
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
@@ -8,7 +7,7 @@
 		<groupId>com.dunkware.maven</groupId>
 		<artifactId>dunkware-maven-parent</artifactId>
 		<version>6-SNAPSHOT</version>
-		<relativePath>../dunkware-maven-parent/pom.xml</relativePath>
+		<relativePath>/</relativePath>
 	</parent>
 	<groupId>com.dunkware.trade.tick</groupId>
 	<artifactId>dunkware-trade-tick-provider-atick</artifactId>
@@ -51,6 +50,8 @@
 			<version>1.2.0-SNAPSHOT</version>
 		</dependency>
 		<!-- Active Tick Libs -->
+
+
 
 		<dependency>
 			<groupId>com.dunkware.trade.tick</groupId>

@@ -127,3 +127,27 @@ INFO: Registered provider org.glassfish.jaxb.runtime.v2.JAXBContextFactory of se
 2024-07-02 03:23:05.642 [Java indexing] - org.burningwave.core.Cache - (Cache.java:76) - Building cache
 2024-07-02 03:23:05.650 [Java indexing] - org.burningwave.core.assembler.StaticComponentContainer - (StaticComponentContainer.java:432) - org.burningwave.core.assembler.StaticComponentContainer initialized in 0.062089417 seconds
 jdk.internal.loader.ClassLoaders$PlatformClassLoader@11e63fbb instantiated
+2024-07-02 15:47:16.992 eclipse[88522:5989866] WARNING: Secure coding is not enabled for restorable state! Enable secure coding by implementing NSApplicationDelegate.applicationSupportsSecureRestorableState: and returning YES.
+WARNING: Using incubator modules: jdk.incubator.vector
+Jul 02, 2024 3:47:18 PM org.apache.aries.spifly.BaseActivator log
+INFO: Registered provider ch.qos.logback.classic.spi.LogbackServiceProvider of service org.slf4j.spi.SLF4JServiceProvider in bundle ch.qos.logback.classic
+15:47:19.766 [Start Level: Equinox Container: 7999bf1f-95ec-41bc-9424-0fddb8ad77f5] DEBUG org.eclipse.jgit.internal.util.ShutdownHook -- register org.eclipse.jgit.util.FS$FileStoreAttributes$$Lambda/0x000001fe011a3230@3642b34d with shutdown hook
+15:47:19.766 [Start Level: Equinox Container: 7999bf1f-95ec-41bc-9424-0fddb8ad77f5] DEBUG org.eclipse.jgit.internal.util.ShutdownHook -- register org.eclipse.jgit.util.FS$FileStoreAttributes$$Lambda/0x000001fe011a3230@3642b34d with shutdown hook
+Jul 02, 2024 3:47:20 PM org.apache.aries.spifly.BaseActivator log
+INFO: Registered provider com.sun.tools.rngdatatype.helpers.ProxyDatatypeLibraryFactory of service com.sun.tools.rngdatatype.DatatypeLibraryFactory in bundle com.sun.xml.bind.jaxb-osgi
+Jul 02, 2024 3:47:20 PM org.apache.aries.spifly.BaseActivator log
+INFO: Registered provider com.sun.tools.xjc.addon.code_injector.PluginImpl of service com.sun.tools.xjc.Plugin in bundle com.sun.xml.bind.jaxb-osgi
+Jul 02, 2024 3:47:20 PM org.apache.aries.spifly.BaseActivator log
+INFO: Registered provider com.sun.tools.xjc.addon.locator.SourceLocationAddOn of service com.sun.tools.xjc.Plugin in bundle com.sun.xml.bind.jaxb-osgi
+Jul 02, 2024 3:47:20 PM org.apache.aries.spifly.BaseActivator log
+INFO: Registered provider com.sun.tools.xjc.addon.sync.SynchronizedMethodAddOn of service com.sun.tools.xjc.Plugin in bundle com.sun.xml.bind.jaxb-osgi
+Jul 02, 2024 3:47:20 PM org.apache.aries.spifly.BaseActivator log
+INFO: Registered provider com.sun.tools.xjc.addon.at_generated.PluginImpl of service com.sun.tools.xjc.Plugin in bundle com.sun.xml.bind.jaxb-osgi
+Jul 02, 2024 3:47:20 PM org.apache.aries.spifly.BaseActivator log
+INFO: Registered provider com.sun.tools.xjc.addon.episode.PluginImpl of service com.sun.tools.xjc.Plugin in bundle com.sun.xml.bind.jaxb-osgi
+Jul 02, 2024 3:47:20 PM org.apache.aries.spifly.BaseActivator log
+INFO: Registered provider com.sun.tools.xjc.addon.accessors.PluginImpl of service com.sun.tools.xjc.Plugin in bundle com.sun.xml.bind.jaxb-osgi
+Jul 02, 2024 3:47:20 PM org.apache.aries.spifly.BaseActivator log
+INFO: Registered provider org.glassfish.jaxb.runtime.v2.JAXBContextFactory of service jakarta.xml.bind.JAXBContextFactory in bundle com.sun.xml.bind.jaxb-osgi
+18:56:03.125 [ForkJoinPool-1-worker-1] DEBUG org.eclipse.jgit.internal.util.ShutdownHook -- Cleanup org.eclipse.jgit.util.FS$FileStoreAttributes$$Lambda/0x000001fe011a3230@3642b34d during JVM shutdown
+18:56:03.125 [ForkJoinPool-1-worker-1] DEBUG org.eclipse.jgit.internal.util.ShutdownHook -- Cleanup org.eclipse.jgit.util.FS$FileStoreAttributes$$Lambda/0x000001fe011a3230@3642b34d during JVM shutdown

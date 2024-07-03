@@ -106,111 +106,6 @@
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="second" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EInt"/>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="type" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
   </eClassifiers>
-  <eClassifiers xsi:type="ecore:EClass" name="OrderType"/>
-  <eClassifiers xsi:type="ecore:EClass" name="OrderTypeMarketElement"/>
-  <eClassifiers xsi:type="ecore:EClass" name="OrderTypeMarketTimeout" eSuperTypes="#//OrderTypeMarketElement">
-    <eStructuralFeatures xsi:type="ecore:EAttribute" name="value" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EInt"/>
-    <eStructuralFeatures xsi:type="ecore:EAttribute" name="timeoutUnit" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
-  </eClassifiers>
-  <eClassifiers xsi:type="ecore:EClass" name="OrderTypeMarket" eSuperTypes="#//OrderType">
-    <eStructuralFeatures xsi:type="ecore:EReference" name="elements" upperBound="-1"
-        eType="#//OrderTypeMarketElement" containment="true"/>
-  </eClassifiers>
-  <eClassifiers xsi:type="ecore:EClass" name="OrderTypeMarketPeg" eSuperTypes="#//OrderType">
-    <eStructuralFeatures xsi:type="ecore:EReference" name="elements" upperBound="-1"
-        eType="#//OrderTypeMarketPegElement" containment="true"/>
-  </eClassifiers>
-  <eClassifiers xsi:type="ecore:EClass" name="OrderTypeMarketPegElement"/>
-  <eClassifiers xsi:type="ecore:EClass" name="OrderTypeMarketPegTimeout" eSuperTypes="#//OrderTypeMarketPegElement">
-    <eStructuralFeatures xsi:type="ecore:EAttribute" name="value" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EInt"/>
-    <eStructuralFeatures xsi:type="ecore:EAttribute" name="timeoutUnit" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
-  </eClassifiers>
-  <eClassifiers xsi:type="ecore:EClass" name="OrderTypeMarketPegOffset" eSuperTypes="#//OrderTypeMarketPegElement">
-    <eStructuralFeatures xsi:type="ecore:EAttribute" name="offset" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EDouble"/>
-  </eClassifiers>
-  <eClassifiers xsi:type="ecore:EClass" name="BotSetupElementType" eSuperTypes="#//BotSetupPlayElementType"/>
-  <eClassifiers xsi:type="ecore:EClass" name="BotSetupPlayElementType"/>
-  <eClassifiers xsi:type="ecore:EClass" name="BotAllocatedCapitalType" eSuperTypes="#//BotSetupElementType">
-    <eStructuralFeatures xsi:type="ecore:EAttribute" name="allocated" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EDouble"/>
-  </eClassifiers>
-  <eClassifiers xsi:type="ecore:EClass" name="BotActiveTradeLimitType" eSuperTypes="#//BotSetupElementType">
-    <eStructuralFeatures xsi:type="ecore:EAttribute" name="activeTradeLimit" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EInt"/>
-  </eClassifiers>
-  <eClassifiers xsi:type="ecore:EClass" name="BotTradeLimitType" eSuperTypes="#//BotSetupElementType">
-    <eStructuralFeatures xsi:type="ecore:EAttribute" name="tradeLimit" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EInt"/>
-  </eClassifiers>
-  <eClassifiers xsi:type="ecore:EClass" name="BotActiveSymbolLimitType" eSuperTypes="#//BotSetupElementType">
-    <eStructuralFeatures xsi:type="ecore:EAttribute" name="activeSymbolLimit" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EInt"/>
-  </eClassifiers>
-  <eClassifiers xsi:type="ecore:EClass" name="BotSymbolLimitType" eSuperTypes="#//BotSetupElementType">
-    <eStructuralFeatures xsi:type="ecore:EAttribute" name="symbolLimit" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EInt"/>
-  </eClassifiers>
-  <eClassifiers xsi:type="ecore:EClass" name="BotSymbolThrottleType" eSuperTypes="#//BotSetupElementType">
-    <eStructuralFeatures xsi:type="ecore:EAttribute" name="limit" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EInt"/>
-    <eStructuralFeatures xsi:type="ecore:EAttribute" name="unit" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
-  </eClassifiers>
-  <eClassifiers xsi:type="ecore:EClass" name="BotWeightType" eSuperTypes="#//BotSetupPlayElementType">
-    <eStructuralFeatures xsi:type="ecore:EAttribute" name="weight" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EInt"/>
-  </eClassifiers>
-  <eClassifiers xsi:type="ecore:EClass" name="BotSideType" eSuperTypes="#//BotSetupElementType">
-    <eStructuralFeatures xsi:type="ecore:EAttribute" name="side" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
-  </eClassifiers>
-  <eClassifiers xsi:type="ecore:EClass" name="BotWeigtedType" eSuperTypes="#//BotSetupElementType">
-    <eStructuralFeatures xsi:type="ecore:EAttribute" name="weighted" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
-  </eClassifiers>
-  <eClassifiers xsi:type="ecore:EClass" name="BotType" eSuperTypes="#//CoreAbstractElement">
-    <eStructuralFeatures xsi:type="ecore:EAttribute" name="name" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
-    <eStructuralFeatures xsi:type="ecore:EAttribute" name="description" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
-    <eStructuralFeatures xsi:type="ecore:EReference" name="setupElements" upperBound="-1"
-        eType="#//BotSetupElementType" containment="true"/>
-    <eStructuralFeatures xsi:type="ecore:EReference" name="tradePlays" upperBound="-1"
-        eType="#//TradePlayType" containment="true"/>
-  </eClassifiers>
-  <eClassifiers xsi:type="ecore:EClass" name="BotEntryType"/>
-  <eClassifiers xsi:type="ecore:EClass" name="BotSignalEntryType" eSuperTypes="#//BotEntryType">
-    <eStructuralFeatures xsi:type="ecore:EAttribute" name="name" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
-    <eStructuralFeatures xsi:type="ecore:EReference" name="signal" eType="#//SignalType"/>
-  </eClassifiers>
-  <eClassifiers xsi:type="ecore:EClass" name="TradePlayType">
-    <eStructuralFeatures xsi:type="ecore:EAttribute" name="name" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
-    <eStructuralFeatures xsi:type="ecore:EReference" name="elments" upperBound="-1"
-        eType="#//BotSetupPlayElementType" containment="true"/>
-    <eStructuralFeatures xsi:type="ecore:EReference" name="entryOrder" eType="#//OrderType"
-        containment="true"/>
-    <eStructuralFeatures xsi:type="ecore:EReference" name="entryTriggers" upperBound="-1"
-        eType="#//BotEntryType" containment="true"/>
-    <eStructuralFeatures xsi:type="ecore:EReference" name="exitOrder" eType="#//OrderType"
-        containment="true"/>
-    <eStructuralFeatures xsi:type="ecore:EReference" name="exitTriggers" upperBound="-1"
-        eType="#//TradeExitType" containment="true"/>
-  </eClassifiers>
-  <eClassifiers xsi:type="ecore:EClass" name="TradeExitType">
-    <eStructuralFeatures xsi:type="ecore:EAttribute" name="name" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
-  </eClassifiers>
-  <eClassifiers xsi:type="ecore:EClass" name="TradeExitTimmerType" eSuperTypes="#//TradeExitType">
-    <eStructuralFeatures xsi:type="ecore:EAttribute" name="hours" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EInt"/>
-    <eStructuralFeatures xsi:type="ecore:EAttribute" name="minutes" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EInt"/>
-    <eStructuralFeatures xsi:type="ecore:EAttribute" name="seconds" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EInt"/>
-  </eClassifiers>
-  <eClassifiers xsi:type="ecore:EClass" name="TradeExitTimeType" eSuperTypes="#//TradeExitType">
-    <eStructuralFeatures xsi:type="ecore:EReference" name="time" eType="#//TimeType"
-        containment="true"/>
-  </eClassifiers>
-  <eClassifiers xsi:type="ecore:EClass" name="TradeExitStopType" eSuperTypes="#//TradeExitType">
-    <eStructuralFeatures xsi:type="ecore:EAttribute" name="percent" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EDouble"/>
-  </eClassifiers>
-  <eClassifiers xsi:type="ecore:EClass" name="TradeExitTradilingStopType" eSuperTypes="#//TradeExitType">
-    <eStructuralFeatures xsi:type="ecore:EAttribute" name="percent" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EDouble"/>
-  </eClassifiers>
-  <eClassifiers xsi:type="ecore:EClass" name="TradeExitUplAmountType" eSuperTypes="#//TradeExitType">
-    <eStructuralFeatures xsi:type="ecore:EAttribute" name="acount" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EDouble"/>
-  </eClassifiers>
-  <eClassifiers xsi:type="ecore:EClass" name="TradeExitUplPercentType" eSuperTypes="#//TradeExitType">
-    <eStructuralFeatures xsi:type="ecore:EAttribute" name="percent" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EDouble"/>
-  </eClassifiers>
-  <eClassifiers xsi:type="ecore:EClass" name="TradeExitSignalType" eSuperTypes="#//TradeExitType">
-    <eStructuralFeatures xsi:type="ecore:EReference" name="signal" eType="#//SignalType"/>
-  </eClassifiers>
   <eClassifiers xsi:type="ecore:EEnum" name="StreamTimeUnit">
     <eLiterals name="second" literal="SEC"/>
     <eLiterals name="minute" value="1" literal="MIN"/>
@@ -449,6 +344,103 @@
         containment="true"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="value2" eType="#//XExpressionType"
         containment="true"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="XScriptOrder">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="properties" upperBound="-1"
+        eType="#//XScriptOrderProperty" containment="true"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="XScriptMarketOrder" eSuperTypes="#//XScriptOrder"/>
+  <eClassifiers xsi:type="ecore:EClass" name="XScriptMarketPegOrder" eSuperTypes="#//XScriptOrder"/>
+  <eClassifiers xsi:type="ecore:EClass" name="XScriptOrderProperty"/>
+  <eClassifiers xsi:type="ecore:EClass" name="XScriptOrderOffset" eSuperTypes="#//XScriptOrderProperty">
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="offset" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EDouble"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="XScriptOrderTimeout" eSuperTypes="#//XScriptOrderProperty">
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="value" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EInt"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="timeUnit" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="XScriptBotElement"/>
+  <eClassifiers xsi:type="ecore:EClass" name="XScriptPolicy"/>
+  <eClassifiers xsi:type="ecore:EClass" name="XScriptAllocatedCapital">
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="allocated" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EDouble"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="XScriptActiveTradeLimit">
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="activeTradeLimit" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EInt"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="XScriptTradeLimit" eSuperTypes="#//XScriptPolicy">
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="tradeLimit" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EInt"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="XScriptActiveEntityLimit" eSuperTypes="#//XScriptPolicy">
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="activeEntityLimit" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EInt"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="XScriptEntityLimit" eSuperTypes="#//XScriptPolicy">
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="symbolLimit" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EInt"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="XScriptEntityThrottle" eSuperTypes="#//XScriptPolicy">
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="limit" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EInt"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="unit" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="XScriptWeight" eSuperTypes="#//XScriptPolicy">
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="weight" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EInt"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="XScriptSide" eSuperTypes="#//XScriptPolicy">
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="side" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="XScriptWeighted" eSuperTypes="#//XScriptPolicy">
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="weighted" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="XScriptBot" eSuperTypes="#//CoreAbstractElement">
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="name" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="description" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="policies" upperBound="-1"
+        eType="#//XScriptPolicy" containment="true"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="tradePlays" upperBound="-1"
+        eType="#//XScriptTrade" containment="true"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="XScriptEntry"/>
+  <eClassifiers xsi:type="ecore:EClass" name="XScriptSignalEntry" eSuperTypes="#//XScriptEntry">
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="name" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="signal" eType="#//SignalType"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="XScriptTrade" eSuperTypes="#//XScriptBotElement">
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="name" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="policies" upperBound="-1"
+        eType="#//XScriptPolicy" containment="true"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="entryOrder" eType="#//XScriptOrder"
+        containment="true"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="entryTypes" upperBound="-1"
+        eType="#//XScriptEntry" containment="true"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="exitOrder" eType="#//XScriptOrder"
+        containment="true"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="exits" upperBound="-1"
+        eType="#//XScriptExit" containment="true"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="XScriptExit">
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="name" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="XScriptExitTimer" eSuperTypes="#//XScriptExit">
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="hours" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EInt"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="minutes" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EInt"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="seconds" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EInt"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="XScriptExitTime" eSuperTypes="#//XScriptExit">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="time" eType="#//TimeType"
+        containment="true"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="XScriptStopLoss" eSuperTypes="#//XScriptExit">
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="percent" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EDouble"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="XScriptTrailingStop" eSuperTypes="#//XScriptExit">
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="percent" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EDouble"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="XScriptGainLossExit" eSuperTypes="#//XScriptExit">
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="acount" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EDouble"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="XScriptGainLossPercExit" eSuperTypes="#//XScriptExit">
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="amount" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EDouble"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="XScriptSignalExit" eSuperTypes="#//XScriptExit">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="signal" eType="#//SignalType"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="ScriptTree" eSuperTypes="#//CoreAbstractElement">
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="name" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
