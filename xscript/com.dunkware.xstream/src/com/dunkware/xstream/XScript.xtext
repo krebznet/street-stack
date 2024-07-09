@@ -10,7 +10,7 @@ ScriptElement:
 	CoreAbstractElement;
 
 CoreAbstractElement:
-	VarType | XClassType | SignalType  | ScriptTree | XScriptBot;
+	VarType | XClassType | SignalType  | ScriptTree | TradeBookType;
 
 VarType:
 	"var" name=ID '(' code=INT ',' type=DataType ',' format=FormatType ')' '=' expression=ExpressionType ';';
@@ -422,17 +422,21 @@ XScriptOrderOffset:
 	'offset:' offset=DOUBLE';';
 	
 XScriptOrderTimeout:
-	'timeout:' value=INT timeUnit=("sec" | "min" | "hour")';';
+	{XScriptOrderTimeout}'timeout:' value=INT timeUnit=("sec" | "min" | "hour")';';
 
 
 XScriptBotElement:
 	XScriptTrade;
 
 
-XScriptPolicy:
-	XScriptEntityThrottle   | XScriptEntityLimit |	XScriptWeight | XScriptSide | XScriptActiveEntityLimit | XScriptTradeLimit  |    XScriptWeighted;
+XScriptBookSetup:
+		XScriptEntityThrottle   | XScriptEntityLimit  | XScriptAllocatedCapital | XScriptActiveEntityLimit | XScriptTradeLimit  |    XScriptWeighted;
+	
 
 
+
+XScriptPlaySetup:
+XScriptEntityThrottle   | XScriptEntityLimit |	XScriptWeight | XScriptSide | XScriptActiveEntityLimit | XScriptTradeLimit  |  XScriptAllocatedCapital;
 XScriptAllocatedCapital:
 	{XScriptAllocatedCapital} 'allocatedCapital:' allocated=DOUBLE ';';
 
@@ -443,13 +447,13 @@ XScriptTradeLimit:
 	{XScriptTradeLimit} 'tradeLimit:' tradeLimit=INT ';';
 
 XScriptActiveEntityLimit:
-	{XScriptActiveEntityLimit} 'activeEntityLimit:' activeEntityLimit=INT ';';
+	{XScriptActiveEntityLimit} 'activeTickerLimit:' activeEntityLimit=INT ';';
 
 XScriptEntityLimit:
-	{XScriptEntityLimit} 'entityLimit:' symbolLimit=INT ';';
+	{XScriptEntityLimit} 'tickerLimit:' symbolLimit=INT ';';
 
 XScriptEntityThrottle:
-	{XScriptEntityThrottle} 'entityThrottle:' limit=INT unit=('sec' | 'min' | 'hour') ';';
+	{XScriptEntityThrottle} 'tickerThrottle:' limit=INT unit=('sec' | 'min' | 'hour') ';';
 
 XScriptWeight:
 	{XScriptWeight} 'weight:' weight=INT ';';
@@ -460,15 +464,16 @@ XScriptSide:
 XScriptWeighted:
 	{XScriptWeighted} 'weighted:' weighted=("true" | "false") ';';
 
-XScriptBot:
-	{XScriptBot} 'tradeScript' '(' name=STRING ',' description=STRING ')' '{'
-	'setup' '{'
-		policies+=XScriptPolicy*
+TradeBookType:
+	{TradeBookType} 'playBook' '(' name=STRING ',' group=STRING ')' '{'
+	'policies' '{'
+		policies+=XScriptBookSetup* // Add Playbook
 	'}'
-	 
-	 '{'
+	 'tradePlays' '{'
 		tradePlays+=XScriptTrade*
-	'}'
+	'}'	
+
+	
 '}';
 
 XScriptEntry:
@@ -478,25 +483,26 @@ XScriptSignalEntry:
 	{XScriptSignalEntry} 'signal' '(' name=STRING ',' signal=[SignalType] ')' ';';
 
 XScriptTrade:
-	{XScriptTrade} 'tradeType' '(' name=STRING ')' '{'
-	'setup' '{'
-		policies+=XScriptPolicy*
+	{XScriptTrade}'play' '(' name=STRING ')' '{'
+	'policies' '{'
+		policies+=XScriptPlaySetup*
 	'}'
-	'entryOrder' entryOrder=XScriptOrder
-	'entryTypes' '{'
+	'entryTriggers' '{'
 		entryTypes+=XScriptEntry*
 	'}'
-	'exitOrder' exitOrder=XScriptOrder
-	'exitTypes' '{'
+	'entryOrder' entryOrder=XScriptOrder
+	
+	'exitTriggers' '{'
 		exits+=XScriptExit*
-	'}';
-
+	'}'
+	'exitOrder' exitOrder=XScriptOrder
+  '}';
 XScriptExit:
 	XScriptExitTimer | XScriptExitTime | XScriptStopLoss | XScriptTrailingStop | XScriptGainLossExit |
 	 XScriptSignalExit | XScriptGainLossPercExit;
 
 XScriptExitTimer:
-	{XScriptExitTimer} 'timer' '(' name=STRING ',' hours=INT ',' minutes=INT ',' seconds=INT ')' ';';
+	{XScriptExitTimer} 'timer' '(' name=STRING ',' hours=INT ':' minutes=INT ':' seconds=INT ')' ';';
 
 XScriptExitTime:
 	{XScriptExitTime} 'time' '(' name=STRING ',' time=TimeType ')' ';';
