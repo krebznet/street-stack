@@ -57,7 +57,6 @@ public class LoginPanel extends JPanel {
 		gbc_lblNewLabel_2.gridx = 5;
 		gbc_lblNewLabel_2.gridy = 2;
 		add(lblNewLabel_2, gbc_lblNewLabel_2);
-		
 		serverTxt = new JTextField();
 		serverTxt.setForeground(new Color(128, 128, 128));
 		serverTxt.setFont(new Font("Kohinoor Bangla", Font.PLAIN, 12));

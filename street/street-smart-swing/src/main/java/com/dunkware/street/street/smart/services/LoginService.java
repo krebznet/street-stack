@@ -5,6 +5,7 @@ import org.springframework.stereotype.Service;
 import jakarta.annotation.PostConstruct;
 
 @Service
+// spring boot template 
 public class LoginService {
 
 	@PostConstruct
@@ -15,4 +16,6 @@ public class LoginService {
 	public String auth()	 { 
 		return "yes";
 	}
+	
+	// method getTradescri
 }
