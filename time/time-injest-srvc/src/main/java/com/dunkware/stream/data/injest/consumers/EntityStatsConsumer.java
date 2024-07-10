@@ -20,7 +20,7 @@ import com.dunkware.stream.data.cassy.loaders.SessionEntityStatLoader;
 import com.dunkware.stream.data.injest.config.InjestConfig;
 import com.dunkware.tiime.data.util.constants.StreamDataTopics;
 import com.dunkware.tiime.data.util.helpers.EntityStatModelHelper;
-import com.dunkware.time.data.codec.stat.EntityStatsModelCodec;
+import com.dunkware.time.data.codec.stat.EntityStatsCodec;
 import com.dunkware.time.data.model.entity.EntityStatModel;
 import com.dunkware.time.data.model.entity.EntityStatsModel;
 import com.dunkware.utils.kafka.byteconsumer.KafkaByteConsumer;
@@ -106,7 +106,7 @@ public class EntityStatsConsumer implements KafkaByteHandler {
     @Override
     public void record(ConsumerRecord<String, byte[]> record) {
         try {
-           kafkaQueue.add(EntityStatsModelCodec.decode(record.value()));
+           kafkaQueue.add(EntityStatsCodec.decode(record.value()));
         } catch(Exception e) {
             logger.error("Exception Decoding EntityDateStats " + e.toString());
         }

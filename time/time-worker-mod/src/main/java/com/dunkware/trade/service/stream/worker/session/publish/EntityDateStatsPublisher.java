@@ -10,7 +10,7 @@ import org.slf4j.Marker;
 import org.slf4j.MarkerFactory;
 
 import com.dunkware.tiime.data.util.constants.StreamDataTopics;
-import com.dunkware.time.data.codec.stat.EntityStatsModelCodec;
+import com.dunkware.time.data.codec.stat.EntityStatsCodec;
 import com.dunkware.time.data.model.entity.EntityStatsModel;
 import com.dunkware.trade.service.stream.worker.session.StreamWorker;
 import com.dunkware.trade.service.stream.worker.session.StreamWorkerExtension;
@@ -60,7 +60,7 @@ public class EntityDateStatsPublisher implements StreamWorkerExtension {
                 }
                 for(EntityStatsModel stat : stats) {
                     try {
-                        byte[] bytes = EntityStatsModelCodec.encode(stat);
+                        byte[] bytes = EntityStatsCodec.encode(stat);
                         ProducerRecord<Integer,byte[]> record = new ProducerRecord<Integer,byte[]>(StreamDataTopics.CaptureEntityStats,bytes);
                         producer.send(record);
                     } catch (Exception e) {

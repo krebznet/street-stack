@@ -4,7 +4,7 @@ import java.io.IOException;
 import java.time.LocalDate;
 import java.time.LocalTime;
 
-import com.dunkware.time.data.codec.stat.EntityStatsModelCodec;
+import com.dunkware.time.data.codec.stat.EntityStatsCodec;
 import com.dunkware.time.data.model.entity.EntityStatsModel;
 import com.dunkware.time.data.model.entity.EntityVarStatsModel;
 
@@ -30,9 +30,9 @@ public class EntityDateStatsCodecTest extends TestCase {
 		stats1.getTimes().put(1, LocalTime.of(9, 30,1));
 		stats.getVarstats().put(1, stats1);
 		
-		byte[] bytes = EntityStatsModelCodec.encode(stats);
+		byte[] bytes = EntityStatsCodec.encode(stats);
 		
-		EntityStatsModel decoded = EntityStatsModelCodec.decode(bytes);
+		EntityStatsModel decoded = EntityStatsCodec.decode(bytes);
 		
 		assertEquals(stats.getStream(), decoded.getStream());
 		assertEquals(decoded.getEntity(),stats.getEntity());

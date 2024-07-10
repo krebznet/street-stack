@@ -23,6 +23,7 @@ public class EntitySignalPublisher implements StreamWorkerExtension, XSignalList
 	
 	private Producer<Integer, byte[]> producer;
 	
+	private String topicName; 
 	
 	@Override
 	public void init(StreamWorker worker) throws Exception {
@@ -32,6 +33,7 @@ public class EntitySignalPublisher implements StreamWorkerExtension, XSignalList
 	@Override
 	public void start() throws Exception {
 		this.stream = worker.getStream();
+		
 		stream.getXSignals().addSignalListener(this);
 		 
          try {
@@ -57,6 +59,8 @@ public class EntitySignalPublisher implements StreamWorkerExtension, XSignalList
 		sig.setId(signal.getType().getId());
 		sig.setSignalIdent(signal.getType().getName());
 		sig.setTimestamp(signal.getTimeStamp());
+		// we want variables so this is the first thing publish to kafka encoded 
+		// 
 		sig.setStream(0);
 		try {
 			//byte[] bytes = 

@@ -1,5 +1,6 @@
 package com.dunkware.time.script.model.proto;
 
+import com.dunkware.time.script.model.update.ScriptUpdates;
 import com.dunkware.time.script.model.validate.ScriptErrors;
 
 import lombok.AllArgsConstructor;
@@ -13,4 +14,5 @@ public class ScriptDeployRep {
 
 	private boolean error = false; 
 	private ScriptErrors errors; 
+	private ScriptUpdates updates;
 }

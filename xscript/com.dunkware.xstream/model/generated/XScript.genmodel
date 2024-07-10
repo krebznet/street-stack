@@ -5,7 +5,7 @@
     updateClasspath="false" rootExtendsClass="org.eclipse.emf.ecore.impl.MinimalEObjectImpl$Container"
     complianceLevel="11.0" copyrightFields="false" runtimeVersion="2.29">
   <genPackages prefix="XScript" basePackage="com.dunkware.xstream" disposableProviderFactory="true"
-      fileExtensions="xs" ecorePackage="XScript.ecore#/">
+      loadInitialization="true" literalsInterface="false" fileExtensions="xs" ecorePackage="XScript.ecore#/">
     <genEnums typeSafeEnumCompatible="false" ecoreEnum="XScript.ecore#//HistoricalAggFunc">
       <genEnumLiterals ecoreEnumLiteral="XScript.ecore#//HistoricalAggFunc/high"/>
       <genEnumLiterals ecoreEnumLiteral="XScript.ecore#//HistoricalAggFunc/low"/>
@@ -312,7 +312,8 @@
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute XScript.ecore#//XScriptOrderTimeout/timeUnit"/>
     </genClasses>
     <genClasses ecoreClass="XScript.ecore#//XScriptBotElement"/>
-    <genClasses ecoreClass="XScript.ecore#//XScriptPolicy"/>
+    <genClasses ecoreClass="XScript.ecore#//XScriptBookSetup"/>
+    <genClasses ecoreClass="XScript.ecore#//XScriptPlaySetup"/>
     <genClasses ecoreClass="XScript.ecore#//XScriptAllocatedCapital">
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute XScript.ecore#//XScriptAllocatedCapital/allocated"/>
     </genClasses>
@@ -341,11 +342,11 @@
     <genClasses ecoreClass="XScript.ecore#//XScriptWeighted">
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute XScript.ecore#//XScriptWeighted/weighted"/>
     </genClasses>
-    <genClasses ecoreClass="XScript.ecore#//XScriptBot">
-      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute XScript.ecore#//XScriptBot/name"/>
-      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute XScript.ecore#//XScriptBot/description"/>
-      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference XScript.ecore#//XScriptBot/policies"/>
-      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference XScript.ecore#//XScriptBot/tradePlays"/>
+    <genClasses ecoreClass="XScript.ecore#//TradeBookType">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute XScript.ecore#//TradeBookType/name"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute XScript.ecore#//TradeBookType/group"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference XScript.ecore#//TradeBookType/policies"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference XScript.ecore#//TradeBookType/tradePlays"/>
     </genClasses>
     <genClasses ecoreClass="XScript.ecore#//XScriptEntry"/>
     <genClasses ecoreClass="XScript.ecore#//XScriptSignalEntry">
@@ -355,10 +356,10 @@
     <genClasses ecoreClass="XScript.ecore#//XScriptTrade">
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute XScript.ecore#//XScriptTrade/name"/>
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference XScript.ecore#//XScriptTrade/policies"/>
-      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference XScript.ecore#//XScriptTrade/entryOrder"/>
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference XScript.ecore#//XScriptTrade/entryTypes"/>
-      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference XScript.ecore#//XScriptTrade/exitOrder"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference XScript.ecore#//XScriptTrade/entryOrder"/>
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference XScript.ecore#//XScriptTrade/exits"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference XScript.ecore#//XScriptTrade/exitOrder"/>
     </genClasses>
     <genClasses ecoreClass="XScript.ecore#//XScriptExit">
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute XScript.ecore#//XScriptExit/name"/>

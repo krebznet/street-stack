@@ -12,7 +12,7 @@ import com.dunkware.time.data.codec.time.LocalTimeCodec;
 import com.dunkware.time.data.model.entity.EntityStatsModel;
 import com.dunkware.time.data.model.entity.EntityVarStatsModel;
 
-public class EntityStatsModelCodec {
+public class EntityStatsCodec {
 
 	public static byte[] encode(EntityStatsModel input) throws IOException {
 		MessageBufferPacker packer = MessagePack.newDefaultBufferPacker();

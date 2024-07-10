@@ -34,6 +34,12 @@
 	</properties>
 
 	<dependencies>
+		
+		<dependency>
+			<groupId>com.dunkware.street</groupId>
+	<artifactId>street-smart-model</artifactId>
+	<version>1.0.0-SNAPSHOT</version>
+		</dependency>
 
 
 		<dependency>
