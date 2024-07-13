@@ -1,17 +1,15 @@
 package com.dunkware.street.street.smart.ui;
 
+
 import java.awt.BorderLayout;
 import java.awt.Dimension;
 
-import javax.swing.BoxLayout;
-import javax.swing.JButton;
 import javax.swing.JDesktopPane;
 import javax.swing.JFrame;
 import javax.swing.JInternalFrame;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
-import javax.swing.JPanel;
 import javax.swing.LookAndFeel;
 import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
@@ -21,92 +19,80 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.springframework.stereotype.Component;
 
+import com.dunkware.street.stream.model.trade.TradeSet;
 import com.dunkware.street.street.smart.services.LoginService;
 import com.dunkware.street.street.smart.ui.login.LoginDialog;
+import com.dunkware.street.street.smart.ui.resourcetree.ResourceTreeGen;
+import com.dunkware.street.street.smart.ui.viewers.EventLogger;
+import com.dunkware.street.street.smart.ui.viewers.TradeViewer;
 import com.formdev.flatlaf.FlatDarkLaf;
 import com.formdev.flatlaf.FlatLightLaf;
 
 @Component
 public class MainFrame extends JFrame {
-	
-	
-	
-	@Autowired
-	private LoginService loginService;
-	
-	@Autowired
-	private ApplicationContext ac; 
-	
+    
+    @Autowired
+    private LoginService loginService;
+    
+    @Autowired
+    private ApplicationContext ac; 
+    
     private JDesktopPane desktopPane;
-    private JPanel sidePanel;
+    private ResourceTreeGen resourceTreeGen;
     
     private LoginDialog loginDlg;
 
     public MainFrame(LoginService service, ApplicationContext ac) {
-    	this.loginService = service;
-    	this.ac = ac;
-    	loginService.auth();
-    	System.out.println(loginService.auth());
-    	LoginDialog dlg = new LoginDialog(this,ac);
-    	dlg.setVisible(true);
-    	
-      
+        this.loginService = service;
+        this.ac = ac;
+        loginService.auth();
+        System.out.println(loginService.auth());
+        LoginDialog dlg = new LoginDialog(this, ac);
+        dlg.setVisible(true);
+        
+        initComponents();
     }
     
     public void initComponents() { 
-    	
-    
-    	 setTitle("Street Smart");
-         setSize(1200, 800);
-         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-         setLayout(new BorderLayout());
+        setTitle("Street Smart");
+        setSize(1200, 800);
+        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        setLayout(new BorderLayout());
 
-         // Menu bar for theming
-         JMenuBar menuBar = new JMenuBar();
-         JMenu viewMenu = new JMenu("View");
-         JMenuItem lightThemeItem = new JMenuItem("Light Theme");
-         lightThemeItem.addActionListener(e -> setTheme(new FlatLightLaf()));
-         viewMenu.add(lightThemeItem);
+        // Menu bar for theming
+        JMenuBar menuBar = new JMenuBar();
+        JMenu viewMenu = new JMenu("View");
+        JMenuItem lightThemeItem = new JMenuItem("Light Theme");
+        lightThemeItem.addActionListener(e -> setTheme(new FlatLightLaf()));
+        viewMenu.add(lightThemeItem);
 
-         JMenuItem darkThemeItem = new JMenuItem("Dark Theme");
-         darkThemeItem.addActionListener(e -> setTheme(new FlatDarkLaf()));
-         viewMenu.add(darkThemeItem);
+        JMenuItem darkThemeItem = new JMenuItem("Dark Theme");
+        darkThemeItem.addActionListener(e -> setTheme(new FlatDarkLaf()));
+        viewMenu.add(darkThemeItem);
 
-         menuBar.add(viewMenu);
-         setJMenuBar(menuBar);
+        menuBar.add(viewMenu);
+        setJMenuBar(menuBar);
 
-         // Sidebar for navigation
-         sidePanel = new JPanel();
-         sidePanel.setLayout(new BoxLayout(sidePanel, BoxLayout.Y_AXIS));
-         sidePanel.setPreferredSize(new Dimension(200, getHeight()));
+        // Sidebar for navigation
+        resourceTreeGen = new ResourceTreeGen();
+        resourceTreeGen.setPreferredSize(new Dimension(300, getHeight()));
 
-         JButton tradeBotButton = new JButton("Trade Bots");
-         tradeBotButton.addActionListener(e -> showTradeBots());
-         sidePanel.add(tradeBotButton);
+        add(resourceTreeGen, BorderLayout.WEST);
 
-         JButton marketScannerButton = new JButton("Market Scanners");
-         marketScannerButton.addActionListener(e -> showMarketScanners());
-         sidePanel.add(marketScannerButton);
-
-         // Button to tile internal frames
-         JButton tileButton = new JButton("Tile Windows");
-         tileButton.addActionListener(e -> tileInternalFrames());
-         sidePanel.add(tileButton);
-
-         add(sidePanel, BorderLayout.WEST);
-
-         // Desktop pane for internal frames
-         desktopPane = new JDesktopPane();
-         add(desktopPane, BorderLayout.CENTER);
-
-         // Initialize with trade bots view
-         showTradeBots();
+        // Desktop pane for internal frames
+        desktopPane = new JDesktopPane();
+        add(desktopPane, BorderLayout.CENTER);
+        this.setVisible(false);
+        // Initialize with trade bots view
+        showTradeBots();
     }
     
-    
-    private void launchLoginDialog() { 
-    	
+    public void addTradeViewer(TradeSet tradeSet, EventLogger eventLogger) {
+        TradeViewer viewer = new TradeViewer(tradeSet, eventLogger);
+        desktopPane.add(viewer);
+        viewer.setVisible(true);
     }
+
 
     private void setTheme(LookAndFeel laf) {
         try {
@@ -119,7 +105,7 @@ public class MainFrame extends JFrame {
 
     private void showTradeBots() {
         desktopPane.removeAll();
-       // mockTradeViewers();
+        // mockTradeViewers();
         desktopPane.revalidate();
         desktopPane.repaint();
     }
@@ -127,14 +113,10 @@ public class MainFrame extends JFrame {
     private void showMarketScanners() {
         desktopPane.removeAll();
         // Add mock market scanner viewers
-       // mockMarketScanners();
+        // mockMarketScanners();
         desktopPane.revalidate();
         desktopPane.repaint();
     }
-
-  
-
-
 
     private void tileInternalFrames() {
         JInternalFrame[] frames = desktopPane.getAllFrames();
@@ -157,14 +139,4 @@ public class MainFrame extends JFrame {
             frame.revalidate();
         }
     }
-  
-} // TradeSession
-		// TradeSessionViewer
-
-
-
-
-
-
-
-
+}

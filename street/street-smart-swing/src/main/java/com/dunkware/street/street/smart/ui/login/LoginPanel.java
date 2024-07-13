@@ -28,9 +28,9 @@ public class LoginPanel extends JPanel {
 	private JPasswordField passwordTxt;
 	private JButton btnNewButton;
 
-	
 	private MainFrame mainFrame;
-	private LoginDialog dlg; 
+	private LoginDialog dlg;
+
 	/**
 	 * 
 	 * Create the panel.
@@ -39,14 +39,16 @@ public class LoginPanel extends JPanel {
 		setOpaque(false);
 		this.mainFrame = mainFrame;
 		this.dlg = dlg;
-		//setBackground(new Color(0, 128, 0));
+		// setBackground(new Color(0, 128, 0));
 		GridBagLayout gridBagLayout = new GridBagLayout();
-		gridBagLayout.columnWidths = new int[] {20, 20, 30, 30, 30, 30, 0, 30, 0, 30, 30, 30, 30, 0, 0, 30, 30, 30, 50, 0, 0, 0};
-		gridBagLayout.rowHeights = new int[]{100, 0, 0, 0, 0, 0, 0, 0, 0, 0};
-		gridBagLayout.columnWeights = new double[]{1.0, 0.0, 1.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 1.0, 1.0, 0.0, 0.0, 1.0, Double.MIN_VALUE};
-		gridBagLayout.rowWeights = new double[]{0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, Double.MIN_VALUE};
+		gridBagLayout.columnWidths = new int[] { 20, 20, 30, 30, 30, 30, 0, 30, 0, 30, 30, 30, 30, 0, 0, 30, 30, 30, 50,
+				0, 0, 0 };
+		gridBagLayout.rowHeights = new int[] { 100, 0, 0, 0, 0, 0, 0, 0, 0, 0 };
+		gridBagLayout.columnWeights = new double[] { 1.0, 0.0, 1.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 0.0,
+				0.0, 0.0, 0.0, 1.0, 1.0, 0.0, 0.0, 1.0, Double.MIN_VALUE };
+		gridBagLayout.rowWeights = new double[] { 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, Double.MIN_VALUE };
 		setLayout(gridBagLayout);
-		
+
 		JLabel lblNewLabel_2 = new JLabel("Street URL. ");
 		lblNewLabel_2.setFont(new Font("Lucida Grande", Font.PLAIN, 12));
 		lblNewLabel_2.setForeground(new Color(172, 196, 206));
@@ -71,7 +73,7 @@ public class LoginPanel extends JPanel {
 		gbc_serverTxt.gridy = 2;
 		add(serverTxt, gbc_serverTxt);
 		serverTxt.setColumns(10);
-		
+
 		JLabel lblNewLabel_1 = new JLabel("Street User. ");
 		lblNewLabel_1.setFont(new Font("Lucida Grande", Font.PLAIN, 12));
 		lblNewLabel_1.setForeground(new Color(172, 196, 206));
@@ -82,7 +84,7 @@ public class LoginPanel extends JPanel {
 		gbc_lblNewLabel_1.gridx = 5;
 		gbc_lblNewLabel_1.gridy = 3;
 		add(lblNewLabel_1, gbc_lblNewLabel_1);
-		
+
 		userTxt = new JTextField();
 		userTxt.setForeground(new Color(128, 128, 128));
 		userTxt.setFont(UIManager.getFont("List.font"));
@@ -97,7 +99,7 @@ public class LoginPanel extends JPanel {
 		gbc_userTxt.gridy = 3;
 		add(userTxt, gbc_userTxt);
 		userTxt.setColumns(10);
-		
+
 		JLabel lblNewLabel = new JLabel("Street Pass. ");
 		lblNewLabel.setFont(new Font("Lucida Grande", Font.PLAIN, 12));
 		lblNewLabel.setForeground(new Color(172, 196, 206));
@@ -109,7 +111,7 @@ public class LoginPanel extends JPanel {
 		gbc_lblNewLabel.gridy = 4;
 		add(lblNewLabel, gbc_lblNewLabel);
 		repaint();
-		
+
 		passwordTxt = new JPasswordField();
 		passwordTxt.setForeground(new Color(128, 128, 128));
 		passwordTxt.setFont(UIManager.getFont("List.font"));
@@ -122,7 +124,7 @@ public class LoginPanel extends JPanel {
 		gbc_passwordTxt.gridx = 7;
 		gbc_passwordTxt.gridy = 4;
 		add(passwordTxt, gbc_passwordTxt);
-		
+
 		btnNewButton = new JButton("LOGIN");
 		btnNewButton.setFont(new Font("Lucida Grande", Font.PLAIN, 12));
 		btnNewButton.setBackground(new Color(172, 196, 206));
@@ -143,26 +145,24 @@ public class LoginPanel extends JPanel {
 		add(btnNewButton, gbc_btnNewButton);
 
 	}
-	
-	 private void authenticate() {
-	        String server = serverTxt.getText();
-	        String user = userTxt.getText();
-	        String password = new String(passwordTxt.getPassword());
 
-	        // Replace with actual authentication service call
-	        //if (authenticateWithServer(server, user, password)) {
-	           // X); // Close the dialog on successful authentication
-dlg.dispose();
+	private void authenticate() {
+		String server = serverTxt.getText();
+		String user = userTxt.getText();
+		String password = new String(passwordTxt.getPassword());
+
+		// Replace with actual authentication service call
+		// if (authenticateWithServer(server, user, password)) {
+		// X); // Close the dialog on successful authentication
+		dlg.dispose();
 //mainFrame.setVisible(true);
 
-	            // Show the main application frame
-	            SwingUtilities.invokeLater(() -> {
-	              mainFrame.initComponents();
-	              mainFrame.setVisible(true);
-	            });
-	       
-	    
-	 }
+		// Show the main application frame
+		SwingUtilities.invokeLater(() -> {
+			mainFrame.initComponents();
+			mainFrame.setVisible(true);
+		});
 
+	}
 
 }
