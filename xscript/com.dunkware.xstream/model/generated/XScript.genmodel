@@ -53,6 +53,7 @@
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute XScript.ecore#//VarType/code"/>
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute XScript.ecore#//VarType/type"/>
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute XScript.ecore#//VarType/format"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute XScript.ecore#//VarType/label"/>
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference XScript.ecore#//VarType/expression"/>
     </genClasses>
     <genClasses ecoreClass="XScript.ecore#//ExpressionType"/>
@@ -342,24 +343,19 @@
     <genClasses ecoreClass="XScript.ecore#//XScriptWeighted">
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute XScript.ecore#//XScriptWeighted/weighted"/>
     </genClasses>
-    <genClasses ecoreClass="XScript.ecore#//TradeBookType">
-      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute XScript.ecore#//TradeBookType/name"/>
-      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute XScript.ecore#//TradeBookType/group"/>
-      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference XScript.ecore#//TradeBookType/policies"/>
-      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference XScript.ecore#//TradeBookType/tradePlays"/>
-    </genClasses>
+    <genClasses ecoreClass="XScript.ecore#//XScriptBot"/>
     <genClasses ecoreClass="XScript.ecore#//XScriptEntry"/>
     <genClasses ecoreClass="XScript.ecore#//XScriptSignalEntry">
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute XScript.ecore#//XScriptSignalEntry/name"/>
       <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference XScript.ecore#//XScriptSignalEntry/signal"/>
     </genClasses>
-    <genClasses ecoreClass="XScript.ecore#//XScriptTrade">
-      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute XScript.ecore#//XScriptTrade/name"/>
-      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference XScript.ecore#//XScriptTrade/policies"/>
-      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference XScript.ecore#//XScriptTrade/entryTypes"/>
-      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference XScript.ecore#//XScriptTrade/entryOrder"/>
-      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference XScript.ecore#//XScriptTrade/exits"/>
-      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference XScript.ecore#//XScriptTrade/exitOrder"/>
+    <genClasses ecoreClass="XScript.ecore#//XScriptPlay">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute XScript.ecore#//XScriptPlay/name"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference XScript.ecore#//XScriptPlay/policies"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference XScript.ecore#//XScriptPlay/entryTypes"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference XScript.ecore#//XScriptPlay/entryOrder"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference XScript.ecore#//XScriptPlay/exits"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference XScript.ecore#//XScriptPlay/exitOrder"/>
     </genClasses>
     <genClasses ecoreClass="XScript.ecore#//XScriptExit">
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute XScript.ecore#//XScriptExit/name"/>
@@ -517,6 +513,12 @@
     </genClasses>
     <genClasses ecoreClass="XScript.ecore#//XBoolConstantType">
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute XScript.ecore#//XBoolConstantType/value"/>
+    </genClasses>
+    <genClasses ecoreClass="XScript.ecore#//XTradeBotType">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute XScript.ecore#//XTradeBotType/name"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute XScript.ecore#//XTradeBotType/group"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference XScript.ecore#//XTradeBotType/policies"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference XScript.ecore#//XTradeBotType/tradePlays"/>
     </genClasses>
   </genPackages>
 </genmodel:GenModel>

@@ -12,6 +12,7 @@
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="code" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EInt"/>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="type" eType="#//DataType"/>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="format" eType="#//FormatType"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="label" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="expression" eType="#//ExpressionType"
         containment="true"/>
   </eClassifiers>
@@ -390,20 +391,13 @@
   <eClassifiers xsi:type="ecore:EClass" name="XScriptWeighted" eSuperTypes="#//XScriptBookSetup">
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="weighted" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
   </eClassifiers>
-  <eClassifiers xsi:type="ecore:EClass" name="TradeBookType" eSuperTypes="#//CoreAbstractElement">
-    <eStructuralFeatures xsi:type="ecore:EAttribute" name="name" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
-    <eStructuralFeatures xsi:type="ecore:EAttribute" name="group" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
-    <eStructuralFeatures xsi:type="ecore:EReference" name="policies" upperBound="-1"
-        eType="#//XScriptBookSetup" containment="true"/>
-    <eStructuralFeatures xsi:type="ecore:EReference" name="tradePlays" upperBound="-1"
-        eType="#//XScriptTrade" containment="true"/>
-  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="XScriptBot" eSuperTypes="#//CoreAbstractElement"/>
   <eClassifiers xsi:type="ecore:EClass" name="XScriptEntry"/>
   <eClassifiers xsi:type="ecore:EClass" name="XScriptSignalEntry" eSuperTypes="#//XScriptEntry">
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="name" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="signal" eType="#//SignalType"/>
   </eClassifiers>
-  <eClassifiers xsi:type="ecore:EClass" name="XScriptTrade" eSuperTypes="#//XScriptBotElement">
+  <eClassifiers xsi:type="ecore:EClass" name="XScriptPlay" eSuperTypes="#//XScriptBotElement">
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="name" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="policies" upperBound="-1"
         eType="#//XScriptPlaySetup" containment="true"/>
@@ -610,5 +604,13 @@
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="XBoolConstantType" eSuperTypes="#//XExpressionType">
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="value" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="XTradeBotType" eSuperTypes="#//XScriptBot">
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="name" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="group" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="policies" upperBound="-1"
+        eType="#//XScriptBookSetup" containment="true"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="tradePlays" upperBound="-1"
+        eType="#//XScriptPlay" containment="true"/>
   </eClassifiers>
 </ecore:EPackage>
