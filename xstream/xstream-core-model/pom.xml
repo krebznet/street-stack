@@ -12,6 +12,11 @@
 		<relativePath>../dunkware-maven-parent/pom.xml</relativePath>
 
 	</parent>
+	
+	<properties>
+		
+			<lombok.version>1.18.20</lombok.version>
+	</properties>
 	<groupId>com.dunkware.xstream</groupId>
 	<artifactId>xstream-core-model</artifactId>
 	<version>1.0.0-SNAPSHOT</version>
@@ -37,6 +42,16 @@
 			<artifactId>msgpack</artifactId>
 			<version>0.6.12</version>
 		</dependency>
+		
+		<dependency>
+	
+		
+			<groupId>org.projectlombok</groupId>
+			<artifactId>lombok</artifactId>
+			<optional>true</optional>
+			<version>${lombok.version}</version>
+		
+</dependency>
 
 		<dependency>
 			<groupId>com.dunkware.utils</groupId>
