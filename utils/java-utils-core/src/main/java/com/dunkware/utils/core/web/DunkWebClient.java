@@ -15,8 +15,15 @@ import org.apache.http.impl.client.BasicCredentialsProvider;
 import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClients;
 import org.apache.http.util.EntityUtils;
-
+//TODO: AVINASHANV-1 - DunkWebClient 
+/**
+ * This was chat gbt generated its simply a component that lets you make post and get calls 
+ * that is json centric with basic auth, the component does not do the json serialization 
+ * or deserialization for us, we do that ourselves. this is used in some other places 
+ */
 public class DunkWebClient {
+	
+	
 	
 	
 	public static DunkWebClient newInstance(String baseURL, String username, String password) { 
