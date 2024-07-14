@@ -8,10 +8,8 @@ import java.util.concurrent.ConcurrentHashMap;
 public class EntitySignalModel {
 	
 	private int stream; 
-	private int id;
+	private int signal;
 	private int entity;
-	private String entityIdent; 
-	private String signalIdent; 
 	private Map<Integer,Number> vars = new ConcurrentHashMap<Integer,Number>();
 	private LocalDateTime timestamp;
 	
@@ -25,15 +23,7 @@ public class EntitySignalModel {
 	public void setStream(int stream) {
 		this.stream = stream;
 	}
-	public int getId() {
-		return id;
-	}
-	public void setId(int id) {
-		this.id = id;
-	}
-	public int getEntity() {
-		return entity;
-	}
+	
 	public void setEntity(int entity) {
 		this.entity = entity;
 	}
@@ -50,25 +40,22 @@ public class EntitySignalModel {
 		this.timestamp = timestamp;
 	}
 
-	public String getEntityIdent() {
-		return entityIdent;
+	public int getSignal() {
+		return signal;
 	}
 
-	public void setEntityIdent(String entityIdent) {
-		this.entityIdent = entityIdent;
+	public void setSignal(int signal) {
+		this.signal = signal;
 	}
 
-	public String getSignalIdent() {
-		return signalIdent;
+	public int getEntity() {
+		return entity;
 	}
 
-	public void setSignalIdent(String signalIdent) {
-		this.signalIdent = signalIdent;
-	} 
 	
 	
 	
 	
-	
+
 
 }
