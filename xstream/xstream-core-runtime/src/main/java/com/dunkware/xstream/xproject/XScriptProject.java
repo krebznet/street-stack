@@ -25,7 +25,7 @@ import com.google.inject.Injector;
 
 public class XScriptProject {
 	
-	private boolean isSetup = false;
+	public static boolean isSetup = false;
 
 	private List<VarType> streamVars = new ArrayList<VarType>();
 	private List<XScript> scripts = new ArrayList<XScript>();
