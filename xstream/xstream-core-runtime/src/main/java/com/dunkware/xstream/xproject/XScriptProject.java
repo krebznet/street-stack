@@ -18,6 +18,7 @@ import com.dunkware.xstream.xScript.VarType;
 import com.dunkware.xstream.xScript.XClassType;
 import com.dunkware.xstream.xScript.XScript;
 import com.dunkware.xstream.xScript.XScriptPackage;
+import com.dunkware.xstream.xScript.XTradeBotType;
 import com.dunkware.xstream.xproject.model.XScriptBundle;
 import com.dunkware.xstream.xproject.model.XScriptFile;
 import com.google.inject.Injector;
@@ -33,8 +34,11 @@ public class XScriptProject {
 	private List<Integer> streamVarIds = new ArrayList<Integer>();
 	private List<Integer> streamSignalIds = new ArrayList<Integer>();
 	private List<SignalType> streamSignals = new ArrayList<SignalType>();
+	private List<XTradeBotType> streamBots = new ArrayList<XTradeBotType>();
 	
+	private XScriptBundle bundle;
 	public XScriptProject(XScriptBundle bundle) throws XScriptException {
+		this.bundle = bundle;
 		if(!isSetup) { 
 			XScriptStandaloneSetup.doSetup();
 			isSetup = true;
@@ -68,6 +72,7 @@ public class XScriptProject {
 			classes.addAll(XScriptHelper.getClasses(xScript));
 			signals.addAll(XScriptHelper.getSignals(xScript));
 			signals.addAll(XScriptHelper.getSignals(xScript));
+			streamBots.addAll(XScriptHelper.getStreamBots(xScript));
 		}
 		for (VarType varType : streamVars) {
 			streamVarIds.add(varType.getCode());
@@ -77,6 +82,24 @@ public class XScriptProject {
 		}
 		
 		
+		
+	}
+	
+	public double getVersion() { 
+		return bundle.getVersion();
+	}
+	
+	public List<XTradeBotType> getStreamBots() { 
+		return streamBots;
+	}
+	
+	public XTradeBotType getStreamBot(int id) throws Exception{ 
+		for (XTradeBotType bo : streamBots) {
+			if(bo.getId() == id) { 
+				return bo;
+			}
+		}
+		throw new Exception("Stream Bot id " + id + " does not exist");
 	}
 	
 	@Transient
@@ -117,22 +140,5 @@ public class XScriptProject {
 		return streamSignalIds;
 	}
 	
-	public List<VarType> getNewVariables(XScriptProject project) { 
-		List<VarType> newVars = new ArrayList<VarType>();
-		List<VarType> oldVars = new ArrayList<VarType>();
-		List<SignalType> newSignals = new ArrayList<SignalType>();
-		List<SignalType> oldSignals = new ArrayList<SignalType>();
-		//List<BotType> newBots = new Array
-		for (VarType vtype : project.getStreamVars()) {
-			
-			if(streamVarIds.contains(vtype.getCode()) == false) {
-				newVars.add(vtype);
-			}
-			
-		}
-
-		return null;
-		
-	}
 }
 

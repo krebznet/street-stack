@@ -12,7 +12,9 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class XScriptModel {
 	
+	
 	private String name;
+	private String type;
 	private String version;
 	private List<XScriptModelVariable> variables = new ArrayList<XScriptModelVariable>();
 	private List<XScriptModelSignal> signals = new ArrayList<XScriptModelSignal>();

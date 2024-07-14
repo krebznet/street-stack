@@ -7,7 +7,6 @@ import com.dunkware.xstream.model.script.model.XScriptModel;
 import com.dunkware.xstream.model.script.model.XScriptModelBot;
 import com.dunkware.xstream.model.script.model.XScriptModelSignal;
 import com.dunkware.xstream.model.script.model.XScriptModelVariable;
-import com.dunkware.xstream.model.util.XScriptModelFormatter;
 
 public class XScriptModelCopier {
 
@@ -21,18 +20,18 @@ public class XScriptModelCopier {
                 .collect(Collectors.toList());
 
         List<XScriptModelBot> copiedBots = original.getBots().stream()
-                .map(bot -> new XScriptModelBot(bot.getName(), bot.getGroup(), bot.getVersion()))
+                .map(bot -> new XScriptModelBot(bot.getId(), bot.getVersion(), bot.getName(), bot.getLabel(), bot.getGroup(), bot.getDescription()))
                 .collect(Collectors.toList());
 
-        return new XScriptModel(original.getName(), original.getVersion(), copiedVariables, copiedSignals, copiedBots);
+        return new XScriptModel(original.getName(), original.getType(),original.getVersion(), copiedVariables, copiedSignals, copiedBots);
     }
 
     public static void main(String[] args) {
         // Example usage
-        XScriptModel original = new XScriptModel("ExampleScript", "1.0.0", 
+        XScriptModel original = new XScriptModel("ExampleScript", "1.0.0", "example",
                 List.of(new XScriptModelVariable("1.0.0", 1, "Variable1", "Label1", "Group1", "Format1")),
                 List.of(new XScriptModelSignal(1, "Signal1", "Label1", "Group1", "1.0.0")),
-                List.of(new XScriptModelBot("Bot1", "Group1", "1.0.0")));
+                List.of(new XScriptModelBot(1, "3.3.3", "name", "label", "group", "dec")));
 
         XScriptModel copied = copy(original);
 

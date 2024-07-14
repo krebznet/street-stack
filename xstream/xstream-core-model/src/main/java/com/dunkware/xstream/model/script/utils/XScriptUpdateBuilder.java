@@ -7,77 +7,79 @@ import com.dunkware.xstream.model.script.model.XScriptModelBot;
 import com.dunkware.xstream.model.script.model.XScriptModelSignal;
 import com.dunkware.xstream.model.script.model.XScriptModelVariable;
 
-public class XScriptModelUpdater {
+public class XScriptUpdateBuilder {
     private XScriptModel scriptModel;
 
-    public XScriptModelUpdater(XScriptModel scriptModel) {
+    public XScriptUpdateBuilder(XScriptModel scriptModel) {
         this.scriptModel = scriptModel;
     }
+    
 
-    public XScriptModelUpdater insertVariable(int id, String name, String label, String group, String format) {
+    public XScriptUpdateBuilder insertVariable(int id, String name, String label, String group, String format) {
         scriptModel.getVariables().add(new XScriptModelVariable("", id, name, label, group, format));
         return this;
     }
 
-    public XScriptModelUpdater insertSignal(int id, String name, String label, String group) {
+    public XScriptUpdateBuilder insertSignal(int id, String name, String label, String group) {
         scriptModel.getSignals().add(new XScriptModelSignal(id, name, label, group, ""));
         return this;
     }
+    
 
-    public XScriptModelUpdater insertBot(int id, String name, String group) {
-        scriptModel.getBots().add(new XScriptModelBot(name, group, ""));
+    public XScriptUpdateBuilder insertBot(int id,String version, String name, String label, String group, String description) {
+        scriptModel.getBots().add(new XScriptModelBot(id,version, name, label, group,description));
         return this;
     }
 
-    public XScriptModelUpdater deleteVariable(int varId) {
+    public XScriptUpdateBuilder deleteVariable(int varId) {
         scriptModel.getVariables().removeIf(var -> var.getId() == varId);
         return this;
     }
 
-    public XScriptModelUpdater deleteVariableByName(String name) {
+    public XScriptUpdateBuilder deleteVariableByName(String name) {
         scriptModel.getVariables().removeIf(var -> var.getName().equals(name));
         return this;
     }
 
-    public XScriptModelUpdater deleteSignal(int id) {
+    public XScriptUpdateBuilder deleteSignal(int id) {
         scriptModel.getSignals().removeIf(sig -> sig.getId() == id);
         return this;
     }
 
-    public XScriptModelUpdater deleteSignalByName(String name) {
+    public XScriptUpdateBuilder deleteSignalByName(String name) {
         scriptModel.getSignals().removeIf(sig -> sig.getName().equals(name));
         return this;
     }
 
-    public XScriptModelUpdater deleteBot(int id) {
+    public XScriptUpdateBuilder deleteBot(int id) {
         scriptModel.getBots().removeIf(bot -> bot.getName().equals(String.valueOf(id)));
         return this;
     }
 
-    public XScriptModelUpdater deleteBotByName(String name) {
+    public XScriptUpdateBuilder deleteBotByName(String name) {
         scriptModel.getBots().removeIf(bot -> bot.getName().equals(name));
         return this;
     }
 
-    public XScriptModelUpdater updateVariableLabel(int id, String label) {
+    public XScriptUpdateBuilder updateVariableLabel(int id, String label) {
         Optional<XScriptModelVariable> variable = scriptModel.getVariables().stream().filter(var -> var.getId() == id).findFirst();
         variable.ifPresent(var -> var.setLabel(label));
         return this;
     }
 
-    public XScriptModelUpdater updateVariableGroup(int id, String group) {
+    public XScriptUpdateBuilder updateVariableGroup(int id, String group) {
         Optional<XScriptModelVariable> variable = scriptModel.getVariables().stream().filter(var -> var.getId() == id).findFirst();
         variable.ifPresent(var -> var.setGroup(group));
         return this;
     }
 
-    public XScriptModelUpdater updateSignalLabel(int id, String label) {
+    public XScriptUpdateBuilder updateSignalLabel(int id, String label) {
         Optional<XScriptModelSignal> signal = scriptModel.getSignals().stream().filter(sig -> sig.getId() == id).findFirst();
         signal.ifPresent(sig -> sig.setLabel(label));
         return this;
     }
 
-    public XScriptModelUpdater updateSignalGroup(int id, String group) {
+    public XScriptUpdateBuilder updateSignalGroup(int id, String group) {
         Optional<XScriptModelSignal> signal = scriptModel.getSignals().stream().filter(sig -> sig.getId() == id).findFirst();
         signal.ifPresent(sig -> sig.setGroup(group));
         return this;
@@ -89,12 +91,12 @@ public class XScriptModelUpdater {
 
     public static void main(String[] args) {
         // Example usage
-        XScriptModel scriptModel = new XScriptModel("ExampleScript", "1.0.0", new ArrayList<>(), new ArrayList<>(), new ArrayList<>());
+        XScriptModel scriptModel = new XScriptModel("ExampleScript","type", "1.0.0", new ArrayList<>(), new ArrayList<>(), new ArrayList<>());
 
-        XScriptModelUpdater updater = new XScriptModelUpdater(scriptModel)
+        XScriptUpdateBuilder updater = new XScriptUpdateBuilder(scriptModel)
                 .insertVariable(1, "Variable1", "Label1", "Group1", "Format1")
                 .insertSignal(2, "Signal1", "Label2", "Group2")
-                .insertBot(3, "Bot1", "Group3")
+                .insertBot(3, "3.3.3", "Bot1", "label", "d", "Group3")
                 .updateVariableLabel(1, "NewLabel1")
                 .updateVariableGroup(1, "NewGroup1")
                 .deleteSignal(2)

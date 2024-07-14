@@ -1,6 +1,6 @@
 package com.dunkware.xstream.model.script.model;
 
-import com.dunkware.xstream.model.script.update.XScriptUpdate;
+import java.time.LocalDateTime;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -10,7 +10,11 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 public class XScriptRelease {
-    private String version;
+	private String name;
+	private String type;
+	private String version;
+	private XScriptModel model;
     private XScriptUpdate update;
-    private XScriptModel mergedModel;
+    private LocalDateTime timestamp;
+    private String script;
 }

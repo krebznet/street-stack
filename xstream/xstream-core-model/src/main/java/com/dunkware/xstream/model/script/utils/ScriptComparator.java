@@ -9,6 +9,7 @@ import com.dunkware.xstream.model.script.model.XScriptModel;
 import com.dunkware.xstream.model.script.model.XScriptModelBot;
 import com.dunkware.xstream.model.script.model.XScriptModelSignal;
 import com.dunkware.xstream.model.script.model.XScriptModelVariable;
+import com.dunkware.xstream.model.script.model.XScriptUpdate;
 
 public class ScriptComparator {
 
@@ -102,8 +103,8 @@ public class ScriptComparator {
 
     public static void main(String[] args) {
         // Example usage
-        XScriptModel oldScript = new XScriptModel("ExampleScript", "1.3.0", new ArrayList<>(), new ArrayList<>(), new ArrayList<>());
-        XScriptModel newScript = new XScriptModel("ExampleScript", "", new ArrayList<>(), new ArrayList<>(), new ArrayList<>());
+        XScriptModel oldScript = new XScriptModel("ExampleScript", "1.3.0","example", new ArrayList<>(), new ArrayList<>(), new ArrayList<>());
+        XScriptModel newScript = new XScriptModel("ExampleScript", "eampd", "1.3.3", new ArrayList<>(), new ArrayList<>(), new ArrayList<>());
 
         ScriptComparator comparator = new ScriptComparator();
         XScriptUpdate update = comparator.compareScripts(oldScript, newScript);

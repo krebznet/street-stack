@@ -9,7 +9,6 @@ import com.dunkware.xstream.model.script.model.XScriptModel;
 import com.dunkware.xstream.model.script.model.XScriptModelBot;
 import com.dunkware.xstream.model.script.model.XScriptModelSignal;
 import com.dunkware.xstream.model.script.model.XScriptModelVariable;
-import com.dunkware.xstream.model.util.XScriptModelFormatter;
 
 public class XScriptModelGenerator {
     private static final List<String> FORMATS = List.of("PERCENT", "CURRENCY", "TEXT", "NUMBER", "SHORT_NUMBER");
@@ -20,7 +19,7 @@ public class XScriptModelGenerator {
         List<XScriptModelSignal> signals = generateSignals(numSignals, numSignalGroups);
         List<XScriptModelBot> bots = generateBots(numBots, numBotGroups);
 
-        return new XScriptModel(modelName, version, variables, signals, bots);
+        return new XScriptModel(modelName, "Generated", version, variables, signals, bots);
     }
 
     private static List<XScriptModelVariable> generateVariables(int numVariables, int numGroups) {
@@ -54,9 +53,12 @@ public class XScriptModelGenerator {
         List<String> groups = generateGroupNames(numGroups);
         return IntStream.rangeClosed(1, numBots)
                 .mapToObj(i -> new XScriptModelBot(
+                		i,
+                		"3.3.3",
+                        DunkRandom.generateRandomWord(),
                         DunkRandom.generateRandomWord(),
                         getRandomElement(groups),
-                        ""
+                        DunkRandom.generateRandomWord()
                 ))
                 .collect(Collectors.toList());
     }

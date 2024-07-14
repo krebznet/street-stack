@@ -7,14 +7,8 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class XScriptModelBot {
-
-	private int id;
-	private String version;
-	private String name; 
-	private String label;
-	private String group;
-	private String description;
-
+public class XScriptProblem {
 	 
+	private String message;
+
 }

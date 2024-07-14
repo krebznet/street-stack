@@ -2,6 +2,8 @@ package com.dunkware.xstream.model.script.utils;
 
 import java.util.List;
 
+import com.dunkware.xstream.model.script.model.XScriptUpdate;
+
 public class XScriptUpdateFormatter {
 
     public static String format(XScriptUpdate scriptUpdate) {

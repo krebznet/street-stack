@@ -8,6 +8,7 @@ import com.dunkware.xstream.xScript.SignalType;
 import com.dunkware.xstream.xScript.VarType;
 import com.dunkware.xstream.xScript.XClassType;
 import com.dunkware.xstream.xScript.XScript;
+import com.dunkware.xstream.xScript.XTradeBotType;
 
 public class XScriptHelper {
 	
@@ -39,6 +40,18 @@ public class XScriptHelper {
 		for (ScriptElement element : script.getElements()) {
 			if (element instanceof XClassType) {
 				XClassType clazz = (XClassType) element;
+				types.add(clazz);
+			}
+		}
+		
+		return types;
+	}
+	
+	public static List<XTradeBotType> getStreamBots(XScript script) { 
+		List<XTradeBotType> types = new ArrayList<XTradeBotType>();
+		for (ScriptElement element : script.getElements()) {
+			if (element instanceof XTradeBotType) {
+				XTradeBotType clazz = (XTradeBotType) element;
 				types.add(clazz);
 			}
 		}

@@ -1,4 +1,4 @@
-package com.dunkware.xstream.model.util;
+package com.dunkware.xstream.model.script.utils;
 
 import java.util.List;
 
@@ -68,10 +68,10 @@ public class XScriptModelFormatter {
 
     public static void main(String[] args) {
         // Example usage
-        XScriptModel scriptModel = new XScriptModel("ExampleScript", "1.0.0", 
+        XScriptModel scriptModel = new XScriptModel("ExampleScript", "ex000", "1.0.0", 
                 List.of(new XScriptModelVariable("1.0.0", 1, "Variable1", "Label1", "Group1", "Format1")),
                 List.of(new XScriptModelSignal(1, "Signal1", "Label1", "Group1", "1.0.0")),
-                List.of(new XScriptModelBot("Bot1", "Group1", "1.0.0")));
+                List.of(new XScriptModelBot(1,"3.3", "Bot1", "label", "Group1", "1.0.0")));
 
         String formattedOutput = format(scriptModel);
         System.out.println(formattedOutput);

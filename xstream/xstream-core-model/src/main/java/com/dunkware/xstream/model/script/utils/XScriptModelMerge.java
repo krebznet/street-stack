@@ -9,6 +9,7 @@ import com.dunkware.xstream.model.script.model.XScriptModel;
 import com.dunkware.xstream.model.script.model.XScriptModelBot;
 import com.dunkware.xstream.model.script.model.XScriptModelSignal;
 import com.dunkware.xstream.model.script.model.XScriptModelVariable;
+import com.dunkware.xstream.model.script.model.XScriptUpdate;
 
 public class XScriptModelMerge {
 

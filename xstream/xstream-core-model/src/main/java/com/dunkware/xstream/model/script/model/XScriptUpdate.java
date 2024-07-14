@@ -1,4 +1,4 @@
-package com.dunkware.xstream.model.script.utils;
+package com.dunkware.xstream.model.script.model;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
