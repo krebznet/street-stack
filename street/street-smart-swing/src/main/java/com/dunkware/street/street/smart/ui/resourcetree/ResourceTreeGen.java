@@ -100,16 +100,12 @@ public class ResourceTreeGen extends JPanel {
         JToolBar toolBar = new JToolBar();
         toolBar.setFloatable(false);
 
-        JButton expandButton = new JButton( loadIcon("images/icons/obj16/back-16.png"));
-        expandButton.addActionListener(e -> expandAllNodes(tree, true));
-        toolBar.add(expandButton);
-
-        JButton collapseButton = new JButton("", loadIcon("images/icons/obj16/container-16.png"));
+JButton collapseButton = new JButton("", loadIcon("images/icons/obj16/back-16.png"));
         
         collapseButton.addActionListener(e -> expandAllNodes(tree, false));
         toolBar.add(collapseButton);
         
-        JButton tradeBotWizard = new JButton("", loadIcon("images/icons/obj16/bot-16.png"));
+        JButton tradeBotWizard = new JButton("", loadIcon("images/icons/obj16/nuclear-16.png"));
         tradeBotWizard.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -124,9 +120,14 @@ public class ResourceTreeGen extends JPanel {
         });
         
         toolBar.add(tradeBotWizard);
-			
-        toolBar.add(collapseButton);
+		
 
+        JButton expandButton = new JButton( loadIcon("images/icons/obj16/forward-16.png"));
+        expandButton.addActionListener(e -> expandAllNodes(tree, true));
+        toolBar.add(expandButton);
+
+        
+       
 
         JButton mockActionButton = new JButton("", loadIcon("images/icons/obj/chart-16.png"));
         mockActionButton.addActionListener(e -> showMockContextMenu(mockActionButton));

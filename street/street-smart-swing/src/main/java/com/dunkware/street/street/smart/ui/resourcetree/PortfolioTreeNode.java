@@ -15,6 +15,6 @@ public class PortfolioTreeNode extends AbstractTreeNode {
     }
 
     public String getIconPath() {
-        return "images/icons/obj16/nuclear-16.png";
+        return "images/icons/obj16/node2.png";
     }
 }
