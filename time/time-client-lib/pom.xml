@@ -22,6 +22,14 @@
 
 	<dependencies>
 
+		<dependency>
+
+			<groupId>com.dunkware.time</groupId>
+			<artifactId>time-script-lib</artifactId>
+			<version>1.0.0-SNAPSHOT</version>
+
+		</dependency>
+
 		<!-- https://mvnrepository.com/artifact/org.redisson/redisson -->
 		<dependency>
 			<groupId>org.redisson</groupId>

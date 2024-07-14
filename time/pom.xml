@@ -72,6 +72,7 @@
         <module>time-gateway-srvc</module>
         <module>time-cache-lib</module>
         <module>time-cassy-srvc</module>
+        <module>time-csasy-lib</module>
         <module>time-cassy-mod</module>
         <module>time-data-codec</module>
         <module>time-data-model</module>
