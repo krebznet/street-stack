@@ -49,7 +49,7 @@ public class ATProviderStreamer extends ActiveTickStreamListener {
 		if(strSymbol.equals("SPY")) { 
 			logger.info(MarkerFactory.getMarker("SPYQ"),"AP{} AS{} BP{} BS{}", quote.getAskPrice(), quote.getAskSize(), quote.getBidPrice(), quote.getBidSize());
 		}
-		//// time 
+		
 		provider.onQuote(quote);
 		
 	}

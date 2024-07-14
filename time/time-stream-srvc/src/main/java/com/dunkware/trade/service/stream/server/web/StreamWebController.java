@@ -35,7 +35,23 @@ public class StreamWebController {
 	
 	private StreamSessionRepo sessionRepo;
 	
-//	/stream/v1/web/stream/grid/session/nodes?stream=us_equity
+
+	//TODO: AVINASHANV-41 Web Service using data grid stream 
+	/**
+	 * so look what we do. for each type of data stream we have an observable element list 
+	 * on some service that we use to stream for data grid population, could be the nodes
+	 * in the stream session, the orders for a trade or trades all the model objects
+	 * can be observable and putting them in ObservableElementList is a great way to bind
+	 * to ui and send these Data Grid updates. To create a new web service for streaming 
+	 * a data grid of model objects its a 5 minute task, create the web service use GlazedDataGrid
+	 * go into react create new component that defines the grid columns and calls your DshBoardDaaGrid
+	 * component with an end point that invokes a service like this and consumes the Data grid updates
+	 * then your logic looks at the update type and calls the relevent api on data grid, this way we don't
+	 * refresh entire grids of data, but we just update specific rows and that is the story. 
+	 * @param stream
+	 * @return
+	 * @throws Exception
+	 */
 	@GetMapping(path = "/stream/v1/web/stream/grid/session/nodes", produces = MediaType.APPLICATION_STREAM_JSON_VALUE)
 	public Flux<List<DataGridUpdate>> streamSessionNodes(@RequestParam() String stream) throws Exception {
 		ObservableElementList<StreamSessionNodeBean> nodes = webService.getStreamNodes(stream);

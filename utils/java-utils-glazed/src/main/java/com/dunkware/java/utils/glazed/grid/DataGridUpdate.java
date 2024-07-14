@@ -1,5 +1,9 @@
 package com.dunkware.java.utils.glazed.grid;
-
+//TODO: AVINASHANV-38 Data Grid Update
+/**
+ * this is the model feeding your ui data grid
+ * has a generic object an id and a type (update,insert,delete)
+ */
 public class DataGridUpdate {
 	
 	

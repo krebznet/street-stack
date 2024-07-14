@@ -67,6 +67,17 @@ import ca.odell.glazedlists.BasicEventList;
 import ca.odell.glazedlists.GlazedLists;
 import ca.odell.glazedlists.ObservableElementList;
 
+//TODO: AVINASHANV-17 Distributed stream computing
+/**
+ * this is where we have a service that deploys scripts and each stream 
+ * has a schedule. it is impossible to compute all entities in a single 
+ * XScript runtime so what this does is it gets all available worker nodes
+ * and distributes the entities evenly across them and then a sub kafka 
+ * topic is created for each node that sends market data for the entities
+ * its handling. this is how we can compute 8,000 stocks at the same time
+ * 
+ * a stream runs in a stream session. 
+ */
 public class StreamController implements StreetExchange  {
 
 	private Logger logger = org.slf4j.LoggerFactory.getLogger(getClass());

@@ -4,6 +4,10 @@ import java.util.Vector;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
+//TODO: AVINASHANV-37 simple version of a observable
+/**
+ * observers attach and are notified on notifyAll call
+ */
 public abstract class ObservableBean {
 
 	@JsonIgnore

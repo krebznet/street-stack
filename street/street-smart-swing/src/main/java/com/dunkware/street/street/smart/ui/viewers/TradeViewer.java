@@ -12,7 +12,19 @@ import javax.swing.JTable;
 
 import com.dunkware.street.stream.model.trade.TradeContextMetrics;
 import com.dunkware.street.stream.model.trade.TradeSet;
-
+//TODO: AVINASHANV-35 Trade Session/Context UI 
+/**
+ * all i care about is starting a trade bot in the client app and having a UI that views the trade session
+ * this will show open trades, closed trades unrealized gain loss, active capital, event log and its the way
+ * i start debugging and running bots. as i define more tradeBots in script they will show up as options
+ * to run in the client. 
+ * 
+ * THE KEY PART here is that using the event node tree this UI component can be reused on multiple levels
+ * it can be used to view a single trade strategy, then a trade session with a list of trade strategies
+ * that have all trades from all strategies, then an broker account that has all trades from all trade sessions
+ * hopefully you astarting to see it. 
+ *  
+ */
 // TradeViewer Class
 public class TradeViewer extends JInternalFrame {
     private JTabbedPane tabbedPane;

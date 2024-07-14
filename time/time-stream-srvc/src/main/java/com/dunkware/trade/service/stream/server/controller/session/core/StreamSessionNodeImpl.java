@@ -48,6 +48,14 @@ import com.dunkware.utils.core.events.DunkEventNode;
 import com.dunkware.utils.core.stopwatch.StopWatch;
 import com.dunkware.xstream.xproject.model.XStreamBundle;
 
+//TODO: AVINASHANV-19 Stream Session Controller node
+/**
+ * this talks to the worker node over a communication bus i built using kafka that has the concept
+ * of conversation scoped channels. every node can annotate methods and classes to define channel 
+ * providers, service providers and event listeners. once a channel is created the same set of annotations
+ * are applied so that a channel like a server controller and server stream worker can communicate within
+ * the context of the channel. 
+ */
 public class StreamSessionNodeImpl implements StreamSessionNode, DunkNetChannelHandler {
 
 	private Logger logger = LoggerFactory.getLogger(getClass());

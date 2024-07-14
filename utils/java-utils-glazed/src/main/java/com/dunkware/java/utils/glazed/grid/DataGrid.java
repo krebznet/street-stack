@@ -7,7 +7,12 @@ import java.util.concurrent.Semaphore;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
+//TODO: AVINASHANV-39 Data Grid
+/**
+ * this is clever, a data grid is configured with a method name that defines 
+ * the unique id of the object all it does is has insert/update/delete methods
+ * that create teh DataGrid Update objects for each update type. 
+ */
 /**
  * Stateless Component just gets initialized with a method for getting ID
  * and returns DataGridUpdate on insert/detle/update methods

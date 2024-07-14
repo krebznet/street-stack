@@ -2,6 +2,14 @@
 	
 	generate xScript "http://www.dunkware.com/xstream/XScript"
 	import "http://www.eclipse.org/emf/2002/Ecore" as ecore
+	//TODO: AVINASHANV-11 XScript Grammar 
+	/**
+	 * this is huge, it is the xtext grammar that defines my DSL script, it has 4 things
+	 * variables , signals , trade bots and classes. classes in this language are auto 
+	 * instantiated for every entity so you can better program logic with state to generate
+	 * signals. the init function allows to configure methods in the class to run at fixed
+	 * interval or lisen to a signal type trigger 
+	 */
 	
 	XScript:
 		elements+=ScriptElement*;
@@ -474,6 +482,20 @@
 	
 	XScriptWeighted:
 		{XScriptWeighted} 'weighted:' weighted=("true" | "false") ';';
+	
+	
+	//TODO: AVINASHANV-12 Script Trade Bot grammar
+	/**
+	 * This is the tradeBot that we can script what is cool is that a trade bot can reference
+	 * andy signals in the script and xtext auto generates the editors for eclipse. trade bot 
+	 * has a set of connfiguratioin objects in setup { it can be activeCapitalLimit and other 
+	 * things. 
+	 * 
+	 * the maven build auto generates an object model for the script that is called XScript
+	 * these objects are used by the runtime interpeter. 
+	 */ 
+	 * 
+	 * */
 	
 	XScriptBot: // tradeBotAlpha1(1,"Alpha 1 Bot", "Alpha Bots,
 		{XScriptBot} 'tradeBot' name=ID '(' id=INT ',' label=STRING ',' group=[GroupType] ')' '{'

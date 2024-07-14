@@ -21,7 +21,12 @@ import com.dunkware.xstream.api.XSignal;
 import com.dunkware.xstream.api.XSignalListener;
 import com.dunkware.xstream.api.XStream;
 
-
+//TODO: AVINASHANV-30 Signal Publisher
+/**
+ * look at the annotation its an extension to the stream worker higher level than XStream 
+ * and it registers itself as a signal listener to the XStream and converts it to a model
+ * class and sends it to kafak where injestors write it to the database. 
+ */
 @AStreamWorkerExtension
 public class EntitySignalPublisher implements StreamWorkerExtension, XSignalListener  {
 

@@ -12,7 +12,14 @@ import com.dunkware.xstream.core.XStreamExpressionImpl;
 import com.dunkware.xstream.core.annotations.AXStreamExpression;
 import com.dunkware.xstream.xScript.ExpressionType;
 import com.dunkware.xstream.xScript.RocExpressionType;
-
+//TODO: AVINASHANV-15 Computing Expressions
+/**
+ * this is cool, so for each expression type in the grammar we have a expression 
+ * in runtime tha is matched to the script model using annotation. a expression is 
+ * associated to an entity variable, this one does the rate of change between two 
+ * values, all variables keep historical data so its easy to create value ranges
+ * in the past etc. 
+ */
 @AXStreamExpression(type = RocExpressionType.class)
 public class RocExpression extends XStreamExpressionImpl {
 
@@ -27,6 +34,15 @@ public class RocExpression extends XStreamExpressionImpl {
 	public void init(XStreamEntity row, ExpressionType type) {
 		this.row = row;
 		this.type = (RocExpressionType) type;
+		//TODO: AVINASHANV-16 RocExpressionType 
+		/*
+		 * RocExpressionType is auto generated from xtext scripting framework defined in our grammer
+		 * in script its like roc(value1,value2) variable in xscript by default maintain historical
+		 * history so we can get values like a range of historical values in the last 5 minutes the
+		 * value 5 minutes ago etc. here what we do is the scirpt model has an expression type for 
+		 * both values, we use the registry to create a new expression by passing in the expression type
+		 * and using annotations it builds an expression. 
+		 */
 		targetExp = row.getStream().getInput().getRegistry().createVarExpression(this.type.getTarget());
 		targetExp.init(row, this.type.getTarget());
 		compareExp = row.getStream().getInput().getRegistry().createVarExpression(this.type.getCompare());
@@ -50,6 +66,17 @@ public class RocExpression extends XStreamExpressionImpl {
 		return type;
 	}
 
+	//TODO: AVINASHANV-16 Expression executions
+	/**
+	 * we have a boolean canExecute in the event the expression like historical high over
+	 * last 30 days that does not have enough historical data to compute will return false
+	 * whenver that happens the expression and variable linked to it is not resolvable. 
+	 * here we simple do the rate of change and we get the values of the expressions
+	 * we are doing roc one... good example of an roc is comparing current value of a 
+	 * variable like Mtc30sec which is the number of trades wihtin the last 30 seconds
+	 * to the highest value that variable has had for the entity in the list 30 days
+	 * if its 10X greater we start understanding breakouts. 
+	 */
 	@Override
 	public boolean execute() {
 		
@@ -182,6 +209,7 @@ public class RocExpression extends XStreamExpressionImpl {
 		return false;
 	}
 
+	 
 	@Override
 	public boolean canExecute() {
 		if (targetExp.canExecute() && compareExp.canExecute()) {

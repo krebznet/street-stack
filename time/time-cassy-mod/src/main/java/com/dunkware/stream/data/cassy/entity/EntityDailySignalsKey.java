@@ -6,7 +6,11 @@ import java.time.Instant;
 import org.springframework.data.cassandra.core.mapping.PrimaryKeyClass;
 import org.springframework.data.cassandra.core.mapping.PrimaryKeyColumn;
 import org.springframework.data.cassandra.core.cql.PrimaryKeyType;
-
+//TODO: AVINASHANV-09 Cassandra Composite Key Entity
+/**
+ * this is a bit annpying the fields that make up the key are in a differnt class
+ * than the entity you can see the cassandra partitions 
+ */
 @PrimaryKeyClass
 public class EntityDailySignalsKey implements Serializable {
     @PrimaryKeyColumn(name = "entity_id", type = PrimaryKeyType.PARTITIONED)

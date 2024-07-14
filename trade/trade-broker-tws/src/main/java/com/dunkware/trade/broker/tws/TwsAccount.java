@@ -52,7 +52,13 @@ public class TwsAccount implements Account, TwsSocketReader {
 		
 	}
 	
-	
+	//TODO: AVINASHANV-23 Account CreateOrder
+	/**
+	 * A OrderSpec is the model that defines the order logic
+	 * like the order side long or short the number of shares 
+	 * to buy and other things from a ordrespec and order 
+	 * object is returned. 
+	 */
 	@Override
 	public Order createOrder(OrderSpec spec) throws OrderException {
 		TwsAccountOrder order = new TwsAccountOrder(this,spec);

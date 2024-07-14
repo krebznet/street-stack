@@ -11,6 +11,13 @@ import com.dunkware.xstream.model.metrics.XStreamMetrics;
 
 import io.vertx.core.Future;
 
+//TODO: AVINASHANV-13 XStream Engine
+/**
+ * this is key class that takes an XScript and listens to an incoming stream 
+ * with adapters that translate stream data into entities, entities can be 
+ * created here and XStreamInput defines the date, the script model and 
+ * other things
+ */
 public interface XStream {
 	
 	void start(XStreamInput input) throws XStreamException;

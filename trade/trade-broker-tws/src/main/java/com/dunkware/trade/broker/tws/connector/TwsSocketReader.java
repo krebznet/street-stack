@@ -29,7 +29,15 @@ import com.ib.client.TickAttribBidAsk;
 import com.ib.client.TickAttribLast;
 import com.ib.client.TwsOrder;
 import com.ib.client.TwsOrderState;
-
+//TODO: AVINASHANV-27 TwsSocketReader
+/**
+ * any class can register themselves to consume TWS API events
+ * they extends this class and override the events that they 
+ * care about, this has everything from oder updates, to 
+ * account summary to errors to subsribed market data 
+ * to tick news to market scanner subscriptions it is
+ * the key part of tws api 
+ */
 public interface TwsSocketReader extends EWrapper  {
 
 	@Override

@@ -18,7 +18,27 @@ import ca.odell.glazedlists.event.ListEvent;
 import ca.odell.glazedlists.event.ListEventListener;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.FluxSink;
-
+//TODO: AVINASHANV-40 Glazed Data Grid
+/**
+ * this is where it all comes together a glazed data grid has an ObservableElement list
+ * that is configured to observe objects in the list and it also trigges events for 
+ * item inserts and deletes. what happens a listener like the interface this class
+ * implements gets notified on all bean updates deletes and inserts. when it gets notified
+ * it used DataGrid to create update model and puts them in a list that another worker will
+ * pick up and send. even cooler is these things are hooked up to streaming spring boot web
+ * services using react. so a WebFlux is created on line 66 and references a method to to 
+ * be notified in dispose or when the client http stream disconnects so it can clean up
+ * the events from the observable element list create DataGridUpdate objects line 141 is
+ * method emitUpdates called every second to use a FluxSing created from the flux to publish
+ * the messages, in the context of a reactive web service it has a subscription to the Flux
+ * and uses the publisher for the http stream to consume DataGrid Updates and send to web 
+ * client. i wil show you example of web service  next. 
+ */
+/**
+ * this is the money one, what happens is we use a ObservableElementList that is configured
+ * to listen to observable beans within its list and it also notifies events on item inserts
+ * and item deletes. We configure this to have a DataGrid
+ */
 public class GlazedDataGrid implements ListEventListener<Object> {
 
 	private ObservableElementList<?> list;

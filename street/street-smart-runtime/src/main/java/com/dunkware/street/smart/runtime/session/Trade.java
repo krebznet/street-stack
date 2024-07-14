@@ -2,11 +2,11 @@ package com.dunkware.street.smart.runtime.session;
 
 import java.util.List;
 
-import com.dunkware.street.stream.model.session.TradeType;
+import com.dunkware.street.stream.model.session.TradeSpec;
 
 public interface Trade {
 
-	TradeType getType();
+	TradeSpec getType();
 	
 	List<TradeOrder> getEntryOrders();
 	

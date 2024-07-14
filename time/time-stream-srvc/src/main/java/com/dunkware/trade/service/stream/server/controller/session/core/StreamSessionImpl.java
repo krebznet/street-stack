@@ -57,6 +57,14 @@ import com.dunkware.xstream.xproject.model.XScriptBundle;
 
 import jakarta.transaction.Transactional;
 
+//TODO: AVINASHANV-18 Controller Stream Session
+/**
+ * this is where we create session nodes for each instance of the stream worker service
+ * and the node is responsbile for starting a worker stream node. we abstract all the 
+ * distribution and can treat a cluster stream as a single entity so we can do things like
+ * execute scannes that behind the scenes has a controller that talks to each node to pass in
+ * the scanner expression, signal listeners etc. 
+ */
 public class StreamSessionImpl implements StreamSession {
 
 	public static final String METRIC_PENDING_TASK_COUNT = "stream.us_equity.stats.cluster.pendingtasks";

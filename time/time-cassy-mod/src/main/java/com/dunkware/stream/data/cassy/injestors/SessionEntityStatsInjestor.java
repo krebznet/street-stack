@@ -17,7 +17,14 @@ import org.slf4j.MarkerFactory;
 import com.dunkware.stream.data.cassy.entity.SessionEntityStats;
 import com.dunkware.stream.data.cassy.repository.SessionEntityStatsRepository;
 import com.dunkware.utils.core.stopwatch.StopWatch;
-
+//TODO: AVINASHANV-10 Cassandra injestors 
+/**
+ * its faster to not use spring boot repository to bulk insert at a fast rate, that we do is 
+ * we have a queue and then we configure the number of injestor threads and they use batcch 
+ * inserts and it is pretty fast, this shoud be renamed to SessionEntityStatsWriter these 
+ * classes are used by kafka consumers to hand off consumed objects to be written to the 
+ * database. 
+ */
 public class SessionEntityStatsInjestor implements EntityInjestor<SessionEntityStats> {
 
 	public static SessionEntityStatsInjestor newInstance(SessionEntityStatsRepository repo, int threads, int batchSize) {

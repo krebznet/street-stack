@@ -11,6 +11,19 @@ import org.slf4j.LoggerFactory;
 
 import com.dunkware.utils.core.events.anot.ADunkEventHandler;
 import com.dunkware.utils.core.helpers.DunkReflection;
+//TODO: AVINASHANV-20 Event Node 
+/**
+ * this is a awesome event notification framework and what happens is you start with an EventTree
+ * and it has a root node. child nodes can be created from parent nodes and a event node accepts
+ * an object with annotations to listen to events based on the class type. the event firing of 
+ * child nodes are dispatched to all parent nodes so that listeners on parenet nodes get all
+ * child events. an example of this is a trade bot engine, a trade bot has an event node
+ * and the root is a trade session, when new trades are created a trade creates a child event node
+ * so you can register event listeners on a trade, a trade creates order objects and they also create
+ * a child event node from the trade, so a listener on a trade can listen to all ordreson the trade as well. 
+ * this event framework is used in many places, we have EventObjects that are defined. an annotated
+ * methid with @Eve
+ */
 
 public class DunkEventNode {
 

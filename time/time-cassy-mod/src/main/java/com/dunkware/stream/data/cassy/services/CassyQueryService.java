@@ -16,6 +16,14 @@ import com.datastax.oss.driver.api.core.cql.SimpleStatement;
 import com.dunkware.stream.data.lib.cassy.helpers.CassyQueries;
 import com.dunkware.time.data.model.entity.EntityStatModel;
 
+//TODO: AVINASHANV-06 Cassandra Database Module
+/**
+ * You'll see the pattern of me creating spring boot modules so they can be used in multiple 
+ * services. Cassandra i call the cassy module stores stream signals, daily entity variable stats
+ * and soon entity (stream objects in Time Stream and called Time Machine are called entities) so
+ * when we think of a stock its an entity but every 1 second a snapshot of an entity and value 
+ * of its variables will be stored in the database. 
+ */
 @Service
 public class CassyQueryService {
 

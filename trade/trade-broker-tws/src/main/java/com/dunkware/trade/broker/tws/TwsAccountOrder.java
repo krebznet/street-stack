@@ -30,6 +30,10 @@ import com.ib.client.Decimal;
 import com.ib.client.TwsOrder;
 import com.ib.client.TwsOrderState;
 
+//TODO: AVINASHANV-24 Trader Workstaion Order
+/**
+ * this implemens Order and we'll see how it works. 
+ */
 public class TwsAccountOrder implements Order {
 
 	private Logger logger = LoggerFactory.getLogger(getClass());
@@ -99,6 +103,12 @@ public class TwsAccountOrder implements Order {
 		
 	}
 
+	/**
+	 * //TODO: AVINASHANV-25 Sending an order
+	 * this will send a order to trader workstation
+	 * it uses something called a Socket Reader to get order 
+	 * call backs
+	 */
 	@Override
 	public void send() {
 		// validate status send(); -->
@@ -265,6 +275,13 @@ public class TwsAccountOrder implements Order {
 			EOrderUpdate update = new EOrderUpdate(TwsAccountOrder.this);
 			eventNode.event(update);
 
+			//TODO: AVINASHANV-28 Order Filled Event
+			/**
+			 * this is where we implemented orderStatus on the socket readher we check if the 
+			 * order id is our order and if the status is filled we will trigger an event
+			 * on the order event node line 289 that all registered handlers on the order, trade,
+			 * account and broker will recieve that shows the design behind event tree. 
+			 */
 			if (orderStatus == OrderStatus.Filled) {
 				if (!notifyFilled) {
 					if (logger.isTraceEnabled()) {

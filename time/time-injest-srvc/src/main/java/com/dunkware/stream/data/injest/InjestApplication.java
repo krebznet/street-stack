@@ -4,7 +4,12 @@ import org.springframework.boot.ExitCodeGenerator;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.ConfigurableApplicationContext;
-
+//TODO: AVINASHANV-07 Stream Data Injestion 
+/**
+ * this service has consumers to kafka toppics that consume stream data like the signals and 
+ * stats, we will deploy multiple instances of this service with same kafka Consumer Group to 
+ * scale our database inserts
+ */
 @SpringBootApplication(scanBasePackages = "com.dunkware")
 public class InjestApplication {
 

@@ -45,7 +45,13 @@ import com.dunkware.xstream.api.XStreamStatus;
 import com.dunkware.xstream.core.XStreamCore;
 import com.dunkware.xstream.core.XStreamImpl;
 
-
+//TODO: AVINASHANV-29 Cluster Stream Worker
+/**
+ * this is created by controller session node, it will run a XStream instance 
+ * and this also has extensions that publish signals and other services
+ * so when we want to subscibe to a signal we have to consume all signals
+ * from all nodes or the server does, we do that by kafka topi. 
+ */
 public class StreamWorker implements DunkNetChannelHandler, IStream {
 
 	private StreamSessionWorkerStartReq req;
