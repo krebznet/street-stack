@@ -1,9 +1,9 @@
 package com.dunkware.time.client.lib.script;
 
-import com.dunkware.time.script.model.proto.ScriptDeployRep;
-import com.dunkware.time.script.model.proto.ScriptDeployReq;
-import com.dunkware.time.script.model.proto.ScriptSyncRep;
-import com.dunkware.time.script.model.proto.ScriptUpdateRep;
+import com.dunkware.time.script.model.proto.XScriptDeployRep;
+import com.dunkware.time.script.model.proto.XScriptDeployReq;
+import com.dunkware.time.script.model.proto.XScriptSyncRep;
+import com.dunkware.time.script.model.proto.XScriptReleaseRep;
 
 public class ScriptClient {
 	
@@ -22,18 +22,18 @@ public class ScriptClient {
 		this.password = password;
 	}
 	
-	public ScriptDeployRep deployScript(String name, String script) throws Exception { 
-		ScriptDeployReq req = new ScriptDeployReq();
+	public XScriptDeployRep deployScript(String name, String script) throws Exception { 
+		XScriptDeployReq req = new XScriptDeployReq();
 		req.setName(name);
 		req.setScript(script);
 		return null;
 	}
 	
-	public ScriptSyncRep syncScript(String name, String script) throws Exception { 
+	public XScriptSyncRep syncScript(String name, String script) throws Exception { 
 		return null;
 	}
 	
-	public ScriptUpdateRep updateScript(String name, String script) throws Exception { 
+	public XScriptReleaseRep updateScript(String name, String script) throws Exception { 
 		return null;
 	}
 	
