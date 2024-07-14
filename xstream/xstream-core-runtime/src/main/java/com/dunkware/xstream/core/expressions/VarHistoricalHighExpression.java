@@ -7,15 +7,14 @@ import com.dunkware.xstream.api.XStreamEntity;
 import com.dunkware.xstream.core.XStreamExpressionImpl;
 import com.dunkware.xstream.core.annotations.AXStreamExpression;
 import com.dunkware.xstream.xScript.ExpressionType;
-import com.dunkware.xstream.xScript.HistoricalAggFunc;
-import com.dunkware.xstream.xScript.VarAggHistoryType;
+import com.dunkware.xstream.xScript.VarHistoricalHighType;
 
 
-@AXStreamExpression(type = VarAggHistoryType.class)
-public class VarAggHistoricalExpression extends XStreamExpressionImpl {
+@AXStreamExpression(type = VarHistoricalHighType.class)
+public class VarHistoricalHighExpression extends XStreamExpressionImpl {
 	
 	private XStreamEntity row; 
-	private VarAggHistoryType myType; 
+	private VarHistoricalHighType myType; 
 	
 	private Object resolvedValue = null; 
 	private boolean canResolve = false; 
@@ -27,7 +26,7 @@ public class VarAggHistoricalExpression extends XStreamExpressionImpl {
 	@Override
 	public void init(XStreamEntity row, ExpressionType type) {
 		this.row = row; 
-		this.myType = (VarAggHistoryType)type;
+		this.myType = (VarHistoricalHighType)type;
 		try {
 		//	statsExt = (StreamSessionStatsExt)row.getStream().getExtension(StreamSessionStatsExt.class);
 		} catch (Exception e) {
@@ -36,18 +35,9 @@ public class VarAggHistoricalExpression extends XStreamExpressionImpl {
 			return;
 		}
 		int statConstant = -1; 
-		if(myType.getFunction() == HistoricalAggFunc.HIGH) {
-			//statConstant = EntityStatsConstants.VAR_STAT_HIGH;
-		}
-		if(myType.getFunction() == HistoricalAggFunc.HIGH.LOW) { 
-			//statConstant = EntityStatsConstants.VAR_STAT_LOW;
-		}
+		
 		
 		// it can execute a runnable - Future<>
-		if(statConstant == -1) { 
-			logger.error("Agg Function Not Handled Consant " + myType.getFunction().toString());;
-			canResolve = false; 
-		}
 		try {
 			/*
 			 * if(statsExt.canResolveVarStat(row, myType.getVar(),

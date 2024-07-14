@@ -7,23 +7,21 @@ import com.dunkware.xstream.api.XStreamEntity;
 import com.dunkware.xstream.core.XStreamExpressionImpl;
 import com.dunkware.xstream.core.annotations.AXStreamExpression;
 import com.dunkware.xstream.xScript.ExpressionType;
-import com.dunkware.xstream.xScript.SignalCountSession;
-import com.dunkware.xstream.xScript.VarAggSessionType;
+import com.dunkware.xstream.xScript.SignalHistoricalCountType;
 
-@AXStreamExpression(type = SignalCountSession.class)
-public class SignalCountSessionExp extends XStreamExpressionImpl {
+@AXStreamExpression(type = SignalHistoricalCountType.class)
+public class SignalHistoricalCount extends XStreamExpressionImpl {
 	
 	private Logger logger = LoggerFactory.getLogger(getClass());
 
-	private SignalCountSession myType;
-	private XStreamEntity row;
+	private SignalHistoricalCountType myType; 
+	private XStreamEntity row; 
 	
 	@Override
 	public void init(XStreamEntity row, ExpressionType type) {
-		myType = (SignalCountSession)type;
 		this.row = row; 
+		this.myType = (SignalHistoricalCountType)type;
 		
-		// think about session time range 
 	}
 
 	@Override
@@ -40,7 +38,8 @@ public class SignalCountSessionExp extends XStreamExpressionImpl {
 
 	@Override
 	public ExpressionType getExpType() {
-		return myType; 
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 	@Override
@@ -55,5 +54,4 @@ public class SignalCountSessionExp extends XStreamExpressionImpl {
 		return false;
 	}
 
-	
 }

@@ -13,14 +13,14 @@ import com.dunkware.xstream.xScript.RelativeSessionTimeRange;
 import com.dunkware.xstream.xScript.SessionAggFunc;
 import com.dunkware.xstream.xScript.SessionTimeRange;
 import com.dunkware.xstream.xScript.TodaySessionTimeRange;
-import com.dunkware.xstream.xScript.VarAggSessionType;
+import com.dunkware.xstream.xScript.VarSessionHighType;
 
-@AXStreamExpression(type = VarAggSessionType.class)
-public class VarAggSessionExpression extends XStreamExpressionImpl {
+@AXStreamExpression(type = VarSessionHighType.class)
+public class VarSessionHighExpression extends XStreamExpressionImpl {
 
 	private Logger logger = LoggerFactory.getLogger(getClass());
 
-	private VarAggSessionType myType;
+	private VarSessionHighType myType;
 	private XStreamEntity row;
 	private int secondRange = 0;
 	private boolean todayRange = false;
@@ -31,9 +31,9 @@ public class VarAggSessionExpression extends XStreamExpressionImpl {
 	@Override
 	public void init(XStreamEntity row, ExpressionType type) {
 		this.row = row;
-		myType = (VarAggSessionType) type;
+		myType = (VarSessionHighType) type;
 		SessionTimeRange rnage = myType.getTimeRange();
-		function = myType.getFunction();
+	//	function = myType.getFunction();
 		try {
 			targetVar = row.getVar(myType.getVar().getName());
 		} catch (Exception e) {
@@ -78,13 +78,6 @@ public class VarAggSessionExpression extends XStreamExpressionImpl {
 	@Override
 	public boolean execute() {
 
-		if (myType.getFunction() == SessionAggFunc.HIGH) {
-					// so now we need method to get all the values and 
-		}
-
-		if (myType.getFunction() == SessionAggFunc.LOW) {
-
-		}
 		
 		//setValue(function);
 		

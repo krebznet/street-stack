@@ -18,7 +18,7 @@ import com.dunkware.xstream.xScript.VarType;
 import com.dunkware.xstream.xScript.XClassType;
 import com.dunkware.xstream.xScript.XScript;
 import com.dunkware.xstream.xScript.XScriptPackage;
-import com.dunkware.xstream.xScript.XTradeBotType;
+import com.dunkware.xstream.xScript.XScriptBot;
 import com.dunkware.xstream.xproject.model.XScriptBundle;
 import com.dunkware.xstream.xproject.model.XScriptFile;
 import com.google.inject.Injector;
@@ -34,7 +34,7 @@ public class XScriptProject {
 	private List<Integer> streamVarIds = new ArrayList<Integer>();
 	private List<Integer> streamSignalIds = new ArrayList<Integer>();
 	private List<SignalType> streamSignals = new ArrayList<SignalType>();
-	private List<XTradeBotType> streamBots = new ArrayList<XTradeBotType>();
+	private List<XScriptBot> streamBots = new ArrayList<XScriptBot>();
 	
 	private XScriptBundle bundle;
 	public XScriptProject(XScriptBundle bundle) throws XScriptException {
@@ -89,12 +89,12 @@ public class XScriptProject {
 		return bundle.getVersion();
 	}
 	
-	public List<XTradeBotType> getStreamBots() { 
+	public List<XScriptBot> getStreamBots() { 
 		return streamBots;
 	}
 	
-	public XTradeBotType getStreamBot(int id) throws Exception{ 
-		for (XTradeBotType bo : streamBots) {
+	public XScriptBot getStreamBot(int id) throws Exception{ 
+		for (XScriptBot bo : streamBots) {
 			if(bo.getId() == id) { 
 				return bo;
 			}
