@@ -23,7 +23,7 @@ import com.dunkware.xstream.model.script.model.XScriptModel;
 import com.dunkware.xstream.model.script.model.XScriptRelease;
 import com.dunkware.xstream.model.script.model.XScriptUpdate;
 import com.dunkware.xstream.model.script.utils.XScriptUpdateInitializer;
-import com.dunkware.xstream.util.XScriptProjectModelGenerator;
+import com.dunkware.xstream.script.XScriptModelInitializer;
 import com.dunkware.xstream.xproject.XScriptProject;
 import com.dunkware.xstream.xproject.bundle.XscriptBundleHelper;
 import com.dunkware.xstream.xproject.model.XScriptBundle;
@@ -116,7 +116,7 @@ public class ScriptServiceImpl implements ScriptService  {
 		scriptEnt.setType(type);
 		scriptEnt.setVersion("1.0.0");
 		
-		XScriptModel model = XScriptProjectModelGenerator.generateModel(repoName, "1.0.0", type, project);
+		XScriptModel model = XScriptModelInitializer.generate(script, repoName, type, "1.0.0");
 		XScriptUpdate update = XScriptUpdateInitializer.intialize(model);
 		XScriptRelease relModel = new XScriptRelease();
 		relModel.setVersion("1.0.0");
