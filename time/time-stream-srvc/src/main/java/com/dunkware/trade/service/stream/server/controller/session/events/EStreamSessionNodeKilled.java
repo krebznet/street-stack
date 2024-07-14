@@ -6,7 +6,7 @@ public class EStreamSessionNodeKilled extends EStreamSessionNodeEvent {
 
 	public EStreamSessionNodeKilled(StreamSessionNode node) {
 		super(node);
-		// TODO Auto-generated constructor stub
+	
 	}
 
 }

@@ -440,7 +440,7 @@ public class StreamController implements StreetExchange  {
 						break;
 					}
 				} catch (Exception e) {
-					// TODO: handle exception
+					
 				}
 			}
 			if (nodes.size() == 0) {
@@ -450,7 +450,7 @@ public class StreamController implements StreetExchange  {
 					Thread.sleep(10000);
 					
 				} catch (Exception e) {
-					// TODO: handle exception
+					
 				}
 				
 				stats.setState(StreamState.StartException);
@@ -545,7 +545,7 @@ public class StreamController implements StreetExchange  {
 				//sessionNodeBeans.getReadWriteLock().writeLock().lock();
 				//sessionNodeBeans.add(streamSessionNodeBean.getBean());
 			} catch (Exception e) {
-				// TODO: handle exception
+				
 			} finally {
 			//	sessionNodeBeans.getReadWriteLock().writeLock().unlock();
 			}
@@ -731,7 +731,7 @@ public class StreamController implements StreetExchange  {
 		}
 
 		public void dispose() {
-			// TODO: delete a stream controller ?
+			// delete a stream controller ?
 			if (schedule != null) {
 				schedule.interrupt();
 			}

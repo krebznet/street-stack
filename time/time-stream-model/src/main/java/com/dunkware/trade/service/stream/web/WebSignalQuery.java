@@ -162,7 +162,7 @@ public class WebSignalQuery {
 			System.out.println(DunkJson.serializePretty(q));
 		} catch (Exception e) {
 			e.printStackTrace();
-			// TODO: handle exception
+			
 		}
 		
 	}

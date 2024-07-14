@@ -26,7 +26,7 @@ class GenFunctionTest {
      */
     @Test
     void testGenFunction() {
-        // TODO: test GenFunction
+        // test GenFunction
     }
 
 }

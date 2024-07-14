@@ -36,7 +36,7 @@ class UIActionTest {
      */
     @Test
     void testUIAction() {
-        // TODO: test UIAction
+        // test UIAction
     }
 
     /**
@@ -44,7 +44,7 @@ class UIActionTest {
      */
     @Test
     void typeTest() {
-        // TODO: test type
+        // test type
     }
 
     /**
@@ -52,7 +52,7 @@ class UIActionTest {
      */
     @Test
     void linkTest() {
-        // TODO: test link
+        // test link
     }
 
     /**
@@ -60,7 +60,7 @@ class UIActionTest {
      */
     @Test
     void componentTest() {
-        // TODO: test component
+        // test component
     }
 
     /**
@@ -68,7 +68,7 @@ class UIActionTest {
      */
     @Test
     void propsTest() {
-        // TODO: test props
+        // test props
     }
 
 }

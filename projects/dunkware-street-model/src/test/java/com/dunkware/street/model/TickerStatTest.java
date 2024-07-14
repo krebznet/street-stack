@@ -35,7 +35,7 @@ class TickerStatTest {
      */
     @Test
     void testTickerStat() {
-        // TODO: test TickerStat
+        // test TickerStat
     }
 
     /**
@@ -43,7 +43,7 @@ class TickerStatTest {
      */
     @Test
     void statIdTest() {
-        // TODO: test statId
+        // test statId
     }
 
     /**
@@ -51,7 +51,7 @@ class TickerStatTest {
      */
     @Test
     void statNameTest() {
-        // TODO: test statName
+        // test statName
     }
 
     /**
@@ -59,7 +59,7 @@ class TickerStatTest {
      */
     @Test
     void tickerIdTest() {
-        // TODO: test tickerId
+        // test tickerId
     }
 
     /**
@@ -67,7 +67,7 @@ class TickerStatTest {
      */
     @Test
     void exchangeIdTest() {
-        // TODO: test exchangeId
+        // test exchangeId
     }
 
     /**
@@ -75,7 +75,7 @@ class TickerStatTest {
      */
     @Test
     void elementIdTest() {
-        // TODO: test elementId
+        // test elementId
     }
 
     /**
@@ -83,7 +83,7 @@ class TickerStatTest {
      */
     @Test
     void statValueTest() {
-        // TODO: test statValue
+        // test statValue
     }
 
     /**
@@ -91,7 +91,7 @@ class TickerStatTest {
      */
     @Test
     void timeTest() {
-        // TODO: test time
+        // test time
     }
 
 }

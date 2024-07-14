@@ -128,7 +128,7 @@ public class SessionEntityStatLoader {
 					builder = new BatchStatementBuilder(BatchType.LOGGED);
 				} catch (Exception e) {
 					e.printStackTrace();
-					// TODO: handle exception
+					
 				}
 			}
 		}
@@ -144,7 +144,7 @@ public class SessionEntityStatLoader {
 					System.out.println(queueSize() + " com" + completed.get() + " pending " + pending);
 				}
 			} catch (Exception e) {
-				// TODO: handle exception
+				
 			}
 		}
 	}

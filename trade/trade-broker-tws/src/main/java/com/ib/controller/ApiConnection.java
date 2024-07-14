@@ -37,7 +37,7 @@ public class ApiConnection extends EClientSocket {
 
 	@Override
 	protected void sendMsg(EMessage msg) throws IOException {
-		// TODO Auto-generated method stub
+		
 		super.sendMsg(msg);
 		
 		byte[] buf = msg.getRawData();

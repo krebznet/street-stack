@@ -46,7 +46,7 @@ public class TwsScannerService implements TwsSocketReader, TwsConnectorService {
 
 	@Override
 	public void disposeService() {
-		// TODO Auto-generated method stub
+		
 		
 	}
 	
@@ -119,7 +119,7 @@ public class TwsScannerService implements TwsSocketReader, TwsConnectorService {
 		} finally { 
 			_scannerSemaphore.release();
 		}
-		// TODO Auto-generated method stub
+		
 		
 	}
 

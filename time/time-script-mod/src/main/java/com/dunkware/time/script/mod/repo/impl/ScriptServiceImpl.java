@@ -138,7 +138,7 @@ public class ScriptServiceImpl implements ScriptService  {
 		try {
 			
 		} catch (Exception e) {
-			// TODO: handle exception
+			
 		}
 		
 		
@@ -149,7 +149,7 @@ public class ScriptServiceImpl implements ScriptService  {
 		
 		
 		
-		// TODO Auto-generated method stub
+		
 		return null;
 	}
 

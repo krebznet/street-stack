@@ -87,7 +87,7 @@ public class TickServiceClientImpl implements TickServiceClient {
 
 	@Override
 	public void post(String path, Object request) throws TickServiceClientException {
-		// TODO Auto-generated method stub
+		
 
 	}
 
@@ -97,7 +97,7 @@ public class TickServiceClientImpl implements TickServiceClient {
 		try {
 			System.out.println(DunkJson.serializePretty(req));
 		} catch (Exception e) {
-			// TODO: handle exception
+			
 		}
 	}
 

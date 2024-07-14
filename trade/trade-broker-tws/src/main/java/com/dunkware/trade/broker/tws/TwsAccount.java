@@ -68,7 +68,7 @@ public class TwsAccount implements Account, TwsSocketReader {
 
 	@Override
 	public OrderPreview createOrderPreview(OrderType type) throws OrderException {
-		// TODO Auto-generated method stub
+		
 		return null;
 	}
 
@@ -89,7 +89,7 @@ public class TwsAccount implements Account, TwsSocketReader {
 
 	@Override
 	public void dispose() {
-		// TODO Auto-generated method stub
+		
 		
 	}
 

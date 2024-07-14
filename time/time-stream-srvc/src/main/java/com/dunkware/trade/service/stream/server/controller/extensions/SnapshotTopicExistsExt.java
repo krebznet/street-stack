@@ -36,7 +36,7 @@ public class SnapshotTopicExistsExt implements StreamControllerExt  {
 
 	@Override
 	public void sessionStarted(StreamSession session) {
-		// TODO Auto-generated method stub
+		
 		// STREAM-INGESTOR
 		// STREAM-INGESTOR
 		
@@ -44,13 +44,13 @@ public class SnapshotTopicExistsExt implements StreamControllerExt  {
 
 	@Override
 	public void sessionStopped(StreamSession session) {
-		// TODO Auto-generated method stub
+		
 		
 	}
 
 	@Override
 	public void sessionKilled(StreamSession session) {
-		// TODO Auto-generated method stub
+		
 		
 	}
 	

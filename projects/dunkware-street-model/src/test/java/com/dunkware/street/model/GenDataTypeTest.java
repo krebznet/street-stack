@@ -26,7 +26,7 @@ class GenDataTypeTest {
      */
     @Test
     void testGenDataType() {
-        // TODO: test GenDataType
+        // test GenDataType
     }
 
 }

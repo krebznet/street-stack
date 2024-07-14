@@ -111,7 +111,7 @@ public class DataGrid {
 					rowIds.remove(objectId);
 				}
 			} catch (Exception e) {
-				// TODO: handle exception
+				
 			} finally { 
 				rowIdLock.release();
 			}

@@ -34,7 +34,7 @@ class ExchangeRefTest {
      */
     @Test
     void testExchangeRef() {
-        // TODO: test ExchangeRef
+        // test ExchangeRef
     }
 
     /**
@@ -42,7 +42,7 @@ class ExchangeRefTest {
      */
     @Test
     void idTest() {
-        // TODO: test id
+        // test id
     }
 
     /**
@@ -50,7 +50,7 @@ class ExchangeRefTest {
      */
     @Test
     void identifierTest() {
-        // TODO: test identifier
+        // test identifier
     }
 
     /**
@@ -58,7 +58,7 @@ class ExchangeRefTest {
      */
     @Test
     void nameTest() {
-        // TODO: test name
+        // test name
     }
 
     /**
@@ -66,7 +66,7 @@ class ExchangeRefTest {
      */
     @Test
     void tickersTest() {
-        // TODO: test tickers
+        // test tickers
     }
 
     /**
@@ -74,7 +74,7 @@ class ExchangeRefTest {
      */
     @Test
     void statusTest() {
-        // TODO: test status
+        // test status
     }
 
 }

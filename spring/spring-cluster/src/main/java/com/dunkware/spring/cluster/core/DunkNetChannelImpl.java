@@ -81,7 +81,7 @@ public class DunkNetChannelImpl implements DunkNetChannel {
 		try {
 			Thread.sleep(100);
 		} catch (Exception e) {
-			// TODO: handle exception
+			
 		}
 	}
 	
@@ -278,7 +278,7 @@ public class DunkNetChannelImpl implements DunkNetChannel {
 	
 	@Override
 	public DunkNetChannelRequest channel(Object payload) throws Exception {
-		// TODO Auto-generated method stub
+		
 		throw new  IllegalArgumentException("get sub channel not yet implemented");
 		
 	}
@@ -381,7 +381,7 @@ public class DunkNetChannelImpl implements DunkNetChannel {
 			try {
 				Thread.sleep(1000);
 			} catch (Exception e) {
-				// TODO: handle exception
+				
 			}
 			while(!interrupted()) { 
 				try {

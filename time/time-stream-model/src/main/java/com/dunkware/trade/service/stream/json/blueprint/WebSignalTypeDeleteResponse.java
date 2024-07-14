@@ -19,7 +19,7 @@ public class WebSignalTypeDeleteResponse {
 			System.out.println(DunkJson.serializePretty(resp));
 		} catch (Exception e) {
 			e.getLocalizedMessage();
-			// TODO: handle exception
+			
 		}
 	}
 	

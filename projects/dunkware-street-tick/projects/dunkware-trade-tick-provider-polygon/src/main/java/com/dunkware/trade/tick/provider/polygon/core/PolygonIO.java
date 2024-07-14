@@ -107,7 +107,7 @@ public class PolygonIO {
 					System.out.println("good!!!!");
 				} catch (Exception e) {
 					System.out.println("badd!! " + e.toString());
-					// TODO: handle exception
+					
 				}
             	this.function.apply(data.toString());
                 WebSockets.this.webSocket = webSocket;

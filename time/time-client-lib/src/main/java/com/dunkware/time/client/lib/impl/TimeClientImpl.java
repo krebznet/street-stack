@@ -37,7 +37,7 @@ public class TimeClientImpl implements TimeClient {
 	public StreamSignalSubscription signalSubscription(String streamIdentifier, String... signalTypes) {
 		// here we need to make a reactive call and get back a WebFlux (i think) that we consume 
 		EntitySignalModel model; // objecs of that type from and then 
-		// TODO Auto-generated method stub
+		
 		return null;
 	}
 	

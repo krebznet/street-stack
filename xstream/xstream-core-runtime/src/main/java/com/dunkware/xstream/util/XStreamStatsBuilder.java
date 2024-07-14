@@ -33,7 +33,7 @@ public class XStreamStatsBuilder {
 		stats.setTaskCount(stream.getInput().getExecutor().getCompletedTaskCount());
 		stats.setRowCount(stream.getRowCount());
 		stats.setTickCount(stream.getTickRouter().getDataTickCount());
-		// pendingTickCount TODO!
+
 		if(includeRowStats) { 
 			for (String row : rowIds) {
 				XStreamRowMetrics myRowStats = stream.getRow(row).getStats(includeVarStats);

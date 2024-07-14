@@ -83,7 +83,7 @@ public class PolygonFeed {
 					webSocket.subscribe("T." + string);
 				} catch (Exception e) {
 					logger.error("Exception subscribing stock Q,A for " + string);
-					throw new Exception("Exeception subscribing sec agg for ticker " + string + " " + e.toString()); // TODO:
+					throw new Exception("Exeception subscribing sec agg for ticker " + string + " " + e.toString()); //
 				}
 			}
 			int i = 0;
@@ -312,7 +312,7 @@ public class PolygonFeed {
 					}
 					metrics.secondUpdate();
 				} catch (Exception e) {
-					// TODO: handle exception
+					
 				}
 			}
 		}

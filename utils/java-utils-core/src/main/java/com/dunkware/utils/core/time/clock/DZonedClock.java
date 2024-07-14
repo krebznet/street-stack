@@ -35,7 +35,7 @@ public class DZonedClock {
 			listenerLock.acquire();
 			listeners.add(listener);
 		} catch (Exception e) {
-			// TODO: handle exception
+			
 		} finally { 
 			listenerLock.release();
 		}
@@ -46,7 +46,7 @@ public class DZonedClock {
 			listenerLock.acquire();
 			listeners.remove(listener);
 		} catch (Exception e) {
-			// TODO: handle exception
+			
 		} finally { 
 			listenerLock.release();
 		}
@@ -88,7 +88,7 @@ public class DZonedClock {
 				listener.clockUpdate(this);
 			}
 		} catch (Exception e) {
-			// TODO: handle exception
+			
 		} finally { 
 			listenerLock.release();
 		}

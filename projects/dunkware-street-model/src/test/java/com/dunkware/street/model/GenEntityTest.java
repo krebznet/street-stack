@@ -38,7 +38,7 @@ class GenEntityTest {
      */
     @Test
     void testGenEntity() {
-        // TODO: test GenEntity
+        // test GenEntity
     }
 
     /**
@@ -46,7 +46,7 @@ class GenEntityTest {
      */
     @Test
     void typeTest() {
-        // TODO: test type
+        // test type
     }
 
     /**
@@ -54,7 +54,7 @@ class GenEntityTest {
      */
     @Test
     void valuesTest() {
-        // TODO: test values
+        // test values
     }
 
 }

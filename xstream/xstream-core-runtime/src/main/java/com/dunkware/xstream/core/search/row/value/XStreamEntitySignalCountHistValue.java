@@ -20,14 +20,14 @@ public class XStreamEntitySignalCountHistValue implements XStreamEntityQueryValu
 
 	@Override
 	public boolean isResolvable(XStreamEntity row) throws XStreamQueryException {
-		// TODO Auto-generated method stub
+		
 		return false;
 	}
 
 
 	@Override
 	public Number resolve(XStreamEntity row) throws XStreamResolveException, XStreamQueryException {
-		// TODO Auto-generated method stub
+		
 		return null;
 	}
 

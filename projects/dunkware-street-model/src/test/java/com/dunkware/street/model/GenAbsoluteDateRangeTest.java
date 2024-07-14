@@ -36,7 +36,7 @@ class GenAbsoluteDateRangeTest {
      */
     @Test
     void testGenAbsoluteDateRange() {
-        // TODO: test GenAbsoluteDateRange
+        // test GenAbsoluteDateRange
     }
 
     /**
@@ -44,7 +44,7 @@ class GenAbsoluteDateRangeTest {
      */
     @Test
     void startDateTest() {
-        // TODO: test startDate
+        // test startDate
     }
 
     /**
@@ -52,7 +52,7 @@ class GenAbsoluteDateRangeTest {
      */
     @Test
     void enLocalDateTest() {
-        // TODO: test enLocalDate
+        // test enLocalDate
     }
 
     /**
@@ -60,7 +60,7 @@ class GenAbsoluteDateRangeTest {
      */
     @Test
     void hasTimeWindowTest() {
-        // TODO: test hasTimeWindow
+        // test hasTimeWindow
     }
 
     /**
@@ -68,7 +68,7 @@ class GenAbsoluteDateRangeTest {
      */
     @Test
     void timeWindowTest() {
-        // TODO: test timeWindow
+        // test timeWindow
     }
 
 }

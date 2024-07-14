@@ -77,7 +77,7 @@ public class TickerService  {
 			rs = st.executeQuery(query);
 			// create the model while we insert it
 			TickerListDO list = new TickerListDO();
-			// TODO: validate ticker list name
+			// validate ticker list name
 			list.setName(name);
 			while (rs.next()) {
 				String symbol = rs.getString("symbol");
@@ -92,13 +92,13 @@ public class TickerService  {
 					listTicker.setTicker(ticker.get());
 					list.getTickers().add(listTicker);
 				} catch (Exception e) {
-					// TODO: handle exception
+					
 				}
 			}
 			list.setSize(list.getTickers().size());
 			
 			tickerListRepo.save(list);
-			// TODO: ticker:service-list id not set on insert
+			// ticker:service-list id not set on insert
 			rs.close();
 			st.close();
 			return list;

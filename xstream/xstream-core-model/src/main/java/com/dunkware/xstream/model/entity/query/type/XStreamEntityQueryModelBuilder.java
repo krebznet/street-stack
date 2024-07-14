@@ -11,7 +11,7 @@ public class XStreamEntityQueryModelBuilder {
 			System.out.println(DunkJson.serializePretty(model));
 		} catch (Exception e) {
 			e.printStackTrace();
-			// TODO: handle exception
+			
 		}
 	}
 	

@@ -310,7 +310,7 @@ public class OrderDlg extends JDialog {
                     try {
                         return m_parent.lookupContract(contract);
                     } catch (InterruptedException e) {
-                        // TODO Auto-generated catch block
+
                         e.printStackTrace();
                     }
                     return new ArrayList<>();
@@ -324,7 +324,7 @@ public class OrderDlg extends JDialog {
                   try {
                       return m_parent.lookupContract(contract);
                   } catch (InterruptedException e) {
-                      // TODO Auto-generated catch block
+
                       e.printStackTrace();
                   }
                   return new ArrayList<>();

@@ -34,7 +34,7 @@ class GenTimeTest {
      */
     @Test
     void testGenTime() {
-        // TODO: test GenTime
+        // test GenTime
     }
 
     /**
@@ -42,7 +42,7 @@ class GenTimeTest {
      */
     @Test
     void hourTest() {
-        // TODO: test hour
+        // test hour
     }
 
     /**
@@ -50,7 +50,7 @@ class GenTimeTest {
      */
     @Test
     void minuteTest() {
-        // TODO: test minute
+        // test minute
     }
 
     /**
@@ -58,7 +58,7 @@ class GenTimeTest {
      */
     @Test
     void secondTest() {
-        // TODO: test second
+        // test second
     }
 
     /**
@@ -66,7 +66,7 @@ class GenTimeTest {
      */
     @Test
     void timeZoneTest() {
-        // TODO: test timeZone
+        // test timeZone
     }
 
 }

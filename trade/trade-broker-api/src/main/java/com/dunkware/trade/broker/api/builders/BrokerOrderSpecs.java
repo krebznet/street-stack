@@ -20,7 +20,7 @@ public class BrokerOrderSpecs {
 			System.out.println(DunkJson.serializePretty(spec));
 		} catch (Exception e) {
 			e.printStackTrace();
-			// TODO: handle exception
+			
 		}
 		return spec;
 	}

@@ -26,31 +26,31 @@ public class SignalHistoricalCount extends XStreamExpressionImpl {
 
 	@Override
 	public void start() {
-		// TODO Auto-generated method stub
+		
 		
 	}
 
 	@Override
 	public void dispose() {
-		// TODO Auto-generated method stub
+		
 		
 	}
 
 	@Override
 	public ExpressionType getExpType() {
-		// TODO Auto-generated method stub
+		
 		return null;
 	}
 
 	@Override
 	public boolean execute() {
-		// TODO Auto-generated method stub
+		
 		return false;
 	}
 
 	@Override
 	public boolean canExecute() {
-		// TODO Auto-generated method stub
+		
 		return false;
 	}
 

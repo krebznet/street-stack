@@ -120,7 +120,7 @@ public class StreamSessionWorkerImpl implements StreamSessionWorker {
 
 	@Override
 	public Channel getChannel() {
-		// TODO Auto-generated method stub
+		
 		return null;
 	}
 	
@@ -198,7 +198,7 @@ public class StreamSessionWorkerImpl implements StreamSessionWorker {
 			try {
 				Thread.sleep(3000);
 			} catch (Exception e) {
-				// TODO: handle exception
+				
 			}
 
 		}

@@ -195,7 +195,7 @@ class MarketDataPanel extends JPanel {
 
         @Override
         public void activated() {
-            // TODO Auto-generated method stub
+            
 
         }
 
@@ -1386,7 +1386,7 @@ class MarketDataPanel extends JPanel {
 
         @Override
         public void activated() {
-            // TODO Auto-generated method stub
+            
             
         }
 

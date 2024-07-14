@@ -60,19 +60,19 @@ public class TickFeedExtension implements StreamSessionExtension {
 
 	@Override
 	public void sessionStopping(StreamSession session) {
-		// TODO Auto-generated method stub
+		
 		
 	}
 
 	@Override
 	public void sessionStopped(StreamSession session) {
-		// TODO Auto-generated method stub
+		
 		
 	}
 
 	@Override
 	public void nodeStartException(StreamSessionNode node, String exception) {
-		// TODO Auto-generated method stub
+		
 		
 	}
 

@@ -34,7 +34,7 @@ class TickerRefTest {
      */
     @Test
     void testTickerRef() {
-        // TODO: test TickerRef
+        // test TickerRef
     }
 
     /**
@@ -42,7 +42,7 @@ class TickerRefTest {
      */
     @Test
     void idTest() {
-        // TODO: test id
+        // test id
     }
 
     /**
@@ -50,7 +50,7 @@ class TickerRefTest {
      */
     @Test
     void identifierTest() {
-        // TODO: test identifier
+        // test identifier
     }
 
     /**
@@ -58,7 +58,7 @@ class TickerRefTest {
      */
     @Test
     void exchangeTest() {
-        // TODO: test exchange
+        // test exchange
     }
 
     /**
@@ -66,7 +66,7 @@ class TickerRefTest {
      */
     @Test
     void nameTest() {
-        // TODO: test name
+        // test name
     }
 
     /**
@@ -74,7 +74,7 @@ class TickerRefTest {
      */
     @Test
     void sessionCountTest() {
-        // TODO: test sessionCount
+        // test sessionCount
     }
 
     /**
@@ -82,7 +82,7 @@ class TickerRefTest {
      */
     @Test
     void baseVersionTest() {
-        // TODO: test baseVersion
+        // test baseVersion
     }
 
 }

@@ -53,7 +53,7 @@ public class DefaultApiTest {
         List<ExchangeSession> response = 
         api.apiExchangesExchangeIdSessionsGet(exchangeId);
         
-        // TODO: test validations
+        // test validations
     }
     
     /**
@@ -70,7 +70,7 @@ public class DefaultApiTest {
         List<TickerRef> response = 
         api.apiExchangesExchangeIdTickersGet(exchangeId);
         
-        // TODO: test validations
+        // test validations
     }
     
     /**
@@ -88,7 +88,7 @@ public class DefaultApiTest {
         List<TickerSession> response = 
         api.apiExchangesExchangeIdTickersTickerIdSessionsGet(exchangeId, tickerId);
         
-        // TODO: test validations
+        // test validations
     }
     
     /**
@@ -107,7 +107,7 @@ public class DefaultApiTest {
         List<TickerStat> response = 
         api.apiExchangesExchangeIdTickersTickerIdSessionsSessionIdStatsGet(exchangeId, tickerId, sessionId);
         
-        // TODO: test validations
+        // test validations
     }
     
     /**
@@ -126,7 +126,7 @@ public class DefaultApiTest {
         TickerStat response = 
         api.apiExchangesExchangeIdTickersTickerIdStatsStatIdGet(exchangeId, tickerId, statId);
         
-        // TODO: test validations
+        // test validations
     }
     
     /**
@@ -144,7 +144,7 @@ public class DefaultApiTest {
         List<TickerVariable> response = 
         api.apiExchangesExchangeIdTickersTickerIdVariablesGet(exchangeId, tickerId);
         
-        // TODO: test validations
+        // test validations
     }
     
     /**
@@ -160,7 +160,7 @@ public class DefaultApiTest {
         List<ExchangeRef> response = 
         api.apiExchangesGet();
         
-        // TODO: test validations
+        // test validations
     }
     
 }

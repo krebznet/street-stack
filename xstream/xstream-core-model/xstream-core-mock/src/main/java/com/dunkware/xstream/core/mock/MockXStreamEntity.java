@@ -35,7 +35,7 @@ public class MockXStreamEntity implements XStreamEntity {
 	
 	@Override
 	public XStreamExpression createExpressoin(ExpressionType type) throws Exception {
-		// TODO Auto-generated method stub
+		
 		return null;
 	}
 
@@ -70,7 +70,7 @@ public class MockXStreamEntity implements XStreamEntity {
 
 	@Override
 	public List<XStreamEntityVar> getNumericVars() {
-		// TODO Auto-generated method stub
+		
 		return null;
 	}
 
@@ -78,7 +78,7 @@ public class MockXStreamEntity implements XStreamEntity {
 
 	@Override
 	public Map<Integer, Number> numericVarSnapshot() {
-		// TODO Auto-generated method stub
+		
 		return null;
 	}
 
@@ -86,7 +86,7 @@ public class MockXStreamEntity implements XStreamEntity {
 
 	@Override
 	public void dispose() {
-		// TODO Auto-generated method stub
+		
 		
 	}
 
@@ -112,25 +112,25 @@ public class MockXStreamEntity implements XStreamEntity {
 
 	@Override
 	public TickStream getTickStream() {
-		// TODO Auto-generated method stub
+		
 		return null;
 	}
 
 	@Override
 	public LocalDateTime getLocalDateTime() {
-		// TODO Auto-generated method stub
+		
 		return null;
 	}
 
 	@Override
 	public XStreamRowSnapshot snapshot() {
-		// TODO Auto-generated method stub
+		
 		return null;
 	}
 
 	@Override
 	public XStreamRowMetrics getStats(boolean varStats) {
-		// TODO Auto-generated method stub
+		
 		return null;
 	}
 
@@ -138,7 +138,7 @@ public class MockXStreamEntity implements XStreamEntity {
 
 	@Override
 	public Map<Integer, Object> varValues() {
-		// TODO Auto-generated method stub
+		
 		return null;
 	}
 
@@ -152,7 +152,7 @@ public class MockXStreamEntity implements XStreamEntity {
 					rowListenerLock.acquire();
 					rowListeners.add(list);
 				} catch (Exception e) {
-					// TODO: handle exception
+					
 				} finally {
 					rowListenerLock.release();
 				}
@@ -172,7 +172,7 @@ public class MockXStreamEntity implements XStreamEntity {
 					rowListenerLock.acquire();
 					rowListeners.remove(list);
 				} catch (Exception e) {
-					// TODO: handle exception
+					
 				} finally {
 					rowListenerLock.release();
 				}
@@ -184,31 +184,31 @@ public class MockXStreamEntity implements XStreamEntity {
 
 	@Override
 	public List<XStreamRowSignal> getSignals() {
-		// TODO Auto-generated method stub
+		
 		return null;
 	}
 
 	@Override
 	public int getSignalCount() {
-		// TODO Auto-generated method stub
+		
 		return 0;
 	}
 
 	@Override
 	public int getIdentifier() {
-		// TODO Auto-generated method stub
+		
 		return 0;
 	}
 
 	@Override
 	public void addVarListener(XStreamEntityVarListener listener) {
-		// TODO Auto-generated method stub
+		
 		
 	}
 
 	@Override
 	public void removeVarListener(XStreamEntityVarListener listener) {
-		// TODO Auto-generated method stub
+		
 		
 	}
 
@@ -216,7 +216,7 @@ public class MockXStreamEntity implements XStreamEntity {
 
 	@Override
 	public void signal(SignalType type) {
-		// TODO Auto-generated method stub
+		
 		
 	}
 

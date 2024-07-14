@@ -572,7 +572,7 @@ public class DunkNetController
 				node = getSenderNode(message);
 				counter = counter + 250;
 			} catch (Exception e) {
-				// TODO: handle exception
+				
 			}
 		}
 		if(logger.isDebugEnabled()) { 
@@ -796,7 +796,7 @@ public class DunkNetController
 		try {
 			pendingServiceRequests.remove(message.getRequestId());		
 		} catch (Exception e) {
-			// TODO: handle exception
+			
 		}
 	
 	}
@@ -847,7 +847,7 @@ public class DunkNetController
 			if(channel == null) { 
 				logger.error(marker, "Handling Channel Event for channel {} on node {} but channel is not found",
 						message.getChannel(),net.getId());
-				//TODO: you stop/start stream worker keeps shit running 
+				//// you stop/start stream worker keeps shit running 
 				return;
 			}
 		} catch (Exception e) {

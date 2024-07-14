@@ -43,7 +43,7 @@ public class EntityStatRedisProviderTest {
 				try {
 					Thread.sleep(100);
 				} catch (Exception e) {
-					// TODO: handle exception
+					
 				}
 			}
 			watch.stop();
@@ -51,7 +51,7 @@ public class EntityStatRedisProviderTest {
 		
 		} catch (Exception e) {
 			e.printStackTrace();
-			// TODO: handle exception
+			
 		}
 	
 		

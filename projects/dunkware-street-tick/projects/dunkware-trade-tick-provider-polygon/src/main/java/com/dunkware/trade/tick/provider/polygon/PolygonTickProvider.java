@@ -50,7 +50,7 @@ public class PolygonTickProvider implements TickProvider {
 	
 	@Override
 	public void connect(TickProviderSpec providerSpec, TickFeed feed, DunkExecutor executor) throws TickProviderException {
-		// TODO Auto-generated method stub
+		
 		
 	}
 
@@ -59,7 +59,7 @@ public class PolygonTickProvider implements TickProvider {
 
 	@Override
 	public boolean isSubscribed(String symbol) {
-		// TODO Auto-generated method stub
+		
 		return false;
 	}
 
@@ -68,7 +68,7 @@ public class PolygonTickProvider implements TickProvider {
 
 	@Override
 	public boolean isSubscribed(TradeTickerSpec ticker) {
-		// TODO Auto-generated method stub
+		
 		return false;
 	}
 
@@ -76,7 +76,7 @@ public class PolygonTickProvider implements TickProvider {
 
 	@Override
 	public TickFeedSubscription getSubscription(TradeTickerSpec ticker) throws TickProviderException {
-		// TODO Auto-generated method stub
+		
 		return null;
 	}
 
@@ -84,7 +84,7 @@ public class PolygonTickProvider implements TickProvider {
 
 	@Override
 	public TickFeedSubscription getSubscription(String symbol) throws TickProviderException {
-		// TODO Auto-generated method stub
+		
 		return null;
 	}
 
@@ -92,7 +92,7 @@ public class PolygonTickProvider implements TickProvider {
 
 	@Override
 	public String getConnectionError() {
-		// TODO Auto-generated method stub
+		
 		return null;
 	}
 
@@ -100,7 +100,7 @@ public class PolygonTickProvider implements TickProvider {
 
 	@Override
 	public List<TradeTickerSpec> getInvalidTickers() {
-		// TODO Auto-generated method stub
+		
 		return null;
 	}
 
@@ -108,7 +108,7 @@ public class PolygonTickProvider implements TickProvider {
 
 	@Override
 	public Collection<TickFeedSubscription> getSubscriptions() {
-		// TODO Auto-generated method stub
+		
 		return null;
 	}
 
@@ -116,7 +116,7 @@ public class PolygonTickProvider implements TickProvider {
 
 	@Override
 	public int getQuoteCount() {
-		// TODO Auto-generated method stub
+		
 		return 0;
 	}
 
@@ -124,7 +124,7 @@ public class PolygonTickProvider implements TickProvider {
 
 	@Override
 	public int getTradeCount() {
-		// TODO Auto-generated method stub
+		
 		return 0;
 	}
 
@@ -132,7 +132,7 @@ public class PolygonTickProvider implements TickProvider {
 
 	@Override
 	public int getSnapshotCount() {
-		// TODO Auto-generated method stub
+		
 		return 0;
 	}
 
@@ -140,7 +140,7 @@ public class PolygonTickProvider implements TickProvider {
 
 	@Override
 	public void newDay() {
-		// TODO Auto-generated method stub
+		
 		
 	}
 

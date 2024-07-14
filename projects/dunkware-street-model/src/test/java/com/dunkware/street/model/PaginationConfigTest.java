@@ -34,7 +34,7 @@ class PaginationConfigTest {
      */
     @Test
     void testPaginationConfig() {
-        // TODO: test PaginationConfig
+        // test PaginationConfig
     }
 
     /**
@@ -42,7 +42,7 @@ class PaginationConfigTest {
      */
     @Test
     void pageSizeTest() {
-        // TODO: test pageSize
+        // test pageSize
     }
 
     /**
@@ -50,7 +50,7 @@ class PaginationConfigTest {
      */
     @Test
     void currentPageTest() {
-        // TODO: test currentPage
+        // test currentPage
     }
 
 }

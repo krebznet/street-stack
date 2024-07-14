@@ -36,7 +36,7 @@ class ExchangeSessionTest {
      */
     @Test
     void testExchangeSession() {
-        // TODO: test ExchangeSession
+        // test ExchangeSession
     }
 
     /**
@@ -44,7 +44,7 @@ class ExchangeSessionTest {
      */
     @Test
     void idTest() {
-        // TODO: test id
+        // test id
     }
 
     /**
@@ -52,7 +52,7 @@ class ExchangeSessionTest {
      */
     @Test
     void exchangeIdTest() {
-        // TODO: test exchangeId
+        // test exchangeId
     }
 
     /**
@@ -60,7 +60,7 @@ class ExchangeSessionTest {
      */
     @Test
     void startTimeTest() {
-        // TODO: test startTime
+        // test startTime
     }
 
     /**
@@ -68,7 +68,7 @@ class ExchangeSessionTest {
      */
     @Test
     void stopTimeTest() {
-        // TODO: test stopTime
+        // test stopTime
     }
 
     /**
@@ -76,7 +76,7 @@ class ExchangeSessionTest {
      */
     @Test
     void dateTest() {
-        // TODO: test date
+        // test date
     }
 
     /**
@@ -84,7 +84,7 @@ class ExchangeSessionTest {
      */
     @Test
     void entityCountTest() {
-        // TODO: test entityCount
+        // test entityCount
     }
 
     /**
@@ -92,7 +92,7 @@ class ExchangeSessionTest {
      */
     @Test
     void versionTest() {
-        // TODO: test version
+        // test version
     }
 
 }

@@ -46,31 +46,31 @@ public class StreamEventPublisher implements StreamSessionExtension {
 
 	@Override
 	public void nodeStarted(StreamSessionNode node) {
-		// TODO Auto-generated method stub
+		
 
 	}
 
 	@Override
 	public void sessionStarted(StreamSession session) {
-		// TODO Auto-generated method stub
+		
 
 	}
 
 	@Override
 	public void sessionStopping(StreamSession session) {
-		// TODO Auto-generated method stub
+		
 
 	}
 
 	@Override
 	public void sessionStopped(StreamSession session) {
-		// TODO Auto-generated method stub
+		
 
 	}
 
 	@Override
 	public void nodeStartException(StreamSessionNode node, String exception) {
-		// TODO Auto-generated method stub
+		
 
 	}
 

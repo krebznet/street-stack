@@ -15,7 +15,7 @@ public class SnapshotEntityFactoryTest {
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
-			// TODO: handle exception
+			
 		}
 		
 		

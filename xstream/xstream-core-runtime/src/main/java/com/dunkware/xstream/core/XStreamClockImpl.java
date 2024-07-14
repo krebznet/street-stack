@@ -108,7 +108,7 @@ public class XStreamClockImpl implements XStreamClock {
 				listener.timeUpdate(this, dt);
 			}
 		} catch (Exception e) {
-			// TODO: handle exception
+			
 		} finally {
 			
 			listenerLock.release();
@@ -185,7 +185,7 @@ public class XStreamClockImpl implements XStreamClock {
 					listener.timeUpdate(XStreamClockImpl.this, time);
 				}
 			} catch (Exception e) {
-				// TODO: handle exception
+				
 			} finally {
 				listenerLock.release();
 			}

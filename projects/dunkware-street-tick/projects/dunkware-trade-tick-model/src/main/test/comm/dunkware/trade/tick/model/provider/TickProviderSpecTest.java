@@ -19,7 +19,7 @@ public class TickProviderSpecTest {
 			System.out.println(deserialized.getProperties().toString());
 		} catch (Exception e) {
 			e.printStackTrace();
-			// TODO: handle exception
+			
 		}
 	}
 }

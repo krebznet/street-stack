@@ -29,7 +29,7 @@ public class XStreamEntityValueComparePredicate implements XStreamEntityPredicat
 	}
 
 	public boolean test(XStreamEntity t) {
-		// TODO Auto-generated method stub
+		
 		return false;
 	}
 	
@@ -51,7 +51,7 @@ public class XStreamEntityValueComparePredicate implements XStreamEntityPredicat
 
 	@Override
 	public XStreamEntityCriteriaType getModel() {
-		// TODO Auto-generated method stub
+		
 		return null;
 	}
 

@@ -38,7 +38,7 @@ public class LIveEntityTest {
 	        redisson.shutdown();
 		} catch (Exception e) {
 			e.printStackTrace();
-			// TODO: handle exception
+			
 		}
 	   	
 	}

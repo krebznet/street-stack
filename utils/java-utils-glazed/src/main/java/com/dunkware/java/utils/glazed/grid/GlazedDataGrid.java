@@ -81,7 +81,7 @@ public class GlazedDataGrid implements ListEventListener<Object> {
 				}
 			} catch (Exception e2) {
 				
-				// TODO: handle exception
+				
 			} finally {
 				list.getReadWriteLock().readLock().unlock();
 			}
@@ -377,7 +377,7 @@ public class GlazedDataGrid implements ListEventListener<Object> {
 			logger.debug("added update");
 			;
 		} catch (Exception e) {
-			// TODO: handle exception
+			
 		} finally {
 			updatesLock.release();
 		}
@@ -392,7 +392,7 @@ public class GlazedDataGrid implements ListEventListener<Object> {
 					emitUpdates();
 					Thread.sleep(100);
 				} catch (Exception e) {
-					// TODO: handle exception
+					
 				}
 			}
 		}

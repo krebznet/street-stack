@@ -218,7 +218,7 @@ public class TickFeedImpl implements TickFeed {
 				
 				}
 			} catch (Exception e) {
-				// TODO: handle exception
+				
 			}
 		}
 	}

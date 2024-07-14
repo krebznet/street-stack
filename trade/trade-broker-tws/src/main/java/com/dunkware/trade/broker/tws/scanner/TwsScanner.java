@@ -30,7 +30,7 @@ public class TwsScanner {
 			_listenerSemaphore.acquire();
 			_listeners.add(listener);
 		} catch (Exception e) {
-			// TODO: handle exception
+			
 		} finally {
 			_listenerSemaphore.release();
 		}
@@ -41,7 +41,7 @@ public class TwsScanner {
 			_listenerSemaphore.acquire();
 			_listeners.remove(listener);
 		} catch (Exception e) {
-			// TODO: handle exception
+			
 		} finally {
 			_listenerSemaphore.release();
 		}

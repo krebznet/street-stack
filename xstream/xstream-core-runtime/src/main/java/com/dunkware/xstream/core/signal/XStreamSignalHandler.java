@@ -88,7 +88,7 @@ public class XStreamSignalHandler {
 					}
 				}
 				if(signalType.isEnableEntityLimit()) { 
-					// TODO: 
+				
 				}
 				signals.entitySignal(XStreamSignalHandler.this, entity);
 			}

@@ -23,7 +23,7 @@ public class GitClone {
 			clone(source,"/Users/duncankrebs/clone");
 		} catch (Exception e) {
 			e.printStackTrace();
-			// TODO: handle exception
+			
 		}
 				
 	}

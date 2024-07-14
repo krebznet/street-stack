@@ -81,11 +81,11 @@ public class DunkNetNodeImpl implements DunkNetNode {
 			descriptorLock.acquire();
 			return descriptor;
 		} catch (Exception e) {
-			// TODO: handle exception
+			
 		} finally { 
 			descriptorLock.release();
 		}
-		// TODO Auto-generated method stub
+		
 		return null;
 	}
 
@@ -104,7 +104,7 @@ public class DunkNetNodeImpl implements DunkNetNode {
 
 	@Override
 	public DunkNetServiceRequest service(Object payload) throws DunkNetException {
-		// TODO Auto-generated method stub
+		
 		return null;
 	}
 	

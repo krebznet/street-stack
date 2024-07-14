@@ -231,7 +231,7 @@ public class TwsBroker implements Broker , TwsSocketReader {
 
 					}
 				} catch (Exception e) {
-					// TODO: handle exception
+					
 				}
 			}
 
@@ -265,7 +265,7 @@ public class TwsBroker implements Broker , TwsSocketReader {
 		
 		logger.debug("error " + id + " " + errorCode + " " + errorMsg + " " + advancedOrderRejectJson);
 		_connectorSocket.getClientSocket().eDisconnect();
-		// TODO Auto-generated method stub
+		
 		// EClientErrors.NOT_CONNECTED.c
 
 		// TwsSocketReader.super.error(id, errorCode, errorMsg,

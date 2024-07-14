@@ -107,7 +107,7 @@ public class MockTickProvider implements TickProvider {
 
 	@Override
 	public String getConnectionError() {
-		// TODO Auto-generated method stub
+		
 		return null;
 	}
 
@@ -123,25 +123,25 @@ public class MockTickProvider implements TickProvider {
 
 	@Override
 	public int getQuoteCount() {
-		// TODO Auto-generated method stub
+		
 		return 0;
 	}
 
 	@Override
 	public int getTradeCount() {
-		// TODO Auto-generated method stub
+		
 		return 0;
 	}
 
 	@Override
 	public int getSnapshotCount() {
-		// TODO Auto-generated method stub
+		
 		return 0;
 	}
 
 	@Override
 	public void newDay() {
-		// TODO Auto-generated method stub
+		
 		
 	}
 	
@@ -172,7 +172,7 @@ public class MockTickProvider implements TickProvider {
 					}
 				}
 			} catch (Exception e) {
-				// TODO: handle exception
+				
 			}
 		}
 	}

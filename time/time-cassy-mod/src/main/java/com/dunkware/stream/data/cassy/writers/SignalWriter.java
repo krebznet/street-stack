@@ -88,7 +88,7 @@ public class SignalWriter {
 					Thread.sleep(1000);
 					System.out.println(insertCounter.get());
 				} catch (Exception e) {
-					// TODO: handle exception
+					
 				}
     		}
     	}

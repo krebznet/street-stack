@@ -49,7 +49,7 @@ public class CassyInsertController {
 				System.out.println("stop");
 			} catch (Exception e) {
 				e.printStackTrace();
-				// TODO: handle exception
+				
 			}
 
 			
@@ -76,7 +76,7 @@ public class CassyInsertController {
 			}
 
 		} catch (Exception e) {
-			// TODO: handle exception
+			
 		}
 	}
 }

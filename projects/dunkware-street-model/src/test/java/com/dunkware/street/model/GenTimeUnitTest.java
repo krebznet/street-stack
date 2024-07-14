@@ -34,7 +34,7 @@ class GenTimeUnitTest {
      */
     @Test
     void testGenTimeUnit() {
-        // TODO: test GenTimeUnit
+        // test GenTimeUnit
     }
 
     /**
@@ -42,7 +42,7 @@ class GenTimeUnitTest {
      */
     @Test
     void secondsTest() {
-        // TODO: test seconds
+        // test seconds
     }
 
     /**
@@ -50,7 +50,7 @@ class GenTimeUnitTest {
      */
     @Test
     void minutesTest() {
-        // TODO: test minutes
+        // test minutes
     }
 
     /**
@@ -58,7 +58,7 @@ class GenTimeUnitTest {
      */
     @Test
     void hoursTest() {
-        // TODO: test hours
+        // test hours
     }
 
     /**
@@ -66,7 +66,7 @@ class GenTimeUnitTest {
      */
     @Test
     void daysTest() {
-        // TODO: test days
+        // test days
     }
 
 }

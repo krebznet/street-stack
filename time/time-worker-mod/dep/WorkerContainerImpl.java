@@ -133,7 +133,7 @@ public class WorkerContainerImpl {
 					messageHandlersLock.acquire();
 					messageHandlers.add(handler);
 				} catch (Exception e) {
-					// TODO: handle exception
+					
 				} finally { 
 					messageHandlersLock.release();
 				}
@@ -151,7 +151,7 @@ public class WorkerContainerImpl {
 					messageHandlersLock.acquire();
 					messageHandlers.remove(handler);
 				} catch (Exception e) {
-					// TODO: handle exception
+					
 				} finally { 
 					messageHandlersLock.release();
 				}
@@ -210,7 +210,7 @@ public class WorkerContainerImpl {
 						}
 					}
 				} catch (Exception e) {
-					// TODO: handle exception
+					
 				} finally { 
 					messageHandlersLock.release();
 					

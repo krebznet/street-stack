@@ -33,19 +33,19 @@ public class HttpTimeScriptClient implements TimeScriptClient {
 	
 	@Override
 	public XScriptModel getLatestScriptReleaseModel(String scriptName) throws Exception {
-		// TODO Auto-generated method stub
+		
 		return null;
 	}
 
 	@Override
 	public XScriptReleaseRep releaseScript(String string, String scriptName) throws Exception {
-		// TODO Auto-generated method stub
+		
 		return null;
 	}
 
 	@Override
 	public XScriptSyncRep syncScript(String script, String scriptName) throws Exception {
-		// TODO Auto-generated method stub
+		
 		return null;
 	}
 

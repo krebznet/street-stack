@@ -36,7 +36,7 @@ class TickerSessionTest {
      */
     @Test
     void testTickerSession() {
-        // TODO: test TickerSession
+        // test TickerSession
     }
 
     /**
@@ -44,7 +44,7 @@ class TickerSessionTest {
      */
     @Test
     void dateTest() {
-        // TODO: test date
+        // test date
     }
 
     /**
@@ -52,7 +52,7 @@ class TickerSessionTest {
      */
     @Test
     void startTimeTest() {
-        // TODO: test startTime
+        // test startTime
     }
 
     /**
@@ -60,7 +60,7 @@ class TickerSessionTest {
      */
     @Test
     void stopTimeTest() {
-        // TODO: test stopTime
+        // test stopTime
     }
 
     /**
@@ -68,7 +68,7 @@ class TickerSessionTest {
      */
     @Test
     void signalCountTest() {
-        // TODO: test signalCount
+        // test signalCount
     }
 
     /**
@@ -76,7 +76,7 @@ class TickerSessionTest {
      */
     @Test
     void versionTest() {
-        // TODO: test version
+        // test version
     }
 
 }

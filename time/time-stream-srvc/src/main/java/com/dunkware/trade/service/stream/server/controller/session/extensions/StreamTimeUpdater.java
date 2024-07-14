@@ -43,13 +43,13 @@ public class StreamTimeUpdater implements StreamSessionExtension {
 
 	@Override
 	public void nodeStarted(StreamSessionNode node) {
-		// TODO Auto-generated method stub
+		
 		
 	}
 
 	@Override
 	public void sessionStarted(StreamSession session) {
-		// TODO Auto-generated method stub
+		
 		
 	}
 

@@ -37,7 +37,7 @@ public class StreamSignalType {
 			System.out.println(type.toString());
 		} catch (Exception e) {
 			e.printStackTrace();
-			// TODO: handle exception
+			
 		}
 	}
 

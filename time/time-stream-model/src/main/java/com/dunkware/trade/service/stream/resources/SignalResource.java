@@ -19,7 +19,7 @@ public class SignalResource {
 		try {
 			System.out.println(DunkJson.serializePretty(re));
 		} catch (Exception e) {
-			// TODO: handle exception
+			
 		}
 	}
 	

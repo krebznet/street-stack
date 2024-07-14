@@ -36,7 +36,7 @@ class GenAbsoluteTimeRangeTest {
      */
     @Test
     void testGenAbsoluteTimeRange() {
-        // TODO: test GenAbsoluteTimeRange
+        // test GenAbsoluteTimeRange
     }
 
     /**
@@ -44,7 +44,7 @@ class GenAbsoluteTimeRangeTest {
      */
     @Test
     void startTimeTest() {
-        // TODO: test startTime
+        // test startTime
     }
 
     /**
@@ -52,7 +52,7 @@ class GenAbsoluteTimeRangeTest {
      */
     @Test
     void enLocalTimeTest() {
-        // TODO: test enLocalTime
+        // test enLocalTime
     }
 
     /**
@@ -60,7 +60,7 @@ class GenAbsoluteTimeRangeTest {
      */
     @Test
     void hasTimeWindowTest() {
-        // TODO: test hasTimeWindow
+        // test hasTimeWindow
     }
 
     /**
@@ -68,7 +68,7 @@ class GenAbsoluteTimeRangeTest {
      */
     @Test
     void timeWindowTest() {
-        // TODO: test timeWindow
+        // test timeWindow
     }
 
 }

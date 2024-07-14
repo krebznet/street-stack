@@ -30,7 +30,7 @@ public class ScapeNYSE {
 	 * ticker.setStatus(TickerDO.STATUS_PENDING); try { tickerRepo.save(ticker);
 	 * System.out.println("Inserted " + ticker.getSymbol() + " " +
 	 * ticker.getSecurityName()); } catch (Exception e) { e.printStackTrace(); } } }
-	 * } catch (Exception e) { // TODO: handle exception }
+	 * } catch (Exception e) {  }
 	 * 
 	 * }
 	 */

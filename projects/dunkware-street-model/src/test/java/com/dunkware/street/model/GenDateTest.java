@@ -34,7 +34,7 @@ class GenDateTest {
      */
     @Test
     void testGenDate() {
-        // TODO: test GenDate
+        // test GenDate
     }
 
     /**
@@ -42,7 +42,7 @@ class GenDateTest {
      */
     @Test
     void yearTest() {
-        // TODO: test year
+        // test year
     }
 
     /**
@@ -50,7 +50,7 @@ class GenDateTest {
      */
     @Test
     void monthTest() {
-        // TODO: test month
+        // test month
     }
 
     /**
@@ -58,7 +58,7 @@ class GenDateTest {
      */
     @Test
     void dayOfMonthTest() {
-        // TODO: test dayOfMonth
+        // test dayOfMonth
     }
 
 }

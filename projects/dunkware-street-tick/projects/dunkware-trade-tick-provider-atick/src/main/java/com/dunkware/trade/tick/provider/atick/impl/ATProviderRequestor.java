@@ -119,7 +119,7 @@ public class ATProviderRequestor extends at.feedapi.ActiveTickServerRequester {
 			TickFeedSnapshot snapshot = new TickFeedSnapshot();
 			snapshot.setTime(LocalDateTime.now(DunkTimeZones.zoneNewYork()));
 			snapshot.setSymbol(strItemSymbol);
-			//TODO: item
+		
 			//fields.add(Tick.TickField.newBuilder().setId(TradeTicks.FieldSymbolId).setType(TickFieldType.INT).setIntValue(this.provider.getSymbolService().getSymbolId(strItemSymbol)).build());
 			
 			for (QuoteDbDataItem dataItem : responseItem.m_vecDataItems) {
@@ -242,7 +242,7 @@ public class ATProviderRequestor extends at.feedapi.ActiveTickServerRequester {
 				
 					case ATQuoteFieldType.LastTradeDateTime:
 						//getItemValue(item, dataType)
-						//TODO: Handle LastTradeDateTime
+					
 						break;
 					default:
 						// do not throw error for now

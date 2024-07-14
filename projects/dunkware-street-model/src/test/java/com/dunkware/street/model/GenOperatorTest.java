@@ -26,7 +26,7 @@ class GenOperatorTest {
      */
     @Test
     void testGenOperator() {
-        // TODO: test GenOperator
+        // test GenOperator
     }
 
 }

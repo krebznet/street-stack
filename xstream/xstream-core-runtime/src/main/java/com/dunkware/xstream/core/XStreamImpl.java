@@ -464,7 +464,7 @@ public class XStreamImpl implements XStream {
 					rowListenerLock.acquire();
 					rowListeners.add(listener);
 				} catch (Exception e) {
-					// TODO: handle exception
+					
 				} finally {
 					rowListenerLock.release();
 				}
@@ -524,7 +524,7 @@ public class XStreamImpl implements XStream {
 						listener.onError(XStreamImpl.this, error);
 					}
 				} catch (Exception e) {
-					// TODO: handle exception
+					
 				} finally {
 					errorListenerLock.release();
 				}
@@ -542,7 +542,7 @@ public class XStreamImpl implements XStream {
 					errorListenerLock.acquire();
 					errorListeners.add(listener);
 				} catch (Exception e) {
-					// TODO: handle exception
+					
 				} finally {
 					errorListenerLock.release();
 				}
@@ -560,7 +560,7 @@ public class XStreamImpl implements XStream {
 					errorListenerLock.acquire();
 					errorListeners.remove(listener);
 				} catch (Exception e) {
-					// TODO: handle exception
+					
 				} finally {
 					errorListenerLock.release();
 				}

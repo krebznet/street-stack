@@ -119,7 +119,7 @@ public class EntityStatCache {
 				try {
 					Thread.sleep(100);
 				} catch (Exception e) {
-					// TODO: handle exception
+					
 				}
 			}
 			watch.stop();

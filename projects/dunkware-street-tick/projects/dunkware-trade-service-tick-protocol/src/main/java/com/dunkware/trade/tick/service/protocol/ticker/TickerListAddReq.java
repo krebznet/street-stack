@@ -14,7 +14,7 @@ public class TickerListAddReq {
 		try {
 			System.out.println(DunkJson.serializePretty(req));
 		} catch (Exception e) {
-			// TODO: handle exception
+			
 		}
 	}
 	

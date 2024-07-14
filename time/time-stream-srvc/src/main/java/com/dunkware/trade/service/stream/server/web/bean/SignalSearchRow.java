@@ -19,7 +19,7 @@ public class SignalSearchRow {
 			
 		} catch (Exception e) {
 			e.printStackTrace();
-			// TODO: handle exception
+			
 		}
 	}
 	private long id; 

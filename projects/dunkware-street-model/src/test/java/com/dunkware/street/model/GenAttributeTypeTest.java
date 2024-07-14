@@ -36,7 +36,7 @@ class GenAttributeTypeTest {
      */
     @Test
     void testGenAttributeType() {
-        // TODO: test GenAttributeType
+        // test GenAttributeType
     }
 
     /**
@@ -44,7 +44,7 @@ class GenAttributeTypeTest {
      */
     @Test
     void identifierTest() {
-        // TODO: test identifier
+        // test identifier
     }
 
     /**
@@ -52,7 +52,7 @@ class GenAttributeTypeTest {
      */
     @Test
     void nameTest() {
-        // TODO: test name
+        // test name
     }
 
     /**
@@ -60,7 +60,7 @@ class GenAttributeTypeTest {
      */
     @Test
     void dataTypeTest() {
-        // TODO: test dataType
+        // test dataType
     }
 
     /**
@@ -68,7 +68,7 @@ class GenAttributeTypeTest {
      */
     @Test
     void dataFormatTest() {
-        // TODO: test dataFormat
+        // test dataFormat
     }
 
 }

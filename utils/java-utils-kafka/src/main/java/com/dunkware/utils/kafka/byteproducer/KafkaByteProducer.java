@@ -104,7 +104,7 @@ public class KafkaByteProducer {
 					Thread.sleep(5000);
 					logger.trace("{}:{}:{}", identifier, sendCount.get(), callbackCount.get());
 				} catch (Exception e) {
-					// TODO: handle exception
+					
 				}
 			}
 		}

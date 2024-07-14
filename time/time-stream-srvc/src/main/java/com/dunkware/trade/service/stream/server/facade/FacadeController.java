@@ -45,13 +45,13 @@ public class FacadeController implements ApiApi  {
 
 	@Override
 	public ResponseEntity<List<TickerRef>> _apiExchangesExchangeIdTickersGet(Integer exchangeId) {
-		// TODO Auto-generated method stub
+		
 		return ApiApi.super._apiExchangesExchangeIdTickersGet(exchangeId);
 	}
 
 	@Override
 	public ResponseEntity<List<ExchangeRef>> _apiExchangesGet() {
-		// TODO Auto-generated method stub
+		
 		return ApiApi.super._apiExchangesGet();
 	}
 

@@ -416,7 +416,7 @@ public class ApiController implements EWrapper {
 
 		@Override
 		public void orderState(TwsOrderState orderState) {
-			// TODO Auto-generated method stub
+			
 			
 		}
 
@@ -424,7 +424,7 @@ public class ApiController implements EWrapper {
 		public void orderStatus(TwsOrderStatus status, Decimal filled,
 				Decimal remaining, double avgFillPrice, int permId,
 				int parentId, double lastFillPrice, int clientId, String whyHeld, double mktCapPrice) {
-			// TODO Auto-generated method stub
+			
 			
 		} });
 		

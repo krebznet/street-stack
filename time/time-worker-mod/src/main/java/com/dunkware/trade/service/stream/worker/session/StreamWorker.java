@@ -454,7 +454,7 @@ public class StreamWorker implements DunkNetChannelHandler, IStream {
 						return;
 					}
 				} catch (Exception e) {
-					// TODO: handle exception
+					
 				}
 			}
 

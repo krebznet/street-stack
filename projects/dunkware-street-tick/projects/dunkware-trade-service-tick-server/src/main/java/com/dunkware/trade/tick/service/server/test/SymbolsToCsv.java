@@ -27,7 +27,7 @@ public class SymbolsToCsv {
 			System.out.println(out.toString());
 		} catch (Exception e) {
 			e.printStackTrace();
-			// TODO: handle exception
+			
 		}
 	}
 

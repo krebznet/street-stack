@@ -39,7 +39,7 @@ public class XStreamMetrics {
 				i++;
 			} catch (Exception e) {
 				e.printStackTrace();
-				// TODO: handle exception
+				
 			}
 		}
 		

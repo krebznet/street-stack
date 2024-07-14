@@ -17,25 +17,25 @@ public class KafkaChannelConnector implements ChannelEndpoint {
 		try {
 			
 		} catch (Exception e) {
-			// TODO: handle exception
+			
 		}
 	}
 
 	@Override
 	public void send(DunkMessage message) throws ChannelException {
-		// TODO Auto-generated method stub
+		
 		
 	}
 
 	@Override
 	public BlockingQueue<DunkMessage> consumerQueue() {
-		// TODO Auto-generated method stub
+		
 		return null;
 	}
 
 	@Override
 	public void disconnect() {
-		// TODO Auto-generated method stub
+		
 		
 	}
 	

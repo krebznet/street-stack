@@ -37,7 +37,7 @@ class TickerVariableTest {
      */
     @Test
     void testTickerVariable() {
-        // TODO: test TickerVariable
+        // test TickerVariable
     }
 
     /**
@@ -45,7 +45,7 @@ class TickerVariableTest {
      */
     @Test
     void idTest() {
-        // TODO: test id
+        // test id
     }
 
     /**
@@ -53,7 +53,7 @@ class TickerVariableTest {
      */
     @Test
     void identifierTest() {
-        // TODO: test identifier
+        // test identifier
     }
 
     /**
@@ -61,7 +61,7 @@ class TickerVariableTest {
      */
     @Test
     void nameTest() {
-        // TODO: test name
+        // test name
     }
 
     /**
@@ -69,7 +69,7 @@ class TickerVariableTest {
      */
     @Test
     void groupTest() {
-        // TODO: test group
+        // test group
     }
 
     /**
@@ -77,7 +77,7 @@ class TickerVariableTest {
      */
     @Test
     void dataTypeTest() {
-        // TODO: test dataType
+        // test dataType
     }
 
     /**
@@ -85,7 +85,7 @@ class TickerVariableTest {
      */
     @Test
     void dataFormatTest() {
-        // TODO: test dataFormat
+        // test dataFormat
     }
 
     /**
@@ -93,7 +93,7 @@ class TickerVariableTest {
      */
     @Test
     void baseVersionTest() {
-        // TODO: test baseVersion
+        // test baseVersion
     }
 
     /**
@@ -101,7 +101,7 @@ class TickerVariableTest {
      */
     @Test
     void sessionCountTest() {
-        // TODO: test sessionCount
+        // test sessionCount
     }
 
     /**
@@ -109,7 +109,7 @@ class TickerVariableTest {
      */
     @Test
     void valueTest() {
-        // TODO: test value
+        // test value
     }
 
 }

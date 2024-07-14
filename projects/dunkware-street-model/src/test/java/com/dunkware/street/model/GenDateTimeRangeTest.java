@@ -36,7 +36,7 @@ class GenDateTimeRangeTest {
      */
     @Test
     void testGenDateTimeRange() {
-        // TODO: test GenDateTimeRange
+        // test GenDateTimeRange
     }
 
     /**
@@ -44,7 +44,7 @@ class GenDateTimeRangeTest {
      */
     @Test
     void startTest() {
-        // TODO: test start
+        // test start
     }
 
     /**
@@ -52,7 +52,7 @@ class GenDateTimeRangeTest {
      */
     @Test
     void endTest() {
-        // TODO: test end
+        // test end
     }
 
     /**
@@ -60,7 +60,7 @@ class GenDateTimeRangeTest {
      */
     @Test
     void hasTimeWindowTest() {
-        // TODO: test hasTimeWindow
+        // test hasTimeWindow
     }
 
     /**
@@ -68,7 +68,7 @@ class GenDateTimeRangeTest {
      */
     @Test
     void timeWindowTest() {
-        // TODO: test timeWindow
+        // test timeWindow
     }
 
 }

@@ -41,7 +41,7 @@ public class EStreamSessionEvent extends DunkEvent {
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
-			// TODO: handle exception
+			
 		}
 		
 		

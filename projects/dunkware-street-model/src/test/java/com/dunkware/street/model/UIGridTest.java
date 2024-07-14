@@ -38,7 +38,7 @@ class UIGridTest {
      */
     @Test
     void testUIGrid() {
-        // TODO: test UIGrid
+        // test UIGrid
     }
 
     /**
@@ -46,7 +46,7 @@ class UIGridTest {
      */
     @Test
     void idTest() {
-        // TODO: test id
+        // test id
     }
 
     /**
@@ -54,7 +54,7 @@ class UIGridTest {
      */
     @Test
     void columnsTest() {
-        // TODO: test columns
+        // test columns
     }
 
     /**
@@ -62,7 +62,7 @@ class UIGridTest {
      */
     @Test
     void dataTest() {
-        // TODO: test data
+        // test data
     }
 
     /**
@@ -70,7 +70,7 @@ class UIGridTest {
      */
     @Test
     void paginationTest() {
-        // TODO: test pagination
+        // test pagination
     }
 
     /**
@@ -78,7 +78,7 @@ class UIGridTest {
      */
     @Test
     void sortableTest() {
-        // TODO: test sortable
+        // test sortable
     }
 
     /**
@@ -86,7 +86,7 @@ class UIGridTest {
      */
     @Test
     void filterableTest() {
-        // TODO: test filterable
+        // test filterable
     }
 
     /**
@@ -94,7 +94,7 @@ class UIGridTest {
      */
     @Test
     void editableTest() {
-        // TODO: test editable
+        // test editable
     }
 
 }

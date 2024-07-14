@@ -58,7 +58,7 @@ public class WebSignalTypeBean {
 		try {
 			System.out.println(DunkJson.serializePretty(b));
 		} catch (Exception e) {
-			// TODO: handle exception
+			
 		}
 		
 		

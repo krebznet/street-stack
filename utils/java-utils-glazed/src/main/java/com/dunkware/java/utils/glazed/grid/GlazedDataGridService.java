@@ -32,7 +32,7 @@ public class GlazedDataGridService {
 			gridLock.acquire();
 			grids.put(grid.getId(), grid);
 		} catch (Exception e) {
-			// TODO: handle exception
+			
 		} finally {
 			gridLock.release();
 		}
@@ -44,7 +44,7 @@ public class GlazedDataGridService {
 			gridLock.acquire();
 			grids.remove(grid.getId());
 		} catch (Exception e) {
-			// TODO: handle exception
+			
 		} finally {
 			gridLock.release();
 		}

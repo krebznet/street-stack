@@ -19,7 +19,7 @@ public class StreamTest2 {
 			test();	
 		} catch (Exception e) {
 			e.printStackTrace();
-			// TODO: handle exception
+			
 		}
 		
 	}

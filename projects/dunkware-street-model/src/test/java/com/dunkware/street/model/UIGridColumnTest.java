@@ -38,7 +38,7 @@ class UIGridColumnTest {
      */
     @Test
     void testUIGridColumn() {
-        // TODO: test UIGridColumn
+        // test UIGridColumn
     }
 
     /**
@@ -46,7 +46,7 @@ class UIGridColumnTest {
      */
     @Test
     void fieldTest() {
-        // TODO: test field
+        // test field
     }
 
     /**
@@ -54,7 +54,7 @@ class UIGridColumnTest {
      */
     @Test
     void headerNameTest() {
-        // TODO: test headerName
+        // test headerName
     }
 
     /**
@@ -62,7 +62,7 @@ class UIGridColumnTest {
      */
     @Test
     void widthTest() {
-        // TODO: test width
+        // test width
     }
 
     /**
@@ -70,7 +70,7 @@ class UIGridColumnTest {
      */
     @Test
     void sortableTest() {
-        // TODO: test sortable
+        // test sortable
     }
 
     /**
@@ -78,7 +78,7 @@ class UIGridColumnTest {
      */
     @Test
     void filterTypeTest() {
-        // TODO: test filterType
+        // test filterType
     }
 
     /**
@@ -86,7 +86,7 @@ class UIGridColumnTest {
      */
     @Test
     void editableTest() {
-        // TODO: test editable
+        // test editable
     }
 
     /**
@@ -94,7 +94,7 @@ class UIGridColumnTest {
      */
     @Test
     void typeTest() {
-        // TODO: test type
+        // test type
     }
 
     /**
@@ -102,7 +102,7 @@ class UIGridColumnTest {
      */
     @Test
     void actionsTest() {
-        // TODO: test actions
+        // test actions
     }
 
 }

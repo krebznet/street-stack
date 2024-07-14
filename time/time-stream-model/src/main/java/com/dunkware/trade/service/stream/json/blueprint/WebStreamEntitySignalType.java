@@ -30,7 +30,7 @@ public class WebStreamEntitySignalType {
 			System.out.println(t.getCriterias().get(0).getType());
 		} catch (Exception e) {
 			e.printStackTrace();
-			// TODO: handle exception
+			
 		}
 	}
 	

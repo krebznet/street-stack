@@ -33,7 +33,7 @@ public class StreamDesign {
 					// update some metrics increment quote + trade messages; 
 					// if trade -- set last tradeTime, lastPrice, lastSize 
 				} catch (Exception e) {
-					// TODO: handle exception
+					
 				}
 			}
 		}

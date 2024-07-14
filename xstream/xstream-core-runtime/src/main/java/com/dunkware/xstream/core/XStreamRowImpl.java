@@ -233,7 +233,7 @@ public class XStreamRowImpl implements XStreamEntity, XStreamEntityVarListener {
 					rowListenerLock.acquire();
 					rowListeners.add(list);
 				} catch (Exception e) {
-					// TODO: handle exception
+					
 				} finally {
 					rowListenerLock.release();
 				}
@@ -253,7 +253,7 @@ public class XStreamRowImpl implements XStreamEntity, XStreamEntityVarListener {
 					rowListenerLock.acquire();
 					rowListeners.remove(list);
 				} catch (Exception e) {
-					// TODO: handle exception
+					
 				} finally {
 					rowListenerLock.release();
 				}

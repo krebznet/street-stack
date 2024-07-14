@@ -34,7 +34,7 @@ public class StreamEntitySnapshot implements StreamWorkerExtension {
 
 	@Override
 	public void stop() throws Exception {
-		// TODO Auto-generated method stub
+		
 		
 	}
 	

@@ -93,7 +93,7 @@ public class RocExpression extends XStreamExpressionImpl {
 					targetValue = DunkNumber.toDouble(intValue);
 				}
 				if (targetValue == null || compareValue == null) {
-					// TODO: is this exception?
+					// is this exception?
 					return false;
 				}
 

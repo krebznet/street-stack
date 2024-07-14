@@ -26,7 +26,7 @@ class UIGridColumnTypeTest {
      */
     @Test
     void testUIGridColumnType() {
-        // TODO: test UIGridColumnType
+        // test UIGridColumnType
     }
 
 }

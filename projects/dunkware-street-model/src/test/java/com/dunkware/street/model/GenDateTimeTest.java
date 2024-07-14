@@ -36,7 +36,7 @@ class GenDateTimeTest {
      */
     @Test
     void testGenDateTime() {
-        // TODO: test GenDateTime
+        // test GenDateTime
     }
 
     /**
@@ -44,7 +44,7 @@ class GenDateTimeTest {
      */
     @Test
     void dateTest() {
-        // TODO: test date
+        // test date
     }
 
     /**
@@ -52,7 +52,7 @@ class GenDateTimeTest {
      */
     @Test
     void timeTest() {
-        // TODO: test time
+        // test time
     }
 
 }

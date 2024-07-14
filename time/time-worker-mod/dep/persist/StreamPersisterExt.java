@@ -202,7 +202,7 @@ public class StreamPersisterExt implements StreamWorkerExtension, XStreamSignalL
 					try {
 
 					} catch (Exception e) {
-						// TODO: handle exception
+						
 					}
 					List<XStreamEntityVar> numericVars = entity.getNumericVars();
 					for (XStreamEntityVar xStreamEntityVar : numericVars) {
@@ -392,7 +392,7 @@ public class StreamPersisterExt implements StreamWorkerExtension, XStreamSignalL
 				try {
 					Thread.sleep(1000);
 				} catch (Exception e) {
-					// TODO: handle exception
+					
 				}
 				
 				long postWriteCount = snapshotWriteCount.get();
@@ -429,7 +429,7 @@ public class StreamPersisterExt implements StreamWorkerExtension, XStreamSignalL
 						
 					}
 				} catch (Exception e) {
-					// TODO: handle exception
+					
 				}
 				//convert signal to a stream 
 				// validate stream exists 

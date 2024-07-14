@@ -10,7 +10,7 @@ public class SignalHistoricalCountExpression extends XStreamExecutorImpl {
 
 	public SignalHistoricalCountExpression(DunkExecutor executor) {
 		super(executor);
-		// TODO Auto-generated constructor stub
+
 	}
 	
 	

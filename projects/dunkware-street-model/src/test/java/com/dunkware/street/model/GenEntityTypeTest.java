@@ -37,7 +37,7 @@ class GenEntityTypeTest {
      */
     @Test
     void testGenEntityType() {
-        // TODO: test GenEntityType
+        // test GenEntityType
     }
 
     /**
@@ -45,7 +45,7 @@ class GenEntityTypeTest {
      */
     @Test
     void idTest() {
-        // TODO: test id
+        // test id
     }
 
     /**
@@ -53,7 +53,7 @@ class GenEntityTypeTest {
      */
     @Test
     void identifierTest() {
-        // TODO: test identifier
+        // test identifier
     }
 
     /**
@@ -61,7 +61,7 @@ class GenEntityTypeTest {
      */
     @Test
     void nameTest() {
-        // TODO: test name
+        // test name
     }
 
     /**
@@ -69,7 +69,7 @@ class GenEntityTypeTest {
      */
     @Test
     void attributesTest() {
-        // TODO: test attributes
+        // test attributes
     }
 
 }

@@ -23,11 +23,11 @@ public class JedisPoolTester {
 					Thread.sleep(1000);
 					System.out.println(writeCount.get());
 				} catch (Exception e) {
-					// TODO: handle exception
+					
 				}
 			}
 		} catch (Exception e) {
-			// TODO: handle exception
+			
 		}
 		
 	}

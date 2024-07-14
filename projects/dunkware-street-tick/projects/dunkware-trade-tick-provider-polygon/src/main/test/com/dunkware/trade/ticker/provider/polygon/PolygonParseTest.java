@@ -21,7 +21,7 @@ public class PolygonParseTest extends TestCase {
 		} catch (Exception e) {
 			System.err.println(e.toString());
 			throw new Exception("Agg Event Parse Exception " + e.toString());
-			// TODO: handle exception
+			
 		}
 	}
 	
@@ -32,7 +32,7 @@ public class PolygonParseTest extends TestCase {
 			assertEquals(quote.getBidPrice(), 114.125);
 		} catch (Exception e) {
 			throw e;
-			// TODO: handle exception
+			
 		}
 	}
 }

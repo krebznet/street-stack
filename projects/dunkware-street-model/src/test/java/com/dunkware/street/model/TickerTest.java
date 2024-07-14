@@ -34,7 +34,7 @@ class TickerTest {
      */
     @Test
     void testTicker() {
-        // TODO: test Ticker
+        // test Ticker
     }
 
     /**
@@ -42,7 +42,7 @@ class TickerTest {
      */
     @Test
     void idTest() {
-        // TODO: test id
+        // test id
     }
 
     /**
@@ -50,7 +50,7 @@ class TickerTest {
      */
     @Test
     void symbolTest() {
-        // TODO: test symbol
+        // test symbol
     }
 
     /**
@@ -58,7 +58,7 @@ class TickerTest {
      */
     @Test
     void nameTest() {
-        // TODO: test name
+        // test name
     }
 
     /**
@@ -66,7 +66,7 @@ class TickerTest {
      */
     @Test
     void dateAddedTest() {
-        // TODO: test dateAdded
+        // test dateAdded
     }
 
     /**
@@ -74,7 +74,7 @@ class TickerTest {
      */
     @Test
     void versionAddedTest() {
-        // TODO: test versionAdded
+        // test versionAdded
     }
 
 }

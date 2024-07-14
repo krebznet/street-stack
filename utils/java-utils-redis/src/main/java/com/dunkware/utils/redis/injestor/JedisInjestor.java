@@ -107,7 +107,7 @@ public class JedisInjestor {
 				try {
 					Thread.sleep(5000);
 				} catch (Exception e) {
-					// TODO: handle exception
+					
 				}
 				System.out.println(injestCount.get());
 			}

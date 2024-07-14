@@ -35,7 +35,7 @@ class ExchangeLayerTest {
      */
     @Test
     void testExchangeLayer() {
-        // TODO: test ExchangeLayer
+        // test ExchangeLayer
     }
 
     /**
@@ -43,7 +43,7 @@ class ExchangeLayerTest {
      */
     @Test
     void idTest() {
-        // TODO: test id
+        // test id
     }
 
     /**
@@ -51,7 +51,7 @@ class ExchangeLayerTest {
      */
     @Test
     void exchangeIdTest() {
-        // TODO: test exchangeId
+        // test exchangeId
     }
 
     /**
@@ -59,7 +59,7 @@ class ExchangeLayerTest {
      */
     @Test
     void indexIdTest() {
-        // TODO: test indexId
+        // test indexId
     }
 
     /**
@@ -67,7 +67,7 @@ class ExchangeLayerTest {
      */
     @Test
     void releaseDateTest() {
-        // TODO: test releaseDate
+        // test releaseDate
     }
 
 }

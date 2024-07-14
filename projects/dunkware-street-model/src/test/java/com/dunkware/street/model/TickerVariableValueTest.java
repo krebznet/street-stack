@@ -30,7 +30,7 @@ class TickerVariableValueTest {
      */
     @Test
     void testTickerVariableValue() {
-        // TODO: test TickerVariableValue
+        // test TickerVariableValue
     }
 
 }

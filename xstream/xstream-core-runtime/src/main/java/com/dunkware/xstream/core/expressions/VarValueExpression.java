@@ -110,7 +110,7 @@ public class VarValueExpression extends XStreamExpressionImpl {
 			indexExpression.execute();
 			Object value = indexExpression.getValue();
 			if(value == null) { 
-				//TODO: VarValueExp index exp return null
+				//// VarValueExp index exp return null
 				return false;
 			}
 			// DConvertHelper.

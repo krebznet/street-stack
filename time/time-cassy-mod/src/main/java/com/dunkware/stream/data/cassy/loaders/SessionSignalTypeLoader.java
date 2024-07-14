@@ -136,7 +136,7 @@ public int BATCH_SIZE = 3000;
 					builder = new BatchStatementBuilder(BatchType.LOGGED);
 				} catch (Exception e) {
 					e.printStackTrace();
-					// TODO: handle exception
+					
 				}
 			}
 		}
@@ -152,7 +152,7 @@ public int BATCH_SIZE = 3000;
 					System.out.println(queueSize() + " com" + completed.get() + " pending " + pending);
 				}
 			} catch (Exception e) {
-				// TODO: handle exception
+				
 			}
 		}
 	}

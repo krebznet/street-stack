@@ -601,7 +601,7 @@ class SampleFrame extends JFrame implements EWrapper {
 
         // req real time bars
         m_client.reqRealTimeBars( m_orderDlg.id(), m_orderDlg.contract(),
-        		5 /* TODO: parse and use m_orderDlg.m_barSizeSetting */,
+        		5 /* // parse and use m_orderDlg.m_barSizeSetting */,
         		m_orderDlg.whatToShow(), m_orderDlg.useRTH() > 0, m_realTimeBarsOptions);
     }
 

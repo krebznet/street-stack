@@ -361,7 +361,7 @@ public class ChannelImpl implements Channel, KafkaByteHandler {
 					messageInterceptorLock.acquire();
 					messageInterceptors.add(interceptor);
 				} catch (Exception e) {
-					// TODO: handle exception
+					
 				} finally {
 					messageInterceptorLock.release();
 				}
@@ -383,7 +383,7 @@ public class ChannelImpl implements Channel, KafkaByteHandler {
 					messageInterceptorLock.acquire();
 					messageInterceptors.remove(interceptor);
 				} catch (Exception e) {
-					// TODO: handle exception
+					
 				} finally {
 					messageInterceptorLock.release();
 				}
@@ -486,7 +486,7 @@ public class ChannelImpl implements Channel, KafkaByteHandler {
 									
 								}
 								logger.error(e.toString());
-								// TODO: handle exception
+								
 							} finally {
 								channelHandlerLock.release();
 							}
@@ -504,7 +504,7 @@ public class ChannelImpl implements Channel, KafkaByteHandler {
 							}
 						}
 					} catch (Exception e) {
-						// TODO: handle exception
+						
 					} finally { 
 						messageInterceptorLock.release();
 					}
@@ -530,7 +530,7 @@ public class ChannelImpl implements Channel, KafkaByteHandler {
 						}
 
 					} catch (Exception e) {
-						// TODO: handle exception 
+						 
 					} finally { 
 						channelHandlerLock.release();
 					}
@@ -544,7 +544,7 @@ public class ChannelImpl implements Channel, KafkaByteHandler {
 
 	@Override
 	public void open() {
-		// TODO Auto-generated method stub
+		
 		
 	}
 

@@ -34,7 +34,7 @@ class GenDataFormatTest {
      */
     @Test
     void testGenDataFormat() {
-        // TODO: test GenDataFormat
+        // test GenDataFormat
     }
 
     /**
@@ -42,7 +42,7 @@ class GenDataFormatTest {
      */
     @Test
     void formatTypeTest() {
-        // TODO: test formatType
+        // test formatType
     }
 
     /**
@@ -50,7 +50,7 @@ class GenDataFormatTest {
      */
     @Test
     void precisionTest() {
-        // TODO: test precision
+        // test precision
     }
 
     /**
@@ -58,7 +58,7 @@ class GenDataFormatTest {
      */
     @Test
     void truncateLengthTest() {
-        // TODO: test truncateLength
+        // test truncateLength
     }
 
     /**
@@ -66,7 +66,7 @@ class GenDataFormatTest {
      */
     @Test
     void currencySymbolTest() {
-        // TODO: test currencySymbol
+        // test currencySymbol
     }
 
     /**
@@ -74,7 +74,7 @@ class GenDataFormatTest {
      */
     @Test
     void abbreviationStyleTest() {
-        // TODO: test abbreviationStyle
+        // test abbreviationStyle
     }
 
 }

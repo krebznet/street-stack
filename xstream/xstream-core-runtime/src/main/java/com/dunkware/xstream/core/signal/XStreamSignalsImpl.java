@@ -109,7 +109,7 @@ public class XStreamSignalsImpl implements XStreamSignals  {
 			
 			signals.add(sig);
 		} catch (Exception e) {
-			// TODO: handle exception
+			
 		} finally { 
 			signalLock.release();
 		}
@@ -131,7 +131,7 @@ public class XStreamSignalsImpl implements XStreamSignals  {
 			listenerLock.acquire();
 			listeners.add(listener);
 		} catch (Exception e) {
-			// TODO: handle exception
+			
 		} finally { 
 			listenerLock.release();
 		}
@@ -144,7 +144,7 @@ public class XStreamSignalsImpl implements XStreamSignals  {
 			listenerLock.acquire();
 			listeners.remove(listener);
 		} catch (Exception e) {
-			// TODO: handle exception
+			
 		} finally { 
 			listenerLock.release();
 		}
@@ -227,7 +227,7 @@ public class XStreamSignalsImpl implements XStreamSignals  {
 					xStreamSignalListener.onSignal(signal);
 				}
 			} catch (Exception e) {
-				// TODO: handle exception
+				
 			} finally { 
 				signalLock.release();
 			}

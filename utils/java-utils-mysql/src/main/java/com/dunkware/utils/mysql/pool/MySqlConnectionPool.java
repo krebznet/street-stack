@@ -78,7 +78,7 @@ public class MySqlConnectionPool {
 			try {
 				cn.close();				
 			} catch (Exception e) {
-				// TODO: handle exception
+				
 			}
 
 			

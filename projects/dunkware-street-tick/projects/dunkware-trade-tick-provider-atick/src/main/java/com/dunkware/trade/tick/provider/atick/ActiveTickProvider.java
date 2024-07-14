@@ -471,7 +471,7 @@ public class ActiveTickProvider implements TickProvider {
 					
 					
 				} catch (Exception e) {
-					// TODO: handle exception
+					
 				}
 			}
 		}
@@ -625,7 +625,7 @@ public class ActiveTickProvider implements TickProvider {
 					snapshotRequests.put(request, snapshotRequestCount.incrementAndGet());
 				}
 			} catch (Exception e) {
-				// TODO: handle exception
+				
 			}
 		}
 	}

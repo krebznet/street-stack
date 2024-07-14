@@ -83,7 +83,7 @@ public class EntityStatsBuilder implements XStreamEntityListener {
 			System.out.println(DunkJson.serializePretty(stats));	
 		} catch (Exception e) {
 			e.printStackTrace();
-			// TODO: handle exception
+			
 		}
 		
 		return stats;

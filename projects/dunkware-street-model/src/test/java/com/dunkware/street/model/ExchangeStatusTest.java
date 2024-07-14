@@ -26,7 +26,7 @@ class ExchangeStatusTest {
      */
     @Test
     void testExchangeStatus() {
-        // TODO: test ExchangeStatus
+        // test ExchangeStatus
     }
 
 }

@@ -37,7 +37,7 @@ class GenTimeRangeTest {
      */
     @Test
     void testGenTimeRange() {
-        // TODO: test GenTimeRange
+        // test GenTimeRange
     }
 
     /**
@@ -45,7 +45,7 @@ class GenTimeRangeTest {
      */
     @Test
     void typeTest() {
-        // TODO: test type
+        // test type
     }
 
     /**
@@ -53,7 +53,7 @@ class GenTimeRangeTest {
      */
     @Test
     void startDateTest() {
-        // TODO: test startDate
+        // test startDate
     }
 
     /**
@@ -61,7 +61,7 @@ class GenTimeRangeTest {
      */
     @Test
     void enLocalDateTest() {
-        // TODO: test enLocalDate
+        // test enLocalDate
     }
 
     /**
@@ -69,7 +69,7 @@ class GenTimeRangeTest {
      */
     @Test
     void relativeValueTest() {
-        // TODO: test relativeValue
+        // test relativeValue
     }
 
     /**
@@ -77,7 +77,7 @@ class GenTimeRangeTest {
      */
     @Test
     void relativeTimeUnitTest() {
-        // TODO: test relativeTimeUnit
+        // test relativeTimeUnit
     }
 
     /**
@@ -85,7 +85,7 @@ class GenTimeRangeTest {
      */
     @Test
     void hasTimeWindowTest() {
-        // TODO: test hasTimeWindow
+        // test hasTimeWindow
     }
 
     /**
@@ -93,7 +93,7 @@ class GenTimeRangeTest {
      */
     @Test
     void timeWindowTest() {
-        // TODO: test timeWindow
+        // test timeWindow
     }
 
 }

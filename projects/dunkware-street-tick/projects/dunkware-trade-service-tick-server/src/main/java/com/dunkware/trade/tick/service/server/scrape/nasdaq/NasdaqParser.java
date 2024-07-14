@@ -14,7 +14,7 @@ public class NasdaqParser {
 			
 		} catch (Exception e) {
 			e.printStackTrace();
-			// TODO: handle exception
+			
 		}
 	}
 	
@@ -59,7 +59,7 @@ public class NasdaqParser {
 		} catch (Exception e) {
 			e.printStackTrace();
 			throw e;
-			// TODO: handle exception
+			
 		}
 	}
 

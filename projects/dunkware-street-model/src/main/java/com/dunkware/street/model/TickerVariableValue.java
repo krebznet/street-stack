@@ -55,7 +55,7 @@ import com.fasterxml.jackson.databind.deser.std.StdDeserializer;
 import com.fasterxml.jackson.databind.ser.std.StdSerializer;
 import com.dunkware.street.JSON;
 
-@jakarta.annotation.Generated(value = "org.openapitools.codegen.languages.JavaClientCodegen", date = "2024-07-09T07:04:32.310666-05:00[America/Chicago]", comments = "Generator version: 7.6.0")
+@jakarta.annotation.Generated(value = "org.openapitools.codegen.languages.JavaClientCodegen", date = "2024-07-14T03:12:48.582083-05:00[America/Chicago]", comments = "Generator version: 7.6.0")
 @JsonDeserialize(using = TickerVariableValue.TickerVariableValueDeserializer.class)
 @JsonSerialize(using = TickerVariableValue.TickerVariableValueSerializer.class)
 public class TickerVariableValue extends AbstractOpenApiSchema {
@@ -107,7 +107,7 @@ public class TickerVariableValue extends AbstractOpenApiSchema {
                 }
                 if (attemptParsing) {
                     deserialized = tree.traverse(jp.getCodec()).readValueAs(BigDecimal.class);
-                    // TODO: there is no validation against JSON schema constraints
+                    // there is no validation against JSON schema constraints
                     // (min, max, enum, pattern...), this does not perform a strict JSON
                     // validation, which means the 'match' count may be higher than it should be.
                     match++;
@@ -133,7 +133,7 @@ public class TickerVariableValue extends AbstractOpenApiSchema {
                 }
                 if (attemptParsing) {
                     deserialized = tree.traverse(jp.getCodec()).readValueAs(Boolean.class);
-                    // TODO: there is no validation against JSON schema constraints
+                    // there is no validation against JSON schema constraints
                     // (min, max, enum, pattern...), this does not perform a strict JSON
                     // validation, which means the 'match' count may be higher than it should be.
                     match++;
@@ -159,7 +159,7 @@ public class TickerVariableValue extends AbstractOpenApiSchema {
                 }
                 if (attemptParsing) {
                     deserialized = tree.traverse(jp.getCodec()).readValueAs(GenDate.class);
-                    // TODO: there is no validation against JSON schema constraints
+                    // there is no validation against JSON schema constraints
                     // (min, max, enum, pattern...), this does not perform a strict JSON
                     // validation, which means the 'match' count may be higher than it should be.
                     match++;
@@ -185,7 +185,7 @@ public class TickerVariableValue extends AbstractOpenApiSchema {
                 }
                 if (attemptParsing) {
                     deserialized = tree.traverse(jp.getCodec()).readValueAs(GenDateTime.class);
-                    // TODO: there is no validation against JSON schema constraints
+                    // there is no validation against JSON schema constraints
                     // (min, max, enum, pattern...), this does not perform a strict JSON
                     // validation, which means the 'match' count may be higher than it should be.
                     match++;
@@ -211,7 +211,7 @@ public class TickerVariableValue extends AbstractOpenApiSchema {
                 }
                 if (attemptParsing) {
                     deserialized = tree.traverse(jp.getCodec()).readValueAs(GenTime.class);
-                    // TODO: there is no validation against JSON schema constraints
+                    // there is no validation against JSON schema constraints
                     // (min, max, enum, pattern...), this does not perform a strict JSON
                     // validation, which means the 'match' count may be higher than it should be.
                     match++;
@@ -237,7 +237,7 @@ public class TickerVariableValue extends AbstractOpenApiSchema {
                 }
                 if (attemptParsing) {
                     deserialized = tree.traverse(jp.getCodec()).readValueAs(Integer.class);
-                    // TODO: there is no validation against JSON schema constraints
+                    // there is no validation against JSON schema constraints
                     // (min, max, enum, pattern...), this does not perform a strict JSON
                     // validation, which means the 'match' count may be higher than it should be.
                     match++;
@@ -263,7 +263,7 @@ public class TickerVariableValue extends AbstractOpenApiSchema {
                 }
                 if (attemptParsing) {
                     deserialized = tree.traverse(jp.getCodec()).readValueAs(String.class);
-                    // TODO: there is no validation against JSON schema constraints
+                    // there is no validation against JSON schema constraints
                     // (min, max, enum, pattern...), this does not perform a strict JSON
                     // validation, which means the 'match' count may be higher than it should be.
                     match++;

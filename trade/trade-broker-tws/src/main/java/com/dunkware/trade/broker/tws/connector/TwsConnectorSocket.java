@@ -164,7 +164,7 @@ public class TwsConnectorSocket implements EWrapper, EReaderSignal {
 					}
 					
 				} catch (Exception e) {
-					// TODO: handle exception
+					
 				} finally {
 					_handlersSemaphore.release();
 				}
@@ -185,7 +185,7 @@ public class TwsConnectorSocket implements EWrapper, EReaderSignal {
 					_handlersSemaphore.acquire();
 					connectorHandlers.remove(reader);
 				} catch (Exception e) {
-					// TODO: handle exception
+					
 				} finally {
 					_handlersSemaphore.release();
 				}
@@ -202,13 +202,13 @@ public class TwsConnectorSocket implements EWrapper, EReaderSignal {
 
 	@Override
 	public void issueSignal() {
-		// TODO Auto-generated method stub
+		
 		
 	}
 
 	@Override
 	public void waitForSignal() {
-		// TODO Auto-generated method stub
+		
 		
 	}
 

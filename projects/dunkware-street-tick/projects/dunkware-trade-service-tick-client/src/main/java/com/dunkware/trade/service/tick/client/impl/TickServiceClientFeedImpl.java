@@ -82,24 +82,24 @@ public class TickServiceClientFeedImpl implements TickServiceClientFeed, KafkaBy
 		try {
 			
 		} catch (Exception e) {
-			// TODO: handle exception
+
 		}
 		
 	}
 
 	@Override
 	public void update(TickConsumerSpec spec) throws TickServiceClientException {
-		//TODO: send update request 
+
 	}
 
 	@Override
 	public void dispose() {
-		//TODO: send stop request 
+ 
 		kafkaConsumer.dispose();
 		try {
 			DunkHttp.getURLContent(client.getEndpoint() + "/tick/feed/stop?id=" + session.getSessionId());	
 		} catch (Exception e) {
-			// TODO: handle exception
+			
 		}
 		
 	}
@@ -108,7 +108,7 @@ public class TickServiceClientFeedImpl implements TickServiceClientFeed, KafkaBy
 
 	@Override
 	public TickConsumerSpec getSpec() {
-		// TODO Auto-generated method stub
+		
 		return null;
 	}
 

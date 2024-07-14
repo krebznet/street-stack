@@ -32,13 +32,13 @@ public class XStreamEntityVarAggValue implements XStreamEntityQueryValue {
 	
 	@Override
 	public boolean isResolvable(XStreamEntity row) throws XStreamQueryException {
-		// TODO Auto-generated method stub
+		
 		// going to have to get time range right 
 		return false;
 	}
 	@Override
 	public Number resolve(XStreamEntity row) throws XStreamResolveException, XStreamQueryException {
-		// TODO Auto-generated method stub
+		
 		return null;
 	}
 

@@ -26,7 +26,7 @@ class GenTimeRangeTypeTest {
      */
     @Test
     void testGenTimeRangeType() {
-        // TODO: test GenTimeRangeType
+        // test GenTimeRangeType
     }
 
 }

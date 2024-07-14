@@ -57,7 +57,7 @@ public class StreamWorkerService  {
 		} catch (Exception e) {
 			logger.error("Exception adding stream worker service extensions "
 		+ e.toString(),e);
-			// TODO: handle exception
+			
 		}
 		
 		

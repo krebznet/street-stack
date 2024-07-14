@@ -56,7 +56,7 @@ public class StreamingAdapter implements StreamingResponseBody {
 					listenerLock.acquire();
 					listeners.remove(listener);
 				} catch (Exception e) {
-					// TODO: handle exception
+					
 				} finally {
 					listenerLock.release();
 				}
@@ -76,7 +76,7 @@ public class StreamingAdapter implements StreamingResponseBody {
 					listenerLock.acquire();
 					listeners.add(listener);
 				} catch (Exception e) {
-					// TODO: handle exception
+					
 				} finally {
 					listenerLock.release();
 				}
@@ -136,7 +136,7 @@ public class StreamingAdapter implements StreamingResponseBody {
 				System.out.println("send messsage");
 			} catch (Exception e) {
 				e.printStackTrace();
-				// TODO: handle exception
+				
 			}
 		}
 
@@ -160,7 +160,7 @@ public class StreamingAdapter implements StreamingResponseBody {
 					}
 				} catch (Exception e) {
 					e.printStackTrace();
-					// TODO: handle exception
+					
 				} finally {
 					listenerLock.release();
 				}
@@ -180,7 +180,7 @@ public class StreamingAdapter implements StreamingResponseBody {
 					}
 				} catch (Exception e) {
 					e.printStackTrace();
-					// TODO: handle exception
+					
 				} finally {
 					listenerLock.release();
 				}

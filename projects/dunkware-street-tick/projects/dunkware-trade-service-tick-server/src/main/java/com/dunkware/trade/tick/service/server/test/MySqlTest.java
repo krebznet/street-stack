@@ -24,7 +24,7 @@ public class MySqlTest {
 			System.out.println("connected");
 		} catch (Exception e) {
 			e.printStackTrace();
-			// TODO: handle exception
+			
 		}
 		
 	}
