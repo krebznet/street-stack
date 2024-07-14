@@ -1,5 +1,6 @@
 package com.dunkware.time.script.mod.repo.impl;
 
+import java.time.LocalDateTime;
 import java.util.Collection;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
@@ -12,9 +13,19 @@ import org.springframework.stereotype.Service;
 import com.dunkware.spring.runtime.services.EventService;
 import com.dunkware.time.script.mod.repo.Script;
 import com.dunkware.time.script.mod.repo.ScriptService;
-import com.dunkware.time.script.mod.repo.persist.ScriptEntity;
-import com.dunkware.time.script.mod.repo.persist.ScriptEntityRepo;
+import com.dunkware.time.script.mod.repo.entity.ScriptEntity;
+import com.dunkware.time.script.mod.repo.entity.ScriptReleaseEntity;
+import com.dunkware.time.script.mod.repo.repository.ScriptReleaseRepository;
+import com.dunkware.time.script.mod.repo.repository.ScriptRepository;
 import com.dunkware.utils.core.events.DunkEventNode;
+import com.dunkware.utils.core.json.DunkJson;
+import com.dunkware.xstream.model.script.model.XScriptModel;
+import com.dunkware.xstream.model.script.model.XScriptRelease;
+import com.dunkware.xstream.model.script.model.XScriptUpdate;
+import com.dunkware.xstream.model.script.utils.XScriptUpdateInitializer;
+import com.dunkware.xstream.util.XScriptProjectModelGenerator;
+import com.dunkware.xstream.xproject.XScriptProject;
+import com.dunkware.xstream.xproject.bundle.XscriptBundleHelper;
 import com.dunkware.xstream.xproject.model.XScriptBundle;
 
 import jakarta.annotation.PostConstruct;
@@ -29,15 +40,18 @@ public class ScriptServiceImpl implements ScriptService  {
 
 	private Logger logger = LoggerFactory.getLogger(getClass());
 	
-	private Map<String,Script> repos = new ConcurrentHashMap<String,Script>();
+	private Map<String,Script> scripts = new ConcurrentHashMap<String,Script>();
 
-	private ScriptEntityRepo entityRepo; 
+	private ScriptRepository scriptRepository;
+	
+	private ScriptReleaseRepository scriptReleaseRepository;
 	
 	private DunkEventNode eventNode; 
 	
 	
-	public ScriptServiceImpl(ScriptEntityRepo repo, EventService service, ApplicationContext ac) { 
-		this.entityRepo = repo;
+	public ScriptServiceImpl(ScriptRepository repo, ScriptReleaseRepository relRepo, EventService service, ApplicationContext ac) { 
+		this.scriptRepository = repo;
+		this.scriptReleaseRepository = relRepo;
 		this.eventService = service; 
 		this.ac = ac; 
 		eventNode = eventService.getEventRoot().createChild(this);
@@ -45,12 +59,12 @@ public class ScriptServiceImpl implements ScriptService  {
 	
 	@PostConstruct
 	private void init() { 
-		for (ScriptEntity entity : entityRepo.findAll()) {
-			ScriptImpl scriptRepo = new ScriptImpl();
-			ac.getAutowireCapableBeanFactory().autowireBean(scriptRepo);
+		for (ScriptEntity entity : scriptRepository.findAll()) {
+			ScriptImpl script = new ScriptImpl();
+			ac.getAutowireCapableBeanFactory().autowireBean(script);
 			try {
-				scriptRepo.init(entity);
-				repos.put(scriptRepo.getName(), scriptRepo);
+				script.init(entity);
+				scripts.put(script.getName(), script);
 			} catch (Exception e) {
 				logger.error("Fatal exception script repo failed to init " + e.toString());
 				System.exit(-1);
@@ -65,22 +79,69 @@ public class ScriptServiceImpl implements ScriptService  {
 	 * Okay interesting
 	 */
 	@Override
-	public void archiveScript(String scriptId) throws Exception {
+	public void deleteScript(String scriptId) throws Exception {
 		Script script = getScript(scriptId);
 		
-			if(script.isArchieved() == true) { 
-				throw new  Exception("Script " + scriptId  + " is already archived");
-			}
-			
-		//	script.
-		
+	}
+	
+
+
+	@Override
+	public boolean hasScript(String name) {
+		if(scripts.containsKey(name)) {
+			return true;
+		}
+		return false;
 	}
 
 	@Override
-	public Script createScript(XScriptBundle script, String repoName) throws Exception {
-		if(scriptExists(repoName)) { 
+	public Script createScript(String script, String repoName, String type) throws Exception {
+		if(hasScript(repoName)) { 
 			throw new Exception("Script name " + repoName + " already exists");
 		}
+		
+		XScriptBundle bundle = XscriptBundleHelper.createBundleFromFileContents(script);
+		XScriptProject project = null;
+		try {
+			project = new XScriptProject(bundle);
+		} catch (Exception e) {
+			throw new Exception("Script Parse Exception " + e.toString());
+		}
+		// new revision 
+		ScriptEntity scriptEnt = new ScriptEntity();
+		scriptEnt.setActive(true);
+		scriptEnt.setCreated(LocalDateTime.now());
+		scriptEnt.setName(repoName);
+		scriptEnt.setUpdated(LocalDateTime.now());
+		scriptEnt.setType(type);
+		scriptEnt.setVersion("1.0.0");
+		
+		XScriptModel model = XScriptProjectModelGenerator.generateModel(repoName, "1.0.0", type, project);
+		XScriptUpdate update = XScriptUpdateInitializer.intialize(model);
+		XScriptRelease relModel = new XScriptRelease();
+		relModel.setVersion("1.0.0");
+		relModel.setModel(model);
+		relModel.setScript(script);
+		relModel.setType(type);
+		relModel.setTimestamp(LocalDateTime.now());
+		relModel.setUpdate(update);
+		relModel.setName(model.getName());
+		
+		ScriptReleaseEntity relEnt = new ScriptReleaseEntity();
+		relEnt.setReleaseTimestamp(LocalDateTime.now());
+		relEnt.setScript(scriptEnt);
+		relEnt.setScriptName(repoName);
+		relEnt.setReleaseModel(DunkJson.serialize(relModel));
+		relEnt.setVersion("1.0.0");
+		relEnt.setXscript(script);
+		
+		try {
+			
+		} catch (Exception e) {
+			// TODO: handle exception
+		}
+		
+		
 		ScriptImpl scriptImpl = new ScriptImpl();
 		ac.getAutowireCapableBeanFactory().autowireBean(script);
 		
@@ -94,21 +155,19 @@ public class ScriptServiceImpl implements ScriptService  {
 
 	@Override
 	public Script getScript(String name) throws Exception {
-		// TODO Auto-generated method stub
-		return null;
+		if(scripts.containsKey(name) == false) { 
+			Exception e = new Exception("Script " + name + " not found");
+			throw e;
+		}
+		return scripts.get(name);
 	}
 
 	@Override
 	public Collection<Script> getScripts() {
-		// TODO Auto-generated method stub
-		return null;
+		return scripts.values();
 	}
 
-	@Override
-	public boolean scriptExists(String name) {
-		// TODO Auto-generated method stub
-		return false;
-	}
+	
 
 	@Override
 	public DunkEventNode getEventNode() {

@@ -2,28 +2,25 @@ package com.dunkware.time.script.mod.repo;
 
 import java.util.List;
 
-import com.dunkware.time.script.mod.repo.persist.ScriptEntity;
+import com.dunkware.time.script.mod.repo.entity.ScriptEntity;
 import com.dunkware.utils.core.events.DunkEventNode;
-import com.dunkware.xstream.xproject.model.XScriptBundle;
+import com.dunkware.xstream.model.script.model.XScriptModel;
 
 public interface Script {
 
 	String getName();
 
 	String getType();
-	
-	XScriptBundle getBundle();
 
-	ScriptVersion getLatestVersion();
+	public ScriptRelease getRelease();
+
+	public XScriptModel getReleaseModel();
 	
-	List<ScriptVersion> getVersions();
+	List<ScriptRelease> getReleaseHistory();
 	
 	public DunkEventNode getEventNode();
 
-	public boolean isArchieved();
-
 	public ScriptEntity getEntity();
-	
-	public void archive() throws Exception;
+
 
 }

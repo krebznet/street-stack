@@ -1,4 +1,4 @@
-package com.dunkware.time.script.mod.repo.persist;
+package com.dunkware.time.script.mod.repo.entity;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -19,14 +19,14 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 
-@Entity(name = "script_repo_entity")
+@Entity(name = "script_entity")
 public class ScriptEntity {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private long uuid;
 	
-	private double version;
+	private String version;
 	
 	private LocalDateTime created;
 	
@@ -34,25 +34,14 @@ public class ScriptEntity {
 	
 	private String name; 
 	
-	private String type; 
+	private String type;
 	
 	private boolean active = true; 
 	
 	@OneToMany(cascade = CascadeType.ALL, orphanRemoval =  true)
 	@JoinColumn(name = "script")
-	private List<ScriptVersionEntity> versions = new ArrayList<ScriptVersionEntity>();
-	
-	@OneToMany(cascade = CascadeType.ALL, orphanRemoval =  true)
-	@JoinColumn(name = "script")
-	private List<ScriptVariableEntity> variables = new ArrayList<ScriptVariableEntity>();
-	
-	@OneToMany(cascade = CascadeType.ALL, orphanRemoval =  true)
-	@JoinColumn(name = "script")
-	private List<ScriptSignalEntity> signals = new ArrayList<ScriptSignalEntity>();
-	
-	@OneToMany(cascade = CascadeType.ALL, orphanRemoval =  true)
-	@JoinColumn(name = "script")
-	private List<ScriptLeaseEntity> leases = new ArrayList<ScriptLeaseEntity>();
+	private List<ScriptReleaseEntity> releases = new ArrayList<ScriptReleaseEntity>();
+
 	
 	
 }

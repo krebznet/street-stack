@@ -35,7 +35,7 @@
 
 		<dependency>
 			<groupId>com.dunkware.xstream</groupId>
-			<artifactId>xstream-core-runtime</artifactId>
+			<artifactId>xstream-core-model</artifactId>
 			<version>1.0.0-SNAPSHOT</version>
 		</dependency>
 		<!-- https://mvnrepository.com/artifact/org.redisson/redisson -->

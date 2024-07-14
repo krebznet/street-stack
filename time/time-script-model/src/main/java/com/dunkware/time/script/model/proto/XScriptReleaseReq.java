@@ -7,11 +7,8 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class ScriptDeployReq {
-	
-	private String name; 
-	private String script;
-	private String type;
-	
+public class XScriptReleaseReq {
 
+	private String name; 
+	private String script; 
 }
