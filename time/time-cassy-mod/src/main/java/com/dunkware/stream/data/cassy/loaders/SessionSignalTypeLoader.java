@@ -24,7 +24,7 @@ import com.dunkware.stream.data.cassy.constants.CassySchema;
 import com.dunkware.time.data.model.entity.EntitySignalModel;
 import com.dunkware.utils.core.json.DunkJson;
 
-public class SessionSignalEntityLoader {
+public class SessionSignalTypeLoader {
 	
 public int BATCH_SIZE = 3000;
 	
@@ -50,12 +50,12 @@ public int BATCH_SIZE = 3000;
 		return queue.size();
 	}
 	
-	public SessionSignalEntityLoader(CqlSession session, int loaders, int batchSize ) { 
+	public SessionSignalTypeLoader(CqlSession session, int loaders, int batchSize ) { 
 		this.session = session;
 		BATCH_SIZE = batchSize;
 		
 		
-		RegularInsert insertInto = QueryBuilder.insertInto(CassySchema.TableNames.SessionSignalType)
+		RegularInsert insertInto = QueryBuilder.insertInto(CassySchema.TableNames.SessionSignalEntity)
 				.value("stream", QueryBuilder.bindMarker()).value("date", QueryBuilder.bindMarker())
 				.value("entity", QueryBuilder.bindMarker()).value("time", QueryBuilder.bindMarker())
 				.value("data", QueryBuilder.bindMarker());

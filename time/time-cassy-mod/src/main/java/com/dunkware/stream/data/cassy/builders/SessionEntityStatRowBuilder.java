@@ -3,8 +3,8 @@ package com.dunkware.stream.data.cassy.builders;
 import java.time.LocalDate;
 import java.time.LocalTime;
 
-import com.dunkware.stream.data.cassy.entity.stats.DBSessionEntityStatKey;
-import com.dunkware.stream.data.cassy.entity.stats.DBSessionEntityStatRow;
+import com.dunkware.stream.data.cassy.entity.SessionEntityStat;
+import com.dunkware.stream.data.cassy.entity.SessionEntityStatKey;
 
 public class SessionEntityStatRowBuilder {
 	
@@ -46,10 +46,15 @@ public class SessionEntityStatRowBuilder {
 				
 	}
 	
-	public DBSessionEntityStatRow build()  { 
+	public SessionEntityStat build()  { 
 		
-		DBSessionEntityStatKey key = new DBSessionEntityStatKey(stream, date, entity, stat);
-		DBSessionEntityStatRow row = new DBSessionEntityStatRow(key, element, value, time);
+		SessionEntityStatKey key = new SessionEntityStatKey(stream,date,entity);
+		SessionEntityStat row = new SessionEntityStat();
+		row.setElement(this.element);
+		row.setStat(this.stat);
+		row.setValue(value);
+		row.setTime(this.time);
+		
 		return row;
 		
 	}

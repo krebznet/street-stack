@@ -5,21 +5,21 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.dunkware.stream.data.cassy.builders.SessionEntityStatRowBuilder;
-import com.dunkware.stream.data.cassy.entity.stats.DBSessionEntityStatRow;
+import com.dunkware.stream.data.cassy.entity.SessionEntityStat;
 
 public class SessionEntityStatMockData {
 
 	
 	public static void main(String[] args) {
-		List<DBSessionEntityStatRow> data = build(LocalDate.of(2024, 1, 2),1,5000,50,1,2);
-		for (DBSessionEntityStatRow sessionEntityStatRow : data) {
+		List<SessionEntityStat> data = build(LocalDate.of(2024, 1, 2),1,5000,50,1,2);
+		for (SessionEntityStat sessionEntityStatRow : data) {
 			System.out.println(sessionEntityStatRow.toString());
 		}
 		System.out.println(data.size());
 	}
 	
-	public static List<DBSessionEntityStatRow> build(LocalDate date, int stream, int entities, int elements, int... stats) {
-		List<DBSessionEntityStatRow> rows = new ArrayList<DBSessionEntityStatRow>();
+	public static List<SessionEntityStat> build(LocalDate date, int stream, int entities, int elements, int... stats) {
+		List<SessionEntityStat> rows = new ArrayList<SessionEntityStat>();
 		for(int i = 0; i < entities; i++) { 
 			for(int x = 0; x < elements; x++) { 
 				for(int j = 0; j < stats.length;j++) { 

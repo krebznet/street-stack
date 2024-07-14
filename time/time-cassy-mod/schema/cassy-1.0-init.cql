@@ -65,7 +65,7 @@ CREATE TABLE IF NOT EXISTS dunkstreet.session_signal_type (
     "date" date,
     "entity" int,
     "time" time,
-    "data" blob,
+    vars frozen<Map<int,double>>,
     PRIMARY KEY ((signal, stream, date), time, entity)
 ) WITH CLUSTERING ORDER BY (signal_time ASC);
 
@@ -75,7 +75,7 @@ CREATE TABLE IF NOT EXISTS dunkstreet.entity_daily_signals (
     signal_time timestamp,
     signal_id int,
     stream_id int,
-    data blob,
+    vars frozen<Map<int,double>>,
     PRIMARY KEY ((entity_id, signal_date), signal_time, signal_id, stream_id)
 ) WITH CLUSTERING ORDER BY (signal_time ASC);
 

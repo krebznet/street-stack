@@ -1,14 +1,14 @@
 package com.dunkware.stream.data.cassy.helpers;
 
-import com.dunkware.stream.data.cassy.entity.sesion.DBStreamSessionKey;
-import com.dunkware.stream.data.cassy.entity.sesion.DBStreamSessionRow;
+import com.dunkware.stream.data.cassy.entity.StreamSession;
+import com.dunkware.stream.data.cassy.entity.StreamSessionKey;
 import com.dunkware.time.data.model.session.StreamSessionModel;
 
 public class StreamSessionRowHelper {
 	
 	
 	
-	public static StreamSessionModel toModel(DBStreamSessionRow row) { 
+	public static StreamSessionModel toModel(StreamSession row) { 
 		StreamSessionModel mod = new StreamSessionModel();
 		mod.setDate(row.getKey().getDate());
 		mod.setEntities(row.getEntities());
@@ -22,9 +22,9 @@ public class StreamSessionRowHelper {
 	}
 	
 	
-	public static DBStreamSessionRow toRow(StreamSessionModel model) { 
-		DBStreamSessionRow row = new DBStreamSessionRow();
-		DBStreamSessionKey key = new DBStreamSessionKey(model.getStream(), model.getDate());
+	public static StreamSession toRow(StreamSessionModel model) { 
+		StreamSession row = new StreamSession();
+		StreamSessionKey key = new StreamSessionKey(model.getStream(), model.getDate());
 		row.setKey(key);
 		row.setEntities(model.getEntities());
 		row.setSignals(model.getSignals());

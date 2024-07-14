@@ -14,6 +14,12 @@ import org.springframework.data.cassandra.core.AsyncCassandraTemplate;
 import org.springframework.data.cassandra.core.convert.CassandraConverter;
 import org.springframework.data.cassandra.repository.config.EnableCassandraRepositories;
 
+import com.datastax.oss.driver.api.core.CqlSession;
+import com.datastax.oss.driver.api.core.CqlSessionBuilder;
+import com.datastax.oss.driver.api.core.config.DriverConfigLoader;
+import com.datastax.oss.driver.api.core.config.ProgrammaticDriverConfigLoaderBuilder;
+import com.datastax.oss.driver.api.core.config.TypedDriverOption;
+import com.datastax.oss.driver.internal.core.metadata.DefaultEndPoint;
 import com.dunkware.stream.data.cassy.support.CustomCassandraOperations;
 import com.dunkware.stream.data.cassy.support.CustomCassandraRepositoryImpl;
 
@@ -21,8 +27,8 @@ import com.dunkware.stream.data.cassy.support.CustomCassandraRepositoryImpl;
 @EnableCassandraRepositories(repositoryBaseClass = CustomCassandraRepositoryImpl.class, basePackages = "com.dunkware.stream.data.cassy.repository")
 class CassandraConfiguration   {
 
-	@Value("${spring.cassandra.keyspace-name}")
-	private String keyspace; 
+	//@Value("${spring.cassandra.keyspace-name}")
+	private String keyspace = "timestream";
 	
 	@Value("${spring.cassandra.username}")
 	private String username; 
@@ -69,27 +75,6 @@ class CassandraConfiguration   {
 		return session;
 	}
 
-	/**
-	@ReadingConverter
-	class RoleReadingConverter implements Converter<String, Role> {
-		@Override
-		public Role convert(String source) {
-			return Role.parse(source);
-		}
-	}
-
-	@WritingConverter
-	class RoleWritingConverter implements Converter<Role, String> {
-		@Override
-		public String convert(Role source) {
-			return source.toString();
-		}
-	}
-
-	@Bean
-	CassandraCustomConversions cassandraCustomConversions() {
-		return new CassandraCustomConversions(Arrays.asList(new RoleReadingConverter(), new RoleWritingConverter()));
-	}
-	**/
-
+	
+	
 }

@@ -14,22 +14,22 @@ import org.slf4j.LoggerFactory;
 import org.slf4j.Marker;
 import org.slf4j.MarkerFactory;
 
-import com.dunkware.stream.data.cassy.entity.stats.DBSessionEntityStatsRow;
-import com.dunkware.stream.data.cassy.repository.stats.SessionEntityStatsRepo;
+import com.dunkware.stream.data.cassy.entity.SessionEntityStats;
+import com.dunkware.stream.data.cassy.repository.SessionEntityStatsRepository;
 import com.dunkware.utils.core.stopwatch.StopWatch;
 
-public class SessionEntityStatsInjestor implements EntityInjestor<DBSessionEntityStatsRow> {
+public class SessionEntityStatsInjestor implements EntityInjestor<SessionEntityStats> {
 
-	public static SessionEntityStatsInjestor newInstance(SessionEntityStatsRepo repo, int threads, int batchSize) {
+	public static SessionEntityStatsInjestor newInstance(SessionEntityStatsRepository repo, int threads, int batchSize) {
 		return new SessionEntityStatsInjestor(repo, threads, batchSize);
 	}
 	
 	private Logger logger = LoggerFactory.getLogger(getClass());
 	private Marker marker = MarkerFactory.getMarker("EntityStatsInjestor");
-	private BlockingQueue<DBSessionEntityStatsRow> queue = new LinkedBlockingQueue<DBSessionEntityStatsRow>();
+	private BlockingQueue<SessionEntityStats> queue = new LinkedBlockingQueue<SessionEntityStats>();
 
 
-	private SessionEntityStatsRepo repo;
+	private SessionEntityStatsRepository repo;
 	private int threadCount;
 	private int batchSize;
 
@@ -46,7 +46,7 @@ public class SessionEntityStatsInjestor implements EntityInjestor<DBSessionEntit
 	
 	private EntityInjestorMetrics metrics = new EntityInjestorMetrics();
 	
-	private SessionEntityStatsInjestor(SessionEntityStatsRepo repo, int threads, int batchSize) {
+	private SessionEntityStatsInjestor(SessionEntityStatsRepository repo, int threads, int batchSize) {
 		this.repo = repo;
 		this.threadCount = threads; 
 		this.batchSize = batchSize; 
@@ -58,7 +58,7 @@ public class SessionEntityStatsInjestor implements EntityInjestor<DBSessionEntit
 	}
 
 	@Override
-	public void injest(DBSessionEntityStatsRow entity) {
+	public void injest(SessionEntityStats entity) {
 		queue.add(entity);
 	}
 
@@ -82,7 +82,7 @@ public class SessionEntityStatsInjestor implements EntityInjestor<DBSessionEntit
 
 	private class BatchWriter extends Thread {
 
-		private List<DBSessionEntityStatsRow> batch = new ArrayList<DBSessionEntityStatsRow>();
+		private List<SessionEntityStats> batch = new ArrayList<SessionEntityStats>();
 		private StopWatch stopWatch = StopWatch.newInstance();
 		
 		private int id; 
@@ -95,7 +95,7 @@ public class SessionEntityStatsInjestor implements EntityInjestor<DBSessionEntit
 			setName("SessionEntity-Stats_Injestor-" + id);
 			while (!interrupted()) {
 				try {
-					DBSessionEntityStatsRow row = queue.poll(3, TimeUnit.SECONDS);
+					SessionEntityStats row = queue.poll(3, TimeUnit.SECONDS);
 					if (row == null) {
 						writeBatch();
 						continue;
@@ -121,7 +121,7 @@ public class SessionEntityStatsInjestor implements EntityInjestor<DBSessionEntit
 			if (batch.size() > 0) {
 				stopWatch.start();
 				try {
-					repo.ingest(batch);	
+					repo.saveAll(batch);	
 				} catch (Exception e) {
 					errorCount.incrementAndGet();
 					logger.error(marker, "Exception Injestion " + e.toString());

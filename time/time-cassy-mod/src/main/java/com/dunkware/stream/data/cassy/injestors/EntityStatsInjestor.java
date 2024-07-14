@@ -14,22 +14,22 @@ import org.slf4j.LoggerFactory;
 import org.slf4j.Marker;
 import org.slf4j.MarkerFactory;
 
-import com.dunkware.stream.data.cassy.entity.stats.DBEntityStatsRow;
-import com.dunkware.stream.data.cassy.repository.stats.EntityStatsRepo;
+import com.dunkware.stream.data.cassy.entity.EntityStats;
+import com.dunkware.stream.data.cassy.repository.EntityStatsRepository;
 import com.dunkware.utils.core.stopwatch.StopWatch;
 
-public class EntityStatsInjestor implements EntityInjestor<DBEntityStatsRow> {
+public class EntityStatsInjestor implements EntityInjestor<EntityStats> {
 
-	public static EntityStatsInjestor newInstance(EntityStatsRepo repo, int threads, int batchSize) {
+	public static EntityStatsInjestor newInstance(EntityStatsRepository repo, int threads, int batchSize) {
 		return new EntityStatsInjestor(repo, threads, batchSize);
 	}
 	
 	private Logger logger = LoggerFactory.getLogger(getClass());
 	private Marker marker = MarkerFactory.getMarker("EntityStatsInjestor");
-	private BlockingQueue<DBEntityStatsRow> queue = new LinkedBlockingQueue<DBEntityStatsRow>();
+	private BlockingQueue<EntityStats> queue = new LinkedBlockingQueue<EntityStats>();
 
 
-	private EntityStatsRepo repo;
+	private EntityStatsRepository repo;
 	private int threadCount;
 	private int batchSize;
 
@@ -46,7 +46,7 @@ public class EntityStatsInjestor implements EntityInjestor<DBEntityStatsRow> {
 	
 	private EntityInjestorMetrics metrics = new EntityInjestorMetrics();
 	
-	private EntityStatsInjestor(EntityStatsRepo repo, int threads, int batchSize) {
+	private EntityStatsInjestor(EntityStatsRepository repo, int threads, int batchSize) {
 		this.repo = repo;
 		this.threadCount = threads; 
 		this.batchSize = batchSize; 
@@ -58,7 +58,7 @@ public class EntityStatsInjestor implements EntityInjestor<DBEntityStatsRow> {
 	}
 
 	@Override
-	public void injest(DBEntityStatsRow entity) {
+	public void injest(EntityStats entity) {
 		queue.add(entity);
 	}
 
@@ -82,7 +82,7 @@ public class EntityStatsInjestor implements EntityInjestor<DBEntityStatsRow> {
 
 	private class BatchWriter extends Thread {
 
-		private List<DBEntityStatsRow> batch = new ArrayList<DBEntityStatsRow>();
+		private List<EntityStats> batch = new ArrayList<EntityStats>();
 		private StopWatch stopWatch = StopWatch.newInstance();
 		
 		private int id; 
@@ -95,7 +95,7 @@ public class EntityStatsInjestor implements EntityInjestor<DBEntityStatsRow> {
 			setName("Entity-Stats_Injestor-" + id);
 			while (!interrupted()) {
 				try {
-					DBEntityStatsRow row = queue.poll(3, TimeUnit.SECONDS);
+					EntityStats row = queue.poll(3, TimeUnit.SECONDS);
 					if (row == null) {
 						writeBatch();
 						continue;
@@ -121,7 +121,7 @@ public class EntityStatsInjestor implements EntityInjestor<DBEntityStatsRow> {
 			if (batch.size() > 0) {
 				stopWatch.start();
 				try {
-					repo.ingest(batch);	
+					repo.saveAll(batch);
 				} catch (Exception e) {
 					errorCount.incrementAndGet();
 					logger.error(marker, "Exception Injestion " + e.toString());
