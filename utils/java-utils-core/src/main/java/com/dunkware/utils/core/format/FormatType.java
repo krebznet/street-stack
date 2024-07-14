@@ -10,75 +10,67 @@
  * Do not edit the class manually.
  */
 
-
 package com.dunkware.utils.core.format;
 
-import java.net.URLEncoder;
-import java.nio.charset.StandardCharsets;
-import java.util.StringJoiner;
-import java.util.Objects;
-import java.util.Map;
 import java.util.HashMap;
-import com.fasterxml.jackson.annotation.JsonPropertyOrder;
+import java.util.Map;
 
-
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonValue;
-
-/**
- * The type of format.
- */
 public enum FormatType {
-  
-  CURRENCY("Currency"),
-  
-  TEXT("Text"),
-  
-  PERCENT("Percent"),
-  
-  DECIMAL("Decimal"),
-  
-  NUMERIC("Numeric");
+	TEXT(1, "TEXT", "text"), PERCENT(2, "PERCENT", "percent"), PERCENT_NATURAL(3, "PERCENT_NATURAL", "percentNatural"),
+	DECIMAL(4, "DECIMAL", "decimal"), DATE(5, "DATE", "date"), TIME(6, "TIME", "time"),
+	DATETIME(7, "DATETIME", "datetime"), LOCAL_DATE(8, "LOCAL_DATE", "localDate"),
+	LOCAL_TIME(9, "LOCAL_TIME", "localTime"), LOCAL_DATETIME(10, "LOCAL_DATETIME", "localDateTime"),
+	ZONED_DATE(11, "ZONED_DATE", "zonedDate"), ZONED_TIME(12, "ZONED_TIME", "zonedTime"),
+	ZONED_DATETIME(13, "ZONED_DATETIME", "zonedDateTime"), INSTANT(14, "INSTANT", "instant"),
+	EPOCH_SECOND(15, "EPOCH_SECOND", "epochSecond"), FULL_DATE_TIME(16, "FULL_DATE_TIME", "fullDateTime"),
+	ISO_DATE_TIME(17, "ISO_DATE_TIME", "isoDateTime"), SHORT_DATE(18, "SHORT_DATE", "shortDate"),
+	SHORT_DATE_TIME(19, "SHORT_DATE_TIME", "shortDateTime"), TIME_AM_PM(20, "TIME_AM_PM", "timeAmPm"),
+	TIME_24H(21, "TIME_24H", "time24h"), DAY_TIME(22, "DAY_TIME", "dayTime"), NUMBER(23, "NUMBER", "number"),
+	SHORT_NUMBER(24, "SHORT_NUMBER", "shortNumber");
 
-  private String value;
+	private final int id;
+	private final String name;
+	private final String literal;
 
-  FormatType(String value) {
-    this.value = value;
-  }
+	private static final Map<Integer, FormatType> BY_ID = new HashMap<>();
+	private static final Map<String, FormatType> BY_NAME = new HashMap<>();
+	private static final Map<String, FormatType> BY_LITERAL = new HashMap<>();
 
-  @JsonValue
-  public String getValue() {
-    return value;
-  }
+	static {
+		for (FormatType e : values()) {
+			BY_ID.put(e.id, e);
+			BY_NAME.put(e.name, e);
+			BY_LITERAL.put(e.literal, e);
+		}
+	}
 
-  @Override
-  public String toString() {
-    return String.valueOf(value);
-  }
+	FormatType(int id, String name, String literal) {
+		this.id = id;
+		this.name = name;
+		this.literal = literal;
+	}
 
-  @JsonCreator
-  public static FormatType fromValue(String value) {
-    for (FormatType b : FormatType.values()) {
-      if (b.value.equals(value)) {
-        return b;
-      }
-    }
-    throw new IllegalArgumentException("Unexpected value '" + value + "'");
-  }
+	public int getId() {
+		return id;
+	}
 
-  /**
-   * Convert the instance into URL query string.
-   *
-   * @param prefix prefix of the query string
-   * @return URL query string
-   */
-  public String toUrlQueryString(String prefix) {
-    if (prefix == null) {
-      prefix = "";
-    }
+	public String getName() {
+		return name;
+	}
 
-    return String.format("%s=%s", prefix, this.toString());
-  }
+	public String getLiteral() {
+		return literal;
+	}
 
+	public static FormatType getById(int id) {
+		return BY_ID.get(id);
+	}
+
+	public static FormatType getByName(String name) {
+		return BY_NAME.get(name);
+	}
+
+	public static FormatType getByLiteral(String literal) {
+		return BY_LITERAL.get(literal);
+	}
 }
-
