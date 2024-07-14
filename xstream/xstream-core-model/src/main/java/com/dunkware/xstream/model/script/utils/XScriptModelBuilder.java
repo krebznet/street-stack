@@ -11,6 +11,10 @@ import com.dunkware.xstream.model.script.model.XScriptModelVariable;
 public class XScriptModelBuilder {
 	
 	
+	
+	public static XScriptModelBuilder instance() { 
+		return new XScriptModelBuilder();
+	}
     private String name;
     private String version;
     private String type;
@@ -28,8 +32,8 @@ public class XScriptModelBuilder {
         return this;
     }
 
-    public XScriptModelBuilder insertVariable(int id, String name, String label, String group, String format) {
-        this.variables.add(new XScriptModelVariable("", id, name, label, group, format));
+    public XScriptModelBuilder insertVariable(String version, int id, String name, String label, String group, String format) {
+        this.variables.add(new XScriptModelVariable(version, id, name, label, group, format));
         return this;
     }
 

@@ -9,6 +9,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class XScriptModelSignal {
 
+	
 	private int id; 
 	private String name; 
 	private String label; 
