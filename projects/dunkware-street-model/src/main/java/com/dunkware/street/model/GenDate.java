@@ -36,7 +36,7 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
   GenDate.JSON_PROPERTY_MONTH,
   GenDate.JSON_PROPERTY_DAY_OF_MONTH
 })
-@jakarta.annotation.Generated(value = "org.openapitools.codegen.languages.JavaClientCodegen", date = "2024-07-14T03:12:48.582083-05:00[America/Chicago]", comments = "Generator version: 7.6.0")
+@jakarta.annotation.Generated(value = "org.openapitools.codegen.languages.JavaClientCodegen", date = "2024-07-14T18:13:17.312132-05:00[America/Chicago]", comments = "Generator version: 7.6.0")
 public class GenDate {
   public static final String JSON_PROPERTY_YEAR = "year";
   private Integer year;

@@ -7,7 +7,7 @@
 	<parent>
 		<groupId>org.springframework.boot</groupId>
 		<artifactId>spring-boot-starter-parent</artifactId>
-		<version>3.3.0</version>
+		<version>3.2.5</version>
 	</parent>
 	<groupId>com.dunkware.trade.service</groupId>
 	<artifactId>dunkware-trade-service-tick-server</artifactId>
@@ -60,7 +60,11 @@
 	<artifactId>java-utils-core</artifactId>
 	<version>1.0.0-SNAPSHOt</version>
 </dependency>
-
+<dependency>
+    <groupId>com.zaxxer</groupId>
+    <artifactId>HikariCP</artifactId>
+    <version>3.4.5</version>
+</dependency>
 <dependency>
 	
 	<groupId>com.dunkware.utils</groupId>

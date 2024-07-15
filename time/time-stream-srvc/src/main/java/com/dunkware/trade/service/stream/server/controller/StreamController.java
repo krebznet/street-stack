@@ -37,8 +37,6 @@ import com.dunkware.trade.service.stream.server.controller.session.events.EStrea
 import com.dunkware.trade.service.stream.server.controller.session.events.EStreamSessionStartException;
 import com.dunkware.trade.service.stream.server.controller.session.events.EStreamSessionStarted;
 import com.dunkware.trade.service.stream.server.controller.session.events.EStreamSessionStopped;
-import com.dunkware.trade.service.stream.server.facade.model.ExchangeSession;
-import com.dunkware.trade.service.stream.server.facade.model.TickerRef;
 import com.dunkware.trade.service.stream.server.repository.StreamEntity;
 import com.dunkware.trade.service.stream.server.repository.StreamRepo;
 import com.dunkware.trade.service.stream.server.repository.StreamVersionEntity;
@@ -78,7 +76,7 @@ import ca.odell.glazedlists.ObservableElementList;
  * 
  * a stream runs in a stream session. 
  */
-public class StreamController implements StreetExchange  {
+public class StreamController   {
 
 	private Logger logger = org.slf4j.LoggerFactory.getLogger(getClass());
 	private Marker marker = MarkerFactory.getMarker("StreamController");
@@ -279,37 +277,20 @@ public class StreamController implements StreetExchange  {
 	
 	
 
-	@Override
+	
 	public ZoneId getTimeZone() {
 		return zoneId;
 	}
 
-	public List<TickerRef> getExchangeTickers() { 
-		List<TickerRef> tickers = new ArrayList<TickerRef>();
-		for (TradeTickerSpec spec : tickerList.getTickers()) {
-			TickerRef ref = new TickerRef();
-			ref.setId(spec.getId());
-			ref.setExchange((int)this.ent.getId());
-			ref.setIdentifier(spec.getSymbol());
-			ref.setName(spec.getName());
-			tickers.add(ref);
-		}
-		return tickers;
-		
-	}
+
 	
 	
 	
-	@Override
+	
 	public int getExchangeId() {
 		return (int)ent.getId();
 	}
 
-	@Override
-	public List<ExchangeSession> getExchangeSessions() {
-			throw new IllegalArgumentException("Not implemented");
-
-	}
 
 	public void setTickers(String...tickers) throws Exception {
 		
