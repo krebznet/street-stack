@@ -5,13 +5,13 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
-import com.dunkware.trade.engine.model.api.TradeExitTriggerType;
+import com.dunkware.trade.engine.model.api.TradeEntryExecutorType;
 
 @Target(ElementType.TYPE)
 @Retention(RetentionPolicy.RUNTIME)
 
-public @interface ATradeExitTrigger {
-	Class<? extends TradeExitTriggerType> type();
+public @interface ATradeEnryExecutor {
+	Class<? extends TradeEntryExecutorType> type();
 	
 }
  
