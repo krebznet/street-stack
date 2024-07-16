@@ -21,7 +21,7 @@ public class AppFoundationGen extends JFrame {
     private boolean isSidePanelCollapsed = false;
 
     public AppFoundationGen() {
-        setTitle("Trading Platform");
+        setTitle("Street Smart Alpha");
         setSize(1200, 800);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setLayout(new BorderLayout());
@@ -73,7 +73,7 @@ public class AppFoundationGen extends JFrame {
         // Desktop pane for internal frames
         desktopPane = new JDesktopPane();
         add(desktopPane, BorderLayout.CENTER);
-
+        this.setVisible(false);
         // Show login dialog
         showLoginDialog();
     }

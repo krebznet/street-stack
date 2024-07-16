@@ -6,6 +6,7 @@ class TwsAccountNode extends AbstractTreeNode {
     }
 
     public String getType() {
+
         return "TwsAccountNode";
     }
 

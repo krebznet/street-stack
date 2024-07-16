@@ -46,14 +46,7 @@
 			<version>1.0.0-SNAPSHOT</version>
 		</dependency>
 
-		<dependency>
-
-			<groupId>com.dunkware.utils</groupId>
-			<artifactId>java-utils-kafka</artifactId>
-			<version>1.0.0-SNAPSHOT</version>
-
-		</dependency>
-
+Q
 		<dependency>
 			<groupId>com.dunkware.time</groupId>
 			<artifactId>time-data-codec</artifactId>

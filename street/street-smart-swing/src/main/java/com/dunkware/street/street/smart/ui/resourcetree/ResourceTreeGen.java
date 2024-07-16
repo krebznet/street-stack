@@ -58,7 +58,7 @@ public class ResourceTreeGen extends JPanel {
         tree.setShowsRootHandles(true);
         tree.setRootVisible(true);
 
-        // Add context menu
+        // Add context menuq
         JPopupMenu popupMenu = new JPopupMenu();
 
         tree.addMouseListener(new MouseAdapter() {

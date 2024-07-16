@@ -9,6 +9,8 @@ import java.util.concurrent.Semaphore;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.dunkware.utils.core.eventlogger.EventLogger;
+import com.dunkware.utils.core.eventlogger.EventLoggerBuilder;
 import com.dunkware.utils.core.events.anot.ADunkEventHandler;
 import com.dunkware.utils.core.helpers.DunkReflection;
 //TODO: AVINASHANV-20 Event Node 
@@ -39,15 +41,23 @@ public class DunkEventNode {
 	private List<AnnotateDunkEventHandler> eventHandlers = new ArrayList<AnnotateDunkEventHandler>();
 	private Semaphore eventHandlerLock = new Semaphore(1);
 	
+	private EventLogger eventLogger; 
+	
 
 	public DunkEventNode(DunkEventNode parent, Object source, DunkEventTree service)   {
 		this.parent = parent;
 		this.source = source;
-	
 		this.eventTree = service;
+		
+		if(parent != null) { 
+			EventLoggerBuilder b = new EventLoggerBuilder(parent.getEventLogger(), source.getClass().getName(), source.getClass().getName(),null,null);
+			this.eventLogger = b.build();
+		}
 	}
 
-	
+	public EventLogger getEventLogger() { 
+		return eventLogger;
+	}
 	
 	public DunkEventNode getParent() {
 		return parent;
@@ -56,6 +66,8 @@ public class DunkEventNode {
 	public Object getSource() { 
 		return source; 
 	}
+	
+	
 	
 	/**
 	 * Recursively gets all upstream event handlers registered on parent nodes. 

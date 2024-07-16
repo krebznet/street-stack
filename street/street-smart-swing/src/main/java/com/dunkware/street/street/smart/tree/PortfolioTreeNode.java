@@ -12,7 +12,7 @@ public class PortfolioTreeNode extends AbstractTreeNode {
     }
 
     public String getLabel() {
-        return "ResourceTree";
+        return "Portfolio Tree";
     }
 
     public String getIconPath() {

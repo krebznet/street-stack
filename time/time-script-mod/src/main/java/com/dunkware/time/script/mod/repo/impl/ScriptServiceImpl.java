@@ -59,7 +59,7 @@ public class ScriptServiceImpl implements ScriptService  {
 	
 	@PostConstruct
 	private void init() { 
-		for (ScriptEntity entity : scriptRepository.) {
+		for (ScriptEntity entity : scriptRepository.findAll()) {
 			ScriptImpl script = new ScriptImpl();
 			ac.getAutowireCapableBeanFactory().autowireBean(script);
 			try {

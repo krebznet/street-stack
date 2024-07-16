@@ -54,7 +54,7 @@ public class MainFrame extends JFrame {
     }
     
     public void initComponents() { 
-        setTitle("Street Smart");
+        setTitle("Street Link");
         setSize(1200, 800);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setLayout(new BorderLayout());

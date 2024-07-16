@@ -8,7 +8,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 /**
  * observers attach and are notified on notifyAll call
  */
-public abstract class ObservableBean {
+public abstract class ObservableBean  implements IObservableBean {
 
 	@JsonIgnore
 	private Vector<ObservableListener> obs = new Vector<ObservableListener>();
