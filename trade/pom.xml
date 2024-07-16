@@ -72,8 +72,10 @@
         <module>trade-feed-api</module>
         <module>trade-engine-api</module>
         <module>trade-engine-core</module>
-        <module>trade-engine-mode</module>
+        <module>trade-engine-mod</module>
         <module>trade-engine-model</module>
+        <module>trade-time-core</module>
+        <module>trade-time-model</module>
        
         
 	

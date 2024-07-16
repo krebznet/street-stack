@@ -6,6 +6,7 @@ import com.dunkware.trade.engine.api.context.TradeContext;
 
 public interface TradeStrategy {
 	
+	// 
 	
 	TradeContext getContext();
 	
