@@ -1,7 +1,12 @@
-package com.dunkware.trade.engine.model.order;
+package com.dunkware.trade.engine.model.bean;
 
 import java.time.LocalDateTime;
 
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
+@Data
+@NoArgsConstructor
 public class TradeOrderBean {
 
 	private LocalDateTime submittedTime;

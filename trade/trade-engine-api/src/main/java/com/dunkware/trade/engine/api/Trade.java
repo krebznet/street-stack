@@ -2,7 +2,7 @@ package com.dunkware.trade.engine.api;
 
 import java.util.List;
 
-import com.dunkware.trade.engine.model.trade.TradeBean;
+import com.dunkware.trade.engine.model.bean.TradeBean;
 import com.dunkware.utils.core.events.DunkEventNode;
 
 public interface Trade {
@@ -21,5 +21,6 @@ public interface Trade {
 	
 	public List<TradeOrder> getOrders();
 	
-	
+	// Trade - realizedGainLoss
+	// lastPrice 
 }

@@ -5,7 +5,7 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
-import com.dunkware.trade.engine.model.api.TradeEntryTriggerType;
+import com.dunkware.trade.engine.model.api.extend.TradeEntryTriggerType;
 
 @Target(ElementType.TYPE)
 @Retention(RetentionPolicy.RUNTIME)

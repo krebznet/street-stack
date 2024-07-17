@@ -1,4 +1,4 @@
-package com.dunkware.trade.engine.model.api;
+package com.dunkware.trade.engine.model.api.extend;
 
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 

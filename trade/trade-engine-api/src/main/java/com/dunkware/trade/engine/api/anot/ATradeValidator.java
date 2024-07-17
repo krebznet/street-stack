@@ -5,12 +5,12 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
-import com.dunkware.trade.engine.model.api.TradeEntryExecutorType;
+import com.dunkware.trade.engine.model.api.extend.TradeEntryExecutorType;
 
 @Target(ElementType.TYPE)
 @Retention(RetentionPolicy.RUNTIME)
 
-public @interface ATradeEnryExecutor {
+public @interface ATradeValidator {
 	Class<? extends TradeEntryExecutorType> type();
 	
 }

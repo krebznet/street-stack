@@ -1,5 +1,5 @@
 package com.dunkware.trade.engine.api;
 
-public interface TradeNode {
+public interface TradeExitTrigger {
 
 }
