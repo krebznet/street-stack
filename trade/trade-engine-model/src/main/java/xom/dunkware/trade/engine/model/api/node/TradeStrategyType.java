@@ -4,11 +4,11 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.dunkware.trade.engine.model.api.TradeNodeType;
+import com.dunkware.trade.engine.model.api.TradeValidatorType;
 import com.dunkware.trade.engine.model.api.extend.TradeEntryExecutorType;
 import com.dunkware.trade.engine.model.api.extend.TradeEntryTriggerType;
 import com.dunkware.trade.engine.model.api.extend.TradeExitExecutorType;
 import com.dunkware.trade.engine.model.api.extend.TradeExitTriggerType;
-import com.dunkware.trade.engine.model.api.extend.TradeValidatorType;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;

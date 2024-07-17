@@ -17,11 +17,11 @@ import com.dunkware.trade.engine.api.anot.ATradeExitExecutor;
 import com.dunkware.trade.engine.api.anot.ATradeExitTrigger;
 import com.dunkware.trade.engine.api.anot.ATradeValidator;
 import com.dunkware.trade.engine.api.registry.TradeRegistry;
-import com.dunkware.trade.engine.model.api.TradeValidatorType;
 import com.dunkware.trade.engine.model.api.extend.TradeEntryExecutorType;
 import com.dunkware.trade.engine.model.api.extend.TradeEntryTriggerType;
 import com.dunkware.trade.engine.model.api.extend.TradeExitExecutorType;
 import com.dunkware.trade.engine.model.api.extend.TradeExitTriggerType;
+import com.dunkware.trade.engine.model.api.extend.TradeValidatorType;
 
 public class TradeRegistryImpl implements TradeRegistry {
 

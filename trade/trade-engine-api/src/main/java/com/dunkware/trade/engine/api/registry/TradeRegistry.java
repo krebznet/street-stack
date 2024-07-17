@@ -5,11 +5,11 @@ import com.dunkware.trade.engine.api.TradeEntryTrigger;
 import com.dunkware.trade.engine.api.TradeExitExecutor;
 import com.dunkware.trade.engine.api.TradeExitTrigger;
 import com.dunkware.trade.engine.api.TradeValidator;
-import com.dunkware.trade.engine.model.api.TradeValidatorType;
 import com.dunkware.trade.engine.model.api.extend.TradeEntryExecutorType;
 import com.dunkware.trade.engine.model.api.extend.TradeEntryTriggerType;
 import com.dunkware.trade.engine.model.api.extend.TradeExitExecutorType;
 import com.dunkware.trade.engine.model.api.extend.TradeExitTriggerType;
+import com.dunkware.trade.engine.model.api.extend.TradeValidatorType;
 
 public interface TradeRegistry {
 	

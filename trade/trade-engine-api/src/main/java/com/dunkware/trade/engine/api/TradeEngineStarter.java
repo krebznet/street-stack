@@ -2,7 +2,7 @@ package com.dunkware.trade.engine.api;
 
 import java.util.List;
 
-import com.dunkware.trade.engine.model.api.TradeValidatorType;
+import com.dunkware.trade.engine.model.api.extend.TradeValidatorType;
 import com.dunkware.utils.core.concurrent.DunkExecutor;
 import com.dunkware.utils.core.events.DunkEventNode;
 

@@ -2,8 +2,6 @@ package com.dunkware.trade.engine.model.api;
 
 import java.util.List;
 
-import com.dunkware.trade.engine.model.api.extend.TradeValidatorType;
-
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
