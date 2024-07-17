@@ -1,4 +1,4 @@
-package com.dunkware.utils.core.eventscheduler.model;
+package com.dunkware.utils.core.scheduler.model;
 
 import java.time.ZonedDateTime;
 

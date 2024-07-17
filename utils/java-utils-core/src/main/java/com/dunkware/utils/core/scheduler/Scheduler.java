@@ -1,4 +1,4 @@
-package com.dunkware.utils.core.eventscheduler;
+package com.dunkware.utils.core.scheduler;
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
 import java.util.ArrayList;
@@ -6,17 +6,17 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import com.dunkware.utils.core.eventscheduler.model.Event;
-import com.dunkware.utils.core.eventscheduler.model.EventOverride;
-import com.dunkware.utils.core.eventscheduler.model.EventSchedule;
+import com.dunkware.utils.core.scheduler.model.Event;
+import com.dunkware.utils.core.scheduler.model.EventOverride;
+import com.dunkware.utils.core.scheduler.model.EventSchedule;
 
-public class EventController {
+public class Scheduler {
     private List<EventSchedule> eventSchedules;
-    private List<EventListener> listeners;
+    private List<SchedulerListener> listeners;
     private ZoneId timeZone;
     private Map<String, Boolean> eventStates; // Track event states
 
-    public EventController(ZoneId timeZone) {
+    public Scheduler(ZoneId timeZone) {
         this.eventSchedules = new ArrayList<>();
         this.listeners = new ArrayList<>();
         this.timeZone = timeZone;
@@ -31,7 +31,7 @@ public class EventController {
         }
     }
 
-    public void addListener(EventListener listener) {
+    public void addListener(SchedulerListener listener) {
         this.listeners.add(listener);
     }
 
@@ -44,13 +44,13 @@ public class EventController {
 
                 if (isRunning && !wasRunning) {
                     // Event started
-                    for (EventListener listener : listeners) {
+                    for (SchedulerListener listener : listeners) {
                         listener.onEventStarted(event);
                     }
                     eventStates.put(event.getName(), true);
                 } else if (!isRunning && wasRunning) {
                     // Event ended
-                    for (EventListener listener : listeners) {
+                    for (SchedulerListener listener : listeners) {
                         listener.onEventEnded(event);
                     }
                     eventStates.put(event.getName(), false);

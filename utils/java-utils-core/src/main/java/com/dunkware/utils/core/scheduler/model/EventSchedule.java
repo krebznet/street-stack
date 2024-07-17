@@ -1,4 +1,4 @@
-package com.dunkware.utils.core.eventscheduler.model;
+package com.dunkware.utils.core.scheduler.model;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 

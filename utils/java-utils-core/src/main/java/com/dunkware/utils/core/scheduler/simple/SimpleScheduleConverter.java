@@ -1,4 +1,4 @@
-package com.dunkware.utils.core.eventscheduler.simple;
+package com.dunkware.utils.core.scheduler.simple;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.time.ZoneId;
@@ -6,9 +6,9 @@ import java.time.ZonedDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.dunkware.utils.core.eventscheduler.model.Event;
-import com.dunkware.utils.core.eventscheduler.model.EventOverride;
-import com.dunkware.utils.core.eventscheduler.model.EventSchedule;
+import com.dunkware.utils.core.scheduler.model.Event;
+import com.dunkware.utils.core.scheduler.model.EventOverride;
+import com.dunkware.utils.core.scheduler.model.EventSchedule;
 
 public class SimpleScheduleConverter {
 

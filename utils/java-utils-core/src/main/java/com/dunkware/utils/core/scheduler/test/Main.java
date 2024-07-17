@@ -1,4 +1,4 @@
-package com.dunkware.utils.core.eventscheduler.test;
+package com.dunkware.utils.core.scheduler.test;
 
 import java.time.Duration;
 import java.time.ZoneId;
@@ -7,11 +7,11 @@ import java.util.Arrays;
 
 import javax.swing.event.EventListenerList;
 
-import com.dunkware.utils.core.eventscheduler.EventController;
-import com.dunkware.utils.core.eventscheduler.EventListener;
-import com.dunkware.utils.core.eventscheduler.model.Event;
-import com.dunkware.utils.core.eventscheduler.model.EventSchedule;
 import com.dunkware.utils.core.json.DunkJson;
+import com.dunkware.utils.core.scheduler.Scheduler;
+import com.dunkware.utils.core.scheduler.SchedulerListener;
+import com.dunkware.utils.core.scheduler.model.Event;
+import com.dunkware.utils.core.scheduler.model.EventSchedule;
 import com.dunkware.utils.core.time.DunkTimeZones;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
@@ -46,10 +46,10 @@ public class Main {
             System.out.println("Deserialized EventSchedule from JSON:");
             System.out.println(deserializedSchedule.getName());
             
-            EventController controller = new EventController(DunkTimeZones.zoneNewYork());
+            Scheduler controller = new Scheduler(DunkTimeZones.zoneNewYork());
             controller.addEventSchedule(deserializedSchedule);
             
-          EventListener list =   new EventListener() {
+          SchedulerListener list =   new SchedulerListener() {
 				
 				@Override
 				public void onEventStarted(Event event) {

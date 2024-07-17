@@ -1,39 +1,30 @@
-package com.dunkware.utils.core.eventscheduler.model;
+package com.dunkware.utils.core.scheduler.simple;
 
-import java.time.ZonedDateTime;
-import java.util.ArrayList;
-import java.util.List;
-
-import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
+import java.time.LocalTime;
+import java.util.List;
+
 @JsonInclude(JsonInclude.Include.NON_NULL)
-public class Event {
+public class SimpleEventModel {
     private String name;
     private String description;
-
-    @JsonFormat(shape = JsonFormat.Shape.STRING)
-    private ZonedDateTime startTime;
-
-    @JsonFormat(shape = JsonFormat.Shape.STRING)
-    private ZonedDateTime endTime;
-
+    private LocalTime startTime;
+    private LocalTime endTime;
     private List<String> days;
-    private List<EventOverride> overrides;
 
-    public Event(
+    public SimpleEventModel(
             @JsonProperty("name") String name,
             @JsonProperty("description") String description,
-            @JsonProperty("startTime") ZonedDateTime startTime,
-            @JsonProperty("endTime") ZonedDateTime endTime,
+            @JsonProperty("startTime") LocalTime startTime,
+            @JsonProperty("endTime") LocalTime endTime,
             @JsonProperty("days") List<String> days) {
         this.name = name;
         this.description = description;
         this.startTime = startTime;
         this.endTime = endTime;
         this.days = days;
-        this.overrides = new ArrayList<>();
     }
 
 	public String getName() {
@@ -52,19 +43,19 @@ public class Event {
 		this.description = description;
 	}
 
-	public ZonedDateTime getStartTime() {
+	public LocalTime getStartTime() {
 		return startTime;
 	}
 
-	public void setStartTime(ZonedDateTime startTime) {
+	public void setStartTime(LocalTime startTime) {
 		this.startTime = startTime;
 	}
 
-	public ZonedDateTime getEndTime() {
+	public LocalTime getEndTime() {
 		return endTime;
 	}
 
-	public void setEndTime(ZonedDateTime endTime) {
+	public void setEndTime(LocalTime endTime) {
 		this.endTime = endTime;
 	}
 
@@ -74,14 +65,6 @@ public class Event {
 
 	public void setDays(List<String> days) {
 		this.days = days;
-	}
-
-	public List<EventOverride> getOverrides() {
-		return overrides;
-	}
-
-	public void setOverrides(List<EventOverride> overrides) {
-		this.overrides = overrides;
 	}
     
     

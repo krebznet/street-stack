@@ -1,4 +1,4 @@
-package com.dunkware.utils.core.eventscheduler.simple;
+package com.dunkware.utils.core.scheduler.simple;
 
 import java.time.Duration;
 import java.time.LocalTime;
@@ -6,8 +6,8 @@ import java.time.ZoneId;
 import java.time.ZonedDateTime;
 import java.util.Arrays;
 
-import com.dunkware.utils.core.eventscheduler.model.EventSchedule;
 import com.dunkware.utils.core.json.DunkJson;
+import com.dunkware.utils.core.scheduler.model.EventSchedule;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 public class Main {
