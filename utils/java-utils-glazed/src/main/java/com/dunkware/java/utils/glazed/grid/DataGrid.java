@@ -140,7 +140,7 @@ public class DataGrid {
 		} catch (Exception e) {
 			throw new DataGridException("Exception getting object id via reflection " + e.toString());
 		}
-	}
+	} 
 
 	
 

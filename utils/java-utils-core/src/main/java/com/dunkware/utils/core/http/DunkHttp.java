@@ -6,6 +6,10 @@ import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.net.URLEncoder;
+import java.nio.charset.StandardCharsets;
+import java.util.Base64;
+import java.util.Map;
 import java.util.Scanner;
 
 import com.dunkware.utils.core.json.DunkJson;
@@ -46,6 +50,47 @@ public class DunkHttp {
 
 	}
 	
+
+    public static void performGetRequest(String urlEndpoint, Map<String, Object> queryParams) throws Exception {
+        // Construct query string from the map
+        StringBuilder queryString = new StringBuilder();
+        if (queryParams != null && !queryParams.isEmpty()) {
+            queryString.append("?");
+            for (Map.Entry<String, Object> entry : queryParams.entrySet()) {
+                if (queryString.length() > 1) {
+                    queryString.append("&");
+                }
+                queryString.append(URLEncoder.encode(entry.getKey(), StandardCharsets.UTF_8));
+                queryString.append("=");
+                queryString.append(URLEncoder.encode(entry.getValue().toString(), StandardCharsets.UTF_8));
+            }
+        }
+
+        // Append query string to URL
+        URL url = new URL(urlEndpoint + queryString.toString());
+        HttpURLConnection con = (HttpURLConnection) url.openConnection();
+        con.setConnectTimeout(HTTP_REQ_TIMEOUT);
+        con.setReadTimeout(HTTP_RESP_TIMEOUT);
+        con.setRequestMethod("GET");
+        con.setRequestProperty("Accept", "application/json");
+
+        // Check HTTP response code
+        int responseCode = con.getResponseCode();
+        if (responseCode != HttpURLConnection.HTTP_OK) {
+            throw new Exception("HTTP GET request failed with response code " + responseCode);
+        }
+
+        // Read response (if needed, here for demonstration)
+        try (BufferedReader br = new BufferedReader(new InputStreamReader(con.getInputStream(), StandardCharsets.UTF_8))) {
+            StringBuilder response = new StringBuilder();
+            String responseLine;
+            while ((responseLine = br.readLine()) != null) {
+                response.append(responseLine.trim());
+            }
+            // You can print the response or log it if needed
+            System.out.println("Response: " + response.toString());
+        }
+    }
 
 	public static <T> T postBodyResponse(String urlEndpoint, Object bodyReq, Class<T> bodyResp) throws Exception {
 		URL url = new URL(urlEndpoint);
@@ -97,6 +142,48 @@ public class DunkHttp {
 	      }
 	      return sb.toString();
 	}
+	
+	  public static String getWithBasicAuth(String urlEndpoint, Map<String, String> queryParams, String username, String password) throws Exception {
+	        // Build query string
+	        StringBuilder queryString = new StringBuilder();
+	        if (queryParams != null && !queryParams.isEmpty()) {
+	            queryString.append("?");
+	            for (Map.Entry<String, String> entry : queryParams.entrySet()) {
+	                queryString.append(URLEncoder.encode(entry.getKey(), StandardCharsets.UTF_8))
+	                           .append("=")
+	                           .append(URLEncoder.encode(entry.getValue(), StandardCharsets.UTF_8))
+	                           .append("&");
+	            }
+	            queryString.deleteCharAt(queryString.length() - 1); // Remove trailing '&'
+	        }
+
+	        URL url = new URL(urlEndpoint + queryString.toString());
+	        HttpURLConnection con = (HttpURLConnection) url.openConnection();
+	        con.setConnectTimeout(10000); // 10 seconds
+	        con.setReadTimeout(10000); // 10 seconds
+	        con.setRequestMethod("GET");
+
+	        // Apply Basic Authentication
+	        String auth = username + ":" + password;
+	        String encodedAuth = Base64.getEncoder().encodeToString(auth.getBytes(StandardCharsets.UTF_8));
+	        con.setRequestProperty("Authorization", "Basic " + encodedAuth);
+
+	        int responseCode = con.getResponseCode();
+	        if (responseCode >= 400) { // If response is not successful
+	            throw new Exception("HTTP request failed with response code: " + responseCode);
+	        }
+
+	        // Read the response
+	        try (BufferedReader br = new BufferedReader(new InputStreamReader(con.getInputStream(), StandardCharsets.UTF_8))) {
+	            StringBuilder response = new StringBuilder();
+	            String responseLine;
+	            while ((responseLine = br.readLine()) != null) {
+	                response.append(responseLine.trim());
+	            }
+	            return response.toString();
+	        }
+	    }
+	
 	
 	
 

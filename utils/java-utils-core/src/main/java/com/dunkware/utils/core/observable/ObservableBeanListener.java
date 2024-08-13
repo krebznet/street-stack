@@ -1,6 +1,6 @@
 package com.dunkware.utils.core.observable;
 
-public interface ObservableListener {
+public interface ObservableBeanListener {
 	
 	
 	public void observableUpdate(ObservableBean bean);

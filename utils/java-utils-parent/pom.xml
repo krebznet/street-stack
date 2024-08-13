@@ -36,6 +36,7 @@
 		<module>../java-utils-redis</module>
 		<module>../java-utils-git</module>
 		<module>../java-utils-mysql</module>
+		<module>../java-utils-reactive</module>
 <module>../java-utils-glazed</module>
 	</modules>
 	

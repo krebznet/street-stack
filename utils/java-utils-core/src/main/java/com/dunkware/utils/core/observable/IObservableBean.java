@@ -4,9 +4,9 @@ public interface IObservableBean {
 
 	public void notifyUpdate();
 	
-	public void addObserver(ObservableListener o);
+	public void addObserver(ObservableBeanListener o);
 	
 
-	public  void removeListener(ObservableListener o);
+	public  void removeListener(ObservableBeanListener o);
 	
 }

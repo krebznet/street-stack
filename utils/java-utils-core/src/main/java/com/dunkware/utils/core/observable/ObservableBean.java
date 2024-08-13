@@ -11,7 +11,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 public abstract class ObservableBean  implements IObservableBean {
 
 	@JsonIgnore
-	private Vector<ObservableListener> obs = new Vector<ObservableListener>();
+	private Vector<ObservableBeanListener> obs = new Vector<ObservableBeanListener>();
 
 	public void notifyUpdate() {
 		  /*
@@ -38,16 +38,16 @@ public abstract class ObservableBean  implements IObservableBean {
         }
 
         for (int i = arrLocal.length-1; i>=0; i--)
-            ((ObservableListener)arrLocal[i]).observableUpdate(this);
+            ((ObservableBeanListener)arrLocal[i]).observableUpdate(this);
 	}
 
-	public synchronized void addObserver(ObservableListener o) {
+	public synchronized void addObserver(ObservableBeanListener o) {
 		if (!obs.contains(o)) {
             obs.addElement(o);
         }
 	}
 
-	public synchronized void removeListener(ObservableListener o) {
+	public synchronized void removeListener(ObservableBeanListener o) {
 		 obs.removeElement(o);
 	}
 

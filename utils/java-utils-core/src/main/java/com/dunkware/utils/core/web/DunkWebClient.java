@@ -29,7 +29,7 @@ public class DunkWebClient {
 	public static DunkWebClient newInstance(String baseURL, String username, String password) { 
 		return new DunkWebClient(baseURL, username, password);
 	}
-	
+	// StreetWebClient // GatewayWebClient
     private final String baseUrl;
     private final CloseableHttpClient httpClient;
 
