@@ -1,7 +1,7 @@
 package com.dunkware.time.script.model.proto;
 
-import com.dunkware.xstream.model.script.model.XScriptProblems;
-import com.dunkware.xstream.model.script.model.XScriptRelease;
+import com.dunkware.xstream.model.script.release.XScriptProblems;
+import com.dunkware.xstream.model.script.release.XScriptRelease;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;

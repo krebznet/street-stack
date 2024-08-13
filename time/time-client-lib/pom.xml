@@ -21,11 +21,29 @@
 	</properties>
 
 	<dependencies>
-
+		<dependency>
+			<groupId>com.dunkware.time</groupId>
+			<artifactId>time-stream-lib</artifactId>
+			<version>1.0.0-SNAPSHOT</version>
+		</dependency>
 		<dependency>
 
 			<groupId>com.dunkware.time</groupId>
 			<artifactId>time-script-lib</artifactId>
+			<version>1.0.0-SNAPSHOT</version>
+
+		</dependency>
+
+		<dependency>
+			<groupId>com.dunkware.time</groupId>
+			<artifactId>time-script-model</artifactId>
+			<version>1.0.0-SNAPSHOT</version>
+
+		</dependency>
+		<dependency>
+
+			<groupId>com.dunkware.utils</groupId>
+			<artifactId>java-utils-reactive</artifactId>
 			<version>1.0.0-SNAPSHOT</version>
 
 		</dependency>

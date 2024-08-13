@@ -67,9 +67,12 @@
         
         <module>time-stream-model</module>
         <module>time-stream-srvc</module>
+        <module>time-stream-lib</module>
+        <module>time-stream-mod</module>
         <module>time-worker-mod</module>
         <module>time-worker-srvc</module>
         <module>time-gateway-srvc</module>
+        <module>time-gateway-lib</module>
         <module>time-cache-lib</module>
         <module>time-cassy-srvc</module>
         <module>time-cassy-mod</module>
@@ -82,7 +85,7 @@
         <module>time-script-lib</module>
         <module>time-client-lib</module>
         <module>time-signal-srvc</module>
-	
+		
     </modules>
     <build>
         <!-- To define the plugin version in your parent POM -->

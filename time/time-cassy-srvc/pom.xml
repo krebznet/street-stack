@@ -46,7 +46,6 @@
 			<version>1.0.0-SNAPSHOT</version>
 		</dependency>
 
-Q
 		<dependency>
 			<groupId>com.dunkware.time</groupId>
 			<artifactId>time-data-codec</artifactId>

@@ -8,7 +8,7 @@
 	<parent>
 		<groupId>org.springframework.boot</groupId>
 		<artifactId>spring-boot-starter-parent</artifactId>
-		<version>3.3.1</version>
+		<version>3.2.5</version>
 		<relativePath/>
 	</parent>
 
@@ -47,13 +47,13 @@
 <dependency>
     <groupId>org.springframework</groupId>
     <artifactId>spring-web</artifactId>
-    <version>6.1.11</version>
+ 
 </dependency>
 <!-- https://mvnrepository.com/artifact/org.springframework.data/spring-data-commons -->
 <dependency>
     <groupId>org.springframework.data</groupId>
     <artifactId>spring-data-commons</artifactId>
-    <version>2.4.2</version>
+  
 </dependency>
 
 
@@ -67,7 +67,7 @@
 <dependency>
     <groupId>jakarta.persistence</groupId>
     <artifactId>jakarta.persistence-api</artifactId>
-    <version>3.2.0</version>
+   
 </dependency>
 		<dependency>
 			<groupId>com.dunkware.utils</groupId>
@@ -81,12 +81,7 @@
 			<artifactId>time-data-model</artifactId>
 			<version>1.0.0-SNAPSHOT</version>
 		</dependency>
-		<dependency>
-			<groupId>com.dunkware.utils</groupId>
-			<artifactId>java-utils-core</artifactId>
-			<version>1.0.0-SNAPSHOT</version>
-		</dependency>
-
+		
 		<dependency>
 			<groupId>com.dunkware.xstream</groupId>
 			<artifactId>xstream-core-runtime</artifactId>
@@ -97,8 +92,7 @@
 		<dependency>
 			<groupId>org.projectlombok</groupId>
 			<artifactId>lombok</artifactId>
-			<version>1.18.34</version>
-			<scope>provided</scope>
+		
 		</dependency>
 
 

@@ -1,3 +1,5 @@
+
+
 package com.dunkware.time.script.lib.client.impl;
 
 import java.util.HashMap;
@@ -9,7 +11,7 @@ import com.dunkware.time.script.model.proto.XScriptReleaseRep;
 import com.dunkware.time.script.model.proto.XScriptSyncRep;
 import com.dunkware.utils.core.json.DunkJson;
 import com.dunkware.utils.core.web.DunkWebClient;
-import com.dunkware.xstream.model.script.model.XScriptModel;
+import com.dunkware.xstream.model.script.descriptor.XScriptDescriptor;
 
 //TODO: AVINASHANV-02 HttpTimeScriptClient
 /**
@@ -40,7 +42,7 @@ public class HttpTimeScriptClient implements TimeScriptClient {
 	
 	
 	@Override
-	public XScriptModel getLatestScriptReleaseModel(String scriptName) throws Exception {
+	public XScriptDescriptor getLatestScriptReleaseModel(String scriptName) throws Exception {
 		
 		return null;
 	}

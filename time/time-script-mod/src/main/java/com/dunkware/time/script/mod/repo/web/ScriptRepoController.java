@@ -5,20 +5,23 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.dunkware.time.script.mod.repo.Script;
-import com.dunkware.time.script.mod.repo.ScriptService;
+import com.dunkware.time.script.mod.repo.ScriptRepo;
+import com.dunkware.time.script.mod.repo.ScriptRepoService;
 import com.dunkware.time.script.model.proto.XScriptDeployRep;
 import com.dunkware.time.script.model.proto.XScriptDeployReq;
-import com.dunkware.xstream.model.script.model.XScriptProblems;
+import com.dunkware.time.script.model.proto.XScriptSyncRep;
+import com.dunkware.time.script.model.proto.XScriptSyncReq;
+import com.dunkware.xstream.model.script.descriptor.XScriptDescriptor;
+import com.dunkware.xstream.model.script.release.XScriptProblems;
 
 
 
 @RestController
 public class ScriptRepoController {
 	
-	private ScriptService repoService; 
+	private ScriptRepoService repoService; 
 	
-	public ScriptRepoController(ScriptService repoService) {
+	public ScriptRepoController(ScriptRepoService repoService) {
 		this.repoService = repoService;
 	}
 	
@@ -26,7 +29,7 @@ public class ScriptRepoController {
 	public @ResponseBody XScriptDeployRep deployScript(@RequestBody XScriptDeployReq req) {
 		XScriptDeployRep rep = new XScriptDeployRep();
 		try {
-			Script script = repoService.createScript(req.getScript(), req.getName(), req.getType());
+			ScriptRepo script = repoService.createRepo(req.getScript(), req.getName(), req.getType());
 			rep.setError(false);
 			rep.setModel(script.getReleaseModel());
 			rep.setVersion(script.getReleaseModel().getVersion());
@@ -38,6 +41,21 @@ public class ScriptRepoController {
 			rep.setProblems(problems);
 			return rep;
 		}
+	}
+	
+	
+	@PostMapping(path =  "/stream/script/sync")
+	public @ResponseBody XScriptSyncRep syncScript(@RequestBody XScriptSyncReq req) { 
+		XScriptSyncRep rep = new XScriptSyncRep(); 
+		try {
+			ScriptRepo script = repoService.getRepo(req.getScriptName());
+			XScriptDescriptor model = script.getReleaseModel();
+		
+			
+		} catch (Exception e) {
+			// TODO: handle exception
+		}
+		return null;
 	}
 	
 
