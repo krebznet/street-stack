@@ -1,6 +1,6 @@
 package com.dunkware.xstream.script;
 
-import com.dunkware.xstream.model.script.model.XScriptModel;
+import com.dunkware.xstream.model.script.descriptor.XScriptDescriptor;
 import com.dunkware.xstream.model.script.utils.XScriptModelBuilder;
 import com.dunkware.xstream.xScript.SignalType;
 import com.dunkware.xstream.xScript.VarType;
@@ -12,9 +12,9 @@ import com.dunkware.xstream.xproject.model.XScriptBundle;
 public class XScriptModelInitializer {
 	
 	
-	public static XScriptModel generate(String script, String name, String type, String version) throws Exception { 
+	public static XScriptDescriptor generate(String script, String name, String type, String version) throws Exception { 
 		XScriptBundle bundle = XscriptBundleHelper.createBundleFromFileContents(script);
-		XScriptModel model = new XScriptModel();
+		XScriptDescriptor model = new XScriptDescriptor();
 		model.setName(name);
 		model.setType(type);
 		model.setVersion(version);
@@ -26,6 +26,9 @@ public class XScriptModelInitializer {
 			throw e;
 		}
 		XScriptModelBuilder b = XScriptModelBuilder.instance();
+		b.setName(name);
+		b.setType(type);
+		b.setVersion(version);
 		for (VarType var : project.getStreamVars()) {
 			b.insertVariable(version, var.getCode(), var.getName(), var.getLabel(), var.getGroup().getLabel(), var.getFormat().name());
 		}
