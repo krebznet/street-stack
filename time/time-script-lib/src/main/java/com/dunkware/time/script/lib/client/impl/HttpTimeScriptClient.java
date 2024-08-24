@@ -23,9 +23,18 @@ import com.dunkware.xstream.model.script.descriptor.XScriptDescriptor;
  */
 public class HttpTimeScriptClient implements TimeScriptClient {
 	
-	private static final String URL_SCRIPT_CREATE = "";
-	private static final String URL_SCRIPT_SYNC = "";
-	private static final String URL_SCRIPT_DEPLOY = "";
+	public static final String CREDS_LOCAL_USERNAME = "dunkware";
+	public static final String CREDS_LOCAL_PASSWORD = "dunkStreet@2022";
+	
+	public static final String ENV_LOCAL = "http://localhost:8085";
+	public static final String ENV_TESTROCK = "https://api.dunkstreet.com";
+	
+	public static final String API_GATEWAY_ECHO = "/v1/api/user/echo";
+	
+	public static final String API_SCRIPT_DEPLOY = "/stream/script/deploy";
+	public static final String API_SCRIPT_SYNC = "/stream/script/sync";
+	public static final String API_SCRIPT_UPDATE = "/stream/script/deploy";
+
 	
 	
 	public static HttpTimeScriptClient instance(String baseURL, String username, String password) throws Exception {
@@ -33,6 +42,8 @@ public class HttpTimeScriptClient implements TimeScriptClient {
 	}
 	
 	private DunkWebClient webClient; 
+	private boolean auth = false; 
+	
 
 	
 	private HttpTimeScriptClient(String baseURL, String username, String password) throws Exception { 
@@ -73,7 +84,7 @@ public class HttpTimeScriptClient implements TimeScriptClient {
 		}
 		String response = null;
 		try {
-			response = webClient.postJson(URL_SCRIPT_DEPLOY, serialized, new HashMap<String,String>());
+			//response = webClient.postJsonBasicAuth(API_SCRIPT_DEPLOY, new HashMap<String,String>(),serialized);
 		} catch (Exception e) {
 			throw new Exception("Exception invoking request " + e.toString());
 		}
