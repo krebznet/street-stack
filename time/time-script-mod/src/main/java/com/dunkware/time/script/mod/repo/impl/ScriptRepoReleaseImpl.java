@@ -6,6 +6,7 @@ import com.dunkware.time.script.mod.repo.ScriptRepo;
 import com.dunkware.time.script.mod.repo.ScriptRepoRelease;
 import com.dunkware.time.script.mod.repo.entity.DBScriptRepoRelease;
 import com.dunkware.utils.core.json.DunkJson;
+import com.dunkware.xstream.model.script.descriptor.XScriptDescriptor;
 import com.dunkware.xstream.model.script.release.XScriptRelease;
 import com.dunkware.xstream.xproject.XScriptProject;
 import com.dunkware.xstream.xproject.bundle.XscriptBundleHelper;
@@ -17,6 +18,7 @@ public class ScriptRepoReleaseImpl implements ScriptRepoRelease {
 	private XScriptRelease releaseModel;
 	private XScriptProject scriptProject;
 	private ScriptRepo script; 
+	
 	public void init(ScriptRepo script, DBScriptRepoRelease entity) throws Exception {
 		this.entity = entity;
 		this.script = script;
@@ -64,6 +66,14 @@ public class ScriptRepoReleaseImpl implements ScriptRepoRelease {
 	public String getSource() {
 		return entity.getSource();
 	}
+
+	@Override
+	public XScriptDescriptor getDescriptor() {
+		return releaseModel.getModel();
+		
+	}
+	
+	
 	
 	
 	

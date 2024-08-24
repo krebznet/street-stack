@@ -7,6 +7,8 @@ import java.util.concurrent.ConcurrentHashMap;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.config.AutowireCapableBeanFactory;
 import org.springframework.context.ApplicationContext;
 import org.springframework.stereotype.Service;
 
@@ -28,14 +30,16 @@ import com.dunkware.xstream.xproject.XScriptProject;
 import com.dunkware.xstream.xproject.bundle.XscriptBundleHelper;
 import com.dunkware.xstream.xproject.model.XScriptBundle;
 
-import jakarta.annotation.PostConstruct;
-
 @Service
 public class ScriptRepoServiceImpl implements ScriptRepoService  {
 
 
+	@Autowired
 	private ApplicationContext ac; 
 
+	@Autowired
+	private  AutowireCapableBeanFactory autowireCapableBeanFactory;
+	
 	private EventService eventService; 
 
 	private Logger logger = LoggerFactory.getLogger(getClass());
@@ -57,7 +61,7 @@ public class ScriptRepoServiceImpl implements ScriptRepoService  {
 		eventNode = eventService.getEventRoot().createChild(this);
 	}
 	
-	@PostConstruct
+	//@PostConstruct
 	private void init() { 
 		for (DBScriptRepo entity : scriptRepository.findAll()) {
 			ScriptRepoImpl script = new ScriptRepoImpl();
@@ -134,23 +138,18 @@ public class ScriptRepoServiceImpl implements ScriptRepoService  {
 		relEnt.setMetadata(DunkJson.serialize(relModel));
 		relEnt.setVersion("1.0.0");
 		relEnt.setSource(script);
-		
+		scriptEnt.getReleases().add(relEnt);
 		try {
-			
+			scriptRepository.save(scriptEnt);
+			scriptReleaseRepository.save(relEnt);
 		} catch (Exception e) {
-			
+			throw new Exception("Exception persisting script entities " + e.toString());
 		}
 		
-		
-		ScriptRepoImpl scriptImpl = new ScriptRepoImpl();
-		ac.getAutowireCapableBeanFactory().autowireBean(script);
-		
-		
-		
-		
-		
-		
-		return null;
+		ScriptRepoImpl scriptImpl = autowireCapableBeanFactory.createBean(ScriptRepoImpl.class);
+		autowireCapableBeanFactory.autowireBean(scriptImpl);
+		scriptImpl.init(scriptEnt);
+		return scriptImpl;
 	}
 
 	@Override

@@ -12,12 +12,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import com.dunkware.time.script.mod.repo.ScriptRepo;
 import com.dunkware.time.script.mod.repo.ScriptRepoRelease;
 import com.dunkware.time.script.mod.repo.ScriptRepoService;
-import com.dunkware.time.script.mod.repo.entity.DBScriptRepoRelease;
 import com.dunkware.time.script.mod.repo.entity.DBScriptRepo;
+import com.dunkware.time.script.mod.repo.entity.DBScriptRepoRelease;
 import com.dunkware.utils.core.events.DunkEventNode;
 import com.dunkware.xstream.model.script.descriptor.XScriptDescriptor;
 import com.dunkware.xstream.model.script.release.XScriptVersion;
-import com.dunkware.xstream.xproject.model.XScriptBundle;
+
 
 
 public class ScriptRepoImpl implements ScriptRepo {
@@ -34,11 +34,6 @@ public class ScriptRepoImpl implements ScriptRepo {
 	
 	@Autowired
 	private ScriptRepoService scriptService; 
-	
-	
-	public void create(XScriptBundle script, String name) throws Exception { 
-		
-	}
 	
 	public void init(DBScriptRepo entity) throws Exception { 
 		this.entity = entity;
@@ -80,8 +75,11 @@ public class ScriptRepoImpl implements ScriptRepo {
 			count++;
 		}
 		
+		if(this.currentRelease == null) { 
+			throw new Exception("Script Repo " + entity.getName() + " ini with no release");
+		}
 		
-		
+
 	}
 	
 	@Override
