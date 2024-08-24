@@ -4,16 +4,16 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import com.dunkware.xstream.model.script.model.XScriptVersion;
-import com.dunkware.xstream.model.script.model.XScriptModel;
-import com.dunkware.xstream.model.script.model.XScriptModelBot;
-import com.dunkware.xstream.model.script.model.XScriptModelSignal;
-import com.dunkware.xstream.model.script.model.XScriptModelVariable;
-import com.dunkware.xstream.model.script.model.XScriptUpdate;
+import com.dunkware.xstream.model.script.descriptor.XScriptBotDescriptor;
+import com.dunkware.xstream.model.script.descriptor.XScriptDescriptor;
+import com.dunkware.xstream.model.script.descriptor.XScriptSignalDescriptor;
+import com.dunkware.xstream.model.script.descriptor.XScriptVariableDescriptor;
+import com.dunkware.xstream.model.script.release.XScriptUpdate;
+import com.dunkware.xstream.model.script.release.XScriptVersion;
 
 public class ScriptComparator {
 
-    public XScriptUpdate compareScripts(XScriptModel oldScript, XScriptModel newScript) {
+    public XScriptUpdate compareScripts(XScriptDescriptor oldScript, XScriptDescriptor newScript) {
         XScriptUpdate scriptUpdate = new XScriptUpdate();
         compareSignals(oldScript.getSignals(), newScript.getSignals(), scriptUpdate.getChanges());
         compareVariables(oldScript.getVariables(), newScript.getVariables(), scriptUpdate.getChanges());
@@ -22,14 +22,14 @@ public class ScriptComparator {
         return scriptUpdate;
     }
 
-    private void compareSignals(List<XScriptModelSignal> oldSignals, List<XScriptModelSignal> newSignals, List<XScriptUpdate.XScriptChange> changes) {
-        Map<Integer, XScriptModelSignal> oldSignalMap = new HashMap<>();
-        for (XScriptModelSignal signal : oldSignals) {
+    private void compareSignals(List<XScriptSignalDescriptor> oldSignals, List<XScriptSignalDescriptor> newSignals, List<XScriptUpdate.XScriptChange> changes) {
+        Map<Integer, XScriptSignalDescriptor> oldSignalMap = new HashMap<>();
+        for (XScriptSignalDescriptor signal : oldSignals) {
             oldSignalMap.put(signal.getId(), signal);
         }
 
-        for (XScriptModelSignal newSignal : newSignals) {
-            XScriptModelSignal oldSignal = oldSignalMap.remove(newSignal.getId());
+        for (XScriptSignalDescriptor newSignal : newSignals) {
+            XScriptSignalDescriptor oldSignal = oldSignalMap.remove(newSignal.getId());
             if (oldSignal == null) {
                 changes.add(new XScriptUpdate.XScriptChange(newSignal.getName(), newSignal.getLabel(), newSignal.getId(), XScriptUpdate.XScriptElementType.Signal, XScriptUpdate.XScriptChangeType.Insert));
             } else if (!oldSignal.getLabel().equals(newSignal.getLabel()) || !oldSignal.getGroup().equals(newSignal.getGroup())) {
@@ -37,19 +37,19 @@ public class ScriptComparator {
             }
         }
 
-        for (XScriptModelSignal remainingOldSignal : oldSignalMap.values()) {
+        for (XScriptSignalDescriptor remainingOldSignal : oldSignalMap.values()) {
             changes.add(new XScriptUpdate.XScriptChange(remainingOldSignal.getName(), remainingOldSignal.getLabel(), remainingOldSignal.getId(), XScriptUpdate.XScriptElementType.Signal, XScriptUpdate.XScriptChangeType.Delete));
         }
     }
 
-    private void compareVariables(List<XScriptModelVariable> oldVariables, List<XScriptModelVariable> newVariables, List<XScriptUpdate.XScriptChange> changes) {
-        Map<Integer, XScriptModelVariable> oldVariableMap = new HashMap<>();
-        for (XScriptModelVariable variable : oldVariables) {
+    private void compareVariables(List<XScriptVariableDescriptor> oldVariables, List<XScriptVariableDescriptor> newVariables, List<XScriptUpdate.XScriptChange> changes) {
+        Map<Integer, XScriptVariableDescriptor> oldVariableMap = new HashMap<>();
+        for (XScriptVariableDescriptor variable : oldVariables) {
             oldVariableMap.put(variable.getId(), variable);
         }
 
-        for (XScriptModelVariable newVariable : newVariables) {
-            XScriptModelVariable oldVariable = oldVariableMap.remove(newVariable.getId());
+        for (XScriptVariableDescriptor newVariable : newVariables) {
+            XScriptVariableDescriptor oldVariable = oldVariableMap.remove(newVariable.getId());
             if (oldVariable == null) {
                 changes.add(new XScriptUpdate.XScriptChange(newVariable.getName(), newVariable.getLabel(), newVariable.getId(), XScriptUpdate.XScriptElementType.Variable, XScriptUpdate.XScriptChangeType.Insert));
             } else if (!oldVariable.getLabel().equals(newVariable.getLabel()) || !oldVariable.getGroup().equals(newVariable.getGroup())) {
@@ -57,19 +57,19 @@ public class ScriptComparator {
             }
         }
 
-        for (XScriptModelVariable remainingOldVariable : oldVariableMap.values()) {
+        for (XScriptVariableDescriptor remainingOldVariable : oldVariableMap.values()) {
             changes.add(new XScriptUpdate.XScriptChange(remainingOldVariable.getName(), remainingOldVariable.getLabel(), remainingOldVariable.getId(), XScriptUpdate.XScriptElementType.Variable, XScriptUpdate.XScriptChangeType.Delete));
         }
     }
 
-    private void compareBots(List<XScriptModelBot> oldBots, List<XScriptModelBot> newBots, List<XScriptUpdate.XScriptChange> changes) {
-        Map<String, XScriptModelBot> oldBotMap = new HashMap<>();
-        for (XScriptModelBot bot : oldBots) {
+    private void compareBots(List<XScriptBotDescriptor> oldBots, List<XScriptBotDescriptor> newBots, List<XScriptUpdate.XScriptChange> changes) {
+        Map<String, XScriptBotDescriptor> oldBotMap = new HashMap<>();
+        for (XScriptBotDescriptor bot : oldBots) {
             oldBotMap.put(bot.getName(), bot);
         }
 
-        for (XScriptModelBot newBot : newBots) {
-            XScriptModelBot oldBot = oldBotMap.remove(newBot.getName());
+        for (XScriptBotDescriptor newBot : newBots) {
+            XScriptBotDescriptor oldBot = oldBotMap.remove(newBot.getName());
             if (oldBot == null) {
                 changes.add(new XScriptUpdate.XScriptChange(newBot.getName(), "", 0, XScriptUpdate.XScriptElementType.Bot, XScriptUpdate.XScriptChangeType.Insert));
             } else if (!oldBot.getGroup().equals(newBot.getGroup())) {
@@ -77,12 +77,12 @@ public class ScriptComparator {
             }
         }
 
-        for (XScriptModelBot remainingOldBot : oldBotMap.values()) {
+        for (XScriptBotDescriptor remainingOldBot : oldBotMap.values()) {
             changes.add(new XScriptUpdate.XScriptChange(remainingOldBot.getName(), "", 0, XScriptUpdate.XScriptElementType.Bot, XScriptUpdate.XScriptChangeType.Delete));
         }
     }
 
-    private void setNewScriptVersion(XScriptModel oldScript, XScriptModel newScript, XScriptUpdate scriptUpdate) {
+    private void setNewScriptVersion(XScriptDescriptor oldScript, XScriptDescriptor newScript, XScriptUpdate scriptUpdate) {
         String currentVersion = oldScript.getVersion();
         boolean hasInsert = scriptUpdate.getChanges().stream().anyMatch(change -> change.getChangeType() == XScriptUpdate.XScriptChangeType.Insert);
         boolean hasDelete = scriptUpdate.getChanges().stream().anyMatch(change -> change.getChangeType() == XScriptUpdate.XScriptChangeType.Delete);
@@ -103,8 +103,8 @@ public class ScriptComparator {
 
     public static void main(String[] args) {
         // Example usage
-        XScriptModel oldScript = new XScriptModel("ExampleScript", "1.3.0","example", new ArrayList<>(), new ArrayList<>(), new ArrayList<>());
-        XScriptModel newScript = new XScriptModel("ExampleScript", "eampd", "1.3.3", new ArrayList<>(), new ArrayList<>(), new ArrayList<>());
+        XScriptDescriptor oldScript = new XScriptDescriptor("ExampleScript", "1.3.0","example", new ArrayList<>(), new ArrayList<>(), new ArrayList<>());
+        XScriptDescriptor newScript = new XScriptDescriptor("ExampleScript", "eampd", "1.3.3", new ArrayList<>(), new ArrayList<>(), new ArrayList<>());
 
         ScriptComparator comparator = new ScriptComparator();
         XScriptUpdate update = comparator.compareScripts(oldScript, newScript);

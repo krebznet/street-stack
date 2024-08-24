@@ -4,27 +4,27 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
-import com.dunkware.xstream.model.script.model.XScriptVersion;
-import com.dunkware.xstream.model.script.model.XScriptModel;
-import com.dunkware.xstream.model.script.model.XScriptModelBot;
-import com.dunkware.xstream.model.script.model.XScriptModelSignal;
-import com.dunkware.xstream.model.script.model.XScriptModelVariable;
-import com.dunkware.xstream.model.script.model.XScriptUpdate;
+import com.dunkware.xstream.model.script.descriptor.XScriptBotDescriptor;
+import com.dunkware.xstream.model.script.descriptor.XScriptDescriptor;
+import com.dunkware.xstream.model.script.descriptor.XScriptSignalDescriptor;
+import com.dunkware.xstream.model.script.descriptor.XScriptVariableDescriptor;
+import com.dunkware.xstream.model.script.release.XScriptUpdate;
+import com.dunkware.xstream.model.script.release.XScriptVersion;
 
 public class XScriptModelMerge {
 
-    public static XScriptModel merge(XScriptModel updated, XScriptModel original, XScriptUpdate update) {
-        XScriptModel merged = new XScriptModel();
+    public static XScriptDescriptor merge(XScriptDescriptor updated, XScriptDescriptor original, XScriptUpdate update) {
+        XScriptDescriptor merged = new XScriptDescriptor();
         merged.setName(original.getName());
         merged.setVersion(original.getVersion()); // This will be updated later
 
         // Merge variables
-        Map<Integer, XScriptModelVariable> mergedVariables = new HashMap<>();
-        for (XScriptModelVariable var : original.getVariables()) {
+        Map<Integer, XScriptVariableDescriptor> mergedVariables = new HashMap<>();
+        for (XScriptVariableDescriptor var : original.getVariables()) {
             mergedVariables.put(var.getId(), var);
         }
 
-        for (XScriptModelVariable var : updated.getVariables()) {
+        for (XScriptVariableDescriptor var : updated.getVariables()) {
             mergedVariables.put(var.getId(), var);
         }
 
@@ -38,12 +38,12 @@ public class XScriptModelMerge {
         merged.setVariables(new ArrayList<>(mergedVariables.values()));
 
         // Merge signals
-        Map<Integer, XScriptModelSignal> mergedSignals = new HashMap<>();
-        for (XScriptModelSignal sig : original.getSignals()) {
+        Map<Integer, XScriptSignalDescriptor> mergedSignals = new HashMap<>();
+        for (XScriptSignalDescriptor sig : original.getSignals()) {
             mergedSignals.put(sig.getId(), sig);
         }
 
-        for (XScriptModelSignal sig : updated.getSignals()) {
+        for (XScriptSignalDescriptor sig : updated.getSignals()) {
             mergedSignals.put(sig.getId(), sig);
         }
 
@@ -57,12 +57,12 @@ public class XScriptModelMerge {
         merged.setSignals(new ArrayList<>(mergedSignals.values()));
 
         // Merge bots
-        Map<String, XScriptModelBot> mergedBots = new HashMap<>();
-        for (XScriptModelBot bot : original.getBots()) {
+        Map<String, XScriptBotDescriptor> mergedBots = new HashMap<>();
+        for (XScriptBotDescriptor bot : original.getBots()) {
             mergedBots.put(bot.getName(), bot);
         }
 
-        for (XScriptModelBot bot : updated.getBots()) {
+        for (XScriptBotDescriptor bot : updated.getBots()) {
             mergedBots.put(bot.getName(), bot);
         }
 
@@ -93,19 +93,19 @@ public class XScriptModelMerge {
         merged.setVersion(newVersionString);
 
         // Assign new version to new variables, signals, and bots
-        for (XScriptModelVariable var : merged.getVariables()) {
+        for (XScriptVariableDescriptor var : merged.getVariables()) {
             if (var.getVersion() == null || var.getVersion().isEmpty()) {
                 var.setVersion(newVersionString);
             }
         }
 
-        for (XScriptModelSignal sig : merged.getSignals()) {
+        for (XScriptSignalDescriptor sig : merged.getSignals()) {
             if (sig.getVersion() == null || sig.getVersion().isEmpty()) {
                 sig.setVersion(newVersionString);
             }
         }
 
-        for (XScriptModelBot bot : merged.getBots()) {
+        for (XScriptBotDescriptor bot : merged.getBots()) {
             if (bot.getVersion() == null || bot.getVersion().isEmpty()) {
                 bot.setVersion(newVersionString);
             }

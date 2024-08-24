@@ -2,26 +2,26 @@ package com.dunkware.xstream.model.script.utils;
 
 import java.util.List;
 
-import com.dunkware.xstream.model.script.model.XScriptModel;
-import com.dunkware.xstream.model.script.model.XScriptModelBot;
-import com.dunkware.xstream.model.script.model.XScriptModelSignal;
-import com.dunkware.xstream.model.script.model.XScriptModelVariable;
-import com.dunkware.xstream.model.script.model.XScriptUpdate;
-import com.dunkware.xstream.model.script.model.XScriptUpdate.XScriptChange;
-import com.dunkware.xstream.model.script.model.XScriptUpdate.XScriptChangeType;
-import com.dunkware.xstream.model.script.model.XScriptUpdate.XScriptElementType;
+import com.dunkware.xstream.model.script.descriptor.XScriptBotDescriptor;
+import com.dunkware.xstream.model.script.descriptor.XScriptDescriptor;
+import com.dunkware.xstream.model.script.descriptor.XScriptSignalDescriptor;
+import com.dunkware.xstream.model.script.descriptor.XScriptVariableDescriptor;
+import com.dunkware.xstream.model.script.release.XScriptUpdate;
+import com.dunkware.xstream.model.script.release.XScriptUpdate.XScriptChange;
+import com.dunkware.xstream.model.script.release.XScriptUpdate.XScriptChangeType;
+import com.dunkware.xstream.model.script.release.XScriptUpdate.XScriptElementType;
 
 public class XScriptUpdateInitializer {
 
-	public static XScriptUpdate intialize(XScriptModel model) {
+	public static XScriptUpdate intialize(XScriptDescriptor model) {
 		XScriptUpdateInitializer in = new XScriptUpdateInitializer(model);
 		return in.getUpdate();
 	}
 	
 	private XScriptUpdate update;
-	private XScriptModel model;
+	private XScriptDescriptor model;
 	
-	private XScriptUpdateInitializer(XScriptModel model) { 
+	private XScriptUpdateInitializer(XScriptDescriptor model) { 
 		this.model = model;
 		update = new XScriptUpdate();
 		insertBots(model.getBots());
@@ -30,8 +30,8 @@ public class XScriptUpdateInitializer {
 		
 	}
 	
-	public void insertVariables(List<XScriptModelVariable> vars) {
-		for (XScriptModelVariable var : vars) {
+	public void insertVariables(List<XScriptVariableDescriptor> vars) {
+		for (XScriptVariableDescriptor var : vars) {
 			XScriptChange change = new XScriptChange();
 			change.setElementId(var.getId());
 			change.setElementLabel(var.getLabel());
@@ -43,8 +43,8 @@ public class XScriptUpdateInitializer {
 		
 	}
 	
-	public void insertSignals(List<XScriptModelSignal> vars) {
-		for (XScriptModelSignal var : vars) {
+	public void insertSignals(List<XScriptSignalDescriptor> vars) {
+		for (XScriptSignalDescriptor var : vars) {
 			XScriptChange change = new XScriptChange();
 			change.setElementId(var.getId());
 			change.setElementLabel(var.getLabel());
@@ -56,8 +56,8 @@ public class XScriptUpdateInitializer {
 		
 	}
 	
-	public void insertBots(List<XScriptModelBot> bots) {
-		for (XScriptModelBot var : bots) {
+	public void insertBots(List<XScriptBotDescriptor> bots) {
+		for (XScriptBotDescriptor var : bots) {
 			XScriptChange change = new XScriptChange();
 			change.setElementId(var.getId());
 			change.setElementLabel(var.getLabel());

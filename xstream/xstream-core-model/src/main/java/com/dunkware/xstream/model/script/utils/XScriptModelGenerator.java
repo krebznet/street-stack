@@ -5,27 +5,27 @@ import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
 import com.dunkware.utils.core.helpers.DunkRandom;
-import com.dunkware.xstream.model.script.model.XScriptModel;
-import com.dunkware.xstream.model.script.model.XScriptModelBot;
-import com.dunkware.xstream.model.script.model.XScriptModelSignal;
-import com.dunkware.xstream.model.script.model.XScriptModelVariable;
+import com.dunkware.xstream.model.script.descriptor.XScriptBotDescriptor;
+import com.dunkware.xstream.model.script.descriptor.XScriptDescriptor;
+import com.dunkware.xstream.model.script.descriptor.XScriptSignalDescriptor;
+import com.dunkware.xstream.model.script.descriptor.XScriptVariableDescriptor;
 
 public class XScriptModelGenerator {
     private static final List<String> FORMATS = List.of("PERCENT", "CURRENCY", "TEXT", "NUMBER", "SHORT_NUMBER");
     private static final Random RANDOM = new Random();
 
-    public static XScriptModel generateModel(String modelName, String version, int numVariables, int numSignals, int numBots, int numVariableGroups, int numSignalGroups, int numBotGroups) {
-        List<XScriptModelVariable> variables = generateVariables(numVariables, numVariableGroups);
-        List<XScriptModelSignal> signals = generateSignals(numSignals, numSignalGroups);
-        List<XScriptModelBot> bots = generateBots(numBots, numBotGroups);
+    public static XScriptDescriptor generateModel(String modelName, String version, int numVariables, int numSignals, int numBots, int numVariableGroups, int numSignalGroups, int numBotGroups) {
+        List<XScriptVariableDescriptor> variables = generateVariables(numVariables, numVariableGroups);
+        List<XScriptSignalDescriptor> signals = generateSignals(numSignals, numSignalGroups);
+        List<XScriptBotDescriptor> bots = generateBots(numBots, numBotGroups);
 
-        return new XScriptModel(modelName, "Generated", version, variables, signals, bots);
+        return new XScriptDescriptor(modelName, "Generated", version, variables, signals, bots);
     }
 
-    private static List<XScriptModelVariable> generateVariables(int numVariables, int numGroups) {
+    private static List<XScriptVariableDescriptor> generateVariables(int numVariables, int numGroups) {
         List<String> groups = generateGroupNames(numGroups);
         return IntStream.rangeClosed(1, numVariables)
-                .mapToObj(i -> new XScriptModelVariable(
+                .mapToObj(i -> new XScriptVariableDescriptor(
                         "",
                         i,
                         DunkRandom.generateRandomWord(),
@@ -36,10 +36,10 @@ public class XScriptModelGenerator {
                 .collect(Collectors.toList());
     }
 
-    private static List<XScriptModelSignal> generateSignals(int numSignals, int numGroups) {
+    private static List<XScriptSignalDescriptor> generateSignals(int numSignals, int numGroups) {
         List<String> groups = generateGroupNames(numGroups);
         return IntStream.rangeClosed(1, numSignals)
-                .mapToObj(i -> new XScriptModelSignal(
+                .mapToObj(i -> new XScriptSignalDescriptor(
                         i,
                         DunkRandom.generateRandomWord(),
                         DunkRandom.generateRandomWord(),
@@ -49,10 +49,10 @@ public class XScriptModelGenerator {
                 .collect(Collectors.toList());
     }
 
-    private static List<XScriptModelBot> generateBots(int numBots, int numGroups) {
+    private static List<XScriptBotDescriptor> generateBots(int numBots, int numGroups) {
         List<String> groups = generateGroupNames(numGroups);
         return IntStream.rangeClosed(1, numBots)
-                .mapToObj(i -> new XScriptModelBot(
+                .mapToObj(i -> new XScriptBotDescriptor(
                 		i,
                 		"3.3.3",
                         DunkRandom.generateRandomWord(),
@@ -75,7 +75,7 @@ public class XScriptModelGenerator {
 
     public static void main(String[] args) {
         // Example usage
-        XScriptModel model = generateModel("ExampleModel", "1.0.0", 10, 5, 3, 2, 2, 1);
+        XScriptDescriptor model = generateModel("ExampleModel", "1.0.0", 10, 5, 3, 2, 2, 1);
         String formattedOutput = XScriptModelFormatter.format(model);
         System.out.println(formattedOutput);
     }

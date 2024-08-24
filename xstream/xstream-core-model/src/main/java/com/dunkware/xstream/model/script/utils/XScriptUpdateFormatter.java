@@ -2,7 +2,7 @@ package com.dunkware.xstream.model.script.utils;
 
 import java.util.List;
 
-import com.dunkware.xstream.model.script.model.XScriptUpdate;
+import com.dunkware.xstream.model.script.release.XScriptUpdate;
 
 public class XScriptUpdateFormatter {
 
