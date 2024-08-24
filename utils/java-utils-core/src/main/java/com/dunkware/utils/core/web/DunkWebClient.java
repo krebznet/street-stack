@@ -1,6 +1,7 @@
 package com.dunkware.utils.core.web;
 
 import java.io.IOException;
+import java.util.Base64;
 import java.util.Map;
 import java.util.stream.Collectors;
 
@@ -8,13 +9,17 @@ import org.apache.http.HttpResponse;
 import org.apache.http.auth.AuthScope;
 import org.apache.http.auth.UsernamePasswordCredentials;
 import org.apache.http.client.CredentialsProvider;
+import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.entity.StringEntity;
 import org.apache.http.impl.client.BasicCredentialsProvider;
 import org.apache.http.impl.client.CloseableHttpClient;
+import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.impl.client.HttpClients;
 import org.apache.http.util.EntityUtils;
+
+
 //TODO: AVINASHANV-01 DunkWebClient 
 /*
  * This was chat gbt generated its simply a component that lets you make post and get calls 
@@ -32,15 +37,21 @@ public class DunkWebClient {
 	// StreetWebClient // GatewayWebClient
     private final String baseUrl;
     private final CloseableHttpClient httpClient;
+    private String username; 
+    private String password; 
+    
 
     private DunkWebClient(String baseUrl, String username, String password) {
         this.baseUrl = baseUrl;
+        this.username = username; 
+        this.password = password;
         CredentialsProvider credsProvider = new BasicCredentialsProvider();
         credsProvider.setCredentials(AuthScope.ANY, new UsernamePasswordCredentials(username, password));
         this.httpClient = HttpClients.custom()
                 .setDefaultCredentialsProvider(credsProvider)
                 .build();
     }
+ 
 
     public String postJson(String path, String json, Map<String, String> queryParams) throws IOException {
         String url = buildUrl(path, queryParams);
