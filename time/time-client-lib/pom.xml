@@ -12,7 +12,7 @@
 
 	<name>Stream Client Lib</name>
 	<description>maven-archtype-jar.</description>
-
+ <packaging>bundle</packaging> <!-- Change packaging type to bundle -->
 
 	<properties>
 		<java.version>17</java.version>
@@ -92,11 +92,32 @@
 
 
 	</dependencies>
+	
+	
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.felix</groupId>
+                <artifactId>maven-bundle-plugin</artifactId>
+                <version>5.1.2</version>
+                <extensions>true</extensions>
+                <configuration>
+                    <instructions>
+                        <Bundle-SymbolicName>com.dunkware.time.client</Bundle-SymbolicName>
+                        <Bundle-Version>${project.version}</Bundle-Version>
+                        <Export-Package> <!-- List packages to export -->
+                            com.dunkware.*
+                        </Export-Package>
+                    </instructions>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
 
 
-	<build>
 
-	</build>
+
+
 
 
 </project>
