@@ -483,19 +483,7 @@
 	XScriptWeighted:
 		{XScriptWeighted} 'weighted:' weighted=("true" | "false") ';';
 	
-	
-	//TODO: AVINASHANV-12 Script Trade Bot grammar
-	/**
-	 * This is the tradeBot that we can script what is cool is that a trade bot can reference
-	 * andy signals in the script and xtext auto generates the editors for eclipse. trade bot 
-	 * has a set of connfiguratioin objects in setup { it can be activeCapitalLimit and other 
-	 * things. 
-	 * 
-	 * the maven build auto generates an object model for the script that is called XScript
-	 * these objects are used by the runtime interpeter. 
-	 */ 
-	 * 
-	 * */
+
 	
 	XScriptBot: // tradeBotAlpha1(1,"Alpha 1 Bot", "Alpha Bots,
 		{XScriptBot} 'tradeBot' name=ID '(' id=INT ',' label=STRING ',' group=[GroupType] ')' '{'

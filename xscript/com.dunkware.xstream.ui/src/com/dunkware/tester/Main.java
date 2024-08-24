@@ -8,8 +8,13 @@ import org.eclipse.swt.widgets.MenuItem;
 import org.eclipse.swt.custom.CTabFolder;
 import org.eclipse.swt.custom.CTabItem;
 import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Table;
+import org.eclipse.jface.viewers.TableViewer;
+import org.eclipse.swt.widgets.TableColumn;
+import org.eclipse.jface.viewers.TableViewerColumn;
 
 public class Main {
+	private static Table table;
 
     public static void main(String[] args) {
         Display display = new Display();
@@ -31,6 +36,27 @@ public class Main {
         tabFolder.setSimple(false);
         tabFolder.setTabPosition(SWT.BOTTOM);
         createTabs(tabFolder);
+        
+        CTabItem tbtmTrades = new CTabItem(tabFolder, SWT.NONE);
+        tbtmTrades.setText("Trades");
+        
+        TableViewer tableViewer = new TableViewer(tabFolder, SWT.BORDER | SWT.FULL_SELECTION);
+        table = tableViewer.getTable();
+        table.setHeaderVisible(true);
+        tbtmTrades.setControl(table);
+        
+        TableViewerColumn tableViewerColumn = new TableViewerColumn(tableViewer, SWT.NONE);
+        TableColumn tblclmnSymbol = tableViewerColumn.getColumn();
+        tblclmnSymbol.setWidth(100);
+        tblclmnSymbol.setText("Symbol");
+        
+        TableViewerColumn tableViewerColumn_1 = new TableViewerColumn(tableViewer, SWT.NONE);
+        TableColumn tblclmnSize = tableViewerColumn_1.getColumn();
+        tblclmnSize.setWidth(100);
+        tblclmnSize.setText("Size");
+        
+        CTabItem tbtmOrders = new CTabItem(tabFolder, SWT.NONE);
+        tbtmOrders.setText("Orders");
 
         shell.open();
         while (!shell.isDisposed()) {
