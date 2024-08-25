@@ -9,14 +9,14 @@
 		<groupId>org.springframework.boot</groupId>
 		<artifactId>spring-boot-starter-parent</artifactId>
 		<version>3.2.5</version>
-		<relativePath />
+		<relativePath/>
 	</parent>
 
 	<groupId>com.dunkware.time</groupId>
-	<artifactId>time-stream-mod</artifactId>
+	<artifactId>time-entity-mod</artifactId>
 	<version>1.0.0-SNAPSHOT</version>
 	<packaging>jar</packaging>
-	<name>Time Repo Module</name>
+	<name>Time Entity Module</name>
 	<description>maven-archtype-jar.</description>
 
 
@@ -27,49 +27,41 @@
 	</properties>
 
 	<dependencies>
-		<dependency>
-			<groupId>com.dunkware.time</groupId>
-			<artifactId>time-stream-model</artifactId>
-			<version>1.0.0-SNAPSHOT</version>
-		</dependency>
-		<dependency>
+
+	<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-webflux</artifactId>
 		</dependency>
 
-		<dependency>
-			<groupId>com.dunkware.time</groupId>
-			<artifactId>time-script-mod</artifactId>
-			<version>1.0.0-SNAPSHOT</version>
-		</dependency>
-
+	
 		<!--
 		https://mvnrepository.com/artifact/org.springframework.boot/spring-boot-starter-web -->
-		<!-- https://mvnrepository.com/artifact/org.springframework/spring-web -->
-		<dependency>
-			<groupId>org.springframework</groupId>
-			<artifactId>spring-web</artifactId>
-		</dependency>
-		<!--
-		https://mvnrepository.com/artifact/org.springframework.data/spring-data-commons -->
-		<dependency>
-			<groupId>org.springframework.data</groupId>
-			<artifactId>spring-data-commons</artifactId>
-		</dependency>
+<!-- https://mvnrepository.com/artifact/org.springframework/spring-web -->
+<dependency>
+    <groupId>org.springframework</groupId>
+    <artifactId>spring-web</artifactId>
+ 
+</dependency>
+<!-- https://mvnrepository.com/artifact/org.springframework.data/spring-data-commons -->
+<dependency>
+    <groupId>org.springframework.data</groupId>
+    <artifactId>spring-data-commons</artifactId>
+  
+</dependency>
 
 
-		<dependency>
-			<groupId>com.dunkware.spring</groupId>
-			<artifactId>spring-runtime</artifactId>
-			<version>1.0.0-SNAPSHOT</version>
-		</dependency>
+<dependency>
+	<groupId>com.dunkware.spring</groupId>
+	<artifactId>spring-runtime</artifactId>
+	<version>1.0.0-SNAPSHOT</version>
+</dependency>
 
-		<!--
-		https://mvnrepository.com/artifact/jakarta.persistence/jakarta.persistence-api -->
-		<dependency>
-			<groupId>jakarta.persistence</groupId>
-			<artifactId>jakarta.persistence-api</artifactId>
-		</dependency>
+	<!-- https://mvnrepository.com/artifact/jakarta.persistence/jakarta.persistence-api -->
+<dependency>
+    <groupId>jakarta.persistence</groupId>
+    <artifactId>jakarta.persistence-api</artifactId>
+   
+</dependency>
 		<dependency>
 			<groupId>com.dunkware.utils</groupId>
 			<artifactId>java-utils-core</artifactId>
@@ -79,24 +71,17 @@
 		<!-- Dunkware Depenencies -->
 		<dependency>
 			<groupId>com.dunkware.time</groupId>
-			<artifactId>time-data-model</artifactId>
+			<artifactId>time-entity-model</artifactId>
 			<version>1.0.0-SNAPSHOT</version>
 		</dependency>
-
-
-		<dependency>
-			<groupId>com.dunkware.xstream</groupId>
-			<artifactId>xstream-core-runtime</artifactId>
-			<version>1.0.0-SNAPSHOT</version>
-		</dependency>
-
+		
 	
+
 		<!-- https://mvnrepository.com/artifact/org.projectlombok/lombok -->
 		<dependency>
 			<groupId>org.projectlombok</groupId>
 			<artifactId>lombok</artifactId>
-
-			<scope>provided</scope>
+		
 		</dependency>
 
 

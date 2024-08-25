@@ -16,5 +16,10 @@ public class StreamDeployReq {
 	private String[] entityLists;
 	private SimpleEventSchedule schedule; 
 	private String script; 
+	
+	
+	public static void main(String[] args) {
+		
+	}
 
 }

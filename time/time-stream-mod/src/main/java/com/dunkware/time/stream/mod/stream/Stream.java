@@ -3,7 +3,7 @@ package com.dunkware.time.stream.mod.stream;
 import java.util.List;
 
 import com.dunkware.time.script.mod.repo.ScriptRepoRelease;
-import com.dunkware.time.stream.mod.entity.StreamEntity;
+import com.dunkware.time.stream.mod.entity.DBStream;
 import com.dunkware.time.stream.model.admin.settings.StreamSettings;
 import com.dunkware.utils.core.events.DunkEventNode;
 import com.dunkware.utils.core.scheduler.Scheduler;
@@ -30,7 +30,7 @@ public interface Stream {
 	
 	public DunkEventNode getEventNode();
 
-	public StreamEntity getEntity();
+	public DBStream getEntity();
 
 
 }

@@ -62,6 +62,9 @@
 
     <modules>
 
+        <module>time-entity-model</module>
+        <module>time-entity-lib</module>
+        <module>time-entity-mod</module>
         <module>time-stream-model</module>
         <module>time-stream-srvc</module>
         <module>time-stream-lib</module>

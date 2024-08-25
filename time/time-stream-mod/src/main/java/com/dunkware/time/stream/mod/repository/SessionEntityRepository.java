@@ -2,8 +2,8 @@ package com.dunkware.time.stream.mod.repository;
 
 import org.springframework.data.repository.CrudRepository;
 
-import com.dunkware.time.stream.mod.entity.SessionEntity;
+import com.dunkware.time.stream.mod.entity.DBStreamSession;
 
-public interface SessionEntityRepository extends CrudRepository<SessionEntity, Long>{
+public interface SessionEntityRepository extends CrudRepository<DBStreamSession, Long>{
 
 }
