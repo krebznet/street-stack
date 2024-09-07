@@ -13,6 +13,9 @@ xtext-gen
 # BlueJ files
 *.ctxt
 
+.run
+.idea
+
 # Mobile Tools for Java (J2ME)
 .mtj.tmp/
 
