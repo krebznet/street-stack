@@ -6,7 +6,7 @@
     xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
     <groupId>com.dunkware.trade</groupId>
-    <artifactId>trade-parent</artifactId>
+    <artifactId>trade-build-mvn-parent</artifactId>
     <version>1.0.0-SNAPSHOT</version>
     <packaging>pom</packaging>
 
@@ -65,17 +65,17 @@
         
 
         
-        <module>trade-broker-api</module>
-        <module>trade-broker-tws</module>
-       
-        <module>trade-data-api</module>
-        <module>trade-feed-api</module>
-        <module>trade-engine-api</module>
-        <module>trade-engine-core</module>
-        <module>trade-engine-mod</module>
-        <module>trade-engine-model</module>
-        <module>trade-time-core</module>
-        <module>trade-time-model</module>
+        <module>trade-broker-api-runtime</module>
+        <module>trade-broker-api-model</module>
+        <module>trade-broker-tws-runtime</module>
+     
+        <module>trade-feed-api-runtime</module>
+        <module>trade-feed-api-model</module>
+        <module>trade-engine-api-runtime</module>
+        <module>trade-engine-api-model</module>
+        <module>trade-engine-core-runtime</module>
+        <module>trade-engine-core-model</module>
+        
        
         
 	

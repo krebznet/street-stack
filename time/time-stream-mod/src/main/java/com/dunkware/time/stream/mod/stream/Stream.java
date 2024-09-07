@@ -4,7 +4,7 @@ import java.util.List;
 
 import com.dunkware.time.script.mod.repo.ScriptRepoRelease;
 import com.dunkware.time.stream.mod.entity.DBStream;
-import com.dunkware.time.stream.model.admin.settings.StreamSettings;
+import com.dunkware.time.stream.model.admin.config.StreamConfig;
 import com.dunkware.utils.core.events.DunkEventNode;
 import com.dunkware.utils.core.scheduler.Scheduler;
 import com.dunkware.utils.core.scheduler.model.Event;
@@ -18,7 +18,7 @@ public interface Stream {
 
 	String getType();
 
-	public void saveSettings(StreamSettings settings) throws Exception; 
+	public void saveSettings(StreamConfig settings) throws Exception; 
 	
 	public Scheduler getScheduler();
 	

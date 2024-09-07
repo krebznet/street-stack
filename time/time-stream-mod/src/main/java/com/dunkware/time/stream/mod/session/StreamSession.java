@@ -6,4 +6,6 @@ public interface StreamSession {
 
 	DBStreamSession getEntity();
 	
+	// we need an api for 
+	
 }

@@ -24,22 +24,15 @@ public class DBStreamSession {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private long uuid; 
 	
-	@Column(name = "stream_name")
-	private String streamName;
-	
-	@Column(name = "start_timestamp")
-	private LocalDateTime startTimestamp;
-
-	@Column(name = "stop_timestamp")
-	private LocalDateTime stopTimestramp;
-
-	@Column(name = "script_version")
-	private String scriptVersion;
-
 	@ManyToOne()
 	private DBStream stream; 
 	
+	@ManyToOne()
+	private DBScriptRepo repo;
 	
+	@Column(name = "start")
+	private LocalDateTime startTimestamp; 
 	
-	
+	@Column(name = "stop")
+	private LocalDateTime stopTimestamp; 
 }

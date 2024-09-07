@@ -1,0 +1,67 @@
+/* General background color for the application */
+.root {
+    -fx-background-color: #2b2b2b;
+    -fx-text-fill: #d0d0d0;
+}
+
+/* Styling for the MenuBar */
+.menu-bar {
+    -fx-background-color: #3c3f41;
+    -fx-text-fill: #d0d0d0;
+}
+
+.menu {
+    -fx-text-fill: #d0d0d0;
+}
+
+.menu-item {
+    -fx-background-color: #3c3f41;
+    -fx-text-fill: #d0d0d0;
+}
+
+.menu-item:hover {
+    -fx-background-color: #555555;
+}
+
+/* Styling for the SplitPane divider */
+.split-pane {
+    -fx-background-color: #3c3f41;
+}
+
+.split-pane .divider {
+    -fx-background-color: #444444;
+}
+
+/* Styling for TabPane and Tabs */
+.tab-pane {
+    -fx-background-color: #3c3f41;
+}
+
+.tab {
+    -fx-background-color: #3c3f41;
+    -fx-text-base-color: #d0d0d0;
+}
+
+.tab:selected {
+    -fx-background-color: #2b2b2b;
+}
+
+/* Styling for HBox used as a status line */
+.hbox {
+    -fx-background-color: #3c3f41;
+    -fx-text-fill: #d0d0d0;
+}
+
+.label {
+    -fx-text-fill: #d0d0d0;
+}
+
+/* General styling for buttons (if you add them later) */
+.button {
+    -fx-background-color: #3c3f41;
+    -fx-text-fill: #d0d0d0;
+}
+
+.button:hover {
+    -fx-background-color: #555555;
+}

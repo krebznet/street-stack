@@ -66,9 +66,9 @@
         <module>projects/dunkware-maven-parent</module>
         <module>xstream/xstream-core-model</module>
         <module>xstream/xstream-core-runtime</module>
-        <module>street</module>
+       <!-- <module>street</module>--> 
         <module>time</module>
-        <module>trade</module>
+       <!-- <module>trade</module> -->
         <module>spring/spring-cluster</module>
         <module>spring/spring-runtime</module>
         

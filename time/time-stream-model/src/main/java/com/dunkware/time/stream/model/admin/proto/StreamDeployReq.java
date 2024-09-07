@@ -1,6 +1,6 @@
 package com.dunkware.time.stream.model.admin.proto;
 
-import com.dunkware.utils.core.scheduler.simple.SimpleEventSchedule;
+import com.dunkware.time.stream.model.admin.config.StreamConfig;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -11,15 +11,10 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class StreamDeployReq {
 	
-	private String identifier; 
-	private String type; 
-	private String[] entityLists;
-	private SimpleEventSchedule schedule; 
-	private String script; 
+	private StreamConfig config;
 	
 	
-	public static void main(String[] args) {
-		
-	}
+	
+	
 
 }

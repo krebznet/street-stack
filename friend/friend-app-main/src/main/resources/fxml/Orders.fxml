@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.Cursor?>
+<?import javafx.scene.control.SplitPane?>
+<?import javafx.scene.control.Tab?>
+<?import javafx.scene.control.TabPane?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.effect.Blend?>
+<?import javafx.scene.layout.BorderPane?>
+
+<SplitPane dividerPositions="0.6884422110552764" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" orientation="VERTICAL" prefHeight="550.0" prefWidth="833.0" style="-fx-background-insets: re;" stylesheets="@../../../../../street-react/node_modules/highlight.js/styles/arduino-light.css" xmlns="http://javafx.com/javafx/22" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.dunkware.street.smart.controller.OrdersController">
+">
+  <items>
+      <BorderPane prefHeight="200.0" prefWidth="200.0">
+         <center>
+            <TabPane prefHeight="200.0" prefWidth="200.0" style="-fx-background-insets: 1;" tabClosingPolicy="UNAVAILABLE" BorderPane.alignment="CENTER">
+              <tabs>
+                <Tab text="Submitted">
+                     <content>
+                        <BorderPane prefHeight="200.0" prefWidth="200.0">
+                           <center>
+                              <TableView prefHeight="200.0" prefWidth="200.0" style="-fx-border-width: 0;" BorderPane.alignment="CENTER">
+                                <columns>
+                                  <TableColumn prefWidth="75.0" text="C1" />
+                                  <TableColumn prefWidth="75.0" text="C2" />
+                                </columns>
+                              </TableView>
+                           </center>
+                        </BorderPane>
+                     </content>
+                </Tab>
+                <Tab text="Untitled Tab 2" />
+              </tabs>
+            </TabPane>
+         </center>
+      </BorderPane>
+      <BorderPane prefHeight="200.0" prefWidth="200.0" style="-fx-background-color: black;">
+         <center>
+            <TabPane prefHeight="143.0" prefWidth="598.0" side="BOTTOM" tabClosingPolicy="UNAVAILABLE" BorderPane.alignment="CENTER">
+              <tabs>
+                <Tab text="Brokers">
+                     <content>
+                        <BorderPane prefHeight="200.0" prefWidth="200.0">
+                           <center>
+                              <TableView prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER">
+                                <columns>
+                                  <TableColumn prefWidth="75.0" text="Type" />
+                                  <TableColumn prefWidth="75.0" text="Name" />
+                                </columns>
+                              </TableView>
+                           </center>
+                        </BorderPane>
+                     </content>
+                </Tab>
+                <Tab text="Accountts">
+                     <content>
+                        <BorderPane prefHeight="200.0" prefWidth="200.0">
+                           <center>
+                              <TableView prefHeight="200.0" prefWidth="200.0" style="-fx-view-order: red;" BorderPane.alignment="CENTER">
+                                <columns>
+                                  <TableColumn prefWidth="75.0" text="C1" />
+                                  <TableColumn prefWidth="75.0" text="C2" />
+                                </columns>
+                              </TableView>
+                           </center>
+                        </BorderPane>
+                     </content>
+                </Tab>
+              </tabs>
+            </TabPane>
+         </center>
+         <effect>
+            <Blend />
+         </effect>
+      </BorderPane>
+  </items>
+   <cursor>
+      <Cursor fx:constant="DEFAULT" />
+   </cursor>
+</SplitPane>

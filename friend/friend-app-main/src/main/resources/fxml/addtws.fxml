@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.DialogPane?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.RowConstraints?>
+<?import javafx.scene.layout.VBox?>
+
+<DialogPane prefHeight="267.0" prefWidth="442.0" style="-fx-region-border: 9; -fx-background-radius: 90; -fx-background-color: white;" xmlns="http://javafx.com/javafx/22" xmlns:fx="http://javafx.com/fxml/1">
+   <header>
+      <BorderPane maxHeight="1.7976931348623157E308" prefHeight="241.0" prefWidth="401.0" style="-fx-background-color: white;">
+         <top>
+            <ImageView fitHeight="150.0" fitWidth="450.0" pickOnBounds="true" preserveRatio="true" BorderPane.alignment="CENTER">
+               <image>
+                  <Image url="@../images/twswiz.png" />
+               </image>
+            </ImageView>
+         </top>
+         <center>
+            <GridPane BorderPane.alignment="CENTER">
+              <columnConstraints>
+                <ColumnConstraints hgrow="SOMETIMES" maxWidth="226.0" minWidth="10.0" prefWidth="107.0" />
+                <ColumnConstraints hgrow="SOMETIMES" maxWidth="353.0" minWidth="10.0" prefWidth="353.0" />
+              </columnConstraints>
+              <rowConstraints>
+                <RowConstraints maxHeight="-Infinity" minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                <RowConstraints maxHeight="37.0" minHeight="10.0" prefHeight="37.0" vgrow="SOMETIMES" />
+                <RowConstraints maxHeight="36.0" minHeight="10.0" prefHeight="35.0" vgrow="SOMETIMES" />
+                  <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                  <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+              </rowConstraints>
+               <children>
+                  <VBox>
+                     <children>
+                        <Label alignment="TOP_LEFT" prefHeight="22.0" prefWidth="122.0" text="Name:">
+                           <padding>
+                              <Insets left="35.0" top="5.0" />
+                           </padding>
+                           <opaqueInsets>
+                              <Insets left="5.0" />
+                           </opaqueInsets>
+                        </Label>
+                     </children>
+                  </VBox>
+                  <Label text="Host:" GridPane.rowIndex="1">
+                     <GridPane.margin>
+                        <Insets left="35.0" />
+                     </GridPane.margin>
+                     <opaqueInsets>
+                        <Insets left="50.0" />
+                     </opaqueInsets>
+                  </Label>
+                  <Label text="Port:" GridPane.rowIndex="2">
+                     <GridPane.margin>
+                        <Insets left="35.0" />
+                     </GridPane.margin>
+                     <opaqueInsets>
+                        <Insets left="50.0" />
+                     </opaqueInsets>
+                  </Label>
+                  <Label prefHeight="17.0" prefWidth="56.0" text="Con ID" GridPane.rowIndex="3">
+                     <GridPane.margin>
+                        <Insets left="35.0" />
+                     </GridPane.margin>
+                     <opaqueInsets>
+                        <Insets left="50.0" />
+                     </opaqueInsets>
+                  </Label>
+                  <TextField id="txtName" onKeyReleased="#s" prefHeight="25.0" prefWidth="220.0" GridPane.columnIndex="1">
+                     <GridPane.margin>
+                        <Insets right="35.0" />
+                     </GridPane.margin>
+                     <opaqueInsets>
+                        <Insets left="10.0" />
+                     </opaqueInsets>
+                  </TextField>
+                  <TextField id="txtHost" onKeyPressed="#onHost" GridPane.columnIndex="1" GridPane.rowIndex="1">
+                     <GridPane.margin>
+                        <Insets right="40.0" />
+                     </GridPane.margin>
+                  </TextField>
+                  <TextField id="txtPort" onKeyPressed="#onPort" GridPane.columnIndex="1" GridPane.rowIndex="2">
+                     <GridPane.margin>
+                        <Insets right="40.0" />
+                     </GridPane.margin>
+                  </TextField>
+                  <TextField id="txtConnectionId" onKeyReleased="#onConId" GridPane.columnIndex="1" GridPane.rowIndex="3">
+                     <GridPane.margin>
+                        <Insets right="40.0" />
+                     </GridPane.margin>
+                  </TextField>
+                  <Button id="btnConnect" mnemonicParsing="false" onMouseClicked="#onzvonnrvy" style="-fx-background-color: green; -fx-text-fill: white;" text="Connect" GridPane.columnIndex="1" GridPane.halignment="RIGHT" GridPane.rowIndex="4">
+                     <GridPane.margin>
+                        <Insets right="35.0" />
+                     </GridPane.margin>
+                  </Button>
+                  <Button id="btnCancel" mnemonicParsing="false" onMouseClicked="#onCancel" style="-fx-background-color: red; -fx-text-fill: white;" text="Cancel" GridPane.columnIndex="1" GridPane.rowIndex="4">
+                     <opaqueInsets>
+                        <Insets left="50.0" />
+                     </opaqueInsets>
+                     <GridPane.margin>
+                        <Insets left="180.0" />
+                     </GridPane.margin>
+                  </Button>
+               </children>
+            </GridPane>
+         </center>
+      </BorderPane>
+   </header>
+</DialogPane>
