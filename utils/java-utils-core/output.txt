@@ -11,3 +11,7 @@ trade-feed-atick
 faces-
 
 
+
+fusion-javafx-main
+fusion-service-srvc
+fusion-service

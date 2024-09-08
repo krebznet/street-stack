@@ -68,6 +68,7 @@
         <module>faces-widgets-mock</module>
         <module>faces-demo-service</module>
         <module>faces-demo-client</module>
+        <module>faces-demo-javafx</module>
         <module>faces-widgets-client</module>
         <module>faces-widgets-model</module>
         <module>faces-widgets-proto</module>
