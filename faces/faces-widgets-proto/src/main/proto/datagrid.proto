@@ -1,0 +1,15 @@
+syntax = "proto3";
+
+package com.faces.widget.proto.grid;
+
+// DataGridUpdate message definition
+message DataGridUpdateProto {
+  int32 id = 1;
+  string json = 2;
+  string type = 3;
+}
+
+// DataGridUpdateProtoList message definition for batching updates
+message DataGridUpdateProtoList {
+  repeated DataGridUpdateProto updates = 1;
+}

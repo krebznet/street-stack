@@ -15,7 +15,7 @@
 	
 	<properties>
 		
-			<lombok.version>1.18.20</lombok.version>
+			<lombok.version>1.18.32</lombok.version>
 	</properties>
 	<groupId>com.dunkware.xstream</groupId>
 	<artifactId>xstream-core-model</artifactId>

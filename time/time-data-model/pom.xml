@@ -15,7 +15,8 @@
 
 
 	<properties>
-			<lombok.version>1.18.20</lombok.version>
+				<lombok.version>1.18.32</lombok.version>
+
 			<java.version>17</java.version>
 		<maven.compiler.source>17</maven.compiler.source>
 		<maven.compiler.target>17</maven.compiler.target>

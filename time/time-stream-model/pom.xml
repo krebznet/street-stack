@@ -22,7 +22,8 @@
 		<java.version>17</java.version>
 		<maven.compiler.source>17</maven.compiler.source>
 		<maven.compiler.target>17</maven.compiler.target>
-		<lombok.version>1.18.20</lombok.version>
+				<lombok.version>1.18.32</lombok.version>
+
 		<maven-jar-plugin.version>3.1.1</maven-jar-plugin.version>
 		<os.plugin.version>1.6.0</os.plugin.version>
 

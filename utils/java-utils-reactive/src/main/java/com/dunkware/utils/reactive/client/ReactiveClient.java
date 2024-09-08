@@ -15,14 +15,21 @@ public class ReactiveClient {
 
     private final WebClient webClient;
 
+    // Constructor for basic authentication
     public static ReactiveClient newInstance(String endpoint, String username, String password) {
         return new ReactiveClient(endpoint, username, password);
+    }
+
+    // Constructor for no authentication
+    public static ReactiveClient newInstance(String endpoint) {
+        return new ReactiveClient(endpoint);
     }
 
     private String endPoint;
     private String username;
     private String password;
 
+    // Private constructor with basic authentication
     private ReactiveClient(String endpoint, String username, String password) {
         this.webClient = WebClient.builder()
                 .baseUrl(endpoint)
@@ -30,6 +37,23 @@ public class ReactiveClient {
                 .defaultHeader(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE).build();
         this.endPoint = endpoint;
         this.username = username;
+        this.password = password;
+    }
+    
+    public Flux<byte[]> getBinaryFluxResponse(String path, Map<String, Object> queryParams) {
+        return webClient.get()
+            .uri(buildUrlWithParams(path, queryParams))
+            .retrieve()
+            .bodyToFlux(byte[].class)
+            .doOnError(WebClientResponseException.class, this::handleHttpError);
+    }
+
+    // Private constructor for no authentication
+    private ReactiveClient(String endpoint) {
+        this.webClient = WebClient.builder()
+                .baseUrl(endpoint)
+                .defaultHeader(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE).build();
+        this.endPoint = endpoint;
     }
 
     // Helper method to build URL with query parameters

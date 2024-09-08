@@ -5,8 +5,8 @@
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
     xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
-    <groupId>com.dunkware.stack</groupId>
-    <artifactId>dunkware-stack-build</artifactId>
+    <groupId>com.dunkware.faces</groupId>
+    <artifactId>faces-widgets-parent</artifactId>
     <version>1.0.0-SNAPSHOT</version>
     <packaging>pom</packaging>
 
@@ -46,40 +46,37 @@
             <layout>default</layout>
             <name>dunkware-internal-snapshot</name>
             <url>
-                https://nexus.dunkware.com/repository/dunkware-internal-snapshot/</url>
+                https://nexus.dunkware.net/</url>
 
         </snapshotRepository>
         <repository>
             <uniqueVersion>false</uniqueVersion>
-            <id>dunkware-internal-release</id>
+            <id>dunkware-internal-snapshot</id>
             <layout>default</layout>
-            <name>dunkware-internal-release</name>
+            <name>dunkware-snapshotreleasese</name>
             <url>
-                https://nexus.dunkware.com/repository/dunkware-internal-release/</url>
+                https://nexus.dunkware./repository/dunkware-internal-release/</url>
 
         </repository>
     </distributionManagement>
 
     <modules>
 
-        <module>utils/java-utils-parent</module>
-        <module>xscript/pom.xml</module>
-        <module>xstream/xstream-core-model/pom.xml</module>
-        <module>xstream/xstream-core-runtime/pom.xml</module>
-       
         
-        <module>trade</module>
-        <module>time</module>
+
         
-       <!-- <module>trade</module> -->
-        <module>spring/spring-cluster</module>
-        <module>spring/spring-runtime</module>
+        <module>faces-widgets-mock</module>
+        <module>faces-demo-service</module>
+        <module>faces-demo-client</module>
+        <module>faces-widgets-client</module>
+        <module>faces-widgets-model</module>
+        <module>faces-widgets-proto</module>
+        <module>faces-widgets-server</module>
+        <module>faces-widgets-javafx </module>
         
         
-        <!--
-        <module>projects/dunkware-street-tick</module>
-   
-        <module>xscript</module>-->
+        
+	
     </modules>
     <build>
         <!-- To define the plugin version in your parent POM -->
