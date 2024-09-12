@@ -32,6 +32,14 @@
 	</properties>
 
 	<dependencies>
+		
+		<dependency>
+			
+			
+	<groupId>com.dunkware.trade</groupId>
+	<artifactId>trade-feed-api-model</artifactId>
+	<version>1.0.0-SNAPSHOT</version>
+		</dependency>
 
 		<dependency>
 			<groupId>com.dunkware.utils</groupId>

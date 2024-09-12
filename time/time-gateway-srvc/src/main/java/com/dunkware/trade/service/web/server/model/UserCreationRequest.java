@@ -1,7 +1,10 @@
 package com.dunkware.trade.service.web.server.model;
 
-import javax.validation.constraints.NotNull;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
+
+import javax.validation.constraints.NotNull;
 
 public class UserCreationRequest {
 
@@ -15,11 +18,15 @@ public class UserCreationRequest {
     @NotNull
     private String email;
 
-    private String address;
-
+    private LocalDateTime lastLogin; 
+    
+    private int loginCount;
+   
     private LocalDateTime createdOn;
 
     private LocalDateTime updatedOn;
+    
+    private List<String> roles = new ArrayList<String>();
 
     public String getPassword() {
         return password;
@@ -53,14 +60,7 @@ public class UserCreationRequest {
         this.email = email;
     }
 
-    public String getAddress() {
-        return address;
-    }
-
-    public void setAddress(String address) {
-        this.address = address;
-    }
-
+  
     public LocalDateTime getCreatedOn() {
         return createdOn;
     }
@@ -76,4 +76,22 @@ public class UserCreationRequest {
     public void setUpdatedOn(LocalDateTime updatedOn) {
         this.updatedOn = updatedOn;
     }
+
+	public LocalDateTime getLastLogin() {
+		return lastLogin;
+	}
+
+	public void setLastLogin(LocalDateTime lastLogin) {
+		this.lastLogin = lastLogin;
+	}
+
+	public int getLoginCount() {
+		return loginCount;
+	}
+
+	public void setLoginCount(int loginCount) {
+		this.loginCount = loginCount;
+	}
+    
+    
 }

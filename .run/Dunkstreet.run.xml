@@ -1,9 +1,0 @@
-<component name="ProjectRunConfigurationManager">
-  <configuration default="false" name="Dunkstreet" type="CompoundRunConfigurationType">
-    <toRun name="StreamServer" type="Application" />
-    <toRun name="TickService" type="Application" />
-    <toRun name="WebService" type="Application" />
-    <toRun name="WorkerApp" type="Application" />
-    <method v="2" />
-  </configuration>
-</component>

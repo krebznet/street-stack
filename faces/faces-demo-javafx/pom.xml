@@ -124,7 +124,7 @@
                     </execution>
                 </executions>
                 <configuration>
-                    <mainClass>com.dunkware.faces.demo.client.grid.FxVariableViewer</mainClass>
+                    <mainClass>com.dunkware.faces.demo.client.grid.DataGridDemoApp</mainClass>
                 </configuration>
             </plugin>
         </plugins>

@@ -1,0 +1,213 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	<parent>
+		<groupId>org.springframework.boot</groupId>
+		<artifactId>spring-boot-starter-parent</artifactId>
+		<version>3.2.5</version>
+	</parent>
+	<groupId>com.dunkware.trade</groupId>
+	<artifactId>trade-feed-tick-srvc</artifactId>
+	<version>1.0.0-SNAPSHOT</version>
+	<name>Dunkware Trade Tick Service Server</name>
+	<description>Dunkware Trade Tick Service Server</description>
+
+	<properties>
+	<java.version>17</java.version>
+		<maven.compiler.source>17</maven.compiler.source>
+		<maven.compiler.target>17</maven.compiler.target>
+		<dockerfile-maven-plugin.version>1.3.3</dockerfile-maven-plugin.version>
+		<private.registry.url>505030817635.dkr.ecr.us-east-1.amazonaws.com</private.registry.url>
+	</properties>
+
+
+	<distributionManagement>
+		<snapshotRepository>
+			<uniqueVersion>false</uniqueVersion>
+			<id>dunkware-internal-snapshot</id>
+			<layout>default</layout>
+			<name>dunkware-internal-snapshot</name>
+			<url>https://nexus.dunkware.com/repository/dunkware-internal-snapshot/</url>
+
+		</snapshotRepository>
+		<repository>
+			<uniqueVersion>false</uniqueVersion>
+			<id>dunkware-internal-release</id>
+			<layout>default</layout>
+			<name>dunkware-internal-release</name>
+			<url>https://nexus.dunkware.com/repository/dunkware-internal-release/</url>
+
+		</repository>
+	</distributionManagement>
+
+
+	<scm>
+		<connection>scm:git:ssh://git@github.com/krebznet/dunkware-trade-service-tick-server.git</connection>
+		<developerConnection>scm:git:ssh://git@github.com/krebznet/dunkware-trade-service-tick-server.git</developerConnection>
+		<url>https://github.com/krebznet/dunkware-trade-service-tick-server.git</url>
+		<tag>v1</tag>
+	</scm>
+	<dependencies>
+		<!-- <dependency> <groupId>org.springframework.boot</groupId> <artifactId>spring-boot-starter-data-jpa</artifactId> 
+			</dependency> -->
+
+<dependency>
+	
+	<groupId>com.dunkware.utils</groupId>
+	<artifactId>java-utils-core</artifactId>
+	<version>1.0.0-SNAPSHOT</version>
+</dependency>
+<dependency>
+    <groupId>com.zaxxer</groupId>
+    <artifactId>HikariCP</artifactId>
+    <version>3.4.5</version>
+</dependency>
+<dependency>
+	
+	<groupId>com.dunkware.utils</groupId>
+	<artifactId>java-utils-mysql</artifactId>
+	<version>1.0.0-SNAPSHOT</version>
+</dependency>
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-web</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-test</artifactId>
+			<scope>test</scope>
+		</dependency>
+		<!-- Spring Boot Actuator for Production Ready Features -->
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-actuator</artifactId>
+		</dependency>
+		<!-- Spring Boot Dev Tool - High Performance Development -->
+
+		<!-- https://mvnrepository.com/artifact/org.springframework.boot/spring-boot-starter-data-jpa -->
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-data-jpa</artifactId>
+		</dependency>
+	           
+		<dependency>
+			<groupId>com.mysql</groupId>
+			<artifactId>mysql-connector-j</artifactId>
+		</dependency> 			
+
+		<!-- https://mvnrepository.com/artifact/com.sndyuk/logback-more-appenders -->
+
+		<dependency>
+			<groupId>ch.qos.logback</groupId>
+			<artifactId>logback-classic</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>ch.qos.logback</groupId>
+			<artifactId>logback-core</artifactId>
+		</dependency>
+	
+		
+
+		<dependency>
+			<groupId>org.fluentd</groupId>
+			<artifactId>fluent-logger</artifactId>
+			<version>0.3.4</version>
+		</dependency>
+		<dependency>
+			<groupId>com.sndyuk</groupId>
+			<artifactId>logback-more-appenders</artifactId>
+			<version>1.8.3</version>
+		</dependency>
+		<!-- https://mvnrepository.com/artifact/io.hawt/hawtio-springboot -->
+
+		<!-- Metrics/Prometheus -->
+
+
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-actuator</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>io.micrometer</groupId>
+			<artifactId>micrometer-registry-prometheus</artifactId>
+			<scope>runtime</scope>
+		</dependency>
+
+
+		<!-- Dunkware Dependnecies -->
+
+
+		<dependency>
+			<groupId>com.dunkware.trade</groupId>
+			<artifactId>trade-feed-tick-atick</artifactId>
+			<version>1.0.0-SNAPSHOT</version>
+		</dependency>
+
+
+		<dependency>
+			<groupId>com.dunkware.spring</groupId>
+			<artifactId>spring-cluster</artifactId>
+			<version>2.0.0-SNAPSHOT</version>
+		</dependency>
+
+
+
+		<dependency>
+			<groupId>com.dunkware.trade</groupId>
+			<artifactId>trade-feed-tick-api</artifactId>
+			<version>1.0.0-SNAPSHOT</version>
+		</dependency>
+		<dependency>
+			<groupId>com.dunkware.trade</groupId>
+			<artifactId>trade-feed-tick-model</artifactId>
+			<version>1.0.0-SNAPSHOT</version>
+		</dependency>
+		<dependency>
+			<groupId>com.dunkware.trade</groupId>
+			<artifactId>trade-feed-tick-protocol</artifactId>
+			<version>1.0.0-SNAPSHOT</version>
+		</dependency>
+	
+
+		<!-- <dependency> <groupId>com.dunkware.trade.tools</groupId> <artifactId>dunkware-trade-tools-scrape</artifactId> 
+			<version>1.1.0</version> </dependency> -->
+		<dependency>
+			<groupId>com.dunkware.utils</groupId>
+			<artifactId>java-utils-core</artifactId>
+			<version>1.0.0-SNAPSHOT</version>
+		</dependency>
+		<!-- https://mvnrepository.com/artifact/com.google.guava/guava -->
+		<!-- https://mvnrepository.com/artifact/com.google.guava/guava -->
+		<dependency>
+			<groupId>com.google.guava</groupId>
+			<artifactId>guava</artifactId>
+			<version>30.1-jre</version>
+		</dependency>
+
+
+		<dependency>
+			<groupId>org.apache.httpcomponents</groupId>
+			<artifactId>httpcore</artifactId>
+			<version>4.4.8</version>
+		</dependency>
+	</dependencies>
+
+
+	<build>
+
+		<!-- <resources> <resource> <directory>src/main/resources</directory> <filtering>true</filtering> 
+			<excludes> <exclude>**/application.properties</exclude> <exclude>**/logback.xml</exclude> 
+			</excludes> </resource> </resources> -->
+		<plugins>
+			<plugin>
+				<groupId>org.springframework.boot</groupId>
+				<artifactId>spring-boot-maven-plugin</artifactId>
+			</plugin>
+
+		</plugins>
+	</build>
+
+</project>

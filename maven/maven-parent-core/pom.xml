@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	<groupId>com.dunkware.maven</groupId>
+	<artifactId>maven-parent-core</artifactId>
+	<version>1.0.0-SNAPSHOT</version>
+	<name>Maven Parent Core </name>
+	<description>Maven Parent Core</description>
+	<packaging>pom</packaging>
+
+
+	<properties>
+
+		<java.version>17</java.version>
+		<maven.compiler.source>17</maven.compiler.source>
+		<maven.compiler.target>17</maven.compiler.target>
+		<test.dir>src/test/java</test.dir>
+		<testSourceDirectory>/src/test/java</testSourceDirectory>
+		<project.build.testSourceDirectory>src/test/java</project.build.testSourceDirectory>
+		<src.dir>src/main/java</src.dir>
+		<slf4j.api.version>2.0.12</slf4j.api.version>
+		<lombok.version>1.18.32</lombok.version>
+	</properties>
+
+
+	<scm>
+		<connection>
+			scm:git:ssh://git@github.com/dunkware/street-stack.git</connection>
+		<developerConnection>
+			scm:git:ssh://git@github.com/dunkware/street-stack.git</developerConnection>
+		<url>https://github.com/dunkware/street-stack.git</url>
+
+	</scm>
+	<dependencies>
+
+		<!-- https://mvnrepository.com/artifact/org.slf4j/slf4j-api -->
+		<dependency>
+			<groupId>org.slf4j</groupId>
+			<artifactId>slf4j-api</artifactId>
+			<version>${slf4j.api.version}</version>
+		</dependency>
+
+		<dependency>
+			<groupId>org.projectlombok</groupId>
+			<artifactId>lombok</artifactId>
+			<version>${lombok.version}</version>
+			<optional>true</optional>
+		</dependency>
+	</dependencies>
+
+	
+
+
+	<distributionManagement>
+		<snapshotRepository>
+			<uniqueVersion>false</uniqueVersion>
+			<id>dunkware-snapshots</id>
+			<layout>default</layout>
+			<name>Dunkware Snapshots</name>
+			<url>https://nexus.dunkware.net/repository/dunkware-snapshots/</url>
+
+		</snapshotRepository>
+		<repository>
+			<uniqueVersion>false</uniqueVersion>
+			<id>dunkware-releases</id>
+			<layout>default</layout>
+			<name>Dunkware Releases</name>
+			<url>https://nexus.dunkware.net/repository/dunkware-releases/</url>
+		</repository>
+	</distributionManagement>
+
+
+</project>

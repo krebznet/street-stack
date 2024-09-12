@@ -23,7 +23,7 @@ import com.dunkware.trade.service.web.server.model.UserCreationRequest;
 import com.dunkware.trade.service.web.server.storage.service.UserService;
 
 @RestController
-@RequestMapping("/v1/api/user")
+@RequestMapping("/api/gateway")
 public class UserController {
 
     @Autowired

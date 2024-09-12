@@ -1,6 +1,6 @@
 package com.dunkware.trade.broker.api.model.account;
 
-import com.dunkware.utils.core.observable.ObservableBean;
+import com.dunkware.utils.core.observable.Observable;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -11,7 +11,7 @@ import lombok.ToString;
 @NoArgsConstructor
 @AllArgsConstructor
 @ToString
-public class AccountBean extends ObservableBean {
+public class AccountBean extends Observable<AccountBean> {
 
 	private String name;
 	private String broker;

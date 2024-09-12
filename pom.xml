@@ -66,6 +66,7 @@
         <module>xscript/pom.xml</module>
         <module>xstream/xstream-core-model/pom.xml</module>
         <module>xstream/xstream-core-runtime/pom.xml</module>
+        <module>maven/parent-core/pom.xml</module>
        <module>faces</module>
         
         <module>trade</module>

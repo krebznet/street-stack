@@ -1,0 +1,79 @@
+package com.dunkware.trade.service.stream.serverd.server.controller.session;
+
+import java.util.List;
+
+import com.dunkware.spring.cluster.DunkNetChannel;
+import com.dunkware.spring.cluster.DunkNetNode;
+import com.dunkware.trade.service.stream.json.controller.session.StreamSessionNodeBean;
+import com.dunkware.trade.service.stream.json.controller.spec.StreamState;
+import com.dunkware.trade.service.stream.json.worker.stream.StreamSessionWorkerStartReq;
+import com.dunkware.trade.service.stream.serverd.controller.StreamController;
+import com.dunkware.trade.tick.model.ticker.TradeTickerSpec;
+import com.dunkware.utils.core.events.DunkEventNode;
+import com.dunkware.xstream.xproject.model.XStreamBundle;
+
+public interface StreamSessionNode {
+
+	XStreamBundle getStreamBundle();
+	
+	StreamState getState();
+	
+	StreamSessionNodeBean getBean();
+	
+	DunkNetNode getDunkNode();
+	
+	DunkNetChannel getChannel();
+	
+	String getNodeId();
+	
+	int getNumericId();
+	
+	String getWorkerId();
+	
+	List<TradeTickerSpec> getTickers();
+	
+	boolean hasTicker(String symbol);
+	
+	public List<String> getErrors();
+	
+	void stop(); 
+	
+	StreamSessionWorkerStartReq getStartReq();
+	
+	void start(StreamSessionNodeInput input) ;
+	
+	public DunkEventNode getEventNode();
+	
+	public StreamSessionNodeInput getInput();
+	
+	public StreamSession getSession();
+	
+	public StreamController getStream();
+		
+	String getStartExcetpion();
+	
+	String getStopException();
+	
+	public void cancel();
+	
+	public boolean isRunning();
+	
+	public double stoppingElapseLocalTime();
+	
+	public double startingElapseLocalTime();
+	
+	public boolean isStarting();
+	
+	public boolean isStopping();
+	
+	public boolean isStopException();
+	
+	public StreamSessionNodeStopState getStopState();
+	
+	public List<Integer> getSessionEntities();
+	
+	
+	
+	
+	
+}

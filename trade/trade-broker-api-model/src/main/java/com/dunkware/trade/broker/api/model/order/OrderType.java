@@ -2,7 +2,7 @@ package com.dunkware.trade.broker.api.model.order;
 
 import java.beans.Transient;
 
-import com.dunkware.trade.feed.model.ticker.Ticker;
+import com.dunkware.trade.feed.api.model.ticker.Ticker;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;

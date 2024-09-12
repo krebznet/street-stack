@@ -7,7 +7,6 @@ import java.util.concurrent.TimeUnit;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-
 import com.dunkware.trade.broker.api.model.order.OrderBean;
 import com.dunkware.trade.broker.api.model.order.OrderPreview;
 import com.dunkware.trade.broker.api.model.order.OrderStatus;
@@ -189,9 +188,10 @@ public class TwsAccountOrder implements Order {
 	}
 
 	private void setStatus(OrderStatus status) { 
+		bean.propertyChange("status",this.status,status);
 		this.status = status; 
 		this.bean.setStatus(status.name());
-		bean.notifyUpdate();
+		
 	}
 
 	private TwsOrder createTwsOrder() throws OrderException {
@@ -353,6 +353,7 @@ public class TwsAccountOrder implements Order {
 
 		}
 
+		
 		
 		/**
 		 * this is only invoked when the what_iff flag is = true

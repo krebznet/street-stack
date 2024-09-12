@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	
+	
+	
+	<groupId>com.dunkware.trade</groupId>
+	<artifactId>trade-feed-tick-api</artifactId>
+	<version>1.0.0-SNAPSHOT</version>
+
+	<name>Trade Feed Tick API</name>
+	<description>Trade Feed Tick API</description>
+
+
+	
+	<dependencies>
+		<dependency>
+			<groupId>junit</groupId>
+			<artifactId>junit</artifactId>
+			<version>3.8.1</version>
+		</dependency>
+		<dependency>
+			<groupId>org.reflections</groupId>
+			<artifactId>reflections</artifactId>
+			<version>0.9.10</version>
+		</dependency>
+		
+		<dependency>
+			<groupId>com.dunkware.utils</groupId>
+			<artifactId>java-utils-tick</artifactId>
+			<version>1.0.0-SNAPSHOT</version>
+		</dependency>
+		<dependency>
+			<groupId>com.dunkware.utils</groupId>
+			<artifactId>java-utils-kafka</artifactId>
+			<version>1.0.0-SNAPSHOT</version>
+		</dependency>
+		<!-- Dunkware Dependencies -->
+		
+		<dependency>
+			<groupId>com.dunkware.trade</groupId>
+			<artifactId>trade-feed-tick-model</artifactId>
+			<version>1.0.0-SNAPSHOT</version>
+		</dependency>
+
+
+
+	</dependencies>
+
+</project>

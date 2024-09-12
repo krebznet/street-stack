@@ -58,15 +58,15 @@ public class CliDevGetContentFromAllSubJavaFiles {
     }
 
     public static void main(String[] args) {
-        if (args.length < 2) {
-            System.out.println("Usage: JavaFileAggregator <directory> <output-file>");
-            return;
-        }
+       // if (args.length < 2) {
+         //   System.out.println("Usage: JavaFileAggregator <directory> <output-file>");
+         //   return;
+       // }
 
         // The directory containing .java files
-        String directoryPath = args[0];
+        String directoryPath = "/Users/duncankrebs/dunkware-bsv/repo/bac/street-cluster/projects/dunkware-xstream-core-model/src/main/java/com/dunkware/xstream/model/entity/query";// args[0];
         // The output file to write the collected content
-        String outputFilePath = args[1];
+        String outputFilePath = "/tmp/model.java";//
 
         CliDevGetContentFromAllSubJavaFiles aggregator = new CliDevGetContentFromAllSubJavaFiles();
         aggregator.processDirectory(new File(directoryPath)); // Process the directory

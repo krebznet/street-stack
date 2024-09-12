@@ -12,20 +12,20 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
-import com.dunkware.time.entity.mod.EntityService;
-import com.dunkware.time.entity.model.data.EntityDTO;
-import com.dunkware.time.entity.model.search.EntitySearchReq;
+import com.dunkware.time.entity.mod.ServerEntityService;
+import com.dunkware.time.entity.model.data.TimeEntity;
+import com.dunkware.time.entity.model.search.TimeEntitySearchReq;
 
 @RestController
 @RequestMapping("/stream/entities")
 public class EntityController {
 
     @Autowired
-    private EntityService entityService;
+    private ServerEntityService entityService;
 
     // Search entities
     @PostMapping("/search")
-    public ResponseEntity<List<EntityDTO>> searchEntities(@RequestBody EntitySearchReq searchReq) {
+    public ResponseEntity<List<TimeEntity>> searchEntities(@RequestBody TimeEntitySearchReq searchReq) {
        // List<EntityDTO> results = entityService.searchEntities(searchReq);
        // return ResponseEntity.ok(results);
     	return null;

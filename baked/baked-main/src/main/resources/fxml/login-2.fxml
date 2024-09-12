@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.lang.String?>
+<?import javafx.collections.FXCollections?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.PasswordField?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.text.Font?>
+
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="700.0" xmlns="http://javafx.com/javafx/22" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.dunkware.street.smart.controller.LoginController">
+   <left>
+      <AnchorPane prefHeight="200.0" prefWidth="300.0" style="-fx-background-color: lightblue;" BorderPane.alignment="CENTER">
+         <children>
+            <ImageView fitHeight="400.0" fitWidth="400.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@../images/login-image.png" />
+               </image>
+            </ImageView>
+         </children>
+      </AnchorPane>
+   </left>
+   <center>
+      <AnchorPane prefHeight="400.0" prefWidth="330.0" style="-fx-background-color: black;" BorderPane.alignment="CENTER">
+         <children>
+            <ComboBox fx:id="txtEnvironment" layoutX="57.0" layoutY="114.0" onInputMethodTextChanged="#setEnvironment" prefHeight="30.0" prefWidth="202.0" promptText="Envrionment">
+            <items>
+               <FXCollections fx:factory="observableArrayList">
+                  <String fx:value="Local" />
+                  <String fx:value="Development" />
+                  <String fx:value="Testing" />
+               </FXCollections>
+            </items>
+            </ComboBox>
+            <TextField fx:id="txtUsername" layoutX="58.0" layoutY="158.0" onAction="#onSetUsername" prefHeight="26.0" prefWidth="201.0" promptText="Username" style="-fx-background-color: transparent; -fx-border-color: #136ac7; -fx-border-width: 2;">
+               <font>
+                  <Font name="System Bold" size="13.0" />
+               </font>
+            </TextField>
+            <PasswordField fx:id="txtPassword" layoutX="58.0" layoutY="200.0" onAction="#onSetPassword" prefHeight="26.0" prefWidth="200.0" promptText="Password" style="-fx-background-color: transparent; -fx-border-color: #136ac7; -fx-border-image-width: 2;" />
+            <Button fx:id="btnLogin" layoutX="128.0" layoutY="243.0" mnemonicParsing="false" onAction="#onLogin" onMouseClicked="#handleLogin" prefHeight="30.0" prefWidth="61.0" style="-fx-background-color: lightblue;" text="Login" />
+
+            <ImageView fitHeight="22.0" fitWidth="49.0" layoutX="266.0" layoutY="9.0" onMouseReleased="#onExit" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@../icons/exit1.png" />
+               </image>
+            </ImageView>
+         </children>
+      </AnchorPane>
+   </center>
+</BorderPane>

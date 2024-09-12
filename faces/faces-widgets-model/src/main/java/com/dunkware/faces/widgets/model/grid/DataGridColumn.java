@@ -6,6 +6,7 @@ public class DataGridColumn {
     private String header;   
     private String formatType; 
     private String dataType;  
+    
 
     public DataGridColumn(String field, String header, String formatType, String dataType) {
         this.field = field;

@@ -11,7 +11,57 @@ trade-feed-atick
 faces-
 
 
+com.dunktrade
+
+DUNKTRADE 
+    STUDIO 
+
+com.dunkware.studio.parent
+com.dunkware.studio.plugins-parent
+com.dunkware.studio.product
+com.dunkware.studio.rcp - org.apache.directory.studio.rcp
+com.dunkware.studio.installers (org.apache.studio.installers) 
+com.dunkware.studio.installers.macos
+com.dunkware.studio.installers.windows
+com.dunkware.studio.windows.64bit
+com.dunkware.studio.ecplise.target (studio.eclipse-trgt-product) 
+com.dunkware.studio.time.stream.script.ui
+com.dunkware.st
+
+	
+java-utils-widgets
+DataGridList
+
+faces-widgets-runtime
+
+DataGrid
+
+face-datagrid-
+
+DataGrid
+ -> start it -> 
+
+faces-widgets-core
+  - datagrid
+     DataGrid
+
+GridBean
+GridList
+GridUpdate
+GridListener
+Grid
 
 fusion-javafx-main
 fusion-service-srvc
 fusion-service
+
+
+java-utils-core
+
+com.dunkware.java.utils.feature
+com.dunkware.java.utils.tick
+com.dunkware.java.utils.core
+com.dunkware.java.utils.feature
+
+com.dunkware.time.studio.script
+

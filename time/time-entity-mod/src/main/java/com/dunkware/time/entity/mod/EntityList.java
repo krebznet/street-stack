@@ -2,7 +2,7 @@ package com.dunkware.time.entity.mod;
 
 import java.util.List;
 
-import com.dunkware.time.entity.model.data.EntityDTO;
+import com.dunkware.time.entity.model.data.TimeEntity;
 
 public interface EntityList {
 	
@@ -12,8 +12,8 @@ public interface EntityList {
 	
 	public int getListSize();
 	
-	public List<Entity> getEntityList();
+	public List<ServerTimeEntity> getEntityList();
 	
-	public List<EntityDTO> getDTOList();
+	public List<TimeEntity> getDTOList();
 
 }

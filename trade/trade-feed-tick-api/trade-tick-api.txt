@@ -1,0 +1,6 @@
+1.2.0
+ Instrument Package
+   -InstrumentProvider 
+   -Equity
+   -EquityListener
+   - Impl base classes

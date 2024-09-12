@@ -1,8 +1,8 @@
 package com.dunkware.trade.broker.api.model.broker;
 
-import com.dunkware.utils.core.observable.ObservableBean;
+import com.dunkware.utils.core.observable.Observable;
 
-public class BrokerBean extends ObservableBean {
+public class BrokerBean extends Observable<BrokerBean> {
 	
 	private String connectTime; 
 	private String disconnectCount; 

@@ -1,0 +1,13 @@
+[INFO] Scanning for projects...
+[INFO] 
+[INFO] ---< com.dunkware.trade.service:dunkware-trade-service-tick-server >----
+[INFO] Building Dunkware Trade Tick Service Server 1.2.0-SNAPSHOT
+[INFO] --------------------------------[ jar ]---------------------------------
+[INFO] 
+[INFO] --- dockerfile-maven-plugin:1.3.3:build (default-cli) @ dunkware-trade-service-tick-server ---
+[INFO] Using Google application default credentials
+[INFO] loaded credentials for user account with clientId=764086051850-6qr4p6gpi6hn506pt8ejuq83di341hur.apps.googleusercontent.com
+[INFO] Building Docker context /Users/dkrebs/genesis/artifacts/trade-service-tick-server/1.2.0/dunkware-trade-service-tick-server
+[INFO] 
+[INFO] Image will be built as 505030817635.dkr.ecr.us-east-1.amazonaws.com/dunkware-private:1.2.0-SNAPSHOT
+[INFO] 

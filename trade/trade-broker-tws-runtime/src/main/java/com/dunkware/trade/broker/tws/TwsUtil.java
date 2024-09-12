@@ -1,8 +1,8 @@
 package com.dunkware.trade.broker.tws;
 
 import com.dunkware.trade.broker.api.runtime.OrderException;
-import com.dunkware.trade.feed.model.ticker.Ticker;
-import com.dunkware.trade.feed.model.ticker.TickerType;
+import com.dunkware.trade.feed.api.model.ticker.Ticker;
+import com.dunkware.trade.feed.api.model.ticker.TickerType;
 import com.ib.client.Contract;
 import com.ib.contracts.StkContract;
 

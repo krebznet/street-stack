@@ -1,6 +1,6 @@
 package com.dunkware.spring.cluster;
 
-public enum DunkNodeStatus {
+public enum  DunkNodeStatus {
 	Online,Offline
 	
 

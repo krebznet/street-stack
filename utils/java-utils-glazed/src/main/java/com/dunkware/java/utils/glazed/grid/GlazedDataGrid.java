@@ -13,6 +13,7 @@ import org.slf4j.MarkerFactory;
 import com.dunkware.utils.core.concurrent.DunkExecutor;
 import com.dunkware.utils.core.helpers.DunkUUID;
 
+import ca.odell.glazedlists.GlazedLists;
 import ca.odell.glazedlists.ObservableElementList;
 import ca.odell.glazedlists.event.ListEvent;
 import ca.odell.glazedlists.event.ListEventListener;
@@ -382,6 +383,7 @@ public class GlazedDataGrid implements ListEventListener<Object> {
 				}
 
 			}
+
 			if (listChanges.hasNext() == false) {
 				return;
 			}

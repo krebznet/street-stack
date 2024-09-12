@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	<parent>
+		<groupId>com.dunkware.maven</groupId>
+		<artifactId>maven-parent-core</artifactId>
+		<version>1.0.0</version>
+		
+	</parent>
+	<groupId>com.dunkware.trade</groupId>
+	<artifactId>trade-feed-tick-model</artifactId>
+	<version>1.0.0-SNAPSHOT</version>
+
+	<name>Dunkware Trade Feed Tick Model</name>
+	<description>maven-archtype-jar.</description>
+
+
+	<dependencies>
+		<dependency>
+			<groupId>junit</groupId>
+			<artifactId>junit</artifactId>
+			<version>3.8.1</version>
+		</dependency>
+		<!-- Dunkware Dependencies -->
+		<dependency>
+			<groupId>com.dunkware.utils</groupId>
+			<artifactId>java-utils-core</artifactId>
+			<version>1.0.0-SNAPSHOT</version>
+		</dependency>
+
+	</dependencies>
+
+	
+
+</project>

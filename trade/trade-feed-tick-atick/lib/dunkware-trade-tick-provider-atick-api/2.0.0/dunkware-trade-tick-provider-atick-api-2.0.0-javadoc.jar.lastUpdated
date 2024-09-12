@@ -1,0 +1,18 @@
+#NOTE: This is a Maven Resolver internal implementation file, its format can be changed without prior notice.
+#Fri Apr 26 00:48:19 CDT 2024
+@default-dunkware-internal-release-https\://nexus.dunkware.com/repository/dunkware-internal-release/.lastUpdated=1705305160731
+@default-dunkware-internal-snapshot-https\://nexus.dunkware.com/repository/dunkware-internal-snapshot/.lastUpdated=1705305160839
+@default-maven-central-https\://mvnrepository.com/.lastUpdated=1710233857497
+https\://jcenter.bintray.com/.error=
+https\://jcenter.bintray.com/.lastUpdated=1714110499379
+https\://jitpack.io/.error=
+https\://jitpack.io/.lastUpdated=1714110499511
+https\://mvnrepository.com/.error=Could not transfer artifact com.dunkware.trade.tick\:dunkware-trade-tick-provider-atick-api\:jar\:javadoc\:2.0.0 from/to maven-central (https\://mvnrepository.com/)\: status code\: 403, reason phrase\: Forbidden (403)
+https\://nexus.dunkware.com/repository/dunkware-internal-release/.error=
+https\://nexus.dunkware.com/repository/dunkware-internal-release/.lastUpdated=1714110499823
+https\://nexus.dunkware.com/repository/dunkware-internal-snapshot/.error=
+https\://nexus.dunkware.com/repository/dunkware-internal-snapshot/.lastUpdated=1710233857740
+https\://repo.maven.apache.org/maven2/.error=
+https\://repo.maven.apache.org/maven2/.lastUpdated=1714110499171
+https\://repo1.maven.org/maven2/.error=
+https\://repo1.maven.org/maven2/.lastUpdated=1705305160836

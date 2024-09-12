@@ -1,10 +1,9 @@
 package com.dunkware.trade.broker.api.model.order;
 
-import com.dunkware.utils.core.observable.ObservableBean;
+import com.dunkware.utils.core.observable.Observable;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
-import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
 
@@ -12,7 +11,7 @@ import lombok.ToString;
 @NoArgsConstructor()
 @AllArgsConstructor
 @ToString
-public class OrderBean extends ObservableBean {
+public class OrderBean extends Observable<OrderBean> {
 
 	
 	private String exception;

@@ -75,6 +75,13 @@
         <module>trade-engine-api-model</module>
         <module>trade-engine-core-runtime</module>
         <module>trade-engine-core-model</module>
+        <module>trade-feed-tick-srvc</module>
+        <module>trade-feed-tick-api</module>
+        <module>trade-feed-tick-proto</module>
+        <module>trade-feed-tick-model</module>
+        <module>trade-feed-tick-atick</module>
+        <module>trade-feed-tick-client</module>
+        <module>trade-feed-tick-srvc</module>
         
        
         

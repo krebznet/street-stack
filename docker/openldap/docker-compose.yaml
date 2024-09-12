@@ -1,0 +1,31 @@
+version: '3'
+services:
+  # OpenLDAP service
+  ldap:
+    image: osixia/openldap:latest
+    container_name: openldap
+    environment:
+      LDAP_ORGANISATION: "Dunkware Corp"
+      LDAP_DOMAIN: "dunkware.com"
+      LDAP_ADMIN_PASSWORD: "password"
+    ports:
+      - "389:389"     # LDAP port
+      - "636:636"     # LDAPS (secure LDAP) port
+    volumes:
+      - ./ldap-data:/var/lib/ldap           # Persist LDAP data
+      - ./ldap-config:/etc/ldap/slapd.d     # Persist LDAP configuration
+    restart: always                         # Automatically restart if the container stops
+
+  # phpLDAPadmin service for web-based LDAP management
+  phpldapadmin:
+    image: osixia/phpldapadmin:latest
+    container_name: phpldapadmin
+    environment:
+      PHPLDAPADMIN_LDAP_HOSTS: "openldap"       # Link phpLDAPadmin to OpenLDAP
+      PHPLDAPADMIN_HTTPS: "false"               # Disable HTTPS for now (simpler setup)
+      APACHE_SERVER_NAME: "localhost"           # Set Apache ServerName to avoid warning
+    ports:
+      - "9595:80"     # Map container's port 80 to localhost:9595
+    depends_on:
+      - ldap         # Ensure ldap service starts before phpLDAPadmin
+    restart: always   # Automatically restart if the container stops

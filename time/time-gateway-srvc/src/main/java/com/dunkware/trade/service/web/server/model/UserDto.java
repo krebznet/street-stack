@@ -1,6 +1,8 @@
 package com.dunkware.trade.service.web.server.model;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 public class UserDto {
 	
@@ -8,9 +10,10 @@ public class UserDto {
     private String firstName;
     private String lastName;
     private String email;
-    private String address;
     private LocalDateTime createdOn;
     private LocalDateTime updatedOn;
+    
+    private List<String> roles = new ArrayList<String>();
 
     public Long getUserId() {
         return userId;
@@ -28,10 +31,7 @@ public class UserDto {
         return email;
     }
 
-    public String getAddress() {
-        return address;
-    }
-
+   
     public LocalDateTime getCreatedOn() {
         return createdOn;
     }
@@ -56,10 +56,7 @@ public class UserDto {
         this.email = email;
     }
 
-    public void setAddress(String address) {
-        this.address = address;
-    }
-
+ 
     public void setCreatedOn(LocalDateTime createdOn) {
         this.createdOn = createdOn;
     }
@@ -67,4 +64,14 @@ public class UserDto {
     public void setUpdatedOn(LocalDateTime updatedOn) {
         this.updatedOn = updatedOn;
     }
+
+	public List<String> getRoles() {
+		return roles;
+	}
+
+	public void setRoles(List<String> roles) {
+		this.roles = roles;
+	}
+    
+    
 }
