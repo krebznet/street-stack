@@ -27,7 +27,7 @@ import com.dunkware.trade.broker.tws.connector.TwsSocketReader;
 import com.dunkware.trade.broker.tws.instrument.TwsInstruments;
 import com.dunkware.utils.core.concurrent.DunkExecutor;
 import com.dunkware.utils.core.concurrent.DunkExecutorCountLatch;
-import com.dunkware.utils.core.events.DunkEventNode;
+import com.dunkware.utils.core.event.EventNode;
 import com.ib.client.ContractDetails;
 import com.ib.client.EClientSocket;
 
@@ -49,7 +49,7 @@ public class TwsBroker implements Broker , TwsSocketReader {
 
 	private DunkExecutorCountLatch connectLatch = new DunkExecutorCountLatch();
 
-	private DunkEventNode eventNode;
+	private EventNode eventNode;
 
 	private TwsInstruments instruments;
 
@@ -114,7 +114,7 @@ public class TwsBroker implements Broker , TwsSocketReader {
 	}
 
 	@Override
-	public void connect(Object brokerType, DunkEventNode eventNode, DunkExecutor executor)  {
+	public void connect(Object brokerType, EventNode eventNode, DunkExecutor executor)  {
 		this.type =  (TwsBrokerType)brokerType;
 		
 		this.eventNode = eventNode; 
@@ -124,7 +124,7 @@ public class TwsBroker implements Broker , TwsSocketReader {
 		try {
 			this.exector = executor;
 			this.eventNode = eventNode;
-			this.eventNode.adDunkEventHandler(this);
+			this.eventNode.addEventHandler(this);
 			connectLatch.increment();
 			this.type = type; 
 			this.type.setConnectionId(CLIENTID.incrementAndGet());
@@ -152,7 +152,7 @@ public class TwsBroker implements Broker , TwsSocketReader {
 	}
 
 	@Override
-	public DunkEventNode getEventNode() {
+	public EventNode getEventNode() {
 		return eventNode; 
 	}
 

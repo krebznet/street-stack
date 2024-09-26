@@ -1,58 +1,71 @@
 package com.dunkware.utils.core.observable;
 
-import java.util.Vector;
-
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
+import java.util.Vector;
+import java.util.concurrent.locks.ReentrantReadWriteLock;
+
 public class Observable<T extends Observable<T>> {
-	
-	
-	@JsonIgnore
-	private Vector<ObservableMonitor<T>> obs = new Vector<ObservableMonitor<T>>();
 
+    @JsonIgnore
+    private final Vector<Observer<T>> observers = new Vector<>();
+    private final ReentrantReadWriteLock lock = new ReentrantReadWriteLock();
 
-	public void beanUpdate() {
-		  /*
-         * a temporary array buffer, used as a snapshot of the state of
-         * current Observers.
-         */
-        Object[] arrLocal;
+    // Add an observer to the list
+    public void addListener(Observer<T> monitor) {
+        lock.writeLock().lock();
+        try {
+            if (!observers.contains(monitor)) {
+                observers.add(monitor);
+            }
+        } finally {
+            lock.writeLock().unlock();
+        }
+    }
 
-        synchronized (this) {
-            /* We don't want the Observer doing callbacks into
-             * arbitrary code while holding its own Monitor.
-             * The code where we extract each Observable from
-             * the Vector and store the state of the Observer
-             * needs synchronization, but notifying observers
-             * does not (should not).  The worst result of any
-             * potential race-condition here is that:
-             * 1) a newly-added Observer will miss a
-             *   notification in progress
-             * 2) a recently unregistered Observer will be
-             *   wrongly notified when it doesn't care
-             */
-          
-            arrLocal = obs.toArray();
+    // Remove an observer from the list
+    public void removeListener(Observer<T> monitor) {
+        lock.writeLock().lock();
+        try {
+            observers.remove(monitor);
+        } finally {
+            lock.writeLock().unlock();
+        }
+    }
+
+    // Notify all observers of a general update
+    protected void update() {
+        Object[] localObservers;
+
+        lock.readLock().lock();
+        try {
+            localObservers = observers.toArray();
+        } finally {
+            lock.readLock().unlock();
         }
 
-      //  for (int i = arrLocal.length-1; i>=0; i--)
-           // ((ObservableBeanListener)arrLocal[i]).observableUpdate(this);
-	}
+        for (Object observer : localObservers) {
+            @SuppressWarnings("unchecked")
+            Observer<T> monitor = (Observer<T>) observer;
+            monitor.beanUpdate((T) this);
+        }
+    }
 
-	public synchronized void addMonitor(ObservableMonitor<T>  o) {
-		//if (!obs.contains(o)) {
-       //     obs.addElement(o);
-      //  }
-	}
+    // Notify observers of a specific property change
+    protected void propertyUpdate(String property, Object oldValue, Object newValue) {
+        Object[] localObservers;
 
-	public synchronized void removeMonitor(ObservableMonitor<T> o) {
-		 obs.removeElement(o);
-	}
-	
-	public void propertyChange(String property, Object oldValue, Object newValue) { 
-		
-	}
-	
-	
+        lock.readLock().lock();
+        try {
+            localObservers = observers.toArray();
+        } finally {
+            lock.readLock().unlock();
+        }
 
+        for (Object observer : localObservers) {
+            @SuppressWarnings("unchecked")
+            Observer<T> monitor = (Observer<T>) observer;
+            monitor.propertyUpdate((T) this, property, newValue);
+        }
+    }
 }

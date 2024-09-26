@@ -15,6 +15,14 @@
 
     <dependencies>
         <!-- JavaFX Dependencies -->
+		<dependency>
+			
+	<groupId>com.dunkware.trade</groupId>
+	<artifactId>trade-feed-api-model</artifactId>
+	<version>1.0.0-SNAPSHOT</version>
+
+		</dependency>
+
         <dependency>
             <groupId>org.openjfx</groupId>
             <artifactId>javafx-controls</artifactId>
@@ -50,7 +58,7 @@
         
         <dependency>
 			<groupId>com.dunkware.utils</groupId>
-	<artifactId>java-utils-core</artifactId>
+	<artifactId>utils-core</artifactId>
 	<version>1.0.0-SNAPSHOT</version>
 	<exclusions>
 		<exclusion>
@@ -61,7 +69,7 @@
         </dependency>
 <dependency>
 			<groupId>com.dunkware.utils</groupId>
-	<artifactId>java-utils-reactive</artifactId>
+	<artifactId>utils-reactive</artifactId>
 	<version>1.0.0-SNAPSHOT</version>
 		</dependency>
 		
@@ -124,6 +132,7 @@
                     </execution>
                 </executions>
                 <configuration>
+					
                     <mainClass>com.dunkware.faces.demo.client.grid.DataGridDemoApp</mainClass>
                 </configuration>
             </plugin>

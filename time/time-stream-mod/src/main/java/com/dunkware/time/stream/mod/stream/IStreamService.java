@@ -5,7 +5,7 @@ import java.util.List;
 
 import org.springframework.stereotype.Service;
 
-import com.dunkware.utils.core.events.DunkEventNode;
+import com.dunkware.utils.core.event.EventNode;
 
 @Service
 public interface IStreamService {
@@ -20,5 +20,5 @@ public interface IStreamService {
 	
 	public List<String> getStreamLabels();
 	
-	public DunkEventNode getEventNode();
+	public EventNode getEventNode();
 }

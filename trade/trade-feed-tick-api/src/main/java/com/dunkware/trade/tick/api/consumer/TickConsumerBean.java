@@ -2,9 +2,9 @@ package com.dunkware.trade.tick.api.consumer;
 
 import java.time.LocalTime;
 
-import com.dunkware.utils.core.observable.ObservableBean;
+import com.dunkware.utils.core.observable.Observable;
 
-public class TickConsumerBean extends ObservableBean  {
+public class TickConsumerBean extends Observable<TickConsumerBean>  {
 
 	private String name; 
 	private int subscriptions; 

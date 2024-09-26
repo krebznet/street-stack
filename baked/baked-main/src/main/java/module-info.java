@@ -14,6 +14,7 @@ module street {
     exports com.dunkware.street.smart;
     exports com.dunkware.street.smart.controller;
     exports com.dunkware.street.smart.ui.common;
+    exports com.dunkware.street.smart.bot;
     exports com.dunkware.street.smart.ui.common.example;
     opens com.dunkware.street.smart to  javafx.fxml;
 

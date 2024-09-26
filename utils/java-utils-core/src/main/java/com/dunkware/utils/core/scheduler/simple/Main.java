@@ -14,7 +14,7 @@ public class Main {
     public static void main(String[] args) {
         ZoneId easternTime = ZoneId.of("America/New_York");
 
-        // Create a simple event model
+        // Create a simple event bean
         SimpleEventModel simplePreMarket = new SimpleEventModel(
                 "PreMarket",
                 "Pre Market Trading",

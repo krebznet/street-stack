@@ -1,7 +1,6 @@
 package com.dunkware.trade.broker.api.runtime.event;
 
 import com.dunkware.trade.broker.api.runtime.Broker;
-import com.dunkware.utils.core.events.DunkEvent;
 
 //TODO: AVINASHANV-21 Event Object example
 /**
@@ -12,7 +11,7 @@ import com.dunkware.utils.core.events.DunkEvent;
  * and matching the event with the class type of the input param on the handler, then it moves the event op 
  * the tree and notifies registered handlers on each parent node. 
  */
-public class EBrokerEvent extends DunkEvent {
+public class EBrokerEvent  {
 
 	private Broker broker; 
 	

@@ -10,14 +10,14 @@ import com.dunkware.spring.cluster.core.request.DunkNetChannelRequest;
 import com.dunkware.spring.cluster.core.request.DunkNetServiceRequest;
 import com.dunkware.spring.cluster.protocol.descriptors.DunkNetNodeDescriptor;
 import com.dunkware.utils.core.concurrent.DunkExecutor;
-import com.dunkware.utils.core.events.DunkEventNode;
+import com.dunkware.utils.core.event.EventNode;
 import com.dunkware.utils.kafka.admin.DunkKafkaAdmin;
 
 import io.vertx.core.Future;
 
 public interface DunkNet {
 	
-	public DunkEventNode getEventNode();
+	public EventNode getEventNode();
 	
 	public String getId();
 	

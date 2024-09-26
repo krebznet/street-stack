@@ -1,9 +1,8 @@
 package com.dunkware.spring.cluster.event;
 
 import com.dunkware.spring.cluster.DunkNetNode;
-import com.dunkware.utils.core.events.DunkEvent;
 
-public class EDunkNetNodeEvent extends DunkEvent  {
+public class EDunkNetNodeEvent  {
 
 	private DunkNetNode node; 
 	

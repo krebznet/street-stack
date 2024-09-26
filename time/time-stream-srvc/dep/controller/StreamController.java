@@ -46,7 +46,7 @@ import com.dunkware.trade.tick.model.ticker.TradeTickerSpec;
 import com.dunkware.trade.tick.model.ticker.TradeTickerType;
 import com.dunkware.trade.tick.service.protocol.ticker.spec.TradeTickerListSpec;
 import com.dunkware.utils.core.concurrent.DunkExecutorCountLatch;
-import com.dunkware.utils.core.events.DunkEventNode;
+import com.dunkware.utils.core.event.EventNode;
 import com.dunkware.utils.core.events.anot.ADunkEventHandler;
 import com.dunkware.utils.core.helpers.DunkAnot;
 import com.dunkware.utils.core.json.DunkJson;
@@ -131,7 +131,7 @@ public class StreamController   {
 
 	private LocalTime statsCacheTimestamp = null;
 	
-	private DunkEventNode eventNode; 
+	private EventNode eventNode; 
 
 	private List<StreamEntitySignalListener> signalListeners = new ArrayList<StreamEntitySignalListener>();
 	
@@ -168,7 +168,7 @@ public class StreamController   {
 	}
 	
 	
-	public DunkEventNode getEventNode() { 
+	public EventNode getEventNode() { 
 		return eventNode;
 	}
 	public void start(StreamEntity ent) throws Exception {

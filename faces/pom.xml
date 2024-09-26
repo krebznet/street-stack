@@ -65,6 +65,7 @@
         
 
         
+        <module>faces-widgets-core</module>
         <module>faces-widgets-mock</module>
         <module>faces-demo-service</module>
         <module>faces-demo-client</module>

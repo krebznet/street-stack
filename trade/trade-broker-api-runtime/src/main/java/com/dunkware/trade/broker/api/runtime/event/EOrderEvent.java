@@ -1,9 +1,8 @@
 package com.dunkware.trade.broker.api.runtime.event;
 
 import com.dunkware.trade.broker.api.runtime.Order;
-import com.dunkware.utils.core.events.DunkEvent;
 
-public class EOrderEvent extends DunkEvent  {
+public class EOrderEvent  {
 
 	private Order order; 
 	

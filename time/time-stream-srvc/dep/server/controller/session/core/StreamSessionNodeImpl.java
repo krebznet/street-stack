@@ -44,7 +44,7 @@ import com.dunkware.trade.service.stream.server.controller.session.events.EStrea
 import com.dunkware.trade.service.stream.server.controller.session.events.EStreamSessionNodeStopException;
 import com.dunkware.trade.service.stream.server.controller.session.events.EStreamSessionNodeStopped;
 import com.dunkware.trade.tick.model.ticker.TradeTickerSpec;
-import com.dunkware.utils.core.events.DunkEventNode;
+import com.dunkware.utils.core.event.EventNode;
 import com.dunkware.utils.core.stopwatch.StopWatch;
 import com.dunkware.xstream.xproject.model.XStreamBundle;
 
@@ -84,7 +84,7 @@ public class StreamSessionNodeImpl implements StreamSessionNode, DunkNetChannelH
 
 	private String workerId;
 
-	private DunkEventNode eventNode;
+	private EventNode eventNode;
 
 	private AtomicBoolean stopped = new AtomicBoolean(false);
 
@@ -448,7 +448,7 @@ public class StreamSessionNodeImpl implements StreamSessionNode, DunkNetChannelH
 	}
 
 	@Override
-	public DunkEventNode getEventNode() {
+	public EventNode getEventNode() {
 		return eventNode;
 	}
 

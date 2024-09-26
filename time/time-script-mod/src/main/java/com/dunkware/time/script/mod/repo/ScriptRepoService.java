@@ -4,7 +4,7 @@ import java.util.Collection;
 
 import org.springframework.stereotype.Service;
 
-import com.dunkware.utils.core.events.DunkEventNode;
+import com.dunkware.utils.core.event.EventNode;
 
 @Service
 public interface ScriptRepoService {
@@ -19,5 +19,5 @@ public interface ScriptRepoService {
 	
 	public boolean repoExists(String name); 
 	
-	public DunkEventNode getEventNode();
+	public EventNode getEventNode();
 }

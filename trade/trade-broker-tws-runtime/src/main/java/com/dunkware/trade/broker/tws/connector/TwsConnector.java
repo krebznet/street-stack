@@ -15,7 +15,7 @@ import org.slf4j.LoggerFactory;
 
 import com.dunkware.trade.broker.api.runtime.BrokerStatus;
 import com.dunkware.trade.broker.tws.TwsBroker;
-import com.dunkware.utils.core.events.DunkEventNode;
+import com.dunkware.utils.core.event.EventNode;
 import com.dunkware.utils.core.time.DunkTimeZones;
 import com.ib.client.Contract;
 import com.ib.client.ContractDetails;
@@ -49,7 +49,7 @@ public class TwsConnector implements TwsSocketReader {
 	private Map<String, ContractDetails> _contractDetailsMap = new HashMap<String, ContractDetails>();
 	private Semaphore _contractDetailsSemaphore = new Semaphore(1);
 	private TimeUpdater _timeUpdater = null;
-	private DunkEventNode eventNode;
+	private EventNode eventNode;
 	
 	private ZonedDateTime connectTime = null;
 	private ZonedDateTime disconnectTime = null;
@@ -61,12 +61,12 @@ public class TwsConnector implements TwsSocketReader {
 		_connectorSocket = new TwsConnectorSocket();
 	}
 	
-	public void setEventNode(DunkEventNode eventNode) { 
+	public void setEventNode(EventNode eventNode) { 
 		this.eventNode = eventNode;
 		
 	}
 	
-	public DunkEventNode getEventNode() { 
+	public EventNode getEventNode() { 
 		return eventNode;
 	}
 

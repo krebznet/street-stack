@@ -64,9 +64,9 @@ public class CliDevGetContentFromAllSubJavaFiles {
        // }
 
         // The directory containing .java files
-        String directoryPath = "/Users/duncankrebs/dunkware-bsv/repo/bac/street-cluster/projects/dunkware-xstream-core-model/src/main/java/com/dunkware/xstream/model/entity/query";// args[0];
+        String directoryPath = "/Users/duncankrebs/dunkware-bsv/repo/bac/street-cluster/projects/dunkware-xstream-core-bean/src/main/java/com/dunkware/xstream/bean/bean/query";// args[0];
         // The output file to write the collected content
-        String outputFilePath = "/tmp/model.java";//
+        String outputFilePath = "/tmp/bean.java";//
 
         CliDevGetContentFromAllSubJavaFiles aggregator = new CliDevGetContentFromAllSubJavaFiles();
         aggregator.processDirectory(new File(directoryPath)); // Process the directory

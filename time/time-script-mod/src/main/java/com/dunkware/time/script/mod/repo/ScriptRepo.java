@@ -3,7 +3,7 @@ package com.dunkware.time.script.mod.repo;
 import java.util.List;
 
 import com.dunkware.time.script.mod.repo.entity.DBScriptRepo;
-import com.dunkware.utils.core.events.DunkEventNode;
+import com.dunkware.utils.core.event.EventNode;
 import com.dunkware.xstream.model.script.descriptor.XScriptDescriptor;
 
 public interface ScriptRepo {
@@ -18,7 +18,7 @@ public interface ScriptRepo {
 	
 	List<ScriptRepoRelease> getReleaseHistory();
 	
-	public DunkEventNode getEventNode();
+	public EventNode getEventNode();
 
 	public DBScriptRepo getEntity();
 

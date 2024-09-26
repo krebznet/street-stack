@@ -9,7 +9,7 @@ import org.springframework.stereotype.Service;
 
 import com.dunkware.time.stream.mod.stream.IStream;
 import com.dunkware.time.stream.mod.stream.IStreamService;
-import com.dunkware.utils.core.events.DunkEventNode;
+import com.dunkware.utils.core.event.EventNode;
 
 import jakarta.annotation.PostConstruct;
 
@@ -60,7 +60,7 @@ public class StreamServiceImpl implements IStreamService {
 	}
 
 	@Override
-	public DunkEventNode getEventNode() {
+	public EventNode getEventNode() {
 		// TODO Auto-generated method stub
 		return null;
 	}

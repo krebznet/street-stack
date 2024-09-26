@@ -95,11 +95,11 @@ public class DunkHttpHelper {
 			connection.setRequestMethod("POST");
 			connection.setRequestProperty("Connection", "Keep-Alive");
 			connection.setRequestProperty("User-Agent", "Android Multipart HTTP Client 1.0");
-			connection.setRequestProperty("Content-Type", "multipart/form-data; boundary="+boundary);
+			connection.setRequestProperty("Content-Type", "multipart/form-enums; boundary="+boundary);
 			
 			outputStream = new DataOutputStream(connection.getOutputStream());
 			outputStream.writeBytes(twoHyphens + boundary + lineEnd);
-			outputStream.writeBytes("Content-Disposition: form-data; name=\"" + filefield + "\"; filename=\"" +  "pussy.bytes" +"\"" + lineEnd);
+			outputStream.writeBytes("Content-Disposition: form-enums; name=\"" + filefield + "\"; filename=\"" +  "pussy.bytes" +"\"" + lineEnd);
 			outputStream.writeBytes("Content-Type: image/jpeg" + lineEnd);
 			outputStream.writeBytes("Content-Transfer-Encoding: binary" + lineEnd);
 			outputStream.writeBytes(lineEnd);
@@ -127,7 +127,7 @@ public class DunkHttpHelper {
 			for(int i=0; i<max;i++) {
 				outputStream.writeBytes(twoHyphens + boundary + lineEnd);
 				String[] kv = posts[i].split("=");
-				outputStream.writeBytes("Content-Disposition: form-data; name=\"" + kv[0] + "\"" + lineEnd);
+				outputStream.writeBytes("Content-Disposition: form-enums; name=\"" + kv[0] + "\"" + lineEnd);
 				outputStream.writeBytes("Content-Type: text/plain"+lineEnd);
 				outputStream.writeBytes(lineEnd);
 				outputStream.writeBytes(kv[1]);

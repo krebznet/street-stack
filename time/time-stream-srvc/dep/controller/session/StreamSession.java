@@ -11,7 +11,7 @@ import com.dunkware.trade.service.stream.json.controller.spec.StreamState;
 import com.dunkware.trade.service.stream.server.controller.StreamController;
 import com.dunkware.trade.service.stream.server.repository.StreamSessionEntity;
 import com.dunkware.trade.tick.model.ticker.TradeTickerSpec;
-import com.dunkware.utils.core.events.DunkEventNode;
+import com.dunkware.utils.core.event.EventNode;
 import com.dunkware.xstream.xproject.XScriptProject;
 import com.dunkware.xstream.xproject.model.XScriptBundle;
 
@@ -47,7 +47,7 @@ public interface StreamSession {
 
 	public Long getSessionEntityId();
 
-	public DunkEventNode getEventNode();
+	public EventNode getEventNode();
 	
 	public XScriptProject getScriptProject();
 

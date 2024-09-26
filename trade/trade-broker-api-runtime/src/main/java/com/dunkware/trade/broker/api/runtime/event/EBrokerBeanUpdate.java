@@ -1,9 +1,8 @@
 package com.dunkware.trade.broker.api.runtime.event;
 
 import com.dunkware.trade.broker.api.runtime.Broker;
-import com.dunkware.utils.core.events.DunkEvent;
 
-public class EBrokerBeanUpdate extends DunkEvent {
+public class EBrokerBeanUpdate   {
 
 	private Broker broker; 
 	

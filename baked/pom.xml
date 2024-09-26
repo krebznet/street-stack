@@ -6,14 +6,15 @@
 
     <groupId>com.dunkware.baked</groupId>
     <artifactId>baked-app</artifactId>
-    <version>1.0.0</version>
+    <version>1.0.0-SNAPSHOT</version>
     <packaging>pom</packaging>
     <name>Baked Parent POM</name>
 
     <modules>
         <!-- List of your child modules -->
         <module>baked-core</module>
-        <module>baked--main</module>
+        <module>baked-main</module>
+        <module>baked-broker</module>
 
         <!-- Add more modules here -->
     </modules>

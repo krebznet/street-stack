@@ -145,7 +145,7 @@ public class DunkExecutor {
 							try {
 								nextTask.task.run();	
 							} catch (Exception e) {
-								logger.error("Task Class {} Threw Exception {}",nextTask.task.getClass().getName(),e.toString(),e);
+								logger.error("Task Class {} Threw Exception {}",nextTask.task.getClass().getName(),e,e);
 							}
 							
 							phaser.decrement();

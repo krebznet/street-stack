@@ -17,7 +17,7 @@ import com.dunkware.trade.broker.api.runtime.Broker;
 import com.dunkware.trade.broker.api.runtime.Order;
 import com.dunkware.trade.broker.api.runtime.OrderException;
 import com.dunkware.trade.broker.tws.connector.TwsSocketReader;
-import com.dunkware.utils.core.events.DunkEventNode;
+import com.dunkware.utils.core.event.EventNode;
 
 public class TwsAccount implements Account, TwsSocketReader {
 
@@ -29,7 +29,7 @@ public class TwsAccount implements Account, TwsSocketReader {
 	private TwsBroker broker;
 	private String id;
 
-	private DunkEventNode eventNode;
+	private EventNode eventNode;
 
 	private AccountBean bean;
 	
@@ -119,7 +119,7 @@ public class TwsAccount implements Account, TwsSocketReader {
 	}
 
 	@Override
-	public DunkEventNode getEventNode() {
+	public EventNode getEventNode() {
 		return eventNode;
 	}
 

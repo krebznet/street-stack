@@ -4,11 +4,11 @@ import java.util.List;
 
 import com.dunkware.trade.broker.api.model.broker.BrokerBean;
 import com.dunkware.utils.core.concurrent.DunkExecutor;
-import com.dunkware.utils.core.events.DunkEventNode;
+import com.dunkware.utils.core.event.EventNode;
 
 public interface Broker {
 
-	public void connect(Object brokerType, DunkEventNode eventNode, DunkExecutor executor);
+	public void connect(Object brokerType, EventNode eventNode, DunkExecutor executor);
 
 	public void disconnect() throws Exception;
 
@@ -18,7 +18,7 @@ public interface Broker {
 
 	Account getAccount(String accountId) throws BrokerException;
 
-	public DunkEventNode getEventNode();
+	public EventNode getEventNode();
 
 	public List<Account> getAccounts();
 

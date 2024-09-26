@@ -13,7 +13,7 @@ import org.springframework.stereotype.Service;
 import com.datastax.oss.driver.api.core.cql.ResultSet;
 import com.datastax.oss.driver.api.core.cql.Row;
 import com.datastax.oss.driver.api.core.cql.SimpleStatement;
-import com.dunkware.stream.data.lib.cassy.helpers.CassyQueries;
+import com.dunkware.stream.data.cassy.helpers.CassyQueries;
 import com.dunkware.time.data.model.entity.EntityStatModel;
 
 //TODO: AVINASHANV-06 Cassandra Database Module

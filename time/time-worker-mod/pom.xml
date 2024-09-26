@@ -6,8 +6,8 @@
 	<modelVersion>4.0.0</modelVersion>
 	<parent>
 		<groupId>com.dunkware.maven</groupId>
-		<artifactId>dunkware-maven-parent</artifactId>
-		<version>6-SNAPSHOT</version>
+	<artifactId>maven-parent-core</artifactId>
+	<version>1.0.0-SNAPSHOT</version>
 		<relativePath>../dunkware-maven-parent/pom.xml</relativePath>
 
 	</parent>
@@ -98,9 +98,11 @@
 		</dependency>
 
 		<dependency>
-			<groupId>com.dunkware.trade.service</groupId>
-			<artifactId>dunkware-trade-service-tick-client</artifactId>
-			<version>1.2.0-SNAPSHOT</version>
+		
+	<groupId>com.dunkware.trade</groupId>
+	<artifactId>trade-feed-tick-client</artifactId>
+	<version>1.0.0-SNAPSHOT</version>
+
 		</dependency>
 
 
@@ -128,21 +130,21 @@
 			<version>3.8.1</version>
 		</dependency>
 
-
+<!--
 		<dependency>
 			<groupId>org.slf4j</groupId>
 			<artifactId>slf4j-api</artifactId>
 			<version>${slf4j-api-version}</version>
 		</dependency>
 
-		<!-- https://mvnrepository.com/artifact/ch.qos.logback/logback-classic -->
+		
 		<dependency>
 			<groupId>ch.qos.logback</groupId>
 			<artifactId>logback-classic</artifactId>
 			<version>${logback.classic-version}</version>
 			<scope>test</scope>
 		</dependency>
-
+-->
 
 		<!-- GRPC DEPS -->
 

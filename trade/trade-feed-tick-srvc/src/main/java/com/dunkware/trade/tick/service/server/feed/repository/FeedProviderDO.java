@@ -1,23 +1,19 @@
 package com.dunkware.trade.tick.service.server.feed.repository;
 
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-import jakarta.persistence.NamedQueries;
-import jakarta.persistence.NamedQuery;
 
 @Entity(name = "ticker_feed_provider")
-@NamedQueries({
-@NamedQuery(name="FeedProviderDO.All",
-    query="SELECT e FROM ticker_feed_provider e")          
-})
 public class FeedProviderDO {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id; 
 	private String identifier; 
+	@Column()
 	private String json; 
 	private int subscriptionLimit;
 	

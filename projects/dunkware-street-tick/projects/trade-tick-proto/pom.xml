@@ -6,8 +6,8 @@
 	<modelVersion>4.0.0</modelVersion>
 	<parent>
 		<groupId>com.dunkware.maven</groupId>
-		<artifactId>dunkware-maven-parent</artifactId>
-		<version>6-SNAPSHOT</version>
+	<artifactId>maven-parent-core</artifactId>
+	<version>1.0.0-SNAPSHOT</version>
 		<relativePath>../dunkware-maven-parent/pom.xml</relativePath>
 
 	</parent>

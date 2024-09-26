@@ -1,14 +1,18 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import java.lang.*?>
-<?import java.util.*?>
-<?import javafx.scene.*?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-<AnchorPane xmlns="http://javafx.com/javafx"
-            xmlns:fx="http://javafx.com/fxml"
-            fx:controller="com.dunkware.street.smart.broker.controllers.BrokersViewController"
-            prefHeight="400.0" prefWidth="600.0">
-
-</AnchorPane>
+<VBox xmlns="http://javafx.com/javafx/22" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.dunkware.street.smart.broker.controllers.BrokersViewController">
+    <children>
+        <TableView fx:id="brokerTable" VBox.vgrow="ALWAYS">
+            <columns>
+                <TableColumn fx:id="identifierColumn" text="Identifier" />
+                <TableColumn fx:id="statusColumn" text="Status" />
+                <TableColumn fx:id="durationColumn" text="Status Duration" />
+                <TableColumn fx:id="brokerTypeColumn" text="Broker Type" />
+                <TableColumn fx:id="accountCountColumn" text="Account Count" />
+            </columns>
+        </TableView>
+    </children>
+</VBox>

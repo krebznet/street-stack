@@ -1,15 +1,68 @@
 syntax = "proto3";
 
-package com.faces.widget.proto.grid;
+package com.faces.widgets.proto.grid;
 
-// DataGridUpdate message definition
-message DataGridUpdateProto {
-  int32 id = 1;
-  string json = 2;
-  string type = 3;
+// Enum to define possible value types for property updates
+enum ValueType {
+    INTEGER = 0;
+    STRING = 1;
+    LONG = 2;
+    DOUBLE = 3;
 }
 
-// DataGridUpdateProtoList message definition for batching updates
-message DataGridUpdateProtoList {
-  repeated DataGridUpdateProto updates = 1;
+// ValueProto message to represent different types of values
+message ValueProto {
+    ValueType type = 1;
+
+    // Using oneof to support multiple types in one field
+    oneof value {
+        int32 int_value = 2;
+        string string_value = 3;
+        int64 long_value = 4;
+        double double_value = 5;
+    }
+}
+
+// PropertyUpdateProto message to define individual property updates
+message PropertyUpdateProto {
+    string property_name = 1;
+    ValueProto property_value = 2;
+}
+
+// RowInsertProto message to define an insert operation with row data
+message RowInsertProto {
+    ValueProto id = 1;                         // Unique ID for the row (inserted)
+    repeated ValueProto field_values = 2;       // List of field values for the row
+}
+
+// RowDeleteProto message to represent a delete operation
+message RowDeleteProto {
+    ValueProto id = 1;                         // Unique ID of the row to be deleted
+}
+
+// RowUpdateProto message definition
+message RowUpdateProto {
+    ValueProto id = 1;                         // Row identifier
+    repeated PropertyUpdateProto property_updates = 2; // Optional property updates for this row
+}
+
+// PropertyUpdatesProto message definition for updating specific properties
+message PropertyUpdatesProto {
+    ValueProto id = 1;                         // Row identifier
+    repeated PropertyUpdateProto property_updates = 2; // List of property updates
+}
+
+// DataGridUpdateProto message definition (parent update)
+message DataGridUpdateProto {
+    oneof update_type {
+        RowUpdateProto row_update = 1;
+        PropertyUpdatesProto property_updates = 2;
+        RowInsertProto row_insert = 3;         // Insert event
+        RowDeleteProto row_delete = 4;         // Delete event
+    }
+}
+
+// DataGridUpdatesProto message definition for batching updates
+message DataGridUpdatesProto {
+    repeated DataGridUpdateProto updates = 1;
 }

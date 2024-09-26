@@ -23,6 +23,7 @@ public class StatGroup {
 
 			@Override
 			public int compare(Stat o1, Stat o2) {
+				
 				return o1.getName().compareTo(o2.getName());
 			}
 			

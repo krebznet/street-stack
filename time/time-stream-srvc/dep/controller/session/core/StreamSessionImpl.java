@@ -48,7 +48,7 @@ import com.dunkware.trade.service.stream.server.controller.session.events.EStrea
 import com.dunkware.trade.service.stream.server.repository.StreamSessionEntity;
 import com.dunkware.trade.service.stream.server.repository.StreamSessionRepo;
 import com.dunkware.trade.tick.model.ticker.TradeTickerSpec;
-import com.dunkware.utils.core.events.DunkEventNode;
+import com.dunkware.utils.core.event.EventNode;
 import com.dunkware.utils.core.events.anot.ADunkEventHandler;
 import com.dunkware.utils.core.json.DunkJson;
 import com.dunkware.utils.core.time.DunkTime;
@@ -121,7 +121,7 @@ public class StreamSessionImpl implements StreamSession {
 
 	private LocalDateTime startTime;
 	
-	private DunkEventNode eventNode; 
+	private EventNode eventNode; 
 
 	// put the stream session capture in here?
 
@@ -165,7 +165,7 @@ public class StreamSessionImpl implements StreamSession {
 	
 
 	@Override
-	public DunkEventNode getEventNode() {
+	public EventNode getEventNode() {
 		return eventNode;
 	}
 

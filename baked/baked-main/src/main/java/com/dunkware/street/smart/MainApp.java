@@ -94,7 +94,7 @@ public class MainApp extends Application {
 
             Scene scene = new Scene(root);
             primaryStage.setScene(scene);
-            primaryStage.setTitle("Dunkware Alpha");
+            primaryStage.setTitle("Street Smart");
 
          //   primaryStage.showAndWait();;
         } catch (Exception e) {

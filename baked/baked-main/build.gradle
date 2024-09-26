@@ -29,11 +29,16 @@ application {
 }
 
 javafx {
-    version = "21"
+    version = "17"
     modules = ["javafx.controls", "javafx.graphics", "javafx.fxml", "javafx.swing", "javafx.media", "javafx.web"]
 }
 
 dependencies {
+
+ implementation "org.openjfx:javafx-controls:17:mac"
+    implementation "org.openjfx:javafx-fxml:17:mac"
+    implementation "org.openjfx:javafx-base:17:mac"
+    implementation "org.openjfx:javafx-graphics:17:mac"
     implementation("io.github.palexdev:materialfx:11.16.1")
     implementation("org.slf4j:slf4j-api:2.0.12")
     implementation("ch.qos.logback:logback-classic:1.5.3")

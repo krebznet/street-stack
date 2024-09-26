@@ -4,7 +4,7 @@ import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.text.DecimalFormat;
 
-import org.apache.commons.math.MathException;
+
 
 public class DunkMath {
 	
@@ -18,10 +18,10 @@ public class DunkMath {
 	 * 
 	 * @param values
 	 * @return
-	 * @throws MathException
 	 */
 	public static double getMean(Object[] values) throws Exception {
 		double temp = 0;
+
 
 		int count = 0;
 		for (Object object : values) {

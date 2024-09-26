@@ -5,9 +5,10 @@
 	<modelVersion>4.0.0</modelVersion>
 	<parent>
 		<groupId>com.dunkware.maven</groupId>
-		<artifactId>maven-parent-core</artifactId>
-		<version>1.0.0</version>
-		
+	<artifactId>maven-parent-core</artifactId>
+	<version>1.0.0-SNAPSHOT</version>
+		<relativePath>../dunkware-maven-parent/pom.xml</relativePath>
+
 	</parent>
 	<groupId>com.dunkware.trade</groupId>
 	<artifactId>trade-feed-tick-atick</artifactId>
@@ -52,7 +53,7 @@
 		<!-- Active Tick Libs -->
 
 
-
+<!--
 		<dependency>
 			<groupId>com.dunkware.trade.tick</groupId>
 			<artifactId>dunkware-trade-tick-provider-atick-javax-security</artifactId>
@@ -74,7 +75,7 @@
 			<version>2.0.0</version>
 		</dependency>
 		
-
+-->
 		<dependency>
 			<groupId>org.eclipse.jetty</groupId>
 			<artifactId>jetty-reactive-httpclient</artifactId>

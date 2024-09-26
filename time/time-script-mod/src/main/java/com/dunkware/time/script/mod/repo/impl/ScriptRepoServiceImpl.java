@@ -19,7 +19,7 @@ import com.dunkware.time.script.mod.repo.entity.DBScriptRepo;
 import com.dunkware.time.script.mod.repo.entity.DBScriptRepoRelease;
 import com.dunkware.time.script.mod.repo.repository.DBScriptRepoReleaseRepo;
 import com.dunkware.time.script.mod.repo.repository.DBScriptRepoRepo;
-import com.dunkware.utils.core.events.DunkEventNode;
+import com.dunkware.utils.core.event.EventNode;
 import com.dunkware.utils.core.json.DunkJson;
 import com.dunkware.xstream.model.script.descriptor.XScriptDescriptor;
 import com.dunkware.xstream.model.script.release.XScriptRelease;
@@ -50,7 +50,7 @@ public class ScriptRepoServiceImpl implements ScriptRepoService  {
 	
 	private DBScriptRepoReleaseRepo scriptReleaseRepository;
 	
-	private DunkEventNode eventNode; 
+	private EventNode eventNode; 
 	
 	
 	public ScriptRepoServiceImpl(DBScriptRepoRepo repo, DBScriptRepoReleaseRepo relRepo, EventService service, ApplicationContext ac) { 
@@ -169,7 +169,7 @@ public class ScriptRepoServiceImpl implements ScriptRepoService  {
 	
 
 	@Override
-	public DunkEventNode getEventNode() {
+	public EventNode getEventNode() {
 		return eventNode; 
 	}
 	

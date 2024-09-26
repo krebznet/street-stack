@@ -9,8 +9,8 @@ public class DunkJsonHttpTest {
 	
 	public static void main(String[] args) {
 		Map<String,Object> params = new HashMap<>();
-		params.put("username", "fuck@fuck.com");
-		params.put("password", "fuck");
+		params.put("username", "fuckme@fuckme.com");
+		params.put("password", "fuckme");
 		
 		String url = "http://localhost:8085/v1/api/user/login-in?username=fuck@fuck.com&password=fuck";
 		try {

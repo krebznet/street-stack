@@ -39,8 +39,8 @@ import com.dunkware.spring.cluster.message.DunkNetMessageTransport;
 import com.dunkware.spring.cluster.protocol.descriptors.DunkNetNodeDescriptor;
 import com.dunkware.spring.runtime.services.ExecutorService;
 import com.dunkware.utils.core.concurrent.DunkExecutor;
-import com.dunkware.utils.core.events.DunkEventNode;
-import com.dunkware.utils.core.events.DunkEventTree;
+import com.dunkware.utils.core.event.EventNode;
+import com.dunkware.utils.core.event.EventTree;
 import com.dunkware.utils.core.helpers.DunkUUID;
 import com.dunkware.utils.core.json.DunkJson;
 import com.dunkware.utils.kafka.admin.DunkKafkaAdmin;
@@ -71,9 +71,9 @@ public class DunkNetImpl implements DunkNet, KafkaByteHandler {
 
 	private BlockingQueue<DunkNetMessage> messageQueue = new LinkedBlockingQueue<DunkNetMessage>();
 	
-	private DunkEventNode eventNode;
+	private EventNode eventNode;
 
-	private DunkEventTree eventTree;
+	private EventTree eventTree;
 
 	private DunkNetBean bean = new DunkNetBean();
 	
@@ -103,7 +103,7 @@ public class DunkNetImpl implements DunkNet, KafkaByteHandler {
 		extensions = DunkNetExtensions.buildComponentExtensions(ac);
 		
 		controller.init(this);
-		eventTree = DunkEventTree.newInstance(executorService.get());
+		eventTree = EventTree.newInstance(executorService.get());
 		eventNode = eventTree.getRoot().createChild(this);
 		bean.setStartTime(LocalDateTime.now());
 		bean.setId(config.getNodeId());
@@ -233,7 +233,7 @@ public class DunkNetImpl implements DunkNet, KafkaByteHandler {
 	}
 
 	@Override
-	public DunkEventNode getEventNode() {
+	public EventNode getEventNode() {
 		return eventNode;
 	}
 

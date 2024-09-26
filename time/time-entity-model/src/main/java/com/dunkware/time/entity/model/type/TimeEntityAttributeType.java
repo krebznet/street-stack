@@ -1,6 +1,6 @@
 package com.dunkware.time.entity.model.type;
 
-import com.dunkware.utils.core.data.DataType;
+import com.dunkware.utils.core.enums.DataType;
 import com.dunkware.utils.core.format.FormatType;
 
 import lombok.AllArgsConstructor;

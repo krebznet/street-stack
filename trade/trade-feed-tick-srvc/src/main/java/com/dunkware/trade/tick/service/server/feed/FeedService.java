@@ -33,6 +33,7 @@ import com.dunkware.trade.tick.model.ticker.TradeTickerType;
 import com.dunkware.trade.tick.service.protocol.service.spec.FeedServiceState;
 import com.dunkware.trade.tick.service.protocol.service.spec.FeedServiceStats;
 import com.dunkware.trade.tick.service.server.feed.repository.FeedProviderDO;
+import com.dunkware.trade.tick.service.server.feed.repository.FeedProviderRepository;
 import com.dunkware.trade.tick.service.server.feed.repository.FeedRepository;
 import com.dunkware.trade.tick.service.server.ticker.repsoitory.TickerListSubscribeDO;
 import com.dunkware.trade.tick.service.server.ticker.repsoitory.TickerListSubscribeRepo;
@@ -55,6 +56,9 @@ public class FeedService {
 
 	@Autowired
 	private FeedRepository providerRepo;
+	
+	@Autowired
+	private FeedProviderRepository providerRepository;
 	
 	@Autowired
 	private TickerListSubscribeRepo subRepo; 
@@ -126,7 +130,7 @@ public class FeedService {
 		
 		
 		logMarker = MarkerFactory.getMarker("FeedService");
-		List<FeedProviderDO> providers = providerRepo.getProviders();
+		Iterable<FeedProviderDO> providers = providerRepository.findAll();
 		for (FeedProviderDO tickProviderEntity : providers) {
 			FeedServiceProvider provider = new FeedServiceProvider();
 			ac.getAutowireCapableBeanFactory().autowireBean(provider);
@@ -147,7 +151,7 @@ public class FeedService {
 		}
 		if(serviceProviders.size() == 0) { 
 			logger.error(MarkerFactory.getMarker("crash"), "Not Data Providers Configured on Tick Server");
-			//System.exit(-1);
+			System.exit(-1);
 		}
 		activeProvider = serviceProviders.get(0).getProvider();
 		if(serviceProviders.size() > 0) { 

@@ -1,6 +1,6 @@
 package com.dunkware.time.entity.model.search;
 
-import com.dunkware.utils.core.data.DataType;
+import com.dunkware.utils.core.enums.DataType;
 
 public class TimeEntitySearchCriteria {
 	

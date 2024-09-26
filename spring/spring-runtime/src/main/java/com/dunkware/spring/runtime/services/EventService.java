@@ -3,15 +3,15 @@ package com.dunkware.spring.runtime.services;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.dunkware.utils.core.events.DunkEventNode;
-import com.dunkware.utils.core.events.DunkEventTree;
+import com.dunkware.utils.core.event.EventNode;
+import com.dunkware.utils.core.event.EventTree;
 
 import jakarta.annotation.PostConstruct;
 
 @Service
 public class EventService {
 
-	private DunkEventTree eventTree; 
+	private EventTree eventTree; 
 	
 	
 	@Autowired
@@ -19,10 +19,10 @@ public class EventService {
 	
 	@PostConstruct
 	public void init() { 
-		eventTree = DunkEventTree.newInstance(executorService.get());
+		eventTree = EventTree.newInstance(executorService.get());
 	}
 	
-	public DunkEventNode getEventRoot() { 
+	public EventNode getEventRoot() { 
 		return eventTree.getRoot();
 	}
 }

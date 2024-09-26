@@ -3,7 +3,7 @@ package com.dunkware.trade.broker.api.runtime;
 import com.dunkware.trade.broker.api.model.order.OrderBean;
 import com.dunkware.trade.broker.api.model.order.OrderStatus;
 import com.dunkware.trade.broker.api.model.order.OrderType;
-import com.dunkware.utils.core.events.DunkEventNode;
+import com.dunkware.utils.core.event.EventNode;
 
 public interface Order {
 
@@ -15,7 +15,7 @@ public interface Order {
 
 	public OrderBean getBean();
 
-	DunkEventNode getEventNode();
+	EventNode getEventNode();
 	
 	public OrderType getType();
 	

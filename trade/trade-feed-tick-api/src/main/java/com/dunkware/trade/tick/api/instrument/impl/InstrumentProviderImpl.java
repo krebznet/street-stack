@@ -66,7 +66,11 @@ public abstract class InstrumentProviderImpl implements InstrumentProvider  {
 		
 		public Instrument getInstrument() { 
 			return instrument;
-		}
+		} // cloud-resources-model
+			// cloud-resources-client
+			// cloud-resources-module
+			// cloud-resources-service
+			
 	}
 
 }

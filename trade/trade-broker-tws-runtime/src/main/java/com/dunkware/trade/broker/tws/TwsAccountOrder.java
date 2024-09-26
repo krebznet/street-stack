@@ -24,7 +24,7 @@ import com.dunkware.trade.broker.api.runtime.event.EOrderStatusUpdate;
 import com.dunkware.trade.broker.api.runtime.event.EOrderSubmitted;
 import com.dunkware.trade.broker.api.runtime.event.EOrderUpdate;
 import com.dunkware.trade.broker.tws.connector.TwsSocketReader;
-import com.dunkware.utils.core.events.DunkEventNode;
+import com.dunkware.utils.core.event.EventNode;
 import com.ib.client.Contract;
 import com.ib.client.Decimal;
 import com.ib.client.TwsOrder;
@@ -56,7 +56,7 @@ public class TwsAccountOrder implements Order {
 	
 	private OrderType spec; 
 
-	private DunkEventNode eventNode;
+	private EventNode eventNode;
 	
 	private OrderStatus status = OrderStatus.Created;
 
@@ -188,7 +188,7 @@ public class TwsAccountOrder implements Order {
 	}
 
 	private void setStatus(OrderStatus status) { 
-		bean.propertyChange("status",this.status,status);
+	
 		this.status = status; 
 		this.bean.setStatus(status.name());
 		
@@ -416,7 +416,7 @@ public class TwsAccountOrder implements Order {
 	}
 
 	@Override
-	public DunkEventNode getEventNode() {
+	public EventNode getEventNode() {
 		return eventNode;
 	}
 

@@ -10,74 +10,76 @@
 <?import javafx.scene.control.TabPane?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.HBox?>
+<?import javafx.fxml.FXMLLoader?>
 
-<AnchorPane prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/22" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.dunkware.street.smart.controller.ShellController">
+<AnchorPane prefHeight="600.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/22" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.dunkware.street.smart.controller.ShellController">
     <children>
         <!-- Menu Bar -->
-        <MenuBar AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+        <MenuBar AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
             <menus>
                 <Menu text="File">
                     <items>
                         <MenuItem onAction="#handleQuit" text="Quit" />
                     </items>
                 </Menu>
-                <Menu id="menuActions" text="Actions">
+                <Menu text="Actions">
                     <items>
                         <MenuItem text="Tws Broker" />
                         <MenuItem text="System" />
-                  <MenuItem text="System" />
                     </items>
                 </Menu>
                 <Menu text="Help">
                     <items>
-                        <MenuItem id="menuAbout" onAction="#menuAbout" text="About" />
+                        <MenuItem onAction="#menuAbout" text="About" />
                     </items>
                 </Menu>
             </menus>
         </MenuBar>
 
         <!-- Main Split Pane -->
-        <SplitPane dividerPositions="0.2976588628762542" layoutY="25.0" AnchorPane.bottomAnchor="30.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="30.0">
+        <SplitPane dividerPositions="0.3" layoutY="25.0" AnchorPane.bottomAnchor="30.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="30.0">
             <items>
-                <!-- Left Pane: Resource Explorer -->
-                <AnchorPane maxWidth="-Infinity" minHeight="0.0" minWidth="0.0" prefHeight="160.0" prefWidth="200.0">
-                    <!-- Add content here for resource explorer -->
-                </AnchorPane>
+                <!-- Left Pane -->
+                <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="160.0" prefWidth="200.0" />
 
                 <!-- Right Pane: Vertical Split Pane -->
-                <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="160.0" prefWidth="100.0">
+                <AnchorPane>
                     <children>
-                        <SplitPane dividerPositions="0.5" orientation="VERTICAL" prefHeight="338.0" prefWidth="417.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                        <!-- Vertical Split for Editor Area and Tabs -->
+                        <SplitPane dividerPositions="0.5" orientation="VERTICAL" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                             <items>
                                 <!-- Editor Area -->
-                                <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="100.0" prefWidth="160.0">
-                                    <!-- Add content here for editor area -->
-                                </AnchorPane>
-                                <AnchorPane prefHeight="400.0" prefWidth="600.0">
+                                <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="150.0">
                                     <children>
-                                        <TabPane layoutX="200.0" layoutY="73.0" prefHeight="400.0" prefWidth="600.0" tabClosingPolicy="UNAVAILABLE" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                                        <Label layoutX="10.0" layoutY="10.0" text="Editor Area (Placeholder)" />
+                                    </children>
+                                </AnchorPane>
+
+                                <!-- Tab Area for Brokers and Other Tabs -->
+                                <AnchorPane>
+                                    <children>
+                                        <TabPane fx:id="tabPane" tabClosingPolicy="UNAVAILABLE" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                                             <tabs>
-                                                <Tab id="tabBrokersread" closable="false" text="Brokers">
+                                                <!-- Brokers Tab with Included Brokers View -->
+                                                <Tab fx:id="tabBrokers" closable="false" text="Brokers">
+                                                    <AnchorPane fx:id="brokersTabContent" />
+                                                </Tab>
+                                                <Tab closable="false" text="Accounts">
                                                     <content>
                                                         <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" />
                                                     </content>
                                                 </Tab>
-                                                <Tab text="tabAccounts">
+                                                <Tab closable="false" text="Feeds">
                                                     <content>
                                                         <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" />
                                                     </content>
                                                 </Tab>
-                                                <Tab text="tabFeeds">
+                                                <Tab closable="false" text="Streams">
                                                     <content>
                                                         <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" />
                                                     </content>
                                                 </Tab>
-                                                <Tab text="tabStreams">
-                                                    <content>
-                                                        <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" />
-                                                    </content>
-                                                </Tab>
-                                                <Tab text="tabBots">
+                                                <Tab closable="false" text="Bots">
                                                     <content>
                                                         <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" />
                                                     </content>
@@ -94,9 +96,9 @@
         </SplitPane>
 
         <!-- Status Line -->
-        <HBox prefHeight="25.0" prefWidth="600.0" style="-fx-background-color: #188dfa;" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0">
+        <HBox prefHeight="25.0" prefWidth="800.0" style="-fx-background-color: #188dfa;" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0">
             <children>
-                <Label id="statusLabel" style="-fx-text-fill: white;" text="Status: Connected    Errors:  43" textFill="#fffbfb">
+                <Label id="statusLabel" style="-fx-text-fill: white;" text="Status: Connected    Errors: 43">
                     <padding>
                         <Insets top="5.0" />
                     </padding>

@@ -1,67 +1,62 @@
-/* General background color for the application */
+/* Basic Backgrounds */
 .root {
     -fx-background-color: #2b2b2b;
-    -fx-text-fill: #d0d0d0;
+    -fx-text-fill: #e0e0e0;
 }
 
-/* Styling for the MenuBar */
-.menu-bar {
+/* Buttons */
+.button {
     -fx-background-color: #3c3f41;
-    -fx-text-fill: #d0d0d0;
+    -fx-text-fill: #e0e0e0;
 }
 
-.menu {
-    -fx-text-fill: #d0d0d0;
-}
-
-.menu-item {
-    -fx-background-color: #3c3f41;
-    -fx-text-fill: #d0d0d0;
-}
-
-.menu-item:hover {
+.button:hover {
     -fx-background-color: #555555;
 }
 
-/* Styling for the SplitPane divider */
-.split-pane {
+/* Toolbars */
+.tool-bar {
     -fx-background-color: #3c3f41;
+    -fx-border-color: #4b4b4b;
 }
 
-.split-pane .divider {
-    -fx-background-color: #444444;
-}
-
-/* Styling for TabPane and Tabs */
-.tab-pane {
+/* Tabs */
+.tab-pane .tab-header-background {
     -fx-background-color: #3c3f41;
 }
 
 .tab {
     -fx-background-color: #3c3f41;
-    -fx-text-base-color: #d0d0d0;
+    -fx-text-fill: #e0e0e0;
 }
 
-.tab:selected {
+/* TableView */
+.table-view {
     -fx-background-color: #2b2b2b;
 }
 
-/* Styling for HBox used as a status line */
-.hbox {
-    -fx-background-color: #3c3f41;
-    -fx-text-fill: #d0d0d0;
+.table-row-cell {
+    -fx-background-color: #2b2b2b;
 }
 
+.table-cell {
+    -fx-text-fill: #e0e0e0;
+}
+
+/* Tooltips */
+.tooltip {
+    -fx-background-color: #444444;
+    -fx-text-fill: #e0e0e0;
+    -fx-border-color: #555555;
+}
+
+/* Other Controls like Labels, Text, etc. */
 .label {
-    -fx-text-fill: #d0d0d0;
+    -fx-text-fill: #e0e0e0;
 }
 
-/* General styling for buttons (if you add them later) */
-.button {
+.text-field {
     -fx-background-color: #3c3f41;
-    -fx-text-fill: #d0d0d0;
-}
-
-.button:hover {
-    -fx-background-color: #555555;
+    -fx-text-fill: #e0e0e0;
+    -fx-border-color: #555555;
 }

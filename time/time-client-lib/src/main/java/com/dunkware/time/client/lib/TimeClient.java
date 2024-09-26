@@ -19,6 +19,15 @@ public class TimeClient {
 		return new TimeClient(endpoint, username, password) ;
 	}
 	
+	
+	// time-client-runtime
+	// time-client-lib
+	// time-client
+	// Time-
+	// CloudConnector
+	
+	// TradeBot
+	
 	private TimeScripts timeScripts = null;
 	private TimeStreams timeStreams = null;
 	private ReactiveClient webClient = null;
